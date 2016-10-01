@@ -19,7 +19,7 @@
 - OWASP MASVS: Requirement 2.1: Verify that secure credential storage facilities are used to store sensitive data, such as user credentials or cryptographic keys.
 - CWE: [Link to CWE issue]
 
-### OMTG-DATAST-002: Test for Sensitive Data Disclosure through Logs
+### OMTG-DATAST-002: Test for Sensitive Data Disclosure through Application Logs
 
 ### White-box Testing
 
