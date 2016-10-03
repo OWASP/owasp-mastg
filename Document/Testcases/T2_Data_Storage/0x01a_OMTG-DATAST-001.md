@@ -1,4 +1,4 @@
-## OMTG-NET-001: Test for Unencrypted Sensitive Data on the Network
+## OMTG-DATAST-001: Test for Unencrypted Sensitive Data on the Network
 
 [General description]
 
