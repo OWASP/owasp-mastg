@@ -2,6 +2,4 @@
 
 ## Overview
 
-What is the test case about? 
-
-[google](http://www.google.com)
+[Describe what this chapter is about.]
