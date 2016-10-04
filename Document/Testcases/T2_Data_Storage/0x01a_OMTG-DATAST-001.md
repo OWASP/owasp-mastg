@@ -1,6 +1,6 @@
-## OMTG-DATAST-001: Test for Unencrypted Sensitive Data on the Network
+## OMTG-DATAST-001: Test Sensitive Data Storage
 
 [General description]
 
-- OWASP MASVS: V5-1: "Verify that sensitive data is encrypted on the network using secure communication protocols. Verify that the secure channel is used consistently throughout the app."
+- OWASP MASVS: V2-1: "Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 - CWE: [Link to CWE issue]
