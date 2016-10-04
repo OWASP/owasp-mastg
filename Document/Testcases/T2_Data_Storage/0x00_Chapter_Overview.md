@@ -11,8 +11,8 @@
 
 #### Detailed Guides
 
-- [OMTG-DATAST-001 Android](/Testcases/T2_Data_Storage/0x01_OMTG-DATAST-Android.md#OMTG-DATAST-001)
-- [OMTG-DATAST-001 iOS](/Testcases/T2_Data_Storage/0x02_OMTG-DATAST-iOS.md#OMTG-DATAST-001)
+- [OMTG-DATAST-001 Android](/Document/Testcases/T2_Data_Storage/0x01_OMTG-DATAST-Android.md#OMTG-DATAST-001)
+- [OMTG-DATAST-001 iOS](/Document/Testcases/T2_Data_Storage/0x02_OMTG-DATAST-iOS.md#OMTG-DATAST-001)
 
 #### References
 
@@ -24,8 +24,8 @@
 
 #### Detailed Guides
 
-- [OMTG-DATAST-009 iOS](/Testcases/T2_Data_Storage/0x01_OMTG-DATAST-Android.md#OMTG-DATAST-009)
-- [OMTG-DATAST-009 Android](/Testcases/T2_Data_Storage/0x02_OMTG-DATAST-iOS.md#OMTG-DATAST-009)
+- [OMTG-DATAST-009 iOS](/Document/Testcases/T2_Data_Storage/0x01_OMTG-DATAST-Android.md#OMTG-DATAST-009)
+- [OMTG-DATAST-009 Android](/Document/Testcases/T2_Data_Storage/0x02_OMTG-DATAST-iOS.md#OMTG-DATAST-009)
 
 #### References
 
