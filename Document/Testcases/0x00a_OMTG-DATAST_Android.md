@@ -16,7 +16,7 @@
 
 - [link to relevant how-tos, papers, etc.]
 
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
+## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 ### White-box Testing
 
