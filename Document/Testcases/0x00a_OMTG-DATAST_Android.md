@@ -77,16 +77,16 @@ CWE-534 - Information Exposure Through Debug Log Files
 
 Check the source code for usage of Logging functions. 
 
-1.Decompile the APK to get access to the Java source code as described in <link to guide>
-* Import the Java files in an IDE (e.g. IntelliJ or Eclipse) or Editor of your choice or directly open them in JD-Gui, ClassyShark or use grep on the command line to search for
+1. Decompile the APK to get access to the Java source code as described in <link to guide>
+2. Import the Java files in an IDE (e.g. IntelliJ or Eclipse) or Editor of your choice or directly open them in JD-Gui, ClassyShark or use grep on the command line to search for
 * functions like:
-... Log.d, Log.e, Log.i, Log.v. Log.w or Log.wtf
-... Logger
-... System.out.print|System.out.println
-* StrictMode
-... Keywords (to identify non-standard log mechanisms) like :
-... Logfile
-... logging
+..* Log.d, Log.e, Log.i, Log.v. Log.w or Log.wtf
+..* Logger
+..* System.out.print|System.out.println
+..* StrictMode
+* Keywords (to identify non-standard log mechanisms) like :
+..* Logfile
+..* logging
 
 
 
