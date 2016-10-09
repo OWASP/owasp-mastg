@@ -316,6 +316,118 @@ Tools
 * SQLite3 - http://www.sqlite.org/cli.html
 
 
+
+
+
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for sending sensitvie data to 3rd Parties
+
+Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel. 
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed. 
+3rd party services are mostly implemented in two ways:
+* By using a standalone library, like a Jar in an Android project that is getting included into the APK.
+* By using a full SDK.
+
+Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base. 
+
+The source code should be checked for API calls or functions provided by the 3rd party library, but also the permissions. It need to be verified that no unnecessary permissions are granted for the 3rd  party library. 
+All requests made  to the external service should be analyzed if any sensitive information is embedded into them. 
+
+### OWASP Mobile Top 10
+M7 - Client Code Quality
+
+### CWE 
+CWE 359 - Exposure of Private Information ('Privacy Violation')
+
+
+### White-box Testing
+
+The permissions set in the AnroidManifest.xml  when installing a library through an IDE wizard should be reviewed. Especially permissions to access SMS (READ_SMS), contacts (ROAD_CONTACTS) or the location (ACCESS_FINE_LOCATION) should be challenged if they are really needed to make the library work at a bare minimum. (See also OMTG-ENV-001).
+
+### Black-box Testing
+
+Dynamic analysis can be performed launching a MITM attack using Burp Proxy, to intercept the traffic exchanged between client and server. Using the certificate provided by Portswigger, Burp can intercept and decrypt the traffic on the fly and manipulate it as you prefer. First of all we need to setup Burp, on our laptop, to listen on a specific port from all the interfaces. After that we can setup the Android device to redirect all the traffic to our laptop, i.e. setting our laptop IP address like proxy.
+A complete guide can be found here (https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
+Once we are able to route the traffic to burp, we can try to sniff the traffic from the application. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service. 
+When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices. 
+The Jar files loaded into the project should be reviewed in order to identify with the developers if they are needed and also if they are out of date and contain known vulnerabilities.
+
+### Remediation
+
+All data that is sent to 3rd Party services should be anonymized, so no PII data is available. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
+AndroidManifest.xml should only contain the permissions that are absolutely needed to work properly and as intended.
+
+### References
+
+* Bulletproof Android, Godfrey Nolan, Chapter 7 - Third-Party Library Integration
+
+
+
+
+## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data Disclosure in Process Memory
+
+Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory. 
+
+To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the decompiled code before making any memory analysis. 
+Once sensitive functions are identified (like decryption of data) the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or decrypted information. 
+
+### OWASP Mobile Top 10
+TBD
+
+### CWE 
+CWE-316 - Cleartext Storage of Sensitive Information in Memory
+
+### White-box Testing
+
+It needs to be identified within the code when sensitive information is stored within a variable and is therefore available within the memory. This information can then be used in dynamic testing when using the App. 
+
+### Black-box Testing
+
+To analyse the memory of an app, the app must be debuggable. See the instructions in XXX on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also ADB integration need to be activated in Android Studio in “Tools/Android/Enable ADB Integration” in order to take a memory dump.
+For rudimentary analysis Android Studio built in tools can be used. Android studio includes tools in the “Android Monitor” tab to investigate the memory. Select the device and app you want to analyse in the "Android Monitor" tab and click on "Dump Java Heap" and a .hprof file will be created. 
+
+![Create Heap Dump](http://bb-conservation.de/sven/mem0.png)
+
+In the new tab that shows the .hprof file, the Package Tree View should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump. 
+
+![Create Heap Dump](http://bb-conservation.de/sven/mem1.png)
+
+For more deeper analysis of the memory dump Eclipse Memory Analyser (MAT) should be used. The .hprof file will be stored in the directory "captures", relative to the project path open within Android Studio.
+
+Before the hprof file can be opened in MAT the hprof file needs to be converted. The tool hprof-conf can be found in the Android SDK in the directory platform-tools.
+
+```
+./hprof-conv file.hprof file-converted.hprof
+```
+
+By using MAT, more functions are available like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes. 
+
+When doing a memory analysis check for sensitive information like:
+* Password and/or Username
+* Decrypted information
+* User or session related information
+* Session ID
+* Interaction with OS, e.g. reading file content
+
+
+### Remediation
+
+If sensitive information is used within the application memory it should be nulled immediately after usage to reduce the attack surface. Information should not be stored in clear text in memory (does this make sense?).
+
+
+### References
+
+* Securely stores sensitive data in RAM - https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/
+
+Tools:
+* Android Studio’s Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap 
+* Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php 
+* Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
+* Fridump - http://pentestcorner.com/introduction-to-fridump 
+* Fridump Repo - https://github.com/Nightbringer21/fridump 
+* LiME (formerly DMD) - https://github.com/504ensicsLabs/LiME 
+
+
+
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 ### White-box Testing
