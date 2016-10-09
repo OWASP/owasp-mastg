@@ -3,6 +3,14 @@
 An app shouldn’t store any sensitive information like credentials, passwords or encryption keys (even when using security controls and mechanisms offered by the OS as a best practice to protect this information). It should be remembered that the confidentiality of sensitive information stored locally on a device cannot be guaranteed, and that most controls can be bypassed on a rooted device.
 In case sensitive information needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. 
 
+### OWASP Mobile Top 10
+M1 - Improper Platform Usage
+M2 - Insecure Data Storage
+
+### CWE
+CWE-312 - Cleartext Storage of Sensitive Information
+CWE-522 - Insufficiently Protected Credentials
+
 ### White-box Testing
 
 When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. Especially encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be avoided:
@@ -125,14 +133,14 @@ public static int e(...);
 
 ### References
 
-Overview of Class Log - http://developer.android.com/reference/android/util/Log.html
-Debugging Logs with LogCat - http://developer.android.com/tools/debugging/debugging-log.html 
+* Overview of Class Log - http://developer.android.com/reference/android/util/Log.html
+* Debugging Logs with LogCat - http://developer.android.com/tools/debugging/debugging-log.html 
 
 Tools
-Logcat - http://developer.android.com/tools/help/logcat.html 
-ProGuard - http://proguard.sourceforge.net/
-DexGuard - https://www.guardsquare.com/dexguard
-ClassyShark - https://github.com/google/android-classyshark 
+* Logcat - http://developer.android.com/tools/help/logcat.html 
+* ProGuard - http://proguard.sourceforge.net/
+* DexGuard - https://www.guardsquare.com/dexguard
+* ClassyShark - https://github.com/google/android-classyshark 
 
 
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
