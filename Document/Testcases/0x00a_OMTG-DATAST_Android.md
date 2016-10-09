@@ -51,6 +51,60 @@ The following is a list of best practice functions used for secure storage of ce
 [3] Android KeyStore System - http://developer.android.com/training/articles/keystore.html
 
 
+
+## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+
+There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
+Log files can be created in various ways on each of the different operating systems. The following table shows the mechanisms that are available on each platform:
+
+| iOS        | Android       | 
+| ------------- |-------------| 
+| NSLog Method      | Log Class, .log[a-Z] | 
+| printf-like function      | Logger Class      |
+| NSAssert-like function | StrictMode     |
+| Macro | System.out / System.err.print    |
+
+### OWASP Mobile Top 10
+M1 - Improper Platform Usage
+M2 - Insecure Data Storage
+
+### CWE 
+CWE-532 - Information Exposure Through Log Files
+CWE-534 - Information Exposure Through Debug Log Files
+
+
+### White-box Testing
+
+Check the source code for usage of Logging functions. 
+
+* Decompile the APK to get access to the Java source code as described in <link to guide>
+* Import the Java files in an IDE (e.g. IntelliJ or Eclipse) or Editor of your choice or directly open them in JD-Gui, ClassyShark or use grep on the command line to search for
+** functions like:
+*** Log.d, Log.e, Log.i, Log.v. Log.w or Log.wtf
+*** Logger
+*** System.out.print|System.out.println
+*** StrictMode
+** Keywords (to identify non-standard log mechanisms) like :
+*** Logfile
+*** logging
+
+
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 ### White-box Testing
