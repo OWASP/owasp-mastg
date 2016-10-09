@@ -60,7 +60,7 @@ The following is a list of best practice functions used for secure storage of ce
 
 
 
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
 Log files can be created in various ways on each of the different operating systems. The following table shows the mechanisms that are available on each platform:
@@ -141,6 +141,179 @@ Tools
 * ProGuard - http://proguard.sourceforge.net/
 * DexGuard - https://www.guardsquare.com/dexguard
 * ClassyShark - https://github.com/google/android-classyshark 
+
+
+
+
+## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Sensitive Data Disclosure in Local Stora
+
+Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on each platform:
+
+iOS        | Android       | 
+| ------------- |-------------| 
+| Property lists      | Shared Preferences | 
+| NSKeyedArchiver      | Internal Storage    |
+| NSFileHandle | External Storage     |
+| SQLite Databases | SQLite Databases  |
+| NSUserDefaults |  |
+
+The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.  
+This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from apps that have a payment option in order to attack it. 
+
+This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. 
+When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information). 
+
+The following examples shows snippets of code to demonstrate bad practices that discloses sensitive information and also shows the different mechanisms in Android to store data. 
+
+* Shared Preferences
+
+SharedPreferences is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
+
+```
+SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
+SharedPreferences.Editor editor = sharedPref.edit();
+editor.putString("username", "administrator");
+editor.putString("password", "supersecret");
+editor.commit();
+```
+
+Once the activity is called, the file key.xml is created with the provided data. This code is violating several best practices. 
+
+  * The username and password is stored in clear text in /data/data/<PackageName>/shared_prefs/key.xml
+
+![Shared Preferences](http://bb-conservation.de/sven/shared_prefs.png)
+
+  * MODE_WORLD_READABLE allows all applications to access and read the content of key.xml
+
+![MODE_WORLD_READABLE](http://bb-conservation.de/sven/mode_world_readable.png)
+
+The usage of Shared Preferences or other mechanisms that are not able to protect data should be avoided to store sensitive information. SharedPreferences are insecure and not encrypted by default. 
+
+* SQLite Databases (Unencrypted)
+
+SQLite is a SQL database that stores data to a text file. The Android SDK comes with built in classes to operate SQLite databases. The main package to manage the databases is android.database.sqlite.
+Within an Activity the following code might be used to store sensitive information like a username and a password:
+SQLiteDatabase notSoSecure = openOrCreateDatabase("privateNotSoSecure",MODE_PRIVATE,null);
+
+```
+notSoSecure.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);");
+notSoSecure.execSQL("INSERT INTO Accounts VALUES('admin','AdminPass');");
+notSoSecure.close();
+```
+
+Once the activity is called, the database file privateNotSoSecure is created with the provided data and the data is stored in clear text in /data/data/<PackageName>/databases/privateNotSoSecure.
+There might be several files available in the databases directory, besides the SQLite database.
+  * Journal files: These are temporary files used to implement atomic commit and rollback capabilities in SQLite (see also https://www.sqlite.org/tempfiles.html). 
+  * Lock files: The lock files are part of the locking and journaling mechanism designed to improve concurrency in SQLite and to reduce the writer starvation problem. (https://www.sqlite.org/lockingv3.html) 
+  
+Unencrypted SQLite databases should not be used to store sensitive information. 
+
+* SQLite Databases (Encrypted)
+By using the library SQLCipher SQLite databases can be encrypted, by providing a password. 
+
+SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
+
+```
+secureDB.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);");
+secureDB.execSQL("INSERT INTO Accounts VALUES('admin','AdminPassEnc');");
+secureDB.close();
+```
+
+If encrypted SQLite databases are used, check if the password is hardcoded in the source, stored in shared preferences or hidden somewhere else in the code or file system. 
+A secure approach to retrieve the key, instead of storing it locally could be to either:
+  * Ask the user every time for a PIN or password to decrypt the database, once the App is opened (weak password or PIN is prone to Brute Force Attacks)
+  * Store the key on the server and make it accessible via a Web Service (then the App can only be used when the device is online)
+
+
+* Internal Storage
+
+Files can be saved directly on the device's internal storage. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed [1].
+Within an Activity the following code might be used to store sensitive information in the variable string persistently to the internal storage:
+
+```
+FileOutputStream fos = null;
+fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+fos.write(string.getBytes());
+fos.close();
+```
+
+Once the activity is called, the file is created with the provided data and the data is stored in clear text in /data/data/<PackageName>/files/$FILENAME.
+The file mode need to be checked, to make sure that only the app itself has access to the file by using MODE_PRIVATE. Other modes like MODE_WORLD_READABLE and  MODE_WORLD_WRITEABLE are more lax and can pose a security risk. 
+
+It should also be checked what files are read within the App by searching for the usage of class FileInputStream. Part of the internal storage mechanisms is also the cache storage. To cache data temporarily, functions like getCacheDir() can be used. 
+
+* External Storage
+Every Android-compatible device supports a shared "external storage" that you can use to save files. This can be a removable storage media (such as an SD card) or an internal (non-removable) storage. Files saved to the external storage are world-readable and can be modified by the user when they enable USB mass storage to transfer files on a computer [2].
+Within an Activity the following code might be used to store sensitive information in the variable string persistently to the external storage:
+
+```
+           File file = new File (Environment.getExternalStorageDirectory(), "password.txt");
+           String password = "SecretPassword";
+           FileOutputStream fos;
+               fos = new FileOutputStream(file);
+               fos.write(password.getBytes());
+               fos.close();
+```
+
+Once the activity is called, the file is created with the provided data and the data is stored in clear text in the external storage. 
+
+
+### OWASP Mobile Top 10
+M2 - Insecure Data Storage
+
+### CWE 
+CWE-200 - Information Exposure
+
+### White-box Testing
+
+As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code of an Android App. 
+
+* Check AndroidManifest.xml for permissions to read and write to external storage, like uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE".
+* Check the source code for functions and API calls that are used for storing data and search for:
+  * file permissions like MODE_WORLD_READABLE or MODE_WORLD_WRITABLE. IPC files should not be created with permissions of MODE_WORLD_READABLE or MODE_WORLD_WRITABLE unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory.
+* Check the source code for functions and API calls that are used for storing data and search for Classes and functions like:
+  * Shared Preferences (Storage of key-value pairs)
+  * FileOutPutStream (Using Internal or External Storage)
+  * getExternal* functions (Using External Storage)
+  * getWritableDatabase function (return a SQLiteDatabase for writing)
+  * getReadableDatabase function (return a SQLiteDatabase for reading)
+  * getCacheDir and getExternalCacheDirs function (Using cached files)
+
+### Black-box Testing
+
+Install and use the App as it is intended. Afterwards check the following items: 
+
+* Check the files that are shipped with the mobile application once installed in /data/data/<AppName>/files in order to identify development, backup or simply old files that shouldn’t be in a production release. 
+* Check if .db files are available, which are SQLite databases and if they contain sensitive information (usernames, passwords, keys etc.). SQlite databases can be accessed on the command line with sqlite3. 
+* Check Shared Preferences that are stored as XML files in the shared_prefs directory of the App for sensitive information. 
+* Check the file system permissions of the files in /data/data/<app name>. The permission should only allow rwx to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
+
+
+### Remediation
+
+Usage of MODE_WORLD_WRITEABLE or MODE_WORLD_READABLE should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis. 
+
+Do not use the external storage for sensitive data. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
+To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a KeyStore and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
+“secure-preferences” can be used to encrypt the values stored within SharedPrefences [7].
+
+
+### References
+
+* [1] Using Internal Storage - http://developer.android.com/guide/topics/data/data-storage.html#filesInternal 
+* [2] Using External Storage - https://developer.android.com/guide/topics/data/data-storage.html#filesExternal
+* [3] Storing Data - http://developer.android.com/training/articles/security-tips.html#StoringData 
+* [4] Shared Preferences - http://developer.android.com/reference/android/content/SharedPreferences.html 
+* [5] SQLCipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ 
+* [6] Android Keystore - http://developer.android.com/training/articles/keystore.html
+* [7] Secure-Preferences - https://github.com/scottyab/secure-preferences 
+
+Tools
+* Enjarify - https://github.com/google/enjarify 
+* JADX - https://github.com/skylot/jadx
+* Dex2jar - https://github.com/pxb1988/dex2jar 
+* Lint - http://developer.android.com/tools/help/lint.html 
+* SQLite3 - http://www.sqlite.org/cli.html
 
 
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
