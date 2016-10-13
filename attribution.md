@@ -1,10 +1,10 @@
 ## CHAPTER OWNERS
 
-- OMTG-DATAST Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
-- OMTG-DATAST iOS:
+- OMTG-DATAST (Data Storage and Privacy) Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
+- OMTG-DATAST (Data Storage and Privacy) iOS:
 
-- OMTG-RARE Android: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
-- OMTG-RARE iOS: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE (Resiliency Against Reverse Engineering) Android: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
 
 ## Attribution (authors from Google Doc)
 
