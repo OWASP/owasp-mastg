@@ -1,9 +1,12 @@
 ## CHAPTER OWNERS
 
-- OWASP-DATAST Android: Francesco Stillavato
-- OWASP-DATAST iOS:
+- OMTG-DATAST Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
+- OMTG-DATAST iOS:
 
-## Attribution
+- OMTG-RARE Android: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE iOS: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
+
+## Attribution (authors from Google Doc)
 
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
 
