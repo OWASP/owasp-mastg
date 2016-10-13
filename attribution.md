@@ -1,7 +1,7 @@
 ## CHAPTER OWNERS
 
-OWASP-DATAST Android: Francesco Stillavato
-OWASP-DATAST iOS:
+- OWASP-DATAST Android: Francesco Stillavato
+- OWASP-DATAST iOS:
 
 ## Attribution
 
