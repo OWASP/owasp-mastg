@@ -1,3 +1,11 @@
+== CHAPTER OWNERS ==
+
+OWASP-DATAST Android: Francesco Stillavato
+OWASP-DATAST iOS: Francesco Stillavato
+
+
+== Attribution
+
 === OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 Adapted from MSTG Beta 2:
