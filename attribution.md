@@ -1,4 +1,4 @@
-## CHAPTER OWNERS
+## Lead Authors
 
 - OMTG-DATAST (Data Storage and Privacy) Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
 - OMTG-DATAST (Data Storage and Privacy) iOS:
