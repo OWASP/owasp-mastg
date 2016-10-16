@@ -48,7 +48,7 @@ Lead authors, contributors and reviewer will be added to the [acknowledgements s
 Originally, the OWASP MSTG was developed on Google Docs. Lead authors starting on a chapter should check this document first and transfer any usable content into the new version of the guide. Whenever content from the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#) is used, the original authors must be credited. Unfortunately, this process can sometimes be painful, but there's no way around it (missing attribution one of the main reason we moved to GitHub). To determine the original authors try the following:
 
 1. Check the owner, authors and reviewers column in the [project plan](http://goo.gl/SsXAvC) (now obsolete);
-2. Check the revision history of the Google doc;
+2. Check the revision history of the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#);
 3. If you still can't figure it out, ask on the [Slack channel] or on the [mailing list];
 4. If the original author(s) aren't aware of the new MSTG, invite them to join.
 5. Add the content to the new MSTG.
