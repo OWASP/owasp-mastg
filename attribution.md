@@ -1,10 +1,10 @@
 ## Lead Authors
 
-- OMTG-DATAST (Data Storage and Privacy) Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
+- OMTG-DATAST (Data Storage and Privacy) Android: Francesco Stillavato - Email: frastillavato [at] gmail [dot] com - GitHub: 
 - OMTG-DATAST (Data Storage and Privacy) iOS:
 
-- OMTG-RARE (Resiliency Against Reverse Engineering) Android: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
-- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: Bernhard Mueller - bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller) - Email: bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller) - Email: bernhard [at] vantagepoint [dot] sg - GitHub: b-mueller
 
 ## Attribution (authors from Google Doc)
 
