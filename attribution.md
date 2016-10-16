@@ -1,25 +1,35 @@
 ## Lead Authors
 
-- OMTG-DATAST (Data Storage and Privacy) Android: Francesco Stillavato - Email: frastillavato [at] gmail [dot] com - GitHub: 
-- OMTG-DATAST (Data Storage and Privacy) iOS:
+- Introduction: T.b.d.
 
-- OMTG-CRYPTO (Cryptography) Android: 
-- OMTG-CRYPTO (Cryptography) iOS: 
+- About the OWASP Mobile Testing Guide: T.b.d.
 
-- OMTG-AUTH (Authentication and Session Management) Android:
-- OMTG-AUTH (Authentication and Session Management) iOS:
+- Mobile Platforms Overview - Android: T.b.d.
+- Mobile Platforms Overview - iOS: T.b.d.
 
-- OMTG-NET (Network Communication) Android:
-- OMTG-NET (Network Communication) iOS:
+- Testing Processes and Techniques - Android: T.b.d.
+- Testing Processes and Techniques - iOS: T.b.d.
 
-- OMTG-ENV (Environmental Interaction) Android:
-- OMTG-ENV (Envrionmental Interaction) iOS:
+- OMTG-DATAST (Data Storage and Privacy) - Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
+- OMTG-DATAST (Data Storage and Privacy) - iOS:: T.b.d.
 
-- OMTG-CODE (Code Quality) Android:
-- OMTG-CODE (Code Quality) iOS:
+- OMTG-CRYPTO (Cryptography) - Android: : T.b.d.
+- OMTG-CRYPTO (Cryptography) - iOS:: T.b.d. 
 
-- OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller) - Email: bernhard [at] vantagepoint [dot] sg
-- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller) - Email: bernhard [at] vantagepoint [dot] sg - GitHub: b-mueller
+- OMTG-AUTH (Authentication and Session Management) - Android:: T.b.d.
+- OMTG-AUTH (Authentication and Session Management) - iOS: T.b.d.
+
+- OMTG-NET (Network Communication) - Android: T.b.d.
+- OMTG-NET (Network Communication) - iOS: T.b.d.
+
+- OMTG-ENV (Environmental Interaction) - Android: T.b.d.
+- OMTG-ENV (Envrionmental Interaction) - iOS: T.b.d.
+
+- OMTG-CODE (Code Quality) - Android: T.b.d.
+- OMTG-CODE (Code Quality) - iOS: T.b.d.
+
+- OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg
+- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg - GitHub: b-mueller
 
 ## Attribution (authors from Google Doc)
 
