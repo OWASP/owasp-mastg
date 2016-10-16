@@ -19,7 +19,7 @@
 - OWASP MASVS: V2-1: "Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 - CWE: [Link to CWE issue]
 
-### OMTG-DATAST-009: OMTG-DATAST-009: Test for Sensitive Data in Backups
+### OMTG-DATAST-009: Test for Sensitive Data in Backups
 [General description]
 
 #### Detailed Guides
