@@ -8,7 +8,7 @@ The OWASP MSTG is an open standard, so in principle everyone is welcome to contr
 
 ### Lead author
 
-The lead author takes overall ownership of a chapter or group of test cases (such as "Data Storage on Android"). A lead author should:
+The lead author takes high-level ownership of a chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
 
 1. Contribute an significant amount of quality content to the chapter(s) owned;
 2. Coordinate the work of authors and reviews working on subchapters;
@@ -16,7 +16,7 @@ The lead author takes overall ownership of a chapter or group of test cases (suc
 4. Moderate discussions about issues in the chapter(s) owned;
 5. Ensure that milestones for chapter are reached on time.
 
-The lead author is expected to be highly responsive and actively engage in discussions on GitHub and Slack. This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
+Lead authors are expected to be highly responsive and actively engage in discussions on GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
 
 ### Contributor
 
@@ -45,7 +45,7 @@ Lead authors, contributors and reviewer will be added to the [acknowledgements s
 
 ### Using Content from OWASP MSTG Beta 2
 
-Originally, the OWASP MSTG was developed on Google docs. Lead authors starting on a chapter should check this document first and transfer any usable content into the new version of the guide. Whenever content from the Google Doc is used, the original authors must be credited. Unfortunately, this process can sometimes be painful, but there's no way around it (missing attribution one of the main reason we moved to GitHub). To determine the original authors try the following:
+Originally, the OWASP MSTG was developed on Google Docs. Lead authors starting on a chapter should check this document first and transfer any usable content into the new version of the guide. Whenever content from the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#) is used, the original authors must be credited. Unfortunately, this process can sometimes be painful, but there's no way around it (missing attribution one of the main reason we moved to GitHub). To determine the original authors try the following:
 
 1. Check the owner, authors and reviewers column in the [project plan](http://goo.gl/SsXAvC) (now obsolete);
 2. Check the revision history of the Google doc;
@@ -53,6 +53,8 @@ Originally, the OWASP MSTG was developed on Google docs. Lead authors starting o
 4. If the original author(s) aren't aware of the new MSTG, invite them to join.
 5. Add the content to the new MSTG.
 6. Add the original author(s) to the acknowledgemens and make a note in the attribution document.
+
+Note that content may also originate from the [original "beta" version](https://docs.google.com/document/d/1Z2nCRfe84D3t3IuEm9idX51lh51uzIerFaCV0Z74tbA/edit?ts=56f10e7f).
 
 ## Writing a test case
 
