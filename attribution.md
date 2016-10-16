@@ -31,6 +31,12 @@
 - OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg
 - OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg - GitHub: b-mueller
 
+- Security Tesing in the Application Development Lifecycle: T.b.d.
+
+- Testing Tools: T.b.d.
+
+- Suggested Reading: T.b.d.
+
 ## Attribution (authors from Google Doc)
 
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
