@@ -8,7 +8,7 @@ The OWASP MSTG is an open standard, so in principle everyone is welcome to contr
 
 ### Lead author
 
-The lead author takes high-level ownership of a chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
+The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
 
 1. Contribute an significant amount of quality content to the chapter(s) owned;
 2. Coordinate the work of authors and reviews working on subchapters;
@@ -23,7 +23,7 @@ Lead authors are expected to be highly responsive and actively engage in discuss
 Contributors write content such as single test cases or parts of test cases. For example, a contributor could submit a how-to for testing the custom URL schemes exported by an app. Contributors should:
 
 1. Deliver quality content on the selected topic;
-2. Actively engage with the chapter owners and reviewers via GitHub and Slack.
+2. Actively engage with the chapter owners and reviewers via GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
 
 ### Reviewer
 
@@ -31,7 +31,7 @@ Reviewers are subject matter experts that help ensure the quality of the MSTG. A
 
 1. Ensure technical accuracy of the content reviewed;
 2. Check for grammar and spelling errors;
-3. Provide feedback and actively engage with the chapter owners and reviewers via GitHub and Slack.
+3. Provide feedback and actively engage with the chapter owners and reviewers via GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
 
 In our experience, opinions will differ in many cases. Whenever differences cannot easily be resolved, open an issue on GitHub and bring it up for discussion. Usually, the open discussion will result in a resolution - if not, the lead author of the chapter in question has the last word.
 
