@@ -8,7 +8,7 @@ To report and error or suggest an improvement, please create an [issue](https://
 
 # How to Contribute
 
-The MSTG is an open source effort and we welcome contributions and feedback. Read the [author's guide](https://github.com/b-mueller/owasp-mstg/blob/master/authors_guide.md) first if you want to join our team. To discuss the MASVS or MSTG join the [OWASP Mobile Security Project Slack Channel](https//owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up here:
+The MSTG is an open source effort and we welcome contributions and feedback. Read the [author's guide](https://github.com/b-mueller/owasp-mstg/blob/master/authors_guide.md) first if you want to contribute. To discuss the MASVS or MSTG join the [OWASP Mobile Security Project Slack Channel](https//owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up here:
  
 http://owasp.herokuapp.com/
 
