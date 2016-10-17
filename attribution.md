@@ -10,7 +10,7 @@
 - Testing Processes and Techniques - Android: T.b.d.
 - Testing Processes and Techniques - iOS: T.b.d.
 
-- OMTG-DATAST (Data Storage and Privacy) - Android: Francesco Stillavato - frastillavato [at] gmail [dot] com
+- OMTG-DATAST (Data Storage and Privacy) - Android: [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
 - OMTG-DATAST (Data Storage and Privacy) - iOS:: T.b.d.
 
 - OMTG-CRYPTO (Cryptography) - Android: : T.b.d.
@@ -28,8 +28,8 @@
 - OMTG-CODE (Code Quality) - Android: T.b.d.
 - OMTG-CODE (Code Quality) - iOS: T.b.d.
 
-- OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg
-- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller) - bernhard [at] vantagepoint [dot] sg - GitHub: b-mueller
+- OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller)
+- OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller)
 
 - Security Tesing in the Application Development Lifecycle: T.b.d.
 
