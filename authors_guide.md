@@ -66,7 +66,7 @@ The list of test cases in the MSTG maps 1:1 to the requirements in the [OWASP MA
 
 - OWASP MASVS V2.9 "Verify that sensitive data does not leak to backups."
 
--  OMTG-DATAST-009: Test for Sensitive Data in Backups
+-  OMTG-DATAST-009: "Test for Sensitive Data in Backups"
 
 The MSTG must be kept compatible to the equivalent version of the MASVS. Changes in the list of requirements are always done in the MASVS first, after which the MSTG is updated to match the new requirements.
 
