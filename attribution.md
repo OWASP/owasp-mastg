@@ -7,7 +7,7 @@
 - Mobile Platforms Overview - Android: T.b.d.
 - Mobile Platforms Overview - iOS: T.b.d.
 
-- Testing Processes and Techniques - Android: T.b.d.
+- Testing Processes and Techniques - Android: [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
 - Testing Processes and Techniques - iOS: T.b.d.
 
 - OMTG-DATAST (Data Storage and Privacy) - Android: [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
