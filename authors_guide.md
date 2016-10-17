@@ -18,12 +18,20 @@ The lead author takes high-level ownership of a whole chapter or test case categ
 
 Lead authors are expected to be highly responsive and actively engage in discussions on GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
 
+#### Permissions
+
+Lead authors are given write access to the repository so they can review and merge pull requests for their respective chapters.
+
 ### Contributor
 
 Contributors write content such as single test cases or parts of test cases. For example, a contributor could submit a how-to for testing the custom URL schemes exported by an app. Contributors should:
 
 1. Deliver quality content on the selected topic;
 2. Actively engage with the chapter owners and reviewers via GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
+
+#### Permissions
+
+Contributors are not provided with write access and should instead fork a working copy of the repo. The chapter owner is responsible for reviewing and merging the content.
 
 ### Reviewer
 
@@ -35,9 +43,9 @@ Reviewers are subject matter experts that help ensure the quality of the MSTG. A
 
 In our experience, opinions will differ in many cases. Whenever differences cannot easily be resolved, open an issue on GitHub and bring it up for discussion. Usually, the open discussion will result in a resolution - if not, the lead author of the chapter in question has the last word.
 
-## How to become an author
+## How to Become an Author
 
-To become a contributor or reviewer, contact the lead author of the respective chapter. You can find their name, GitHub handle and email address [here](https://github.com/b-mueller/owasp-mstg/blob/master/attribution.md).
+To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name, GitHub handle and email address [here](https://github.com/b-mueller/owasp-mstg/blob/master/attribution.md). Please always check with the chapter owner first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
 ## Attribution and Acknowledgement
 
@@ -86,6 +94,3 @@ The following rules are meant to ensure consistency of the MSTG:
 
 Refer to [existing test cases](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) for examples.
 
-### Submitting content
-
-Fork a working copy of the repo to develop your content. Once you are finished editing, submit a pull request. The chapter owner is responsible for reviewing and merging the content.
