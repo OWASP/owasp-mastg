@@ -11,7 +11,7 @@
 - Testing Processes and Techniques - iOS: T.b.d.
 
 - OMTG-DATAST (Data Storage and Privacy) - Android: [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
-- OMTG-DATAST (Data Storage and Privacy) - iOS:: T.b.d.
+- OMTG-DATAST (Data Storage and Privacy) - iOS:: [Gerhard Wagner](https://github.com/thec00n)
 
 - OMTG-CRYPTO (Cryptography) - Android: : T.b.d.
 - OMTG-CRYPTO (Cryptography) - iOS:: T.b.d. 
