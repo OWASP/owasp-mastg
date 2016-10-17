@@ -64,7 +64,7 @@ All test cases should follow the following basic guidelines.
 
 The list of test cases in the MSTG maps 1:1 to the requirements in the [OWASP MASVS](https://github.com/OWASP/owasp-masvs). For example, OWASP MASVS V2.9 maps to the test case OMTG-DATAST-009:
 
-- OWASP MASVS V2.9 ""Verify that sensitive data does not leak to backups."
+- OWASP MASVS V2.9 "Verify that sensitive data does not leak to backups."
 
 -  OMTG-DATAST-009: Test for Sensitive Data in Backups
 
