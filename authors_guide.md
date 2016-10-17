@@ -8,7 +8,7 @@ The OWASP MSTG is an open standard, so in principle everyone is welcome to contr
 
 ### Lead author
 
-The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
+The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
 
 1. Contribute an significant amount of quality content to the chapter(s) owned;
 2. Coordinate the work of authors and reviews working on subchapters;
@@ -16,7 +16,7 @@ The lead author takes high-level ownership of a whole chapter or test case categ
 4. Moderate discussions about issues in the chapter(s) owned;
 5. Ensure that milestones for chapter are reached on time.
 
-Lead authors are expected to be highly responsive and actively engage in discussions on GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
+Lead authors are expected to be highly responsive and actively engage in discussions on [GitHub](https://github.com/OWASP/owasp-mstg/issues) and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
 
 #### Permissions
 
@@ -27,7 +27,7 @@ Lead authors are given write access to the repository so they can review and mer
 Contributors write content such as single test cases or parts of test cases. For example, a contributor could submit a how-to for testing the custom URL schemes exported by an app. Contributors should:
 
 1. Deliver quality content on the selected topic;
-2. Actively engage with the chapter owners and reviewers via GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
+2. Actively engage with the chapter owners and reviewers via [GitHub](https://github.com/OWASP/owasp-mstg/issues) and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
 
 #### Permissions
 
@@ -39,17 +39,17 @@ Reviewers are subject matter experts that help ensure the quality of the MSTG. A
 
 1. Ensure technical accuracy of the content reviewed;
 2. Check for grammar and spelling errors;
-3. Provide feedback and actively engage with the chapter owners and reviewers via GitHub and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
+3. Provide feedback and actively engage with the chapter owners and reviewers via [GitHub](https://github.com/OWASP/owasp-mstg/issues) and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/)
 
 In our experience, opinions will differ in many cases. Whenever differences cannot easily be resolved, open an issue on GitHub and bring it up for discussion. Usually, the open discussion will result in a resolution - if not, the lead author of the chapter in question has the last word.
 
 ## How to Become an Author
 
-To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name, GitHub handle and email address [here](https://github.com/b-mueller/owasp-mstg/blob/master/attribution.md). Please always check with the chapter owner first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
+To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name, GitHub handle and email address [here](https://github.com/OWASP/owasp-mstg/blob/master/attribution.md). Please always check with the chapter owner first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
 ## Attribution and Acknowledgement
 
-Lead authors, contributors and reviewer will be added to the [acknowledgements section](https://github.com/b-mueller/owasp-mstg/blob/master/Document/0x01-Acknowledgements.md) of the MSTG after their work has been added.
+Lead authors, contributors and reviewer will be added to the [acknowledgements section](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x01-Acknowledgements.md) of the MSTG after their work has been added.
 
 ### Using Content from OWASP MSTG Beta 2
 
@@ -57,7 +57,7 @@ Originally, the OWASP MSTG was developed on Google Docs. Lead authors starting o
 
 1. Check the owner, authors and reviewers column in the [project plan](http://goo.gl/SsXAvC) (now obsolete);
 2. Check the revision history of the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#);
-3. If you still can't figure it out, ask on the [Slack channel] or on the [mailing list];
+3. If you still can't figure it out, ask on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) or on the [mailing list](mailto:owasp-mobile-top-10-risks@owasp.org);
 4. If the original author(s) aren't aware of the new MSTG, invite them to join.
 5. Add the content to the new MSTG.
 6. Add the original author(s) to the acknowledgemens and make a note in the attribution document.
@@ -82,7 +82,7 @@ The MSTG must be kept compatible to the equivalent version of the MASVS. Changes
 
 Test cases are split into markdown files by test case category and operating system. For each category, there is a generic list of test cases as well as one file per mobile OS with OS-specific instructions. At the moment, only iOS and Android are discussed in the guide, so there are three files per category.
 
-Use the [test case templates](https://github.com/b-mueller/owasp-mstg/tree/master/Templates) to add a new category.
+Use the [test case templates](https://github.com/OWASP/owasp-mstg/tree/master/Templates) to add a new category.
 
 ### Style guide
 
