@@ -1,8 +1,8 @@
 ## Lead Authors
 
-- Introduction: T.b.d.
+- Introduction: [Bernhard Mueller](https://github.com/b-mueller) 
 
-- About the OWASP Mobile Testing Guide: T.b.d.
+- About the OWASP Mobile Testing Guide: [Bernhard Mueller](https://github.com/b-mueller) 
 
 - Mobile Platforms Overview - Android: T.b.d.
 - Mobile Platforms Overview - iOS: T.b.d.
