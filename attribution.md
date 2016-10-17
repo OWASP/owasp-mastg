@@ -31,7 +31,7 @@
 - OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller)
 - OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller)
 
-- Security Tesing in the Application Development Lifecycle: T.b.d.
+- Security Testing in the Application Development Lifecycle: T.b.d.
 
 - Testing Tools: T.b.d.
 
