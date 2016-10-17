@@ -19,10 +19,10 @@
 - OMTG-AUTH (Authentication and Session Management) - Android:: T.b.d.
 - OMTG-AUTH (Authentication and Session Management) - iOS: T.b.d.
 
-- OMTG-NET (Network Communication) - Android: T.b.d.
+- OMTG-NET (Network Communication) - Android: [Sven Schleier](https://github.com/sushi2k)
 - OMTG-NET (Network Communication) - iOS: T.b.d.
 
-- OMTG-ENV (Environmental Interaction) - Android: T.b.d.
+- OMTG-ENV (Environmental Interaction) - Android: [Sven Schleier](https://github.com/sushi2k)
 - OMTG-ENV (Envrionmental Interaction) - iOS: T.b.d.
 
 - OMTG-CODE (Code Quality) - Android: T.b.d.
