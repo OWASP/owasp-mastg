@@ -6,7 +6,17 @@
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
+
+~~~~ 
+berndt@osboxes:~/ $ objdumpApplication Security Verification Standard -t my_library.so
+my_library.so:     file format elf32-little
+
+SYMBOL TABLE:
+no symbols
+~~~~ 
+
+Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions. 
 
 ### Remediation
 
