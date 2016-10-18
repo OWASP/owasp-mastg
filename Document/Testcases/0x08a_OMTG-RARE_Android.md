@@ -9,7 +9,7 @@
 Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
 
 ~~~~ 
-berndt@osboxes:~/ $ objdumpApplication Security Verification Standard -t my_library.so
+berndt@osboxes:~/ $ objdump -t my_library.so
 my_library.so:     file format elf32-little
 
 SYMBOL TABLE:
