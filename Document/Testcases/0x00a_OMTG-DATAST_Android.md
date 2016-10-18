@@ -1,20 +1,46 @@
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test Sensitive Data Storage
+## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+- Files with permissions of MODE_WORLD_READABLE or MODE_WORLD_WRITABLE are accessible even though it is stored in the app’s private data directory. WRITE_EXTERNAL_STORAGE or READ_EXTERNAL_STORAGE app permission allows access to the external phone storage which is world readable.
+
+        egrep -irn "MODE_WORLD_READABLE|MODE_WORLD_WRITABLE|WRITE_EXTERNAL_STORAGE|READ_EXTERNAL_STORAGE" . 
+
+- Below listed functions read from or write to the internal app directory.
+
+        egrep -irn "openFileOutput(|createTempFile(|openFile(|getFilesDir(|getCacheDir(" . 
+        
+-  getExternalFilesDir() and getExternalFilesDirs() will create directory on the external storage. Files created in those directories can be only read by the app itself. getExternalStoragePublicDirectory() will create a directory that is world rw.
+
+        egrep -irn "getExternalStoragePublicDirectory(|getExternalFilesDir(|getExternalFilesDirs(" . 
+
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+ 1. Use the mobile app extensively so that all functionality is at least triggered once.
+  
+ 2. Download the mobile app data directory from  /data/data/com.example.appname and the global storage directory /sdcard/ . 
+ 
+ 3. Look for sensitive data such as credentials, passwords, usernames, encryption keys or any other information that could be classified as sensitive in all downloaded files. 
 
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+Sensitive information should not be stored on the device. Instead, perform initial authentication using credentials supplied by the user, and then use a short-lived, service-specific authorization token (session token).
+If credentials, keys or other sensitive information need to be stored locally use the KeyChain or KeyStore according to your requirements.
+
+- KeyChain: Use the KeyChain API when you want system-wide credentials. When an app requests the use of any credential through the KeyChain API, users get to choose, through a system-provided UI, which of the installed credentials an app can access. This allows several apps to use the same set of credentials with user consent.
+
+- Keystore: Use the Android Keystore provider to let an individual app store its own credentials that only the app itself can access. This provides a way for apps to manage credentials that are usable only by itself while providing the same security benefits that the KeyChain API provides for system-wide credentials. This method requires no user interaction to select the credentials.
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+[OWASP Mobile TOP 10: Insecure Data Storage](https://www.owasp.org/index.php/Mobile_Top_10_2014-M2)
+
+[Android KeyChain Documentation](http://developer.android.com/reference/android/security/KeyChain.html)
+
+[Android KeyStore System Documentation](http://developer.android.com/training/articles/keystore.html)
+
+[Android Storage Documentation](https://developer.android.com/training/basics/data-storage/index.html)
 
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
