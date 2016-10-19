@@ -184,14 +184,17 @@ As already pointed out, there are several ways to store information within Andro
 
 * Check AndroidManifest.xml for permissions to read and write to external storage, like uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE".
 * Check the source code for functions and API calls that are used for storing data and search for:
-  * file permissions like MODE_WORLD_READABLE or MODE_WORLD_WRITABLE. IPC files should not be created with permissions of MODE_WORLD_READABLE or MODE_WORLD_WRITABLE unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory.
+  * File permissions like MODE_WORLD_READABLE or MODE_WORLD_WRITABLE. IPC files should not be created with permissions of MODE_WORLD_READABLE or MODE_WORLD_WRITABLE unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory. Files with permissions of MODE_WORLD_READABLE or MODE_WORLD_WRITABLE are accessible even though it is stored in the app’s private data directory. WRITE_EXTERNAL_STORAGE or READ_EXTERNAL_STORAGE app permission allows access to the external phone storage which is world readable.
 * Check the source code for functions and API calls that are used for storing data and search for classes and functions like:
+  * openFileOutput | createTempFile | openFile |getFilesDir | getCacheDir (these listed functions read from or write to the internal app directory)
   * Shared Preferences (Storage of key-value pairs)
   * FileOutPutStream (Using Internal or External Storage)
   * getExternal* functions (Using External Storage)
   * getWritableDatabase function (return a SQLiteDatabase for writing)
   * getReadableDatabase function (return a SQLiteDatabase for reading)
   * getCacheDir and getExternalCacheDirs function (Using cached files)
+
+
 
 ### Black-box Testing
 
@@ -202,7 +205,9 @@ Install and use the App as it is intended and check the following items:
 * Check Shared Preferences that are stored as XML files in the shared_prefs directory of the App for sensitive information. 
 * Check the file system permissions of the files in /data/data/[PackageName]. The permission should only allow read write and execute (rwx) to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
 
-These checks can either be done by logging into the Android devive via SSH to verify it or by copying all data from /data/data/[PackageName] to your local machine and verifiy it there. 
+These checks can either be done by logging into the Android devive via SSH to verify it or by copying all data from the internal storage in /data/data/[PackageName] and external storage in /sdcard to your local machine and verifiy it there. 
+
+Look for sensitive data such as credentials, passwords, usernames, encryption keys or any other information that could be classified as sensitive in all downloaded files. 
 
 
 ### Remediation
