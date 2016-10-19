@@ -21,15 +21,31 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 - OWASP MASVS: V8-1: "Verify that debugging symbols have been removed from native binaries."
 - CWE: N/A
 
-### OMTG-DATAST-009: OMTG-DATAST-009: Test for Meaningful Identifiers in Java Bytecode
+### OMTG-RARE-002: Test for Meaningful Identifiers in Java Bytecode
 [General description]
 
 #### Detailed Guides
 
-- [OMTG-DATAST-009 Android](0x08a_OMTG-RARE_Android.md#OMTG-RARE-002)
-- [OMTG-DATAST-009 iOS](0x08b_OMTG-RARE_iOS.md#OMTG-RARE-002)
+- [OMTG-RARE-002 Android](0x08a_OMTG-RARE_Android.md#OMTG-RARE-002)
+- [OMTG-RARE-002 iOS](0x08b_OMTG-RARE_iOS.md#OMTG-RARE-002)
 
 #### References
 
 - OWASP MASVS: V8-2: "Verify that Java bytecode has been obscured through identifier renaming."
 - CWE: N/A
+
+### OMTG-RARE-003: Testing for Jailbreak / Root Detection
+
+Modern smartphone operating systems implement containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
+
+The risk of malicious code running as root is higher on rooted or jailbroken devices, as some of the default integrity checks are disabled. Developers of apps that handle highly sensitive data (e.g. banking) should therefore consider implementing checks that prevent the app from running under these conditions.
+
+#### Detailed Guides
+
+- [OMTG-RARE-003 Android](0x06a_OMTG-DID_Android.md#OMTG-DID-002)
+- [OMTG-RARE-003 iOS](0x06b_OMTG-DID_iOS.md#OMTG-DID-002)
+
+#### References
+
+- OWASP MASVS : V8.3: "Verify that the application detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users should be warned, or the app should terminate if the device is rooted."
+- CWE : N/A
