@@ -1,7 +1,10 @@
 ## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Insecure Storage of Credentials and Keys
 
-An app shouldn’t store any sensitive information like credentials, passwords or encryption keys (even when using security controls and mechanisms offered by the OS as a best practice to protect this information). It should be remembered that the confidentiality of sensitive information stored locally on a device cannot be guaranteed, and that most controls can be bypassed on a rooted device.
-In case sensitive information needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. 
+Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case credentials or keys needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. 
+
+The following tasks should be done when analysing an App:
+* Identify keys and passwords in the App, e.g. entered by the users, sent back by the endpoint, shipped within the App and how this sensitive data is processed locally. 
+* Decide with the developers if this sensitive stored information locally is needed and if not, how it can be removed or moved to the server (endpoint). 
 
 ### OWASP Mobile Top 10
 M1 - Improper Platform Usage
@@ -13,13 +16,13 @@ CWE-522 - Insufficiently Protected Credentials
 
 ### White-box Testing
 
-When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. Especially encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be avoided:
+Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked withi the source code:
 * Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered. 
 * Check if keys are created or used without taking advantage of the Android onboard features like the KeyStore. 
-* See also OMTG-DATAST-004 to identify what kind of information is stored persistently and if credentials or keys are disclosed.
+* Identify what kind of information is stored persistently and if credentials or keys are disclosed.
 
-The code should also be analysed if sensitive data is used properly and securely:
-* Sensitive information should not be stored for too long in the RAM (see also “Testing for Sensitive Data Disclosure in Process Memory (OMTG-DATAST-006)”).
+The code should be analysed if sensitive data is used properly and securely:
+* Sensitive information should not be stored for too long in the RAM (see also “Testing for Sensitive Data Disclosure in Process Memory (OMTG-DATAST-XXX)”).
 * Set variables that use sensitive information to null once finished. 
 * Use immutable objects for sensitive data so it cannot be changed.
 
@@ -32,20 +35,16 @@ If sensitive information needs to be stored on the device itself, several functi
 
 ### Black-box Testing
 
-For black box testing, the memory should be analysed in order to be able to retrieve sensitive information, like private keys related to the encryption process. See also OMTG-DATAST-007.
-Check if keys or credentials are logged in log files (OMTG-DATAST-002) or stored permanently unencrypted in the file system (OMTG-DATAST-004). 
+For black box testing, the memory should be analysed in order to be able to retrieve sensitive information, like private keys related to the encryption process. See also OMTG-DATAST-XXX.
+Check if keys or credentials are logged in log files (OMTG-DATAST-XXX) or stored permanently unencrypted in the file system (OMTG-DATAST-XXX). 
 
 
 ### Remediation
 
-The following tasks should be done:
-* Identify keys and passwords in the App, e.g. entered by the users, sent back by the endpoint, shipped within the App and how this sensitive data is processed locally. 
-* Decide (with the developers) if this sensitive stored information locally is needed, and if not if it can be removed or relocated to the endpoint. 
-
 If sensitive information is needed locally on the device several best practices are offered by Android and iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device. 
 Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token).
 If credentials, keys or other sensitive information need to be stored locally and are only used by one application on the device use the KeyStore to create a keypair and use it for encrypting the information. 
-As a security in depth measure code obfuscation should also be applied to the App, to make reverse engineering harder for attackers. 
+
 The following is a list of best practice functions used for secure storage of certificates and keys:
  
 * KeyStore [3]: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStores is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder /data/misc/keystore/. 	Although the Android Keystore provider was introduced in API level 18 (Android 4.3), the Keystore itself has been available since API 1, restricted to use by VPN and WiFi systems. The Keystore is encrypted using the user’s own lockscreen pin/password, hence, when the device screen is locked the Keystore is unavailable [1].	
@@ -63,14 +62,15 @@ The following is a list of best practice functions used for secure storage of ce
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
-Log files can be created in various ways on each of the different operating systems. The following table shows the mechanisms that are available on each platform:
+Log files can be created in various ways on each of the different operating systems. The following table shows the mechanisms that are available on Android:
 
-| iOS        | Android       | 
-| ------------- |-------------| 
-| NSLog Method      | Log Class, .log[a-Z] | 
-| printf-like function      | Logger Class      |
-| NSAssert-like function | StrictMode     |
-| Macro | System.out / System.err.print    |
+| Log Class, .log[a-Z] | 
+| Logger Class      |
+| StrictMode     |
+| System.out / System.err.print    |
+
+Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App. 
+
 
 ### OWASP Mobile Top 10
 M1 - Improper Platform Usage
@@ -83,25 +83,24 @@ CWE-534 - Information Exposure Through Debug Log Files
 
 ### White-box Testing
 
-Check the source code for usage of Logging functions. 
+Check the source code for usage of Logging functions, by searching for the following terms:
 
-Decompile the APK to get access to the Java source code as described in <link to guide>
-Import the Java files in an IDE (e.g. IntelliJ or Eclipse) or Editor of your choice or directly open them in JD-Gui, ClassyShark or use grep on the command line to search for
-
-1. Functions like:
+1. Function names like:
   * Log.d, Log.e, Log.i, Log.v. Log.w or Log.wtf
   * Logger
-  * System.out.print|System.out.println
   * StrictMode
 
-2. Keywords (to identify non-standard log mechanisms) like :
+2. Keywords and system output to identify non-standard log mechanisms like :
   * Logfile
   * logging
+  * System.out.print|System.out.println
 
 
 ### Black-box Testing
 
-1. Check if log data is generated when starting, using and closing the app by checking application logs, as some mobile applications create and store their own logs. Identify the data directory of the application in order to look for log files (/data/data/package_name). 
+Use the mobile app extensively so that all functionality is at least triggered once.
+
+1. Identify the data directory of the application in order to look for log files (/data/data/package_name). Check if log data is generated by checking the application logs, as some mobile applications create and store their own logs in the data directory.  
 2. Many application developers use still System.out.println() or printStackTrace() instead of a proper logging class. Therefore the testing approach also needs to cover all output generated by the application during starting, running and closing of it and not only the output created by the log classes. In order to verify what data is written to logfiles and printed directly by using System.out.println() or printStackTrace() the code should be checked for these functions and the tool LogCat can be used to check the output. Two different approaches are available to execute LogCat. 
   * LogCat is already part of Dalvik Debug Monitor Server (DDMS) and is therefore built into Android Studio. Once the app is running and in debug mode, patterns can be defined in LogCat to reduce the log output of the app. 
   
@@ -117,7 +116,7 @@ Import the Java files in an IDE (e.g. IntelliJ or Eclipse) or Editor of your cho
 
 ### Remediation
 
-Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like ProGuard, which is already included in Android Studio  or DexGuard can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, we can simply add the following option in the proguard-project.txt configuration file of Proguard:
+Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like ProGuard, which is already included in Android Studio or DexGuard can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, simply add the following option in the proguard-project.txt configuration file of Proguard:
 
 ```
 -assumenosideeffects class android.util.Log
