@@ -144,17 +144,14 @@ Tools
 
 
 
-## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Sensitive Data Disclosure in Local Stora
+## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-001: Test for Sensitive Data Disclosure in Local Storage
 
-Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on each platform:
+Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
-iOS        | Android       | 
-| ------------- |-------------| 
-| Property lists      | Shared Preferences | 
-| NSKeyedArchiver      | Internal Storage    |
-| NSFileHandle | External Storage     |
-| SQLite Databases | SQLite Databases  |
-| NSUserDefaults |  |
+| Shared Preferences | 
+| Internal Storage   |
+| External Storage   |
+| SQLite Databases   |
 
 The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.  
 This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from apps that have a payment option in order to attack it. 
@@ -280,21 +277,24 @@ As already pointed out, there are several ways to store information within Andro
 
 ### Black-box Testing
 
-Install and use the App as it is intended. Afterwards check the following items: 
+Install and use the App as it is intended and check the following items: 
 
-* Check the files that are shipped with the mobile application once installed in /data/data/<AppName>/files in order to identify development, backup or simply old files that shouldn’t be in a production release. 
+* Check the files that are shipped with the mobile application once installed in /data/data/<package-name>/files in order to identify development, backup or simply old files that shouldn’t be in a production release. 
 * Check if .db files are available, which are SQLite databases and if they contain sensitive information (usernames, passwords, keys etc.). SQlite databases can be accessed on the command line with sqlite3. 
 * Check Shared Preferences that are stored as XML files in the shared_prefs directory of the App for sensitive information. 
-* Check the file system permissions of the files in /data/data/<app name>. The permission should only allow rwx to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
+* Check the file system permissions of the files in /data/data/<app name>. The permission should only allow read write and execute (rwx) to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
+
+These checks can either be done by logging into the Android devive via SSH to verify it or by copying all data from /data/data/<package-name> to your local machine and verifiy it there. 
 
 
 ### Remediation
 
-Usage of MODE_WORLD_WRITEABLE or MODE_WORLD_READABLE should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis. 
-
 Do not use the external storage for sensitive data. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
 To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a KeyStore and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
-“secure-preferences” can be used to encrypt the values stored within SharedPrefences [7].
+Usage of MODE_WORLD_WRITEABLE or MODE_WORLD_READABLE should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis. 
+Different wrapper and libraries are available to add encryption to internal storage mechanisms:
+* SQLCipher can be used to encrypt the SQLite database [5].
+* secure-preferences can be used to encrypt the values stored within SharedPrefences [7].
 
 
 ### References
@@ -326,10 +326,6 @@ The downside is that a developer doesn’t know in detail what code is executed 
 * By using a standalone library, like a Jar in an Android project that is getting included into the APK.
 * By using a full SDK.
 
-Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base. 
-
-The source code should be checked for API calls or functions provided by the 3rd party library, but also the permissions. It need to be verified that no unnecessary permissions are granted for the 3rd  party library. 
-All requests made  to the external service should be analyzed if any sensitive information is embedded into them. 
 
 ### OWASP Mobile Top 10
 M7 - Client Code Quality
@@ -340,10 +336,13 @@ CWE 359 - Exposure of Private Information ('Privacy Violation')
 
 ### White-box Testing
 
-The permissions set in the AnroidManifest.xml  when installing a library through an IDE wizard should be reviewed. Especially permissions to access SMS (READ_SMS), contacts (ROAD_CONTACTS) or the location (ACCESS_FINE_LOCATION) should be challenged if they are really needed to make the library work at a bare minimum. (See also OMTG-ENV-001).
+Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the AnroidManifest.xml  when installing a library through an IDE wizard should be reviewed. Especially permissions to access SMS (READ_SMS), contacts (ROAD_CONTACTS) or the location (ACCESS_FINE_LOCATION) should be challenged if they are really needed to make the library work at a bare minimum, see also OMTG-ENV-XXX. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base. 
+
+The source code should be checked for API calls or functions provided by the 3rd party library.
 
 ### Black-box Testing
 
+All requests made  to the external service should be analyzed if any sensitive information is embedded into them. 
 Dynamic analysis can be performed launching a MITM attack using Burp Proxy, to intercept the traffic exchanged between client and server. Using the certificate provided by Portswigger, Burp can intercept and decrypt the traffic on the fly and manipulate it as you prefer. First of all we need to setup Burp, on our laptop, to listen on a specific port from all the interfaces. After that we can setup the Android device to redirect all the traffic to our laptop, i.e. setting our laptop IP address like proxy.
 A complete guide can be found here (https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
 Once we are able to route the traffic to burp, we can try to sniff the traffic from the application. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service. 
