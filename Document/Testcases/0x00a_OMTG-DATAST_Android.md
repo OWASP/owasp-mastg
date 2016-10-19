@@ -79,7 +79,7 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 
 The following examples shows snippets of code to demonstrate bad practices that discloses sensitive information and also shows the different mechanisms in Android to store data. 
 
-1. Shared Preferences
+#### Shared Preferences
 
 SharedPreferences is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
 
@@ -103,7 +103,7 @@ Once the activity is called, the file key.xml is created with the provided data.
 
 The usage of Shared Preferences or other mechanisms that are not able to protect data should be avoided to store sensitive information. SharedPreferences are insecure and not encrypted by default. 
 
-2. SQLite Databases (Unencrypted)
+#### SQLite Databases (Unencrypted)
 
 SQLite is a SQL database that stores data to a text file. The Android SDK comes with built in classes to operate SQLite databases. The main package to manage the databases is android.database.sqlite.
 Within an Activity the following code might be used to store sensitive information like a username and a password:
@@ -122,7 +122,7 @@ There might be several files available in the databases directory, besides the S
   
 Unencrypted SQLite databases should not be used to store sensitive information. 
 
-3. SQLite Databases (Encrypted)
+#### SQLite Databases (Encrypted)
 By using the library SQLCipher SQLite databases can be encrypted, by providing a password. 
 
 SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
@@ -139,7 +139,7 @@ A secure approach to retrieve the key, instead of storing it locally could be to
   * Store the key on the server and make it accessible via a Web Service (then the App can only be used when the device is online)
 
 
-4. Internal Storage
+#### Internal Storage
 
 Files can be saved directly on the device's internal storage. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed [1].
 Within an Activity the following code might be used to store sensitive information in the variable string persistently to the internal storage:
@@ -156,7 +156,7 @@ The file mode need to be checked, to make sure that only the app itself has acce
 
 It should also be checked what files are read within the App by searching for the usage of class FileInputStream. Part of the internal storage mechanisms is also the cache storage. To cache data temporarily, functions like getCacheDir() can be used. 
 
-5. External Storage
+#### External Storage
 Every Android-compatible device supports a shared "external storage" that you can use to save files. This can be a removable storage media (such as an SD card) or an internal (non-removable) storage. Files saved to the external storage are world-readable and can be modified by the user when they enable USB mass storage to transfer files on a computer [2].
 Within an Activity the following code might be used to store sensitive information in the variable string persistently to the external storage:
 
