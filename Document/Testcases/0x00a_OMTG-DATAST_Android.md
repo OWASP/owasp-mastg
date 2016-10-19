@@ -229,6 +229,8 @@ Different wrapper and libraries are available to add encryption to internal stor
 * [5] SQLCipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ 
 * [6] Android Keystore - http://developer.android.com/training/articles/keystore.html
 * [7] Secure-Preferences - https://github.com/scottyab/secure-preferences 
+* [8] [Android Storage Documentation](https://developer.android.com/training/basics/data-storage/index.html)
+
 
 Tools
 * Enjarify - https://github.com/google/enjarify 
