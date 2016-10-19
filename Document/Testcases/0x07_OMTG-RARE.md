@@ -42,7 +42,7 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 
 #### Detailed Guides
 
-- [OMTG-RARE-003 Android](0x07a_OMTG-RAREAndroid.md#OMTG-RARE-003)
+- [OMTG-RARE-003 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-003)
 - [OMTG-RARE-003 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-003)
 
 #### References
