@@ -465,6 +465,12 @@ CWE [ID] - [Title]
 
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
+### OWASP Mobile Top 10
+M2 - Insecure Data Storage
+
+### CWE 
+CWE 530 - https://cwe.mitre.org/data/definitions/530.html
+
 ### White-box Testing
 
 In order to backup all your application’s data Android provides an attribute called allowBackup. This attribute is set within the AndroidManifest.xml file. If the value of this attribute is set to true then the device allows user to backup the application using Android Debug Bridge (ADB) - $adb backup. Note: If the device was encrypted then the backup files will be encrypted as well.
