@@ -1,4 +1,4 @@
-## <a name="OMTG-DID-001"></a>OMTG-DID-001: Testing SSL Pinning
+## <a name="OMTG-NET-004"></a>OMTG-NET-004: Testing SSL Pinning
 
 ### White-box Testing
 
