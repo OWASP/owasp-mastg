@@ -386,7 +386,7 @@ AndroidManifest.xml should only contain the permissions that are absolutely need
 * Bulletproof Android, Godfrey Nolan, Chapter 7 - Third-Party Library Integration
 
 
-## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that keyboard cache is disabled for sensitive data
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
 
 ### OWASP Mobile Top 10
 M[ID] - [Title]
@@ -409,6 +409,32 @@ CWE [ID] - [Title]
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
+
+## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+
+### OWASP Mobile Top 10
+M[ID] - [Title]
+
+### CWE 
+CWE [ID] - [Title]
+
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
 
 
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
