@@ -45,3 +45,10 @@ Adapted from MSTG Beta 2:
 
 Author - Shiv Patel
 Contributors & Reviewers - Bernhard Wagner, Anant
+
+
+### OMTG-NET-004: Test SSL Pinning
+
+Adapted from MSTG Beta 2:
+
+Authors - Davide Cioccia, Gerhard Wagner
