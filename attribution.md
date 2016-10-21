@@ -20,7 +20,7 @@
 - OMTG-AUTH (Authentication and Session Management) - iOS: [Stephen Corbiaux](https://github.com/stephenreda)
 
 - OMTG-NET (Network Communication) - Android: [Jeroen Willemsen](https://github.com/commjoen)
-- OMTG-NET (Network Communication) - iOS: T.b.d.
+- OMTG-NET (Network Communication) - iOS: [Jeroen Willemsen](https://github.com/commjoen)
 
 - OMTG-ENV (Environmental Interaction) - Android: [Sven Schleier](https://github.com/sushi2k)
 - OMTG-ENV (Envrionmental Interaction) - iOS: [Sven Schleier](https://github.com/sushi2k)
