@@ -1,10 +1,10 @@
 # Author's guide
 
-This document contains guidelines for new authors joining the OWASP MSTG. Please read them carefully.
+This document contains guidelines for new authors joining the OWASP Mobile Security Testing Guide (MSTG). Please read them carefully.
 
 ## Picking a Role
 
-The OWASP MSTG is a communitiy effort, and in principle everyone is welcome to contribute or become a chapter owner. We don't check CVs and there is no formal process to go through. That said, keep in mind that with great power comes great reponsiblity: Once you have commited to a role, you'll be expected to deliver quality content.
+The OWASP MSTG is a community effort, and in principle everyone is welcome to contribute or become a chapter owner. We don't check CVs and there is no formal process to go through. That said, keep in mind that with great power comes great reponsiblity: Once you have commited to a role, you'll be expected to deliver quality content.
 
 ### Lead author
 
