@@ -1,5 +1,13 @@
 ## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features
 
+### OWASP Mobile Top 10
+* OWASP Mobile Top Ten M1 - Improper Platform Usage
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
+
+### CWE
+* CWE-922 - Insecure Storage of Sensitive Information
+* CWE-311 - Missing Encryption of Sensitive Data
+
 ### White-box Testing
 
 Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked withi the source code:
@@ -36,15 +44,19 @@ The following is a list of best practice used for secure storage of certificates
 * [How to use the Android Keystore to store passwords and other sensitive information][0d4e8f69]
 * [Android KeyChain][707361af]
 * [Android KeyStore][19149717]
-* OWASP Mobile Top Ten M1 - Improper Platform Usage
-* OWASP Mobile Top Ten M2 - Insecure Data Storage
-* CWE-922 - Insecure Storage of Sensitive Information
-* CWE-311 - Missing Encryption of Sensitive Data
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 ### Overview
 
-Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
+### OWASP Mobile Top 10
+
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
+
+### CWE
+* CWE-922 - Insecure Storage of Sensitive Information
+* CWE-311 - Missing Encryption of Sensitive Data
+
+[Storing data][fb530e1c]] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
 * Shared Preferences
 * Internal Storage  
@@ -205,16 +217,18 @@ To provide additional protection for sensitive data, you might choose to encrypt
 
 ### References
 
+#### Info
+
 * [Internal Storage][e65ea363]
 * [External Storage][5e4c3059]
-* [Storing Data[fb530e1c]]
+* [Storing Data][fb530e1c]
 * [Shared Preferences][afd8258f]
 * [SQLCipher][7e90d2dc]
 * [SecurePreferences][6dea1401]
 * [Android Keystore][19149717]
 * [Android Storage Documentation][1e23894b]
 
-Tools
+#### Tools
 * [Enjarify][be9ea354]
 * [JADX][b54750a7]
 * [Dex2jar][3d1bb980]
@@ -222,6 +236,15 @@ Tools
 * [SQLite3][3b9b0b6f]
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+
+### OWASP Mobile Top 10
+
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
+
+### CWE
+* CWE-117: Improper Output Neutralization for Logs
+* CWE-532: Information Exposure Through Log Files
+* CWE-534: Information Exposure Through Debug Log Files
 
 ### White-box Testing
 
@@ -273,10 +296,11 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 ### References
 
+#### Info
 * [Overview of Class Log][de2ec1fd]
 * [Debugging Logs with LogCat][7f106169]
 
-Tools
+#### Tools
 * [LogCat][99e277eb]
 * [ProGuard][45476f61]
 * [DexGuard][7bd6e70d]
