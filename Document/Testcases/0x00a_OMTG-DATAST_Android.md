@@ -115,9 +115,8 @@ Tools
 * Dex2jar - https://github.com/pxb1988/dex2jar
 * Lint - http://developer.android.com/tools/help/lint.html
 * SQLite3 - http://www.sqlite.org/cli.html
-
-
 * [link to relevant how-tos, papers, etc.]
+
 [tempfiles]: https://www.sqlite.org/tempfiles.html
 [lockingv3]: https://www.sqlite.org/lockingv3.html
 
