@@ -6,7 +6,7 @@
 
 ## Test Cases
 
-### OMTG-DATAST-001-1: Test for system credentials storage features 
+### OMTG-DATAST-001-1: Test for system credentials storage features
 Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case credentials or keys needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information.
 
 The following tasks should be done when analysing an App:
@@ -43,7 +43,7 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 
 #### Detailed Guides
 
-- [OMTG-DATAST-001-2 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001-21)
+- [OMTG-DATAST-001-2 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001-2)
 - [OMTG-DATAST-001 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-001)
 
 #### References
