@@ -1,4 +1,4 @@
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Insecure Storage of Credentials and Keys
+## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for Insecure Storage of Credentials and Keys
 
 ### White-box Testing
 
@@ -55,7 +55,7 @@ The following is a list of best practice used for secure storage of certificates
 [fcc82125]: https://developer.android.com/reference/javax/crypto/KeyGenerator.html "KeyGenerator"
 [ff4a4029]: https://developer.android.com/reference/android/accounts/AccountManager.html "AccountManager"
 
-## <a name="OMTG-DATAST-001.1"></a>OMTG-DATAST-001: Test for Sensitive Data Disclosure in Local Storage
+## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 ### White-box Testing
 

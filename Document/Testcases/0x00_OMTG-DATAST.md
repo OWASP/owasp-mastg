@@ -15,7 +15,7 @@ The following tasks should be done when analysing an App:
 
 #### Detailed Guides
 
-- [OMTG-DATAST-001 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001)
+- [OMTG-DATAST-001-1 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001-1)
 - [OMTG-DATAST-001 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-001)
 
 #### References
@@ -33,7 +33,7 @@ The following tasks should be done when analysing an App:
 
 
 
-### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-001: Test for Sensitive Data Disclosure in Local Storage
+### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
@@ -165,7 +165,7 @@ It’s also worth to know that files stored outside the application folder (inte
 
 #### Detailed Guides
 
-- [OMTG-DATAST-001 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001.1)
+- [OMTG-DATAST-001-2 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-001-21)
 - [OMTG-DATAST-001 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-001)
 
 #### References
