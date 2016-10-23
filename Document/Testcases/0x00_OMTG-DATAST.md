@@ -31,8 +31,6 @@ The following tasks should be done when analysing an App:
 * CWE-312 - Cleartext Storage of Sensitive Information
 * CWE-522 - Insufficiently Protected Credentials
 
-
-
 ### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.  
@@ -48,7 +46,39 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 
 #### References
 
-* to add
+##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
+* Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
+
+
+### OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+
+There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
+Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on Android:
+
+| Android                      | iOS           |
+|:-----------------------------|:-------------|
+|  Log Class, .log[a-Z]        | NSLog Method |
+| Logger Class                 | printf-like function |
+| StrictMode                   | NSAssert-like function |
+| System.out/System.err.print  | Macro |
+
+Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
+
+#### Detailed Guides
+
+- [OMTG-DATAST-002 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-002)
+- [OMTG-DATAST-002 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-002)
+
+#### References
+
+##### OWASP Mobile Top 10
+M1 - Improper Platform Usage
+M2 - Insecure Data Storage
+
+##### CWE
+CWE-532 - Information Exposure Through Log Files
+CWE-534 - Information Exposure Through Debug Log Files
+
 
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
 [General description]

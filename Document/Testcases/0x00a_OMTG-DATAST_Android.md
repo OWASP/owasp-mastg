@@ -1,10 +1,18 @@
-## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features 
+## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features
+
+### OWASP Mobile Top 10
+* OWASP Mobile Top Ten M1 - Improper Platform Usage
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
+
+### CWE
+* CWE-922 - Insecure Storage of Sensitive Information
+* CWE-311 - Missing Encryption of Sensitive Data
 
 ### White-box Testing
 
 Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked withi the source code:
 * Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered.
-* Check if keys are created or used without taking advantage of the Android onboard features like the KeyStore.
+* Check if keys are created or used without taking advantage of the Android onboard features like the [KeyStore][19149717].
 * Identify what kind of information is stored persistently and if credentials or keys are disclosed.
 
 When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. If sensitive information needs to be stored on the device itself, several functions/API calls are available to protect the data on the Android device by using the **KeyChain** and **Keystore**. The following controls should therefore be used:
@@ -17,13 +25,9 @@ The code should also be analysed if sensitive data is used properly and securely
 * Set variables that use sensitive information to null once finished.
 * Use immutable objects for sensitive data so it cannot be changed.
 
-
-
 ### Black-box Testing
 
 When targetting compiled Android applications, the best way to proceed is to first decompile them  in order to obtain something close to the source code (_**see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
-
-
 
 ### Remediation
 
@@ -36,29 +40,23 @@ The following is a list of best practice used for secure storage of certificates
 * Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the [AccountManager][ff4a4029] class to invoke a cloud-based service and do not store passwords on the device.
 * As a security in depth measure code obfuscation should also be applied to the App, to make reverse engineering harder for attackers.
 
-
-
 ### References
 * [How to use the Android Keystore to store passwords and other sensitive information][0d4e8f69]
 * [Android KeyChain][707361af]
 * [Android KeyStore][19149717]
-* OWASP Mobile Top Ten M1 - Improper Platform Usage
-* OWASP Mobile Top Ten M2 - Insecure Data Storage
-* CWE-922 - Insecure Storage of Sensitive Information
-* CWE-311 - Missing Encryption of Sensitive Data
-
-[707361af]: http://developer.android.com/reference/android/security/KeyChain.html "Android KeyChain"
-[19149717]: http://developer.android.com/training/articles/keystore.html "Android KeyStore System"
-[0d4e8f69]: http://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Android Keystore"
-[8705d59b]: https://developer.android.com/reference/javax/crypto/Cipher.html "Cipher"
-[c941abfc]: https://developer.android.com/reference/java/security/SecureRandom.html "SecureRandom"
-[fcc82125]: https://developer.android.com/reference/javax/crypto/KeyGenerator.html "KeyGenerator"
-[ff4a4029]: https://developer.android.com/reference/android/accounts/AccountManager.html "AccountManager"
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 ### Overview
 
-Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
+### OWASP Mobile Top 10
+
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
+
+### CWE
+* CWE-922 - Insecure Storage of Sensitive Information
+* CWE-311 - Missing Encryption of Sensitive Data
+
+[Storing data][fb530e1c]] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
 * Shared Preferences
 * Internal Storage  
@@ -71,7 +69,7 @@ The following examples shows snippets of code to demonstrate bad practices that 
 
 #### Shared Preferences
 
-SharedPreferences is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
+[SharedPreferences][afd8258f] is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
 
 ```java
 SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
@@ -124,7 +122,7 @@ Unencrypted SQLite databases should not be used to store sensitive information.
 
 #### SQLite Databases (Encrypted)
 
-By using the library SQLCipher SQLite databases can be encrypted, by providing a password.
+By using the library [SQLCipher][7e90d2dc] SQLite databases can be encrypted, by providing a password.
 ```java
 SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
 secureDB.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);");
@@ -140,7 +138,7 @@ A secure approach to retrieve the key, instead of storing it locally could be to
 
 #### Internal Storage
 
-Files can be saved directly on the device's internal storage. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed [1].
+Files can be saved directly on the device's [internal storage][e65ea363]. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
 Within an Activity the following code might be used to store sensitive information in the variable string persistently to the internal storage:
 
 ```java
@@ -160,13 +158,11 @@ The file mode need to be checked, to make sure that only the app itself has acce
 
 It should also be checked what files are read within the App by searching for the usage of class `FileInputStream`. Part of the internal storage mechanisms is also the cache storage. To cache data temporarily, functions like `getCacheDir()` can be used.
 
-
 #### External Storage
 
-Every Android-compatible device supports a shared "external storage" that you can use to save files. This can be a removable storage media (such as an SD card) or an internal (non-removable) storage.
-Files saved to the external storage are world-readable and can be modified by the user when they enable USB mass storage to transfer files on a computer [2].
+Every Android-compatible device supports a shared "[external storage][5e4c3059]" that you can use to save files. This can be a removable storage media (such as an SD card) or an internal (non-removable) storage.
+Files saved to the external storage are world-readable and can be modified by the user when they enable USB mass storage to transfer files on a computer.
 Within an Activity the following code might be used to store sensitive information in the variable string persistently to the external storage:
-
 
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
@@ -196,7 +192,6 @@ As already pointed out, there are several ways to store information within Andro
       * `getReadableDatabase` function (return a SQLiteDatabase for reading)
       * `getCacheDir` and `getExternalCacheDirs` function (Using cached files)
 
-
 ### Black-box Testing
 
 Install and use the App as it is intended. Afterwards check the following items:
@@ -215,94 +210,77 @@ The usage of Shared Preferences or other mechanisms that are not able to protect
 
 Do not use the external storage for sensitive data. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
 
-To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a KeyStore and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
+To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a [KeyStore][19149717] and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
 
-* “secure-preferences” can be used to encrypt the values stored within SharedPrefences [7].
+* [“Secure-preferences][6dea1401]” can be used to encrypt the values stored within [Shared Preferences][afd8258f].
+
 
 ### References
 
+#### Info
 
-* [1] Using Internal Storage - http://developer.android.com/guide/topics/data/data-storage.html#filesInternal
-* [2] Using External Storage - https://developer.android.com/guide/topics/data/data-storage.html#filesExternal
-* [3] Storing Data - http://developer.android.com/training/articles/security-tips.html#StoringData
-* [4] Shared Preferences - http://developer.android.com/reference/android/content/SharedPreferences.html
-* [5] SQLCipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android/
-* [6] Android Keystore - http://developer.android.com/training/articles/keystore.html
-* [7] Secure-Preferences - https://github.com/scottyab/secure-preferences
-* [8] [Android Storage Documentation](https://developer.android.com/training/basics/data-storage/index.html)
+* [Internal Storage][e65ea363]
+* [External Storage][5e4c3059]
+* [Storing Data][fb530e1c]
+* [Shared Preferences][afd8258f]
+* [SQLCipher][7e90d2dc]
+* [SecurePreferences][6dea1401]
+* [Android Keystore][19149717]
+* [Android Storage Documentation][1e23894b]
 
-
-Tools
-* Enjarify - https://github.com/google/enjarify
-* JADX - https://github.com/skylot/jadx
-* Dex2jar - https://github.com/pxb1988/dex2jar
-* Lint - http://developer.android.com/tools/help/lint.html
-* SQLite3 - http://www.sqlite.org/cli.html
-* [link to relevant how-tos, papers, etc.]
-
-[tempfiles]: https://www.sqlite.org/tempfiles.html
-[lockingv3]: https://www.sqlite.org/lockingv3.html
+#### Tools
+* [Enjarify][be9ea354]
+* [JADX][b54750a7]
+* [Dex2jar][3d1bb980]
+* [Lint][a9965341]
+* [SQLite3][3b9b0b6f]
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
-There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
-Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on Android:
-
-* Log Class, .log[a-Z]
-* Logger Class  
-* StrictMode
-* System.out / System.err.print
-
-Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
-
-
 ### OWASP Mobile Top 10
-M1 - Improper Platform Usage
-M2 - Insecure Data Storage
+
+* OWASP Mobile Top Ten M2 - Insecure Data Storage
 
 ### CWE
-CWE-532 - Information Exposure Through Log Files
-CWE-534 - Information Exposure Through Debug Log Files
-
+* CWE-117: Improper Output Neutralization for Logs
+* CWE-532: Information Exposure Through Log Files
+* CWE-534: Information Exposure Through Debug Log Files
 
 ### White-box Testing
 
 Check the source code for usage of Logging functions, by searching for the following terms:
 
 1. Function names like:
-  * Log.d, Log.e, Log.i, Log.v. Log.w or Log.wtf
-  * Logger
-  * StrictMode
+  * `Log.d`, `Log.e`, `Log.i`, `Log.v`, `Log.w` and so on
+  * `Logger`
+  * `StrictMode`
 
 2. Keywords and system output to identify non-standard log mechanisms like :
   * Logfile
   * logging
-  * System.out.print|System.out.println
-
+  * `System.out.print` | `System.out.println`
 
 ### Black-box Testing
 
 Use the mobile app extensively so that all functionality is at least triggered once.
 
-1. Identify the data directory of the application in order to look for log files (/data/data/package_name). Check if log data is generated by checking the application logs, as some mobile applications create and store their own logs in the data directory.  
-2. Many application developers use still System.out.println() or printStackTrace() instead of a proper logging class. Therefore the testing approach also needs to cover all output generated by the application during starting, running and closing of it and not only the output created by the log classes. In order to verify what data is written to logfiles and printed directly by using System.out.println() or printStackTrace() the code should be checked for these functions and the tool LogCat can be used to check the output. Two different approaches are available to execute LogCat.
-  * LogCat is already part of Dalvik Debug Monitor Server (DDMS) and is therefore built into Android Studio. Once the app is running and in debug mode, patterns can be defined in LogCat to reduce the log output of the app.
+1. Identify the data directory of the application in order to look for log files (`/data/data/package_name`). Check if log data is generated by checking the application logs, as some mobile applications create and store their own logs in the data directory.  
+2. Many application developers use still `System.out.println()` or `printStackTrace()` instead of a proper logging class. Therefore the testing approach also needs to cover all output generated by the application during starting, running and closing of it and not only the output created by the log classes. In order to verify what data is written to `logfiles` and printed directly by using `System.out.println()` or `printStackTrace()` the code should be checked for these functions and the tool [_LogCat_][99e277eb] can be used to check the output. Two different approaches are available to execute LogCat.
+  * LogCat is already part of _Dalvik Debug Monitor Server_ (DDMS) and is therefore built into Android Studio. Once the app is running and in debug mode, patterns can be defined in LogCat to reduce the log output of the app.
 
 ![Log output in Android Studio](http://bb-conservation.de/sven/adb.png)
 
-
   * LogCat can be executed by using adb in order to store the log output permanently.
 
-```
+```bash
 # adb logcat > logcat.log
 ```
 
-
 ### Remediation
 
-Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like ProGuard, which is already included in Android Studio or DexGuard can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, simply add the following option in the proguard-project.txt configuration file of Proguard:
+Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like **[ProGuard][45476f61]**, which is already included in Android Studio or **[DexGuard][7bd6e70d]** can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, simply add the following option in the _proguard-project.txt_ configuration file of Proguard:
 
-```
+```java
 -assumenosideeffects class android.util.Log
 {
 public static boolean isLoggable(java.lang.String, int);
@@ -314,18 +292,19 @@ public static int e(...);
 }
 ```
 
+Although the `android:debuggable=""` flag can be bypassed by repacking the application, before shipping it, it is important to set the option `android:debuggable="false"` in the _AndroidManifest.xml_.
+
 ### References
 
-* Overview of Class Log - http://developer.android.com/reference/android/util/Log.html
-* Debugging Logs with LogCat - http://developer.android.com/tools/debugging/debugging-log.html
+#### Info
+* [Overview of Class Log][de2ec1fd]
+* [Debugging Logs with LogCat][7f106169]
 
-Tools
-* Logcat - http://developer.android.com/tools/help/logcat.html
-* ProGuard - http://proguard.sourceforge.net/
-* DexGuard - https://www.guardsquare.com/dexguard
-* ClassyShark - https://github.com/google/android-classyshark
-
-
+#### Tools
+* [LogCat][99e277eb]
+* [ProGuard][45476f61]
+* [DexGuard][7bd6e70d]
+* [ClassyShark][c83d7c35]
 
 ## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
 
@@ -350,8 +329,6 @@ CWE [ID] - [Title]
 ### References
 
 - [link to relevant how-tos, papers, etc.]
-
-
 
 
 ## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
@@ -522,8 +499,6 @@ To prevent backing up the app's data, set the android:allowBackup attribute must
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
 
 
-
-
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test that no sensitive data leaks through backups
 
 ### OWASP Mobile Top 10
@@ -572,8 +547,6 @@ CWE [ID] - [Title]
 ### References
 
 - [link to relevant how-tos, papers, etc.]
-
-
 
 ## <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
 
@@ -691,3 +664,39 @@ CWE [ID] - [Title]
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
+<!-- References links
+If a link is outdated, you can change it here and it will be updated everywhere -->
+
+<!-- OMTG-DATAST-001-1 -->
+[707361af]: http://developer.android.com/reference/android/security/KeyChain.html "Android KeyChain"
+[19149717]: http://developer.android.com/training/articles/keystore.html "Android KeyStore System"
+[0d4e8f69]: http://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android Keystore"
+[8705d59b]: https://developer.android.com/reference/javax/crypto/Cipher.html "Cipher"
+[c941abfc]: https://developer.android.com/reference/java/security/SecureRandom.html "SecureRandom"
+[fcc82125]: https://developer.android.com/reference/javax/crypto/KeyGenerator.html "KeyGenerator"
+[ff4a4029]: https://developer.android.com/reference/android/accounts/AccountManager.html "AccountManager"
+
+<!-- OMTG-DATAST-001-2 -->
+[tempfiles]: https://www.sqlite.org/tempfiles.html "Journal files"
+[lockingv3]: https://www.sqlite.org/lockingv3.html "Lock Files"
+[e65ea363]: http://developer.android.com/guide/topics/data/data-storage.html#filesInternal "UsingInternalStorage"
+[5e4c3059]: https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "UsingExternalStorage"
+[afd8258f]: http://developer.android.com/reference/android/content/SharedPreferences.html "SharedPreferences"
+[7e90d2dc]: https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"
+[6dea1401]: https://github.com/scottyab/secure-preferences "SecurePreferences"
+[1e23894b]: https://developer.android.com/training/basics/data-storage/index.html "AndroidStorage"
+[fb530e1c]: http://developer.android.com/training/articles/security-tips.html#StoringData "StoringData"
+[be9ea354]: https://github.com/google/enjarify "Enjarify"
+[b54750a7]: https://github.com/skylot/jadx "JADX"
+[3d1bb980]: https://github.com/pxb1988/dex2jar "Dex2jar"
+[a9965341]: http://developer.android.com/tools/help/lint.html "Lint"
+[3b9b0b6f]: http://www.sqlite.org/cli.html "Sqlite3"
+
+<!-- OMTG-DATAST-002 -->
+[45476f61]: http://proguard.sourceforge.net/ "ProGuard"
+[7bd6e70d]: https://www.guardsquare.com/dexguard "DexGuard"
+[99e277eb]: http://developer.android.com/tools/help/logcat.html "LogCat"
+[c83d7c35]: https://github.com/google/android-classyshark "ClassyShark"
+[de2ec1fd]: http://developer.android.com/reference/android/util/Log.html "ClassLogOverview"
+[7f106169]: http://developer.android.com/tools/debugging/debugging-log.html "DebuggingLogsLogCat"
