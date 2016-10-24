@@ -30,3 +30,38 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 This test case is not applicable on iOS.
 
+## <a name="OMTG-RARE-003"></a>OMTG-RARE-003: Test Jailbreak / Root Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Installer Verification
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-005"></a>OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
