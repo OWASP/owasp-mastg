@@ -34,7 +34,7 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 - OWASP MASVS: V8-2: "Verify that Java bytecode has been obscured through identifier renaming."
 - CWE: N/A
 
-### OMTG-RARE-003: Testing for Jailbreak / Root Detection
+### OMTG-RARE-003: Test Jailbreak / Root Detection
 
 Modern smartphone operating systems implement containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
 
