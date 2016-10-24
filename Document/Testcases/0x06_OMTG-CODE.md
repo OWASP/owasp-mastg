@@ -6,7 +6,37 @@
 
 ## Test Cases
 
-### OMTG-CODE-007: Testing for Secure Compiler Flags
+### OMTG-CODE-001: Testing for Debug Build 
+[General description]
+
+#### Detailed Guides
+
+[Add links, e.g.:]
+
+- [OMTG-CODE-001 Android](LINK#OMTG-CODE-001)
+- [OMTG-CODE-001 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-001)
+
+#### References
+
+- OWASP MASVS: [NUMBER]: "QUOTE"
+- CWE: [Link to CWE issue]
+
+### OMTG-CODE-002: Testing for Exception Handling
+[General description]
+
+#### Detailed Guides
+
+[Add links, e.g.:]
+
+- [OMTG-CODE-002 Android](LINK#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-002)
+
+#### References
+
+- OWASP MASVS: [NUMBER]: "QUOTE"
+- CWE: [Link to CWE issue]
+
+### OMTG-CODE-003: Testing for Secure Compiler Flags
 Compilers such as CLANG and GCC support hardening options that add additional runtime security features and checks to the generated executables. While these hardening features don’t fix broken code, they do make exploitation of bugs such as buffer overflows more difficult, and should be activated as a defense-in-depth measure.
 
 This test-case aim to check whether the following Flags are enabled whitin the mobile application's binary :
@@ -21,8 +51,8 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 
 #### Detailed Guides
 
-- [OMTG-CODE-007 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-007)
-- [OMTG-CODE-007 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-007)
+- [OMTG-CODE-003 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-003)
+- [OMTG-CODE-003 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-003)
 
 #### References
 
