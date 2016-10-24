@@ -63,9 +63,16 @@ android {
 
 ### White-box Testing
 
+Root detection is usually implemented as a number of environmental checks, such as checking for files and processes known to be found only on rooted devices, or artefacts of widely used rooting tools. If you have access to the source code, make sure that there is at least a check for the presence of the "su" binary in common locations, including:
+
+~~~~
+/system/bin/su
+/system/xbin/su
+~~~~
 
 ### Black-box Testing
 
+Install the app on a rooted device and launch the app. If the app functions without any issues, then this test fails.
 
 ### References
 
