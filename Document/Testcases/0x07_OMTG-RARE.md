@@ -26,8 +26,8 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 
 #### Detailed Guides
 
-- [OMTG-RARE-002 Android](0x08a_OMTG-RARE_Android.md#OMTG-RARE-002)
-- [OMTG-RARE-002 iOS](0x08b_OMTG-RARE_iOS.md#OMTG-RARE-002)
+- [OMTG-RARE-002 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-002)
+- [OMTG-RARE-002 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-002)
 
 #### References
 
