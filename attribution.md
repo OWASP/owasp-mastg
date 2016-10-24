@@ -25,8 +25,8 @@
 - OMTG-ENV (Environmental Interaction) - Android: [Sven Schleier](https://github.com/sushi2k)
 - OMTG-ENV (Envrionmental Interaction) - iOS: [Sven Schleier](https://github.com/sushi2k)
 
-- OMTG-CODE (Code Quality) - Android: T.b.d.
-- OMTG-CODE (Code Quality) - iOS: T.b.d.
+- OMTG-CODE (Code Quality) - Android: Abdessamad Temmar (https://github.com/TmmmmmR)
+- OMTG-CODE (Code Quality) - iOS: Abdessamad Temmar (https://github.com/TmmmmmR)
 
 - OMTG-RARE (Resiliency Against Reverse Engineering) Android: [Bernhard Mueller](https://github.com/b-mueller)
 - OMTG-RARE (Resiliency Against Reverse Engineering)  iOS: [Bernhard Mueller](https://github.com/b-mueller)
