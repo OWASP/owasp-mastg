@@ -50,7 +50,7 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 - OWASP MASVS : V8.3: "Verify that the application detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users should be warned, or the app should terminate if the device is rooted."
 - CWE : N/A
 
-### OMTG-RARE-004: Test Installer Verification
+### OMTG-RARE-004: Test Verification of Installation Source
 
 (todo)
 
