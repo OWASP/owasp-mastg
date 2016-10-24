@@ -71,7 +71,7 @@ android {
 
 - [link to relevant how-tos, papers, etc.]
 
-## <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Installer Verification
+## <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Verification of Installation Source
 
 ### White-box Testing
 
@@ -83,7 +83,7 @@ android {
 
 - [link to relevant how-tos, papers, etc.]
 
-## <a name="OMTG-RARE-004"></a>OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+## <a name="OMTG-RARE-005"></a>OMTG-RARE-005: Test Simple Debugger Detection / Prevention
 
 ### White-box Testing
 
