@@ -1,3 +1,13 @@
 # Testing Processes and Techniques
 
-(TODO - GENERAL OVERVIEW)
+## Black-box Testing
+
+## White-box Testing
+
+## Static Analysis
+
+## Dynamic Analysis
+
+## Tampering and Reverse Engineering
+
+## Assessing Software Protections
