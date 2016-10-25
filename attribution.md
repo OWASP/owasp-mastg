@@ -7,8 +7,8 @@
 - Mobile Platforms Overview - Android: [Stephen Corbiaux](https://github.com/stephenreda)
 - Mobile Platforms Overview - iOS: [Stephen Corbiaux](https://github.com/stephenreda)
 
-- Testing Processes and Techniques - Android: [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
-- Testing Processes and Techniques - iOS: [Stephen Corbiaux](https://github.com/stephenreda)
+- Testing Processes and Techniques - Android: [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Bernhard Mueller](https://github.com/b-mueller)
+- Testing Processes and Techniques - iOS: [Stephen Corbiaux](https://github.com/stephenreda), [Bernhard Mueller](https://github.com/b-mueller)
 
 - OMTG-DATAST (Data Storage and Privacy) - Android: [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
 - OMTG-DATAST (Data Storage and Privacy) - iOS:: [Gerhard Wagner](https://github.com/thec00n)
