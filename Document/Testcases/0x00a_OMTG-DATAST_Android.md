@@ -484,6 +484,12 @@ Run the following command to convert the .ab file into a .tar file.
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
+Alternatively, use the [Android Backup Extractor](https://sourceforge.net/projects/adbextractor/) for this task. To install, download the [binary distribution](https://sourceforge.net/projects/adbextractor/files/latest/download). For the tool to work, you also have to download the [Oracle JCE Unlimited Strength Jurisdiction Policy Files for JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html), and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+
+```
+java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
+```
+
 Extract the tar file into your current working directory to perform your analysis for sensitive data.
 
 ```
