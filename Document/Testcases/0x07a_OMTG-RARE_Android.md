@@ -68,6 +68,24 @@ Root detection is usually implemented as a number of environmental checks, such 
 ~~~~
 /system/bin/su
 /system/xbin/su
+/sbin/su
+~~~~
+
+It is also possible to check for app packages of typical rooting tools, such as Superuser.apk. However, the presence and location of these files varies heavily depending on the specific Android and tool version. 
+
+Another option is checking the list of installed apps against a package names of known rooting tools, such as:
+
+~~~~
+eu.chainfire.supersu
+com.koushikdutta.superuser
+~~~~
+
+The package list can be obtained via the PackageManager:
+
+~~~~
+final PackageManager pm = getPackageManager();
+
+List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 ~~~~
 
 ### Black-box Testing
@@ -76,7 +94,8 @@ Install the app on a rooted device and launch the app. If the app functions with
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+- Netspi Blog - https://blog.netspi.com/android-root-detection-techniques/
+- InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
 
 ## <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Verification of Installation Source
 
