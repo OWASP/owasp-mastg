@@ -24,7 +24,9 @@ A comprehensive guide to debug an Android application can be found within the of
 
 ### Black-box Testing
 
-Use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
+When targetting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF) and check the value of "android:debuggable" attribute.
+
+Otherwise, use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
 
 ```
 $ aapt l -a /path/to/apk/file.apk | grep debuggable
