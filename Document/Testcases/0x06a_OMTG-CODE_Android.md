@@ -2,14 +2,39 @@
 
 ### White-box Testing
 
-1. Check the AndroidManifest.xml for the value of "android:debuggable" attribute within the application element. This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" if it can be, And "false" if not. The default value is "false". If the debuggable flag is set and activated, the app can be debugged. A comprehensive guide to debug an Android application can be found within the official documentation by Android (see references).
+Check the AndroidManifest.xml for the value of "android:debuggable" attribute within the application element :
 
-2.	Check the source code for patterns like "startMethodTracing|stopMethodTracing”.
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.android.owasp">
+    
+    ...
+    
+    <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <meta-data android:name="com.owasp.main" android:value=".Hook"/>
+    </application>
+</manifest>
+```
+
+This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" if it can be, And "false" if not. The default value is "false".
+
+A comprehensive guide to debug an Android application can be found within the official documentation by Android (see references).
+
 
 
 ### Black-box Testing
 
-Using a debugger to manipulate application variables at runtime can be a powerful technique to employ while penetration testing Android applications. Android applications can be unpacked, modified, re-assembled, and converted to gain access to the underlying application code, however understanding which variables are important and should be modified is a whole other story that can be laborious and time consuming. <Give detailed explanation how to do it>
+Use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
+
+```
+$ aapt l -a /path/to/apk/file.apk | grep debuggable
+```
+
+Will return the following if android:debuggable parameter is set to true :
+
+```
+      A: android:debuggable(0x0101000f)=(type 0x12)0xffffffff
+```
 
 ### Remediation
 
