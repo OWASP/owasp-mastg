@@ -7,7 +7,7 @@
 ## Test Cases
 
 ### OMTG-CODE-001: Testing for Debug Build 
-[General description]
+Debugging is a technique where a hook is attached to a particular application code. Execution pauses once a particular piece of code is reached (break point), giving us the ability to analyze local variables, dump class values, modify values, and generally interact with the program state. A debug build allows therefore an attacker to attach a debugger to the application in order to analyze the behavior during runtime.
 
 #### Detailed Guides
 
