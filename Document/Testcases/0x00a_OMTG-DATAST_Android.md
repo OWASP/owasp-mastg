@@ -40,7 +40,7 @@ The following is a list of best practice used for secure storage of certificates
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 ### Overview
 
-[Storing data][fb530e1c]] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
+[Storing data][fb530e1c] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
 * Shared Preferences
 * Internal Storage  
@@ -196,7 +196,7 @@ Do not use the external storage for sensitive data. By default, files saved to t
 
 To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a [KeyStore][19149717] and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
 
-* [“Secure-preferences][6dea1401]” can be used to encrypt the values stored within [Shared Preferences][afd8258f].
+[“Secure-preferences][6dea1401]” can be used to encrypt the values stored within [Shared Preferences][afd8258f].
 
 
 ### References
@@ -264,6 +264,7 @@ public static int i(...);
 public static int w(...);
 public static int d(...);
 public static int e(...);
+public static int wtf(...);
 }
 ```
 
