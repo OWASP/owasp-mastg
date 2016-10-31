@@ -28,8 +28,10 @@ The following tasks should be done when analysing an App:
 * M2 - Insecure Data Storage
 
 ##### CWE
+* CWE-311 - Missing Encryption of Sensitive Data
 * CWE-312 - Cleartext Storage of Sensitive Information
 * CWE-522 - Insufficiently Protected Credentials
+* CWE-922 - Insecure Storage of Sensitive Information
 
 ### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
@@ -72,12 +74,112 @@ Classification of sensitive information can vary between different industries, c
 #### References
 
 ##### OWASP Mobile Top 10
-M1 - Improper Platform Usage
-M2 - Insecure Data Storage
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
 
 ##### CWE
-CWE-532 - Information Exposure Through Log Files
-CWE-534 - Information Exposure Through Debug Log Files
+* CWE-117: Improper Output Neutralization for Logs
+* CWE-532 - Information Exposure Through Log Files
+* CWE-534 - Information Exposure Through Debug Log Files
+
+
+
+
+### OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-003 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-003)
+- [OMTG-DATAST-003 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-003)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-004 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-004)
+- [OMTG-DATAST-004 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-004)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-005 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-005)
+- [OMTG-DATAST-005 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-005)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-006 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-006)
+- [OMTG-DATAST-006 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-006)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-007 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-007)
+- [OMTG-DATAST-007 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-007)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
 
 
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
@@ -92,3 +194,79 @@ CWE-534 - Information Exposure Through Debug Log Files
 
 - OWASP MASVS: V2-1: "Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 - CWE: [Link to CWE issue]
+
+
+### OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-010 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-010)
+- [OMTG-DATAST-010 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-010)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-011 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-011)
+- [OMTG-DATAST-011 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-011)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-012: Test support of Hardware-Backed Keystore
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-012 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-012)
+- [OMTG-DATAST-012 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-012)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+
+### OMTG-DATAST-013: Test remote locking and wiping
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-013 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-013)
+- [OMTG-DATAST-013 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-013)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
