@@ -303,25 +303,12 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 ## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
 
-Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
-The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
-3rd party services are mostly implemented in two ways:
-* By using a standalone library, like a Jar in an Android project that is getting included into the APK.
-* By using a full SDK.
-
-
-### OWASP Mobile Top 10
-* M7 - Client Code Quality
-
-### CWE
-* CWE 359 - Exposure of Private Information ('Privacy Violation') https://cwe.mitre.org/data/definitions/359.html
-
-
 ### White-box Testing
 
 Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the AnroidManifest.xml  when installing a library through an IDE wizard should be reviewed. Especially permissions to access SMS (READ_SMS), contacts (ROAD_CONTACTS) or the location (ACCESS_FINE_LOCATION) should be challenged if they are really needed to make the library work at a bare minimum, see also OMTG-ENV-XXX. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
 
-The source code should be checked for API calls or functions provided by the 3rd party library.
+The same thing applies when adding a library manually. The source code should be checked for API calls or functions provided by the 3rd party library. The applied code changes should be reviewed and it should be checked if available security best practices of the library are applied and used. 
+
 
 ### Black-box Testing
 
