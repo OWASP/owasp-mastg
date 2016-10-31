@@ -333,19 +333,30 @@ AndroidManifest.xml should only contain the permissions that are absolutely need
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+In the layout definition of an activity TextViews can be defined that have XML attributes. When the XML attribute android:inputType is set with the constant "textNoSuggestions" the keyboard cache is not shown if the input field is selected. Only the keyboard is shown and the user needs to type everytyhing manually and nothing is suggested to him. 
+
+```xml
+   <EditText
+        android:id="@+id/KeyBoardCache"
+        android:inputType="textNoSuggestions"/>
+````
+
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Start the app and click into the input fields that ask for sensitive data. If strings are suggested the keyboard cache is not disabled for this input field. 
 
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+All input fields that ask for sensitive information, should implement the following XML attribute to disable the keyboard suggestions:
+
+android:inputType="textNoSuggestions"
+
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+- https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS
+
 
 
 ## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
