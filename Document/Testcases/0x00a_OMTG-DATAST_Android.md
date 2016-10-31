@@ -1,13 +1,5 @@
 ## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features
 
-### OWASP Mobile Top 10
-* OWASP Mobile Top Ten M1 - Improper Platform Usage
-* OWASP Mobile Top Ten M2 - Insecure Data Storage
-
-### CWE
-* CWE-922 - Insecure Storage of Sensitive Information
-* CWE-311 - Missing Encryption of Sensitive Data
-
 ### White-box Testing
 
 Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked withi the source code:
@@ -47,14 +39,6 @@ The following is a list of best practice used for secure storage of certificates
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 ### Overview
-
-### OWASP Mobile Top 10
-
-* OWASP Mobile Top Ten M2 - Insecure Data Storage
-
-### CWE
-* CWE-922 - Insecure Storage of Sensitive Information
-* CWE-311 - Missing Encryption of Sensitive Data
 
 [Storing data][fb530e1c]] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
 
@@ -237,15 +221,6 @@ To provide additional protection for sensitive data, you might choose to encrypt
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
-### OWASP Mobile Top 10
-
-* OWASP Mobile Top Ten M2 - Insecure Data Storage
-
-### CWE
-* CWE-117: Improper Output Neutralization for Logs
-* CWE-532: Information Exposure Through Log Files
-* CWE-534: Information Exposure Through Debug Log Files
-
 ### White-box Testing
 
 Check the source code for usage of Logging functions, by searching for the following terms:
@@ -308,12 +283,6 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 ## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
-
 ### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
@@ -341,10 +310,10 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 
 ### OWASP Mobile Top 10
-M7 - Client Code Quality
+* M7 - Client Code Quality
 
 ### CWE
-CWE 359 - Exposure of Private Information ('Privacy Violation')
+* CWE 359 - Exposure of Private Information ('Privacy Violation') https://cwe.mitre.org/data/definitions/359.html
 
 
 ### White-box Testing
@@ -374,12 +343,6 @@ AndroidManifest.xml should only contain the permissions that are absolutely need
 
 ## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
-
 ### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
@@ -398,12 +361,6 @@ CWE [ID] - [Title]
 
 
 ## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
-
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
 
 ### White-box Testing
 
@@ -425,11 +382,26 @@ CWE [ID] - [Title]
 
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
 
-### CWE
-CWE [ID] - [Title]
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+
+## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots 
+
 
 ### White-box Testing
 
@@ -449,13 +421,8 @@ CWE [ID] - [Title]
 
 
 
+
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
-
-### OWASP Mobile Top 10
-M2 - Insecure Data Storage
-
-### CWE
-CWE 530 - https://cwe.mitre.org/data/definitions/530.html
 
 ### White-box Testing
 
@@ -505,38 +472,9 @@ To prevent backing up the app's data, set the android:allowBackup attribute must
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
 
 
-## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test that no sensitive data leaks through backups
-
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
-
-### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-### References
-
-- [link to relevant how-tos, papers, etc.]
-
 
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
 
 ### White-box Testing
 
@@ -554,18 +492,9 @@ CWE [ID] - [Title]
 
 - [link to relevant how-tos, papers, etc.]
 
+
 ## <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
 
-Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
-
-To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the decompiled code before making any memory analysis.
-Once sensitive functions are identified (like decryption of data) the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or decrypted information.
-
-### OWASP Mobile Top 10
-TBD
-
-### CWE
-CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 ### White-box Testing
 
@@ -623,12 +552,6 @@ Tools:
 
 ## <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test support of Hardware-Backed Keystore
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
-
-### CWE
-CWE [ID] - [Title]
-
 ### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
@@ -649,11 +572,25 @@ CWE [ID] - [Title]
 
 ## <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test remote locking and wiping
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
+### White-box Testing
 
-### CWE
-CWE [ID] - [Title]
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+
+
+## <a name="OMTG-DATAST-014"></a>OMTG-DATAST-014: Test for device access security policy
 
 ### White-box Testing
 
@@ -670,6 +607,27 @@ CWE [ID] - [Title]
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
+
+
+## <a name="OMTG-DATAST-015"></a>OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
+
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->
