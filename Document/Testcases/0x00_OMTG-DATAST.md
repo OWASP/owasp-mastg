@@ -105,7 +105,13 @@ Classification of sensitive information can vary between different industries, c
 
 
 ### OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
-[General description]
+
+Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
+3rd party services are mostly implemented in two ways:
+* By using a standalone library, like a Jar in an Android project that is getting included into the APK.
+* By using a full SDK.
+
 
 #### Detailed Guides
 
@@ -124,7 +130,7 @@ Classification of sensitive information can vary between different industries, c
 
 
 ### OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
-[General description]
+When keying in data into input fields, the software keyboard automatically suggests what data the user might want to key in. This feature can be very useful in messaging Apps to write text messages more efficient. For input fields that are asking for sensitive information like passwords or credit card data the keyboard cache might disclose sensitive information already when the input field is selected. This feature should therefore be disabled for input fields that are asking for sensitive information.
 
 #### Detailed Guides
 
@@ -138,7 +144,7 @@ Classification of sensitive information can vary between different industries, c
 * M2 - Insecure Data Storage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+- CWE-524: Information Exposure Through Caching
 
 
 
