@@ -79,8 +79,8 @@ Classification of sensitive information can vary between different industries, c
 
 ##### CWE
 * CWE-117: Improper Output Neutralization for Logs
-* CWE-532 - Information Exposure Through Log Files
-* CWE-534 - Information Exposure Through Debug Log Files
+* CWE-532: Information Exposure Through Log Files
+* CWE-534: Information Exposure Through Debug Log Files
 
 
 
@@ -119,7 +119,7 @@ Classification of sensitive information can vary between different industries, c
 * M2 - Insecure Data Storage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+- CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 
 
@@ -179,6 +179,23 @@ Classification of sensitive information can vary between different industries, c
 - CWE: [Link to CWE issue]
 
 
+### OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots 
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-008 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-008)
+- [OMTG-DATAST-008 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-008)
+
+#### References
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE: [Link to CWE issue]
+
 
 
 
@@ -192,8 +209,8 @@ Classification of sensitive information can vary between different industries, c
 
 #### References
 
-- OWASP MASVS: V2-1: "Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-- CWE: [Link to CWE issue]
+* OWASP MASVS: V2-9: "Verify that sensitive data does not leak to backups."
+* [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
 ### OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
@@ -216,7 +233,12 @@ Classification of sensitive information can vary between different industries, c
 
 
 ### OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
-[General description]
+
+Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
+
+To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the decompiled code before making any memory analysis.
+Once sensitive functions are identified (like decryption of data) the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or decrypted information.
+
 
 #### Detailed Guides
 
@@ -230,7 +252,7 @@ Classification of sensitive information can vary between different industries, c
 * M2 - Insecure Data Storage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+* CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
 
@@ -264,9 +286,42 @@ Classification of sensitive information can vary between different industries, c
 #### References
 
 ##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
+
 
 ##### CWE
 - CWE: [Link to CWE issue]
 
+
+
+### OMTG-DATAST-014: Test for device access security policy
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-014 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-014)
+- [OMTG-DATAST-014 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-014)
+
+#### References
+
+##### OWASP Mobile Top 10
+
+
+##### CWE
+- CWE: [Link to CWE issue]
+
+
+### OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
+[General description]
+
+#### Detailed Guides
+
+- [OMTG-DATAST-015 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-015)
+- [OMTG-DATAST-015 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-015)
+
+#### References
+
+##### OWASP Mobile Top 10
+
+
+##### CWE
+- CWE: [Link to CWE issue]
