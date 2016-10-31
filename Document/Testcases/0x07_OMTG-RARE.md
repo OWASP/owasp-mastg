@@ -26,15 +26,15 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 
 #### Detailed Guides
 
-- [OMTG-RARE-002 Android](0x08a_OMTG-RARE_Android.md#OMTG-RARE-002)
-- [OMTG-RARE-002 iOS](0x08b_OMTG-RARE_iOS.md#OMTG-RARE-002)
+- [OMTG-RARE-002 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-002)
+- [OMTG-RARE-002 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-002)
 
 #### References
 
 - OWASP MASVS: V8-2: "Verify that Java bytecode has been obscured through identifier renaming."
 - CWE: N/A
 
-### OMTG-RARE-003: Testing for Jailbreak / Root Detection
+### OMTG-RARE-003: Test Jailbreak / Root Detection
 
 Modern smartphone operating systems implement containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
 
@@ -48,4 +48,32 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 #### References
 
 - OWASP MASVS : V8.3: "Verify that the application detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users should be warned, or the app should terminate if the device is rooted."
+- CWE : N/A
+
+### OMTG-RARE-004: Test Verification of Installation Source
+
+(todo)
+
+#### Detailed Guides
+
+- [OMTG-RARE-004 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-004)
+- [OMTG-RARE-004 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-004)
+
+#### References
+
+- OWASP MASVS : V8.4: "Verify that the app checks its installation source, and only runs if installed from a trusted source."
+- CWE : N/A
+
+### OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+
+(todo)
+
+#### Detailed Guides
+
+- [OMTG-RARE-005 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-005)
+- [OMTG-RARE-005 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-005)
+
+#### References
+
+- OWASP MASVS : V8.5: "Verify that the app has some form of debugger detection and terminates when a debugger is detected, or prevents attaching a debugger using any method. All available means of debugging must be covered (e.g. JDWP and native)."
 - CWE : N/A

@@ -36,7 +36,7 @@ Verify the minifyEnabled is set to true in build.gradle (see below).
 
 To inspect the Java bytecode for metadata either use the dexdump tool that ships with the Android SDK or a decompiler.
 
-TODO - show what obfuscated bytecode looks like
+![ProGuard-obfuscated code](../images/proguard.jpg)
 
 ### Remediation
 
@@ -54,6 +54,68 @@ android {
     ...
 }
 ~~~~ 
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-003"></a>OMTG-RARE-003: Test Jailbreak / Root Detection
+
+### White-box Testing
+
+Root detection is usually implemented as a number of environmental checks, such as checking for files and processes known to be found only on rooted devices, or artefacts of widely used rooting tools. If you have access to the source code, make sure that there is at least a check for the presence of the "su" binary in common locations, including:
+
+~~~~
+/system/bin/su
+/system/xbin/su
+/sbin/su
+~~~~
+
+It is also possible to check for app packages of typical rooting tools, such as Superuser.apk. However, the presence and location of these files varies heavily depending on the specific Android and tool version. 
+
+Another option is checking the list of installed apps against a package names of known rooting tools, such as:
+
+~~~~
+eu.chainfire.supersu
+com.koushikdutta.superuser
+~~~~
+
+The package list can be obtained via the PackageManager:
+
+~~~~
+final PackageManager pm = getPackageManager();
+
+List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+~~~~
+
+### Black-box Testing
+
+Install the app on a rooted device and launch the app. If the app functions without any issues, then this test fails.
+
+### References
+
+- Netspi Blog - https://blog.netspi.com/android-root-detection-techniques/
+- InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
+
+## <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Verification of Installation Source
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-005"></a>OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+
+### White-box Testing
+
+
+### Black-box Testing
+
 
 ### References
 
