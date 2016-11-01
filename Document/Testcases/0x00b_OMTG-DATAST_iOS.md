@@ -1,16 +1,35 @@
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test Sensitive Data Storage
+## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
-### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
 
 ### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
+### White-box Testing
+
+Check the source code for usage of predefined/custom Logging statements using the following keywords :
+* For predefined and built-in functions :
+  * NSLog
+  * NSAssert
+  * NSCAssert
+  * fprintf
+* For custom functions :
+  * Logging
+  * Logfile
+
+
+
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (*.pch) file:
+
+```C#
+#ifdef DEBUG
+#   define NSLog (...) NSLog(__VA_ARGS__)
+#else
+#   define NSLog (...)
+#endif
+```
 
 ### References
 
