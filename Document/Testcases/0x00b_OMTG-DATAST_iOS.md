@@ -34,3 +34,24 @@ Use a define to enable NSLog statements for development and debugging, and disab
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
+
+## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
+
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### White-box Testing
+
+While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
+
+### Remediation
+
+The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
