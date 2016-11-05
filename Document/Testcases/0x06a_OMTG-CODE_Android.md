@@ -47,3 +47,9 @@ For production releases, the attribute android:debuggable must be set to false w
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
+
+
+## <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Testing for Secure Compiler Flags
+
+Since most Android applications are Java based, they are [immunue](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java) to buffer overflow vulnerabilities.
+

@@ -220,7 +220,7 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 
 ### OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
-[General description]
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
 
 #### Detailed Guides
 
