@@ -305,35 +305,37 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 ### White-box Testing
 
-Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the AnroidManifest.xml  when installing a library through an IDE wizard should be reviewed. Especially permissions to access SMS (READ_SMS), contacts (ROAD_CONTACTS) or the location (ACCESS_FINE_LOCATION) should be challenged if they are really needed to make the library work at a bare minimum, see also OMTG-ENV-XXX. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
+Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the `AnroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also OMTG-ENV-XXX. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
 
-The same thing applies when adding a library manually. The source code should be checked for API calls or functions provided by the 3rd party library. The applied code changes should be reviewed and it should be checked if available security best practices of the library are applied and used. 
+The same thing applies when adding a library manually. The source code should be checked for API calls or functions provided by the 3rd party library. The applied code changes should be reviewed and it should be checked if available security best practices of the library are applied and used.
 
 
 ### Black-box Testing
 
-All requests made  to the external service should be analyzed if any sensitive information is embedded into them.
-Dynamic analysis can be performed launching a MITM attack using Burp Proxy, to intercept the traffic exchanged between client and server. Using the certificate provided by Portswigger, Burp can intercept and decrypt the traffic on the fly and manipulate it as you prefer. First of all we need to setup Burp, on our laptop, to listen on a specific port from all the interfaces. After that we can setup the Android device to redirect all the traffic to our laptop, i.e. setting our laptop IP address like proxy.
-A complete guide can be found here (https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
-Once we are able to route the traffic to burp, we can try to sniff the traffic from the application. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service.
-When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
+All requests made to the external service should be analyzed if any sensitive information is embedded into them.
+* Dynamic analysis can be performed launching a MITM attack using _Burp Proxy_, to intercept the traffic exchanged between client and server. Using the certificate provided by Portswigger, Burp can intercept and decrypt the traffic on the fly and manipulate it as you prefer. First of all we need to setup Burp, on our laptop, to listen on a specific port from all the interfaces. After that we can setup the Android device to redirect all the traffic to our laptop, i.e. setting our laptop IP address like proxy.
+A complete guide can be found [here][05773baa]. Once we are able to route the traffic to burp, we can try to sniff the traffic from the application. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service.
+* When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 The Jar files loaded into the project should be reviewed in order to identify with the developers if they are needed and also if they are out of date and contain known vulnerabilities.
+
 
 ### Remediation
 
 All data that is sent to 3rd Party services should be anonymized, so no PII data is available. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
-AndroidManifest.xml should only contain the permissions that are absolutely needed to work properly and as intended.
+`AndroidManifest.xml` should only contain the permissions that are absolutely needed to work properly and as intended.
 
 ### References
 
-* Bulletproof Android, Godfrey Nolan, Chapter 7 - Third-Party Library Integration
+* [Bulletproof Android, Godfrey Nolan][9b6055db]: Chapter 7 - Third-Party Library Integration
 
+[9b6055db]: https://www.amazon.com/Bulletproof-Android-Practical-Building-Developers/dp/0133993329 "Book_BulletproofAndroid"
+[05773baa]: https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "ConfigureAndroidBurp"
 
 ## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
 
 ### White-box Testing
 
-In the layout definition of an activity TextViews can be defined that have XML attributes. When the XML attribute android:inputType is set with the constant "textNoSuggestions" the keyboard cache is not shown if the input field is selected. Only the keyboard is shown and the user needs to type everytyhing manually and nothing is suggested to him. 
+In the layout definition of an activity TextViews can be defined that have XML attributes. When the XML attribute android:inputType is set with the constant "textNoSuggestions" the keyboard cache is not shown if the input field is selected. Only the keyboard is shown and the user needs to type everytyhing manually and nothing is suggested to him.
 
 ```xml
    <EditText
@@ -344,7 +346,7 @@ In the layout definition of an activity TextViews can be defined that have XML a
 
 ### Black-box Testing
 
-Start the app and click into the input fields that ask for sensitive data. If strings are suggested the keyboard cache is not disabled for this input field. 
+Start the app and click into the input fields that ask for sensitive data. If strings are suggested the keyboard cache is not disabled for this input field.
 
 ### Remediation
 
@@ -399,7 +401,7 @@ android:inputType="textNoSuggestions"
 - [link to relevant how-tos, papers, etc.]
 
 
-## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots 
+## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
 
 
 ### White-box Testing
