@@ -32,7 +32,7 @@ Functional defenses are programmatic features  that aim to detect, and respond t
 
 In the MASVS and MSTG, we define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2). The MASVS defines the minimum amount of protection that must exist in each category.
 
-
+![Reverse engineering processes](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/reversing-processes.png "Reverse engineering processes")
 
 ### Testing Obfuscation
 
