@@ -10,20 +10,22 @@
 
 ## Tampering and Reverse Engineering
 
+
+
 ## Assessing Software Protections
 
-On the highest level we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they are used in the guide.
-
-(table 1)
-
+Whether we’re talking about malware, banking apps, or mobile games: They all use similar anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that the defenses, taken together, are “good enough” to provide the desired level of protection? In the MASVS and MSTG, we tackle this question by defining sets of criteria for obfuscations and functional (programmatic) defenses, as well as testing processes that can be used for manual verification.
 
 ### Testing Functional Defenses
+
+Functional defenses are programmatic features  that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. When combined with obfuscation, multiple defenses add up to make the life of the reverse engineer as difficult as possible.
+
+In the MASVS and MSTG, we define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2). The MASVS defines the minimum amount of protection that must exist in each category.
+
 
 
 
 ### Testing Obfuscation
-
-
 
 1. Stripping
 
@@ -33,7 +35,7 @@ On the highest level we classify reverse engineering defenses into two categorie
 2. Increase Complexity
 
    The second type of obfuscations aims to hide the semantics of a computation by embedding it into a more complex computation. Put another way, these transformations increase the absolute amount of high-variability information in the code and data representing a certain functionality, thereby increasing the amount of information an adversary must process to understand the semantics of the code. Provided that the adversary has no prior knowledge about the obfuscation parameters applied, these obfuscations increase the reverse engineering effort even for an adversary with full visibility of all operations executed by the CPU.
-   
+
 3. TODO
 
 Increase Complexity
