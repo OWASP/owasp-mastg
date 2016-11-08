@@ -26,7 +26,7 @@ On the highest level, we classify reverse engineering defenses into two categori
 | 2. Delayed response (stealth)| 2. Increase complexity|
 ||3. Inhibit reverse engineering processes and tools|
 
-### Testing Functional Defenses
+### Functional defense requirements
 
 Functional defenses are programmatic features  that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. When combined with obfuscation, multiple defenses add up to make the life of the reverse engineer as difficult as possible.
 
@@ -34,7 +34,20 @@ In the MASVS and MSTG, we define five defensive categories, each of which corres
 
 ![Reverse engineering processes](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/reversing-processes.png "Reverse engineering processes")
 
-### Testing Obfuscation
+For example, MASVS L2 requires an app to implement a simple form protection in the categories “environmental manipulation” and “debugging”. An app may pass as long as it implements any form of detection, no matter the specific implementation. MASVS  L3 ups the ante by adding requirements for all five categories:
+
+- 8.6: "Verify that the app implements two or more functionally independent methods of root detection and responds to the presence of a rooted device either by alerting the user or terminating the app."
+- 8.7: "Verify that the app implements multiple defenses that result in strong resiliency against debugging. All available means of debugging must be covered (e.g. JDWP and native)."
+- 8.8: "Verify that the app detects and responds to tampering with executable files and critical data."
+- 8.9: "Verify that the app detects the presence of widely used reverse engineering tools, such as code injection tools, hooking frameworks and debugging servers."
+- 8.10: "Verify that the app detects whether it is run inside an emulator using any method, and responds by terminating or malfunctioning when an emulator is detected."
+- 8.11: "Verify that the app detects modifications of process memory, including relocation table patches and injected code."
+
+Basic requirements, such as 8.8 and 8.9, can be verified using either black-box or white-box testing (see the respective test cases for details). The requirement for *strong* resiliency in the debugging category (V8.7) will be discussed in the following sections.
+
+(TODO)
+
+### Obfuscation requirements
 
 1. Stripping
 
