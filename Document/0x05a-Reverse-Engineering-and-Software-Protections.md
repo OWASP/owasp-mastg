@@ -8,13 +8,15 @@ Whether we’re talking about malware, banking apps, or mobile games: They all u
 
 On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
 
-| Functional Defenses | Obfuscations  |
-| -----------------   |--------------|
-| *Prevent, or react to, actions of the reverse engineer* | *Modify code and/or data to make it less comprehensible* |
-| Preventive: Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.   | Modifications that are usually applied during the build process to the source code, binary, intermediate representation of the code, or other elements such as data or executable headers. The goal is to transform the code and data so it becomes more difficult to comprehend for human adversaries while still performing the desired function. Obfuscating transformations change the representation of the code and data, but do not exhibit behavior of their own (i.e. they don’t actively interfere with the actions of the reverse engineer). |
-| 1. Immediate response| 1. Strip meaningful information|
-| 2. Delayed response (stealth)| 2. Increase complexity|
-||3. Inhibit reverse engineering processes and tools|
+### 1. Functional defenses
+*Prevent, or react to, actions of the reverse engineer*
+
+Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. 
+
+### 2. Obfuscations
+*Modify code and/or data to make it less comprehensible*
+
+ Modifications applied during the build process to the source code, binary, intermediate representation of the code, or other elements such as data or executable headers. The goal is to transform the code and data so it becomes more difficult to comprehend for human adversaries while still performing the desired function. Obfuscating transformations change the representation of the code and data, but do not exhibit behavior of their own (i.e. they don’t actively interfere with the actions of the reverse engineer).
 
 ### Functional defense requirements
 
