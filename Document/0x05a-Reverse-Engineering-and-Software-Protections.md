@@ -39,15 +39,40 @@ Basic requirements, such as 8.8 and 8.9, can be verified using either black-box 
 
 ### Obfuscation requirements
 
-1. Stripping
+![Obfuscation model](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/obfuscation-model.png "Reverse engineering processes")
 
-   Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
-   Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
+#### Tier 1: Strip Meaningful Information
 
-2. Increase Complexity
+Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
+For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable. 
+Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
-   The second type of obfuscations aims to hide the semantics of a computation by embedding it into a more complex computation. Put another way, these transformations increase the absolute amount of high-variability information in the code and data representing a certain functionality, thereby increasing the amount of information an adversary must process to understand the semantics of the code. Provided that the adversary has no prior knowledge about the obfuscation parameters applied, these obfuscations increase the reverse engineering effort even for an adversary with full visibility of all operations executed by the CPU.
+#### Tier 2: Obfuscate control flow and data
 
-3. TODO
+The second type of obfuscations aims to hide the semantics of a computation by computing the same function in a more complicated way, or encoding sensitive data in ways that are not easily comprehensible. Provided that the adversary has no prior knowledge about the obfuscation parameters applied, these obfuscations increase the reverse engineering effort even for an adversary with full visibility of the execution trace. Obfuscation in this category have the following properties:
 
-Increase Complexity
+- The size and performance penalty can be sizable (scales with the obfuscation settings)
+- De-obfuscation requires advanced methods and/or custom tools 
+
+A simple example for this kind of obfuscations are opaque predicates. Opaque predicates are redundant code branches added to the program that always execute the same way, which is known a priori to the programmer but not to the analyzer. For example, a statement such as if (1 + 1) = 1 always evaluates to false, and thus always result in a jump to the same location. Opaque predicates can be constructed in ways that make them difficult to identify and remove in static analysis.
+Some types of obfuscation that fall into this category are:
+
+- Pattern-based obfuscation, when instructions are replaced with more complicated instruction sequences
+- Control flow obfuscation
+- Control flow flattening
+- Function Inlining
+- Data encoding and reordering
+- Variable splitting
+- Virtualization
+- White-box cryptography
+
+#### Tier 3: Inhibit Reverse Engineering Processes and Tools
+
+The third category of transformations includes tricks that make static analysis more difficult, but do not transform the obfuscated computation per se. That is, the instructions that eventually compute the obfuscated function(s) remain more or less unchanged. Examples for this kind of transformations includes simple packing and encryption of large code blocks and manipulations of executable headers.
+In contrast to “type 2” obfuscations, transformations in this category have the following properties: 
+
+- The size and performance penalty is neglibigle;
+- De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
+
+In general, type 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once type 1 and 2 obfuscations have been applied. 
+
