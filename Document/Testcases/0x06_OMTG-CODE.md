@@ -19,7 +19,8 @@ Debugging is a technique where a hook is attached to a particular application co
 #### References
 
 - OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE: [Link to CWE issue]
+- CWE-636: Not Failing Securely ('Failing Open')
+- CWE-391: Unchecked Error Condition
 
 ### OMTG-CODE-002: Testing for Exception Handling
 [General description]
@@ -57,4 +58,19 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 #### References
 
 - OWASP MASVS : [Link to MASVS]
+- CWE : [Link to CWE issue]
+
+### OMTG-CODE-004: Testing for Unused/Dead code 
+[General description]
+
+#### Detailed Guides
+
+[Add links, e.g.:]
+
+- [OMTG-CODE-004 Android](LINK#OMTG-CODE-004)
+- [OMTG-CODE-004 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-004)
+
+#### References
+
+- OWASP MASVS: [NUMBER]: "QUOTE"
 - CWE : [Link to CWE issue]
