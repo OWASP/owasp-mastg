@@ -332,6 +332,7 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 * Backing up App Data to the Cloud - https://developer.android.com/guide/topics/data/backup.html
 * Key/Value Backup - https://developer.android.com/guide/topics/data/keyvaluebackup.html
 * BackupAgentHelper https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html
+* BackupAgent https://developer.android.com/reference/android/app/backup/BackupAgent.html
 * Auto Backup - https://developer.android.com/guide/topics/data/autobackup.html
 
 
