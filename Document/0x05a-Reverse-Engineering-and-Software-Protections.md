@@ -1,6 +1,6 @@
 ## Tampering and Reverse Engineering
 
-Mobile security testing requires at least basic reverse engineering skills for the following reasons:
+Mobile security testing requires at least basic reverse engineering skills for several reasons.
 
 - In a black-box test, static analysis of the app bytecode or binary code is helpful for getting a better understanding of what the app is doing. It also enables you to identify certain flaws, such as credentials hardcoded inside the app.
 
@@ -8,7 +8,11 @@ Mobile security testing requires at least basic reverse engineering skills for t
 
 - Apps that implement software protections according to MASVS L3 or L4 should be resilient against reverse engineering. In this case, testing the reverse engineering defenses ("resiliency assessment") may be part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses. Advanced reverse engineering skills are required to perform this kind of test.
 
+Reverse engineering is a creative process. The best software protections are based on original ideas, so there is no generic process that always works. That said, we'll describe commonly used methods and tools later on, and give examples for tackling the most common defenses.
+
 ## Assessing Software Protections
+
+The MASVS lists various kinds of software protections in the "V8 - Resiliency against Reverse Engineering" section.
 
 Whether we’re talking about malware, banking apps, or mobile games: They all use similar anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that the defenses, taken together, are “good enough” to provide the desired level of protection? In the MASVS and MSTG, we tackle this question by defining sets of criteria for obfuscations and functional (programmatic) defenses, as well as testing processes that can be used for manual verification.
 
@@ -48,7 +52,6 @@ Basic requirements, such as 8.8 and 8.9, can be verified using either black-box 
 The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal. 
 
 Each individual defensive function is assessed on three properties:
-
 -	Uniqueness: 1 – 3 points
 -	API Layer: Up to 2 bonus points
 -	Parallelism: Up to 2 bonus points
@@ -62,14 +65,11 @@ Table 2 explains the scoring criteria in detail.
 | **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
 | **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
 
-
-
-
 ### Obfuscation requirements
 
 ![Obfuscation model](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/obfuscation-model.png "Reverse engineering processes")
 
-#### Tier 1: Strip Meaningful Information
+#### Tier 1: Strip meaningful information
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
 For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable. 
@@ -94,14 +94,18 @@ Some types of obfuscation that fall into this category are:
 - Virtualization
 - White-box cryptography
 
-#### Tier 3: Inhibit Reverse Engineering Processes and Tools
+#### Tier 3: Inhibit reverse engineering processes and tools
 
 The third category of transformations includes tricks that make static analysis more difficult, but do not transform the obfuscated computation per se. That is, the instructions that eventually compute the obfuscated function(s) remain more or less unchanged. Examples for this kind of transformations includes simple packing and encryption of large code blocks and manipulations of executable headers.
-In contrast to “type 2” obfuscations, transformations in this category have the following properties: 
+Transformations in this category have the following properties: 
 
 - The size and performance penalty is neglibigle;
 - De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
 
-In general, type 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once type 1 and 2 obfuscations have been applied. 
+In general, tier 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once tier 1 and 2 obfuscations have been applied. 
+
+
+
+
 
 
