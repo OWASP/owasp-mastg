@@ -288,7 +288,7 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 Two mechanisms can be used for cloud storage in Android.
 
-1. Key/Value Backup
+#### Key/Value Backup
 To enable key/value backup the backup agent need to be defined in the manifest file. Look in AndroidManifest.xml for the following attribute:
 
 ```xml
@@ -296,12 +296,10 @@ android:backupAgent
 ```
 
 To implement the key/value backup, either one of the following classes need to be extended:
-
 * BackupAgent
 * BackupAgentHelper
 
-
-2. Auto Backup
+#### Auto Backup
 When using the following attribute in the manifest file, auto backup is used instead of key/value backup:
 
 ```xml
