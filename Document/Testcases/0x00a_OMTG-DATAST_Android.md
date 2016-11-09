@@ -288,29 +288,29 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 To enable key/value backup the backup agent need to be defined in the manifest file. Look in AndroidManifest.xml for the following attribute:
 
-'''xml
+```xml
 android:backupAgent
-'''
+```
 
 To implement the key/value backup, either one of the following classes need to be extended:
 
 * BackupAgent
 * BackupAgentHelper
 
-If one of these classes is used in the code it need to be identified
-* what files are sent to the cloud (e.g. SharedPreferences),
-* if the files contain sensitive information,
-* if sensitive information is protected through encryption before sending it to the cloud.
-
 When using the following attribute in the manifest file, auto backup is used instead of key/value backup:
 
 ```xml
 android:fullBackupOnly 
 ```
+If one of these mechanisms is used in the code it need to be identified
+* what files are sent to the cloud (e.g. SharedPreferences),
+* if the files contain sensitive information,
+* if sensitive information is protected through encryption before sending it to the cloud.
+
 
 ### Black-box Testing
 
-The APK should be decompiled in order to read the manifest file. According to the attributes set, it can be identified if backup features are used or not. 
+The APK should be decompiled in order to read the manifest file. According to the attributes set, it can be identified if backup features are used or not. See White-box testing for details. 
 
 ### Remediation
 
