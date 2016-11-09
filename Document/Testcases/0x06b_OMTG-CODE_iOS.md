@@ -1,4 +1,23 @@
-## <a name="OMTG-CODE-007"></a>OMTG-CODE-001: Testing for Secure Compiler Flags
+## <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Testing for Debug Build
+
+### White-box Testing
+
+1. Import the source code into the xCode Editor.
+1. Check the project's build settings for 'DEBUG' parameter under "Apple LVM – Preprocessing" -> "Preprocessor Macros".
+1. Check the source code for NSAsserts method and its companions.
+
+### Black-box Testing
+
+This test case should be performed during White-box testing.
+
+### Remediation
+
+Once you have deployed an iOS application, either through the App Store or as an Ad Hoc or Enterprise build, you won't be able to attach Xcode's debugger to it. To debug problems, you need to analyze Crash Logs and Console output from the device itself. Remove any NSLog calls to prevent debug leakage through the Console.
+
+### References
+TUDU
+
+## <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Testing for Secure Compiler Flags
 
 ### White-box Testing
 
