@@ -289,7 +289,7 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 Two mechanisms can be used for cloud storage in Android.
 
 #### Key/Value Backup
-To enable key/value backup the backup agent need to be defined in the manifest file. Look in AndroidManifest.xml for the following attribute:
+To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
@@ -303,7 +303,7 @@ To implement the key/value backup, either one of the following classes need to b
 When using the following attribute in the manifest file, auto backup is used instead of key/value backup:
 
 ```xml
-android:fullBackupOnly 
+android:fullBackupOnly
 ```
 
 Auto backup includes almost all of the app's files and stores them in the Google Drive account of the user.
@@ -316,7 +316,7 @@ If either key/value or auto backup is used it need to be identified:
 
 ### Black-box Testing
 
-The APK should be decompiled in order to read the manifest file. According to the attributes set, it can be identified if backup features are used or not. See White-box testing for details. 
+The APK should be decompiled in order to read the manifest file. According to the attributes set, it can be identified if backup features are used or not. See White-box testing for details.
 
 ### Remediation
 
@@ -325,15 +325,15 @@ Sensitive information should not be sent in clear text to the cloud. It should e
 * avoided to store the information in the first place or
 * encrypt the information in rest, before sending it to the cloud.
 
-Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles. 
+Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
 
 ### References
 
-* Backing up App Data to the Cloud - https://developer.android.com/guide/topics/data/backup.html
-* Key/Value Backup - https://developer.android.com/guide/topics/data/keyvaluebackup.html
-* BackupAgentHelper https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html
-* BackupAgent https://developer.android.com/reference/android/app/backup/BackupAgent.html
-* Auto Backup - https://developer.android.com/guide/topics/data/autobackup.html
+* [Backing up App Data to the Cloud][fd7bd757]
+* [Key/Value Backup][1aee61a9]
+* [BackupAgentHelper][48d8d464]
+* [BackupAgent][03c7b547]
+* [Auto Backup][bf8bd4ca]
 
 
 ## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
@@ -462,51 +462,52 @@ android:inputType="textNoSuggestions"
 
 ### White-box Testing
 
-In order to backup all your application’s data Android provides an attribute called allowBackup. This attribute is set within the AndroidManifest.xml file. If the value of this attribute is set to true then the device allows user to backup the application using Android Debug Bridge (ADB) - $adb backup. Note: If the device was encrypted then the backup files will be encrypted as well.
+In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows user to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
-Check the AndroidManifest.xml file for the following flag:
+> Note: If the device was encrypted, then the backup files will be encrypted as well.
 
-```
+Check the `AndroidManifest.xml` file for the following flag:
+
+```xml
 android:allowBackup="true"
 ```
 
-If the value is set to true, investigate whether the app saves any kind of sensitive data, either by reading the source code, or inspeciting the files in the app's data directory.
+If the value is set to **true**, investigate whether the app saves any kind of sensitive data, either by reading the source code, or inspecting the files in the app's data directory.
 
 ### Black-box Testing
 
-Attempt to make a backup using adb and, if successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
+Attempt to make a backup using `adb` and, if successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
-```
+```bash
 $ adb backup -apk -nosystem packageNameOfTheDesiredAPK
 ```
 
-Approve the backup from your device by selecting the "Back up my data" option. After the backup process is finished, you will have a .ab file in your current working directory.
+Approve the backup from your device by selecting the "_Back up my data_" option. After the backup process is finished, you will have a _.ab_ file in your current working directory.
 Run the following command to convert the .ab file into a .tar file.
 
-```
+```bash
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
 Alternatively, use the [Android Backup Extractor](https://sourceforge.net/projects/adbextractor/) for this task. To install, download the [binary distribution](https://sourceforge.net/projects/adbextractor/files/latest/download). For the tool to work, you also have to download the [Oracle JCE Unlimited Strength Jurisdiction Policy Files for JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html), and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
-```
+```bash
 java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
 ```
 
 Extract the tar file into your current working directory to perform your analysis for sensitive data.
 
-```
+```bash
 $ tar xvf mybackup.tar
 ```
 
 ### Remediation
 
-To prevent backing up the app's data, set the android:allowBackup attribute must be set to false in AndroidManifest.xml.
+To prevent backing up the app's data, set the `android:allowBackup` attribute must be set to **false** in `AndroidManifest.xml`.
 
 ### References
 
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
-
 
 
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
@@ -538,53 +539,49 @@ It needs to be identified within the code when sensitive information is stored w
 
 ### Black-box Testing
 
-To analyse the memory of an app, the app must be debuggable. See the instructions in XXX on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also ADB integration need to be activated in Android Studio in “Tools/Android/Enable ADB Integration” in order to take a memory dump.
-For rudimentary analysis Android Studio built in tools can be used. Android studio includes tools in the “Android Monitor” tab to investigate the memory. Select the device and app you want to analyse in the "Android Monitor" tab and click on "Dump Java Heap" and a .hprof file will be created.
+To analyse the memory of an app, the app must be **debuggable**.
+See the instructions in XXX (**#TODO-Link to repackage and sign**) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also ADB integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
+
+For rudimentary analysis Android Studio built in tools can be used. Android studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
 
 ![Create Heap Dump](http://bb-conservation.de/sven/mem0.png)
 
-In the new tab that shows the .hprof file, the Package Tree View should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
+In the new tab that shows the _.hprof_ file, the Package Tree View should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
 
 ![Create Heap Dump](http://bb-conservation.de/sven/mem1.png)
 
-For more deeper analysis of the memory dump Eclipse Memory Analyser (MAT) should be used. The .hprof file will be stored in the directory "captures", relative to the project path open within Android Studio.
+For more deeper analysis of the memory dump Eclipse Memory Analyser (MAT) should be used. The _.hprof_ file will be stored in the directory "captures", relative to the project path open within Android Studio.
 
-Before the hprof file can be opened in MAT the hprof file needs to be converted. The tool hprof-conf can be found in the Android SDK in the directory platform-tools.
+Before the _.hprof_ file can be opened in MAT it needs to be converted. The tool _hprof-conf_ can be found in the Android SDK in the directory platform-tools.
 
-```
+```bash
 ./hprof-conv file.hprof file-converted.hprof
 ```
 
 By using MAT, more functions are available like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes.
 
-When doing a memory analysis check for sensitive information like:
+To quickly discover potential sensitive data in the _.hprof_ file, it is also useful to run the `string` command against it. When doing a memory analysis, check for sensitive information like:
 * Password and/or Username
 * Decrypted information
 * User or session related information
 * Session ID
 * Interaction with OS, e.g. reading file content
 
-
 ### Remediation
 
 If sensitive information is used within the application memory it should be nulled immediately after usage to reduce the attack surface. Information should not be stored in clear text in memory (does this make sense?).
 
-
 ### References
 
-* Securely stores sensitive data in RAM - https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/
+* [Securely stores sensitive data in RAM][6227fc2d]
 
 Tools:
-* Android Studio’s Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
-* Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
-* Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
-* Fridump - http://pentestcorner.com/introduction-to-fridump
-* Fridump Repo - https://github.com/Nightbringer21/fridump
-* LiME (formerly DMD) - https://github.com/504ensicsLabs/LiME
-
-
-
-
+* [Android Studio’s Memory Monitor][c96db86c]
+* [Eclipse’s MAT (Memory Analyzer Tool) standalone][681372d4]
+* [Memory Analyzer which is part of Eclipse][6ff3fc11]
+* [Fridump][ebd40e26]
+* [Fridump Repo][faab1495]
+* [LiME][6204d45e] (formerly DMD)
 
 ## <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test support of Hardware-Backed Keystore
 
@@ -700,3 +697,20 @@ If a link is outdated, you can change it here and it will be updated everywhere 
 [c83d7c35]: https://github.com/google/android-classyshark "ClassyShark"
 [de2ec1fd]: http://developer.android.com/reference/android/util/Log.html "ClassLogOverview"
 [7f106169]: http://developer.android.com/tools/debugging/debugging-log.html "DebuggingLogsLogCat"
+
+<!-- OMTG-DATAST-003 -->
+[e894a591]: https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles "IncludingFiles"
+[fd7bd757]: https://developer.android.com/guide/topics/data/backup.html "BackingUpAppDataToCloud"
+[1aee61a9]: https://developer.android.com/guide/topics/data/keyvaluebackup.html "KeyValueBackup"
+[48d8d464]: https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper"
+[03c7b547]: https://developer.android.com/reference/android/app/backup/BackupAgent.html "BackupAgent"
+[bf8bd4ca]: https://developer.android.com/guide/topics/data/autobackup.html "AutoBackup"
+
+<!-- OMTG-DATAST-011 -->
+[c96db86c]: http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap "MemoryMonitor"
+[681372d4]: https://eclipse.org/mat/downloads.php "EclipseMATStandalone"
+[6ff3fc11]: https://www.eclipse.org/downloads/ "MemoryAnalyzerWhichIsPartOfEclipse"
+[ebd40e26]: http://pentestcorner.com/introduction-to-fridump "Fridump"
+[faab1495]: https://github.com/Nightbringer21/fridump "FridumpRepo"
+[6204d45e]: https://github.com/504ensicsLabs/LiME "LiME"
+[6227fc2d]: https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "SecurelyStoreDataInRAM"
