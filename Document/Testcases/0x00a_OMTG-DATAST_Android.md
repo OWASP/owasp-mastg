@@ -286,6 +286,9 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 
 ### White-box Testing
 
+Two mechanisms can be used for cloud storage in Android.
+
+1. Key/Value Backup
 To enable key/value backup the backup agent need to be defined in the manifest file. Look in AndroidManifest.xml for the following attribute:
 
 ```xml
@@ -297,12 +300,17 @@ To implement the key/value backup, either one of the following classes need to b
 * BackupAgent
 * BackupAgentHelper
 
+
+2. Auto Backup
 When using the following attribute in the manifest file, auto backup is used instead of key/value backup:
 
 ```xml
 android:fullBackupOnly 
 ```
-If one of these mechanisms is used in the code it need to be identified
+
+Auto backup includes almost all of the app's files and stores them in the Google Drive account of the user.
+
+If either key/value or auto backup is used it need to be identified:
 * what files are sent to the cloud (e.g. SharedPreferences),
 * if the files contain sensitive information,
 * if sensitive information is protected through encryption before sending it to the cloud.
@@ -319,12 +327,14 @@ Sensitive information should not be sent in clear text to the cloud. It should e
 * avoided to store the information in the first place or
 * encrypt the information in rest, before sending it to the cloud.
 
+Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles. 
 
 ### References
 
 * Backing up App Data to the Cloud - https://developer.android.com/guide/topics/data/backup.html
 * Key/Value Backup - https://developer.android.com/guide/topics/data/keyvaluebackup.html
 * BackupAgentHelper https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html
+* Auto Backup - https://developer.android.com/guide/topics/data/autobackup.html
 
 
 ## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
