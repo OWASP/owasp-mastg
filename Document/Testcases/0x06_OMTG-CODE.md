@@ -37,7 +37,7 @@ Testing for Exception Handling means verifying that mobile app fails safely unde
 ### OMTG-CODE-003: Testing for Secure Compiler Flags
 Compilers such as CLANG and GCC support hardening options that add additional runtime security features and checks to the generated executables. While these hardening features don’t fix broken code, they do make exploitation of bugs such as buffer overflows more difficult, and should be activated as a defense-in-depth measure.
 
-This test-case aim to check whether the following Flags are enabled whitin the mobile application's binary :
+In this phase the tester checks that the following Flags are enabled whitin the mobile application's binary :
 
 * Stack smashing protection : 
 Stack smashing is the willful use of stack overflows to gain control of a system. There are different buffer overflow protectors available, include Stack Smashing Protector (SSP) for GNU's gcc, ProPolice for IBM's XLC, and Buffer Security Check for Microsoft's Visual compilers (option /GS). 
@@ -58,7 +58,7 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 - CWE : [Link to CWE issue]
 
 ### OMTG-CODE-004: Testing for Unused/Dead code 
-[General description]
+Dead code 
 
 #### Detailed Guides
 
@@ -70,4 +70,4 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 #### References
 
 - OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE : [Link to CWE issue]
+- CWE-561: Dead Code
