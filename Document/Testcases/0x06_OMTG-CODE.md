@@ -11,8 +11,6 @@ Debugging is a technique where a hook is attached to a particular application co
 
 #### Detailed Guides
 
-[Add links, e.g.:]
-
 - [OMTG-CODE-001 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-001)
 - [OMTG-CODE-001 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-001)
 
