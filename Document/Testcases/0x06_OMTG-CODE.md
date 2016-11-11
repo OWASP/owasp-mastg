@@ -16,15 +16,14 @@ Debugging is a technique where a hook is attached to a particular application co
 #### References
 
 - OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE-636: Not Failing Securely ('Failing Open')
-- CWE-391: Unchecked Error Condition
+- CWE: [Link to CWE issue]
+
+
 
 ### OMTG-CODE-002: Testing for Exception Handling
 [General description]
 
 #### Detailed Guides
-
-[Add links, e.g.:]
 
 - [OMTG-CODE-002 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-002)
 - [OMTG-CODE-002 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-002)
@@ -32,7 +31,8 @@ Debugging is a technique where a hook is attached to a particular application co
 #### References
 
 - OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE: [Link to CWE issue]
+- CWE-636: Not Failing Securely ('Failing Open')
+- CWE-391: Unchecked Error Condition- OWASP MASVS: [NUMBER]: "QUOTE"
 
 ### OMTG-CODE-003: Testing for Secure Compiler Flags
 Compilers such as CLANG and GCC support hardening options that add additional runtime security features and checks to the generated executables. While these hardening features don’t fix broken code, they do make exploitation of bugs such as buffer overflows more difficult, and should be activated as a defense-in-depth measure.
