@@ -13,8 +13,8 @@ Debugging is a technique where a hook is attached to a particular application co
 
 [Add links, e.g.:]
 
-- [OMTG-CODE-001 Android](LINK#OMTG-CODE-001)
-- [OMTG-CODE-001 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-001)
+- [OMTG-CODE-001 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-001)
+- [OMTG-CODE-001 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-001)
 
 #### References
 
@@ -29,8 +29,8 @@ Debugging is a technique where a hook is attached to a particular application co
 
 [Add links, e.g.:]
 
-- [OMTG-CODE-002 Android](LINK#OMTG-CODE-002)
-- [OMTG-CODE-002 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-002)
+- [OMTG-CODE-002 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-002)
 
 #### References
 
@@ -67,8 +67,8 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 
 [Add links, e.g.:]
 
-- [OMTG-CODE-004 Android](LINK#OMTG-CODE-004)
-- [OMTG-CODE-004 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-004)
+- [OMTG-CODE-004 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-004)
+- [OMTG-CODE-004 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-004)
 
 #### References
 
