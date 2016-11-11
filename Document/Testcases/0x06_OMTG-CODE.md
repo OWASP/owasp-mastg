@@ -21,7 +21,7 @@ Debugging is a technique where a hook is attached to a particular application co
 
 
 ### OMTG-CODE-002: Testing for Exception Handling
-[General description]
+Testing for for Exception Handling means verifying that mobile app fails safely under all possible expected and unexpected runtime erros, to ensure relaiability during execution, and avoid leacking sensitive data to malicious third-party application (see : #TODO). 
 
 #### Detailed Guides
 
