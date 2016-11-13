@@ -1,8 +1,7 @@
 # Testing Code Quality
 
 ## Overview
-
-[Describe what this chapter is about.]
+The goal of this section is to ensure that basic security coding practices are followed in developing the app, and that "free" security features offered by the compiler are activated.
 
 ## Test Cases
 
@@ -11,41 +10,55 @@ Debugging is a technique where a hook is attached to a particular application co
 
 #### Detailed Guides
 
-[Add links, e.g.:]
-
-- [OMTG-CODE-001 Android](LINK#OMTG-CODE-001)
-- [OMTG-CODE-001 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-001)
+- [OMTG-CODE-001 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-001)
+- [OMTG-CODE-001 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-001)
 
 #### References
 
-- OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE-636: Not Failing Securely ('Failing Open')
-- CWE-391: Unchecked Error Condition
+##### OWASP MASVS: V7: Code quality and build setting requirements
+* Verify that all debugging code is removed from the release build, and that the app does log detailed error messages.
+* Verify that the app is marked as a release build.
+
+##### OWASP Mobile Top 10
+* M7 - Client Code Quality
+
+##### CWE
+- CWE-215: Information Exposure Through Debug Information
+- CWE-489: Leftover Debug Code
+
 
 ### OMTG-CODE-002: Testing for Exception Handling
-[General description]
+Testing for Exception Handling means verifying that mobile app fails safely under all possible expected and unexpected runtime errors, to ensure reliability during execution, and to avoid leaking sensitive data to a malicious third-party application (see : #TODO). 
 
 #### Detailed Guides
 
-[Add links, e.g.:]
-
-- [OMTG-CODE-002 Android](LINK#OMTG-CODE-002)
-- [OMTG-CODE-002 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-002)
+- [OMTG-CODE-002 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-002)
 
 #### References
 
-- OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE: [Link to CWE issue]
+##### OWASP MASVS: V7: Code quality and build setting requirements
+* Verify that the application catches and handles possible exceptions.
+* Verify that error handling logic in security controls denies access by default.
+
+##### OWASP Mobile Top 10
+* M7 - Client Code Quality
+
+##### CWE
+- CWE-636: Not Failing Securely ('Failing Open')
+- CWE-391: Unchecked Error Condition
 
 ### OMTG-CODE-003: Testing for Secure Compiler Flags
 Compilers such as CLANG and GCC support hardening options that add additional runtime security features and checks to the generated executables. While these hardening features don’t fix broken code, they do make exploitation of bugs such as buffer overflows more difficult, and should be activated as a defense-in-depth measure.
 
-This test-case aim to check whether the following Flags are enabled whitin the mobile application's binary :
+In this phase the tester checks that the following Flags are enabled whitin the mobile application's binary :
 
 * Stack smashing protection : 
-Stack smashing is the willful use of stack overflows to gain control of a system. There are different buffer overflow protectors available, include Stack Smashing Protector (SSP) for GNU's gcc, ProPolice for IBM's XLC, and Buffer Security Check for Microsoft's Visual compilers (option /GS). 
+When this feature is enabled, a "canary" is placed on the stack to protect the saved base pointer, saved instruction pointer and function arguments. It will be verified upon the function return to see if it has been overwritten.
+
 * PIE support :
-Position-independent executables (PIE) are binaries that can be wholly relocated in memory. Building an app with PIE support makes it possible to apply Address Space Layout Randomization (ASLR) during runtime. ASLR aims to make exploitation of memory corruption vulnerabilities more difficult. As of Android 5.0, Android requires all dynamically linked executables to support PIE.
+Position-independent executables (PIE) are binaries that can be wholly relocated in memory. Building an app with PIE support makes it possible to apply Address Space Layout Randomization (ASLR) during runtime. ASLR aims to make exploitation of memory corruption vulnerabilities more difficult.
+
 * ARC protection : 
 Automatic Reference Counting (ACR) is a compile time protection technique introduced since iOS 5. It provide an additional layer of security at runtime by moving the responsibility of memory management (retains, releases, and autoreleases on Objective-C objects ) from the programmer to the compiler. 
 
@@ -61,16 +74,18 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 - CWE : [Link to CWE issue]
 
 ### OMTG-CODE-004: Testing for Unused/Dead code 
-[General description]
+Dead code 
 
 #### Detailed Guides
 
-[Add links, e.g.:]
+- [OMTG-CODE-004 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-004)
+- [OMTG-CODE-004 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-004)
 
-- [OMTG-CODE-004 Android](LINK#OMTG-CODE-004)
-- [OMTG-CODE-004 iOS](0x02_OMTG-CODE_iOS.md#OMTG-CODE-004)
+##### OWASP MASVS: V7: Code quality and build setting requirements
+* If the app contains unmanaged code, verify that memory is allocated, freed and used securely.
 
-#### References
+##### OWASP Mobile Top 10
+* M7 - Client Code Quality
 
-- OWASP MASVS: [NUMBER]: "QUOTE"
-- CWE : [Link to CWE issue]
+##### CWE
+* CWE-561: Dead Code
