@@ -174,7 +174,7 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 
 ### OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
-[General description]
+During development of mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data. 
 
 #### Detailed Guides
 

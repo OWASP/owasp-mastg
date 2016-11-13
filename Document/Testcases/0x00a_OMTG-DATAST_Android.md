@@ -418,10 +418,26 @@ android:inputType="textNoSuggestions"
 
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
 
+The following is a list of Android IPC Mechanisms that may expose sensitive data:
+* [Binders][0c656fa2]
+* [Services][d97f5ea9]
+  * [Bound Services][5a7bc786]
+  * [AIDL][8c349a63]
+* [Intents][a28d43d1]
+* [ContentProviders][6a30e426]
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms expose by the applications. You will want to identify elements such as
+* `<intent-filter>`: more [here][aa2cf4d9]
+* `<service>`: more [here][56866a0a]
+* `<provider>`: more [here][466ff32c]
+* `<receiver>`: more [here][988bd8a2]
+
+Except for the `<intent-filter>` element, check if the the previous elements contain the following attributes:
+* `android:exported`
+* `android:permission`
+
 
 ### Black-box Testing
 
@@ -714,3 +730,15 @@ If a link is outdated, you can change it here and it will be updated everywhere 
 [faab1495]: https://github.com/Nightbringer21/fridump "FridumpRepo"
 [6204d45e]: https://github.com/504ensicsLabs/LiME "LiME"
 [6227fc2d]: https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "SecurelyStoreDataInRAM"
+
+<!-- OMTG-DATAST-007 -->
+[0c656fa2]: https://developer.android.com/reference/android/os/Binder.html "IPCBinder"
+[d97f5ea9]: https://developer.android.com/guide/components/services.html "IPCServices"
+[a28d43d1]: https://developer.android.com/reference/android/content/Intent.html "IPCIntent"
+[6a30e426]: https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders"
+[aa2cf4d9]: https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement"
+[56866a0a]: https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement"
+[466ff32c]: https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement"
+[988bd8a2]: https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement"
+[5a7bc786]: https://developer.android.com/guide/components/bound-services.html "BoundServices"
+[8c349a63]: https://developer.android.com/guide/components/aidl.html "AIDL"
