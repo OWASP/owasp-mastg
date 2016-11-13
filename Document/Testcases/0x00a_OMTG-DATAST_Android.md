@@ -400,19 +400,48 @@ android:inputType="textNoSuggestions"
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Input fields that are asking for sensitive information need to be identified and afterwards be investiagated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied. 
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Start the app and click into the input fields that ask for sensitive data. When it's possible to get the menu to copy/paste data the functionality is not disabled for this input field.
 
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+Many major versions of the operating system are still activively used and are outta there. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completelty on every single Android device.
+
+A general best practice is overwritting different functions in the input field to disable the clipboard specifically for it. 
+
+```Java
+EditText  etxt = (EditText) findViewById(R.id.editText1);
+etxt.setCustomSelectionActionModeCallback(new Callback() {
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {                  
+            }
+
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+        });
+```
+
+Also longclickable should be deactivated for this input field. 
+
+```xml
+android:longClickable="false"
+```
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+- https://developer.android.com/guide/topics/text/copy-paste.html
 
 
 
