@@ -47,9 +47,43 @@ For production releases, the attribute android:debuggable must be set to false w
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
+## <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Testing for Exception Handling
 
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
 
 ## <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Testing for Secure Compiler Flags
 
 Since most Android applications are Java based, they are [immunue](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java) to buffer overflow vulnerabilities.
 
+
+## <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Testing for Unreacheble/Dead code
+
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
