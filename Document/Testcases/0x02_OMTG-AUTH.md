@@ -1,4 +1,4 @@
-# Testing Network Communication
+# Testing Authentication and Session Management
 
 ## Overview
 
@@ -6,13 +6,13 @@
 
 ## Test Cases
 
-### OMTG-NET-004: Testing SSL Pinning
-Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
+### OMTG-NET-XXX: Test Case 1
+(todo)
 
 #### Detailed Guides
 
-- [OMTG-NET-004 Android](0x04a_OMTG-NET_Android.md#OMTG-NET-004)
-- [OMTG-NET-004 iOS](0x04b_OMTG-NET_iOS.md#OMTG-NET-004)
+- [OMTG-AUTH-XXX Android](0x02a_OMTG-AUTH-Andorid.md#OMTG-AUTH-XXX)
+- [OMTG-AUTH-XXX iOS](0x02b_OMTG-AUTH_iOS.md#OMTG-AUTH-0XXX)
 
 #### References
 
