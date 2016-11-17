@@ -1,17 +1,3 @@
-## Tampering and Reverse Engineering
-
-Mobile app security testing requires at least basic reverse engineering skills for several reasons.
-
-**1. To enable black-box testing of mobile apps.** Modern apps often employ technical controls that will hinder your ability to perform dynamic analysis. SSL pinning and E2E encryption could prevent you from intercepting or manipulating traffic with a proxy. Root detection could prevent the app from running on a rooted device, preventing you from using advanced testing tools. In this cases, you must be able to deactivate these defenses.
-
-**2. To enhance static analysis in black-box security testing.** In a black-box test, static analysis of the app bytecode or binary code is helpful for getting a better understanding of what the app is doing. It also enables you to identify certain flaws, such as credentials hardcoded inside the app.
-
-**3. To assess resiliency against reverse engineering.**  Apps that implement software protections according to MASVS L3 or L4 should be resilient against reverse engineering. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses. Advanced reverse engineering skills are required to perform this kind of test.
-
-Testers should be proficient in general reverse engineering techniques as well as the particular environment: The target architecture, operating system, binary format, programming language, and so on. They should also keep up-to-date with the newest techniques and tools available to reverse engineers. 
-
-Reverse engineering is a creative process: The best protection mechanisms are based on original ideas, so there is no generic process that always works. That said, we'll describe commonly used methods and tools later on, and give examples for tackling the most common defenses.
-
 ## Assessing Software Protections
 
 The MASVS lists various kinds of software protections in the "V8 - Resiliency against Reverse Engineering" section.
@@ -23,7 +9,7 @@ On the highest level, we classify reverse engineering defenses into two categori
 ### 1. Functional defenses
 *Prevent, or react to, actions of the reverse engineer*
 
-Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. 
+Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
 
 ### 2. Obfuscations
 *Modify code and/or data to make it less comprehensible*
@@ -51,7 +37,7 @@ Basic requirements, such as 8.8 and 8.9, can be verified using either black-box 
 
 #### Assessing the effectiveness of defenses
 
-The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal. 
+The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
 
 Each individual defensive function is assessed on three properties:
 -	Uniqueness: 1 – 3 points
@@ -74,7 +60,7 @@ Table 2 explains the scoring criteria in detail.
 #### Tier 1: Strip meaningful information
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
-For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable. 
+For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable.
 Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
 #### Tier 2: Obfuscate control flow and data
@@ -82,7 +68,7 @@ Stripping this information makes a compiled program less intelligible while full
 The second type of obfuscations aims to hide the semantics of a computation by computing the same function in a more complicated way, or encoding sensitive data in ways that are not easily comprehensible. Provided that the adversary has no prior knowledge about the obfuscation parameters applied, these obfuscations increase the reverse engineering effort even for an adversary with full visibility of the execution trace. Obfuscation in this category have the following properties:
 
 - The size and performance penalty can be sizable (scales with the obfuscation settings)
-- De-obfuscation requires advanced methods and/or custom tools 
+- De-obfuscation requires advanced methods and/or custom tools
 
 A simple example for this kind of obfuscations are opaque predicates. Opaque predicates are redundant code branches added to the program that always execute the same way, which is known a priori to the programmer but not to the analyzer. For example, a statement such as if (1 + 1) = 1 always evaluates to false, and thus always result in a jump to the same location. Opaque predicates can be constructed in ways that make them difficult to identify and remove in static analysis.
 Some types of obfuscation that fall into this category are:
@@ -99,15 +85,9 @@ Some types of obfuscation that fall into this category are:
 #### Tier 3: Inhibit reverse engineering processes and tools
 
 The third category of transformations includes tricks that make static analysis more difficult, but do not transform the obfuscated computation per se. That is, the instructions that eventually compute the obfuscated function(s) remain more or less unchanged. Examples for this kind of transformations includes simple packing and encryption of large code blocks and manipulations of executable headers.
-Transformations in this category have the following properties: 
+Transformations in this category have the following properties:
 
 - The size and performance penalty is neglibigle;
 - De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
 
-In general, tier 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once tier 1 and 2 obfuscations have been applied. 
-
-
-
-
-
-
+In general, tier 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once tier 1 and 2 obfuscations have been applied.
