@@ -45,7 +45,7 @@ In our experience, opinions will differ in many cases. Whenever differences cann
 
 ## How to Become an Author
 
-To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name, GitHub handle and email address [here](https://github.com/OWASP/owasp-mstg/blob/master/attribution.md). Please always check with the chapter owner first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
+To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name and GitHub handle in the [readme](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
 ## Attribution and Acknowledgement
 
