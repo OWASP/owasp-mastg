@@ -65,7 +65,7 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 - OWASP MASVS : V8.4: "Verify that the app checks its installation source, and only runs if installed from a trusted source."
 - CWE : N/A
 
-### OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+### OMTG-RARE-005: Test Basic Debugger Detection / Prevention
 
 Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more. OWASP MASVS L2 requires a the app to implement a simple form of debugger detection / prevention. The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected. 
 
@@ -79,4 +79,160 @@ Testing this control is as simple as attempting to attach a debugger to the app 
 #### References
 
 - OWASP MASVS : V8.5: "Verify that the app has some form of debugger detection and terminates when a debugger is detected, or prevents attaching a debugger using any method. All available means of debugging must be covered (e.g. JDWP and native)."
+- CWE : N/A
+
+### OMTG-RARE-006: Test Advanced Jailbreak / Root Detection
+
+#### Detailed Guides
+
+- [OMTG-RARE-006 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-006)
+- [OMTG-RARE-006 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-006)
+
+#### References
+
+- OWASP MASVS : V8.6: "Verify that the app implements two or more functionally independent methods of root detection and responds to the presence of a rooted device either by alerting the user or terminating the app."
+- CWE : N/A
+
+### OMTG-RARE-007: Test Advanced Debugging Defenses
+
+#### Detailed Guides
+
+- [OMTG-RARE-007 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-007)
+- [OMTG-RARE-007 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-007)
+
+#### References
+
+- OWASP MASVS : V8.7: "Verify that the app implements multiple defenses that result in strong resiliency against debugging. All available means of debugging must be covered (e.g. JDWP and native)."
+- CWE : N/A
+
+### OMTG-RARE-008: Test File Tampering Detection
+
+#### Detailed Guides
+
+- [OMTG-RARE-008 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-008)
+- [OMTG-RARE-008 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-008)
+
+#### References
+
+- OWASP MASVS : V8.8: "Verify that the app detects and responds to tampering with executable files and critical data."
+- CWE : N/A
+
+### OMTG-RARE-009: Test Detection of Reverse Engineering Tools
+
+#### Detailed Guides
+
+- [OMTG-RARE-009 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-009)
+- [OMTG-RARE-009 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-009)
+
+#### References
+
+- OWASP MASVS : V8.9: "Verify that the app detects the presence of widely used reverse engineering tools, such as code injection tools, hooking frameworks and debugging servers."
+- CWE : N/A
+
+### OMTG-RARE-010: Test Basic Emulator Detection
+
+#### Detailed Guides
+
+- [OMTG-RARE-010 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-010)
+- [OMTG-RARE-010 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-010)
+
+#### References
+
+- OWASP MASVS : V8.10: "Verify that the app detects whether it is run inside an emulator using any method, and responds by terminating or malfunctioning when an emulator is detected."
+- CWE : N/A
+
+### OMTG-RARE-011: Test Memory Tampering Detection
+
+#### Detailed Guides
+
+- [OMTG-RARE-011 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-011)
+- [OMTG-RARE-011 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-011)
+
+#### References
+
+- OWASP MASVS : V8.11: "Verify that the app detects modifications of process memory, including relocation table patches and injected code."
+- CWE : N/A
+
+### OMTG-RARE-012: Test Variability of Tampering Responses
+
+#### Detailed Guides
+
+- [OMTG-RARE-012 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-012)
+- [OMTG-RARE-012 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-012)
+
+#### References
+
+- OWASP MASVS : V8.12: "Verify that that the app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app."
+- CWE : N/A
+
+### OMTG-RARE-013: Test Binary Encryption
+
+#### Detailed Guides
+
+- [OMTG-RARE-013 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-013)
+- [OMTG-RARE-013 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-013)
+
+#### References
+
+- OWASP MASVS : V8.13: "Verify that all executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data."
+- CWE : N/A
+
+### OMTG-RARE-014: Test Device Binding
+
+#### Detailed Guides
+
+- [OMTG-RARE-014 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-014)
+- [OMTG-RARE-014 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-014)
+
+#### References
+
+- OWASP MASVS : V8.14: "Verify that the application implements a 'device binding' functionality when a mobile device is treated as being trusted. Verify that the device fingerprint is derived from multiple device properties."
+- CWE : N/A
+
+### OMTG-RARE-015: Test Integration of Functional Defenses and Obfuscation
+
+#### Detailed Guides
+
+- [OMTG-RARE-015 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-015)
+- [OMTG-RARE-015 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-015)
+
+#### References
+
+- OWASP MASVS : V8.15: "Verify that obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app (e.g. defensive functions are obfuscated)."
+- CWE : N/A
+
+### OMTG-RARE-016: Test Advanced Emulator Detection
+
+#### Detailed Guides
+
+- [OMTG-RARE-016 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-016)
+- [OMTG-RARE-016 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-016)
+
+#### References
+
+- OWASP MASVS : V8.16: "Verify that the app uses multiple means of emulator detection, and verify that the anti-emulation defenses implement result in strong resiliency against emulation."
+- CWE : N/A
+
+### OMTG-RARE-017: Test Integration of SE and/or TEE
+
+#### Detailed Guides
+
+- [OMTG-RARE-017 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-017)
+- [OMTG-RARE-017 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-017)
+
+#### References
+
+- OWASP MASVS : V8.17: "Verify that sensitive computations take place in a trusted environment that is isolated from the mobile operating system. Hardware-based SE or TEE should be used whenever available."
+- CWE : N/A
+
+### OMTG-RARE-018: Test Advanced Obfuscation
+
+#### Detailed Guides
+
+- [OMTG-RARE-018 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-018)
+- [OMTG-RARE-018 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-018)
+
+#### References
+
+- OWASP MASVS : V8.18: "If hardware-based isolation is unavailable, verify that strong obfuscation has been applied to isolate sensitive data and computations, and verify the robustness of the obfuscation."
 - CWE : N/A
