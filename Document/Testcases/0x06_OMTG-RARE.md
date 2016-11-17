@@ -13,8 +13,8 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 
 #### Detailed Guides
 
-- [OMTG-DATAST-001 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-001)
-- [OMTG-DATAST-001 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-DATAST-001)
+- [OMTG-RARE-001 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-001)
+- [OMTG-RARE-001 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-001)
 
 #### References
 
@@ -27,8 +27,8 @@ Because Java classes are trivial to decompile, applying simple obfuscation to th
 
 #### Detailed Guides
 
-- [OMTG-RARE-002 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-002)
-- [OMTG-RARE-002 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-002)
+- [OMTG-RARE-002 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-002)
+- [OMTG-RARE-002 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-002)
 
 #### References
 
@@ -43,8 +43,8 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 
 #### Detailed Guides
 
-- [OMTG-RARE-003 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-003)
-- [OMTG-RARE-003 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-003)
+- [OMTG-RARE-003 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-003)
+- [OMTG-RARE-003 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-003)
 
 #### References
 
@@ -57,8 +57,8 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 
 #### Detailed Guides
 
-- [OMTG-RARE-004 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-004)
-- [OMTG-RARE-004 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-004)
+- [OMTG-RARE-004 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-004)
+- [OMTG-RARE-004 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-004)
 
 #### References
 
@@ -73,8 +73,8 @@ Testing this control is as simple as attempting to attach a debugger to the app 
 
 #### Detailed Guides
 
-- [OMTG-RARE-005 Android](0x07a_OMTG-RARE_Android.md#OMTG-RARE-005)
-- [OMTG-RARE-005 iOS](0x07b_OMTG-RARE_iOS.md#OMTG-RARE-005)
+- [OMTG-RARE-005 Android](0x06a_OMTG-RARE_Android.md#OMTG-RARE-005)
+- [OMTG-RARE-005 iOS](0x06b_OMTG-RARE_iOS.md#OMTG-RARE-005)
 
 #### References
 
