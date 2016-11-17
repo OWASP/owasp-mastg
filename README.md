@@ -14,9 +14,9 @@ The MSTG is an open source effort and we welcome contributions and feedback. To 
  
 http://owasp.herokuapp.com/
 
-Lead authors are listed next to the individual chapters in the ToC below. Please contact them directly to contribute or give feedback.
-
 # MSTG Sections and Lead Authors
+
+The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback.
 
 * [Header](Document/0x00-Header.md)
 * [Acknowledgements](Document/0x01-Acknowledgements.md)
