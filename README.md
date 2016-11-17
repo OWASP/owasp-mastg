@@ -16,16 +16,16 @@ http://owasp.herokuapp.com/
 
 Lead authors are listed next to the individual chapters in the ToC below. Please contact them directly to contribute or give feedback.
 
-# Read Individual Sections of the MSTG Here
+# MSTG Sections and Lead Authors
 
 * [Header](Document/0x00-Header.md)
 * [Acknowledgements](Document/0x01-Acknowledgements.md)
 * [Introduction](Document/0x02-Introduction.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [The OWASP Moble Application Security Project](Document/0x03-The-OWASP-Mobile-Application-Security-Project.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Stephen Corbiaux](https://github.com/stephenreda)
-    * [Android](Document/0x04a-Android.md) - [Stephen Corbiaux](https://github.com/stephenreda)
-    * [iOS](Document/0x04b-iOS.md) - [Stephen Corbiaux](https://github.com/stephenreda)
-* [Testing Processes and Techniques](Document/0x05-Testing-Processes-and-Techniques.md] -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Stephen Corbiaux](https://github.com/stephenreda)
+    * [Android](Document/0x04a-Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
+    * [iOS](Document/0x04b-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
+* [Testing Processes and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Stephen Corbiaux](https://github.com/stephenreda)
     * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
     * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
 * [Reverse Engineering and Tampering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
