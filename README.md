@@ -36,9 +36,9 @@ The following lists contains the individual sections of the MSTG, along with the
 * [Testing Data Storage](Document/Testcases/0x00_OMTG-DATAST.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [Android](Document/Testcases/0x00a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [iOS](Document/Testcases/0x00b_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
-* [Testing Cryptography](Document/Testcases/0x01_OMTG-CRYPTO.md) -- T.b.d.
-    * [Android](Document/Testcases/0x01a_OMTG-CRYPTO_Android.md) -- T.b.d.
-    * [iOS](Document/Testcases/0x01b_OMTG-CRYPTO_iOS.md) -- T.b.d.
+* [Testing Cryptography](Document/Testcases/0x01_OMTG-CRYPTO.md) --  [Gerhard Wagner](https://github.com/thec00n)
+    * [Android](Document/Testcases/0x01a_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
+    * [iOS](Document/Testcases/0x01b_OMTG-CRYPTO_iOS.md) --  [Gerhard Wagner](https://github.com/thec00n)
 * [Testing Authentication and Session Management](Document/Testcases/0x02-OMTG-AUTH.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
     * [Android](Document/Testcases/0x02-OMTG-AUTH_Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
     * [iOS](Document/Testcases/0x02-OMTG-AUTH_.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
