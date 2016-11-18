@@ -12,6 +12,8 @@
 
 #### Decompiling / Disassembling Code
 
+#### Debugging
+
 #### Execution Tracing
 
 #### Tracing System Calls
