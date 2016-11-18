@@ -51,7 +51,11 @@ For production releases, the attribute android:debuggable must be set to false w
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
+
+* Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
+* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
+* C3
 
 ### Black-box Testing
 
@@ -82,7 +86,7 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+Some best practices to consider to securely handle exception within a mobile application :
 
 ### References
 
