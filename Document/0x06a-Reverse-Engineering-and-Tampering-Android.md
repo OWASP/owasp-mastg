@@ -45,7 +45,7 @@ The /sys/kernel/debug/tracing directory holds all control and output files and r
 
 ##### KProbes
 
-The KProbes interface provides us with an even more powerful way to instrument the kernel: It allows us to insert probes into (almost) arbitrary code addresses within kernel memory. Kprobes work by inserting a breakpoint instruction at the specified address. Once the breakpoint is hit, control passes to the Kprobes system, which then executes the handler function(s) defined by the user as well as the original instruction.12 Besides being great for function tracing, KProbes can be used to implement rootkit-like functionality such as file hiding.
+The KProbes interface provides us with an even more powerful way to instrument the kernel: It allows us to insert probes into (almost) arbitrary code addresses within kernel memory. Kprobes work by inserting a breakpoint instruction at the specified address. Once the breakpoint is hit, control passes to the Kprobes system, which then executes the handler function(s) defined by the user as well as the original instruction. Besides being great for function tracing, KProbes can be used to implement rootkit-like functionality such as file hiding.
 
 Jprobes and Kretprobes are additional probe types based on Kprobes that allow hooking of function entries and exits.
 
