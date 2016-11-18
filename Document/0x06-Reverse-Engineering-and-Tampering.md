@@ -1,4 +1,4 @@
-## Tampering and Reverse Engineering
+# Tampering and Reverse Engineering
 
 Mobile app security testing requires at least basic reverse engineering skills for several reasons.
 

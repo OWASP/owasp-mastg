@@ -1,7 +1,1 @@
-### Reverse Engineering and Tampering
-
-(TODO)
-
-### Resiliency Testing
-
-(TODO)
+##  Tampering and Reverse Engineering on iOS
