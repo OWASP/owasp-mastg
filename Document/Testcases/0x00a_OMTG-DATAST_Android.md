@@ -400,7 +400,7 @@ android:inputType="textNoSuggestions"
 
 ### White-box Testing
 
-Input fields that are asking for sensitive information need to be identified and afterwards be investiagated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied. 
+Input fields that are asking for sensitive information need to be identified and afterwards be investiagated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied.
 
 ### Black-box Testing
 
@@ -410,7 +410,7 @@ Start the app and click into the input fields that ask for sensitive data. When 
 
 Many major versions of the operating system are still activively used and are outta there. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completelty on every single Android device.
 
-A general best practice is overwritting different functions in the input field to disable the clipboard specifically for it. 
+A general best practice is overwritting different functions in the input field to disable the clipboard specifically for it.
 
 ```Java
 EditText  etxt = (EditText) findViewById(R.id.editText1);
@@ -433,7 +433,7 @@ etxt.setCustomSelectionActionModeCallback(new Callback() {
         });
 ```
 
-Also longclickable should be deactivated for this input field. 
+Also longclickable should be deactivated for this input field.
 
 ```xml
 android:longClickable="false"
@@ -447,14 +447,90 @@ android:longClickable="false"
 
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
 
+The following is a list of Android IPC Mechanisms that may expose sensitive data:
+* [Binders][0c656fa2]
+* [Services][d97f5ea9]
+  * [Bound Services][5a7bc786]
+  * [AIDL][8c349a63]
+* [Intents][a28d43d1]
+* [ContentProviders][6a30e426]
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms expose by the applications. You will want to identify elements such as
+* `<intent-filter>`: more [here][aa2cf4d9]
+* `<service>`: more [here][56866a0a]
+* `<provider>`: more [here][466ff32c]
+* `<receiver>`: more [here][988bd8a2]
+
+Except for the `<intent-filter>` element, check if the the previous elements contain the following attributes:
+* `android:exported`
+* `android:permission`
+
+Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can probed to see if they return data.
+
+An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere any input validation test in the project**)
+
+* `AndroidManifest.xml`
+
+```xml
+...
+<provider android:name=".CredentialProvider"
+          android:authorities="com.owaspomtg.vulnapp.provider.CredentialProvider"
+          android:exported="true">
+</provider>
+...
+```
+The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information can be leaked:
+
+```java
+...
+public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		 SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		 // the TABLE_NAME to query on
+		 queryBuilder.setTables(TABLE_NAME);
+	      switch (uriMatcher.match(uri)) {
+	      // maps all database column names
+	      case CREDENTIALS:
+	    	  queryBuilder.setProjectionMap(CredMap);
+	         break;
+	      case CREDENTIALS_ID:
+	    	  queryBuilder.appendWhere( ID + "=" + uri.getLastPathSegment());
+	         break;
+	      default:
+	         throw new IllegalArgumentException("Unknown URI " + uri);
+	      }
+	      if (sortOrder == null || sortOrder == ""){
+	         sortOrder = USERNAME;
+	      }
+	     Cursor cursor = queryBuilder.query(database, projection, selection,
+	    		  selectionArgs, null, null, sortOrder);
+	      cursor.setNotificationUri(getContext().getContentResolver(), uri);
+	      return cursor;
+	}
+...
+```
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Similar to the White-box pentesting, you should decompile the application (if possibile) and detect a list of IPC mechanisms implemented. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+
+In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use
+
+```bash
+$ strings classes.dex | grep "content://"
+com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+```
+
+Now you can probe the content provider via `adb` with the following command:
+
+```bash
+$adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+Row: 0 id=1, username=admin, password=StrongPwd
+Row: 1 id=2, username=test, password=test
+...
+```
 
 ### Remediation
 
@@ -743,3 +819,15 @@ If a link is outdated, you can change it here and it will be updated everywhere 
 [faab1495]: https://github.com/Nightbringer21/fridump "FridumpRepo"
 [6204d45e]: https://github.com/504ensicsLabs/LiME "LiME"
 [6227fc2d]: https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "SecurelyStoreDataInRAM"
+
+<!-- OMTG-DATAST-007 -->
+[0c656fa2]: https://developer.android.com/reference/android/os/Binder.html "IPCBinder"
+[d97f5ea9]: https://developer.android.com/guide/components/services.html "IPCServices"
+[a28d43d1]: https://developer.android.com/reference/android/content/Intent.html "IPCIntent"
+[6a30e426]: https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders"
+[aa2cf4d9]: https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement"
+[56866a0a]: https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement"
+[466ff32c]: https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement"
+[988bd8a2]: https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement"
+[5a7bc786]: https://developer.android.com/guide/components/bound-services.html "BoundServices"
+[8c349a63]: https://developer.android.com/guide/components/aidl.html "AIDL"
