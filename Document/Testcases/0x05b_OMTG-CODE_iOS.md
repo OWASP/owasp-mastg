@@ -17,6 +17,25 @@ Once you have deployed an iOS application, either through the App Store or as an
 ### References
 TUDU
 
+## <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Testing for Exception Handling
+
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+
 ## <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Testing for Secure Compiler Flags
 
 ### White-box Testing
@@ -88,3 +107,21 @@ Steps for enabling ACR protection within an iOS application :
 
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
+
+## <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Testing for Unreacheble/Dead code
+
+### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+### References
+
+- [link to relevant how-tos, papers, etc.]

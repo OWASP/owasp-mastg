@@ -70,11 +70,19 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 
 #### References
 
-- OWASP MASVS : [Link to MASVS]
-- CWE : [Link to CWE issue]
+##### OWASP MASVS: V7: Code quality and build setting requirements
+* Verify that security features offered by the compiler, such as stack protection, PIE support and automatic reference counting, are activated.
 
-### OMTG-CODE-004: Testing for Unused/Dead code 
-Dead code 
+##### OWASP Mobile Top 10
+* M7 - Client Code Quality
+
+##### CWE
+- CWE-119: Improper Restriction of Operations within the Bounds of a Memory Buffer
+- CWE-121: Stack-based Buffer Overflow
+- CWE-122: Heap-based Buffer Overflow
+
+### OMTG-CODE-004: Testing for Unreacheble/Dead code 
+Having unreachable code inside an app can be considered as a security risk, as it doesn't reflect the business logic and what the app was initially designed for.
 
 #### Detailed Guides
 
