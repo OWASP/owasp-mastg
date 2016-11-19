@@ -400,7 +400,7 @@ android:inputType="textNoSuggestions"
 
 ### White-box Testing
 
-Input fields that are asking for sensitive information need to be identified and afterwards be investiagated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied. 
+Input fields that are asking for sensitive information need to be identified and afterwards be investiagated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied.
 
 ### Black-box Testing
 
@@ -410,7 +410,7 @@ Start the app and click into the input fields that ask for sensitive data. When 
 
 Many major versions of the operating system are still activively used and are outta there. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completelty on every single Android device.
 
-A general best practice is overwritting different functions in the input field to disable the clipboard specifically for it. 
+A general best practice is overwritting different functions in the input field to disable the clipboard specifically for it.
 
 ```Java
 EditText  etxt = (EditText) findViewById(R.id.editText1);
@@ -433,7 +433,7 @@ etxt.setCustomSelectionActionModeCallback(new Callback() {
         });
 ```
 
-Also longclickable should be deactivated for this input field. 
+Also longclickable should be deactivated for this input field.
 
 ```xml
 android:longClickable="false"
@@ -467,10 +467,70 @@ Except for the `<intent-filter>` element, check if the the previous elements con
 * `android:exported`
 * `android:permission`
 
+Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can probed to see if they return data.
+
+An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere any input validation test in the project**)
+
+* `AndroidManifest.xml`
+
+```xml
+...
+<provider android:name=".CredentialProvider"
+          android:authorities="com.owaspomtg.vulnapp.provider.CredentialProvider"
+          android:exported="true">
+</provider>
+...
+```
+The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information can be leaked:
+
+```java
+...
+public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		 SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		 // the TABLE_NAME to query on
+		 queryBuilder.setTables(TABLE_NAME);
+	      switch (uriMatcher.match(uri)) {
+	      // maps all database column names
+	      case CREDENTIALS:
+	    	  queryBuilder.setProjectionMap(CredMap);
+	         break;
+	      case CREDENTIALS_ID:
+	    	  queryBuilder.appendWhere( ID + "=" + uri.getLastPathSegment());
+	         break;
+	      default:
+	         throw new IllegalArgumentException("Unknown URI " + uri);
+	      }
+	      if (sortOrder == null || sortOrder == ""){
+	         sortOrder = USERNAME;
+	      }
+	     Cursor cursor = queryBuilder.query(database, projection, selection,
+	    		  selectionArgs, null, null, sortOrder);
+	      cursor.setNotificationUri(getContext().getContentResolver(), uri);
+	      return cursor;
+	}
+...
+```
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Similar to the White-box pentesting, you should decompile the application (if possibile) and detect a list of IPC mechanisms implemented. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+
+In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use
+
+```bash
+$ strings classes.dex | grep "content://"
+com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+```
+
+Now you can probe the content provider via `adb` with the following command:
+
+```bash
+$adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+Row: 0 id=1, username=admin, password=StrongPwd
+Row: 1 id=2, username=test, password=test
+...
+```
 
 ### Remediation
 
