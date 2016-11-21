@@ -86,7 +86,7 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 ### Remediation
 
-Some best practices to consider to securely handle exception within a mobile application :
+[Describe the best practices that developers should follow to prevent this issue]
 
 ### References
 
