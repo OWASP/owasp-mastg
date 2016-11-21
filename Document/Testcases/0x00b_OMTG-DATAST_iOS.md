@@ -45,7 +45,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+* [https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html] - Keychain Services Programming Guide
 
 
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
