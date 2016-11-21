@@ -125,7 +125,13 @@ As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anyth
 
 https://github.com/moyix/panda/blob/master/docs/
 
+##### VxStripper
+
+Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
+
 #### Static Analysis Frameworks
+
+
 
 #### Dynamic Binary Instrumentation
 
