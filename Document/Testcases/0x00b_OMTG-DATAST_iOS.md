@@ -1,3 +1,5 @@
+## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-002: Testing for Insecure Storage of Credentials and Keys 
+
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
 
