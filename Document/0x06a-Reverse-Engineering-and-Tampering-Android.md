@@ -36,10 +36,21 @@ $ jarsigner -verbose -keystore ~/.android/debug.keystore  target_app.recompiled.
 $ adb install target_app.recompiled.aligned.apk
 ~~~
 
-##### Example 2: Disabling SSL pinning
+##### Example 2: Disabling SSL Pinning
+
+As seen in the previous Chapter, certificate pinning might hinder an analyst when analyzing the traffic. To help with this problem, the binary can be patched to allow other certificates. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
+Disassembling the APK using apktool
+$ apktool d target_apk.apk
+Modify the Certificate Pinning logic:
+We need to locate where within the smali source code the certificate pinning checks are done. Searching the smali code for keywords such as “X509TrustManager” should point you in the right direction.
+In this case a search for “X509TrustManager” returned one class which implements an own Trustmanager. This file contains methods named “checkClientTrusted”, “checkServerTrusted” and “getAcceptedIssuers”.
+The “return-void” opcode was added to the first line of each of these methods. The “return-void” statement is a Dalvik opcode to return ‘void’ or null. For more Dalvik opcodes refer to http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html.
+In this context, return-void means that no certificate checks are performed and the application will accept all certificates.
+
+![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
 
-
+#### Code Injection
 ##### Example: Bypassing Root Detection
 
 #### Decompiling / Disassembling Code

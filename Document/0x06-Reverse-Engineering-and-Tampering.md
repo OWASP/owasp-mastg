@@ -23,7 +23,7 @@ FRIDA is the Swiss army knife of Android Reverse Engineering. Its magic is based
 ![Frida](images/frida.png)
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
-So far so good. What makes FRIDA really awesome though is that it injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
+So far so good. What makes FRIDA really awesome is that it injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
 
 Here are some more awesome APIs FRIDA offers:
 
