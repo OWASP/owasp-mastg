@@ -1,4 +1,4 @@
-## Assessing Software Protections
+## Testing Software Protections
 
 The MASVS lists various kinds of software protections in the "V8 - Resiliency against Reverse Engineering" section.
 
