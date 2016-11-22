@@ -10,11 +10,15 @@ Contributors & Reviewers - Bernhard Wagner, Anant
 
 ### Reverse Engineering And Tampering
 
-Android - used content from MSTG Beta 2:
+Android - adapted some content from MSTG Beta 2:
 
 Author - Dennis Titze
 Contributors & Reviewers - Anant, Bao Le
 
+iOS - dapted some content from MSTG Beta 2:
+
+Authors - Pragati Singh, Milan Singh Thakur
+Contributors & Reviewers - Abhinav Sejpal,
 
 ### OMTG-NET-004: Test SSL Pinning
 

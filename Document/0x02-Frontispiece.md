@@ -15,4 +15,4 @@ Copyright © 2016 The OWASP Foundation. This document is released under the Crea
 
 | Project Leads | Lead Authors | Contributors and Reviewers |
 | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Stephen Corbiaux, Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Stephanie Vanroelen,  Gerhard Wagner, Jeroen Willemsen | Davide Cioccia, Bao Le, Shiv Patel, Anant Shrivastava, Blessen Thomas, Dennis Titze, Bernard Wagner  |
+| Bernhard Mueller, Sven Schleier | Stephen Corbiaux, Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Stephanie Vanroelen,  Gerhard Wagner, Jeroen Willemsen | Davide Cioccia, Bao Le, Shiv Patel, Prathan Phongthiproek, Abhinav Sejpal, Anant Shrivastava, Milan Singh Thakur, Pragati Singh, Blessen Thomas, Dennis Titze, Bernard Wagner  |
