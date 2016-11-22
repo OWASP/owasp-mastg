@@ -21,7 +21,7 @@ The following lists contains the individual sections of the MSTG, along with the
 * [Header](Document/0x00-Header.md)
 * [Foreword](Document/0x01-Foreword.md)
 * [Frontispiece](Document/0x02-Frontispiece.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [The OWASP Moble Application Security Project](Document/0x03-The-OWASP-Mobile-Application-Security-Project.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+* [The OWASP Mobile Security Project](Document/0x03-The-OWASP-Mobile-Security-Project.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [Security Testing in the Application Development Lifecycle](Document/0x07b-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
 * [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Stephen Corbiaux](https://github.com/stephenreda)
     * [Android](Document/0x04a-Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
