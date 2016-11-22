@@ -40,7 +40,11 @@ $ adb install target_app.recompiled.aligned.apk
 
 As seen in the previous Chapter, certificate pinning might hinder an analyst when analyzing the traffic. To help with this problem, the binary can be patched to allow other certificates. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
 Disassembling the APK using apktool
+
+~~~
 $ apktool d target_apk.apk
+~~~
+
 Modify the Certificate Pinning logic:
 We need to locate where within the smali source code the certificate pinning checks are done. Searching the smali code for keywords such as “X509TrustManager” should point you in the right direction.
 In this case a search for “X509TrustManager” returned one class which implements an own Trustmanager. This file contains methods named “checkClientTrusted”, “checkServerTrusted” and “getAcceptedIssuers”.
@@ -49,9 +53,31 @@ In this context, return-void means that no certificate checks are performed and 
 
 ![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
-
 #### Code Injection
-##### Example: Bypassing Root Detection
+##### Example: Bypassing Debugger Detection
+
+~~~
+#v0.1
+ 
+import frida
+import sys
+ 
+session = frida.get_remote_device().attach("com.example.targetapp")
+ 
+script = session.create_script("""
+ 
+var funcPtr = Module.findExportByName("libdvm.so", "_Z25dvmDbgIsDebuggerConnectedv");
+Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
+    return 0;
+}, 'int', []));
+ 
+def on_message(message, data):
+    print(message)
+ 
+script.on('message', on_message)
+script.load()
+sys.stdin.read()
+~~~
 
 #### Decompiling / Disassembling Code
 
@@ -301,7 +327,7 @@ $ make
 
 If the build process completes successfully, you will find the bootable kernel image at arch/arm/boot/zImage-dtb.
 
-##### Booting the Environment
+##### Booting the Custom Environment
 
 The fastboot boot command allows you to test your new kernel and ramdisk without actually flashing it (once you’re sure it everything works, you can make the changes permanent with fastboot flash). Restart the device in fastboot mode with the following command:
 $ adb reboot bootloader
