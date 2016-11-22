@@ -18,7 +18,7 @@ $ apktool d --no-src target_app.apk
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ~~~~
 
-3. Repack and sign the APK:
+3. Repackage and sign the APK:
 
 ~~~~
 $ apktool b
@@ -32,30 +32,13 @@ $ jarsigner -verbose -keystore ~/.android/debug.keystore  target_app.recompiled.
 
 4. Reinstall the app:
 
-~~~~
+~~~
 $ adb install target_app.recompiled.aligned.apk
-~~~~
+~~~
 
 ##### Example 2: Disabling SSL pinning
 
-#### Code Injection with FRIDA
 
-FRIDA is the Swiss army knife of Android Reverse Engineering. Its magic is based on code injection: Upon attaching to a process, FRIDA uses ptrace to hijack an existing thread in the process. The hijacked thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper then starts a fresh thread, connects to the Frida debugging server running on the device, and loads a dynamically generated library file containing the Frida agent and instrumentation code. The original, hijacked thread is restored to its original state and resumed, and execution of the process continues as usual (being completely unaware of what has happened to it, unless it scans its own memory or employs some other form of runtime integrity check).
-
-![Frida](images/frida.png)
-*FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
-
-So far so good. What makes FRIDA really awesome though is that it injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
-
-Here are some more awesome APIs FRIDA offers:
-
--	Instantiate Java objects and call static and non-static class methods;
--	Replace Java method implementations;
--	Enumerate live instances of specific classes by scanning the Java heap (Dalvik only);
--	Scan process memory for occurrences of a string;
--	Intercept native function calls to run your own code at function entry and exit.
-
-Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
 ##### Example: Bypassing Root Detection
 
