@@ -1,1 +1,1 @@
-# The OWASP Mobile Application Security Project
+# The OWASP Mobile Security Project
