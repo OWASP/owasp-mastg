@@ -54,5 +54,5 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Android](Document/Testcases/0x06a_OMTG-RARE_Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
     * [iOS](Document/Testcases/0x06b_OMTG-RARE_iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [Testing Software Protections](Document/0x07-Testing-Software-Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Testing Tools](Document/0x08-Testing-Tools) - T.b.d.
+* [Testing Tools](Document/0x08-Testing-Tools.md) - T.b.d.
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
