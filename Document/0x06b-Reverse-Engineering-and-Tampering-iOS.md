@@ -9,9 +9,3 @@
 ### Code Injection
 
 #### Example: Bypassing Root Detection
-
-### Disassembling Code
-
-### Debugging
-
-### Execution Tracing

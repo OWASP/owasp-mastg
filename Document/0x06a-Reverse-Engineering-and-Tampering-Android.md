@@ -57,7 +57,6 @@ Here are some more awesome APIs FRIDA offers:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
-
 ##### Example: Bypassing Root Detection
 
 #### Decompiling / Disassembling Code
@@ -108,18 +107,18 @@ Strace is a standard Linux utility that is used to monitor interaction between p
 
 As a side note, if the Android “stop application at startup” feature is unavailable we can use a shell script to make sure that strace attached immediately once the process is launched (not an elegant solution but it works):
 
-```
+~~~~
 while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e “!read” -ff -p "$pid"; break; fi; done
-```
+~~~~
 
 ##### Ftrace
 
 Ftrace is a tracing utility built directly into the Linux kernel. On a rooted device, ftrace can be used to trace kernel system calls in a more transparent way than is possible with strace, which relies on the ptrace system call to attach to the target process.
 Conveniently, ftrace functionality is found in the stock Android kernel on both Lollipop and Marshmallow. It can be enabled with the following command:
 
-```
+~~~~
 echo 1 > /proc/sys/kernel/ftrace_enabled
-```
+~~~~
 
 The /sys/kernel/debug/tracing directory holds all control and output files and related to ftrace. The following files are found in this directory:
 
@@ -179,33 +178,146 @@ https://github.com/moyix/panda/blob/master/docs/
 
 Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
 
-#### Binary Analysis Frameworks
-
-[Miasm](https://github.com/cea-sec/miasm) is a free and open source (GPLv2) reverse engineering framework. Miasm aims to analyze / modify / generate binary programs. Here is a non exhaustive list of features:
-
-Opening / modifying / generating PE / ELF 32 / 64 LE / BE using Elfesteem
-Assembling / Disassembling X86 / ARM / MIPS / SH4 / MSP430
-Representing assembly semantic using intermediate language
-Emulating using JIT (dynamic code analysis, unpacking, ...)
-Expression simplification for automatic de-obfuscation
-
-[Metasm](https://github.com/jjyg/metasm) is a cross-architecture assembler, disassembler, compiler, linker and debugger.
-
-It has some advanced features such as remote process manipulation, GCC-compatible preprocessor, automatic backtracking in the disassembler ("slicing"), C headers shrinking, linux/windows debugging API interface, a C compiler, a gdb-server compatible debugger, and various advanced features. It is written in pure Ruby.
-
-Miasm is a Python open source reverse engineering framework. T
-
-http://blog.quarkslab.com/deobfuscation-recovering-an-ollvm-protected-program.html
-
-#### Dynamic Binary Instrumentation
-
-Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
-
 #### Customizing Android
 
-##### Modifying the RAMDisk
+Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
-##### Compiling a Custom Kernel
+##### Preparing a development environment
+To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
+https://developer.android.com/develop/index.html
+You’ll also need the Android NDK for compiling anything that creates native code. The NDK contains prebuilt toolchains for cross-compiling native code for different architectures. The NDK is available as a separate download:
+https://developer.android.com/ndk/downloads/index.html
+After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
+
+~~~~
+$ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+~~~~
+
+
+##### Customizing the RAMDisk
+
+The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
+For our purposes, the most important settings in default.prop are ro.debuggable and ro.secure.
+
+~~~~
+shell@hammerhead:/ $ cat /default.prop                                         
+#
+# ADDITIONAL_DEFAULT_PROPERTIES
+#
+ro.secure=1
+ro.allow.mock.location=0
+ro.debuggable=1
+ro.zygote=zygote32
+persist.radio.snapshot_enabled=1
+persist.radio.snapshot_timer=2
+persist.radio.use_cc_names=true
+persist.sys.usb.config=mtp
+rild.libpath=/system/lib/libril-qc-qmi-1.so
+camera.disable_zsl_mode=1
+ro.adb.secure=1
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+ro.dalvik.vm.native.bridge=0
+~~~~
+
+Setting ro.debuggable to 1 causes all apps running on the system to be debuggable (i.e., the debugger thread runs in every process), independent of the android:debuggable attribute in the app’s Manifest. Setting ro.secure to 0 causes adbd to be run as root.
+To modify initrd on any Android device, back up the original boot image using TWRP, or simply dump it with a command like:
+
+~~~~
+adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
+adb pull /mnt/sdcard/boot.img /tmp/boot.img
+~~~~
+
+Use the abootimg tool as described in Krzysztof Adamski’s how-to to extract the contents of the boot image:
+
+~~~~
+mkdir boot
+cd boot
+../abootimg -x /tmp/boot.img
+mkdir initrd
+cd initrd
+cat ../initrd.img | gunzip | cpio -vid
+~~~~
+
+Take note of the boot parameters written to bootimg.cfg – you will need to these parameters later when booting your new kernel and ramdisk.
+
+~~~~
+berndt@osboxes:~/Desktop/abootimg/boot$ cat bootimg.cfg
+bootsize = 0x1600000
+pagesize = 0x800
+kerneladdr = 0x8000
+ramdiskaddr = 0x2900000
+secondaddr = 0xf00000
+tagsaddr = 0x2700000
+name =
+cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1
+Modify default.prop and package your new ramdisk:
+cd initrd
+find . | cpio --create --format='newc' | gzip > ../myinitd.img
+~~~~
+
+##### Customizing the Android Kernel
+
+Many operations performed by a process, such as allocating memory and accessing files, rely on services provided by the kernel in the form of system calls. In an ARM environment, system calls are done with the SVC instruction which triggers a software interrupt. This interrupt calls the vector_swi() kernel function, which then uses the system call number as an offset into a table of function pointers. In Android, this table is exported with the symbol name sys_call_table.
+System call hooking is a commonly used technique to monitor and manipulating the interface between user mode and kernel mode. Hooks can be installed in different ways, but rewriting the function pointers in sys_call_table is probably the easiest and most straight-forward.
+Newer stock Android kernels enforce some restrictions that prevent system call hooking. Specifically, the stock Lollipop and Marshmallow kernels for the Nexus 5 are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel code regions read-only data, which means that any attempts to patch kernel code or sys_call_table result in a segmentation fault and reboot. For the purpose of our sandbox however, we can simply build our own kernel that disables this feature.
+Given that we have to compile a custom kernel for our sandbox anyway, we’ll also add a couple more features for added convenience, such as LKM support and the /dev/kmem interface.
+To build the Android kernel you need a toolchain (set of programs to cross-compile the sources) as well as the appropriate version of the kernel sources. Instructions on how to identify the correct git repository and branch for a given device and Android version can be found at:
+
+https://source.android.com/source/building-kernels.html#id-version
+
+For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, we need to clone the msm repo and check out one the android-msm-hammerhead branch (hammerhead is the “codename” of the Nexus 5., and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config file with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
+
+~~~~
+$ git clone https://android.googlesource.com/kernel/msm.git
+$ cd msm
+$ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
+$ make hammerhead_defconfig
+$ vim .config
+~~~~
+
+I recommend using the following settings to enable the most important tracing facilities, add loadable module support, and open up kernel memory for patching.
+
+~~~~
+CONFIG_MODULES=Y
+CONFIG_STRICT_MEMORY_RWX=N
+CONFIG_DEVMEM=Y
+CONFIG_DEVKMEM=Y
+CONFIG_KALLSYMS=Y
+CONFIG_KALLSYMS_ALL=Y
+CONFIG_HAVE_KPROBES=Y
+CONFIG_HAVE_KRETPROBES=Y
+CONFIG_HAVE_FUNCTION_TRACER=Y
+CONFIG_HAVE_FUNCTION_GRAPH_TRACER=Y
+CONFIG_TRACING=Y
+CONFIG_FTRACE=Y
+CONFIG KDB=Y
+~~~~
+
+Once you are finished editing save the .config file and build the kernel.
+
+~~~~
+$ export ARCH=arm
+$ export SUBARCH=arm
+$ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
+$ make
+~~~~
+
+If the build process completes successfully, you will find the bootable kernel image at arch/arm/boot/zImage-dtb.
+
+##### Booting the Environment
+
+The fastboot boot command allows you to test your new kernel and ramdisk without actually flashing it (once you’re sure it everything works, you can make the changes permanent with fastboot flash). Restart the device in fastboot mode with the following command:
+$ adb reboot bootloader
+
+Then, use the fastboot command to boot Android with the new kernel and ramdisk, passing the boot parameters of the original image:
+~~~~
+$ fastboot boot zImage-dtb myinitrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
+~~~~
+
+To quickly verify that the new kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
 ##### Loading Kernel Modules
 
