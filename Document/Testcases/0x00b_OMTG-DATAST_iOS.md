@@ -56,4 +56,14 @@ The application must obsucate/hide any sensitive informations before being backg
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. SSH into your iOS device and proceed to the following directory:
+/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/
+
+Depending on your iOS version, the start of the directory (/var/mobile) might be different, the test was conducted on a iOS 8.1 device.
+
+If the application caches the sensitive information page as a screenshot, it fails this test.
+
+It is highly recommended to have a default screenshot that will be cached whenever the application enters background.
+
+
+
