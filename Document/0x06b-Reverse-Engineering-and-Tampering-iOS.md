@@ -1,30 +1,39 @@
 ## Tampering and Reverse Engineering on iOS
 
+### Environment and Toolset
+
+#### XCode and iOS SDK
+
+#### Mach-O Disassembler
+
+-- TODO  fixobjc2.idc script
+
+#### Utilities
+
+Class-dump hy Steve Nygard is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+
+http://stevenygard.com/projects/class-dump/
+
+Class-dump-dyld by Elias Limneos allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
+
+https://github.com/limneos/classdump-dyld/
+
+### Jailbreaking an iOS Device
+
 ### Dumping Decrypted Executables
 
 For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
 
-
 In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
 
-First tester need to ssh to idevice in order to run command line tools on the device.
+To use “dumpdecrypted”, connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
 
 ~~~
 ssh root@<ip of idevice>
-~~~
-To use “dumpdecrypted” on idevice, simply execute the mach-o executable of the application with “DYLD_INSERT_LIBRARIES” environment variable to inject the dumpdecrypted dynamic library, as shown here:
-
-~~~
 iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
 ~~~
 
-The tool generates a decrypted application copy in the current working directory. In case of the application is provided from developer as IPA file, tester don’t need to conduct this task.
-
-Tester can inspect the internal classes, methods, and variables used in the application; this information is particularly useful for understanding how the application functions, when patching it or hooking its methods at runtime by using “class-dump”.
-For example, running the previously decrypted iOS application through “class-dump” yields details on the internal class structure, including the following:
-iPod:root#./class-dump /private/var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/tmp/Payload/Scan.app/Scan
-
-In the previous snippet “class-dump” identifies a number of methods in the RootViewController class, which gives us an information into the application’s internals which can be used to invoke, modify, and tamper with these methods at runtime.
+The decrypted binary is saved in the current working directory.
 
 ### Debugging iOS Apps
 
@@ -79,8 +88,6 @@ Attaching to process 2670...
 
 Reference: http://iphonedevwiki.net/index.php/Debugserver
 
-### Jailbreaking the iOS Device
-
 ### Hooking with MobileSubstrate
 
 #### Example: Deactivating Anti-Debugging
@@ -106,8 +113,15 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 ~~~
 
 
-
 ### Code Injection
+
+TODO - Cycript vs Frida
+
+Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
+
+Cycript allows you to run your own code in an attached process out-of-the-box, with some JavaScript-syntax goodies to make writing code more convenient. It allows for useful runtime analysis of a program (such as for instance getting the complete view hierarchy, or checking out the properties of an object), and it allows for easy prototyping of a tweak (by hooking methods with a Substrate bridge, changing objects freely and calling functions, etc.).
+
+http://www.cycript.org
 
 #### Example: Bypassing Jailbreak Detection
 
