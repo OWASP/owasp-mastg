@@ -81,9 +81,31 @@ Reference: http://iphonedevwiki.net/index.php/Debugserver
 
 ### Jailbreaking the iOS Device
 
-
-
 ### Hooking with MobileSubstrate
+
+#### Example: Deactivating Anti-Debugging
+
+~~~
+#import <substrate.h>
+
+#define PT_DENY_ATTACH 31
+
+static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
+
+
+static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
+	if (request == PT_DENY_ATTACH) {
+		request = -1;
+	}
+	return _ptraceHook(request,pid,addr,data);
+}
+
+%ctor {
+	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
+}
+~~~
+
+
 
 ### Code Injection
 
