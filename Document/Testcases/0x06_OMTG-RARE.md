@@ -23,7 +23,7 @@ By default, both ELF and Mach-O binaries have a symbol table that contains debug
 
 ### OMTG-RARE-002: Test for Meaningful Identifiers in Java Bytecode
 
-Because Java classes are trivial to decompile, applying simple obfuscation to the release bytecode is recommended. For Java apps on Android, ProGuard offers an easy way to shrink and obfuscate code. It replaces identifiers such as  class names, method names and variable names with meaningless character combinations. This is a form of layout obfuscation, which is “free” in that it doesn't impact the performance of the program. 
+Because Java classes are trivial to decompile, applying simple obfuscation to the release bytecode is recommended. For Java apps on Android, ProGuard offers an easy way to shrink and obfuscate code. It replaces identifiers such as  class names, method names and variable names with meaningless character combinations. This is a form of layout obfuscation, which is “free” in that it doesn't impact the performance of the program.
 
 #### Detailed Guides
 
@@ -67,7 +67,7 @@ The risk of malicious code running as root is higher on rooted or jailbroken dev
 
 ### OMTG-RARE-005: Test Basic Debugger Detection / Prevention
 
-Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more. OWASP MASVS L2 requires a the app to implement a simple form of debugger detection / prevention. The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected. 
+Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more. OWASP MASVS L2 requires a the app to implement a simple form of debugger detection / prevention. The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
 
 Testing this control is as simple as attempting to attach a debugger to the app which should either fail, or cause the app to terminate.
 
