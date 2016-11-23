@@ -1,5 +1,31 @@
 ## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-002: Testing for Insecure Storage of Credentials and Keys 
 
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### White-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+### References
+
+Identify how the application stores data locally on the iOS device.
+Some of the possible options for the application to store it's data locally includes:
+- Plist
+- SQLite3 DB
+- Realm DB
+
+Proceed to store some data by using the application functionalites. SSH into your iOS device and browse to the following directory: /var/mobile/Containers/Data/Application/$APP_ID/
+
+Perform a grep command of the data that you have stored, such as:
+grep -irn "jk@vantagepoint.sg" .
+
+If the data is being stored in plaintext, it fails this test.
+
+
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
 
@@ -18,9 +44,7 @@ Check the source code for usage of predefined/custom Logging statements using th
 * For custom functions :
   * Logging
   * Logfile
-
-
-
+  
 ### Remediation
 
 Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (*.pch) file:
@@ -47,9 +71,11 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 ### White-box Testing
 
-While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
 ### Remediation
+
+### References
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This is be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
 
