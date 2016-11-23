@@ -38,6 +38,22 @@ Use a define to enable NSLog statements for development and debugging, and disab
 - [link to relevant how-tos, papers, etc.]
 
 
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+
+
+### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### White-box Testing
+
+While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
+
+### Remediation
+
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This is be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+
+
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
 
 
