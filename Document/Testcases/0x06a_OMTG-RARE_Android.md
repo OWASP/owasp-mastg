@@ -8,15 +8,15 @@
 
 Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
 
-~~~~ 
+~~~~
 berndt@osboxes:~/ $ objdump -t my_library.so
 my_library.so:     file format elf32-little
 
 SYMBOL TABLE:
 no symbols
-~~~~ 
+~~~~
 
-Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions. 
+Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
 
 ### Remediation
 
@@ -42,7 +42,7 @@ To inspect the Java bytecode for metadata either use the dexdump tool that ships
 
 ProGuard should be used to strip unneeded debugging information from the Java bytecode. By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It is shipped with Android’s SDK tools. To activate shrinking for the release build, add the following to build.gradle:
 
-~~~~ 
+~~~~
 android {
     buildTypes {
         release {
@@ -53,7 +53,7 @@ android {
     }
     ...
 }
-~~~~ 
+~~~~
 
 ### References
 
@@ -71,7 +71,7 @@ Root detection is usually implemented as a number of environmental checks, such 
 /sbin/su
 ~~~~
 
-It is also possible to check for app packages of typical rooting tools, such as Superuser.apk. However, the presence and location of these files varies heavily depending on the specific Android and tool version. 
+It is also possible to check for app packages of typical rooting tools, such as Superuser.apk. However, the presence and location of these files varies heavily depending on the specific Android and tool version.
 
 Another option is checking the list of installed apps against a package names of known rooting tools, such as:
 
@@ -123,6 +123,162 @@ Attempt to attach a debugger to the running process. This  should either fail, o
 (TODO JDWP)
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-006"></a>OMTG-RARE-006: Test Advanced Jailbreak / Root Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-007"></a>OMTG-RARE-007: Test Advanced Debugging Defenses
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-008"></a>OMTG-RARE-008: Test File Tampering Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-009"></a>OMTG-RARE-009: Test Detection of Reverse Engineering Tools
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-010"></a>OMTG-RARE-010: Test Basic Emulator Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-011"></a>OMTG-RARE-011: Test Memory Tampering Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-012"></a>OMTG-RARE-012: Test Variability of Tampering Responses
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-013"></a>OMTG-RARE-013: Test Binary Encryption
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-014"></a>OMTG-RARE-014: Test Device Binding
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-015"></a>OMTG-RARE-015: Test Advanced Jailbreak / Root Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-016"></a>OMTG-RARE-016: Test Advanced Emulator Detection
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-017"></a>OMTG-RARE-017: Test Integration of SE and/or TEE
+
+### White-box Testing
+
+
+### Black-box Testing
+
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+## <a name="OMTG-RARE-018"></a>OMTG-RARE-018: Test Advanced Obfuscation
+
+### White-box Testing
+
+
+### Black-box Testing
+
 
 ### References
 

@@ -1,4 +1,4 @@
-## Assessing Software Protections
+## Testing Software Protections
 
 The MASVS lists various kinds of software protections in the "V8 - Resiliency against Reverse Engineering" section.
 
@@ -11,12 +11,12 @@ On the highest level, we classify reverse engineering defenses into two categori
 
 Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
 
-### 2. Obfuscations
+### 2. Obfuscationg Transformations
 *Modify code and/or data to make it less comprehensible*
 
  Modifications applied during the build process to the source code, binary, intermediate representation of the code, or other elements such as data or executable headers. The goal is to transform the code and data so it becomes more difficult to comprehend for human adversaries while still performing the desired function. Obfuscating transformations change the representation of the code and data, but do not exhibit behavior of their own (i.e. they don’t actively interfere with the actions of the reverse engineer).
 
-### Functional defense requirements
+### Functional Defense Requirements
 
 Functional defenses are programmatic features  that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. When combined with obfuscation, multiple defenses add up to make the life of the reverse engineer as difficult as possible.
 
@@ -35,7 +35,7 @@ For example, MASVS L2 requires an app to implement a simple form protection in t
 
 Basic requirements, such as 8.8 and 8.9, can be verified using either black-box or white-box testing (see the respective test cases for details). The requirement for *strong* resiliency in the debugging category (V8.7) will be discussed in the following sections.
 
-#### Assessing the effectiveness of defenses
+#### Testing Functional Defenses
 
 The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
 
@@ -53,7 +53,7 @@ Table 2 explains the scoring criteria in detail.
 | **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
 | **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
 
-### Obfuscation requirements
+### Obfuscation Requirements
 
 ![Obfuscation model](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/obfuscation-model.png "Reverse engineering processes")
 
