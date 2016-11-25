@@ -1,4 +1,4 @@
-## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-002: Testing for Insecure Storage of Credentials and Keys 
+## <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Testing for Insecure Storage of Credentials and Keys 
 
 ### Black-box Testing
 
