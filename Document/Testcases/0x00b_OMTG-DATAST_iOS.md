@@ -8,7 +8,7 @@ A way to identify if sensitive information like credentials and keys are stored 
 - SQLite3 DB
 - Realm DB
 
-Steps:
+Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
 2. SSH into your iOS device and browse to the following directory: /var/mobile/Containers/Data/Application/$APP_ID/
@@ -65,9 +65,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 * [https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html] - Keychain Services Programming Guide
 * [Android KeyStore][19149717]
-
-
-
 
 
 ## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
