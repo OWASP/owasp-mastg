@@ -2,9 +2,20 @@
 
 ### Black-box Testing
 
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from IOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data.
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from IOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. Some of the possible options for the application to store it's data locally includes:
+
+- Plist
+- SQLite3 DB
+- Realm DB
+
+Steps 
+1.) Proceed to trigger functionality that stores potential sensitive data.
+2.) SSH into your iOS device and browse to the following directory: /var/mobile/Containers/Data/Application/$APP_ID/
+3.) Perform a grep command of the data that you have stored, such as: grep -irn "jk@vantagepoint.sg" .
+4.) If the sensitive data is being stored in plaintext, it fails this test.
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
+
 
 ### White-box Testing
 When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using the KeyChain and Keystore. The following controls should therefore be used:
@@ -51,12 +62,50 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 
 
+
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+
+
+### Black-box Testing
+
+Reset your iOS device keyboard cache by going through:
+
+Settings > General > Reset > Reset Keyboard Dictionary
+
+Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
+
+Dump the keyboard cache file dynamic-text.dat at the following directory:
+/private/var/mobile/Library/Keyboard/
+
+Look for sensitive data such as username, email addresses, credit card numbers, etc.
+If the sensitive data can be obtained through the keyboard cache file, it fails this test.
+
+### White-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+### Remediation
+
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+
+### References
+
+- [link to relevant how-tos, papers, etc.]
+
+
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
 
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. SSH into your iOS device and proceed to the following directory:
+/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/
+
+Depending on your iOS version, the start of the directory (/var/mobile) might be different, the test was conducted on a iOS 8.1 device.
+
+If the application caches the sensitive information page as a screenshot, it fails this test.
+
+It is highly recommended to have a default screenshot that will be cached whenever the application enters background.
 
 ### White-box Testing
 
@@ -65,7 +114,6 @@ While analyzing the source code, look for the fields or screens where sensitive 
 ### Remediation
 
 The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
-
 
 ### References
 
