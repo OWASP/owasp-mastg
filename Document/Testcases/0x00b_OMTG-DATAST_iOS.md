@@ -71,6 +71,12 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 ### Black-box Testing
 
+Reset your iOS device keyboard cache by going through:
+
+Settings > General > Reset > Reset Keyboard Dictionary
+
+Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
+
 Dump the keyboard cache file dynamic-text.dat at the following directory:
 /private/var/mobile/Library/Keyboard/
 
