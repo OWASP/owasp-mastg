@@ -89,7 +89,7 @@ If the sensitive data can be obtained through the keyboard cache file, it fails 
 
 ### Remediation
 
-The application must ensure that data typed into text fields which contains sensitive information must not be cached. This is be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
 
 ### References
 
