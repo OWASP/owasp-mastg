@@ -65,7 +65,7 @@ JEB
 
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
-### Using Binary Analysis Frameworks for De-Obfuscation
+### De-Obfuscation Using Binary Analysis Frameworks
 
 [Miasm](https://github.com/cea-sec/miasm) is a free and open source (GPLv2) reverse engineering framework. Miasm aims to analyze / modify / generate binary programs. Here is a non exhaustive list of features:
 
