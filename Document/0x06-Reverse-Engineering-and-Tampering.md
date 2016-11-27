@@ -16,7 +16,13 @@ Mobile app security testing requires at least basic reverse engineering skills f
 
 ## Basic Tampering Techniques
 
+In the following section we'll give a high level overview of the techniques most commonly used in mobile app security testing. Right after this chapter, we'll drill down into the OS-specific details for both Android and iOS.
+
 ### Patching
+
+Patching means making changes to the compiled app - e.g. binary executable file(s), Java bytecode, or other resources - with the goal of modifying some aspect of the app. In basic security testing, this is useful for removing restrictions such as SSL Pinning that may otherwise prevent you from running certain test cases. Patches can be applied in any number of ways, from decompiling and re-compiling an app, to editing the binary code in a hex editor - everything goes as long as you're producing a valid binary. You'll find some examples for useful patches in the OS-specific chapters.
+
+All modern mobile OSes do some form of code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. You'll either have to re-sign the app, or disable the default code signing facilities to run modified code (fortunately, this is not all that difficult to do on your own device).
 
 ### Code Injection
 
@@ -45,15 +51,11 @@ TODO: Static vs. dynamic analysis.
 
 Disassemblers and decompilers allow you to translate an app's binary code or byte-code back into a more or less understandable format. In the case of native binaries, you'll usually obtain assembler code matching the architecture the app was compiled for. Android Java apps can be disassembled to Smali (an Assembler language for the dex format), or quite easily converted back to Java code.  
 
-
 IDA
-IDA (Interactive Disassembler) Pro is a commercial disassembler that supports a multitude of architectures. It is compatible with all executable formats and architectures used in Android and iOS devices, and comes with build-in debuggers for Android (Java and native)
-
-
+IDA (Interactive Disassembler) Pro is a commercial disassembler that supports a multitude of architectures. It is compatible with all executable formats and architectures used in Android and iOS devices, and comes with build-in debuggers for Android (Java and native).
 
 
 Hopper
-Hopper is quite new and only supports a small subset of the features that IDA has. It is fast and has a nice user interface. However, the produced assembly code is not as good as the one produced by IDA.
 
 JEB
 
