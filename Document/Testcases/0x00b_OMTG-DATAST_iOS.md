@@ -3,7 +3,7 @@
 ### Black-box Testing
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from IOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. Some of the possible options for the application to store it's data locally includes:
-
+ 
 - Plain Files
 - Plist
 - SQLite3 DB
