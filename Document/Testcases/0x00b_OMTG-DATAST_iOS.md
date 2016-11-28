@@ -101,10 +101,11 @@ Follow these steps to retrieve the keyboard cache:
 
 Look for sensitive input fields such as email addresses, usernames, passwords, credit card numbers, etc.
 
-For fields that require masked output such as password, check if the text field secureTextEntry is set to True:    textField.secureTextEntry = TRUE;
+For fields that require masked output such as password, check if the text field secureTextEntry is set to True:
+- textField.secureTextEntry = TRUE;
 
 For fields that are considered sensitive data, ensure that autocorrectionType is set to False:
-textField.autocorrectionType = FALSE; // or use  UITextAutocorrectionTypeNo
+- textField.autocorrectionType = FALSE; // or use  UITextAutocorrectionTypeNo
 
 By default, all text fields will have auto correction enabled and it will be automatically cached into the keyboard dynamic text file.
 
