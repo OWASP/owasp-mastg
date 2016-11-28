@@ -39,6 +39,16 @@ The following is a list of best practice used for secure storage of certificates
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
+### Black-box Testing
+
+### White-box Testing
+
+### Remediation
+
+### References
+
+
+## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
 ### Black-box Testing
 
@@ -76,6 +86,28 @@ Use a define to enable NSLog statements for development and debugging, and disab
 * [Android KeyStore][19149717]
 
 
+## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
+
+### Black-box Testing
+
+### White-box Testing
+
+### Remediation
+
+### References
+
+
+## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
+
+### Black-box Testing
+
+### White-box Testing
+
+### Remediation
+
+### References
+
+
 ## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
 
 
@@ -105,6 +137,14 @@ The application must ensure that data typed into text fields which contains sens
 
 - [link to relevant how-tos, papers, etc.]
 
+
+## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+
+## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
+
+## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
+
+## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
 
