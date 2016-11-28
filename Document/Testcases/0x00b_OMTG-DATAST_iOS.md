@@ -21,13 +21,29 @@ If the data is being stored in plaintext, it fails this test.
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
+Determine how the application stores data locally in the source code.
+Look for the following strings in the source code.
+
+For .plist storage:
+NSString* plistPath
+writeToPath:plistPath
+:@"\*.plist"
+
+For SQLite3 storage:
+sqlite3_stmt (preparing sqlite3 statement)
+sqlite3_step (executing sqlite3 statement)
+
+Look for the specific kind of data that is being stored locally and determine if it is sensitive data.
+
+
 ### Remediation
 
-If the application has to store data locally on the device, ensure that proper encryption is implemented for sensitive data.
+If the application has to store data locally on the device, ensure that proper encryption is implemented for the sensitive data.
+
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+ - [link to relevant how-tos, papers, etc.]
 
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
@@ -83,6 +99,15 @@ Follow these steps to retrieve the keyboard cache:
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
+Look for sensitive input fields such as email addresses, usernames, passwords, credit card numbers, etc.
+
+For fields that require masked output such as password, check if the text field secureTextEntry is set to True:    textField.secureTextEntry = TRUE;
+
+For fields that are considered sensitive data, ensure that autocorrectionType is set to False:
+textField.autocorrectionType = FALSE; // or use  UITextAutocorrectionTypeNo
+
+By default, all text fields will have auto correction enabled and it will be automatically cached into the keyboard dynamic text file.
+
 ### Remediation
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
@@ -110,6 +135,13 @@ It is highly recommended to have a default screenshot that will be cached whenev
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
+Check for implementations such as:
+applicationWillResignActive:
+applicationDidBecomeActive:
+applicationDidEnterBackground:
+
+If no such implementations or similar implementations exist, the application will most probably cache the current page when being backgrounded.
+
 ### Remediation
 
 The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
@@ -117,6 +149,7 @@ The application must obsucate/hide any sensitive informations before being backg
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+- http://stackoverflow.com/questions/27265957/ios-takes-a-screenshot-of-app-every-time-it-is-sent-to-the-background-how-woul
 
 
 
