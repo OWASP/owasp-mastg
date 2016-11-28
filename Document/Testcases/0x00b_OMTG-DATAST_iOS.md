@@ -36,8 +36,6 @@ The following is a list of best practice used for secure storage of certificates
 * [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
 
 
-
-
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 
