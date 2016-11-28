@@ -25,13 +25,13 @@ Determine how the application stores data locally in the source code.
 Look for the following strings in the source code.
 
 For .plist storage:
-NSString* plistPath
-writeToPath:plistPath
-:@"\*.plist"
+- NSString* plistPath
+- writeToPath:plistPath
+- :@"\*.plist"
 
 For SQLite3 storage:
-sqlite3_stmt (preparing sqlite3 statement)
-sqlite3_step (executing sqlite3 statement)
+- sqlite3_stmt (preparing sqlite3 statement)
+- sqlite3_step (executing sqlite3 statement)
 
 Look for the specific kind of data that is being stored locally and determine if it is sensitive data.
 
@@ -136,9 +136,9 @@ It is highly recommended to have a default screenshot that will be cached whenev
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
 Check for implementations such as:
-applicationWillResignActive:
-applicationDidBecomeActive:
-applicationDidEnterBackground:
+- applicationWillResignActive:
+- applicationDidBecomeActive:
+- applicationDidEnterBackground:
 
 If no such implementations or similar implementations exist, the application will most probably cache the current page when being backgrounded.
 
