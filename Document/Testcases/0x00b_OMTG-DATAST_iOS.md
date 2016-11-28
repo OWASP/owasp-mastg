@@ -20,14 +20,13 @@ Manual dynamic analysis such as debugging can also be leveraged to verify how sp
 
 
 ### White-box Testing
-When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the KeyChain. For more information on insecure storage patterns for static analysis check OMTG-DATAST-001-2.   
+When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. For more information on insecure storage patterns for static analysis check OMTG-DATAST-001-2.   
 
 ### Remediation
 If sensitive information (credentials, keys, PII, etc.) is needed locally on the device several best practices are offered by IOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
-
-- For small amounts of sensitive data such as credentials or keys use the [KeyChain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is kSecAttrAccessibleWhenUnlocked. For more information have a look at the available modes [https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons](Keychain Item Accessibility)
+- For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons)
 -
 
 
