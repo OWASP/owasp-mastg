@@ -28,7 +28,7 @@ If sensitive information (credentials, keys, PII, etc.) is needed locally on the
 The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
 - For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
 - Cryptographic functions that have been self implemented to encryt or decrypt local files should be avoided.  
-- Avoid insecure storage functions as illustrated in chapter OMTG-DATAST-001-2.   
+- Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
 
 
 ### References
