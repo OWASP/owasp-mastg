@@ -1,16 +1,14 @@
 ## Tampering and Reverse Engineering on iOS
 
+### Basics
+
 ### Environment and Toolset
 
 #### XCode and iOS SDK
 
-#### Mach-O Disassembler
-
--- TODO  fixobjc2.idc script
-
 #### Utilities
 
-Class-dump hy Steve Nygard is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+Class-dump by Steve Nygard is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
 
 http://stevenygard.com/projects/class-dump/
 
@@ -18,9 +16,14 @@ Class-dump-dyld by Elias Limneos allows dumping and retrieving symbols directly 
 
 https://github.com/limneos/classdump-dyld/
 
+
 ### Jailbreaking an iOS Device
 
-### Dumping Decrypted Executables
+
+### Statically Analyzing iOS Apps
+
+
+#### Dumping Decrypted Executables
 
 For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
 
@@ -35,9 +38,17 @@ iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xx
 
 The decrypted binary is saved in the current working directory.
 
+
+
+#### Analyzing Swift Apps
+
+
 ### Debugging iOS Apps
 
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode.
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do t
+
+
+his is adding the entitlement to the debugserver binary shipped with XCode.
 
 To obtain the executable mount the following DMG image:
 
@@ -115,15 +126,27 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 
 ### Code Injection
 
-TODO - Cycript vs Frida
 
-Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
+#### Cycript
 
-Cycript allows you to run your own code in an attached process out-of-the-box, with some JavaScript-syntax goodies to make writing code more convenient. It allows for useful runtime analysis of a program (such as for instance getting the complete view hierarchy, or checking out the properties of an object), and it allows for easy prototyping of a tweak (by hooking methods with a Substrate bridge, changing objects freely and calling functions, etc.).
+Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
 
-http://www.cycript.org
+*(Todo - use cases and example for Cycript)
 
-#### Example: Bypassing Jailbreak Detection
+- Obtain references to existing objects
+- Instantiate objects from classes
+- Hooking native functions
+- Hooking objective-C methods
+- etc.*
+http://www.cycript.org/manual/
+
+Cycript tricks:
+
+http://iphonedevwiki.net/index.php/Cycript_Tricks
+
+#### Frida
+
+##### Example: Bypassing Jailbreak Detection
 
 ~~~~
 import frida
@@ -184,7 +207,7 @@ script = session.create_script("""
 		},
 		onLeave: function(retval) {
 			if (hideFile) {
-		  		send("Hiding jailbreak file...");
+		  		send("Hiding jailbreak file...");MM
 				retval.replace(0);
 				hideFile = 0;
 			}
@@ -203,7 +226,6 @@ script = session.create_script("""
 		var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
 
 	*/
-
 
 """)
 
