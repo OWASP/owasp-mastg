@@ -1,18 +1,22 @@
 ## Tampering and Reverse Engineering on Android
 
+Its openness makes Android fantastic environment for reverse engineers. However, dealing with both Java and native code can make things more complicated at times. In the following chapter, we'll look at some peculiarities of Android reversing and OS-specific tools as processes.
+
 ### Basics
 
--- TODO --
+(... TODO ...)
+
+Some of the biggest challenges in reverse engineering obfuscated Android apps stem from the fact that, while Android apps are usually Java-based, it is easy for developers to call into native code via the Java Native Interface (JNI). This feature is commonly used to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to prevent reverse engineering deliberately split functionality between Java bytecode and native binary code, structuring their apps such that execution frequently jumps between the two layers.
+
+As a consequence, Android reverse engineers need to understand both Java bytecode and ARM assembler, and have a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these things inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
 
 ### Environment and Toolset
 
--- TODO: Write about basic stuff & what's special about Android.
-
-With a little effort you can build a reasonable reverse engineering environment for free. JD is a free Java de-compiler that integrates with Eclipse and IntelliJ. I recommend using IntelliJ - it works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. Its main advantage is that it is super lightweight compared to the bloated mess that is Eclipse. The netspi blog (LINK) has a how-to on setting up the decompiled sources for debugging in IntelliJ.
-APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
+With a little effort you can build a reasonable reverse engineering environment for free. JD is a free Java de-compiler that integrates with Eclipse and IntelliJ. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps.
 
 If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. According to the website, Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
+APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
 https://github.com/JesusFreke/smali
 
 IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
@@ -31,7 +35,10 @@ Some things that should be mentioned:
 - DexDump
 - dex2jar
 
-#### Patching and Re-Packaging Apps
+
+### Manipulating Android Apps
+
+#### Patching and Re-Packaging
 
 ##### Example 1: Repackaging an App for Debugging
 
@@ -108,6 +115,7 @@ script.load()
 sys.stdin.read()
 ~~~
 
+### Reverse Engineering on Android
 
 #### Statically Analyzing Java Code
 
@@ -189,8 +197,6 @@ The KProbes interface provides us with an even more powerful way to instrument t
 Jprobes and Kretprobes are additional probe types based on Kprobes that allow hooking of function entries and exits.
 
 Unfortunately, the stock Android kernel comes without loadable module support, which is a problem given that Kprobes are usually deployed as kernel modules. Another issue is that the Android kernel is compiled with strict memory protection which prevents patching some parts of Kernel memory. Using Elfmaster’s system call hooking method (5) results in a Kernel panic on default Lolllipop and Marshmallow due to sys_call_table being non-writable. We can however use Kprobes on a sandbox by compiling our own, more lenient Kernel (more on this later).
-
-### Advanced Reverse Engineering Techniques
 
 #### Emulation-based Analysis
 

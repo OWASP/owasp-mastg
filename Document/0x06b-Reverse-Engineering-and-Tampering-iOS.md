@@ -19,85 +19,7 @@ https://github.com/limneos/classdump-dyld/
 
 ### Jailbreaking an iOS Device
 
-
-### Statically Analyzing iOS Apps
-
-
-#### Dumping Decrypted Executables
-
-For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
-
-In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
-
-To use “dumpdecrypted”, connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
-
-~~~
-ssh root@<ip of idevice>
-iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
-~~~
-
-The decrypted binary is saved in the current working directory.
-
-
-
-#### Analyzing Swift Apps
-
-
-### Debugging iOS Apps
-
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do t
-
-
-his is adding the entitlement to the debugserver binary shipped with XCode.
-
-To obtain the executable mount the following DMG image:
-
-~~~
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
-~~~
-
-You’ll find the debugserver executable in the /usr/bin/ directory on the mounted volume - copy it to a temporary directory. Then, create a file called entitlements.plist with the following content:
-
-~~~
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>com.apple.springboard.debugapplications</key>
-	<true/>
-	<key>run-unsigned-code</key>
-	<true/>
-	<key>get-task-allow</key>
-	<true/>
-	<key>task_for_pid-allow</key>
-	<true/>
-</dict>
-</plist>
-~~~
-
-And apply the entitlement with codesign:
-
-~~~
-codesign -s - --entitlements entitlements.plist -f debugserver
-~~~
-
-Copy the modified binary to any directory on the test device (note: The following examples use usbmuxd to forward a local port through USB).
-
-~~~
-$ ./tcprelay.py -t 22:2222
-$ scp -P2222 debugserver root@localhost:/tmp/
-~~~
-
-You can now attach debugserver to any process running on the device.
-
-~~~
-VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
-debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
- for armv7.
-Attaching to process 2670...
-~~~
-
-Reference: http://iphonedevwiki.net/index.php/Debugserver
+### Manipulating iOS Apps
 
 ### Hooking with MobileSubstrate
 
@@ -237,3 +159,79 @@ script.on('message', on_message)
 script.load()
 sys.stdin.read()
 ~~~~
+
+### Reverse Engineering on iOS
+
+#### Dumping Decrypted Executables
+
+For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
+
+In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
+
+To use “dumpdecrypted”, connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
+
+~~~
+ssh root@<ip of idevice>
+iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
+~~~
+
+The decrypted binary is saved in the current working directory.
+
+#### Analyzing Swift Apps
+
+
+### Debugging iOS Apps
+
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do t
+
+
+his is adding the entitlement to the debugserver binary shipped with XCode.
+
+To obtain the executable mount the following DMG image:
+
+~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
+~~~
+
+You’ll find the debugserver executable in the /usr/bin/ directory on the mounted volume - copy it to a temporary directory. Then, create a file called entitlements.plist with the following content:
+
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.springboard.debugapplications</key>
+	<true/>
+	<key>run-unsigned-code</key>
+	<true/>
+	<key>get-task-allow</key>
+	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
+</dict>
+</plist>
+~~~
+
+And apply the entitlement with codesign:
+
+~~~
+codesign -s - --entitlements entitlements.plist -f debugserver
+~~~
+
+Copy the modified binary to any directory on the test device (note: The following examples use usbmuxd to forward a local port through USB).
+
+~~~
+$ ./tcprelay.py -t 22:2222
+$ scp -P2222 debugserver root@localhost:/tmp/
+~~~
+
+You can now attach debugserver to any process running on the device.
+
+~~~
+VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
+debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
+ for armv7.
+Attaching to process 2670...
+~~~
+
+Reference: http://iphonedevwiki.net/index.php/Debugserver
