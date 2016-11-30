@@ -2,16 +2,34 @@
 
 ### Basics
 
-Some of the biggest challenges in reverse engineering obfuscated Android apps stem from the fact that, while Android apps are usually Java-based, it is easy for developers to call into native code via the Java Native Interface (JNI). This feature is commonly used to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to prevent reverse engineering deliberately split functionality between Java bytecode and native binary code, structuring their apps such that execution frequently jumps between the two layers.
-As a consequence, Android reverse engineers need to understand both Java bytecode and ARM assembler, and have a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these things inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
+-- TODO --
 
 ### Environment and Toolset
 
-The jack-of-all-trades of Android reverse engineering is called IDA Pro: The legendary disassembler understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
-This is where dedicated Java de-compilers become useful. Personally I use JEB, a commercial de-compiler. JEB puts all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
-Fortunately, with a little effort you can build a reasonable reverse engineering environment for free. JD  is a free Java de-compiler that integrates with Eclipse and IntelliJ. I recommend using IntelliJ - it works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. Its main advantage is that it is super lightweight compared to the bloated mess that is Eclipse. The netspi blog has a how-to on setting up the decompiled sources for debugging in IntelliJ.
+-- TODO: Write about basic stuff & what's special about Android.
+
+With a little effort you can build a reasonable reverse engineering environment for free. JD is a free Java de-compiler that integrates with Eclipse and IntelliJ. I recommend using IntelliJ - it works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. Its main advantage is that it is super lightweight compared to the bloated mess that is Eclipse. The netspi blog (LINK) has a how-to on setting up the decompiled sources for debugging in IntelliJ.
 APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
+
 If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. According to the website, Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
+
+https://github.com/JesusFreke/smali
+
+IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
+
+This is where dedicated Java de-compilers become useful.  JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
+
+-- TODO: Other tools
+
+Some things that should be mentioned:
+
+- Android SDK
+- Smali and Baksmali
+- Androguard
+- apktool
+- ADB
+- DexDump
+- dex2jar
 
 #### Patching and Re-Packaging Apps
 
@@ -90,11 +108,16 @@ script.load()
 sys.stdin.read()
 ~~~
 
-#### Decompiling / Disassembling Code
 
-https://github.com/JesusFreke/smali
+#### Statically Analyzing Java Code
 
-#### Debugging
+TODO: Pulling APK File from the device
+
+TODO: DEX vs. OAT
+
+#### Statically Analyzing Native Code
+
+#### Debugging Android Apps
 
 #### Execution Tracing
 
@@ -112,7 +135,7 @@ Initializing jdb ...
 Deferring breakpoint com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>().
 It will be set after the class is loaded.
 > resume
-All threads resumed.
+All threads resumed.M
 Set deferred breakpoint com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>()
 
 Breakpoint hit: "thread=main", com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>(), line=44 bci=0
@@ -167,7 +190,7 @@ Jprobes and Kretprobes are additional probe types based on Kprobes that allow ho
 
 Unfortunately, the stock Android kernel comes without loadable module support, which is a problem given that Kprobes are usually deployed as kernel modules. Another issue is that the Android kernel is compiled with strict memory protection which prevents patching some parts of Kernel memory. Using Elfmaster’s system call hooking method (5) results in a Kernel panic on default Lolllipop and Marshmallow due to sys_call_table being non-writable. We can however use Kprobes on a sandbox by compiling our own, more lenient Kernel (more on this later).
 
-### Advanced Techniques
+### Advanced Reverse Engineering Techniques
 
 #### Emulation-based Analysis
 
@@ -201,7 +224,7 @@ https://github.com/sycurelab/DECAF
 
 PANDA is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
 
-PANDA comes with some premade plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository14 and build PANDA as follows:
+PANDA comes with some premade plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository14 and build PANDA as follows:MM
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo:
 
