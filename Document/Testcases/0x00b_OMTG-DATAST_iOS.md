@@ -140,6 +140,36 @@ The application must ensure that data typed into text fields which contains sens
 
 ## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
 
+### Black-box Testing
+
+Proceeed to a page on the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. 
+
+Enter some values and double tap on the input field. 
+
+If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define".
+
+The "Cut" and "Copy" option should be disabled for sensitive input fields, since it will be possible to retrieve the value by pasting the copied or cut value.
+
+If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
+
+### White-box Testing
+
+### Remediation
+
+Possible remediation method:
+`
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(copy:))
+        return NO;
+    return [super canPerformAction:action withSender:sender];
+}
+`
+http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
+
+### References
+
+
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
 
 ## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
