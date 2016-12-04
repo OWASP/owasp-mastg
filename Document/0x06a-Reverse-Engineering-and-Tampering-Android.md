@@ -90,6 +90,18 @@ In this context, return-void means that no certificate checks are performed and 
 ![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
 #### Code Injection
+
+Here are some more APIs FRIDA offers on Android:
+
+-	Instantiate Java objects and call static and non-static class methods;
+-	Replace Java method implementations;
+-	Enumerate live instances of specific classes by scanning the Java heap (Dalvik only);
+-	Scan process memory for occurrences of a string;
+-	Intercept native function calls to run your own code at function entry and exit.
+
+Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
+
+
 ##### Example: Bypassing Debugger Detection
 
 ~~~
