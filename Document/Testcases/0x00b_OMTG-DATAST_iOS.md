@@ -54,6 +54,16 @@ The following is a list of best practice used for secure storage of certificates
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
+Proceed to a page on the iOS application that contains input fields which prompt users for their sensitive information.
+SSH into your iOS device and execute the following command:
+```
+tail -f /var/log/syslog
+```
+Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
+
+Example output of the command shown above:
+
+
 ### White-box Testing
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
