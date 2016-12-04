@@ -49,7 +49,9 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 ### Code Injection
 
 
-#### Cycript
+#### Cynject
+
+Cycript is traditionally used in the iOS world. It also runs standalone on Android, however without injection support. It is based on a Java VM that can be injected into a running process using Cydia Substrate. The user then communicates with process through the Cycript console interface.
 
 Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
 

@@ -20,32 +20,40 @@ To sum things up, mobile security testing requires at least basic reverse engine
 
 ## Basic Tampering Techniques
 
-Tampering is the process of making changes to a mobile app either the compiled app, or the running process) or its environment to affect changes in behavior. For example, and app might refuse to running on your rooted test device, making it impossible to run some of the test cases. In that case, you'll want to deactivate that particular behavior so you can proceed with the test.
+Tampering is the process of making changes to a mobile app either the compiled app, or the running process) or its environment to affect changes in its behavior. For example, and app might refuse to running on your rooted test device, making it impossible to run some of your tests. In cases like that, you'll want to alter that particular behavior.
 
-In the following section we'll give a high level overview of the techniques most commonly used in mobile app security testing. Right after this chapter, we'll drill down into the OS-specific details for both Android and iOS.
+In the following section we'll give a high level overview of the techniques most commonly used in mobile app security testing. Later, we'll drill down into  OS-specific details for both Android and iOS.
 
 ### Patching
 
-Patching means making changes to the compiled app - e.g. changing code in a binary executable file(s), modifying Java bytecode, or tampering with resources. Patches can be applied in any number of ways, from decompiling and re-assembling an app, to editing binary files in a hex editor - anything goes (this is true in all of reverse engineering). We'll give some OS-specific examples for patching later on.
+Patching means making changes to the compiled app - e.g. changing code in a binary executable file(s), modifying Java bytecode, or tampering with resources. Patches can be applied in any number of ways, from decompiling and re-assembling an app, to editing binary files in a hex editor - anything goes (this rule applies to all of reverse engineering). We'll give some detailed examples for useful patches in later chapters.
 
-All modern mobile OSes enforce some form of code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments (oh good old times). You'll either have to re-sign the app, or disable the default code signing facilities to run modified code. Fortunately, this is not all that difficult to do if you work on your own device.
+One thing to keep in mind is that modern mobile OSes strictly enforce code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. Yep, security experts had a much easier life in the 90ies! Fortunately, this is not all that difficult to do if you work on your own device - it simply means that you need to re-sign the app, or disable the default code signing facilities to run modified code.
 
 ### Code Injection
 
-Code injection is a very powerful technique that allows you to explore and modify processes during runtime. The injection process can be implemented in various ways, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate it. These tools give you direct access to process memory and important structures such as live objects instantiated by the app, and come with many useful utility functions for resolving loaded libraries, hooking methods and native functions, and more. Tampering with process memory is more difficult to detect than patching files, making in the preferred method in the majority of cases.
+Code injection is a very powerful technique that allows you to explore and modify processes during runtime. The injection process can be implemented in various ways*, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate it. These tools give you direct access to process memory and important structures such as live objects instantiated by the app, and come with many useful utility functions for resolving loaded libraries, hooking methods and native functions, and more. Tampering with process memory is more difficult to detect than patching files, making in the preferred method in the majority of cases.
 
-The two best-known code injection frameworks are Cycript and Frida. Cycript - pronounced "sssscript" - is a "Cycript-to-JavaScript" compiler authored by Saurik of Cydia fame that uses JavaScriptCore for its virtual machine. Cycript is traditionally used in the iOS world. It also runs standalone on Android, however without injection support. It is based on a Java VM that can be injected into a running process using Cydia Substrate. The user then communicates with process through the Cycript console interface.
+The two best-known code injection frameworks are Substrate and FRIDA. The main difference between the two is design philosophy: FRIDA aims to be a full-blown "dynamic instrumentation framework" that incorporates both code injection and language bindings, while Substrate only handles code injection and hooking, but doesn't include an injectable JavaScript VM and console. It does however come with a tool called Cynject that provides code injection support for Cycrypt, the programming environment (a.k.a. "Cycript-to-JavaScript" compiler) authored by Saurik of Cydia fame. Ultimately, you can achieve the same goals with both Cycript/Substrate and FRIDA, except that Substrate doesn't support runtime code injection on Android.
 
-Cycript implements a foreign function interface that allows users to interface with C code, including support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is even possible to access and instantiate Objective-C classes inside the running process. Some examples for the use of Cycript are listed in the iOS chapter.
+To complicate things, FRIDA's authors also created a fork of Cycript named ["frida-cycript"](https://github.com/nowsecure/frida-cycript) that replaces Cycript's runtime with a Frida-based runtime called Mjølner. This enables Cycript run on all the platforms and architectures maintained by frida-core. The release was accompanies by a blog post by Ole titled "Cycript on Steroids", which prompted a vitriolic response by Saurik on [Reddit](https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/).
 
-FRIDA is the Swiss army knife of Android Reverse Engineering. Its magic is based on code injection: Upon attaching to a process, FRIDA uses ptrace to hijack an existing thread in the process. The hijacked thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper then starts a fresh thread, connects to the Frida debugging server running on the device, and loads a dynamically generated library file containing the Frida agent and instrumentation code. The original, hijacked thread is restored to its original state and resumed, and execution of the process continues as usual (being completely unaware of what has happened to it, unless it scans its own memory or employs some other form of runtime integrity check).
+#### Cycript and Cynject
+
+Cynject is a tool that provides code injection support for C. It can inject a JavaScriptCore VM into a running process on iOS. Through Cycript's foreign function interface, users can interface with C code, including support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is even possible to access and instantiate Objective-C classes inside the running process. Some examples for the use of Cycript are listed in the iOS chapter.
+
+#### Dynamic Instrumentation with FRIDA
+
+FRIDA is a dynamic instrumentation framework that lets the user you inject JavaScript into native apps on Windows, Mac, Linux, iOS, Android, and QNX.
+
+Its injection code uses ptrace to hijack a thread in a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server running on the device, and loads a dynamically generated library file containing the Frida agent and instrumentation code. The original, hijacked thread is restored to its original state and resumed, and execution of the process continues as usual.
+
+FRIDA really awesome is that it injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
 
 ![Frida](images/frida.png)
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
-So far so good. What makes FRIDA really awesome is that it injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
-
-Here are some more awesome APIs FRIDA offers:
+Here are some more APIs FRIDA offers:
 
 -	Instantiate Java objects and call static and non-static class methods;
 -	Replace Java method implementations;
@@ -57,11 +65,13 @@ Some features unfortunately don’t work yet on current Android devices platform
 
 ### Hooking Frameworks
 
+Cydia Substrate (formerly called MobileSubstrate) is the de facto framework that allows 3rd-party developers to provide run-time patches (“Cydia Substrate extensions”) to system functions,
+
 TODO: Introduce concepts and give examples: Xposed, Substrate.
 
-## Basic Static / Dynamic Analysis
+## Static / Dynamic Binary Analysis
 
-TODO: Static vs. dynamic analysis.
+Reverse engineering is the process of reconstructing the semantics of the original source code from a compiled program. In other words, you take the program apart, run it, simulate parts of it, and do other unspeakable things to in order to understand what exactly it is doing and how.
 
 ### Using Disassemblers and Decompilers
 
@@ -79,7 +89,7 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
-## Advanced Analysis and De-Obfuscation
+## Automated De-Obfuscation Attacks
 
 TODO: Introduce advanced concepts
 
@@ -89,3 +99,8 @@ TODO: Introduce RE frameworks
 
 [Miasm](https://github.com/cea-sec/miasm)
 [Metasm](https://github.com/jjyg/metasm)
+
+### Symbolic Execution
+
+
+### Domain-specific attacks
