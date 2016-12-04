@@ -61,9 +61,6 @@ tail -f /var/log/syslog
 ```
 Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
 
-Example output of the command shown above:
-
-
 ### White-box Testing
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
