@@ -59,6 +59,11 @@ Install and use the App as it is intended. It is important to trigger as much ap
 
 #### CoreData/SQLite Databases
 
+- `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level. 
+
+- `sqlite3`: The ‘libsqlite3.dylib’ library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands. 
+
+
 #### NSUserDefaults
 
 The `NSUserDefaults` class provides a programmatic interface for interacting with the defaults system. The defaults system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data. 
