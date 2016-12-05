@@ -21,8 +21,10 @@ To help pentesters and developers to get a basic understanding of the Android ar
 * Linux Kernel: The Linux kernel is the bottom of the Android stack. It is not the traditional Linux system that is usually seen (e.g., Ubuntu). Rather, Android has taken the Linux kernel code and modified it to run in an embedded environment. Thus, it does not have all the features of a traditional Linux distribution. Specifically, there is no X window system in the Android Linux kernel. Nor are there all the GNU utilities generally found in /bin in a traditional Linux environment (e.g., sed, etc.).
 
 References: 
-[1] HAL - https://source.android.com/devices/
+[1] Android Security - https://source.android.com/security/
+[2] HAL - https://source.android.com/devices/
 
 
 
 ## iOS
+
