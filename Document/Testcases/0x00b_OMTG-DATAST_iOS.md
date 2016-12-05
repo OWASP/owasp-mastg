@@ -39,13 +39,46 @@ The following is a list of best practice used for secure storage of certificates
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
+Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the IOS platform:
+
+- CoreData/SQLite Databases
+- NSUserDefaults
+- Plain files
+
+https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+
+
 ### Black-box Testing
 
 ### White-box Testing
 
+#### CoreData/SQLite Databases
+
+#### NSUserDefaults
+
+The `NSUserDefaults` class provides a programmatic interface for interacting with the defaults system. The defaults system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data. 
+
+#### Plain files / Plist files
+
+`NSData`: creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
+
+`NSdataWritingOptions`: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
+
+Storing Data: `writeToFile`
+
+Managing File Paths:  `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
+
+The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
+
+
+
 ### Remediation
 
 ### References
+
+* [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
+* [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
+* [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
