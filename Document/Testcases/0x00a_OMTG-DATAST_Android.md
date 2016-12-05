@@ -735,7 +735,18 @@ Tools:
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+When using Trusted Execution Environment (TEE), private key bits will be generated within it and will never leave the TEE. Private key operations are also performed inside it. Starting with Android 6.0 (API Level 23) hardware-backed keys are supported in Keystore. In order to check if the device and Android OS are supporting hardware-backed Keystore the function isInsideSecureHardware() can be executed to check if a key is store securely. 
+
+```Java
+PrivateKey key = ...; // private key from KeyChain
+
+KeyFactory keyFactory =
+    KeyFactory.getInstance(key.getAlgorithm(), "AndroidKeyStore");
+KeyInfo keyInfo = keyFactory.getKeySpec(key, KeyInfo.class);
+if (keyInfo.isInsideSecureHardware()) {
+    // The key is bound to the secure hardware of this Android
+}
+```
 
 ### Black-box Testing
 
@@ -747,8 +758,8 @@ Tools:
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
-
+Android 6.0 Keystore Enhancements - https://source.android.com/security/keystore/features.html
+Hardware-backed Keystore - https://source.android.com/security/keystore/
 
 
 ## <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test remote locking and wiping
@@ -795,7 +806,7 @@ Tools:
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Secure Element (SE) Trusted Execution Environment (TEE)
 
 ### Black-box Testing
 
