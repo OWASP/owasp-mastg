@@ -43,9 +43,7 @@ Storing data is essential for many mobile applications, for example in order to 
 
 - CoreData/SQLite Databases
 - NSUserDefaults
-- Plain files
-
-https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+- Plain files / Plist files
 
 
 ### Black-box Testing
@@ -60,22 +58,22 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 #### Plain files / Plist files
 
-`NSData`: creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
+- `NSData`: creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
 
-`NSdataWritingOptions`: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
+- Options for methods used to write NSData objects: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
 
-Storing Data: `writeToFile`
+- Store Data as part of the NSData class with: `writeToFile`
 
-Managing File Paths:  `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
+- Managing File Paths:  `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
 
-The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
-
+- The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
 
 
 ### Remediation
 
 ### References
 
+* [File System Basics](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 * [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
