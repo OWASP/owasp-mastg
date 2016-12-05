@@ -2,8 +2,6 @@
 
 Whether we’re talking about malware, banking apps, or mobile games: They all use anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that the defenses, taken together, are “good enough” to provide the desired level of protection in a given scenario? In the MASVS and MSTG, we tackle this question by defining sets of criteria for obfuscations and functional (programmatic) defenses, as well as testing processes that can be used for manual verification.
 
-Note that it is unrealistic to assume that strong resiliency can be proven in an automated, comprehensive and scientifically sound way for a complex application. As a compromise, we aim for defining guidelines, processes and metrics that enable a human tester to provide a reasonable assessment of whether strong resiliency has been achieved. Ideally, experimental data can then be used to verify (or refute) the proposed metrics. The situation is analogue to "regular" security testing: For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
-
 ### Software Protections Model
 
 On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
@@ -64,17 +62,27 @@ Table 2 explains the scoring criteria in detail.
 
 ### Obfuscation Requirements
 
-![Obfuscation model](https://github.com/OWASP/owasp-mstg/blob/master/Document/images/obfuscation-model.png "Reverse engineering processes")
-
-#### Tier 1: Strip meaningful information
+#### 1. Strip meaningful information
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
+
 For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable.
 Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
-#### Tier 2: Obfuscate control flow and data
+#### 2. Obfuscate control flow and data
 
-The second type of obfuscations aims to hide the semantics of a computation by computing the same function in a more complicated way, or encoding sensitive data in ways that are not easily comprehensible. Provided that the adversary has no prior knowledge about the obfuscation parameters applied, these obfuscations increase the reverse engineering effort even for an adversary with full visibility of the execution trace. Obfuscation in this category have the following properties:
+Program code and data can be transformed in unlimited ways - and indeed, the field of control flow and data obfuscation is highly diverse, with a large amount of research dedicated to both obfuscation and de-obfuscation. Deriving general rules as to what is considered *strong* obfuscation is not an easy task. In the MSTG model, we take a two-fold approach:
+
+1. Apply complexity and distance metrics to quantify the overall impact of the obfuscating transformations;
+2. Define domain-specific criteria based on the state-of-the-art in obfuscation research.
+
+Our working hypothesis that reverse engineering effort generally increases with program complexity, as long as no well-known automated de-obfuscation techniques exits. Note that it is unrealistic to assume that strong resiliency can be proven in a scientifically sound way for a complex application. Our goal is to provide guidelines, processes and metrics that enable a human tester to provide a reasonable assessment of whether strong resiliency has been achieved. Ideally, experimental data can then be used to verify (or refute) the proposed metrics. The situation is analogue to "regular" security testing: For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
+
+Different types of obfuscating transformations vary in their impact on program complexity. In general, there is a gradient from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more "intricate" forms of obfuscation that add significant complexity to parts of the code, data and execution trace.
+
+Simple transformations can be used to defeat standard static analysis tools without causing too much impact on size on performance. The execution trace of the obfuscated function(s) remains more or less unchanged. De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
+
+Advanced methods aim to hide the semantics of a computation by computing the same function in a more complicated way, or encoding code and data in ways that are not easily comprehensible. Transformations in this category have the following properties:
 
 - The size and performance penalty can be sizable (scales with the obfuscation settings)
 - De-obfuscation requires advanced methods and/or custom tools
@@ -90,13 +98,3 @@ Some types of obfuscation that fall into this category are:
 - Variable splitting
 - Virtualization
 - White-box cryptography
-
-#### Tier 3: Inhibit reverse engineering processes and tools
-
-The third category of transformations includes tricks that make static analysis more difficult, but do not transform the obfuscated computation per se. That is, the instructions that eventually compute the obfuscated function(s) remain more or less unchanged. Examples for this kind of transformations includes simple packing and encryption of large code blocks and manipulations of executable headers.
-Transformations in this category have the following properties:
-
-- The size and performance penalty is neglibigle;
-- De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
-
-In general, tier 3 obfuscations are a good way to achieve basic levels of reverse engineering protection without causing too much impact on size on performance. They can be used to deter less dedicated adversaries, and to add additional layers of resiliency once tier 1 and 2 obfuscations have been applied.
