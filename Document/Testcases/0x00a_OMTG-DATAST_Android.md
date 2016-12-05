@@ -457,7 +457,8 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 
 ### White-box Testing
 
-The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms expose by the applications. You will want to identify elements such as
+The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the applications. You will want to identify elements such as:
+
 * `<intent-filter>`: more [here][aa2cf4d9]
 * `<service>`: more [here][56866a0a]
 * `<provider>`: more [here][466ff32c]
@@ -467,7 +468,7 @@ Except for the `<intent-filter>` element, check if the the previous elements con
 * `android:exported`
 * `android:permission`
 
-Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can probed to see if they return data. BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
+Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can be probed to see if they return data. Also BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
 
 * Vulnerable ContentProvider
 
@@ -483,7 +484,7 @@ An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere an
 </provider>
 ...
 ```
-The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information can be leaked:
+The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information will be leaked:
 
 ```java
 ...
@@ -532,11 +533,11 @@ private void vulnerableBroadcastFunction() {
 
 ### Black-box Testing
 
-Similar to the White-box pentesting, you should decompile the application (if possibile) and detect a list of IPC mechanisms implemented. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+Similar to the White-box pentesting, you should decompile the application (if possibile) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
 
 * Vulnerable ContentProvider
 
-In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use
+In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use:
 
 ```bash
 $ strings classes.dex | grep "content://"
@@ -560,7 +561,7 @@ To sniff intents install and run the application on a device (actual device or e
 
 For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
 
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`.
+If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`, as otherwise this allows all other Apps on Andorid to communicate and invoke it. 
 
 If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message, which reduces the risk of leaking sensitive information (`LocalBroadcastManager.sendBroadcast()).
 BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to have to read the broadcast. See also [sendBroadcast][2e0ef82d].
