@@ -30,3 +30,20 @@ References:
 
 ## iOS
 
+
+
+
+## Mobile Applications Overview (Work in progress)
+
+Mobile development has taken world to a ride and we have many different ways of developing applications for all mobile platforms.
+
+* Android: Applications are primarily written in Java. However code logic could be abstracted out as a C binary to provide low-level functionality and speed.
+* iOS: Primarily written in Objective C. With introduction of Swift slowly the primary language is shifting to Swift
+* Hybrid: TBD
+* HTML5-Apps: TBD
+
+Besides these there are various frameworks like Phonegap or Kony which allow you to write software in one language and compile the application for multiple platforms.
+Examples for such frameworks are:
+* Phonegap
+* Kony 
+* B4X
