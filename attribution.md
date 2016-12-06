@@ -1,5 +1,25 @@
 ## Attribution (authors from Google Doc)
 
+### Mobile Platform Overview
+
+Adapted from MSTG Beta 2:
+
+Author - Pragati singh
+
+### Android Application Overview
+
+Adapted from MSTG Beta 2:
+
+Author - Dennis Titze
+Reviewer - Anant
+
+### iOS Application Overview
+
+Adapted from MSTG Beta 2:
+
+Author - Stephen Corbiaux
+Reviewer - Pragati singh, Tom Neaves
+
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 Adapted from MSTG Beta 2:
