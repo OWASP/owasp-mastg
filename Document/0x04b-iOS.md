@@ -60,6 +60,7 @@ On a jailbroken device, we can download the installed iOS app (IPA file) using i
 
 
 References:
+
 [usbmuxd](http://www.libimobiledevice.org/)
 
 [usbmux](http://wikee.iphwn.org/usb:usbmux)
