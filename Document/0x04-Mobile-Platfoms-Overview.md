@@ -40,6 +40,7 @@ References:
 
 References: 
 + [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
++ [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)
 
 ## Mobile Applications Overview (Work in progress)
 
