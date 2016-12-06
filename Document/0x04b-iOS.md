@@ -61,8 +61,13 @@ On a jailbroken device, we can download the installed iOS app (IPA file) using i
 
 References:
 [usbmuxd](http://www.libimobiledevice.org/)
+
 [usbmux](http://wikee.iphwn.org/usb:usbmux)
+
 [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)
+
 [ipainstaller](https://github.com/autopear/ipainstaller)
+
 [Hockey Flight](https://hockeyapp.net/)
+
 [Testflight](https://developer.apple.com/testflight/)
