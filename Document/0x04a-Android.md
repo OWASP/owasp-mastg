@@ -120,7 +120,3 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable. 
 
-
-### iOS Application Overview
-
-
