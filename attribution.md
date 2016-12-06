@@ -1,8 +1,5 @@
 ## Attribution (authors from Google Doc)
 
-### Mobile Platform Overview
-
-
 ### Android Application Overview
 
 Adapted from MSTG Beta 2:
