@@ -2,9 +2,6 @@
 
 ### Mobile Platform Overview
 
-Adapted from MSTG Beta 2:
-
-Author - Pragati singh
 
 ### Android Application Overview
 
