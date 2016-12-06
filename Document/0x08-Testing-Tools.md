@@ -1,14 +1,23 @@
 # Testing Tools
-To perform security test we shall be use tools for multipurpose, such as simulation and emulation, packet sniff and manipulation, decompiler and other test case.
+To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behaviour of running Apps and other test cases and automate them. 
 
-# List of Tools:
-+ Genymotion (Android Emulator)
-+ Appie (Android Test Toolkit)
-+ Drozer (Comprehensive security and attack framework for Android)
-+ Androguard (Reverse engineering, Malware and goodware analysis of Android applications)
-+ MobS - Mobile Security Framework (security analysis of Android, iOS and Windows mobile Applications)
-+ Apktool (A tool for reverse engineering Android apk files)
-+ adb (Android Debug Bridge)
-+ Fiddler (Packet sniffer) 
-+ idb (iOS App Security Assessment Tool)
-+ iFunBox (the File and App Management Tool for iPhone, iPad & iPod Touch)
+## Tools for Android and iOS:
++ [Mobile Security Framework - MobS](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
+
+## Tools for Android:
++ [Drozer](https://labs.mwrinfosecurity.com/tools/drozer/)
++ [Androguard](https://github.com/androguard/androguard)
++ [Apktool](https://ibotpeaches.github.io/Apktool/)
++ [Android Debug Bridge - adb](https://developer.android.com/studio/command-line/adb.html)
+
+## iOS
++ [needle](https://github.com/mwrlabs/needle)
++ [idb](http://www.idbtool.com/)
++ [iFunBox](http://www.i-funbox.com/) 
+
+## Interception Proxies
++ [Burp](https://portswigger.net/burp/download.html)
++ [OWASP ZAP](https://github.com/zaproxy/zaproxy)
++ [Fiddler](http://www.telerik.com/fiddler)
+
+
