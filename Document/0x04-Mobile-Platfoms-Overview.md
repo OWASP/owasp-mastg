@@ -10,6 +10,9 @@ Android can be thought of as a software stack comprising different layers. Each 
 
 To help pentesters and developers to get a basic understanding of the Android architectures these layers are briefly described:
 
+**THIS WHOLE SECTION IS COPY PASTE FROM "Android Security: Attacks and Defenses By Anmol Misra, Abhishek Dubey"** 
+
+
 * **Applications**: By default, Android comes with a rich set of applications, including the browser, calendar, e-mail client and so forth. These applications are written in the Java programming language. Google Play (the main marketplace for Android) provides alternatives to these applications and many other applications with different functions. 
 * **Android Framework**: The Android application framework provides a rich set of classes provided (for developers) through Java APIs for applications. This is done through various Application Manager services. The most important components within this layer are Activity Manager, Resource Manager, Location Manager, and Notification Manager.
 * **Native Libraries**: Android includes a set of C and C++ libraries used by different components of the Android system. Developers use these libraries through the Android application framework. At times, this layer is referred to as the “native layer” as the code here is written in C and C++ and optimized for the hardware, as opposed to the Android applications and framework, which are written in Java. Android applications can access native capabilities through Java Native Interface (JNI) calls.
