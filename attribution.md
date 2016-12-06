@@ -10,8 +10,8 @@ Author - Pragati singh
 
 Adapted from MSTG Beta 2:
 
-Author - Dennis Titze
-Reviewer - Anant
+Author - Dennis Titze, Stephanie Vanroelen, Anantshri
+Reviewer - Anantshri
 
 ### iOS Application Overview
 
