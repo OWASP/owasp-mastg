@@ -29,9 +29,10 @@ The following lists contains the individual sections of the MSTG, along with the
 * [Testing Processes and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Stephen Corbiaux](https://github.com/stephenreda)
     * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
     * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-* [Reverse Engineering and Tampering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+* [Reverse Engineering and Tampering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
     * [Android](Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
     * [iOS](Document/0x06b-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+* [Testing Software Protections](Document/0x07-Testing-Software-Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
 * [Testing Data Storage](Document/Testcases/0x00_OMTG-DATAST.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [Android](Document/Testcases/0x00a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [iOS](Document/Testcases/0x00b_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
@@ -53,6 +54,5 @@ The following lists contains the individual sections of the MSTG, along with the
 * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x06_OMTG-RARE.md) -- [Bernhard Mueller](https://github.com/b-mueller)
     * [Android](Document/Testcases/0x06a_OMTG-RARE_Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
     * [iOS](Document/Testcases/0x06b_OMTG-RARE_iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Testing Software Protections](Document/0x07-Testing-Software-Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [Testing Tools](Document/0x08-Testing-Tools.md) - T.b.d.
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
