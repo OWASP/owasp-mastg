@@ -97,10 +97,13 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
 Proceed to a page on the iOS application that contains input fields which prompt users for their sensitive information.
-SSH into your iOS device and execute the following command:
+
+1.SSH into your iOS device and execute the following command:
 ```
 tail -f /var/log/syslog
 ```
+2.Connect your iOS device via USB and launch Xcode. Navigate to Windows > Devices, select your device and the respective application.
+
 Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
 
 ### White-box Testing
