@@ -203,16 +203,43 @@ If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails 
 
 ### White-box Testing
 
+Check with the developers directly if there is any implementation to deactivate the clipboard.
+
+Search through the source code provided to look for any implemented subclass of UITextField. 
+```
+@interface name_of_sub_class : UITextField
+action == @select(cut:)
+action == @select(copy:)
+```
 ### Remediation
 
 Possible remediation method:
 ```#ObjC
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    if (action == @selector(copy:))
-        return NO;
+@interface NoSelectTextField : UITextField
+
+@end
+
+@implementation NoSelectTextField
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    if (action == @selector(paste:) ||
+        action == @selector(cut:) ||
+        action == @selector(copy:) ||
+        action == @selector(select:) ||
+        action == @selector(selectAll:) ||
+        action == @selector(delete:) ||
+        action == @selector(makeTextWritingDirectionLeftToRight:) ||
+        action == @selector(makeTextWritingDirectionRightToLeft:) ||
+        action == @selector(toggleBoldface:) ||
+        action == @selector(toggleItalics:) ||
+        action == @selector(toggleUnderline:)
+        ) {
+            return NO;
+    }
     return [super canPerformAction:action withSender:sender];
 }
+
+@end
 ```
 http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
 
