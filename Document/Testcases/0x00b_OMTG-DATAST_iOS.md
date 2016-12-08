@@ -178,9 +178,20 @@ If the sensitive data can be obtained through the keyboard cache file, it fails 
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
+Check with the developers directly if there is any implementation to disable keyboard cache.
+
+Search through the source code provided to look the following similar implementation.
+```
+textField.autocorrectionType = UITextAutocorrectionTypeNo;
+```
+
 ### Remediation
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+```#ObjC
+UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
+textField.autocorrectionType = UITextAutocorrectionTypeNo;
+```
 
 ### References
 
