@@ -270,7 +270,7 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 
 ### OMTG-DATAST-012: Test support of Hardware-Backed Keystore
-[General description]
+
 
 #### Detailed Guides
 
@@ -278,6 +278,8 @@ Once sensitive functions are identified (like decryption of data) the investigat
 - [OMTG-DATAST-012 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-012)
 
 #### References
+
+
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -324,7 +326,24 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 
 ### OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
-[General description]
+
+A Secure Element (SE) allows to store (cryptographic) secrets in a temper-resistant way. 
+
+A Trusted Execution Environment (TEE) is part of a system on a chip (SoC) in a mobile phone and typically a separate microprocessor in the system or a virtualized instance of the main processor. TEE is isolated from the rest of the system and ensures that sensitive (cryptographic) data is stored, processed and protected in an isolated and trusted environment. 
+
+The following TEE serivces might be offered [1]:
+
+* Key management
+* Secure crypto operations
+* Verification and signing operations
+* Biometrics and Simple authentication features.(FIDO like authentication)
+* REE runtime memory protection
+* Secure Code Execution
+* Secure boot chain
+* Secure storage
+* Trusted User Interface
+* Digital Rights Management (DRM)
+
 
 #### Detailed Guides
 
@@ -332,6 +351,10 @@ Once sensitive functions are identified (like decryption of data) the investigat
 - [OMTG-DATAST-015 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-015)
 
 #### References
+
+[1] - https://www.owasp.org/images/8/88/Onur_Zengin_-_TEE_chapter_meeting_presentation.pdf
+[2] - https://source.android.com/security/trusty/
+
 
 ##### OWASP Mobile Top 10
 

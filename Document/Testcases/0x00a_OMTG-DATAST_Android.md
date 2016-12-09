@@ -457,7 +457,8 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 
 ### White-box Testing
 
-The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms expose by the applications. You will want to identify elements such as
+The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the applications. You will want to identify elements such as:
+
 * `<intent-filter>`: more [here][aa2cf4d9]
 * `<service>`: more [here][56866a0a]
 * `<provider>`: more [here][466ff32c]
@@ -467,7 +468,9 @@ Except for the `<intent-filter>` element, check if the the previous elements con
 * `android:exported`
 * `android:permission`
 
-Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can probed to see if they return data.
+Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can be probed to see if they return data. Also BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
+
+* Vulnerable ContentProvider
 
 An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere any input validation test in the project**)
 
@@ -481,7 +484,7 @@ An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere an
 </provider>
 ...
 ```
-The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information can be leaked:
+The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information will be leaked:
 
 ```java
 ...
@@ -511,12 +514,30 @@ public Cursor query(Uri uri, String[] projection, String selection,
 	}
 ...
 ```
+* Vulnerable Broadcast
+Search in the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, `sendStickyBroadcast` and verify that the application doesn't send any sensitive data.
+
+An example of a vulnerable broadcast is the following:
+
+```java
+private void vulnerableBroadcastFunction() {
+    // ...
+    Intent VulnIntent = new Intent();
+    VulnIntent.setAction("com.owasp.omtg.receiveInfo");
+    VulnIntent.putExtra("ApplicationSession", "SESSIONID=A4EBFB8366004B3369044EE985617DF9");
+    VulnIntent.putExtra("Username", "litnsarf_omtg");
+    VulnIntent.putExtra("Group", "admin");
+  }
+  this.sendBroadcast(VulnIntent);
+```
 
 ### Black-box Testing
 
-Similar to the White-box pentesting, you should decompile the application (if possibile) and detect a list of IPC mechanisms implemented. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+Similar to the White-box pentesting, you should decompile the application (if possibile) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
 
-In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use
+* Vulnerable ContentProvider
+
+In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use:
 
 ```bash
 $ strings classes.dex | grep "content://"
@@ -531,14 +552,36 @@ Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
 ...
 ```
+* Vulnerable Broadcast
+
+To sniff intents install and run the application on a device (actual device or emulated device) and use tools like [drozer][f3b542e2] or [Intent Sniffer][033fefeb] to capture intents and broadcast messages.
+
 
 ### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
+
+If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`, as otherwise this allows all other Apps on Andorid to communicate and invoke it. 
+
+If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message, which reduces the risk of leaking sensitive information (`LocalBroadcastManager.sendBroadcast()).
+BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to have to read the broadcast. See also [sendBroadcast][2e0ef82d].
+You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
+
+If your IPC is intended to be accessible to other applications, you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission` in a service declaration, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service.
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
+* [Binders][0c656fa2]
+* [Services][d97f5ea9]
+* [Bound Services][5a7bc786]
+* [AIDL][8c349a63]
+* [Intents][a28d43d1]
+* [ContentProviders][6a30e426]
+* [Intent-filter][aa2cf4d9]
+* [Service][56866a0a]
+* [Provider][466ff32c]
+* [Receiver][988bd8a2]
+* [SendBroadcast][2e0ef82d]
 
 
 ## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
@@ -692,7 +735,18 @@ Tools:
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+When using Trusted Execution Environment (TEE), private key bits will be generated within it and will never leave the TEE. Private key operations are also performed inside it. Starting with Android 6.0 (API Level 23) hardware-backed keys are supported in Keystore. In order to check if the device and Android OS are supporting hardware-backed Keystore the function isInsideSecureHardware() can be executed to check if a key is store securely. 
+
+```Java
+PrivateKey key = ...; // private key from KeyChain
+
+KeyFactory keyFactory =
+    KeyFactory.getInstance(key.getAlgorithm(), "AndroidKeyStore");
+KeyInfo keyInfo = keyFactory.getKeySpec(key, KeyInfo.class);
+if (keyInfo.isInsideSecureHardware()) {
+    // The key is bound to the secure hardware of this Android
+}
+```
 
 ### Black-box Testing
 
@@ -704,8 +758,8 @@ Tools:
 
 ### References
 
-- [link to relevant how-tos, papers, etc.]
-
+Android 6.0 Keystore Enhancements - https://source.android.com/security/keystore/features.html
+Hardware-backed Keystore - https://source.android.com/security/keystore/
 
 
 ## <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test remote locking and wiping
@@ -752,7 +806,7 @@ Tools:
 
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Secure Element (SE) Trusted Execution Environment (TEE)
 
 ### Black-box Testing
 
@@ -831,3 +885,6 @@ If a link is outdated, you can change it here and it will be updated everywhere 
 [988bd8a2]: https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement"
 [5a7bc786]: https://developer.android.com/guide/components/bound-services.html "BoundServices"
 [8c349a63]: https://developer.android.com/guide/components/aidl.html "AIDL"
+[2e0ef82d]: https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent) "SendBroadcast"
+[033fefeb]: https://www.nccgroup.trust/us/about-us/resources/intent-sniffer/ "IntentSniffer"
+[f3b542e2]: https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer"
