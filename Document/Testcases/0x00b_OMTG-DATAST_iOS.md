@@ -247,17 +247,14 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 ### Black-box Testing
 
-Reset your iOS device keyboard cache by going through:
+1.) Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
-1. Settings > General > Reset > Reset Keyboard Dictionary
+2.) Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
-Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
-
-Dump the keyboard cache file dynamic-text.dat at the following directory:
+3.) Dump the keyboard cache file dynamic-text.dat at the following directory:
 /private/var/mobile/Library/Keyboard/
 
-Look for sensitive data such as username, email addresses, credit card numbers, etc.
-If the sensitive data can be obtained through the keyboard cache file, it fails this test.
+4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
 ### White-box Testing
 
@@ -273,14 +270,11 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ### Remediation
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+
 ```#ObjC
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
-=======
-### Remediation
-
-The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
 
 ### References
 
@@ -291,7 +285,7 @@ The application must ensure that data typed into text fields which contains sens
 
 ### Black-box Testing
 
-Proceeed to a page on the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. 
+Proceeed to a view in the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. 
 
 Enter some values and double tap on the input field. 
 
@@ -303,14 +297,14 @@ If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails 
 
 ### White-box Testing
 
-Check with the developers directly if there is any implementation to deactivate the clipboard.
-
 Search through the source code provided to look for any implemented subclass of UITextField. 
+
 ```
 @interface name_of_sub_class : UITextField
 action == @select(cut:)
 action == @select(copy:)
 ```
+
 ### Remediation
 
 Possible remediation method:
