@@ -181,7 +181,7 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 Proceed to a page on the iOS application that contains input fields which prompt users for their sensitive information.
 
-1.SSH into your iOS device and execute the following command:
+1. Connect to the iOS device and execute the following command:
 ```
 tail -f /var/log/syslog
 ```
@@ -297,7 +297,7 @@ If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails 
 
 ### White-box Testing
 
-Search through the source code provided to look for any implemented subclass of UITextField. 
+Search through the source code provided to look for any implemented subclass of `UITextField`. 
 
 ```
 @interface name_of_sub_class : UITextField
@@ -352,8 +352,9 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 ### Black-box Testing
 
-Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. SSH into your iOS device and proceed to the following directory:
-/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory:
+
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
 
 Depending on your iOS version, the start of the directory (/var/mobile) might be different, the test was conducted on a iOS 8.1 device.
 
@@ -367,7 +368,7 @@ While analyzing the source code, look for the fields or screens where sensitive 
 
 ### Remediation
 
-The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
+The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using `GPUImageiOSBlurFilter`) or overriding the current view in the `applicationDidEnterBackground` state transition method.
 
 ### References
 
