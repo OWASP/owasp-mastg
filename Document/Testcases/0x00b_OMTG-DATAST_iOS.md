@@ -1,5 +1,4 @@
 ## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features 
-<<<<<<< HEAD
 
 ### Black-box Testing
 
@@ -74,7 +73,6 @@ The following is a list of best practice used for secure storage of certificates
 * [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
 * [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 
->>>>>>> master
 
 ## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
@@ -83,14 +81,13 @@ Storing data is essential for many mobile applications, for example in order to 
 - CoreData/SQLite Databases
 - NSUserDefaults
 - Plain files / Plist files
-<<<<<<< HEAD
-=======
+
 
 
 ### Black-box Testing
 
 Install and use the App as it is intended. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. Afterwards check the following items:
->>>>>>> master
+
 
 * Todo
 
@@ -267,7 +264,6 @@ If the sensitive data can be obtained through the keyboard cache file, it fails 
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
-<<<<<<< HEAD
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
 Search through the source code provided to look the following similar implementation.
@@ -295,7 +291,6 @@ The application must ensure that data typed into text fields which contains sens
 
 ## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
 
-<<<<<<< HEAD
 ### Black-box Testing
 
 Proceeed to a page on the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. 
