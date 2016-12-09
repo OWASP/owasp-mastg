@@ -217,8 +217,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 ### References
 
-* [https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html] - Keychain Services Programming Guide
-* [Android KeyStore][19149717]
+* TODO
 
 
 ## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
