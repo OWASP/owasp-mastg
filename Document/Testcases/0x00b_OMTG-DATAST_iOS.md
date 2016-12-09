@@ -282,7 +282,6 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ### Remediation
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
->>>>>>> master
 
 ### References
 
@@ -348,8 +347,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 ### References
 
 
-=======
->>>>>>> master
+
 ## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
 
 ## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
