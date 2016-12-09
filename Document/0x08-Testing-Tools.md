@@ -8,24 +8,25 @@ To perform security testing different tools are available in order to be able to
 ## Tools for Android:
 + [Drozer](https://labs.mwrinfosecurity.com/tools/drozer/)
 + [Androguard](https://github.com/androguard/androguard)
-+ [Apktool](https://ibotpeaches.github.io/Apktool/)
 + [Android Debug Bridge - adb](https://developer.android.com/studio/command-line/adb.html)
 + [Appie - Android Pentesting Portable Integrated Environment](https://manifestsecurity.com/appie/)
+
+### Decompile
++ [Apktool](https://ibotpeaches.github.io/Apktool/)
++ [JADX](https://github.com/skylot/jadx)
++ [JD-GUI](http://jd.benow.ca/)
+
 
 ## iOS 
 + [needle](https://github.com/mwrlabs/needle)
 + [idb](http://www.idbtool.com/)
 + [iFunBox](http://www.i-funbox.com/) 
 
-## Interception Proxies and Packet analizer 
+## Interception Proxies 
 + [Burp suite](https://portswigger.net/burp/download.html)
 + [OWASP ZAP](https://github.com/zaproxy/zaproxy)
 + [Fiddler](http://www.telerik.com/fiddler)
-+ [Wireshark](https://www.wireshark.org/)
 
-## IDE and Code viewer
+## IDE 
++ [IntelliJ](https://www.jetbrains.com/idea/download/)
 + [Eclipse](https://eclipse.org/)
-
-## Decompiler
-+ [JADX](https://github.com/skylot/jadx)
-+ [JD-GUI](http://jd.benow.ca/)
