@@ -249,7 +249,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 Reset your iOS device keyboard cache by going through:
 
-Settings > General > Reset > Reset Keyboard Dictionary
+1. Settings > General > Reset > Reset Keyboard Dictionary
 
 Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
