@@ -13,7 +13,7 @@ Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
 2. SSH into your iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/`
-3. Perform a grep command of the data that you have stored, such as: `grep -irn "jk@vantagepoint.sg"`.
+3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
@@ -50,7 +50,7 @@ Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
 2. SSH into your iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/`
-3. Perform a grep command of the data that you have stored, such as: `grep -irn "jk@vantagepoint.sg"`.
+3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
