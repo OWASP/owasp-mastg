@@ -89,24 +89,17 @@ In this context, return-void means that no certificate checks are performed and 
 
 ![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
-#### Hooking Java Methods with XPosed
+#### Hooking Java methods with Xposed
 
-Xposed is a framework for modules that can change the behavior of the system and apps without touching any APKs. That's great because it means that modules can work for different versions and even ROMs without any changes (as long as the original code was not changed too much). It's also easy to undo. As all changes are done in the memory, you just need to deactivate the module and reboot to get your original system back. There are many other advantages, but here is just one more: Multiple modules can do changes to the same part of the system or app. With modified APKs, you to decide for one. No way to combine them, unless the author builds multiple APKs with different combinations.
+Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:"](http://repo.xposed.info/module/de.robv.android.xposed.installer)". Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app.
 
+That's great because it means that modules can work for different versions and even ROMs without any changes (as long as the original code was not changed too much). It's also easy to undo. As all changes are done in the memory, you just need to deactivate the module and reboot to get your original system back. There are many other advantages, but here is just one more: Multiple modules can do changes to the same part of the system or app. With modified APKs, you to decide for one. No way to combine them, unless the author builds multiple APKs with different combinations.
 
+To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
-http://repo.xposed.info/
+The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial showing how to creating an Xposed module in Android studio.
 
-
-How Xposed works
-Before beginning with your modification, you should get a rough idea how Xposed works (you might skip this section though if you feel too bored). Here is how:
-
-There is a process that is called "Zygote". This is the heart of the Android runtime. Every application is started as a copy ("fork") of it. This process is started by an /init.rc script when the phone is booted. The process start is done with /system/bin/app_process, which loads the needed classes and invokes the initialization methods.
-
-This is where Xposed comes into play. When you install the framework, an extended app_process executable is copied to /system/bin. This extended startup process adds an additional jar to the classpath and calls methods from there at certain places. For instance, just after the VM has been created, even before the main method of Zygote has been called. And inside that method, we are part of Zygote and can act in its context.
-
-The jar is located at /data/data/de.robv.android.xposed.installer/bin/XposedBridge.jar and its source code can be found here. Looking at the class XposedBridge, you can see the main method. This is what I wrote about above, this gets called in the very beginning of the process. Some initializations are done there and also the modules are loaded (I will come back to module loading later).
-
+##### Example: Root Detection Bypass with Xposed
 
 
 #### Code Injection
@@ -121,8 +114,7 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
-
-##### Example: Bypassing Debugger Detection
+##### Example: Bypassing Native Debugger Detection with FRIDA
 
 ~~~
 #v0.1
