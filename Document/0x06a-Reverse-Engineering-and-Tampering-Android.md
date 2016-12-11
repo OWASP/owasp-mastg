@@ -91,11 +91,9 @@ In this context, return-void means that no certificate checks are performed and 
 
 #### Hooking Java methods with Xposed
 
-Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Changes are applied  in memory and persist only during the runtime of the process - no patches to the application files are made.
+Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
-
-The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial showing how to creating an Xposed module in Android studio.
 
 ##### Example: Bypassing Root Detection
 
@@ -125,9 +123,11 @@ public static boolean c() {
 }
 ~~~
 
+This method iterates through a list of directories, and returns "true" (device rooted) if the "su" binary is found in any of them. Checks like this are easy to deactivate - all we have to do is to replace the code with something that returns "false".
 
+Using an Xposed module is one way to do this. Modules for Xposed are developed and deployed with Android Studio just like regular Android apps. The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial) showing how to write, compile and install a module.
 
-Xposed module:
+Code:
 
 ~~~
 

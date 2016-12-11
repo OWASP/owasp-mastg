@@ -70,7 +70,7 @@ Reverse engineering is the process of reconstructing the semantics of the origin
 
 ### Using Disassemblers and Decompilers
 
-Disassemblers and decompilers allow you to translate an app's binary code or byte-code back into a more or less understandable format. In the case of native binaries, you'll usually obtain assembler code matching the architecture the app was compiled for. Android Java apps can be disassembled to Smali (an Assembler language for the dex format), and also quite easily converted back to Java code.  
+Disassemblers and decompilers allow you to translate an app's binary code or byte-code back into a more or less understandable format. In the case of native binaries, you'll usually obtain assembler code matching the architecture the app was compiled for. Android Java apps can be disassembled to Smali (an Assembler language for the dex format), and also quite easily converted back to Java code.
 
 TODO: introduce a few standard tools, IDA Pro Hopper, Radare2, JEB (?)
 
