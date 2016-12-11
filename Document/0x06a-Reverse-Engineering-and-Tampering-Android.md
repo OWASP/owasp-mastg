@@ -91,9 +91,7 @@ In this context, return-void means that no certificate checks are performed and 
 
 #### Hooking Java methods with Xposed
 
-Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:"](http://repo.xposed.info/module/de.robv.android.xposed.installer)". Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app.
-
-That's great because it means that modules can work for different versions and even ROMs without any changes (as long as the original code was not changed too much). It's also easy to undo. As all changes are done in the memory, you just need to deactivate the module and reboot to get your original system back. There are many other advantages, but here is just one more: Multiple modules can do changes to the same part of the system or app. With modified APKs, you to decide for one. No way to combine them, unless the author builds multiple APKs with different combinations.
+Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Changes are applied  in memory and persist only during the runtime of the process - no patches to the application files are made.
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
