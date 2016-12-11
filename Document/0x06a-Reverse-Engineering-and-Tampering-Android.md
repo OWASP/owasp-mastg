@@ -97,10 +97,10 @@ To use Xposed, you first need to install the Xposed framework on a rooted device
 
 The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial showing how to creating an Xposed module in Android studio.
 
-##### Example: Root Detection Bypass with Xposed
+##### Example: Bypassing Root Detection
 
 
-#### Code Injection
+#### Code Injection with FRIDA
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -112,7 +112,7 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
-##### Example: Bypassing Native Debugger Detection with FRIDA
+##### Example: Bypassing Native Debugger Detection
 
 ~~~
 #v0.1
