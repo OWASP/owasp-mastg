@@ -116,7 +116,7 @@ public static boolean c() {
 
     for(int v3 = 0; v3 < v2; v3++) {
       if(new File(String.valueOf(v1[v3]) + "su").exists()) {
-         v0 = true;
+         v0 = true;M
          return v0;
       }
     }
@@ -124,6 +124,41 @@ public static boolean c() {
     return v0;
 }
 ~~~
+
+
+
+Xposed module:
+
+~~~
+
+package com.awesome.pentestcompany;
+
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+public class DisableRootCheck implements IXposedHookLoadPackage {
+
+    public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
+        if (!lpparam.packageName.equals("com.example.targetapp"))
+            return;
+
+        findAndHookMethod("com.example.a.b", lpparam.classLoader, "c", new XC_MethodHook() {
+            @Override
+
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedBridge.log("Caught root check!");
+                param.setResult(false);
+            }
+
+        });
+    }
+}
+
+~~~
+
 
 
 #### Code Injection with FRIDA
