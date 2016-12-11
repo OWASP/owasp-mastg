@@ -561,7 +561,7 @@ To sniff intents install and run the application on a device (actual device or e
 
 For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
 
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`, as otherwise this allows all other Apps on Andorid to communicate and invoke it. 
+If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`, as otherwise this allows all other Apps on Andorid to communicate and invoke it.
 
 If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message, which reduces the risk of leaking sensitive information (`LocalBroadcastManager.sendBroadcast()).
 BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to have to read the broadcast. See also [sendBroadcast][2e0ef82d].
@@ -586,14 +586,31 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 ## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
 
-
 ### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+To verify if the application may expose sensitive information via the user interface or screenshot, detect if the `FLAG_SECURE` options is set in the activity that needs to be protected.
+
+You should be able to find something similar to the following line.
+
+```Java
+getWindow().setFlags(LayoutParams.FLAG_SECURE, LayoutParams.FLAG_SECURE);
+```
+If not, the application is probably vulnerable to screen capturing.
 
 ### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+To analyse if the application leaks any sensitive information, run the application on a device and try to acquire a screenshot of the activity or activities you want to test.
+
+Steps to reproduce:
+* Install the application on an actual device or emulator
+ * `adb shell install <apk_name>`
+* Run the application
+* Take a screenshot and save in the current folder
+ * `adb shell screencap -p /sdcard/screencap.png && adb pull /sdcard/screencap.png`
+
+If you can see the application screenshot, the application is vulnerable, otherwise you will obtain a file of 0kb.
+
+![OMTG_DATAST_008_FLAG_SECURE](/Document/images/2016/12/OMTG_DATAST_008.png)
 
 ### Remediation
 
@@ -735,7 +752,7 @@ Tools:
 
 ### White-box Testing
 
-When using Trusted Execution Environment (TEE), private key bits will be generated within it and will never leave the TEE. Private key operations are also performed inside it. Starting with Android 6.0 (API Level 23) hardware-backed keys are supported in Keystore. In order to check if the device and Android OS are supporting hardware-backed Keystore the function isInsideSecureHardware() can be executed to check if a key is store securely. 
+When using Trusted Execution Environment (TEE), private key bits will be generated within it and will never leave the TEE. Private key operations are also performed inside it. Starting with Android 6.0 (API Level 23) hardware-backed keys are supported in Keystore. In order to check if the device and Android OS are supporting hardware-backed Keystore the function isInsideSecureHardware() can be executed to check if a key is store securely.
 
 ```Java
 PrivateKey key = ...; // private key from KeyChain

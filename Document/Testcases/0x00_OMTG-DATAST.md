@@ -174,7 +174,7 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 
 ### OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
-During development of mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data. 
+During development of mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 #### Detailed Guides
 
@@ -192,7 +192,7 @@ During development of mobile application, traditional techniques for IPC might b
 
 
 ### OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
-[General description]
+Sensitive data could be exposed if a user deliberately takes a screenshot of the application (containing sensitive data), or in the case of malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a bank application running on the device may reveal information about the user account, his credit, transactions and so on.
 
 #### Detailed Guides
 
@@ -202,11 +202,10 @@ During development of mobile application, traditional techniques for IPC might b
 #### References
 
 ##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
+* M4 - Unintended Data Leakage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+- CWE-200: Information Exposure [https://cwe.mitre.org/data/definitions/200.html]
 
 
 
@@ -327,9 +326,9 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 ### OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
 
-A Secure Element (SE) allows to store (cryptographic) secrets in a temper-resistant way. 
+A Secure Element (SE) allows to store (cryptographic) secrets in a temper-resistant way.
 
-A Trusted Execution Environment (TEE) is part of a system on a chip (SoC) in a mobile phone and typically a separate microprocessor in the system or a virtualized instance of the main processor. TEE is isolated from the rest of the system and ensures that sensitive (cryptographic) data is stored, processed and protected in an isolated and trusted environment. 
+A Trusted Execution Environment (TEE) is part of a system on a chip (SoC) in a mobile phone and typically a separate microprocessor in the system or a virtualized instance of the main processor. TEE is isolated from the rest of the system and ensures that sensitive (cryptographic) data is stored, processed and protected in an isolated and trusted environment.
 
 The following TEE serivces might be offered [1]:
 
