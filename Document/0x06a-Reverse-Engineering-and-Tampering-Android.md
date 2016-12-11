@@ -89,6 +89,19 @@ In this context, return-void means that no certificate checks are performed and 
 
 ![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
+#### Hooking Java methods with Xposed
+
+Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:"](http://repo.xposed.info/module/de.robv.android.xposed.installer)". Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app.
+
+That's great because it means that modules can work for different versions and even ROMs without any changes (as long as the original code was not changed too much). It's also easy to undo. As all changes are done in the memory, you just need to deactivate the module and reboot to get your original system back. There are many other advantages, but here is just one more: Multiple modules can do changes to the same part of the system or app. With modified APKs, you to decide for one. No way to combine them, unless the author builds multiple APKs with different combinations.
+
+To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
+
+The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial showing how to creating an Xposed module in Android studio.
+
+##### Example: Root Detection Bypass with Xposed
+
+
 #### Code Injection
 
 Here are some more APIs FRIDA offers on Android:
@@ -101,8 +114,7 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
-
-##### Example: Bypassing Debugger Detection
+##### Example: Bypassing Native Debugger Detection with FRIDA
 
 ~~~
 #v0.1
