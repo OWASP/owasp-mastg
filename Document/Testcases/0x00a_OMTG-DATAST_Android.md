@@ -610,7 +610,7 @@ Steps to reproduce:
 
 If you can see the application screenshot, the application is vulnerable, otherwise you will obtain a file of 0kb.
 
-![OMTG_DATAST_008_FLAG_SECURE](/Document/images/2016/12/OMTG_DATAST_008.png)
+![OMTG_DATAST_008_FLAG_SECURE](/images/2016/12/OMTG_DATAST_008.png)
 
 ### Remediation
 
@@ -619,8 +619,6 @@ If you can see the application screenshot, the application is vulnerable, otherw
 ### References
 
 - [link to relevant how-tos, papers, etc.]
-
-
 
 
 ## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
