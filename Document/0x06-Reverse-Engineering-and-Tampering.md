@@ -8,7 +8,7 @@ Reverse engineering is an art, and describing every available facet of it would 
 
 There is no generic reverse engineering process that always works. That said, we'll describe commonly used methods and tools later on, and give examples for tackling the most common defenses.
 
-## Why should you even bother?
+## Why Should You Even Bother?
 
 To sum things up, mobile security testing requires at least basic reverse engineering skills for several reasons:
 
@@ -18,19 +18,21 @@ To sum things up, mobile security testing requires at least basic reverse engine
 
 **3. To assess resiliency against reverse engineering.**  Apps that implement software protections according to MASVS L3 or L4 should be resilient against reverse engineering. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses. Advanced reverse engineering skills are required to perform this kind of test.
 
+## Before You Start
+
 ## Basic Tampering Techniques
 
 Tampering is the process of making changes to a mobile app either the compiled app, or the running process) or its environment to affect changes in its behavior. For example, and app might refuse to running on your rooted test device, making it impossible to run some of your tests. In cases like that, you'll want to alter that particular behavior.
 
 In the following section we'll give a high level overview of the techniques most commonly used in mobile app security testing. Later, we'll drill down into  OS-specific details for both Android and iOS.
 
-### Patching
+### Binary Patching
 
 Patching means making changes to the compiled app - e.g. changing code in a binary executable file(s), modifying Java bytecode, or tampering with resources. Patches can be applied in any number of ways, from decompiling and re-assembling an app, to editing binary files in a hex editor - anything goes (this rule applies to all of reverse engineering). We'll give some detailed examples for useful patches in later chapters.
 
 One thing to keep in mind is that modern mobile OSes strictly enforce code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. Yep, security experts had a much easier life in the 90ies! Fortunately, this is not all that difficult to do if you work on your own device - it simply means that you need to re-sign the app, or disable the default code signing facilities to run modified code.
 
-### Code Injection
+### Runtime Patching and Instrumentation
 
 Code injection is a very powerful technique that allows you to explore and modify processes during runtime. The injection process can be implemented in various ways*, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate it. These tools give you direct access to process memory and important structures such as live objects instantiated by the app, and come with many useful utility functions for resolving loaded libraries, hooking methods and native functions, and more. Tampering with process memory is more difficult to detect than patching files, making in the preferred method in the majority of cases.
 
@@ -38,7 +40,11 @@ The two best-known code injection frameworks are Substrate and FRIDA. The main d
 
 To complicate things, FRIDA's authors also created a fork of Cycript named ["frida-cycript"](https://github.com/nowsecure/frida-cycript) that replaces Cycript's runtime with a Frida-based runtime called Mjølner. This enables Cycript run on all the platforms and architectures maintained by frida-core. The release was accompanies by a blog post by Ole titled "Cycript on Steroids", which prompted a vitriolic response by Saurik on [Reddit](https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/).
 
-#### Cycript and Cynject
+#### Cydia Substrate
+
+Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS.
+
+##### Cycript and Cynject
 
 Cynject is a tool that provides code injection support for C. It can inject a JavaScriptCore VM into a running process on iOS. Through Cycript's foreign function interface, users can interface with C code, including support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is even possible to access and instantiate Objective-C classes inside the running process. Some examples for the use of Cycript are listed in the iOS chapter.
 
@@ -54,9 +60,7 @@ FRIDA really awesome is that it injects a complete JavaScript runtime into the p
 
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
-### Hooking Frameworks
-
-Cydia Substrate (formerly called MobileSubstrate) is the de facto framework that allows 3rd-party developers to provide run-time patches (“Cydia Substrate extensions”) to system functions,
+#### Xposed
 
 TODO: Introduce concepts and give examples: Xposed, Substrate.
 
