@@ -99,6 +99,32 @@ The author, rovo89, provides a great [tutorial](https://github.com/rovo89/Xposed
 
 ##### Example: Bypassing Root Detection
 
+Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
+
+~~~
+
+package com.example.a.b
+
+public static boolean c() {
+  int v3 = 0;
+  boolean v0 = false;
+
+  String[] v1 = new String[]{"/sbin/", "/system/bin/", "/system/xbin/", "/data/local/xbin/",
+    "/data/local/bin/", "/system/sd/xbin/", "/system/bin/failsafe/", "/data/local/"};
+
+    int v2 = v1.length;
+
+    for(int v3 = 0; v3 < v2; v3++) {
+      if(new File(String.valueOf(v1[v3]) + "su").exists()) {
+         v0 = true;
+         return v0;
+      }
+    }
+
+    return v0;
+}
+~~~
+
 
 #### Code Injection with FRIDA
 
