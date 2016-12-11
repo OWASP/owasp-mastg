@@ -610,7 +610,7 @@ Steps to reproduce:
 
 If you can see the application screenshot, the application is vulnerable, otherwise you will obtain a file of 0kb.
 
-![OMTG_DATAST_008_FLAG_SECURE](/images/2016/12/OMTG_DATAST_008.png)
+![OMTG_DATAST_008_FLAG_SECURE](../images/Testcases/OMTG_DATAST_008.png)
 
 ### Remediation
 
