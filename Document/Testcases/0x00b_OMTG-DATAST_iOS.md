@@ -12,7 +12,7 @@ A way to identify if sensitive information like credentials and keys are stored 
 Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/` (Might be different in IOS below 8.0)
+2. Connect to the iOS device and browse to the following directory (Might be different in IOS below 8.0): `/var/mobile/Containers/Data/Application/$APP_ID/` 
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
@@ -48,7 +48,7 @@ A way to identify if sensitive information like credentials and keys are stored 
 Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/` (Might be different in IOS below 8.0
+2. Connect to the iOS device and browse to the following directory (Might be different in IOS below 8.0): `/var/mobile/Containers/Data/Application/$APP_ID/` 
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
@@ -247,8 +247,8 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 2.) Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
-3.) Dump the keyboard cache file dynamic-text.dat at the following directory:
-/private/var/mobile/Library/Keyboard/ (Might be different in IOS below 8.0
+3.) Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in IOS below 8.0):
+/private/var/mobile/Library/Keyboard/
 
 4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
@@ -348,9 +348,9 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 ### Black-box Testing
 
-Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory:
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (Might be different in IOS below 8.0):
 
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`(Might be different in IOS below 8.0
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
 
 If the application caches the sensitive information page as a screenshot, it fails this test.
 
