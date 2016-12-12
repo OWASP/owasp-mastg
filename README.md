@@ -35,7 +35,7 @@ The following lists contains the individual sections of the MSTG, along with the
 * [Testing Software Protections](Document/0x07-Testing-Software-Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
 * [Testing Data Storage](Document/Testcases/0x00_OMTG-DATAST.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [Android](Document/Testcases/0x00a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
-    * [iOS](Document/Testcases/0x00b_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
+    * [iOS](Document/Testcases/0x00b_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n), [Jin Kun Ong](https://github.com/jinkunong)
 * [Testing Cryptography](Document/Testcases/0x01_OMTG-CRYPTO.md) --  [Gerhard Wagner](https://github.com/thec00n)
     * [Android](Document/Testcases/0x01a_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
     * [iOS](Document/Testcases/0x01b_OMTG-CRYPTO_iOS.md) --  [Gerhard Wagner](https://github.com/thec00n)
