@@ -16,8 +16,9 @@ Steps :
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
-Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
+Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases. 
 
+Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. 
@@ -55,6 +56,7 @@ Steps :
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
 
+Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. 
@@ -254,6 +256,8 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
+Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
+
 ### White-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
@@ -267,7 +271,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 ### Remediation
 
-The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the AutoCorrection = FALSE directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textField.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
 
 ```#ObjC
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -354,11 +358,11 @@ Proceed to a page on the application which displays sensitive information such a
 
 `/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
 
-Depending on your iOS version, the start of the directory (/var/mobile) might be different, the test was conducted on a iOS 8.1 device.
-
 If the application caches the sensitive information page as a screenshot, it fails this test.
 
 It is highly recommended to have a default screenshot that will be cached whenever the application enters background.
+
+Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 
