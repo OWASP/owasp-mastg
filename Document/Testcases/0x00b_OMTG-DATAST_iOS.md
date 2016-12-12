@@ -12,13 +12,11 @@ A way to identify if sensitive information like credentials and keys are stored 
 Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/`
+2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/` (Might be different in IOS below 8.0)
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases. 
-
-Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. 
@@ -50,13 +48,11 @@ A way to identify if sensitive information like credentials and keys are stored 
 Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/`
+2. Connect to the iOS device and browse to the following directory: `/var/mobile/Containers/Data/Application/$APP_ID/` (Might be different in IOS below 8.0
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.  
-
-Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 When going through the source code it should be analyzed if native mechanisms that are offered by IOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. 
@@ -252,11 +248,9 @@ Use a define to enable NSLog statements for development and debugging, and disab
 2.) Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
 3.) Dump the keyboard cache file dynamic-text.dat at the following directory:
-/private/var/mobile/Library/Keyboard/
+/private/var/mobile/Library/Keyboard/ (Might be different in IOS below 8.0
 
 4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
-
-Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 
@@ -356,13 +350,11 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory:
 
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`(Might be different in IOS below 8.0
 
 If the application caches the sensitive information page as a screenshot, it fails this test.
 
 It is highly recommended to have a default screenshot that will be cached whenever the application enters background.
-
-Please note that the directory may differ if your iOS device is running on an older version. (Below 8.0)
 
 ### White-box Testing
 
