@@ -590,7 +590,6 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 To verify if the application may expose sensitive information via the user interface or screenshot, detect if the `[FLAG_SECURE][ee87d351]` options is set in the activity that needs to be protected.
 
-
 You should be able to find something similar to the following line.
 
 ```Java
@@ -716,6 +715,7 @@ getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
 
 setContentView(R.layout.activity_main);
 ```
+
 Moreover, the following suggestions can also be implemented to enhance your application security posture:
 * Quit the app entirely when backgrounded. This will destroy any retained GUI screens.
 * Nullify the data on a GUI screen before leaving the screen or logging out.
