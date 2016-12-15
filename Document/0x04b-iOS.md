@@ -1,5 +1,20 @@
 ## iOS
 
+(...TODO...)
+
+As every platform, also iOS provides a SDK (Software Development Kit) that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. iOS applications are implemented either by using Objective-C or Swift.
+
+Objective-C is an object-oriented programming language that is based on C and is used on macOS and iOS to develop (mobile) applications. Even macOS and iOS itself is mainly implemented by using Objective-C.
+
+Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+
+### iOS Security Architecture
+
+(...TODO...)
+
+![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
+*iOS Security Architecture (iOS Security Guide)*
+
 ### Structure of an iOS Application
 
 iOS applications are distributed in IPA (iOS App Store Package) archives. This IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be easily decompressed.
@@ -10,7 +25,7 @@ An IPA has a built-in structure for iTunes and App Store to recognize, The examp
 * /iTunesMetadata.plist contains various bits of information, ranging from the developer's name and ID, the bundle identifier, copyright information, genre, the name of the app, release date, purchase date, etc.
 * /WatchKitSupport/WK is an example of an extension bundle. This specific bundle contains the extension delegate and the controllers for managing the interfaces and for responding to user interactions on an Apple watch.
 
-### Installation of an application
+### App Installation Process
 
 Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. ITunes Packages exist for OS X as well as for Windows. iTunes allows you to download applications through the App Store, after which you can synchronise them to an iOS device. The App store is the official application distribution platform from Apple. You can also use iTunes to load an ipa to a device. This can be done by adding “dragging” it into the Apps section, after which we can then add it to a device.
 
@@ -24,9 +39,9 @@ The IPA can also be installed directly from command line by using [ipainstaller]
 $ ipainstaller App_in_scope.ipa
 ```
 
-### Application locations
+#### App Folder Structure
 
-SInce iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/ folder. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since iOS 8 this has changed however, so we will see that the static bundle and the application data folders are now stored in different locations on the filesystem. These folders contain information that we will need to closely examine during application security assessments.
+Since iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/ folder. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since iOS 8 this has changed however, so we will see that the static bundle and the application data folders are now stored in different locations on the filesystem. These folders contain information that we will need to closely examine during application security assessments.
 
 * /var/mobile/Containers/Bundle/Application/[UUID]/Application.app contains the previously mentioned application.app data and stores the static content as well as the ARM compiled binary of the application. The content of this folder will be used to validate the code signature.
 * /var/mobile/Containers/Data/Application/[UUID]/Documents contains all the data stored for the application itself. The creation of this data is initiated by the application’s end user.
@@ -38,7 +53,7 @@ The following figure represents the application’s folder structure:
 ![iOS App Folder Structure](http://bb-conservation.de/sven/iOS.png)
 
 
-### IPA Payloads, a closer look
+#### IPA Payloads - A Closer Look
 
 Let’s take a closer look now at the different files that are to be found in the ZIP compressed IPA container. It is necessary to understand that this is the raw architecture of the bundle container and not the definitive form after installation on the device. It uses a relatively flat structure with few extraneous directories in an effort to save disk space and simplify access to the files. The bundle contains the application executable and any resources used by the application (for instance, the application icon, other images, and localized content) in the top-level bundle directory.
 
@@ -58,9 +73,11 @@ A language.lproj folder is defined for each language that the application suppor
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using IPA Installer (see also [Testing Processes and Techniques](Document/0x05b-Testing-Process-and-Techniques-iOS.md)). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp] or [Testflight].
 
+### References
 
-References:
-
++ [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
++ [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
++ [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)
 - [usbmuxd](http://www.libimobiledevice.org/)
 - [usbmux](http://wikee.iphwn.org/usb:usbmux)
 - [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)
