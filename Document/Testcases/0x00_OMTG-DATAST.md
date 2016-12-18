@@ -9,7 +9,7 @@ This chapter gives an overview of the technical capabilites of the Android platf
 
 ## Test Cases
 
-### OMTG-DATAST-001-1: Test for system credentials storage features
+### OMTG-DATAST-001-1: Test Credential Storage
 Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case credentials or keys needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information.
 
 The following tasks should be done when analysing an App:
@@ -24,7 +24,7 @@ The following tasks should be done when analysing an App:
 #### References
 
 ##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
-* Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
+* System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -52,8 +52,7 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 #### References
 
 ##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
-* Verify that system credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
-
+* System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
 
 ### OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
@@ -86,9 +85,7 @@ Classification of sensitive information can vary between different industries, c
 * CWE-534: Information Exposure Through Debug Log Files
 
 
-
-
-### OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
+### OMTG-DATAST-003: Test for Sensitive Information in Cloud Storage
 
 Android provides two ways for apps to backup their data to the cloud:
 * Auto Backup for Apps (available >= API level 23), which uploads the data to the users Google Drive account.
@@ -110,7 +107,7 @@ Android provides two ways for apps to backup their data to the cloud:
 
 
 
-### OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
+### OMTG-DATAST-004: Test Data Communication with Third Parties
 
 Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
@@ -135,7 +132,7 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 
 
-### OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+### OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
 When keying in data into input fields, the software keyboard automatically suggests what data the user might want to key in. This feature can be very useful in messaging Apps to write text messages more efficient. For input fields that are asking for sensitive information like passwords or credit card data the keyboard cache might disclose sensitive information already when the input field is selected. This feature should therefore be disabled for input fields that are asking for sensitive information.
 
 #### Detailed Guides
@@ -154,7 +151,7 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 
 
-### OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+### OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 [General description]
 
 #### Detailed Guides
@@ -173,7 +170,7 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 
 
-### OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
+### OMTG-DATAST-007: Test for Sensitive Data Leakage via IPC Mechanisms
 During development of mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 #### Detailed Guides
@@ -191,7 +188,7 @@ During development of mobile application, traditional techniques for IPC might b
 - CWE: [Link to CWE issue]
 
 
-### OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
+### OMTG-DATAST-008: Test for Sensitive Data in the User Interface and Screenshots
 Sensitive data could be exposed if a user deliberately takes a screenshot of the application (containing sensitive data), or in the case of malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a bank application running on the device may reveal information about the user account, his credit, transactions and so on.
 
 #### Detailed Guides
@@ -225,7 +222,7 @@ Consider to encrypt backup data and avoid to store any sensitive information tha
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
+### OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
 Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
 
 #### Detailed Guides
@@ -241,7 +238,6 @@ Manufacturers want to provide device users an aesthetically pleasing effect when
 
 ##### CWE
 - CWE: [Link to CWE issue]
-
 
 
 ### OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
@@ -289,7 +285,7 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 
 
-### OMTG-DATAST-013: Test remote locking and wiping
+### OMTG-DATAST-013: Test Remote Locking and Wiping
 [General description]
 
 #### Detailed Guides
