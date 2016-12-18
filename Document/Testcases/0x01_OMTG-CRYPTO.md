@@ -1,10 +1,6 @@
-# Testing [Category]
-
-## Overview
+## Testing [Category]
 
 [Describe what this chapter is about.]
-
-## Test Cases
 
 ### OMTG-[NUMBER]: [NAME]
 [General description]
