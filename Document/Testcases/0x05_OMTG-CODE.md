@@ -10,8 +10,8 @@ Debugging is a technique where a hook is attached to a particular application co
 
 #### Detailed Guides
 
-- [OMTG-CODE-001 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-001)
-- [OMTG-CODE-001 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-001)
+- [OMTG-CODE-001 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-001)
+- [OMTG-CODE-001 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-001)
 
 #### References
 
@@ -32,8 +32,8 @@ Testing for Exception Handling means verifying that mobile app fails safely unde
 
 #### Detailed Guides
 
-- [OMTG-CODE-002 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-002)
-- [OMTG-CODE-002 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-002)
+- [OMTG-CODE-002 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-002)
 
 #### References
 
@@ -65,8 +65,8 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 
 #### Detailed Guides
 
-- [OMTG-CODE-003 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-003)
-- [OMTG-CODE-003 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-003)
+- [OMTG-CODE-003 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-003)
+- [OMTG-CODE-003 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-003)
 
 #### References
 
@@ -86,8 +86,8 @@ Having unreachable code inside an app can be considered as a security risk, as i
 
 #### Detailed Guides
 
-- [OMTG-CODE-004 Android](0x06a_OMTG-CODE_Android.md#OMTG-CODE-004)
-- [OMTG-CODE-004 iOS](0x06b_OMTG-CODE_iOS.md#OMTG-CODE-004)
+- [OMTG-CODE-004 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-004)
+- [OMTG-CODE-004 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-004)
 
 ##### OWASP MASVS: V7: Code quality and build setting requirements
 * If the app contains unmanaged code, verify that memory is allocated, freed and used securely.
