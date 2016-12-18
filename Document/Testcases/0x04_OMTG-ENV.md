@@ -11,8 +11,8 @@
 
 #### Detailed Guides
 
-- [OMTG-ENV-001 Android](0x05a_OMTG-ENV_Android.md#OMTG-ENV-001)
-- [OMTG-ENV-001 iOS](0x05b_OMTG-ENV_iOS.md#OMTG-ENV-001)
+- [OMTG-ENV-001 Android](0x04a_OMTG-ENV_Android.md#OMTG-ENV-001)
+- [OMTG-ENV-001 iOS](0x04b_OMTG-ENV_iOS.md#OMTG-ENV-001)
 
 #### References
 
