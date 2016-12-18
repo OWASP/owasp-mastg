@@ -1,23 +1,36 @@
-# Testing Code Quality
+# Testing Code Quality and Build Settings
 
 ## Overview
 The goal of this section is to ensure that basic security coding practices are followed in developing the app, and that "free" security features offered by the compiler are activated.
 
 ## Test Cases
 
-### OMTG-CODE-001: Testing for Debug Build 
-Debugging is a technique where a hook is attached to a particular application code. Execution pauses once a particular piece of code is reached (break point), giving us the ability to analyze local variables, dump class values, modify values, and generally interact with the program state. A debug build allows therefore an attacker to attach a debugger to the application in order to analyze the behavior during runtime.
+### OMTG-CODE-001: Verify the App Signature
 
 #### Detailed Guides
 
-- [OMTG-CODE-001 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-001)
-- [OMTG-CODE-001 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-001)
+- [OMTG-CODE-002 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-002)
 
 #### References
 
-##### OWASP MASVS: V7: Code quality and build setting requirements
-* Verify that all debugging code is removed from the release build, and that the app does log detailed error messages.
-* Verify that the app is marked as a release build.
+##### OWASP MASVS
+
+- V7.1: The app is signed and provisioned with valid certificate.
+
+### OMTG-CODE-002: Test Whether the App is Debuggable
+Debugging is one of the most powerful dynamic analysis techniques. By attaching a debugger to the running app, it is possible to pause execution at any point and inspect local variables, dump class values, modify values, and generally interact with the program state. Mobile operating systems may differentiate between debug and release builds of an app, and prevent debugging by default unless the app is tagged as a debug build. A a best-practice, debugging should be disabled in a production build.
+
+#### Detailed Guides
+
+- [OMTG-CODE-002 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-002)
+- [OMTG-CODE-002 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-002)
+
+#### References
+
+##### OWASP MASVS
+
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
 
 ##### OWASP Mobile Top 10
 * M7 - Client Code Quality
@@ -27,19 +40,47 @@ Debugging is a technique where a hook is attached to a particular application co
 - CWE-489: Leftover Debug Code
 
 
-### OMTG-CODE-002: Testing for Exception Handling
-Testing for Exception Handling means verifying that mobile app fails safely under all possible expected and unexpected runtime errors, to ensure reliability during execution, and to avoid leaking sensitive data to a malicious third-party application (see : #TODO). 
+### OMTG-CODE-003: Test For Debugging Symbols in Native Binaries
+(todo)
 
 #### Detailed Guides
 
-- [OMTG-CODE-002 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-002)
-- [OMTG-CODE-002 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-002)
+- [OMTG-AUTH-XXX Android](0x02a_OMTG-AUTH-Andorid.md#OMTG-AUTH-XXX)
+- [OMTG-AUTH-XXX iOS](0x02b_OMTG-AUTH_iOS.md#OMTG-AUTH-0XXX)
 
 #### References
 
-##### OWASP MASVS: V7: Code quality and build setting requirements
-* Verify that the application catches and handles possible exceptions.
-* Verify that error handling logic in security controls denies access by default.
+##### OWASP MASVS
+* V7.3: Debugging symbols have been removed from native binaries.
+
+
+### OMTG-CODE-004: Test for Debugging Code in the Release Build
+(todo)
+
+#### Detailed Guides
+
+- [OMTG-AUTH-XXX Android](0x02a_OMTG-AUTH-Andorid.md#OMTG-AUTH-XXX)
+- [OMTG-AUTH-XXX iOS](0x02b_OMTG-AUTH_iOS.md#OMTG-AUTH-0XXX)
+
+#### References
+
+##### OWASP MASVS
+* V7.4: Debugging code has been removed, and the app does not log verbose errors or debugging messages.
+
+
+### OMTG-CODE-005-006: Test Exception Handling
+Verify that the that mobile app fails safely under all possible expected and unexpected runtime errors, to ensure reliability during execution, and to avoid leaking sensitive data to a malicious third-party application (see : #TODO). 
+
+#### Detailed Guides
+
+- [OMTG-CODE-005 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-005)
+- [OMTG-CODE-005 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-005)
+
+#### References
+
+##### OWASP MASVS
+* V7.5: The app catches and handles possible exceptions.
+* V7.6: Error handling logic in security controls denies access by default.
 
 ##### OWASP Mobile Top 10
 * M7 - Client Code Quality
@@ -48,7 +89,24 @@ Testing for Exception Handling means verifying that mobile app fails safely unde
 - CWE-636: Not Failing Securely ('Failing Open')
 - CWE-391: Unchecked Error Condition
 
-### OMTG-CODE-003: Testing for Secure Compiler Flags
+### OMTG-CODE-008: Test Memory Management
+(...TODO... Description needs to be rewritten to correctly reflect the requirement).
+
+#### Detailed Guides
+
+- [OMTG-CODE-008 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-008)
+- [OMTG-CODE-008 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-008)
+
+##### OWASP MASVS
+* V7.8: If the app contains unmanaged code, verify that memory is allocated, freed and used securely.
+
+##### OWASP Mobile Top 10
+* M7 - Client Code Quality
+
+##### CWE
+
+
+### OMTG-CODE-009: Test Compiler Settings
 Compilers such as CLANG and GCC support hardening options that add additional runtime security features and checks to the generated executables. While these hardening features don’t fix broken code, they do make exploitation of bugs such as buffer overflows more difficult, and should be activated as a defense-in-depth measure.
 
 In this phase the tester checks that the following Flags are enabled whitin the mobile application's binary :
@@ -65,13 +123,13 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 
 #### Detailed Guides
 
-- [OMTG-CODE-003 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-003)
-- [OMTG-CODE-003 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-003)
+- [OMTG-CODE-009 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-009)
+- [OMTG-CODE-009 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-009)
 
 #### References
 
-##### OWASP MASVS: V7: Code quality and build setting requirements
-* Verify that security features offered by the compiler, such as stack protection, PIE support and automatic reference counting, are activated.
+##### OWASP MASVS
+* V7.9: Verify that security features offered by the compiler, such as stack protection, PIE support and automatic reference counting, are activated.
 
 ##### OWASP Mobile Top 10
 * M7 - Client Code Quality
@@ -81,19 +139,4 @@ Automatic Reference Counting (ACR) is a compile time protection technique introd
 - CWE-121: Stack-based Buffer Overflow
 - CWE-122: Heap-based Buffer Overflow
 
-### OMTG-CODE-004: Testing for Unreacheble/Dead code 
-Having unreachable code inside an app can be considered as a security risk, as it doesn't reflect the business logic and what the app was initially designed for.
 
-#### Detailed Guides
-
-- [OMTG-CODE-004 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-004)
-- [OMTG-CODE-004 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-004)
-
-##### OWASP MASVS: V7: Code quality and build setting requirements
-* If the app contains unmanaged code, verify that memory is allocated, freed and used securely.
-
-##### OWASP Mobile Top 10
-* M7 - Client Code Quality
-
-##### CWE
-* CWE-561: Dead Code
