@@ -47,7 +47,7 @@ For production releases, the attribute android:debuggable must be set to false w
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
-## <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Testing for Exception Handling
+## <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Testing Exception Handling
 
 ### White-box Testing
 
