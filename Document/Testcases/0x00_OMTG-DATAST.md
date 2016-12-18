@@ -123,6 +123,8 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 #### References
 
+- OWASP MASVS: V2.4: "No sensitive data is sent to third parties."
+
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
@@ -142,13 +144,14 @@ When keying in data into input fields, the software keyboard automatically sugge
 
 #### References
 
+- OWASP MASVS: V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
+
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
 ##### CWE
 - CWE-524: Information Exposure Through Caching
-
 
 
 ### OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
@@ -160,6 +163,8 @@ When keying in data into input fields, the software keyboard automatically sugge
 - [OMTG-DATAST-006 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-006)
 
 #### References
+
+- OWASP MASVS: V2.6: "The clipboard is deactivated on text fields that may contain sensitive data."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -180,6 +185,8 @@ During development of mobile application, traditional techniques for IPC might b
 
 #### References
 
+- OWASP MASVS: V2.7: "No sensitive data is exposed via IPC mechanisms."
+
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
@@ -197,6 +204,8 @@ Sensitive data could be exposed if a user deliberately takes a screenshot of the
 - [OMTG-DATAST-008 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-008)
 
 #### References
+
+- OWASP MASVS: V2.8: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
 
 ##### OWASP Mobile Top 10
 * M4 - Unintended Data Leakage
@@ -218,7 +227,7 @@ Consider to encrypt backup data and avoid to store any sensitive information tha
 
 #### References
 
-* OWASP MASVS: V2-9: "Verify that sensitive data does not leak to backups."
+* OWASP MASVS: V2-9: "No sensitive data is included in backups."
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
@@ -231,6 +240,8 @@ Manufacturers want to provide device users an aesthetically pleasing effect when
 - [OMTG-DATAST-010 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-010)
 
 #### References
+
+* OWASP MASVS: V2-10: "The app removes sensitive data from views when backgrounded."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -253,7 +264,9 @@ Once sensitive functions are identified (like decryption of data) the investigat
 - [OMTG-DATAST-011 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-011)
 - [OMTG-DATAST-011 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-011)
 
-#### References
+#### Reference
+
+* OWASP MASVS: V2-11: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -263,9 +276,8 @@ Once sensitive functions are identified (like decryption of data) the investigat
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-
-### OMTG-DATAST-012: Test support of Hardware-Backed Keystore
-
+### OMTG-DATAST-012: Test Remote Locking and Wiping
+[General description]
 
 #### Detailed Guides
 
@@ -274,18 +286,15 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 #### References
 
-
+* OWASP MASVS: V2-12: "If a remote locking mechanism exists, local storage is wiped upon locking."
 
 ##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
 
 ##### CWE
 - CWE: [Link to CWE issue]
 
 
-
-### OMTG-DATAST-013: Test Remote Locking and Wiping
+### OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
 [General description]
 
 #### Detailed Guides
@@ -295,64 +304,9 @@ Once sensitive functions are identified (like decryption of data) the investigat
 
 #### References
 
-##### OWASP Mobile Top 10
-
-
-##### CWE
-- CWE: [Link to CWE issue]
-
-
-
-### OMTG-DATAST-014: Test for device access security policy
-[General description]
-
-#### Detailed Guides
-
-- [OMTG-DATAST-014 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-014)
-- [OMTG-DATAST-014 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-014)
-
-#### References
+* OWASP MASVS: V2-13: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
-
-
-##### CWE
-- CWE: [Link to CWE issue]
-
-
-### OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
-
-A Secure Element (SE) allows to store (cryptographic) secrets in a temper-resistant way.
-
-A Trusted Execution Environment (TEE) is part of a system on a chip (SoC) in a mobile phone and typically a separate microprocessor in the system or a virtualized instance of the main processor. TEE is isolated from the rest of the system and ensures that sensitive (cryptographic) data is stored, processed and protected in an isolated and trusted environment.
-
-The following TEE serivces might be offered [1]:
-
-* Key management
-* Secure crypto operations
-* Verification and signing operations
-* Biometrics and Simple authentication features.(FIDO like authentication)
-* REE runtime memory protection
-* Secure Code Execution
-* Secure boot chain
-* Secure storage
-* Trusted User Interface
-* Digital Rights Management (DRM)
-
-
-#### Detailed Guides
-
-- [OMTG-DATAST-015 Android](0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-015)
-- [OMTG-DATAST-015 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-015)
-
-#### References
-
-[1] - https://www.owasp.org/images/8/88/Onur_Zengin_-_TEE_chapter_meeting_presentation.pdf
-[2] - https://source.android.com/security/trusty/
-
-
-##### OWASP Mobile Top 10
-
 
 ##### CWE
 - CWE: [Link to CWE issue]
