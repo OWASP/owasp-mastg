@@ -1,18 +1,16 @@
-# Testing Resiliency Against Reverse Engineering
-
-## Overview
+## Testing Resiliency Against Reverse Engineering
 
 This chapter covers defense-in-depth measures that are recommended for apps that process, or give access to, sensitive data or functionality. Lack of any of these controls does not cause a vulnerability - instead, they are meant to increase the app's resiliency against reverse engineering, making it more difficult for adversaries to gain an understanding of the app's internals or extract data from the app.
 
-## Testing Software Protections
+### Testing Software Protections
 
 Whether we’re talking about malware, banking apps, or mobile games: They all use anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that the defenses, taken together, are “good enough” to provide the desired level of protection in a given scenario? In the MASVS and MSTG, we tackle this question by defining sets of criteria for obfuscations and functional (programmatic) defenses, as well as testing processes that can be used for manual verification.
 
-### Software Protections Model
+#### Software Protections Model
 
 On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
 
-#### 1. Functional defenses
+##### 1. Functional defenses
 
 *Functional defenses* are program functions that prevent, or react to, actions of the reverse engineer. They can be further categorized into two modi operandi:
 
@@ -20,7 +18,7 @@ On the highest level, we classify reverse engineering defenses into two categori
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
 
-#### 2. Obfuscating Transformations
+##### 2. Obfuscating Transformations
 
 *Obfuscating transformations* are modifications applied during the build process to the source code, binary, intermediate representation of the code, or other elements such as data or executable headers. The goal is to transform the code and data so it becomes more difficult to comprehend for human adversaries while still performing the desired function. Obfuscating transformations are further categorized into two types:
 
@@ -29,7 +27,7 @@ On the highest level, we classify reverse engineering defenses into two categori
 
 Effective anti-reversing schemes combine a variety of functional defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient (MASVS L2). In some cases however it is desirable to increase resiliency against reverse engineering - in these cases, advanced functional defenses and obfuscating transformations may be added (MASVS L3-L4).
 
-### Functional Defense Requirements
+#### Functional Defense Requirements
 
 Functional defenses are programmatic features  that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. When combined with obfuscation, multiple defenses add up to make the life of the reverse engineer as difficult as possible.
 
@@ -48,7 +46,7 @@ For example, MASVS L2 requires an app to implement a simple form protection in t
 
 Basic requirements, such as 8.8 and 8.9, can be verified using either black-box or white-box testing (see the respective test cases for details). The requirement for *strong* resiliency in the debugging category (V8.7) will be discussed in the following sections.
 
-#### Testing Functional Defenses
+##### Testing Functional Defenses
 
 The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
 
@@ -66,16 +64,16 @@ Table 2 explains the scoring criteria in detail.
 | **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
 | **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
 
-### Obfuscation Requirements
+#### Obfuscation Requirements
 
-#### 1. Strip meaningful information
+##### 1. Strip meaningful information
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
 
 For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable.
 Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
-#### 2. Obfuscate control flow and data
+##### 2. Obfuscate control flow and data
 
 Program code and data can be transformed in unlimited ways - and indeed, the field of control flow and data obfuscation is highly diverse, with a large amount of research dedicated to both obfuscation and de-obfuscation. Deriving general rules as to what is considered *strong* obfuscation is not an easy task. In the MSTG model, we take a two-fold approach:
 
@@ -104,8 +102,6 @@ Some types of obfuscation that fall into this category are:
 - Variable splitting
 - Virtualization
 - White-box cryptography
-
-## Test Cases
 
 ### OMTG-RARE-001: Test the Custom Keyboard
 
