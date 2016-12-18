@@ -1,9 +1,6 @@
-# Testing Code Quality and Build Settings
+## Testing Code Quality and Build Settings
 
-## Overview
 The goal of this section is to ensure that basic security coding practices are followed in developing the app, and that "free" security features offered by the compiler are activated.
-
-## Test Cases
 
 ### OMTG-CODE-001: Verify the App Signature
 
