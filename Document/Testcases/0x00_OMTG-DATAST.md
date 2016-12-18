@@ -23,8 +23,7 @@ The following tasks should be done when analysing an App:
 
 #### References
 
-##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
-* System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
+- OWASP MASVS: V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -51,8 +50,7 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 
 #### References
 
-##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
-* System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
+- OWASP MASVS: V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 
 ### OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
 
@@ -74,6 +72,8 @@ Classification of sensitive information can vary between different industries, c
 - [OMTG-DATAST-002 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-002)
 
 #### References
+
+- OWASP MASVS: V2.2: "No sensitive data is written to application logs."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -97,6 +97,8 @@ Android provides two ways for apps to backup their data to the cloud:
 - [OMTG-DATAST-003 iOS](0x00b_OMTG-DATAST_iOS.md#OMTG-DATAST-003)
 
 #### References
+
+- OWASP MASVS: V2.3: "No sensitive data is synced cloud storage."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
