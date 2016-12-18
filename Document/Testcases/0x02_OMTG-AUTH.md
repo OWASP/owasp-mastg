@@ -1,10 +1,6 @@
-# Testing Authentication and Session Management
-
-## Overview
+## Testing Authentication and Session Management
 
 [Describe what this chapter is about.]
-
-## Test Cases
 
 ### OMTG-NET-XXX: Test Case 1
 (todo)
