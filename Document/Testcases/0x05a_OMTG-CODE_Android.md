@@ -1,4 +1,4 @@
-## <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Testing for Debug Build
+## <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test Whether the App is Debuggable
 
 ### White-box Testing
 
@@ -69,12 +69,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-## <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Testing for Secure Compiler Flags
-
-Since most Android applications are Java based, they are [immunue](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java) to buffer overflow vulnerabilities.
-
-
-## <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Testing for Unreacheble/Dead code
+## <a name="OMTG-CODE-004"></a>OMTG-CODE-008: Test Memory Management
 
 ### White-box Testing
 
@@ -91,3 +86,10 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
+
+## <a name="OMTG-CODE-009"></a>OMTG-CODE-009: Test Compiler Settings
+
+Since most Android applications are Java based, they are [immunue](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java) to buffer overflow vulnerabilities.
+
+
