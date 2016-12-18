@@ -9,8 +9,8 @@ The goal of this section is to ensure that basic security coding practices are f
 
 #### Detailed Guides
 
-- [OMTG-CODE-002 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-002)
-- [OMTG-CODE-002 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-002)
+- [OMTG-CODE-001 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-001)
+- [OMTG-CODE-001 iOS](0x05b_OMTG-CODE_iOS.md#OMTG-CODE-001)
 
 #### References
 
@@ -45,8 +45,8 @@ Debugging is one of the most powerful dynamic analysis techniques. By attaching 
 
 #### Detailed Guides
 
-- [OMTG-AUTH-XXX Android](0x02a_OMTG-AUTH-Andorid.md#OMTG-AUTH-XXX)
-- [OMTG-AUTH-XXX iOS](0x02b_OMTG-AUTH_iOS.md#OMTG-AUTH-0XXX)
+- [OMTG-CODE-003 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-003)
+- [OMTG-CODE-003 iOS](0x5b_OMTG-CODE_iOS.md#OMTG-CODE-003)
 
 #### References
 
@@ -59,8 +59,8 @@ Debugging is one of the most powerful dynamic analysis techniques. By attaching 
 
 #### Detailed Guides
 
-- [OMTG-AUTH-XXX Android](0x02a_OMTG-AUTH-Andorid.md#OMTG-AUTH-XXX)
-- [OMTG-AUTH-XXX iOS](0x02b_OMTG-AUTH_iOS.md#OMTG-AUTH-0XXX)
+- [OMTG-CODE-004 Android](0x05a_OMTG-CODE_Android.md#OMTG-CODE-004)
+- [OMTG-CODE-004 iOS](0x5b_OMTG-CODE_iOS.md#OMTG-CODE-004)
 
 #### References
 
