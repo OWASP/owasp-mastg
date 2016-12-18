@@ -54,7 +54,7 @@ When trying to exploit this kind of issues, consider that there might be a lot o
 ##### OWASP MASVS: V2.1: Data Storage and Privacy requirements:
 * System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys.
 
-### OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+### OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
 Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on Android:
