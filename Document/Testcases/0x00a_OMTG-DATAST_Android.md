@@ -1,4 +1,4 @@
-## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features
+## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test Credential Storage
 
 ### White-box Testing
 
@@ -282,7 +282,7 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 * [DexGuard][7bd6e70d]
 * [ClassyShark][c83d7c35]
 
-## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
+## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Information in Cloud Storage
 
 ### White-box Testing
 
@@ -336,7 +336,7 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 * [Auto Backup][bf8bd4ca]
 
 
-## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
+## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Data Communication with Third Parties
 
 ### White-box Testing
 
@@ -366,7 +366,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 [9b6055db]: https://www.amazon.com/Bulletproof-Android-Practical-Building-Developers/dp/0133993329 "Book_BulletproofAndroid"
 [05773baa]: https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "ConfigureAndroidBurp"
 
-## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
 
 ### White-box Testing
 
@@ -396,7 +396,7 @@ android:inputType="textNoSuggestions"
 
 
 
-## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 
 ### White-box Testing
 
@@ -445,7 +445,7 @@ android:longClickable="false"
 
 
 
-## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
+## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test for Sensitive Data Leakage via IPC Mechanisms
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 * [Binders][0c656fa2]
@@ -584,7 +584,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 * [SendBroadcast][2e0ef82d]
 
 
-## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
+## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in the User Interface and Screenshots
 
 ### White-box Testing
 
@@ -682,7 +682,7 @@ To prevent backing up the app's data, set the `android:allowBackup` attribute mu
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
 
 
-## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
+## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
 
 
 ### White-box Testing
@@ -778,38 +778,7 @@ Tools:
 * [Fridump Repo][faab1495]
 * [LiME][6204d45e] (formerly DMD)
 
-## <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test support of Hardware-Backed Keystore
-
-### White-box Testing
-
-When using Trusted Execution Environment (TEE), private key bits will be generated within it and will never leave the TEE. Private key operations are also performed inside it. Starting with Android 6.0 (API Level 23) hardware-backed keys are supported in Keystore. In order to check if the device and Android OS are supporting hardware-backed Keystore the function isInsideSecureHardware() can be executed to check if a key is store securely.
-
-```Java
-PrivateKey key = ...; // private key from KeyChain
-
-KeyFactory keyFactory =
-    KeyFactory.getInstance(key.getAlgorithm(), "AndroidKeyStore");
-KeyInfo keyInfo = keyFactory.getKeySpec(key, KeyInfo.class);
-if (keyInfo.isInsideSecureHardware()) {
-    // The key is bound to the secure hardware of this Android
-}
-```
-
-### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-### References
-
-Android 6.0 Keystore Enhancements - https://source.android.com/security/keystore/features.html
-Hardware-backed Keystore - https://source.android.com/security/keystore/
-
-
-## <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test remote locking and wiping
+## <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Remote Locking and Wiping
 
 ### White-box Testing
 
@@ -827,9 +796,7 @@ Hardware-backed Keystore - https://source.android.com/security/keystore/
 
 - [link to relevant how-tos, papers, etc.]
 
-
-
-## <a name="OMTG-DATAST-014"></a>OMTG-DATAST-014: Test for device access security policy
+## <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
 
 ### White-box Testing
 
@@ -846,27 +813,6 @@ Hardware-backed Keystore - https://source.android.com/security/keystore/
 ### References
 
 - [link to relevant how-tos, papers, etc.]
-
-
-
-## <a name="OMTG-DATAST-015"></a>OMTG-DATAST-015: Test for usage of hardware-based SE or TEE
-
-### White-box Testing
-
-Secure Element (SE) Trusted Execution Environment (TEE)
-
-### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-### References
-
-- [link to relevant how-tos, papers, etc.]
-
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->
