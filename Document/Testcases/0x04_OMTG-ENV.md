@@ -1,10 +1,6 @@
-# Testing Interaction with the Environment
-
-## Overview
+## Testing Interaction with the Environment
 
 [Describe what this chapter is about.]
-
-## Test Cases
 
 ### OMTG-ENV-001: Test App Permissions
 [Description]
