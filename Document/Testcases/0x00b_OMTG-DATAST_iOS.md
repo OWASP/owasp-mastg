@@ -1,5 +1,4 @@
-## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
-
+## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
 
 ### Black-box Testing
 
@@ -16,7 +15,6 @@ Check the source code for usage of predefined/custom Logging statements using th
 * For custom functions :
   * Logging
   * Logfile
-
 
 
 ### Remediation
@@ -36,8 +34,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 - [link to relevant how-tos, papers, etc.]
 
 
-## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
-
+## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
 
 ### Black-box Testing
 
