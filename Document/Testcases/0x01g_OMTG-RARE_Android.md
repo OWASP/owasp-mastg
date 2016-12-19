@@ -1,5 +1,9 @@
 ### <a name="OMTG-RARE-001"></a>OMTG-RARE-001: Test for Debugging Symbols in Binaries
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
@@ -27,6 +31,10 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-002"></a>OMTG-RARE-002:  Test for Meaningful Identifiers in Java Bytecode
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -60,6 +68,10 @@ android {
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-003"></a>OMTG-RARE-003: Test Jailbreak / Root Detection
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -99,6 +111,10 @@ Install the app on a rooted device and launch the app. If the app functions with
 
 ### <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Verification of Installation Source
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -110,6 +126,10 @@ Install the app on a rooted device and launch the app. If the app functions with
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-005"></a>OMTG-RARE-005: Test Simple Debugger Detection / Prevention
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -130,6 +150,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-006"></a>OMTG-RARE-006: Test Advanced Jailbreak / Root Detection
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -141,6 +165,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-007"></a>OMTG-RARE-007: Test Advanced Debugging Defenses
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -154,6 +182,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-008"></a>OMTG-RARE-008: Test File Tampering Detection
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -165,6 +197,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-009"></a>OMTG-RARE-009: Test Detection of Reverse Engineering Tools
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -178,6 +214,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-010"></a>OMTG-RARE-010: Test Basic Emulator Detection
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -189,6 +229,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-011"></a>OMTG-RARE-011: Test Memory Tampering Detection
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -202,6 +246,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-012"></a>OMTG-RARE-012: Test Variability of Tampering Responses
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -213,6 +261,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-013"></a>OMTG-RARE-013: Test Binary Encryption
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -226,6 +278,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-014"></a>OMTG-RARE-014: Test Device Binding
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -237,6 +293,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-015"></a>OMTG-RARE-015: Test Advanced Jailbreak / Root Detection
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -250,6 +310,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-016"></a>OMTG-RARE-016: Test Advanced Emulator Detection
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -262,6 +326,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ### <a name="OMTG-RARE-017"></a>OMTG-RARE-017: Test Integration of SE and/or TEE
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 
@@ -273,6 +341,10 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-RARE-018"></a>OMTG-RARE-018: Test Advanced Obfuscation
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
