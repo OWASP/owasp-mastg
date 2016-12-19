@@ -2,11 +2,11 @@
 
 | ID | Name | Howto | MASVS |
 | --- | --- | --- | --- | --- | --- |
-| OMTG-DATAST-001 | Test local storage of sensitive data |  Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.1 |
-| OMTG-DATAST-002 | Test for sensitive data in logs |  Android iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.2 |
+| OMTG-DATAST-001 | Test local data storage | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-001) - [iOS](Document/Testcases/0x02a_OMTG-DATAST_iOS.md#OMTG-DATAST-001) | [Data Storage](Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.1 |
+| OMTG-DATAST-002 | Test for sensitive data in logs |  Android iOS| [Data Storage](Document/Testcases/0x02a_OMTG-DATAST_iOS.md) - V2.2 |
 | OMTG-DATAST-003 | Test for sensitive data in cloud storage |  Android iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.3 |
-| OMTG-DATAST-004 | Verify that no sensitive data is sent to third parties | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.4 |
-| OMTG-DATAST-005 | Test for sensitive data in the keyboard cache | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.5 |
+| OMTG-DATAST-004 | Verify that no sensitive data is sent to third parties |  Android iOS|[Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.4 |
+| OMTG-DATAST-005 | Test for sensitive data in the keyboard cache | Android iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.5 |
 | OMTG-DATAST-006 | Test for sensitive Data in the clipboard  | Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.6 |
 | OMTG-DATAST-007 | Test IPC mechanisms for sensitive data exposure | Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.7 |
 | OMTG-DATAST-008 | Test for sensitive Data in screenshots |  Android iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.8 |
