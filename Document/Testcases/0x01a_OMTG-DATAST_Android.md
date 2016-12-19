@@ -2,7 +2,7 @@
 
 ### <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test Credential Storage
 
-### Overview
+#### Overview
 
 Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case credentials or keys needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
 
@@ -263,7 +263,7 @@ To provide additional protection for sensitive data, you might choose to encrypt
 
 ### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
-### Overview
+#### Overview
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
 Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on Android:
