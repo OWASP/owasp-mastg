@@ -355,5 +355,16 @@ While analyzing the source code, look for the fields or screens where sensitive 
 
 The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
 
+### Remediation
 
-- [link to relevant how-tos, papers, etc.]
+Possible remediation method:
+
+```ObjC
+@property (UIImageView *)backgroundImage;
+ 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
+    self.backgroundImage = myBanner;
+    [self.window addSubview:myBanner];
+}
+```
