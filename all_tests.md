@@ -1,6 +1,6 @@
 # All Test Cases in the OWASP Mobile Security Testing Guide
 
-| ID | Name | Links| MASVS |
+| ID | Name | Howto | MASVS |
 | --- | --- | --- | --- | --- | --- |
 | OMTG-DATAST-001 | Test Credential Storage |  Android iOS | Data Storage - V2.1 |
 | OMTG-DATAST-002 | Test for Sensitive Data in Logs |  Android iOS| Data Storage -V2.2 |
