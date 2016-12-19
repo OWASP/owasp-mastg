@@ -1,5 +1,9 @@
 ### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
@@ -35,6 +39,10 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 
 ### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### Black-box Testing
 
