@@ -1,4 +1,4 @@
-# Testing Resiliency Against Reverse Engineering
+# Testing  Software Protections
 
 This chapter covers defense-in-depth measures that are recommended for apps that process, or give access to, sensitive data or functionality. Lack of any of these controls does not cause a vulnerability - instead, they are meant to increase the app's resiliency against reverse engineering, making it more difficult for adversaries to gain an understanding of the app's internals or extract data from the app.
 
