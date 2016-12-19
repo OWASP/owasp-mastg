@@ -170,7 +170,21 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 ## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
 
-### Black-box Testing
+
+#### Overview
+
+
+There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
+Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on iOS:
+
+* NSLog Method 
+* printf-like function
+* NSAssert-like function
+* Macro
+
+Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
+
+#### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
@@ -184,7 +198,9 @@ tail -f /var/log/syslog
 
 Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
 
-### White-box Testing
+
+#### White-box Testing
+
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
 * For predefined and built-in functions :
@@ -197,8 +213,7 @@ Check the source code for usage of predefined/custom Logging statements using th
   * Logfile
 
 
-
-### Remediation
+#### Remediation
 
 Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (*.pch) file:
 
@@ -210,7 +225,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 #endif
 ```
 
-### References
+#### References
 
 * TODO
 
@@ -238,7 +253,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 
 ## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
-
 
 ### Black-box Testing
 
@@ -274,6 +288,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ### References
 
 - [link to relevant how-tos, papers, etc.]
+
 
 
 ## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
@@ -345,7 +360,9 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 ## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
 
 
-### Black-box Testing
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+
+#### Black-box Testing
 
 Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (Might be different in IOS below 8.0):
 
@@ -355,14 +372,13 @@ If the application caches the sensitive information page as a screenshot, it fai
 
 It is highly recommended to have a default screenshot that will be cached whenever the application enters background.
 
-### White-box Testing
+#### White-box Testing
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
-### Remediation
-
-The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using `GPUImageiOSBlurFilter`) or overriding the current view in the `applicationDidEnterBackground` state transition method.
-
 ### References
+
+The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
+
 
 - [link to relevant how-tos, papers, etc.]

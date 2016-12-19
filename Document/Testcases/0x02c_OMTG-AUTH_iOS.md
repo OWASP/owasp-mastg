@@ -1,23 +1,21 @@
-## <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
+### <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
+#### Overview
 
-### CWE 
-CWE [ID] - [Title]
+(Give an overview about the functionality and it's potential weaknesses)
 
-### White-box Testing
+#### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
 
-### Black-box Testing
+#### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
-### Remediation
+#### Remediation
 
 [Describe the best practices that developers should follow to prevent this issue]
 
-### References
+#### References
 
 - [link to relevant how-tos, papers, etc.]

@@ -21,7 +21,7 @@ https://github.com/JesusFreke/smali
 
 IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
 
-This is where dedicated Java de-compilers become useful.  JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
+This is where dedicated Java de-compilers become useful. JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
 
 -- TODO: Other tools
 
@@ -89,7 +89,77 @@ In this context, return-void means that no certificate checks are performed and 
 
 ![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
 
-#### Code Injection
+#### Hooking Java methods with Xposed
+
+Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
+
+To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
+
+##### Example: Bypassing Root Detection
+
+Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
+
+~~~
+
+package com.example.a.b
+
+public static boolean c() {
+  int v3 = 0;
+  boolean v0 = false;
+
+  String[] v1 = new String[]{"/sbin/", "/system/bin/", "/system/xbin/", "/data/local/xbin/",
+    "/data/local/bin/", "/system/sd/xbin/", "/system/bin/failsafe/", "/data/local/"};
+
+    int v2 = v1.length;
+
+    for(int v3 = 0; v3 < v2; v3++) {
+      if(new File(String.valueOf(v1[v3]) + "su").exists()) {
+         v0 = true;M
+         return v0;
+      }
+    }
+
+    return v0;
+}
+~~~
+
+This method iterates through a list of directories, and returns "true" (device rooted) if the "su" binary is found in any of them. Checks like this are easy to deactivate - all we have to do is to replace the code with something that returns "false".
+
+Using an Xposed module is one way to do this. Modules for Xposed are developed and deployed with Android Studio just like regular Android apps. The author, rovo89, provides a great [tutorial](https://github.com/rovo89/XposedBridge/wiki/Development-tutorial) showing how to write, compile and install a module.
+
+Code:
+
+~~~
+
+package com.awesome.pentestcompany;
+
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+public class DisableRootCheck implements IXposedHookLoadPackage {
+
+    public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
+        if (!lpparam.packageName.equals("com.example.targetapp"))
+            return;
+
+        findAndHookMethod("com.example.a.b", lpparam.classLoader, "c", new XC_MethodHook() {
+            @Override
+
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                XposedBridge.log("Caught root check!");
+                param.setResult(false);
+            }
+
+        });
+    }
+}
+
+~~~
+
+#### Code Injection with FRIDA
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -101,8 +171,7 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
-
-##### Example: Bypassing Debugger Detection
+##### Example: Bypassing Native Debugger Detection
 
 ~~~
 #v0.1

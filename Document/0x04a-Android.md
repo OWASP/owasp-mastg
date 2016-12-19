@@ -1,11 +1,69 @@
 ## Android
 
+(... TODO ...)
+
+Android is an open source platform that can be found nowadays on many devices:
+
+* Mobile Phones and Tablets
+* Wearables
+* "Smart" devices in general like TVs
+
+It also offers an application environment that supports not only pre-installed applications on the device, but also 3rd party applications that can be downloaded from marketplaces like Google Play.
+
+The software stack of Android comprises of different layers, where each layer is defining certain behavior and offering specific services to the layer above.
+
+![Android Software Stack](https://source.android.com/security/images/android_software_stack.png)
+
+On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Applications are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM. With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART). Applications are executed in the Android Application Sandbox that enforces isolation of application data and code execution from other applications on the device, that adds an additional layer of security.
+
+The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of the layers below. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
+
+(... TODO ...)
+
+### Inter-Process Communication
+
+As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
+
+In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+
+![Binder Overview](/Document/images/binder.jpg)
+*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+
+#### High-Level Abstractions
+
+*Intent messaging* is a framework for asynchronous communication built on top of binder. This framework enables both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate communication between components in several ways, there are three fundamental use cases:
+
+- Explicit intents specify the component to start by name (the fully-qualified class name).
+
+- Implicit intents do not name a specific component, but instead declare a general action to perform, which allows a component from another app to handle it. When you create an implicit intent, the Android system finds the appropriate component to start by comparing the contents of the intent to the intent filters declared in the manifest file of other apps on the device.
+
+An *intent filter* is an expression in an app's manifest file that specifies the type of intents that the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, if you do not declare any intent filters for an activity, then it can be started only with an explicit intent.
+
+For activities and broadcast receivers, intents are the preferred mechanism for asynchronous IPC in Android. Depending on your application requirements, you might use sendBroadcast(), sendOrderedBroadcast(), or an explicit intent to a specific application component.
+
+A BroadcastReceiver handles asynchronous requests initiated by an Intent.
+
+Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
+
+
+(... TODO ... briefly on security implications)
+
+Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
+
+A reference to the Messenger can be sent via an Intent using the previously mentioned IPC mechanism
+
+Messages sent by the remote process via the messenger are delivered to the local handler. Great for efficient call-backs from the service to the client
+
+#### Security Implications
+
+
+
 ### Android Application Overview
 
-#### App structure on the device
+#### App Folder Structure
 
 Android applications installed (from Google Play Store or from external sources) are located at /data/app/. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (under developer settings) and has to be connected via USB. 
+To do so, the device has to have USB-Debugging enabled (under developer settings) and has to be connected via USB.
 Once USB-Debugging is enabled, the connected devices can be viewed with the command
 
 ```bash
@@ -44,7 +102,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 * **cache**: This location used to cache application data on runtime including WebView caches.
 * **code_cache**: TBD
 * **databases**: This folder stores sqlite database files generated by the application at runtime, e.g. to store user data
-* **files**: This folder is used to store files that are created in the App when using the internal storage. 
+* **files**: This folder is used to store files that are created in the App when using the internal storage.
 * **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
    * armeabi: compiled code for all ARM based processors only
    * armeabi-v7a: compiled code for all ARMv7 and above based processors only
@@ -54,8 +112,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
    * mips: compiled code for MIPS processors only
 * **shared_prefs**: This folder is used to store the preference file generated by application on runtime to save current state of application including data, configuration, session, etc. The file format is XML.
 
-
-#### APK structure
+#### APK Structure
 
 An application on Android is a file with the extension .apk. This file is a signed zip-file which contains different files for the bytecode, assets, etc. When unzipped the following directory structure can be identified:
 
@@ -78,10 +135,9 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
    * CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
 * **assets**: A directory containing applications assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
 * **classes.dex**: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK. 
+* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **resources.arsc**: A file containing precompiled resources, such as XML files for the layout.
-
 
 Since some resources inside the APK are compressed using non-standard algorithms (e.g. the AndroidManifest.xml), simply unzipping the file does not reveal all information. A better way is to use the tool apktool to unpack and uncompress the files. The following is a listing of the the files contained in the apk:
 
@@ -112,11 +168,16 @@ drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
 
-* **AndroidManifest.xml**: This file is not compressed anymore and can be openend in a text editor. 
-* **apktool.yml** : This file contains information about the output of apktool. 
+* **AndroidManifest.xml**: This file is not compressed anymore and can be openend in a text editor.
+* **apktool.yml** : This file contains information about the output of apktool.
 * **assets**: A directory containing applications assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK. 
+* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
 * **original**: TBD
 * **res**: A directory containing resources not compiled into resources.arsc.
-* **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable. 
+* **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
+### References
+
++ [Android Security](https://source.android.com/security/)
++ [HAL](https://source.android.com/devices/)
++ "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
