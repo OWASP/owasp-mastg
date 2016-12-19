@@ -1,4 +1,4 @@
-### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Test App Singature
+### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Propertly Signed
 
 #### White-box Testing
 
@@ -15,7 +15,7 @@
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
-### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test Whether the App is Debuggable
+### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test whether the App is Debuggable
 
 #### White-box Testing
 
