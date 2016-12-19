@@ -1,6 +1,6 @@
 ## Android
 
-### <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test Credential Storage
+### <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001: Test Local Data Storage (TODO - MERGE WITH OWASP-DATAST-001-2)
 
 #### Overview
 
@@ -261,7 +261,7 @@ To provide additional protection for sensitive data, you might choose to encrypt
 * [Lint][a9965341]
 * [SQLite3][3b9b0b6f]
 
-### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data in Logs
 
 #### Overview
 
@@ -349,7 +349,7 @@ Although the `android:debuggable=""` flag can be bypassed by repacking the appli
 * CWE-532: Information Exposure Through Log Files
 * CWE-534: Information Exposure Through Debug Log Files
 
-### <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Information in Cloud Storage
+### <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
 #### Overview
 
@@ -420,7 +420,7 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 - CWE-200: Information Exposure [https://cwe.mitre.org/data/definitions/200.html]
 
 
-### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Data Communication with Third Parties
+### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Whether Sensitive Data is Sent to Third Parties
 
 #### Overview
 
@@ -575,7 +575,7 @@ android:longClickable="false"
 ##### CWE
 - CWE: [Link to CWE issue]
 
-### <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test for Sensitive Data Leakage via IPC Mechanisms
+### <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -730,7 +730,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 
 
-### <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in the User Interface and Screenshots
+### <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots
 
 #### Overview
 
@@ -859,7 +859,7 @@ To prevent backing up the app's data, set the `android:allowBackup` attribute mu
 - CWE: [Link to CWE issue]
 
 
-### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
+### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test If Memory Is Cleared When the App Is Backgrounded
 
 #### Overview
 
@@ -918,7 +918,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 ##### CWE
 - CWE: [Link to CWE issue]
 
-### <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data Disclosure in Process Memory
+### <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data in Memory
 
 #### Overview
 
@@ -990,7 +990,7 @@ Tools:
 ##### CWE
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Remote Locking and Wiping
+### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test If Local Storage Is Wiped upon Remote Locking
 
 #### Overview
 
