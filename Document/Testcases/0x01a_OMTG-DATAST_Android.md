@@ -936,6 +936,15 @@ Tools:
 
 #### References
 
+##### OWASP-MASVS
+
+- V2-12: "If a remote locking mechanism exists, local storage is wiped upon locking."
+
+##### OWASP Mobile Top 10
+
+##### CWE
+- CWE: [Link to CWE issue]
+
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
@@ -956,16 +965,16 @@ Tools:
 
 - [link to relevant how-tos, papers, etc.]
 
-#### Reference
+#### References
 
-* OWASP MASVS: V2-11: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+##### OWASP MASVS
+
+- V2-13: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
 
 ##### CWE
-* CWE-316 - Cleartext Storage of Sensitive Information in Memory
+- CWE: [Link to CWE issue]
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->
