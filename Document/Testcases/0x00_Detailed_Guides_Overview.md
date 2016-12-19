@@ -91,3 +91,32 @@ Certificate pinning allows to hard-code in the client the certificate that is kn
 ### Testing Code Quality and Build Settings
 
 ### Testing Resiliency against Reverse Engineering
+
+### OMTG-RARE-001: Test the Custom Keyboard
+
+### OMTG-RARE-002: Test for Sensitive Data in UI Components
+
+### OMTG-RARE-003: Test Advanced Jailbreak / Root Detection
+
+### OMTG-RARE-004: Test Advanced Debugging Defenses
+
+### OMTG-RARE-005: Test File Tampering Detection
+
+### OMTG-RARE-006: Test Detection of Reverse Engineering Tools
+
+### OMTG-RARE-007: Test Basic Emulator Detection
+
+### OMTG-RARE-008: Test Memory Tampering Detection
+
+### OMTG-RARE-009: Test Variability of Tampering Responses
+
+### OMTG-RARE-010: Test Binary Encryption
+
+### OMTG-RARE-011: Verify that Defenses are Well-Integrated
+
+### OMTG-RARE-012: Test Device Binding
+
+### OMTG-RARE-013: Test Advanced Emulator Detection
+
+### OMTG-RARE-013-014: Test Advanced Obfuscation
+
