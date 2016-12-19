@@ -16,7 +16,7 @@ http://owasp.herokuapp.com/
 
 # MSTG Sections and Lead Authors
 
-The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback.
+The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [detailed list of security test cases](all_tests.md).
 
 * [Header](Document/0x00-Header.md)
 * [Foreword](Document/0x01-Foreword.md)
