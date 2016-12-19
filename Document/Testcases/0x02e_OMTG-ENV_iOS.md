@@ -1,6 +1,6 @@
 ## <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
 
-#### Overview
+### Overview
 
 (Give an overview about the functionality and it's potential weaknesses)
 
