@@ -1,5 +1,9 @@
 ### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Properly Signed
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 #### Black-box Testing
@@ -13,6 +17,10 @@
 - V7.1: "The app is signed and provisioned with valid certificate."
 
 ### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test whether the App is Debuggable
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -33,6 +41,10 @@ Once you have deployed an iOS application, either through the App Store or as an
 (TODO)
 
 ### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -66,6 +78,10 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 ### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 #### Black-box Testing
@@ -79,6 +95,10 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-CODE-005"></a>OMTG-CODE-005: Test Exception Handling
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -102,6 +122,10 @@ Review the source code to understand/identify who the application handle various
 
 ### <a name="OMTG-CODE-006"></a>OMTG-CODE-006: Verify that the App Fails Securely
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 #### Black-box Testing
@@ -117,6 +141,10 @@ Review the source code to understand/identify who the application handle various
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-CODE-007"></a>OMTG-CODE-007: Test Input Validation
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
@@ -136,6 +164,10 @@ Review the source code to understand/identify who the application handle various
 
 ### <a name="OMTG-CODE-008"></a>OMTG-CODE-008: Test Memory Management
 
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
 #### White-box Testing
 
 (Describe how to assess this with access to the source code and build configuration)
@@ -153,6 +185,10 @@ Review the source code to understand/identify who the application handle various
 - [link to relevant how-tos, papers, etc.]
 
 ### <a name="OMTG-CODE-009"></a>OMTG-CODE-009: Test Compiler Settings
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
 
 #### White-box Testing
 
