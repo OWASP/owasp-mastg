@@ -1,4 +1,4 @@
-### <a name="OMTG-NET-004"></a>OMTG-NET-004: Testing SSL Pinning
+### <a name="OMTG-NET-003"></a>OMTG-NET-003: Test SSL Pinning
 
 #### Overview
 
