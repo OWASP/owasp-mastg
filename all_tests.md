@@ -35,13 +35,36 @@
 | OMTG-NET-004 | Verify that perfect forward secrecy is enabled |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V3.4 |
 | OMTG-NET-005 | Test for insecure communication channels | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V3.5 |
 | OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V3.6|
-| OMTG-ENV-001 | Test app permissions |  Android iOS | Authentication - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
-| OMTG-ENV-002 | Test validation of input from external sources |  Android iOS | Authentication - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
-| OMTG-ENV-003 | Test validation of user input |  Android iOS | Authentication  - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
-| OMTG-ENV-004 | Test custom URL schemes |  Android iOS | Authentication  - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
-| OMTG-ENV-005 | Test IPC functionality | Android iOS | Authentication - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
+| OMTG-ENV-001 | Test app permissions |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
+| OMTG-ENV-002 | Test validation of input from external sources |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
+| OMTG-ENV-003 | Test validation of user input |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
+| OMTG-ENV-004 | Test custom URL schemes |  Android iOS |  [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
+| OMTG-ENV-005 | Test IPC functionality | Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
 | OMTG-ENV-006 | Test WebViews |  Android iOS | Authentication  - [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.6 - v6.10 |
 | OMTG-ENV-011 | Verify that the app forces updates of outdated system components |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md)  |
 | OMTG-ENV-012 | Verify that the app checks its installation source |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
 | OMTG-ENV-013 | Test basic root / jailbreak detection |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
+| OMTG-CODE-001 | Verify the app signature |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.1 |
+| OMTG-CODE-002 | Verify build settings |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.2 |
+| OMTG-CODE-003 | Test for debugging symbols |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.3 |
+| OMTG-CODE-004 | Verify that debugging code has been removed | Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.4 |
+| OMTG-CODE-005 | Test exception handling |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.5 - V7.6 |
+| OMTG-CODE-007 | Test for code injection |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.7 |
+| OMTG-CODE-008 | Test for memory management bugs |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.8 |
+| OMTG-CODE-009 | Verify that compiler security features are activated |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.9 |
+| OMTG-CODE-010 | Verify that Java bytecode has been minified. |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.10 |
+| OMTG-RARE-001 | Test the custom keyboard |  Android iOS | Resiliency - V9.1 |
+| OMTG-RARE-002 | Test custom UI components |  Android iOS | Resiliency - V9.2 |
+| OMTG-RARE-003 | Test advanced root/jailbreak detection |  Android iOS | Resiliency  - V9.3 |
+| OMTG-RARE-004 | Test debugging defenses |  Android iOS | Resiliency  - V9.4 |
+| OMTG-RARE-005 | Test file tampering defenses | Android iOS | Resiliency - V9.5 |
+| OMTG-RARE-006 | Test detection of commonly used reverse engineering tools |  Android iOS | Resiliency  - V9.6|
+| OMTG-RARE-007 | Test basic emulator detection |  Android iOS | Resiliency  - V.9.7 |
+| OMTG-RARE-008 | Test memory integrity monitoring |  Android iOS | Resiliency  - V.9.8 |
+| OMTG-RARE-009 | Test variability of tampering responses |  Android iOS | Resiliency - V.9.9 |
+| OMTG-RARE-010 | Test trivial static analysis |  Android iOS | Authentication - V.9.10 |
+| OMTG-RARE-011 | Verify that obfuscations and functional defenses are integrated |  Android iOS | Resiliency - V.9.11 |
+| OMTG-RARE-012| Test device binding |  Android iOS | Resiliency - V9.12 |
+| OMTG-RARE-013 | Test advanced emulator detection |  Android iOS | Resiliency - V9.13 |
+| OMTG-RARE-014 | Test advanced obfuscation |  Android iOS | Resiliency  - V9.14 - V9.15 |
 
