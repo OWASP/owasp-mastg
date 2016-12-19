@@ -49,7 +49,7 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Testing Environmental Interaction](Document/Testcases/0x02e_OMTG-ENV_iOS.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x02f_OMTG-CODE_iOS.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x02g_OMTG-RARE_iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Assessing the Quality of Software Protections](Document/0x07a-Software Protections) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Security Testing in the Application Development Lifecycle](Document/0x07b-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
+    * [Security Testing in the Application Development Lifecycle](Document/0x07a-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
+* [Assessing the Quality of Software Protections](Document/0x07b_Assessing_Software_Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * [Testing Tools](Document/0x08-Testing-Tools.md) - T.b.d.
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
