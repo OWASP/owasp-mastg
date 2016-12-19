@@ -23,3 +23,14 @@
 | OMTG-CRYPTO-006 | Verify that all random values are generated using a sufficiently secure random number generator.  | Android iOS| [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) - V3.6 |
 | OMTG-CRYPTO-007 | Verify that all keys and passwords are changeable, and are generated or replaced at installation time. | Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) - V3.7 |
 | OMTG-CRYPTO-008 | Test for leftover cryptographic keys in memory | Android iOS | Data Storage -  V3.8 |
+| OMTG-AUTH-001 | Test user authentication |  Android iOS | Authentication - V3.1 |
+| OMTG-AUTH-002 | Test implementation of session IDs |  Android iOS | Authentication - V3.2 |
+| OMTG-AUTH-003 | Verify that a password policy exists and is enforced |  Android iOS | Authentication  - V3.3 |
+| OMTG-AUTH-004 | Verify that sessions are terminated upon login |  Android iOS | Authentication  - V3.4 |
+| OMTG-AUTH-005 | Verify that sessions are terminated after a predefined period of inactivity | Android iOS | Authentication - V3.5 |
+| OMTG-AUTH-006 | Test for user account lock or back-off in response to excessive login attempts |  Android iOS | Authentication  - V3.6|
+| OMTG-AUTH-007 | Test biometric authentication |  Android iOS | Authentication  - V.3.7 |
+| OMTG-AUTH-008 | Test 2-factor authentication |  Android iOS | Authentication  - V.3.8 |
+| OMTG-AUTH-009 | Test step-up authentication |  Android iOS | Authentication - V.3.9 |
+| OMTG-AUTH-010 | Test for session hijacking |  Android iOS | Authentication - V.3.10 |
+| OMTG-AUTH-011 | Test device management |  Android iOS | Authentication - V.3.11 |
