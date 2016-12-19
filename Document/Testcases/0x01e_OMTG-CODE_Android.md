@@ -66,15 +66,19 @@ For production releases, the attribute android:debuggable must be set to false w
 
 #### White-box Testing
 
-Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
-
-* Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
-* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
-* C3
-
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
+
+~~~~
+berndt@osboxes:~/ $ objdump -t my_library.so
+my_library.so:     file format elf32-little
+
+SYMBOL TABLE:
+no symbols
+~~~~
+
+Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
 
 #### Remediation
 
@@ -194,11 +198,10 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 ### <a name="OMTG-CODE-010"></a>OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
 
-Since most Android applications are Java based, they are [immunue](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java) to buffer overflow vulnerabilities.
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Verify the minifyEnabled is set to true in build.gradle (see below).
 
 #### Black-box Testing
 
@@ -206,7 +209,20 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+ProGuard should be used to strip unneeded debugging information from the Java bytecode. By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It is shipped with Android’s SDK tools. To activate shrinking for the release build, add the following to build.gradle:
+
+~~~~
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile(‘proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    ...
+}
+~~~~
 
 #### References
 
