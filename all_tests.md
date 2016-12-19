@@ -42,14 +42,14 @@
 | OMTG-ENV-008 | Verify that the app checks its installation source |  Android iOS | [Environment](Document/0x11-V6_Interaction_with_the_environment.md) V6.12  |
 | OMTG-ENV-009 | Test basic root / jailbreak detection |  Android iOS | [Environment](Document/0x11-V6_Interaction_with_the_environment.md) V6.13 |
 | OMTG-CODE-001 | Verify the app signature |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.1 |
-| OMTG-CODE-002 | Test if the app is debuggbale |  (Android)[Document/Testcases/0x01f_OMTG-CODE_Android.md] iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.2 |
-| OMTG-CODE-003 | Test for debugging symbols |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.3 |
-| OMTG-CODE-004 | Verify that debugging code has been removed | Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.4 |
+| OMTG-CODE-002 | Test if the app is debuggable | [Android](Document/Testcases/0x01f_OMTG-CODE_Android.md#OMTG-CODE-002) iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.2 |
+| OMTG-CODE-003 | Test for debugging symbols |  [Android](Document/Testcases/0x01f_OMTG-CODE_Android.md#OMTG-CODE-003) iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.3 |
+| OMTG-CODE-004 | Test for debugging code and verbose error logging | Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.4 |
 | OMTG-CODE-005 | Test exception handling |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.5 - V7.6 |
 | OMTG-CODE-007 | Test for code injection |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.7 |
 | OMTG-CODE-008 | Test for memory management bugs |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.8 |
 | OMTG-CODE-009 | Verify that compiler security features are activated |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.9 |
-| OMTG-CODE-010 | Verify that Java bytecode has been minified. |  Android iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.10 |
+| OMTG-CODE-010 | Verify that Java bytecode has been minified. |  [Android](Document/Testcases/0x01f_OMTG-CODE_Android.md#OMTG-CODE-010) iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.10 |
 | OMTG-RARE-001 | Test the custom keyboard |  Android iOS | [Resiliency](Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.1 |
 | OMTG-RARE-002 | Test custom UI components |  Android iOS | [Resiliency](Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.2 |
 | OMTG-RARE-003 | Test advanced root/jailbreak detection |  Android iOS | [Resiliency](Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.3 |
