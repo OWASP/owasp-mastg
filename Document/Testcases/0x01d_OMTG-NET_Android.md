@@ -1,6 +1,6 @@
-## <a name="OMTG-NET-004"></a>OMTG-NET-004: Testing SSL Pinning
+### <a name="OMTG-NET-004"></a>OMTG-NET-004: Testing SSL Pinning
 
-### White-box Testing
+#### White-box Testing
 
 The process to implement the SSL pinning involves three main steps outlined below:
 
@@ -29,15 +29,15 @@ Create an SSLContext that uses the TrustManager
 sslContext.init(null, tmf.getTrustManagers(), null);
 ```
 
-### Black-box Testing
+#### Black-box Testing
 
 Black-box Testing can be performed by launching a MITM attack using your prefered Web Proxy to intercept the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests/responses, the SSL pinning is correctly implemented.
 
-### Remediation
+#### Remediation
 
 The SSL pinning process should be implemented as described on the static analysis section.
 
-### References
+#### References
 
 - Setting Burp Suite as a proxy for Android Devices : https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
 - OWASP - Certificate Pinning for Android :  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
