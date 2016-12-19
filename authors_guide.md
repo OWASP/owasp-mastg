@@ -45,7 +45,7 @@ In our experience, opinions will differ in many cases. Whenever differences cann
 
 ## How to Become an Author
 
-To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name and GitHub handle in the [readme](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
+To become a contributor or reviewer, contact the lead author responsible for the section you are interested in. You can find their name and GitHub handle in the [README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
 ## Attribution and Acknowledgement
 
@@ -66,23 +66,12 @@ Note that content may also originate from the [original "beta" version](https://
 
 ## Writing a Test Case
 
-All test cases should follow the following basic guidelines.
-
-### MASVS Mapping
-
-The list of test cases in the MSTG maps 1:1 to the requirements in the [OWASP MASVS](https://github.com/OWASP/owasp-masvs). For example, OWASP MASVS V2.9 maps to the test case OMTG-DATAST-009:
+A "test case" is a how-to with step-by-step instructions on how to test for a specific issue. We have defined a list of [63 test cases](all_tests.md) based on the requirements in the [OWASP MASVS](https://github.com/OWASP/owasp-masvs), for the most part maintaining the same order and structure. For example, OWASP MASVS V2.9 maps to the test case OMTG-DATAST-009:
 
 - OWASP MASVS V2.9 "Verify that sensitive data does not leak to backups."
+- OMTG-DATAST-009: "Test for Sensitive Data in Backups"
 
--  OMTG-DATAST-009: "Test for Sensitive Data in Backups"
-
-The MSTG must be kept compatible to the equivalent version of the MASVS. Changes in the list of requirements are always done in the MASVS first, after which the MSTG is updated to match the new requirements.
-
-### Structure of a Test Case
-
-Test cases are split into markdown files by test case category and operating system. For each category, there is a generic list of test cases as well as one file per mobile OS with OS-specific instructions. At the moment, only iOS and Android are discussed in the guide, so there are three files per category.
-
-Use the [test case templates](https://github.com/OWASP/owasp-mstg/tree/master/Templates) to add a new category.
+A good way to start is by browsing the [test case list](all_tests.md) and picking a topic that doesn't have content yet. Then, simply use an [existing test case](Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) as a template to create your own one.
 
 ### Style Guide
 
@@ -91,8 +80,6 @@ The following rules are meant to ensure consistency of the MSTG:
 1. Keep the content factual, brief and focused. Avoid duplicating other sections of the guide;
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person;
-
-Refer to [existing test cases](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) for examples.
 
 #### Title Capitalization
 
