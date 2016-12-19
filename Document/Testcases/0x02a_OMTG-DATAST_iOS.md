@@ -1,4 +1,4 @@
-## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test for system credentials storage features 
+## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
 
 ### Overview
 
@@ -92,7 +92,7 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
 
-## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data Disclosure in Log Files
+## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
@@ -150,7 +150,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 (... TODO ...)
 
 
-## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test that no sensitive data leaks to cloud storage
+## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
 ### Overview
 
@@ -165,7 +165,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 ### References
 
 
-## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test for sending sensitvie data to 3rd Parties
+## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test If Sensitive Data Is Sent to Third Parties
 
 ### Overview
 
@@ -180,7 +180,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 ### References
 
 
-## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test that keyboard cache is disabled for sensitive data
+## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
 
 ### Overview
 
@@ -221,7 +221,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 
 
-## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test that clipboard is deactivated for sensitive input fields
+## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 
 #### Overview
 
@@ -286,7 +286,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 
 
-## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test that no sensitive data is exposed via IPC mechanisms
+## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -301,7 +301,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 ### References
 
 
-## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test that no sensitive data is exposed via the user interface or screenshots
+## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots
 
 #### Overview
 
@@ -331,7 +331,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 ### References
 
 
-## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test that no sensitive data leaks when backgrounded
+## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test If Memory Is Cleared When the App Is Backgrounded
 
 #### Overview
 
