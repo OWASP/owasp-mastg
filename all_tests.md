@@ -20,12 +20,12 @@
 | OMTG-CRYPTO-003 | Verify that all keys and passwords are changeable, and are generated or replaced at installation time | Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) V3.7 |
 | OMTG-AUTH-001 | Test user authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V4.1 |
 | OMTG-AUTH-002 | Test session management |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V4.2 - V4.5 |
-| OMTG-AUTH-006 | Test user account lock/ exponential back-off in response to excessive login attempts |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V4.6|
-| OMTG-AUTH-007 | Test biometric authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.7 |
-| OMTG-AUTH-008 | Test 2-factor authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.8 |
-| OMTG-AUTH-009 | Test step-up authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.9 |
-| OMTG-AUTH-010 | Test for session hijacking |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.10 |
-| OMTG-AUTH-011 | Test user device management |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.11 |
+| OMTG-AUTH-003 | Test user account lock/ exponential back-off in response to excessive login attempts |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V4.6|
+| OMTG-AUTH-004 | Test biometric authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.7 |
+| OMTG-AUTH-005 | Test 2-factor authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.8 |
+| OMTG-AUTH-006 | Test step-up authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.9 |
+| OMTG-AUTH-007 | Test for session hijacking |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.10 |
+| OMTG-AUTH-008 | Test user device management |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.11 |
 | OMTG-NET-001 | Test for unencrypted sensitive data on the network |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.1 |
 | OMTG-NET-002 | Test X.509 certificate verification |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.2 |
 | OMTG-NET-003 | Test SSL pinning |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.3 |
@@ -38,9 +38,9 @@
 | OMTG-ENV-004 | Test custom URL schemes |  Android iOS |  [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.4  |
 | OMTG-ENV-005 | Test IPC functionality | Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.5  |
 | OMTG-ENV-006 | Test WebViews |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.6 - V6.10 |
-| OMTG-ENV-011 | Verify that the app forces updates of outdated system components |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.11 |
-| OMTG-ENV-012 | Verify that the app checks its installation source |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.12  |
-| OMTG-ENV-013 | Test basic root / jailbreak detection |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.13 |
+| OMTG-ENV-007 | Verify that the app forces updates of outdated system components |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.11 |
+| OMTG-ENV-008 | Verify that the app checks its installation source |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.12  |
+| OMTG-ENV-009 | Test basic root / jailbreak detection |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.13 |
 | OMTG-CODE-001 | Verify the app signature |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.1 |
 | OMTG-CODE-002 | Verify build settings |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.2 |
 | OMTG-CODE-003 | Test for debugging symbols |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.3 |
