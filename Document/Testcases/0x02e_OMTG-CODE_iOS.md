@@ -108,7 +108,7 @@ Steps for enabling ACR protection within an iOS application :
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
 
-### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Testing for Unreacheble/Dead code
+### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Testing Memory Management
 
 #### White-box Testing
 
