@@ -38,8 +38,8 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
     * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
     * [Testing Network Communication](Document/Testcases/0x01d_OMTG-NET_Android.md) -- [Jeroen Willemsen](https://github.com/commjoen)
-    * [Testing Environmental Interaction](Document/Testcases/0x01e_OMTG-CODE_Android.md) -- [Sven Schleier](https://github.com/sushi2k)
-    * [Testing Code Quality and Build Settings](Document/Testcases/0x01f_OMTG-ENV_Android.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
+    * [Testing Environmental Interaction](Document/Testcases/0x01e_OMTG-ENV_Android.md) -- [Sven Schleier](https://github.com/sushi2k)
+    * [Testing Code Quality and Build Settings](Document/Testcases/0x01f_OMTG-CODE_Android.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x01g_OMTG-RARE_Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
   * iOS
     * [Testing Data Storage](Document/Testcases/0x02a_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
