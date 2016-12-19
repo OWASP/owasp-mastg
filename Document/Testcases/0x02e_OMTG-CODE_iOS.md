@@ -8,9 +8,6 @@
 
 #### References
 
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
-* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
-
 ##### OWASP MASVS
 
 - V7.1: "The app is signed and provisioned with valid certificate."
