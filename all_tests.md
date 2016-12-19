@@ -7,7 +7,7 @@
 | OMTG-DATAST-003 | Test for sensitive data in cloud storage | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-003) iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.3 |
 | OMTG-DATAST-004 | Test whether sensitive data is sent to third parties | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-004) iOS |[Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.4 |
 | OMTG-DATAST-005 | Test for sensitive data in the keyboard cache | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-005) [iOS](Document/Testcases/0x02a_OMTG-DATAST_iOS.md#OMTG-DATAST-005) | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.5 |
-| OMTG-DATAST-006 | Test for sensitive Data in the clipboard  |  Android [iOS](Document/Testcases/0x02a_OMTG-DATAST_iOS.md#OMTG-DATAST-006) | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.6 |
+| OMTG-DATAST-006 | Test for sensitive data in the clipboard  |  Android [iOS](Document/Testcases/0x02a_OMTG-DATAST_iOS.md#OMTG-DATAST-006) | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.6 |
 | OMTG-DATAST-007 | Test whether sensitive data is exposed via IPC mechanisms | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-007) iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.7 |
 | OMTG-DATAST-008 | Test for sensitive data in screenshots |  [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-008) iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.8 |
 | OMTG-DATAST-009 | Test for sensitive data in backups | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-009) iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) - V2.9 |
@@ -18,20 +18,20 @@
 | OMTG-CRYPTO-001 | Test cryptographic modules |  Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) - V3.1 - V3.5 |
 | OMTG-CRYPTO-002 | Verify that random values are generated using a sufficiently secure random number generator | Android iOS| [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) - V3.6 |
 | OMTG-CRYPTO-003 | Verify that all keys and passwords are changeable, and are generated or replaced at installation time | Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) - V3.7 |
-| OMTG-AUTH-001 | Test user authentication |  Android iOS | Authentication - V3.1 |
-| OMTG-AUTH-002 | Test session management|  Android iOS | Authentication - V4.2 - V4.5 |
+| OMTG-AUTH-001 | Test user authentication |  Android iOS | Authentication - V4.1 |
+| OMTG-AUTH-002 | Test session management |  Android iOS | Authentication - V4.2 - V4.5 |
 | OMTG-AUTH-006 | Test user account lock/ exponential back-off in response to excessive login attempts |  Android iOS | Authentication  - V3.6|
-| OMTG-AUTH-007 | Test biometric authentication |  Android iOS | Authentication  - V.3.7 |
-| OMTG-AUTH-008 | Test 2-factor authentication |  Android iOS | Authentication  - V.3.8 |
-| OMTG-AUTH-009 | Test step-up authentication |  Android iOS | Authentication - V.3.9 |
-| OMTG-AUTH-010 | Test for session hijacking |  Android iOS | Authentication - V.3.10 |
-| OMTG-AUTH-011 | Test user device management |  Android iOS | Authentication - V.3.11 |
+| OMTG-AUTH-007 | Test biometric authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md)  - V.4.7 |
+| OMTG-AUTH-008 | Test 2-factor authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) - V.4.8 |
+| OMTG-AUTH-009 | Test step-up authentication |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) - V.4.9 |
+| OMTG-AUTH-010 | Test for session hijacking |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) - V.4.10 |
+| OMTG-AUTH-011 | Test user device management |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) - V.4.11 |
 | OMTG-NET-001 | Test for unencrypted sensitive data on the network |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V5.1 |
-| OMTG-NET-002 | Test X.509 certificate verification |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V3.2 |
-| OMTG-NET-003 | Test SSL pinning |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V3.3 |
-| OMTG-NET-004 | Test the SSL configuration |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V3.4 |
-| OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V3.5 |
-| OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V3.6|
+| OMTG-NET-002 | Test X.509 certificate verification |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V5.2 |
+| OMTG-NET-003 | Test SSL pinning |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V5.3 |
+| OMTG-NET-004 | Test the SSL configuration |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V5.4 |
+| OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) - V5.5 |
+| OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md)  - V5.6|
 | OMTG-ENV-001 | Test app permissions |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
 | OMTG-ENV-002 | Test validation of input from external sources |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
 | OMTG-ENV-003 | Test validation of user input |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1  |
@@ -50,18 +50,18 @@
 | OMTG-CODE-008 | Test for memory management bugs |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md)  - V7.8 |
 | OMTG-CODE-009 | Verify that compiler security features are activated |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.9 |
 | OMTG-CODE-010 | Verify that Java bytecode has been minified. |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) - V7.10 |
-| OMTG-RARE-001 | Test the custom keyboard |  Android iOS | Resiliency - V9.1 |
-| OMTG-RARE-002 | Test custom UI components |  Android iOS | Resiliency - V9.2 |
-| OMTG-RARE-003 | Test advanced root/jailbreak detection |  Android iOS | Resiliency  - V9.3 |
-| OMTG-RARE-004 | Test debugging defenses |  Android iOS | Resiliency  - V9.4 |
-| OMTG-RARE-005 | Test file tampering defenses | Android iOS | Resiliency - V9.5 |
-| OMTG-RARE-006 | Test detection of commonly used reverse engineering tools |  Android iOS | Resiliency  - V9.6|
-| OMTG-RARE-007 | Test basic emulator detection |  Android iOS | Resiliency  - V.9.7 |
-| OMTG-RARE-008 | Test memory integrity monitoring |  Android iOS | Resiliency  - V.9.8 |
-| OMTG-RARE-009 | Test variability of tampering responses |  Android iOS | Resiliency - V.9.9 |
-| OMTG-RARE-010 | Test trivial static analysis |  Android iOS | Authentication - V.9.10 |
-| OMTG-RARE-011 | Verify that obfuscations and functional defenses are integrated |  Android iOS | Resiliency - V.9.11 |
-| OMTG-RARE-012| Test device binding |  Android iOS | Resiliency - V9.12 |
-| OMTG-RARE-013 | Test advanced emulator detection |  Android iOS | Resiliency - V9.13 |
-| OMTG-RARE-014 | Test advanced obfuscation |  Android iOS | Resiliency  - V9.14 - V9.15 |
+| OMTG-RARE-001 | Test the custom keyboard |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V9.1 |
+| OMTG-RARE-002 | Test custom UI components |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V9.2 |
+| OMTG-RARE-003 | Test advanced root/jailbreak detection |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)  - V9.3 |
+| OMTG-RARE-004 | Test debugging defenses |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)  - V9.4 |
+| OMTG-RARE-005 | Test file tampering defenses | Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V9.5 |
+| OMTG-RARE-006 | Test detection of commonly used reverse engineering tools |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)  - V9.6|
+| OMTG-RARE-007 | Test basic emulator detection |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)  - V.9.7 |
+| OMTG-RARE-008 | Test memory integrity monitoring |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)  - V.9.8 |
+| OMTG-RARE-009 | Test variability of tampering responses |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V.9.9 |
+| OMTG-RARE-010 | Test trivial static analysis |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V.9.10 |
+| OMTG-RARE-011 | Verify that obfuscations and functional defenses are integrated |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V.9.11 |
+| OMTG-RARE-012| Test device binding |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V9.12 |
+| OMTG-RARE-013 | Test advanced emulator detection |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) - V9.13 |
+| OMTG-RARE-014 | Test advanced obfuscation |  Android iOS | Resiliency  - V9[Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md)14 - V9.15 |
 
