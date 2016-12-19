@@ -19,7 +19,7 @@
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
-### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test whether the App is Debuggable
+### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test If the App is Debuggable
 
 #### Overview
 
@@ -82,7 +82,7 @@ For production releases, the attribute android:debuggable must be set to false w
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
-### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
+### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Test for Debugging Symbols
 
 #### Overview
 
