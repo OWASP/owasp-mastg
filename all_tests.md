@@ -2,17 +2,24 @@
 
 | ID | Name | Howto | MASVS |
 | --- | --- | --- | --- | --- | --- |
-| OMTG-DATAST-001 | Test Credential Storage |  Android iOS | Data Storage - V2.1 |
-| OMTG-DATAST-002 | Test for Sensitive Data in Logs |  Android iOS| Data Storage -V2.2 |
-| OMTG-DATAST-003 | Test for Sensitive Data in Cloud Storage |  Android iOS| Data Storage -V2.3 |
-| OMTG-DATAST-004 | Verify that no Sensitive Data is Sent to Third Parties |  Android iOS| Data Storage -V2.4 |
-| OMTG-DATAST-005 | Test for Sensitive Data in the Keyboard Cache |  Android iOS| Data Storage -V2.5 |
-| OMTG-DATAST-006 | Test for Sensitive Data in the Clipboard  |  ndroid iOS| Data Storage -V2.6 |
-| OMTG-DATAST-007 | Verify that no Sensitive Data is Exposed Through IPC Mechanisms | Android iOS | Data Storage -V2.7 |
-| OMTG-DATAST-008 | Test for Sensitive Data in Screenshots |  Android iOS| Data Storage - V2.8 |
-| OMTG-DATAST-009 | Test for Sensitive Data in Backups |  Android iOS| Data Storage - V2.9 |
-| OMTG-DATAST-010 | Test for Sensitive Data in the Backgrounded App  |  Android iOS| Data Storage - V2.10 |
-| OMTG-DATAST-011 | Test for Sensitive Data in Memory |  Android iOS| Data Storage - V2.11 |
-| OMTG-DATAST-012 | Test Remote Locking and Wiping | Android iOS| Data Storage - V2.12 |
-| OMTG-DATAST-013 | Verify that the Device-Access-Security Policy is Enforced |  Android iOS| Data Storage - V2.13 |
-
+| OMTG-DATAST-001 | Test credential storage |  Android iOS | Data Storage - V2.1 |
+| OMTG-DATAST-002 | Test for sensitive data in logs |  Android iOS| Data Storage -V2.2 |
+| OMTG-DATAST-003 | Test for sensitive data in cloud storage |  Android iOS| Data Storage -V2.3 |
+| OMTG-DATAST-004 | Verify that no sensitive data is sent to third parties |  Android iOS| Data Storage -V2.4 |
+| OMTG-DATAST-005 | Test for sensitive data in the keyboard cache |  Android iOS| Data Storage -V2.5 |
+| OMTG-DATAST-006 | Test for sensitive Data in the clipboard  |  ndroid iOS| Data Storage -V2.6 |
+| OMTG-DATAST-007 | Test IPC mechanisms for sensitive data exposure | Android iOS | Data Storage -V2.7 |
+| OMTG-DATAST-008 | Test for sensitive Data in screenshots |  Android iOS| Data Storage - V2.8 |
+| OMTG-DATAST-009 | Test for sensitive Data in backups |  Android iOS| Data Storage - V2.9 |
+| OMTG-DATAST-010 | Verify that memory is cleared when the app is backgrounded |  Android iOS| Data Storage - V2.10 |
+| OMTG-DATAST-011 | Test for sensitive data in memory |  Android iOS| Data Storage - V2.11 |
+| OMTG-DATAST-012 | Test remote locking and wiping | Android iOS| Data Storage - V2.12 |
+| OMTG-DATAST-013 | Verify that a device-access-security policy is Enforced |  Android iOS| Data Storage - V2.13 |
+| OMTG-CRYPTO-001 | Verify that the app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption. |  Android iOS | Cryptography - V2.1 |
+| OMTG-CRYPTO-002 | Verify that the app uses proven implementations of cryptographic primitives. |  Android iOS| Cryptography - V3.2 |
+| OMTG-CRYPTO-003 | Test for depreciated cryptographic protocols and algorithms. |  Android iOS| Cryptography - V3.3 |
+| OMTG-CRYPTO-004 | Verify that cryptographic modules use parameters that adhere to current industry best practices. |  Android iOS| Data Storage -  V3.4 |
+| OMTG-CRYPTO-005 | Verify that the app doesn't re-use the same cryptographic key for multiple purposes. |  Android iOS| Data Storage -  V3.5 |
+| OMTG-CRYPTO-006 | Verify that all random values are generated using a sufficiently secure random number generator.  | Android iOS| Data Storage - V3.6 |
+| OMTG-CRYPTO-007 | Verify that all keys and passwords are changeable, and are generated or replaced at installation time. | Android iOS | Data Storage - V3.7 |
+| OMTG-CRYPTO-008 | Test for Crypographic s |  Android iOS| Data Storage -  V3.8 |
