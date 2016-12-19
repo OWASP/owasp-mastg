@@ -351,6 +351,21 @@ It is highly recommended to have a default screenshot that will be cached whenev
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
+### Remediation
+
+Possible remediation method that will set a default screenshot:
+
+```ObjC
+@property (UIImageView *)backgroundImage;
+ 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
+    self.backgroundImage = myBanner;
+    [self.window addSubview:myBanner];
+}
+```
+This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
+
 ### References
 
 The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
