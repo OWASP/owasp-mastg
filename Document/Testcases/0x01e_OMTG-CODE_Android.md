@@ -39,6 +39,8 @@ A comprehensive guide to debug an Android application can be found within the of
 
 #### Black-box Testing
 
+##### Static Test
+
 When targetting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF) and check the value of "android:debuggable" attribute.
 
 Otherwise, use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
@@ -52,6 +54,16 @@ Will return the following if android:debuggable parameter is set to true :
 ```
       A: android:debuggable(0x0101000f)=(type 0x12)0xffffffff
 ```
+
+##### Dynamic Test
+
+Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
+
+(TODO example)
+
+(TODO JDWP)
+
+Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
 #### Remediation
 
