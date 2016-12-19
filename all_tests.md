@@ -28,7 +28,7 @@
 | OMTG-AUTH-008 | Test user device management |  Android iOS | [Authentication](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management%20Requirements.md) V.4.11 |
 | OMTG-NET-001 | Test for unencrypted sensitive data on the network |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.1 |
 | OMTG-NET-002 | Test X.509 certificate verification |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.2 |
-| OMTG-NET-003 | Test SSL pinning |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.3 |
+| OMTG-NET-003 | Test SSL pinning |  [Android](Document/Testcases/0x01d_OMTG-NET_Android.md#OMTG-NET-003) iOS | [Network](Document/0x10-V5_Network_communication_requirements.md) V5.3 |
 | OMTG-NET-004 | Test the SSL configuration |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.4 |
 | OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.5 |
 | OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.6|
