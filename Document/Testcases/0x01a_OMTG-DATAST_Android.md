@@ -66,7 +66,7 @@ The following is a list of best practice used for secure storage of certificates
 * CWE-522 - Insufficiently Protected Credentials
 * CWE-922 - Insecure Storage of Sensitive Information
 
-### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
+### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data in Local Storage
 
 #### Overview
 
