@@ -32,7 +32,7 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 (TODO)
 
-### <a name="OMTG-CODE-003"></a>OMTG-CODE-002: Verify that Debugging Symbols Have Been Removed
+### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
 
 #### White-box Testing
 
