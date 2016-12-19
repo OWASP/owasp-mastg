@@ -261,7 +261,7 @@ To provide additional protection for sensitive data, you might choose to encrypt
 * [Lint][a9965341]
 * [SQLite3][3b9b0b6f]
 
-### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Testing for Sensitive Data in Logs
+### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
