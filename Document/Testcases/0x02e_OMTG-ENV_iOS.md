@@ -1,10 +1,8 @@
 ## <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
 
-### OWASP Mobile Top 10
-M[ID] - [Title]
+#### Overview
 
-### CWE 
-CWE [ID] - [Title]
+(Give an overview about the functionality and it's potential weaknesses)
 
 ### White-box Testing
 
