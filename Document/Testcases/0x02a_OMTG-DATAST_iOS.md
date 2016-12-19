@@ -1,10 +1,10 @@
-## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
+### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data Disclosure in Log Files
 
-### Black-box Testing
+#### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
-### White-box Testing
+#### White-box Testing
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
 * For predefined and built-in functions :
@@ -17,7 +17,7 @@ Check the source code for usage of predefined/custom Logging statements using th
   * Logfile
 
 
-### Remediation
+#### Remediation
 
 Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (*.pch) file:
 
@@ -29,26 +29,25 @@ Use a define to enable NSLog statements for development and debugging, and disab
 #endif
 ```
 
-### References
+#### References
 
 - [link to relevant how-tos, papers, etc.]
 
 
-## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
+### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for Sensitive Data in the Backgrounded App
 
-### Black-box Testing
+#### Black-box Testing
 
 [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
 
-### White-box Testing
+#### White-box Testing
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
-### Remediation
+#### Remediation
 
 The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
 
-
-### References
+#### References
 
 - [link to relevant how-tos, papers, etc.]
