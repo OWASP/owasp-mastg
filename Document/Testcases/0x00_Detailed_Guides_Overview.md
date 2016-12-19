@@ -30,13 +30,13 @@ Log files can be created in various ways on each of the different operating syst
 
 Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
 
-### OMTG-DATAST-003: Test for Sensitive Information in Cloud Storage
+#### OMTG-DATAST-003: Test for Sensitive Information in Cloud Storage
 
 Android provides two ways for apps to backup their data to the cloud:
 * Auto Backup for Apps (available >= API level 23), which uploads the data to the users Google Drive account.
 * Key/Value Backup (Backup API), which uploads the data to the Anrdoid Backup Service.
 
-### OMTG-DATAST-004: Test Data Communication with Third Parties
+#### OMTG-DATAST-004: Test Data Communication with Third Parties
 
 Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
