@@ -32,7 +32,6 @@ The following lists contains the individual sections of the MSTG, along with the
    * [Android](Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
    * [iOS](Document/0x06b-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 * Detailed Guides
-  * [Overview](Document/Testcases/0x00_Detailed_Guides_Overview.md)
   * Android
     * [Testing Data Storage](Document/Testcases/0x01a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
