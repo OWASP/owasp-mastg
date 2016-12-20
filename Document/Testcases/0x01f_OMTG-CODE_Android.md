@@ -1,4 +1,4 @@
-### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Propertly Signed
+### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Properly Signed
 
 #### Overview
 
@@ -12,7 +12,7 @@
 
 #### References
 
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 ##### OWASP MASVS
@@ -32,9 +32,9 @@ Check the AndroidManifest.xml for the value of "android:debuggable" attribute wi
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.android.owasp">
-    
+
     ...
-    
+
     <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
         <meta-data android:name="com.owasp.main" android:value=".Hook"/>
     </application>
@@ -43,13 +43,15 @@ Check the AndroidManifest.xml for the value of "android:debuggable" attribute wi
 
 This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" if it can be, And "false" if not. The default value is "false".
 
+Although the `android:debuggable=""` flag can be bypassed by repacking the application, before shipping it, it is important to set the option `android:debuggable="false"` in the _AndroidManifest.xml_.
+
 A comprehensive guide to debug an Android application can be found within the official documentation by Android (see references).
 
 #### Black-box Testing
 
 ##### Static Test
 
-When targetting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF) and check the value of "android:debuggable" attribute.
+When targeting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF) and check the value of "android:debuggable" attribute.
 
 Otherwise, use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
 
@@ -79,7 +81,7 @@ For production releases, the attribute android:debuggable must be set to false w
 
 #### References
 
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure 
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 ### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Test for Debugging Symbols
@@ -141,7 +143,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
-* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
+* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user.
 * C3
 
 #### Black-box Testing
@@ -276,4 +278,3 @@ android {
 #### References
 
 - [link to relevant how-tos, papers, etc.]
-
