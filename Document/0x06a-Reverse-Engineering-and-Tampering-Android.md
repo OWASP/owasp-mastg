@@ -87,7 +87,7 @@ In this case a search for “X509TrustManager” returned one class which implem
 The “return-void” opcode was added to the first line of each of these methods. The “return-void” statement is a Dalvik opcode to return ‘void’ or null. For more Dalvik opcodes refer to http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html.
 In this context, return-void means that no certificate checks are performed and the application will accept all certificates.
 
-![Screenshot showing the inserted opcode.](images/Chapters/0x06a/patching-sslpinning.jpg)
+![Screenshot showing the inserted opcode.](Images/Chapters/0x06a/patching-sslpinning.jpg)
 
 #### Hooking Java methods with Xposed
 
@@ -319,7 +319,7 @@ https://github.com/moyix/panda/blob/master/docs/
 
 ##### VxStripper
 
-Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
+Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
 
 #### Customizing Android
 
