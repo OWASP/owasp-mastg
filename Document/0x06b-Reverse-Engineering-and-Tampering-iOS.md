@@ -17,7 +17,56 @@ Class-dump-dyld by Elias Limneos allows dumping and retrieving symbols directly 
 https://github.com/limneos/classdump-dyld/
 
 
-### Jailbreaking an iOS Device
+### Jailbreaking iOS Devices
+
+
+
+
+
+#### Jailbreak Detections
+
+Some typical Jailbreak detection techniques
+
+
+Check for the existence of files, such as:
+
+~~~
+/Library/MobileSubstrate/MobileSubstrate.dylib
+/Applications/Cydia.app
+/Library/MobileSubstrate/MobileSubstrate.dylib
+/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist
+~~~
+
+
+Write a file to the /private/ directory:
+
+~~~
+
+NSError *error;
+NSString *stringToBeWritten = @"This is a test.";
+[stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
+         encoding:NSUTF8StringEncoding error:&error];
+if(error==nil){
+   //Device is jailbroken
+   return YES;
+ } else {
+   //Device is not jailbroken
+   [[NSFileManager defaultManager] removeItemAtPath:@"/private/jailbreak.txt" error:nil];
+ }
+
+~~~
+
+Attempt to open a Cydia URL:
+
+~~~
+if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
+~~~
+
+References:
+
+- [Stack Overflow](http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone)
+
+
 
 ### Manipulating iOS Apps
 
@@ -70,7 +119,10 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 #### Frida
 
+(---TODO---)
+
 ##### Example: Bypassing Jailbreak Detection
+
 
 ~~~~
 import frida
