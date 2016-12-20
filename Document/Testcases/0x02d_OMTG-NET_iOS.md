@@ -1,4 +1,8 @@
-## <a name="OMTG-NET-004"></a>OMTG-NET-004: Testing SSL Pinning
+## <a name="OMTG-NET-004"></a>OMTG-NET-004: Test SSL Pinning
+
+#### Overview
+
+Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
 
 ### White-box Testing
 

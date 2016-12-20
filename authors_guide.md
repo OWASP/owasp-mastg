@@ -1,4 +1,4 @@
-# Author's guide
+# Author's Guide
 
 This document contains guidelines for new authors joining the OWASP Mobile Security Testing Guide (MSTG). Please read them carefully.
 
@@ -6,7 +6,7 @@ This document contains guidelines for new authors joining the OWASP Mobile Secur
 
 The OWASP MSTG is a community effort, and in principle everyone is welcome to contribute or become a chapter owner. We don't check CVs and there is no formal process to go through. That said, keep in mind that with great power comes great reponsiblity: Once you have commited to a role, you'll be expected to deliver quality content.
 
-### Lead author
+### Lead Author
 
 The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
 
@@ -16,7 +16,7 @@ The lead author takes high-level ownership of a whole chapter or test case categ
 4. Moderate discussions about issues in the chapter(s) owned;
 5. Ensure that milestones for chapter are reached on time.
 
-Lead authors are expected to be highly responsive and actively engage in discussions on [GitHub](https://github.com/OWASP/owasp-mstg/issues) and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time. 
+Lead authors are expected to be highly responsive and actively engage in discussions on [GitHub](https://github.com/OWASP/owasp-mstg/issues) and [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). This requires significant effort, so you should only take up this role if you're sure you can put in the time.
 
 #### Permissions
 
@@ -45,7 +45,7 @@ In our experience, opinions will differ in many cases. Whenever differences cann
 
 ## How to Become an Author
 
-To become a contributor or reviewer, contact the lead author responsible for the chapter you are interested in. You can find their name and GitHub handle in the [readme](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
+To become a contributor or reviewer, contact the lead author responsible for the section you are interested in. You can find their name and GitHub handle in the [README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
 ## Attribution and Acknowledgement
 
@@ -64,27 +64,16 @@ Originally, the OWASP MSTG was developed on Google Docs. Lead authors starting o
 
 Note that content may also originate from the [original "beta" version](https://docs.google.com/document/d/1Z2nCRfe84D3t3IuEm9idX51lh51uzIerFaCV0Z74tbA/edit?ts=56f10e7f).
 
-## Writing a test case
+## Writing a Test Case
 
-All test cases should follow the following basic guidelines.
-
-### MASVS mapping
-
-The list of test cases in the MSTG maps 1:1 to the requirements in the [OWASP MASVS](https://github.com/OWASP/owasp-masvs). For example, OWASP MASVS V2.9 maps to the test case OMTG-DATAST-009:
+A "test case" is a how-to with step-by-step instructions on how to test for a specific issue. We have defined a list of [63 test cases](all_tests.md) based on the requirements in the [OWASP MASVS](https://github.com/OWASP/owasp-masvs), for the most part maintaining the same order and structure. For example, OWASP MASVS V2.9 maps to the test case OMTG-DATAST-009:
 
 - OWASP MASVS V2.9 "Verify that sensitive data does not leak to backups."
+- OMTG-DATAST-009: "Test for Sensitive Data in Backups"
 
--  OMTG-DATAST-009: "Test for Sensitive Data in Backups"
+A good way to start is by browsing the [test case list](all_tests.md) and picking a topic that doesn't have content yet. Then, simply use an [existing test case](Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) as a template to create your own one.
 
-The MSTG must be kept compatible to the equivalent version of the MASVS. Changes in the list of requirements are always done in the MASVS first, after which the MSTG is updated to match the new requirements.
-
-### Structure of a Test Case
-
-Test cases are split into markdown files by test case category and operating system. For each category, there is a generic list of test cases as well as one file per mobile OS with OS-specific instructions. At the moment, only iOS and Android are discussed in the guide, so there are three files per category.
-
-Use the [test case templates](https://github.com/OWASP/owasp-mstg/tree/master/Templates) to add a new category.
-
-### Style guide
+### Style Guide
 
 The following rules are meant to ensure consistency of the MSTG:
 
@@ -92,5 +81,13 @@ The following rules are meant to ensure consistency of the MSTG:
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person;
 
-Refer to [existing test cases](https://github.com/b-mueller/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) for examples.
+#### Title Capitalization
 
+We follow the title case rules from the "Chicago Manual of Style":  
+
+- Capitalize the first and last word in a title, regardless of part of speech
+- Capitalize all nouns (baby, country, picture), pronouns (you, she, it), verbs (walk, think, dream), adjectives (sweet, large, perfect), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
+- Lowercase “to” as part of an infinitive
+- Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
+
+When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
