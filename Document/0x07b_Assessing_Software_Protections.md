@@ -33,7 +33,7 @@ Functional defenses are programmatic features  that aim to detect, and respond t
 
 In the MASVS and MSTG, we define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2). The MASVS defines the minimum amount of protection that must exist in each category.
 
-![Reverse engineering processes](/Document/images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
+![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
 
 For example, MASVS L2 requires an app to implement a simple form protection in the categories “environmental manipulation” and “debugging”. An app may pass as long as it implements any form of detection, no matter the specific implementation. MASVS  L3 ups the ante by adding requirements for all five categories:
 
