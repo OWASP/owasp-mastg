@@ -1,83 +1,16 @@
 ## Android
 
-### <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001: Test Local Data Storage (TODO - MERGE WITH OWASP-DATAST-001-2)
+
+### <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Sensitive Data in Local Storage
 
 #### Overview
 
-Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case credentials or keys needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
-
-* Identify keys and passwords in the App, e.g. entered by the users, sent back by the endpoint, shipped within the App and how this sensitive data is processed locally.
-* Decide with the developers if this sensitive stored information locally is needed and if not, how it can be removed or moved to the server (endpoint).
-
-The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
-This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from apps that have a payment option in order to attack it.
-
-This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information).
-
-#### White-box Testing
-
-Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked withi the source code:
-* Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered.
-* Check if keys are created or used without taking advantage of the Android onboard features like the [KeyStore][19149717].
-* Identify what kind of information is stored persistently and if credentials or keys are disclosed.
-
-When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. If sensitive information needs to be stored on the device itself, several functions/API calls are available to protect the data on the Android device by using the **KeyChain** and **Keystore**. The following controls should therefore be used:
-* Check if a key pair is created within the App by looking for the class `KeyPairGenerator`.
-* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and it’s usage.
-* The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
-
-The code should also be analysed if sensitive data is used properly and securely:
-* Sensitive information should not be stored for too long in the RAM (see also [OMTG-DATAST-011 - Testing for Sensitive Data Disclosure in Process Memory](#OMTG-DATAST-011)).
-* Set variables that use sensitive information to null once finished.
-* Use immutable objects for sensitive data so it cannot be changed.
-
-#### Black-box Testing
-
-When targetting compiled Android applications, the best way to proceed is to first decompile them  in order to obtain something close to the source code (_**see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
-
-#### Remediation
-
-If sensitive information (credentials, keys, PII, etc.) is needed locally on the device several best practices are offered by Android that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
-
-The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
-* [Android KeyStore][19149717]: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStores is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The Keystore is encrypted using the user’s own lockscreen pin/password, hence, when the device screen is locked the Keystore is unavailable. More information can be found here: [how to use Android Keystore][0d4e8f69].
-* [Android KeyChain][707361af]: The KeyChain class is used to store and retrieve private keys and their corresponding certificate (chain). The user will be prompted to set a lock screen PIN or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
-* Encryption or decryption functions that were self implemented need to be avoided. Instead use Android implementations such as [Cipher][8705d59b], [SecureRandom][c941abfc] and [KeyGenerator][fcc82125].   
-* Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the [AccountManager][ff4a4029] class to invoke a cloud-based service and do not store passwords on the device.
-* As a security in depth measure code obfuscation should also be applied to the App, to make reverse engineering harder for attackers.
-
-#### References
-
-* [How to use the Android Keystore to store passwords and other sensitive information][0d4e8f69]
-* [Android KeyChain][707361af]
-* [Android KeyStore][19149717]
-
-##### OWASP MASVS
-
-- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-
-##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
-
-##### CWE
-* CWE-311 - Missing Encryption of Sensitive Data
-* CWE-312 - Cleartext Storage of Sensitive Information
-* CWE-522 - Insufficiently Protected Credentials
-* CWE-922 - Insecure Storage of Sensitive Information
-
-### <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data in Local Storage
-
-#### Overview
-
-[Storing data][fb530e1c] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the Android platform:
+[Storing data][fb530e1c] is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently in various ways. The following table shows those mechanisms that are available on the Android platform:
 
 * Shared Preferences
 * Internal Storage  
 * External Storage  
 * SQLite Databases  
-
-The following examples shows snippets of code to demonstrate bad practices that discloses sensitive information and also shows the different mechanisms in Android to store data.
 
 The following examples shows snippets of code to demonstrate bad practices that discloses sensitive information and also shows the different mechanisms in Android to store data.
 
@@ -92,8 +25,6 @@ editor.putString("username", "administrator");
 editor.putString("password", "supersecret");
 editor.commit();
 ```
-
-> Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated in API 17. Although this may not affect newer devices, applications compiled with android:targetSdkVersion set prior to 17 may still be affected, if they run on OS prior to Android 4.2 (`JELLY_BEAN_MR1`).
 
 Once the activity is called, the file key.xml is created with the provided data. This code is violating several best practices.
 
@@ -114,9 +45,12 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 -rw-rw-r-- u0_a118 u0_a118    170 2016-04-23 16:51 key.xml
 ```
 
-##### SQLite Databases (Unencrypted)
+> Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated in API 17. Although this may not affect newer devices, applications compiled with android:targetSdkVersion set prior to 17 may still be affected, if they run on OS prior to Android 4.2 (`JELLY_BEAN_MR1`).
 
-SQLite is a SQL database that stores data to a text file. The Android SDK comes with built in classes to operate SQLite databases. The main package to manage the databases is android.database.sqlite.
+
+##### SQLite Database (Unencrypted)
+
+SQLite is a SQL database that stores data to a .db file. The Android SDK comes with built in classes to operate SQLite databases. The main package to manage the databases is android.database.sqlite.
 Within an Activity the following code might be used to store sensitive information like a username and a password:
 
 ```java
@@ -125,6 +59,7 @@ notSoSecure.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Passwo
 notSoSecure.execSQL("INSERT INTO Accounts VALUES('admin','AdminPass');");
 notSoSecure.close();
 ```
+
 Once the activity is called, the database file `privateNotSoSecure` is created with the provided data and the data is stored in clear text in `/data/data/<PackageName>/databases/privateNotSoSecure`.
 
 There might be several files available in the databases directory, besides the SQLite database.
@@ -137,6 +72,7 @@ Unencrypted SQLite databases should not be used to store sensitive information.
 ##### SQLite Databases (Encrypted)
 
 By using the library [SQLCipher][7e90d2dc] SQLite databases can be encrypted, by providing a password.
+
 ```java
 SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
 secureDB.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);");
@@ -144,22 +80,23 @@ secureDB.execSQL("INSERT INTO Accounts VALUES('admin','AdminPassEnc');");
 secureDB.close();
 
 ```
+
 If encrypted SQLite databases are used, check if the password is hardcoded in the source, stored in shared preferences or hidden somewhere else in the code or file system.
 A secure approach to retrieve the key, instead of storing it locally could be to either:
 
-* Ask the user every time for a PIN or password to decrypt the database, once the App is opened (weak password or PIN is prone to Brute Force Attacks)
+* Ask the user every time for a PIN or password to decrypt the database, once the App is opened (weak password or PIN is prone to Brute Force Attacks), or
 * Store the key on the server and make it accessible via a Web Service (then the App can only be used when the device is online)
 
 ##### Internal Storage
 
 Files can be saved directly on the device's [internal storage][e65ea363]. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
-Within an Activity the following code might be used to store sensitive information in the variable string persistently to the internal storage:
+Within an Activity the following code might be used to store sensitive information in the variable test persistently to the internal storage:
 
 ```java
 FileOutputStream fos = null;
 try {
    fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-   fos.write(string.getBytes());
+   fos.write(test.getBytes());
    fos.close();
 } catch (FileNotFoundException e) {
    e.printStackTrace();
@@ -176,7 +113,7 @@ It should also be checked what files are read within the App by searching for th
 
 Every Android-compatible device supports a shared "[external storage][5e4c3059]" that you can use to save files. This can be a removable storage media (such as an SD card) or an internal (non-removable) storage.
 Files saved to the external storage are world-readable and can be modified by the user when they enable USB mass storage to transfer files on a computer.
-Within an Activity the following code might be used to store sensitive information in the variable string persistently to the external storage:
+Within an Activity the following code might be used to store sensitive information in the variable password persistently to the external storage:
 
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
@@ -186,48 +123,100 @@ FileOutputStream fos;
     fos.write(password.getBytes());
     fos.close();
 ```
+
 Once the activity is called, the file is created with the provided data and the data is stored in clear text in the external storage.
 
 It’s also worth to know that files stored outside the application folder (internal: `data/data/com.appname/files` or external: `/storage/emulated/0/Android/data/com.appname/files/`) will not be deleted when the user uninstall the application.
 
+##### KeyChain and KeyStore
+
+Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
+
+* Identify keys and passwords in the App, e.g. entered by the users, sent by the endpoint, shipped within the App and how this sensitive data is processed locally.
+* Decide with the developers if this sensitive stored information locally is needed and if not, how it can be moved to the endpoint or completely deleted.
+
+The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
+
+This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The App might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information).
+
+This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from Apps that have a payment option in order to attack and abuse it.
+
+
 #### White-box Testing
 
-As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code of an Android App, once decompiled.
+##### Local Storage
+
+As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code to identify the storage mechanisms used within the Android App and if sensitive data is processed insecurely.
+
 * Check `AndroidManifest.xml` for permissions to read and write to external storage, like `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`
 * Check the source code for functions and API calls that are used for storing data:
-  * Import the decompiled Java Files in an IDE of your choice (IntelliJ or Eclipse) or use grep on the command line to search for
+  * Open the Java Files in an IDE or text editor of your choice or use grep on the command line to search for:
     * file permissions like:
       * `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`. IPC files should not be created with permissions of `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE` unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory.
     * Classes and functions like:
-      * Shared Preferences (Storage of key-value pairs)
-      * `FileOutPutStream` (Using Internal or External Storage)
+      * `SharedPreferences` Class (Storage of key-value pairs)
+      * `FileOutPutStream` Class (Using Internal or External Storage)
       * `getExternal*` functions (Using External Storage)
       * `getWritableDatabase` function (return a SQLiteDatabase for writing)
       * `getReadableDatabase` function (return a SQLiteDatabase for reading)
       * `getCacheDir` and `getExternalCacheDirs` function (Using cached files)
 
+##### KeyChain and KeyStore
+
+Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked with the source code:
+
+* Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered.
+* Check if keys are created or used without taking advantage of the Android onboard features like the [KeyStore][19149717].
+* Identify what kind of information is stored persistently and if credentials or keys are disclosed.
+
+When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. If sensitive information needs to be stored on the device itself, several functions/API calls are available to protect the data on the Android device by using the **KeyChain** and **Keystore**. The following controls should therefore be used:
+
+* Check if a key pair is created within the App by looking for the class `KeyPairGenerator`.
+* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and it’s usage.
+* The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
+
+The code should also be analysed if sensitive data is used properly and securely:
+
+* Sensitive information should not be stored for too long in the RAM (see also [OMTG-DATAST-011 - Testing for Sensitive Data Disclosure in Process Memory](#OMTG-DATAST-011)).
+* Set variables that use sensitive information to null once finished.
+* Use immutable objects for sensitive data so it cannot be changed.
+
+
 #### Black-box Testing
 
-Install and use the App as it is intended. Afterwards check the following items:
+Install and use the App as it is intended and execute all functions at least once. Afterwards check the following items:
 
 * Check the files that are shipped with the mobile application once installed in /data/data/<AppName>/files in order to identify development, backup or simply old files that shouldn’t be in a production release.
-* Check if .db files are available, which are SQLite databases and if they contain sensitive information (usernames, passwords, keys etc.). SQlite databases can be accessed on the command line with sqlite3.
+* Check if .db files are available, which are SQLite databases and if they contain sensitive information (usernames, passwords, keys etc.). SQLite databases are stored in /data/data/<AppName>/databases.
 * Check Shared Preferences that are stored as XML files in the shared_prefs directory of the App for sensitive information.
-* Check the file system permissions of the files in /data/data/<app name>. The permission should only allow rwx to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
+* Check the file system permissions of the files in /data/data/<app name>. The permission should only allow **rwx** to the user and his group that was created for the app (e.g. u0_a82) but not to others. Others should have no permissions to files, but may have the executable flag to directories.
+
+##### KeyChain and KeyStore
+
+When targeting Android applications, the best way to proceed is to first decompile them in order to obtain something close to the source code (_**see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
 
 #### Remediation
 
-Usage of `MODE_WORLD_WRITEABLE` or `MODE_WORLD_READABLE` should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis.
+If sensitive information (credentials, keys, PII, etc.) is needed locally on the device several best practices are offered by Android that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
-The usage of Shared Preferences or other mechanisms that are not able to protect data should be avoided to store sensitive information. SharedPreferences are insecure and not encrypted by default.
+The following is a list of best practice used for secure storage of certificates and keys and sensitive data in general:
 
-Do not use the external storage for sensitive data. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
+* [Android KeyStore][19149717]: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStores is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The KeyStore is encrypted using the user’s own lockscreen pin/password, hence, when the device screen is locked the KeyStore is unavailable. More information can be found here: [how to use Android Keystore][0d4e8f69].
+* [Android KeyChain][707361af]: The KeyChain class is used to store and retrieve private keys and their corresponding certificate (chain). The user will be prompted to set a lock screen PIN or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
+* Encryption or decryption functions that were self implemented need to be avoided. Instead use Android implementations such as [Cipher][8705d59b], [SecureRandom][c941abfc] and [KeyGenerator][fcc82125].   
+* Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the [AccountManager][ff4a4029] class to invoke a cloud-based service and do not store passwords on the device.
+* As a security in depth measure code obfuscation should also be applied to the App, to make reverse engineering harder for attackers.
+* Usage of `MODE_WORLD_WRITEABLE` or `MODE_WORLD_READABLE` should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis.
+* The usage of Shared Preferences or other mechanisms that are not able to protect data should be avoided to store sensitive information. SharedPreferences are insecure and not encrypted by default. [“Secure-preferences][6dea1401]” can be used to encrypt the values stored within [Shared Preferences][afd8258f].
+* Do not use the external storage for sensitive data. By default, files saved to the internal storage are private to your application and other applications cannot access them (nor can the user). When the user uninstalls your application, these files are removed.
+* To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a [KeyStore][19149717] and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
 
-To provide additional protection for sensitive data, you might choose to encrypt local files using a key that is not directly accessible to the application. For example, a key can be placed in a [KeyStore][19149717] and protected with a user password that is not stored on the device. While this does not protect data from a root compromise that can monitor the user inputting the password, it can provide protection for a lost device without file system encryption.
-
-[“Secure-preferences][6dea1401]” can be used to encrypt the values stored within [Shared Preferences][afd8258f].
 
 #### References
+
+* [How to use the Android Keystore to store passwords and other sensitive information][0d4e8f69]
+* [Android KeyChain][707361af]
+* [Android KeyStore][19149717]
 
 ##### OWASP MASVS
 
@@ -261,6 +250,7 @@ To provide additional protection for sensitive data, you might choose to encrypt
 * [Lint][a9965341]
 * [SQLite3][3b9b0b6f]
 
+
 ### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
@@ -271,7 +261,7 @@ Log files can be created in various ways on each of the different operating syst
 * Log Class, .log[a-Z]
 * Logger Class        
 * StrictMode  
-* System.out/System.err.print 
+* System.out/System.err.print
 
 Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
 
