@@ -58,7 +58,7 @@ When you "attach" Frida to a running app, it uses ptrace to hijack a thread in a
 
 Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
 
-![Frida](images/frida.png)
+![Frida](Images/Chapters/0x06/frida.png)
 
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
