@@ -48,18 +48,14 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 #### White-box Testing
 
-Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
-
-* Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
-* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
-* C3
+(TODO)
 
 #### Black-box Testing
 
 Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
 
 ~~~~
-berndt@osboxes:~/ $ objdumpApplication Security Verification Standard -t my_library.so
+berndt@osboxes:~/ $ objdump -t my_library.so
 my_library.so:     file format elf32-little
 
 SYMBOL TABLE:

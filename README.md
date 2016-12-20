@@ -4,7 +4,7 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Table of Contents
 
-The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [detailed list of security test cases](all_tests.md).
+The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [detailed list of security test cases](all_tests.md). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklist/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
 
 ### Introductionary
 
@@ -43,7 +43,7 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Testing Environmental Interaction](Document/Testcases/0x02e_OMTG-ENV_iOS.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x02f_OMTG-CODE_iOS.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x02g_OMTG-RARE_iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-    
+
 ### Complementary
 
 * [Security Testing in the Application Development Lifecycle](Document/0x07a-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
