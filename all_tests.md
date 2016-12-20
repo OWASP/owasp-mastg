@@ -1,5 +1,7 @@
 # All Test Cases in the OWASP Mobile Security Testing Guide
 
+The full list of mobile app security tests in the MSTG. Detailed how-tos will be linked from here as they become available (see the [README](README.md) for links to other sections of the guide). You can also [download this as a simple Excel checklist](Checklist/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
+
 | ID | Name | Howto | MASVS |
 | --- | --- | --- | --- | --- | --- |
 | OMTG-DATAST-001 | Test local data storage | Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.1 |
