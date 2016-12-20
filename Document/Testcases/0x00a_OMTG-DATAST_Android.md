@@ -610,7 +610,7 @@ Steps to reproduce:
 
 If you can see the application screenshot, the application is vulnerable; otherwise you will obtain a file of 0 bytes.
 
-![OMTG_DATAST_008_FLAG_SECURE](../images/Testcases/OMTG_DATAST_008.png)
+![OMTG_DATAST_008_FLAG_SECURE](../images/Testcases/OMTG-DATAST_Android/8/1.png)
 
 ### Remediation
 
@@ -702,7 +702,7 @@ During black-box testing, open any screen within the app that contains sensitive
 
 | `SECURE_FLAG` not set  | `SECURE_FLAG` set  |
 |---|---|
-| ![OMTG_DATAST_010_1_FLAG_SECURE](../images/Testcases/OMTG_DATAST_010_1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](../images/Testcases/OMTG_DATAST_010_2.png) |
+| ![OMTG_DATAST_010_1_FLAG_SECURE](../images/Testcases/OMTG-DATAST_Android/10/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](../images/Testcases/OMTG_DATAST_Android/10/2.png) |
 
 
 ### Remediation

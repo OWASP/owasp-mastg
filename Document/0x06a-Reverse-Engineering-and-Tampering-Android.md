@@ -87,7 +87,7 @@ In this case a search for “X509TrustManager” returned one class which implem
 The “return-void” opcode was added to the first line of each of these methods. The “return-void” statement is a Dalvik opcode to return ‘void’ or null. For more Dalvik opcodes refer to http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html.
 In this context, return-void means that no certificate checks are performed and the application will accept all certificates.
 
-![Screenshot showing the inserted opcode.](images/patching-sslpinning.jpg)
+![Screenshot showing the inserted opcode.](images/Chapters/0x06a/patching-sslpinning.jpg)
 
 #### Hooking Java methods with Xposed
 
