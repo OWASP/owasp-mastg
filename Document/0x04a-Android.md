@@ -26,7 +26,7 @@ As we know, every process on Android has its own sandboxed address space. Inter-
 
 In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
 
-![Binder Overview](/Document/images/binder.jpg)
+![Binder Overview](/Document/images/Chapter/0x04a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
 
 #### High-Level Abstractions

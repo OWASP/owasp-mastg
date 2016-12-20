@@ -44,7 +44,7 @@ Verify the minifyEnabled is set to true in build.gradle (see below).
 
 To inspect the Java bytecode for metadata either use the dexdump tool that ships with the Android SDK or a decompiler.
 
-![ProGuard-obfuscated code](../images/proguard.jpg)
+![ProGuard-obfuscated code](/Document/images/Testcases/OMTG-RARE_Android/2/proguard.jpg)
 
 #### Remediation
 
