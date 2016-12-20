@@ -880,7 +880,7 @@ During black-box testing, open any screen within the App that contains sensitive
 
 | `SECURE_FLAG` not set  | `SECURE_FLAG` set  |
 |---|---|
-| ![OMTG_DATAST_010_1_FLAG_SECURE](/Document/Images/Testcases/OMTG-DATAST_Android/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](/Document/Images/Testcases/OMTG_DATAST_Android/2.png) |
+| ![OMTG_DATAST_010_1_FLAG_SECURE](/Document/Images/Testcases/OMTG-DATAST_Android/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](/Document/Images/Testcases/OMTG-DATAST_Android/2.png) |
 
 
 #### Remediation
