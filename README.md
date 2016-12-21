@@ -38,7 +38,7 @@ The following lists contains the individual sections of the MSTG, along with the
   * iOS
     * [Testing Data Storage](Document/Testcases/0x02a_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
     * [Testing Cryptography](Document/Testcases/0x02b_OMTG-CRYPTO_iOS.md) --  [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Authentication and Session Management](Document/Testcases/0x02c_OMTG-AUTH_iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
+    * [Testing Authentication and Session Management](Document/Testcases/0x02c_OMTG-AUTH_iOS.md) --  [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
     * [Testing Network Communication](Document/Testcases/0x02d_OMTG-NET_iOS.md) -- [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x02e_OMTG-ENV_iOS.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x02f_OMTG-CODE_iOS.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
