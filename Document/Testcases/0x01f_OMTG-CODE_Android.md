@@ -248,7 +248,7 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+Because Java classes are trivial to decompile, applying some basic obfuscation to the release bytecode is recommended. For Java apps on Android, ProGuard offers an easy way to shrink and obfuscate code. It replaces identifiers such as  class names, method names and variable names with meaningless character combinations. This is a form of layout obfuscation, which is “free” in that it doesn't impact the performance of the program.
 
 #### White-box Testing
 
