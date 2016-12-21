@@ -15,12 +15,12 @@ The following lists contains the individual sections of the MSTG, along with the
 
 ### High-Level Guides
 
-* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Stephen Corbiaux](https://github.com/stephenreda)
-    * [Android](Document/0x04a-Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-    * [iOS](Document/0x04b-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Stephen Corbiaux](https://github.com/stephenreda)
-   * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
-   * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
+* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Android](Document/0x04a-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [iOS](Document/0x04b-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+   * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+   * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
 * [Tampering and Reverse Engineering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
    * [Android](Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
    * [iOS](Document/0x06b-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
@@ -30,7 +30,7 @@ The following lists contains the individual sections of the MSTG, along with the
   * Android
     * [Testing Data Storage](Document/Testcases/0x01a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
     * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
+    * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
     * [Testing Network Communication](Document/Testcases/0x01d_OMTG-NET_Android.md) -- [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x01e_OMTG-ENV_Android.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x01f_OMTG-CODE_Android.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
