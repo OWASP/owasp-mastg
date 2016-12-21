@@ -8,7 +8,7 @@ The OWASP MSTG is a community effort, and in principle everyone is welcome to co
 
 ### Lead Author
 
-The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/0x00a_OMTG-DATAST_Android.md). A lead author should:
+The lead author takes high-level ownership of a whole chapter or test case category such as [Testing Sensitive Data Storage on Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md). A lead author should:
 
 1. Contribute an significant amount of quality content to the chapter(s) owned;
 2. Coordinate the work of authors and reviews working on subchapters;
