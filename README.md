@@ -29,7 +29,7 @@ The following lists contains the individual sections of the MSTG, along with the
 
   * Android
     * [Testing Data Storage](Document/Testcases/0x01a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
-    * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
+    * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Alexander Anthuk](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
     * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Looking for Lead Authors](authors_guide.md)
     * [Testing Network Communication](Document/Testcases/0x01d_OMTG-NET_Android.md) -- [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x01e_OMTG-ENV_Android.md) -- [Sven Schleier](https://github.com/sushi2k)
@@ -37,7 +37,7 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x01g_OMTG-RARE_Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
   * iOS
     * [Testing Data Storage](Document/Testcases/0x02a_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Cryptography](Document/Testcases/0x02b_OMTG-CRYPTO_iOS.md) --  [Gerhard Wagner](https://github.com/thec00n)
+    * [Testing Cryptography](Document/Testcases/0x02b_OMTG-CRYPTO_iOS.md) --  [Alexander Anthuk](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
     * [Testing Authentication and Session Management](Document/Testcases/0x02c_OMTG-AUTH_iOS.md) --  [Looking for Lead Authors](authors_guide.md)
     * [Testing Network Communication](Document/Testcases/0x02d_OMTG-NET_iOS.md) -- [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x02e_OMTG-ENV_iOS.md) -- [Sven Schleier](https://github.com/sushi2k)
