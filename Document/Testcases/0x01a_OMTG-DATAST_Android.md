@@ -988,38 +988,7 @@ Tools:
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test If Local Storage Is Wiped upon Remote Locking
-
-#### Overview
-
-(... TODO ...)
-
-#### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-##### OWASP-MASVS
-
-- V2-12: "If a remote locking mechanism exists, local storage is wiped upon locking."
-
-##### OWASP Mobile Top 10
-
-##### CWE
-- CWE: [Link to CWE issue]
-
-- [link to relevant how-tos, papers, etc.]
-
-### <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
+### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Enforcement of Device-Access-Security Policy
 
 #### Overview
 
@@ -1057,7 +1026,7 @@ This test cannot be executed as a black-box test, as without proper knowledge of
 
 ##### OWASP MASVS
 
-- V2-13: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- V2-12: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
 
