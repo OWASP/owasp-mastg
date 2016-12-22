@@ -15,10 +15,10 @@ The following lists contains the individual sections of the MSTG, along with the
 
 ### High-Level Guides
 
-* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Looking for Lead Authors](authors_guide.md)
+* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)
    * [Android](Document/0x04a-Android.md) -- [Cláudio André](https://github.com/clviper)
    * [iOS](Document/0x04b-iOS.md) -- [Looking for Lead Authors](authors_guide.md)
-* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Looking for Lead Authors](authors_guide.md)
+* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md)
    * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
    * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
 * [Tampering and Reverse Engineering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
