@@ -16,16 +16,17 @@ Class-dump-dyld by Elias Limneos allows dumping and retrieving symbols directly 
 
 https://github.com/limneos/classdump-dyld/
 
-
 ### Jailbreaking iOS Devices
 
+In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS.
 
+(... TODO: Jailbreaking How-to ...)
 
+#### Jailbreak Detection
 
-#### Jailbreak Detections
-
-Some typical Jailbreak detection techniques
+Some typical Jailbreak detection techniques:
 
 
 Check for the existence of files, such as:
@@ -61,6 +62,7 @@ Attempt to open a Cydia URL:
 ~~~
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ~~~
+
 
 References:
 

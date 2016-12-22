@@ -35,7 +35,6 @@ Some things that should be mentioned:
 - DexDump
 - dex2jar
 
-
 ### Manipulating Android Apps
 
 #### Patching and Re-Packaging
