@@ -4,14 +4,28 @@ Whether we’re talking about malware, banking apps, or mobile games: They all u
 
 The first problem is that there is no one-size-fits-all. Client-side tampering protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing server-side controls in the client. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. To work around this issue, we made modeling of client-side threats part of the requirements in MASVS-R: If one uses obfuscation and anti-tampering controls at all, they should be sure that they're doing it right, and without compromising the overall security architecture.
 
-Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection have been proven (in the scientific sense) to be effective. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research, throw in some practical experience and common sense, and base our standard on that. 
+Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection have been proven (in the scientific sense) to be effective. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research, throw in some practical experience and common sense, and base our standard on that.
 
-## Threat Model
+In this chapter, we outline a process called resiliency testing. Resiliency testing is analogous and complementary to security testing, with a few important differences. (... TODO ...)
+
+## Verifying the Threat Model
+
+
+
+
+## How Adversaries Work
+
+
+
+
+
+
 
 ## Testing Software Protections
 
 
-### Software Protections Model
+
+### Our Model of Software Protections
 
 On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
 
