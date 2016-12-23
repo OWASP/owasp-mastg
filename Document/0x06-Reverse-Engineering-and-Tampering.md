@@ -95,10 +95,3 @@ TODO: Introduce advanced concepts
 
 TODO: Introduce RE frameworks
 
-[Miasm](https://github.com/cea-sec/miasm)
-[Metasm](https://github.com/jjyg/metasm)
-
-### Symbolic Execution
-
-
-### Domain-specific attacks
