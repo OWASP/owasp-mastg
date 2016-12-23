@@ -48,7 +48,7 @@ The following lists contains the individual sections of the MSTG, along with the
 
 * [Security Testing in the Application Development Lifecycle](Document/0x07a-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
 * [Assessing the Quality of Software Protections](Document/0x07b_Assessing_Software_Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Testing Tools](Document/0x08-Testing-Tools.md) - T.b.d.
+* [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/)
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
 
 ## Suggestions and feedback
