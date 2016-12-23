@@ -6,36 +6,37 @@ The first problem is that there is no one-size-fits-all. Client-side tampering p
 
 Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection have been proven (in the scientific sense) to be effective. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research, throw in some practical experience and common sense, and base our standard on that.
 
-In this chapter, we outline a process called resiliency testing. Resiliency testing is analogous and complementary to security testing, with a few important differences. (... TODO ...)
+In this chapter, we outline a process called *resiliency testing*. Resiliency testing is analogous and complementary to security testing, with a few important differences. (... TODO ...)
 
-## Verifying the Threat Model
-
-
-
-
-## How Adversaries Work
+1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
+2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
 
+## Testing Software Protection Schemes
 
 
+### The Attacker's View
+
+![High-level Process](/Document/Images/Chapters/0x07b/Binary_Attack_Overview_Process_Graph.png "Reverse engineering processes")
+
+Attack Steps, from: https://www.owasp.org/index.php/Architectural_Principles_That_Prevent_Code_Modification_or_Reverse_Engineering
 
 
-
-## Testing Software Protections
-
-
-
-### Our Model of Software Protections
+### Software Protections Model
 
 On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
 
 #### 1. Functional Defenses
 
-*Functional defenses* are program functions that prevent, or react to, actions of the reverse engineer. They can be further categorized into two modi operandi:
+*Functional defenses* are program functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
 
 1. Preventive: Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process.
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
+
+We define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2).
+
+![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
 
 #### 2. Obfuscating Transformations
 
@@ -44,46 +45,16 @@ On the highest level, we classify reverse engineering defenses into two categori
 1. Strip information
 2. Obfuscate control flow and data
 
-Effective anti-reversing schemes combine a variety of functional defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient (MASVS L2). In some cases however it is desirable to increase resiliency against reverse engineering - in these cases, advanced functional defenses and obfuscating transformations may be added (MASVS L3-L4).
+Effective anti-reversing schemes combine a variety of functional defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient. In some cases however it is desirable to increase resiliency against reverse engineering - in these cases, advanced functional defenses and obfuscating transformations may be added.
 
-### Functional Defense Requirements
-
-Functional defenses are programmatic features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. When combined with obfuscation, multiple defenses add up to make the life of the reverse engineer as difficult as possible.
-
-In the MASVS and MSTG, we define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2). The MASVS defines the minimum amount of protection that must exist in each category.
-
-![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
-
-
-
-#### Assessing the Quality of Functional Defenses
-
-The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
-
-Each individual defensive function is assessed on three properties:
--	Uniqueness: 1 – 3 points
--	API Layer: Up to 2 bonus points
--	Parallelism: Up to 2 bonus points
-
-Table 2 explains the scoring criteria in detail.
-
-|               | **Uniqueness**    | **API Layer**   | **Parallelism** |
-| ------------- |:-------------:| -----:| ------------------|
-| **Rationale**     | *Lower-level calls are more difficult to defeat than higher level calls.*  | *The more original and/or customized the anti-reversing trick, the less likely the adversary has seen it all before*.  |  *Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.*  |
-| **Level 1**  | Standard API (1 point): The feature relies on APIs that are specifically meant to hinder reverse engineering. It can be bypassed easily using generic |   System Library (1 point): The feature relies on public library functions or methods.| Single thread |
-| **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
-| **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
-
-### Obfuscation Requirements
-
-#### 1. Strip Meaningful Information
+##### 1. Strip Meaningful Information
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
 
 For instance, class files generated with the standard Java compiler include the names of classes, methods and fields, making it trivial to reconstruct the source code. ELF and Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable.
 Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
-#### 2. Obfuscate Control Flow and Data
+##### 2. Obfuscate Control Flow and Data
 
 Program code and data can be transformed in unlimited ways - and indeed, the field of control flow and data obfuscation is highly diverse, with a large amount of research dedicated to both obfuscation and de-obfuscation. Deriving general rules as to what is considered *strong* obfuscation is not an easy task. In the MSTG model, we take a two-fold approach:
 
@@ -112,3 +83,28 @@ Some types of obfuscation that fall into this category are:
 - Variable splitting
 - Virtualization
 - White-box cryptography
+
+
+### Assessing the Threat Model and Architecture
+
+(... TODO ...)
+
+#### Assessing the Quality of Functional Defenses
+
+The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
+
+Each individual defensive function is assessed on three properties:
+-	Uniqueness: 1 – 3 points
+-	API Layer: Up to 2 bonus points
+-	Parallelism: Up to 2 bonus points
+
+Table 2 explains the scoring criteria in detail.
+
+|               | **Uniqueness**    | **API Layer**   | **Parallelism** |
+| ------------- |:-------------:| -----:| ------------------|
+| **Rationale**     | *Lower-level calls are more difficult to defeat than higher level calls.*  | *The more original and/or customized the anti-reversing trick, the less likely the adversary has seen it all before*.  |  *Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.*  |
+| **Level 1**  | Standard API (1 point): The feature relies on APIs that are specifically meant to hinder reverse engineering. It can be bypassed easily using generic |   System Library (1 point): The feature relies on public library functions or methods.| Single thread |
+| **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
+| **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
+
+### Assessing Obfuscations
