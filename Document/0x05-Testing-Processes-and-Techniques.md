@@ -24,3 +24,15 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 In case another (proprietary) protocol is used in a mobile App that is not HTTP, the following tools can be used to try to intercept or analyze the traffic: 
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
+
+### Fuzz Testing
+Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input.
+Steps in fuzzing
+* Identifying a target
+* Generating malicious inputs
+* Test case delivery
+* Crash monitoring
+
+[OWASP Fuzzing guide](https://www.owasp.org/index.php/Fuzzing)
+
+Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
