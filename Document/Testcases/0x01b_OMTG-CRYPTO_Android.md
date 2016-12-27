@@ -14,11 +14,11 @@ The use of a hard-coded or world-readable cryptographic key significantly increa
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+If you need to store a key for repeated use, use a mechanism, such as KeyStore<sup>[1]</sup>, that provides a mechanism for long term storage and retrieval of cryptographic keys.
 
 #### References
 
-* [TBD] TBD
+* [1]: https://developer.android.com/reference/java/security/KeyStore.html
 
 ##### OWASP MASVS
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption"
@@ -37,7 +37,8 @@ The use of a hard-coded or world-readable cryptographic key significantly increa
 * [TBD] TBD
 
 ##### Tools
-* [TBD] TBD
+* [QARK](https://github.com/linkedin/qark)
+* [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
 
 
 
@@ -127,7 +128,8 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * [TBD] TBD
 
 ##### Tools
-* [TBD] TBD
+* [QARK](https://github.com/linkedin/qark)
+* [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
 
 
 ### <a name="OMTG-CRYPTO-004"></a>OMTG-CRYPTO-004: Verify that random values are generated using a sufficiently secure random number generator
@@ -169,4 +171,4 @@ Pseudo-random number generators can produce predictable numbers if the generator
 * [TBD] TBD
 
 ##### Tools
-* [TBD] TBD
+* [QARK](https://github.com/linkedin/qark)
