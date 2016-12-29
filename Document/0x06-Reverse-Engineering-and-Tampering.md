@@ -64,7 +64,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 (todo... add some Frida console examples and links)
 
-## Static / Dynamic Binary Analysis
+## Static / Dynamic Binary Analysis - Old-Fashioned Way
 
 Reverse engineering is the process of reconstructing the semantics of the original source code from a compiled program. In other words, you take the program apart, run it, simulate parts of it, and do other unspeakable things to in order to understand what exactly it is doing and how.
 
@@ -83,22 +83,25 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 
 ### Execution Tracing
 
+## Advanced Techniques
+
 ### Dynamic Binary Instrumentation
 
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
-## Automated De-Obfuscation Attacks
+### Emulation-based Dynamic Analysis
 
-TODO: Introduce advanced concepts
 
-### Binary Analysis Frameworks
+### Program Analysis Using Symbolic / Concolic Execution
+
+For more difficult tasks, such as de-obfuscating heavily obfuscated binaries, you won't get around building customized tools to automate some of the work. To do this, you can either use the scripting and extension APIs offered by modern disassemblers, or build on existing binary analysis frameworks.
+
+Fortunately program analysis tools have come a long way.
 
 TODO: Introduce RE frameworks
 
-[Miasm](https://github.com/cea-sec/miasm)
-[Metasm](https://github.com/jjyg/metasm)
+Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 
-### Symbolic Execution
+In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
-
-### Domain-specific attacks
+### Domain-Specific Attacks

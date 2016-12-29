@@ -464,3 +464,106 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 ##### Loading Kernel Modules
 
 ##### Example: File Hiding
+
+### Automating Binary Analysis Tasks
+
+(TODO - Reverse a simple license check using symbolic analysis)
+
+~~~
+.text:00000A78
+.text:00000A78 ; =============== S U B R O U T I N E =======================================
+.text:00000A78
+.text:00000A78 ; Attributes: bp-based frame
+.text:00000A78
+.text:00000A78 sub_A78                                 ; CODE XREF: sub_B8C+68p
+.text:00000A78
+.text:00000A78 var_20          = -0x20
+.text:00000A78 var_1C          = -0x1C
+.text:00000A78 var_1B          = -0x1B
+.text:00000A78 var_1A          = -0x1A
+.text:00000A78 var_19          = -0x19
+.text:00000A78 var_18          = -0x18
+.text:00000A78 var_14          = -0x14
+.text:00000A78 var_10          = -0x10
+.text:00000A78 var_C           = -0xC
+.text:00000A78
+.text:00000A78                 STMFD   SP!, {R4,R11,LR}
+.text:00000A7C                 ADD     R11, SP, #8
+.text:00000A80                 SUB     SP, SP, #0x1C
+.text:00000A84                 STR     R0, [R11,#var_20]
+.text:00000A88                 LDR     R3, [R11,#var_20]
+.text:00000A8C                 STR     R3, [R11,#var_10]
+.text:00000A90                 MOV     R3, #0
+.text:00000A94                 STR     R3, [R11,#var_14]
+.text:00000A98                 B       loc_AE8
+.text:00000A9C ; ---------------------------------------------------------------------------
+.text:00000A9C
+.text:00000A9C loc_A9C                                 ; CODE XREF: sub_A78+78j
+.text:00000A9C                 LDR     R3, [R11,#var_10]
+.text:00000AA0                 LDRB    R2, [R3]
+.text:00000AA4                 LDR     R3, [R11,#var_10]
+.text:00000AA8                 ADD     R3, R3, #1
+.text:00000AAC                 LDRB    R3, [R3]
+.text:00000AB0                 EOR     R3, R2, R3
+.text:00000AB4                 AND     R2, R3, #0xFF
+.text:00000AB8                 MOV     R3, #0xFFFFFFF0
+.text:00000ABC                 LDR     R1, [R11,#var_14]
+.text:00000AC0                 SUB     R0, R11, #-var_C
+.text:00000AC4                 ADD     R1, R0, R1
+.text:00000AC8                 ADD     R3, R1, R3
+.text:00000ACC                 STRB    R2, [R3]
+.text:00000AD0                 LDR     R3, [R11,#var_10]
+.text:00000AD4                 ADD     R3, R3, #2
+.text:00000AD8                 STR     R3, [R11,#var_10]
+.text:00000ADC                 LDR     R3, [R11,#var_14]
+.text:00000AE0                 ADD     R3, R3, #1
+.text:00000AE4                 STR     R3, [R11,#var_14]
+.text:00000AE8
+.text:00000AE8 loc_AE8                                 ; CODE XREF: sub_A78+20j
+.text:00000AE8                 LDR     R3, [R11,#var_14]
+.text:00000AEC                 CMP     R3, #4
+.text:00000AF0                 BLE     loc_A9C
+.text:00000AF4                 LDRB    R4, [R11,#var_1C]
+.text:00000AF8                 BL      sub_A08
+.text:00000AFC                 MOV     R3, R0
+.text:00000B00                 CMP     R4, R3
+.text:00000B04                 BNE     loc_B6C
+.text:00000B08                 LDRB    R4, [R11,#var_1B]
+.text:00000B0C                 BL      sub_A24
+.text:00000B10                 MOV     R3, R0
+.text:00000B14                 CMP     R4, R3
+.text:00000B18                 BNE     loc_B6C
+.text:00000B1C                 LDRB    R4, [R11,#var_1A]
+.text:00000B20                 BL      sub_A08
+.text:00000B24                 MOV     R3, R0
+.text:00000B28                 CMP     R4, R3
+.text:00000B2C                 BNE     loc_B6C
+.text:00000B30                 LDRB    R4, [R11,#var_19]
+.text:00000B34                 BL      sub_A40
+.text:00000B38                 MOV     R3, R0
+.text:00000B3C                 CMP     R4, R3
+.text:00000B40                 BNE     loc_B6C
+.text:00000B44                 LDRB    R4, [R11,#var_18]
+.text:00000B48                 BL      sub_A5C
+.text:00000B4C                 MOV     R3, R0
+.text:00000B50                 CMP     R4, R3
+.text:00000B54                 BNE     loc_B6C
+.text:00000B58                 LDR     R3, =(aProductActivat - 0xB64)
+.text:00000B5C                 ADD     R3, PC, R3      ; "Product activation passed. Congratulati"...
+.text:00000B60                 MOV     R0, R3          ; char *
+.text:00000B64                 BL      puts
+.text:00000B68                 B       loc_B7C
+.text:00000B6C ; ---------------------------------------------------------------------------
+.text:00000B6C
+.text:00000B6C loc_B6C                                 ; CODE XREF: sub_A78+8Cj
+.text:00000B6C                                         ; sub_A78+A0j ...
+.text:00000B6C                 LDR     R3, =(aIncorrectSeria - 0xB78)
+.text:00000B70                 ADD     R3, PC, R3      ; "Incorrect serial."
+.text:00000B74                 MOV     R0, R3          ; char *
+.text:00000B78                 BL      puts
+.text:00000B7C
+.text:00000B7C loc_B7C                                 ; CODE XREF: sub_A78+F0j
+.text:00000B7C                 SUB     SP, R11, #8
+.text:00000B80                 LDMFD   SP!, {R4,R11,PC}
+.text:00000B80 ; End of function sub_A78
+~~~
