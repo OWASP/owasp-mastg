@@ -51,19 +51,16 @@ The use of a non-standard algorithm is dangerous because a determined attacker m
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Carefully inspect all the crypto methods, especially those which are directly applied to the sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of direct XORing might be a good sign to start digging deeper.
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Although fuzzing of the custom algorithm might work in case of very weak crypto, the recommended approach would be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "White-box Testing")
 
 #### Remediation
 
 When there is a need to store or transmit sensitive data, use strong, up-to-date cryptographic algorithms to encrypt that data. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations. As with all cryptographic mechanisms, the source code should be available for analysis.
 Do not develop custom or private cryptographic algorithms. They will likely be exposed to attacks that are well-understood by cryptographers. Reverse engineering techniques are mature. If the algorithm can be compromised if attackers find out how it works, then it is especially weak.
-
-#### References
-* [TBD] TBD
 
 ##### OWASP MASVS
 - V3.2: "The app uses proven implementations of cryptographic primitives"
@@ -73,13 +70,6 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### CWE
 * CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-* [TBD] TBD
-
-##### Tools
-* [TBD] TBD
-
 
 
 
