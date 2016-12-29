@@ -94,9 +94,7 @@ Another useful method for dealing with native binaries is dynamic binary instrum
 
 ### Program Analysis Using Symbolic / Concolic Execution
 
-For more difficult tasks, such as de-obfuscating heavily obfuscated binaries, you won't get around building customized tools to automate some of the work. To do this, you can either use the scripting and extension APIs offered by modern disassemblers, or build on existing binary analysis frameworks.
-
-Fortunately program analysis tools have come a long way.
+For more difficult tasks, such as de-obfuscating heavily obfuscated binaries, you won't get around building customized tools to automate some of the work. To do this, you can either use the scripting and extension APIs offered by modern disassemblers, or build on existing binary analysis frameworks. Fortunately program analysis tools have come a long way.
 
 TODO: Introduce RE frameworks
 
