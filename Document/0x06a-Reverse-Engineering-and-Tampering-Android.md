@@ -465,6 +465,8 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 
 ### Automating Binary Analysis Tasks
 
+Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+
 (TODO - Reverse a simple license check using symbolic analysis)
 
 You can find the binary here:
