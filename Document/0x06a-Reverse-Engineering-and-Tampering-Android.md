@@ -280,8 +280,6 @@ Unfortunately, the stock Android kernel comes without loadable module support, w
 
 #### Emulation-based Analysis
 
-Running an app in the emulator gives us powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
-
 Even in its standard form that ships with the Android SDK, the Android emulator – a.k.a. “emulator” - is a somewhat capable reverse engineering tool. It is based on QEMU, a generic and open source machine emulator. QEMU emulates a guest CPU by translating the guest instructions on-the-fly into instructions the host processor can understand. Each basic block of guest instructions is disassembled and translated into an intermediate representation called Tiny Code Generator (TCG). The TCG block is compiled into a block of host instructions, stored into a code cache, and executed. After execution of the basic block has completed, QEMU repeats the process for the next block of guest instructions (or loads the already translated block from the cache). The whole process is called dynamic binary translation.
 
 Because the Android emulator is a fork of QEMU, it comes with the full QEMU feature set, including its monitoring, debugging and tracing facilities. QEMU-specific parameters can be passed to the emulator with the -qemu command line flag. We can use QEMU’s built-in tracing facilities to log executed instructions and virtual register values. Simply starting qemu with the "-d" command line flag will cause it to dump the blocks of guest code, micro operations or host instructions being executed. The –d in_asm option logs all basic blocks of guest code as they enter QEMU’s translation function. The following command logs all translated blocks to a file:
@@ -463,8 +461,6 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 
 ##### Loading Kernel Modules
 
-
-
 ##### Example: File Hiding
 
 ### Automating Binary Analysis Tasks
@@ -474,7 +470,6 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 You can find the binary here:
 
 https://github.com/b-mueller/obfuscation-metrics/blob/master/crackmes/android/01_license_check_1
-
 
 
 ~~~

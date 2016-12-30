@@ -83,18 +83,21 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 
 ### Execution Tracing
 
-## Advanced Techniques
-
 ### Dynamic Binary Instrumentation
 
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
+## Advanced Techniques
+
+For more complicated tasks, such as de-obfuscating heavily obfuscated binaries, you'll won't get far without automating certain parts of the analysis. For example, understanding and simplifying a complex control flow graph manually in the disassembler would take you years (and most likely drive you made way before you're done). Instead, you can augment your workflow with custom made scripts or tools. Fortunately, modern disassemblers come with scripting and extension APIs, and many useful extensions are available for popular ones. Additionally, open-source disassembler engines and binary analysis frameworks exist to make your life easier.
+
+Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Simply pick the a disassembler and framework you're comfortable with and learn using them well.
+
 ### Emulation-based Dynamic Analysis
 
+Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
 
 ### Program Analysis Using Symbolic / Concolic Execution
-
-For more difficult tasks, such as de-obfuscating heavily obfuscated binaries, you won't get around building customized tools to automate some of the work. To do this, you can either use the scripting and extension APIs offered by modern disassemblers, or build on existing binary analysis frameworks. Fortunately program analysis tools have come a long way.
 
 TODO: Introduce RE frameworks
 
