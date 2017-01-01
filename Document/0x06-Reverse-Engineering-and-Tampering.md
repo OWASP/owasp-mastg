@@ -108,8 +108,12 @@ TODO: Introduce RE frameworks
 
 In the 2000s, symbolic-execution based testing has gained increased popularity as a means of identifying security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic, whereby variables are represented as symbols. So-called SMT solvers are used to check satisfiability of those formulas and provide a solution, including concrete values for the variables needed to reach a certain point of execution.
 
-Typically, this approach is used in combination with other techniques such as dynamic execution to improve code coverage. However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution).
+Typically, this approach is used in combination with other techniques such as dynamic execution to improve code coverage. However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution) [1].
 
 In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
 ### Domain-Specific De-Obfuscation Attacks
+
+## References
+
+[1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf

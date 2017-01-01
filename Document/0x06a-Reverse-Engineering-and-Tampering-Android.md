@@ -479,23 +479,21 @@ $ pip install angr
 
 It is recommended to create a dedicated virtual environment with Virtualenv as some of its dependencies contain forked versions Z3 and PyVEX that overwrite the original versions (you may skip this step if you don't use these libraries for anything else - on the other hand, using Virtualenv is generally a good idea).
 
-Quite comprehensive documentation for angr is available on Gitbooks, including an installation guide, tutorials and usage examples [5]. An complete API reference is also available [6].
+Quite comprehensive documentation for angr is available on Gitbooks, including an installation guide, tutorials and usage examples [5]. A complete API reference is also available [6].
 
 ##### Using the Disassembler Backends
+
+
 
 ##### Symbolic Execution
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 
-https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
-
- exe
-
 (TODO - Reverse a simple license check using symbolic analysis)
 
 You can find the binary here:
 
-https://github.com/b-mueller/obfuscation-metrics/blob/master/crackmes/android/01_license_check_1
+https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation
 
 
 ~~~
