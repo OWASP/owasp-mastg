@@ -16,4 +16,4 @@
 
 ### References
 
-- [1] Mhyer's Classic Tomato Soup
+- [1] Meyer's Classic Tomato Soup
