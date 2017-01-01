@@ -17,7 +17,7 @@ With a little effort you can build a reasonable reverse engineering environment 
 If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. According to the website, Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
 APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
-https://github.com/JesusFreke/smali
+
 
 IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
 
@@ -28,7 +28,7 @@ This is where dedicated Java de-compilers become useful. JEB, a commercial decom
 Some things that should be mentioned:
 
 - Android SDK
-- Smali and Baksmali
+- Smali and Baksmali [3]
 - Androguard
 - apktool
 - ADB
@@ -90,7 +90,7 @@ In this context, return-void means that no certificate checks are performed and 
 
 #### Hooking Java methods with Xposed
 
-Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
+Xposed is a "framework for modules that can change the behavior of the system and apps without touching any APKs" [1]. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
@@ -467,6 +467,30 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 
 Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
+Our target program is a simple license key validation program. Granted, you won't usually find a license key validator like this in the wild, but it should be useful enough to demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries, precisely to make de-obfuscation more difficult).
+
+#### Installing Angr
+
+Angr is written in Python 2 and available from PyPI. It is easy to install on \*nix operating systems and Mac OS using pip:
+
+~~~
+$ pip install angr
+~~~
+
+It is recommended to create a dedicated virtual environment with Virtualenv as some of its dependencies contain forked versions Z3 and PyVEX that overwrite the original versions (you may skip this step if you don't use these libraries for anything else - on the other hand, using Virtualenv is generally a good idea).
+
+Quite comprehensive documentation for angr is available on Gitbooks, including an installation guide, tutorials and usage examples [5]. An complete API reference is also available [6].
+
+##### Using the Disassembler Backends
+
+##### Symbolic Execution
+
+In the 2000s, symbolic-execution based testing has gained increased popularity as a means of identifying security vulnerabilities.
+
+Symbolic execution is often used in combination other forms of testing. For example, some of the constraints can be obtained from an actual execution trace of the program ("concolic testing") [6].
+
+(... TODO ...)
+
 (TODO - Reverse a simple license check using symbolic analysis)
 
 You can find the binary here:
@@ -618,3 +642,19 @@ solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 
 print base64.b32encode(solution)
 ~~~
+
+### References
+
+- [1] http://repo.xposed.info/module/de.robv.android.xposed.installer
+
+- [2] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
+
+- [3] https://github.com/JesusFreke/smali
+
+- [4] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
+
+- [5] https://docs.angr.io/
+
+- [6] http://angr.io/api-doc/
+
+- [7] https://en.wikipedia.org/wiki/Concolic_testing

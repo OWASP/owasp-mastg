@@ -93,11 +93,13 @@ For more complicated tasks, such as de-obfuscating heavily obfuscated binaries, 
 
 Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Simply pick the a disassembler and framework you're comfortable with and learn using them well.
 
-Two great frameworks
+(... TODO ...)
 
 ### Emulation-based Dynamic Analysis
 
 Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
+
+(... TODO ...)
 
 ### Program Analysis Using Symbolic / Concolic Execution
 
@@ -107,4 +109,4 @@ Symbolic execution allows you to determine the conditions necessary to reach a s
 
 In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
-### Domain-Specific Attacks
+### Domain-Specific De-Obfuscation Attacks
