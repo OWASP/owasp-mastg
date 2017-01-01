@@ -485,11 +485,11 @@ Quite comprehensive documentation for angr is available on Gitbooks, including a
 
 ##### Symbolic Execution
 
-In the 2000s, symbolic-execution based testing has gained increased popularity as a means of identifying security vulnerabilities.
+Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 
-Symbolic execution is often used in combination other forms of testing. For example, some of the constraints can be obtained from an actual execution trace of the program ("concolic testing") [6].
+https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
 
-(... TODO ...)
+ exe
 
 (TODO - Reverse a simple license check using symbolic analysis)
 

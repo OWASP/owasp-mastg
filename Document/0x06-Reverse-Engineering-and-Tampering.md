@@ -83,17 +83,18 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 
 ### Execution Tracing
 
-### Dynamic Binary Instrumentation
-
-Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
 ## Advanced Techniques
 
 For more complicated tasks, such as de-obfuscating heavily obfuscated binaries, you'll won't get far without automating certain parts of the analysis. For example, understanding and simplifying a complex control flow graph manually in the disassembler would take you years (and most likely drive you made way before you're done). Instead, you can augment your workflow with custom made scripts or tools. Fortunately, modern disassemblers come with scripting and extension APIs, and many useful extensions are available for popular ones. Additionally, open-source disassembler engines and binary analysis frameworks exist to make your life easier.
 
-Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Simply pick the a disassembler and framework you're comfortable with and learn using them well.
+Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Often, the best way to get to the goal is to combine different approaches, such as emulator-based tracing and symbolic execution, to fit the task as hand. To get started, pick a good disassembler and/or reverse engineering framework and start using them to get comfortable with their particular features and extension APIs. Ultimately,  the best way to get better is getting hands-on experience.
 
 (... TODO ...)
+
+### Dynamic Binary Instrumentation
+
+Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
 ### Emulation-based Dynamic Analysis
 
@@ -105,7 +106,9 @@ Running an app in the emulator gives you powerful ways to monitor and manipulate
 
 TODO: Introduce RE frameworks
 
-Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
+In the 2000s, symbolic-execution based testing has gained increased popularity as a means of identifying security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic, whereby variables are represented as symbols. So-called SMT solvers are used to check satisfiability of those formulas and provide a solution, including concrete values for the variables needed to reach a certain point of execution.
+
+Typically, this approach is used in combination with other techniques such as dynamic execution to improve code coverage. However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution).
 
 In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
