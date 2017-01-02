@@ -16,9 +16,19 @@ To sum things up, mobile security testing requires at least basic reverse engine
 
 **2. To enhance static analysis in black-box security testing.** In a black-box test, static analysis of the app bytecode or binary code is helpful for getting a better understanding of what the app is doing. It also enables you to identify certain flaws, such as credentials hardcoded inside the app.
 
-**3. To assess resiliency against reverse engineering.**  Apps that implement software protections according to MASVS L3 or L4 should be resilient against reverse engineering. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses. Advanced reverse engineering skills are required to perform this kind of test.
+**3. To assess resiliency against reverse engineering.**  Apps that implement the software protection measures listed in MASVS-R should be resilient against reverse engineering to a certain degree. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses.
 
 ## Before You Start
+
+Before you dive into the world of mobile app reversing, we have some good news and some bad news for you. Let's start with the good news:
+
+**Ultimately, the reverse engineer always wins.**
+
+This is even more true in the mobile world, where less defensive options are available to developers: The way mobile apps are deployed and sandboxed is much more restrictive by design, and is simply not feasible to include the rootkit-like functionality that can often be found in Windows software (e.g. DRM systems). You - the reverse engineer - have a much higher degree of control over the mobile operating system, giving you easy auto-wins in many situation (assuming you know how to use that power).
+
+What is the bad news you ask? Reverse engineering jobs can still be extremely difficult, backbreaking (or better: brain-frying) work in cases where the app does everything it can to make your life difficult. Dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted. By nature, the best software protection schemes are highly proprietary, and while many tasks can be automated, the way to successful reversing is plastered with good amounts of thinking, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
+
+(... TODO ...)
 
 ## Basic Tampering Techniques
 
