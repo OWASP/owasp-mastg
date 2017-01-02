@@ -32,7 +32,7 @@ The full list of mobile app security tests in the MSTG. Detailed how-tos will be
 | OMTG-NET-002 | Test X.509 certificate verification |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.2 |
 | OMTG-NET-003 | Test SSL pinning |  [Android](Document/Testcases/0x01d_OMTG-NET_Android.md#OMTG-NET-003) [iOS](Document/Testcases/0x02d_OMTG-NET_iOS.md#OMTG-NET-003) | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.3 |
 | OMTG-NET-004 | Test the SSL configuration |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.4 |
-| OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5_Network_communication_requirements.md) V5.5 |
+| OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.5 |
 | OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.6|
 | OMTG-ENV-001 | Test app permissions |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
 | OMTG-ENV-002 | Test validation of input from external sources |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.2  |
