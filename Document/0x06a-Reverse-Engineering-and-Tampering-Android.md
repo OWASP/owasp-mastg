@@ -489,11 +489,27 @@ Quite comprehensive documentation for angr is available on Gitbooks, including a
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 
-(TODO - Reverse a simple license check using symbolic analysis)
-
-You can find the binary here:
+Amongst other things, this is useful in cases where we need to find the right inputs for reaching a certain block of code. In the following example, we'll use Angr to solve a simple Android crackme in an automated fashion. The crackme takes the form of a native ELF binary that can be downloaded here:
 
 https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation
+
+Running the executable on any Android device should give you the following output.
+
+~~~
+pyramidalneuron:~ berndt$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+pyramidalneuron:~ berndt$ adb shell chmod 755 /data/local/tmp/validate
+pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate 12345
+Incorrect serial (wrong format).
+~~~
+
+So far, so good, but we really know nothing about how a valid license key might look like. Where do we start? Let's fire up IDA Pro to get a first good look at what is happening.
+
+![Disassembly of function main.](Images/Chapters/0x06a/license-check-1.jpg)
+
+
 
 
 ~~~
