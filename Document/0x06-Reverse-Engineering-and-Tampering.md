@@ -16,9 +16,19 @@ To sum things up, mobile security testing requires at least basic reverse engine
 
 **2. To enhance static analysis in black-box security testing.** In a black-box test, static analysis of the app bytecode or binary code is helpful for getting a better understanding of what the app is doing. It also enables you to identify certain flaws, such as credentials hardcoded inside the app.
 
-**3. To assess resiliency against reverse engineering.**  Apps that implement software protections according to MASVS L3 or L4 should be resilient against reverse engineering. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses. Advanced reverse engineering skills are required to perform this kind of test.
+**3. To assess resiliency against reverse engineering.**  Apps that implement the software protection measures listed in MASVS-R should be resilient against reverse engineering to a certain degree. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses.
 
 ## Before You Start
+
+Before you dive into the world of mobile app reversing, we have some good news and some bad news for you. Let's start with the good news:
+
+**Ultimately, the reverse engineer always wins.**
+
+This is even more true in the mobile world, where less defensive options are available to developers: The way mobile apps are deployed and sandboxed is much more restrictive by design, and is simply not feasible to include the rootkit-like functionality that can often be found in Windows software (e.g. DRM systems). You - the reverse engineer - have a much higher degree of control over the mobile operating system, giving you easy auto-wins in many situation (assuming you know how to use that power).
+
+What is the bad news you ask? Reverse engineering jobs can still be extremely difficult, backbreaking (or better: brain-frying) work in cases where the app does everything it can to make your life difficult. Dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted. By nature, the best software protection schemes are highly proprietary, and while many tasks can be automated, the way to successful reversing is plastered with good amounts of thinking, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
+
+(... TODO ...)
 
 ## Basic Tampering Techniques
 
@@ -64,7 +74,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 (todo... add some Frida console examples and links)
 
-## Static / Dynamic Binary Analysis
+## Static / Dynamic Binary Analysis - Old-Fashioned Way
 
 Reverse engineering is the process of reconstructing the semantics of the original source code from a compiled program. In other words, you take the program apart, run it, simulate parts of it, and do other unspeakable things to in order to understand what exactly it is doing and how.
 
@@ -83,15 +93,37 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 
 ### Execution Tracing
 
+
+## Advanced Techniques
+
+For more complicated tasks, such as de-obfuscating heavily obfuscated binaries, you'll won't get far without automating certain parts of the analysis. For example, understanding and simplifying a complex control flow graph manually in the disassembler would take you years (and most likely drive you made way before you're done). Instead, you can augment your workflow with custom made scripts or tools. Fortunately, modern disassemblers come with scripting and extension APIs, and many useful extensions are available for popular ones. Additionally, open-source disassembler engines and binary analysis frameworks exist to make your life easier.
+
+Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Often, the best way to get to the goal is to combine different approaches, such as emulator-based tracing and symbolic execution, to fit the task as hand. To get started, pick a good disassembler and/or reverse engineering framework and start using them to get comfortable with their particular features and extension APIs. Ultimately,  the best way to get better is getting hands-on experience.
+
+(... TODO ...)
+
 ### Dynamic Binary Instrumentation
 
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download. The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html) contains specific compilation instructions for Android.
 
-## Automated De-Obfuscation Attacks
+### Emulation-based Dynamic Analysis
 
-TODO: Introduce advanced concepts
+Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
 
-### Binary Analysis Frameworks
+(... TODO ...)
+
+### Program Analysis Using Symbolic / Concolic Execution
 
 TODO: Introduce RE frameworks
 
+In the 2000s, symbolic-execution based testing has gained increased popularity as a means of identifying security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic, whereby variables are represented as symbols. So-called SMT solvers are used to check satisfiability of those formulas and provide a solution, including concrete values for the variables needed to reach a certain point of execution.
+
+Typically, this approach is used in combination with other techniques such as dynamic execution to improve code coverage. However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution) [1].
+
+In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
+
+### Domain-Specific De-Obfuscation Attacks
+
+## References
+
+[1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf

@@ -17,7 +17,7 @@ With a little effort you can build a reasonable reverse engineering environment 
 If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. According to the website, Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
 APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
-https://github.com/JesusFreke/smali
+
 
 IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
 
@@ -28,7 +28,7 @@ This is where dedicated Java de-compilers become useful. JEB, a commercial decom
 Some things that should be mentioned:
 
 - Android SDK
-- Smali and Baksmali
+- Smali and Baksmali [3]
 - Androguard
 - apktool
 - ADB
@@ -90,7 +90,7 @@ In this context, return-void means that no certificate checks are performed and 
 
 #### Hooking Java methods with Xposed
 
-Xposed is a ["framework for modules that can change the behavior of the system and apps without touching any APKs:""](http://repo.xposed.info/module/de.robv.android.xposed.installer). Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
+Xposed is a "framework for modules that can change the behavior of the system and apps without touching any APKs" [1]. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
@@ -280,8 +280,6 @@ Unfortunately, the stock Android kernel comes without loadable module support, w
 
 #### Emulation-based Analysis
 
-Running an app in the emulator gives us powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
-
 Even in its standard form that ships with the Android SDK, the Android emulator – a.k.a. “emulator” - is a somewhat capable reverse engineering tool. It is based on QEMU, a generic and open source machine emulator. QEMU emulates a guest CPU by translating the guest instructions on-the-fly into instructions the host processor can understand. Each basic block of guest instructions is disassembled and translated into an intermediate representation called Tiny Code Generator (TCG). The TCG block is compiled into a block of host instructions, stored into a code cache, and executed. After execution of the basic block has completed, QEMU repeats the process for the next block of guest instructions (or loads the already translated block from the cache). The whole process is called dynamic binary translation.
 
 Because the Android emulator is a fork of QEMU, it comes with the full QEMU feature set, including its monitoring, debugging and tracing facilities. QEMU-specific parameters can be passed to the emulator with the -qemu command line flag. We can use QEMU’s built-in tracing facilities to log executed instructions and virtual register values. Simply starting qemu with the "-d" command line flag will cause it to dump the blocks of guest code, micro operations or host instructions being executed. The –d in_asm option logs all basic blocks of guest code as they enter QEMU’s translation function. The following command logs all translated blocks to a file:
@@ -464,3 +462,213 @@ To quickly verify that the new kernel is running, navigate to Settings->About ph
 ##### Loading Kernel Modules
 
 ##### Example: File Hiding
+
+### Automating Binary Analysis Tasks
+
+Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+
+Our target program is a simple license key validation program. Granted, you won't usually find a license key validator like this in the wild, but it should be useful enough to demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries, precisely to make de-obfuscation more difficult).
+
+#### Installing Angr
+
+Angr is written in Python 2 and available from PyPI. It is easy to install on \*nix operating systems and Mac OS using pip:
+
+~~~
+$ pip install angr
+~~~
+
+It is recommended to create a dedicated virtual environment with Virtualenv as some of its dependencies contain forked versions Z3 and PyVEX that overwrite the original versions (you may skip this step if you don't use these libraries for anything else - on the other hand, using Virtualenv is generally a good idea).
+
+Quite comprehensive documentation for angr is available on Gitbooks, including an installation guide, tutorials and usage examples [5]. A complete API reference is also available [6].
+
+##### Using the Disassembler Backends
+
+
+
+##### Symbolic Execution
+
+Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
+
+Amongst other things, this is useful in cases where we need to find the right inputs for reaching a certain block of code. In the following example, we'll use Angr to solve a simple Android crackme in an automated fashion. The crackme takes the form of a native ELF binary that can be downloaded here:
+
+https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation
+
+Running the executable on any Android device should give you the following output.
+
+~~~
+pyramidalneuron:~ berndt$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+pyramidalneuron:~ berndt$ adb shell chmod 755 /data/local/tmp/validate
+pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate 12345
+Incorrect serial (wrong format).
+~~~
+
+So far, so good, but we really know nothing about how a valid license key might look like. Where do we start? Let's fire up IDA Pro to get a first good look at what is happening.
+
+![Disassembly of function main.](Images/Chapters/0x06a/license-check-1.jpg)
+
+
+
+
+~~~
+.text:00401760 ; =============== S U B R O U T I N E =======================================
+.text:00401760
+.text:00401760 ; Attributes: bp-based frame
+.text:00401760
+.text:00401760 sub_401760                              ; CODE XREF: sub_401874+B0p
+.text:00401760
+.text:00401760 var_20          = -0x20
+.text:00401760 var_1C          = -0x1C
+.text:00401760 var_1B          = -0x1B
+.text:00401760 var_1A          = -0x1A
+.text:00401760 var_19          = -0x19
+.text:00401760 var_18          = -0x18
+.text:00401760 var_14          = -0x14
+.text:00401760 var_10          = -0x10
+.text:00401760 var_C           = -0xC
+.text:00401760
+.text:00401760                 STMFD   SP!, {R4,R11,LR}
+.text:00401764                 ADD     R11, SP, #8
+.text:00401768                 SUB     SP, SP, #0x1C
+.text:0040176C                 STR     R0, [R11,#var_20]
+.text:00401770                 LDR     R3, [R11,#var_20]
+.text:00401774                 STR     R3, [R11,#var_10]
+.text:00401778                 MOV     R3, #0
+.text:0040177C                 STR     R3, [R11,#var_14]
+.text:00401780                 B       loc_4017D0
+.text:00401784 ; ---------------------------------------------------------------------------
+.text:00401784
+.text:00401784 loc_401784                              ; CODE XREF: sub_401760+78j
+.text:00401784                 LDR     R3, [R11,#var_10]
+.text:00401788                 LDRB    R2, [R3]
+.text:0040178C                 LDR     R3, [R11,#var_10]
+.text:00401790                 ADD     R3, R3, #1
+.text:00401794                 LDRB    R3, [R3]
+.text:00401798                 EOR     R3, R2, R3
+.text:0040179C                 AND     R2, R3, #0xFF
+.text:004017A0                 MOV     R3, #0xFFFFFFF0
+.text:004017A4                 LDR     R1, [R11,#var_14]
+.text:004017A8                 SUB     R0, R11, #-var_C
+.text:004017AC                 ADD     R1, R0, R1
+.text:004017B0                 ADD     R3, R1, R3
+.text:004017B4                 STRB    R2, [R3]
+.text:004017B8                 LDR     R3, [R11,#var_10]
+.text:004017BC                 ADD     R3, R3, #2
+.text:004017C0                 STR     R3, [R11,#var_10]
+.text:004017C4                 LDR     R3, [R11,#var_14]
+.text:004017C8                 ADD     R3, R3, #1
+.text:004017CC                 STR     R3, [R11,#var_14]
+.text:004017D0
+.text:004017D0 loc_4017D0                              ; CODE XREF: sub_401760+20j
+.text:004017D0                 LDR     R3, [R11,#var_14]
+.text:004017D4                 CMP     R3, #4
+.text:004017D8                 BLE     loc_401784
+.text:004017DC                 LDRB    R4, [R11,#var_1C]
+.text:004017E0                 BL      sub_4016F0
+.text:004017E4                 MOV     R3, R0
+.text:004017E8                 CMP     R4, R3
+.text:004017EC                 BNE     loc_401854
+.text:004017F0                 LDRB    R4, [R11,#var_1B]
+.text:004017F4                 BL      sub_40170C
+.text:004017F8                 MOV     R3, R0
+.text:004017FC                 CMP     R4, R3
+.text:00401800                 BNE     loc_401854
+.text:00401804                 LDRB    R4, [R11,#var_1A]
+.text:00401808                 BL      sub_4016F0
+.text:0040180C                 MOV     R3, R0
+.text:00401810                 CMP     R4, R3
+.text:00401814                 BNE     loc_401854
+.text:00401818                 LDRB    R4, [R11,#var_19]
+.text:0040181C                 BL      sub_401728
+.text:00401820                 MOV     R3, R0
+.text:00401824                 CMP     R4, R3
+.text:00401828                 BNE     loc_401854
+.text:0040182C                 LDRB    R4, [R11,#var_18]
+.text:00401830                 BL      sub_401744
+.text:00401834                 MOV     R3, R0
+.text:00401838                 CMP     R4, R3
+.text:0040183C                 BNE     loc_401854
+.text:00401840                 LDR     R3, =(aProductActivat - 0x40184C)
+.text:00401844                 ADD     R3, PC, R3      ; "Product activation passed. Congratulati"...
+.text:00401848                 MOV     R0, R3          ; char *
+.text:0040184C                 BL      puts
+.text:00401850                 B       loc_401864
+.text:00401854 ; ---------------------------------------------------------------------------
+.text:00401854
+.text:00401854 loc_401854                              ; CODE XREF: sub_401760+8Cj
+.text:00401854                                         ; sub_401760+A0j ...
+.text:00401854                 LDR     R3, =(aIncorrectSer_0 - 0x401860)
+.text:00401858                 ADD     R3, PC, R3      ; "Incorrect serial."
+.text:0040185C                 MOV     R0, R3          ; char *
+.text:00401860                 BL      puts
+.text:00401864
+.text:00401864 loc_401864                              ; CODE XREF: sub_401760+F0j
+.text:00401864                 SUB     SP, R11, #8
+.text:00401868                 LDMFD   SP!, {R4,R11,PC}
+.text:00401868 ; End of function sub_401760
+~~~
+
+
+Solution:
+
+~~~
+#!/usr/bin/python
+
+# This is how we defeat the Android license check using Angr!
+# The binary is available for download on GitHub:
+# https://github.com/b-mueller/obfuscation-metrics/tree/master/crackmes/android/01_license_check_1
+# Written by Bernhard -- bernhard [dot] mueller [at] owasp [dot] org
+
+ bernhard [dot] mueller [at] owasp [dot] org
+
+import angr
+import claripy
+import base64
+
+load_options = {}
+
+# Android NDK library path:
+load_options['custom_ld_path'] = ['/Users/berndt/Tools/android-ndk-r10e/platforms/android-21/arch-arm/usr/lib']
+
+b = angr.Project("./validate", load_options = load_options)
+
+# The key validation function starts at 0x401760, so that's where we create the initial state.
+# This speeds things up a lot because we're bypassing the Base32-encoder.
+
+state = b.factory.blank_state(addr=0x401760)
+
+initial_path = b.factory.path(state)
+path_group = b.factory.path_group(state)
+
+# 0x401840 = Product activation passed
+# 0x401854 = Incorrect serial
+
+path_group.explore(find=0x401840, avoid=0x401854)
+found = path_group.found[0]
+
+# Get the solution string from *(R11 - 0x24).
+
+addr = found.state.memory.load(found.state.regs.r11 - 0x24, endness='Iend_LE')
+concrete_addr = found.state.se.any_int(addr)
+solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
+
+print base64.b32encode(solution)
+~~~
+
+### References
+
+- [1] http://repo.xposed.info/module/de.robv.android.xposed.installer
+
+- [2] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
+
+- [3] https://github.com/JesusFreke/smali
+
+- [4] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
+
+- [5] https://docs.angr.io/
+
+- [6] http://angr.io/api-doc/
+
+- [7] https://en.wikipedia.org/wiki/Concolic_testing
