@@ -25,7 +25,7 @@ Then you can display captured traffic in a human-readable way, using [Wireshark]
 nc localhost 1234 | sudo wireshark -k -S -i –
 ```
 
-* Capture all network traffic using intercept proxy, like [OWASP ZAP] or [Burp Suite]. If you're able to see any traffic without installing RootCA on your device, then it means that intercepted traffic is not encrypted.
+* Capture all network traffic using intercept proxy, like [OWASP ZAP] or [Burp Suite] and observe whether all requests are using HTTPS instead of HTTP.
 
 > Please note, that some applications may not work with proxies like Burp or ZAP (because of customized HTTP/HTTPS implementation, or Cert Pinning). In such case you may use a VPN server to forward all traffic to your Burp/ZAP proxy. You can easily do this, using [Vproxy]
 
@@ -33,7 +33,7 @@ It is important to capture all traffic (TCP and UDP), so you should run all poss
 
 #### Remediation
 
-Ensure that sensitive information is being sent via secure channels, e.g. [HTTPS] over HTTP, or [SSLSocket] for socket-level communication.
+Ensure that sensitive information is being sent via secure channels, e.g. [HTTPS] instead of HTTP, or [SSLSocket] for socket-level communication.
 
 Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure [Android IPC mechanism].
 
