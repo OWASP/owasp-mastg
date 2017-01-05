@@ -27,6 +27,8 @@ nc localhost 1234 | sudo wireshark -k -S -i –
 
 * Capture all network traffic using intercept proxy, like [OWASP ZAP] or [Burp Suite]. If you're able to see any traffic without installing RootCA on your device, then it means that intercepted traffic is not encrypted.
 
+> Please note, that some applications may not work with proxies like Burp or ZAP (because of customized HTTP/HTTPS implementation, or Cert Pinning). In such case you may use a VPN server to forward all traffic to your Burp/ZAP proxy. You can easily do this, using [Vproxy]
+
 It is important to capture all traffic (TCP and UDP), so you should run all possible functions of tested application after starting interception. This should include a process of patching application, because sending a patch to application via HTTP may allow an attacker to install any application on victim's device (MiTM attacks).
 
 #### Remediation
@@ -61,6 +63,7 @@ M3 - Insecure Communication
 [SSLSocket]: https://developer.android.com/reference/javax/net/ssl/SSLSocket.html
 [Android IPC mechanism]: https://developer.android.com/reference/android/app/Service.html
 [CWE 319]: https://cwe.mitre.org/data/definitions/319.html
+[Vproxy]: https://github.com/B4rD4k/Vproxy
 
 
 ### <a name="OMTG-NET-003"></a>OMTG-NET-003: Test SSL Pinning
