@@ -4,7 +4,7 @@
 
 #### Overview
 
-A functionality of most mobile applications requires sending or receiving information from services on the Internet. This reveals another surface of attacks aim at data on the way. It's possible for an attacker to sniff or even modify (MiTM attacks) an unencrypted information if he controls any part of network infrastructure (e.g. an WiFi Access Point) [1]. For this reason, developers should make a general rule, that any confidential data cannot be sent in a cleartext [2].
+A functionality of most mobile applications requires sending or receiving information from services on the Internet. This reveals another surface of attacks aimed at data on the way. It's possible for an attacker to sniff or even modify (MiTM attacks) an unencrypted information if he controls any part of network infrastructure (e.g. an WiFi Access Point) [1]. For this reason, developers should make a general rule, that any confidential data cannot be sent in a cleartext [2].
 
 #### White-box Testing
 
@@ -14,7 +14,7 @@ Identify all external endpoints (backend APIs, third-party web services), which 
 
 The recommended approach is to intercept all network traffic coming to or from tested application and check if it is encrypted. A network traffic can be intercepted using one of the following approaches:
 
-* Capture all network traffic, using [Tcpdump]. You can star live capturing via command:
+* Capture all network traffic, using [Tcpdump]. You can begin live capturing via command:
 ```
 adb shell "tcpdump -s 0 -w - | nc -l -p 1234"
 adb forward tcp:1234 tcp:1234
