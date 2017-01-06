@@ -49,7 +49,7 @@ To become a contributor or reviewer, contact the lead author responsible for the
 
 ## Style Rules
 
-A few basic rules, such as title capitalization and references, are listed in the [style guide.md](style_guide). By following these rules, and matching your contribution to the general writing style of the MSTG, you can help us to minimize the effort for re-formatting and rephrasing the content.
+A few basic rules, such as title capitalization and references, are listed in the [style guide](style_guide.md). By following these rules, and matching your contribution to the general writing style of the MSTG, you can help us to minimize the effort for re-formatting and rephrasing the content.
 
 ## Writing a Test Case
 
