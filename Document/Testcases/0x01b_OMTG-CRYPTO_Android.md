@@ -86,7 +86,7 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 ##### Info
 
 * https://rammic.github.io/2015/07/28/hiding-secrets-in-android-apps/
-* medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3
+* https://medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3#.7z5yruotu
 
 
 ##### Tools
