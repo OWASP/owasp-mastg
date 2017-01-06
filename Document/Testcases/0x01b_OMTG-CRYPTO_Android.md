@@ -130,22 +130,53 @@ When software generates predictable values in a context requiring unpredictabili
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Identify all the instances of random number generators and look for either custom or known insecure java.util.Random class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
+Sample weak random generation code:
+
+```
+import java.util.Random;
+// ...
+ 
+Random number = new Random(123L);
+//...
+for (int i = 0; i < 20; i++) {
+  // Generate another random integer in the range [0, 20]
+  int n = number.nextInt(21);
+  System.out.println(n);
+}
+```
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Knowing what type of weak PRNG is used, it can be trivial to write proof-of-concept to generate next random value based on previously observed ones, as it was done for Java Random<sup>[1]</sup>. In case of very weak custom random generators it may be possible to observe the pattern statistically, although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see "White-box Testing")
 
 #### Remediation
 
-Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of SecureRandom that uses the system-specified seed value to generate a 128-byte-long random number<sup>[1]</sup>.
+Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of SecureRandom that uses the system-specified seed value to generate a 128-byte-long random number<sup>[2]</sup>.
 In general, if a pseudo-random number generator is not advertised as being cryptographically secure (e.g. java.util.Random), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
-Pseudo-random number generators can produce predictable numbers if the generator is known and the seed can be guessed<sup>[2]</sup>. A 128-bit seed is a good starting point for producing a "random enough" number.
+Pseudo-random number generators can produce predictable numbers if the generator is known and the seed can be guessed<sup>[3]</sup>. A 128-bit seed is a good starting point for producing a "random enough" number.
+
+Sample secure random generation:
+
+```
+import java.security.SecureRandom;
+import java.security.NoSuchAlgorithmException;
+// ...
+ 
+public static void main (String args[]) {
+  SecureRandom number = new SecureRandom();
+  // Generate 20 integers 0..20
+  for (int i = 0; i < 20; i++) {
+    System.out.println(number.nextInt(21));
+  }
+}
+```
 
 #### References
 
-* [1]: [Generation of Strong Random Numbers](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers)
-* [2]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
+* [1]: [Predicting the next Math.random() in Java](http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/)
+* [2]: [Generation of Strong Random Numbers](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers)
+* [3]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
 
 ##### OWASP MASVS
 - V3.6: "All random values are generated using a sufficiently secure random number generator"
@@ -155,10 +186,6 @@ Pseudo-random number generators can produce predictable numbers if the generator
 
 ##### CWE
 * CWE-330: Use of Insufficiently Random Values
-
-##### Info
-
-* [TBD] TBD
 
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
