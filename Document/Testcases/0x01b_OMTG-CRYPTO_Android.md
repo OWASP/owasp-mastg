@@ -6,7 +6,32 @@ The use of a hard-coded or world-readable cryptographic key significantly increa
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Consider the following scenario: an application is reading and writing to the encrypted database but the decryption is done based on hardcoded key:
+```
+this.db = localUserSecretStore.getWritableDatabase("SuperPassword123");
+```
+Since the key is the same for all the users and it is trivial to obtain it, the advantages of having sensitive data encrypted are gone, and there is effectively no point in such encryption at all. Similarly, look for hardcoded API keys / private keys and other valuable pieces. Encoded/encrypted keys is just another attempt to make it harder but not impossible to get the crown jewels.
+
+Let's consider this piece of code:
+```
+//A more complicated effort to store the XOR'ed halves of a key (instead of the key itself)
+private static final String[] myCompositeKey = new String[]{
+  "oNQavjbaNNSgEqoCkT9Em4imeQQ=","3o8eFOX4ri/F8fgHgiy/BS47"
+};
+```
+Algorithm to decode the original key in this case might look like this<sup>[1]</sup>:
+```
+public void useXorStringHiding(String myHiddenMessage) {
+  byte[] xorParts0 = Base64.decode(myCompositeKey[0],0);
+  byte[] xorParts1 = Base64.decode(myCompositeKey[1], 0);
+
+  byte[] xorKey = new byte[xorParts0.length];
+  for(int i = 0; i < xorParts1.length; i++){
+    xorKey[i] = (byte) (xorParts0[i] ^ xorParts1[i]);
+  }
+  HidingUtil.doHiding(myHiddenMessage.getBytes(), xorKey, false);
+}
+```
 
 #### Black-box Testing
 
@@ -14,11 +39,11 @@ The use of a hard-coded or world-readable cryptographic key significantly increa
 
 #### Remediation
 
-If you need to store a key for repeated use, use a mechanism, such as KeyStore<sup>[1]</sup>, that provides a mechanism for long term storage and retrieval of cryptographic keys.
+If you need to store a key for repeated use, use a mechanism, such as KeyStore<sup>[2]</sup>, that provides a mechanism for long term storage and retrieval of cryptographic keys.
 
 #### References
-
-* [1]: https://developer.android.com/reference/java/security/KeyStore.html
+* [1]: https://github.com/pillfill/hiding-passwords-android/
+* [2]: https://developer.android.com/reference/java/security/KeyStore.html
 
 ##### OWASP MASVS
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption"
@@ -34,7 +59,9 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 
 ##### Info
 
-* [TBD] TBD
+* https://rammic.github.io/2015/07/28/hiding-secrets-in-android-apps/
+* medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3
+
 
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
@@ -115,7 +142,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 ##### Info
 
-* [TBD] TBD
+* https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
@@ -130,22 +157,53 @@ When software generates predictable values in a context requiring unpredictabili
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Identify all the instances of random number generators and look for either custom or known insecure java.util.Random class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
+Sample weak random generation code:
+
+```
+import java.util.Random;
+// ...
+ 
+Random number = new Random(123L);
+//...
+for (int i = 0; i < 20; i++) {
+  // Generate another random integer in the range [0, 20]
+  int n = number.nextInt(21);
+  System.out.println(n);
+}
+```
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Knowing what type of weak PRNG is used, it can be trivial to write proof-of-concept to generate next random value based on previously observed ones, as it was done for Java Random<sup>[1]</sup>. In case of very weak custom random generators it may be possible to observe the pattern statistically, although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see "White-box Testing")
 
 #### Remediation
 
-Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of SecureRandom that uses the system-specified seed value to generate a 128-byte-long random number<sup>[1]</sup>.
+Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of SecureRandom that uses the system-specified seed value to generate a 128-byte-long random number<sup>[2]</sup>.
 In general, if a pseudo-random number generator is not advertised as being cryptographically secure (e.g. java.util.Random), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
-Pseudo-random number generators can produce predictable numbers if the generator is known and the seed can be guessed<sup>[2]</sup>. A 128-bit seed is a good starting point for producing a "random enough" number.
+Pseudo-random number generators can produce predictable numbers if the generator is known and the seed can be guessed<sup>[3]</sup>. A 128-bit seed is a good starting point for producing a "random enough" number.
+
+Sample secure random generation:
+
+```
+import java.security.SecureRandom;
+import java.security.NoSuchAlgorithmException;
+// ...
+ 
+public static void main (String args[]) {
+  SecureRandom number = new SecureRandom();
+  // Generate 20 integers 0..20
+  for (int i = 0; i < 20; i++) {
+    System.out.println(number.nextInt(21));
+  }
+}
+```
 
 #### References
 
-* [1]: [Generation of Strong Random Numbers](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers)
-* [2]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
+* [1]: [Predicting the next Math.random() in Java](http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/)
+* [2]: [Generation of Strong Random Numbers](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers)
+* [3]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
 
 ##### OWASP MASVS
 - V3.6: "All random values are generated using a sufficiently secure random number generator"
@@ -155,10 +213,6 @@ Pseudo-random number generators can produce predictable numbers if the generator
 
 ##### CWE
 * CWE-330: Use of Insufficiently Random Values
-
-##### Info
-
-* [TBD] TBD
 
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
