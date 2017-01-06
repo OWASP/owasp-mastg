@@ -47,22 +47,9 @@ In our experience, opinions will differ in many cases. Whenever differences cann
 
 To become a contributor or reviewer, contact the lead author responsible for the section you are interested in. You can find their name and GitHub handle in the [README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Please always check with the responsible person first, or you might end up working on a chapter that's already being done by someone else. Asking on the Slack channel is another option.
 
-## Attribution and Acknowledgement
+## Style Rules
 
-Lead authors, contributors and reviewer will be added to the [acknowledgements section](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x01-Acknowledgements.md) of the MSTG after their work has been added.
-
-### Using Content from OWASP MSTG Beta 2
-
-Originally, the OWASP MSTG was developed on Google Docs. Lead authors starting on a chapter should check this document first and transfer any usable content into the new version of the guide. Whenever content from the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#) is used, the original authors must be credited. Unfortunately, this process can sometimes be painful, but there's no way around it (missing attribution one of the main reason we moved to GitHub). To determine the original authors try the following:
-
-1. Check the owner, authors and reviewers column in the [project plan](http://goo.gl/SsXAvC) (now obsolete);
-2. Check the revision history of the [Google Doc](https://docs.google.com/document/d/132Ose0jdQwN6Z_Fp0VOJtVdGCufIwligwmf6oT0lmK8/edit#);
-3. If you still can't figure it out, ask on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) or on the [mailing list](mailto:owasp-mobile-top-10-risks@owasp.org);
-4. If the original author(s) aren't aware of the new MSTG, invite them to join.
-5. Add the content to the new MSTG.
-6. Add the original author(s) to the acknowledgemens and make a note in the attribution document.
-
-Note that content may also originate from the [original "beta" version](https://docs.google.com/document/d/1Z2nCRfe84D3t3IuEm9idX51lh51uzIerFaCV0Z74tbA/edit?ts=56f10e7f).
+A few basic rules, such as title capitalization and references, are listed in the [style guide](style_guide). By following these rules, and matching your contribution to the general writing style of the MSTG, you can help us to minimize the effort for re-formatting and rephrasing the content.
 
 ## Writing a Test Case
 
@@ -73,21 +60,6 @@ A "test case" is a how-to with step-by-step instructions on how to test for a sp
 
 A good way to start is by browsing the [test case list](all_tests.md) and picking a topic that doesn't have content yet. Then, simply use an [existing test case](Document/Testcases/0x00a_OMTG-DATAST_Android.md#OMTG-DATAST-009) as a template to create your own one.
 
-### Style Guide
+## Attribution and Acknowledgement
 
-The following rules are meant to ensure consistency of the MSTG:
-
-1. Keep the content factual, brief and focused. Avoid duplicating other sections of the guide;
-2. Refrain from advertising commercial tools or services;
-3. When giving technical instructions, address the reader in the second person;
-
-#### Title Capitalization
-
-We follow the title case rules from the "Chicago Manual of Style":  
-
-- Capitalize the first and last word in a title, regardless of part of speech
-- Capitalize all nouns (baby, country, picture), pronouns (you, she, it), verbs (walk, think, dream), adjectives (sweet, large, perfect), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
-- Lowercase “to” as part of an infinitive
-- Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
-
-When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
+You'll be added to the [acknowledgements section](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x01-Acknowledgements.md) of the guide following your contribution.
