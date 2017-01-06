@@ -35,7 +35,33 @@ public void useXorStringHiding(String myHiddenMessage) {
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Verify common places where secrets are usually hidden:
+* resources (typically at res/values/strings.xml)
+
+Example:
+```
+<resources>
+    <string name="app_name">SuperApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="secret_key">My_S3cr3t_K3Y</string>
+  </resources>
+```
+
+* build configs, such as in local.properties or gradle.properties
+
+Example:
+```
+buildTypes {
+  debug {
+    minifyEnabled true
+    buildConfigField "String", "hiddenPassword", "\"${hiddenPassword}\""
+  }
+}
+```
+
+* shared preferences, typically at /data/data/package_name/shared_prefs
+
 
 #### Remediation
 
