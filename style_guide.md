@@ -26,6 +26,7 @@ External references are listed at the end of each chapter. Refer to them by numb
 Links to sources on the web look as follows:
 
 [1] Reference Name - http://www.example.com/full-link-1.html
+
 [2] Reference Name - http://www.example.com/full-link-2.html
 
 For example:
