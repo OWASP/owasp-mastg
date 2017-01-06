@@ -33,7 +33,9 @@ It is important to capture all traffic (TCP and UDP), so you should run all poss
 
 #### Remediation
 
-Ensure that sensitive information is being sent via secure channels, e.g. [HTTPS] instead of HTTP, or [SSLSocket] for socket-level communication.
+Ensure that sensitive information is being sent via secure channels, using [HTTPS], or [SSLSocket] for socket-level communication using TLS.
+
+> Please be aware that `SSLSocket` **does not** verify hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. [Here] you can find an example of correct usage.
 
 Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure [Android IPC mechanism].
 
@@ -64,6 +66,7 @@ M3 - Insecure Communication
 [Android IPC mechanism]: https://developer.android.com/reference/android/app/Service.html
 [CWE 319]: https://cwe.mitre.org/data/definitions/319.html
 [Vproxy]: https://github.com/B4rD4k/Vproxy
+[Here]: https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket
 
 
 ### <a name="OMTG-NET-003"></a>OMTG-NET-003: Test SSL Pinning
