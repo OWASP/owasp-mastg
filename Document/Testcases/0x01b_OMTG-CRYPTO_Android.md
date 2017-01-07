@@ -130,15 +130,20 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements.
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+Inspect the code to identify the instances of crypto algorithms throughout the application, and look for known weak ones, such as DES, RC2, CRC32, MD4, MD5, SHA1 and others. See "Remediation" section for a basic list of recommended algorithms.
+
+Example of initialization of DES algorithm:
+```
+Cipher cipher = Cipher.getInstance("DES");
+```
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+Decompile the APK and inspect the code to see if known weak crypto algorithms are in place (see "White-box Testing")
 
 #### Remediation
 
