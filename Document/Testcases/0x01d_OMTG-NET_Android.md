@@ -69,6 +69,120 @@ M3 - Insecure Communication
 [Here]: https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket
 
 
+### <a name="[OMTG-NET-002]"></a>OMTG-NET-002: Test X.509 certificate verification
+
+#### Overview
+
+Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decides for easier, but less secure (e.g. self-signed certificates) solutions to ease a development process what often is not fixed after going on production [1].
+
+#### White-box Testing
+
+There are 2 main issues related with validating TLS connection: the first one is verification if a certificate comes from trusted source and the second one is a check whether the endpoint server presents the right certificate [2].
+
+##### Verifying server certificate
+
+A mechanism responsible for verifying conditions to establish a trusted connection in Android is called `TrustedManager`. Conditions to be checked at this point, are the following:
+
+* is the certificate signed by a "trusted" CA?
+* is the certificate expired?
+* Is the certificate self-sgined?
+
+You should look in a code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
+
+```
+TrustManager[] trustAllCerts = new TrustManager[] {
+new X509TrustManager()
+{
+
+    public java.security.cert.X509Certificate[] getAcceptedIssuers()
+    {
+        return new java.security.cert.X509Certificate[] {};
+    }
+    public void checkClientTrusted(X509Certificate[] chain,
+    String authType) throws CertificateException
+    {
+
+    }
+    public void checkServerTrusted(X509Certificate[] chain,
+    String authType) throws CertificateException
+    {
+
+    }
+
+}};
+
+context.init(null, trustAllCerts, new SecureRandom());
+```
+
+
+##### Hostname verification
+
+Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
+
+```
+final static HostnameVerifier NO_VERIFY = new HostnameVerifier()
+{
+    public boolean verify(String hostname, SSLSession session)
+    {
+              return true;
+    }
+};
+```
+
+It's also possible to accept any hostname using a built-in `HostnameVerifier`:
+
+```
+HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
+                             .ALLOW_ALL_HOSTNAME_VERIFIER;
+```
+
+Ensure that your application verifies a hostname before setting trusted connection.
+
+
+#### Black-box Testing
+
+Improper TLS implementation may be found using static analysis tool called MalloDroid [3]. It simply decompiles an application and warns you if it finds something suspicious. You can check your application using a following command:
+
+```
+./mallodroid.py -f ExampleApp.apk -d ./outputDir
+```
+
+Now, you should be warned if any suspicious code was found by MalloDroid and in `./outputDir` you will find decompiled application for further manual analysis.
+
+A TLS certificate of backend server can be inspected using SSLScan [4]:
+
+```
+./sslscan hostname
+```
+
+The above command will output any issues related with TLS implementation.
+
+#### Remediation
+
+Ensure, that the hostname and certificate is verified correctly. You can find a help how to overcome common TLS certificate issues here [2].
+
+#### OWASP MASVS
+
+V5.2: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+
+#### OWASP Mobile Top 10
+
+M3 - Insecure Communication
+
+#### CWE
+
+[CWE 295]
+
+#### References
+
+- [1] https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf
+- [2] https://developer.android.com/training/articles/security-ssl.html
+- [3] https://github.com/sfahl/mallodroid
+- [4] https://github.com/rbsec/sslscan
+
+[CWE 295]: https://cwe.mitre.org/data/definitions/295.html
+
+
 ### <a name="OMTG-NET-003"></a>OMTG-NET-003: Test SSL Pinning
 
 #### Overview
