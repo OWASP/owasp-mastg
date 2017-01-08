@@ -2,3 +2,4 @@
 *.docx
 MSTG.html
 ~*
+.idea/*
