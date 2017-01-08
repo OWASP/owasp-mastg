@@ -183,7 +183,8 @@ var funcPtr = Module.findExportByName("libdvm.so", "_Z25dvmDbgIsDebuggerConnecte
 Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
     return 0;
 }, 'int', []));
- 
+""") 
+ 
 def on_message(message, data):
     print(message)
  
