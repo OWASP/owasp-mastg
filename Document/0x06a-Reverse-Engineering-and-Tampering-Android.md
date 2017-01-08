@@ -184,7 +184,7 @@ Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
     return 0;
 }, 'int', []));
 """) 
- 
+
 def on_message(message, data):
     print(message)
  
@@ -515,7 +515,7 @@ So far, so good, but we really know nothing about how a valid license key might 
 
 ![Disassembly of function main.](Images/Chapters/0x06a/license-check-1.jpg)
 
-
+The main function is located at address 0x00001874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address by default). Function names have been stripped, but luckily we can see some references to debugging strings: It appears that the input string is base32-decoded (call to sub_1340). At the beginning of main, there's also a length check at loc_1898 that verifies that the length of the input string is exactly 16. So we're looking for a 16 character base32-encoded string! The decoded input is then passed to the function sub_1760, which verifies the validity of the license key.
 
 
 ```
