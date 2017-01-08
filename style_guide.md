@@ -51,4 +51,22 @@ When referencing the MASVS from a test case, include the full wording of the req
 
 ## Code and Shell Commands
 
-Use code tags when including
+Use code tags when including sample code and shell commands. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
+
+\`\`\`java
+
+public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
+
+\`\`\`
+
+This produces the following result:
+
+```java
+public static void main(String[] args) { System.out.println(" Hello World!"); } }
+```
+
+When including shell commands, make sure to remove any host names and usernames from the command prompt, e.g.:
+
+```
+$ echo 'Hello World'
+```
