@@ -19,7 +19,9 @@ When in doubt, you can verify proper capitalization on [www.titlecapitalization.
 
 ## External References
 
-External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: [1].
+External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: [1]. Remember that the MSTG is supposed to work as a printed document, so always include the full URL like in the examples below (hrefs that hide the URL will obviously be problematic in the print version).
+
+See the [test case template](Templates/testcase.md) for more examples.
 
 ### Web Links
 
@@ -41,12 +43,6 @@ Papers:
 Books:
 
 - [1] \[Author(s)\], \[Title\], \[Published\], \[Year\]
-
-### References to the MASVS
-
-When referencing the MASVS from a test case, include the full wording of the requirement, such as:
-
-- V3.3: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated."
 
 ## Code and Shell Commands
 
