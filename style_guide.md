@@ -19,35 +19,34 @@ When in doubt, you can verify proper capitalization on [www.titlecapitalization.
 
 ## External References
 
-External references are listed at the end of each chapter. Refer to them by number within the text, e.g. [1].
+External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: [1].
 
 ### Web Links
 
 Links to sources on the web look as follows:
 
-[1] Reference Name - http://www.example.com/full-link-1.html
-
-[2] Reference Name - http://www.example.com/full-link-2.html
+- [1] Reference Name - http://www.example.com/full-link-1.html
+- [2] Reference Name - http://www.example.com/full-link-2.html
 
 For example:
 
-[1] NIST, the economic impacts of inadequate infrastructure for software testing - http://www.nist.gov/director/planning/upload/report02-3.pdf
+- [1] NIST, the economic impacts of inadequate infrastructure for software testing - http://www.nist.gov/director/planning/upload/report02-3.pdf
 
 ### Other Sources:
 
 Papers:
 
-[1] \[Authors\], \[Title\] - Link
+- [1] \[Author(s)\], \[Title\] - Link
 
 Books:
 
-[1] \[Authors\], \[Title\], \[Published\], \[Year\]
+- [1] \[Author(s)\], \[Title\], \[Published\], \[Year\]
 
 ### References to the MASVS
 
 When referencing the MASVS from a test case, include the full wording of the requirement, such as:
 
-- V3.3: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated"
+- V3.3: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated."
 
 ## Code and Shell Commands
 
