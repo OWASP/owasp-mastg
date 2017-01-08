@@ -496,12 +496,12 @@ https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_valida
 Running the executable on any Android device should give you the following output.
 
 ~~~
-pyramidalneuron:~ berndt$ adb push validate /data/local/tmp
+$ adb push validate /data/local/tmp
 [100%] /data/local/tmp/validate
-pyramidalneuron:~ berndt$ adb shell chmod 755 /data/local/tmp/validate
-pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate
+$ adb shell chmod 755 /data/local/tmp/validate
+$ adb shell /data/local/tmp/validate
 Usage: ./validate <serial>
-pyramidalneuron:~ berndt$ adb shell /data/local/tmp/validate 12345
+$ adb shell /data/local/tmp/validate 12345
 Incorrect serial (wrong format).
 ~~~
 
