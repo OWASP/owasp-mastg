@@ -48,3 +48,7 @@ Books:
 When referencing the MASVS from a test case, include the full wording of the requirement, such as:
 
 - V3.3: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated"
+
+## Code and Shell Commands
+
+Use code tags when including

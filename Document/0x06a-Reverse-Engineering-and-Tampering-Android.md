@@ -43,19 +43,19 @@ Some things that should be mentioned:
 
 1. Use apktool to restore AndroidManifest.xml:
 
-~~~~
+```
 $ apktool d --no-src target_app.apk
-~~~~
+```
 
 2. Add android:debuggable = “true” to the manifest:
 
-~~~~
+```
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
-~~~~
+```
 
 3. Repackage and sign the APK:
 
-~~~~
+```
 $ apktool b
 
 $ zipalign -v 4 target_app.recompiled.apk  target_app.recompiled.aligned.apk
@@ -63,22 +63,22 @@ $ zipalign -v 4 target_app.recompiled.apk  target_app.recompiled.aligned.apk
 $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 
 $ jarsigner -verbose -keystore ~/.android/debug.keystore  target_app.recompiled.aligned.apk signkey
-~~~~
+```
 
 4. Reinstall the app:
 
-~~~
+```
 $ adb install target_app.recompiled.aligned.apk
-~~~
+```
 
 ##### Example 2: Disabling SSL Pinning
 
 As seen in the previous Chapter, certificate pinning might hinder an analyst when analyzing the traffic. To help with this problem, the binary can be patched to allow other certificates. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
 Disassembling the APK using apktool
 
-~~~
+```
 $ apktool d target_apk.apk
-~~~
+```
 
 Modify the Certificate Pinning logic:
 We need to locate where within the smali source code the certificate pinning checks are done. Searching the smali code for keywords such as “X509TrustManager” should point you in the right direction.
@@ -98,8 +98,7 @@ To use Xposed, you first need to install the Xposed framework on a rooted device
 
 Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
-~~~
-
+```java
 package com.example.a.b
 
 public static boolean c() {
@@ -113,14 +112,14 @@ public static boolean c() {
 
     for(int v3 = 0; v3 < v2; v3++) {
       if(new File(String.valueOf(v1[v3]) + "su").exists()) {
-         v0 = true;M
+         v0 = true;
          return v0;
       }
     }
 
     return v0;
 }
-~~~
+```
 
 This method iterates through a list of directories, and returns "true" (device rooted) if the "su" binary is found in any of them. Checks like this are easy to deactivate - all we have to do is to replace the code with something that returns "false".
 
@@ -128,8 +127,7 @@ Using an Xposed module is one way to do this. Modules for Xposed are developed a
 
 Code:
 
-~~~
-
+```java
 package com.awesome.pentestcompany;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -155,8 +153,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
         });
     }
 }
-
-~~~
+```
 
 #### Code Injection with FRIDA
 
@@ -172,7 +169,7 @@ Some features unfortunately don’t work yet on current Android devices platform
 
 ##### Example: Bypassing Native Debugger Detection
 
-~~~
+~~~python
 #v0.1
  
 import frida
@@ -212,7 +209,7 @@ TODO: DEX vs. OAT
 The JDB command line tool offers basic execution tracing functionality.
 To trace an app right from the start we can pause the app using the Android “Wait for Debugger” feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
 
-~~~~
+```
 Pyramidal-Neuron:DIGIPASS berndt$ adb forward tcp:7777 jdwp:7288
 Pyramidal-Neuron:DIGIPASS berndt$ { echo "suspend"; cat; } | jdb -attach localhost:7777
 Set uncaught java.lang.Throwable
@@ -230,7 +227,7 @@ Breakpoint hit: "thread=main", com.acme.bob.mobile.android.core.BobMobileApplica
 main[1] trace go methods
 main[1] resume
 Method entered: All threads resumed.
-~~~~
+```
 
 The Dalvik Debug Monitor Server (DDMS) a GUI tool included with Android Studio. At first glance it might not look like much, but make no mistake: Its Java method tracer is one of the most awesome tools you can have in your arsenal, and is indispensable for analyzing obfuscated bytecode.
 
@@ -251,18 +248,18 @@ Strace is a standard Linux utility that is used to monitor interaction between p
 
 As a side note, if the Android “stop application at startup” feature is unavailable we can use a shell script to make sure that strace attached immediately once the process is launched (not an elegant solution but it works):
 
-~~~~
+```
 while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e “!read” -ff -p "$pid"; break; fi; done
-~~~~
+```
 
 ##### Ftrace
 
 Ftrace is a tracing utility built directly into the Linux kernel. On a rooted device, ftrace can be used to trace kernel system calls in a more transparent way than is possible with strace, which relies on the ptrace system call to attach to the target process.
 Conveniently, ftrace functionality is found in the stock Android kernel on both Lollipop and Marshmallow. It can be enabled with the following command:
 
-~~~~
+```
 echo 1 > /proc/sys/kernel/ftrace_enabled
-~~~~
+```
 
 The /sys/kernel/debug/tracing directory holds all control and output files and related to ftrace. The following files are found in this directory:
 
@@ -329,9 +326,9 @@ You’ll also need the Android NDK for compiling anything that creates native co
 https://developer.android.com/ndk/downloads/index.html
 After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
 
-~~~~
+```
 $ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
-~~~~
+```
 
 
 ##### Customizing the RAMDisk
@@ -339,8 +336,8 @@ $ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=
 The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
 For our purposes, the most important settings in default.prop are ro.debuggable and ro.secure.
 
-~~~~
-shell@hammerhead:/ $ cat /default.prop                                         
+```
+$ cat /default.prop                                         
 #
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
@@ -360,31 +357,31 @@ dalvik.vm.dex2oat-Xmx=512m
 dalvik.vm.image-dex2oat-Xms=64m
 dalvik.vm.image-dex2oat-Xmx=64m
 ro.dalvik.vm.native.bridge=0
-~~~~
+```
 
 Setting ro.debuggable to 1 causes all apps running on the system to be debuggable (i.e., the debugger thread runs in every process), independent of the android:debuggable attribute in the app’s Manifest. Setting ro.secure to 0 causes adbd to be run as root.
 To modify initrd on any Android device, back up the original boot image using TWRP, or simply dump it with a command like:
 
-~~~~
-adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
-adb pull /mnt/sdcard/boot.img /tmp/boot.img
-~~~~
+```
+$ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
+$ adb pull /mnt/sdcard/boot.img /tmp/boot.img
+```
 
 Use the abootimg tool as described in Krzysztof Adamski’s how-to to extract the contents of the boot image:
 
-~~~~
-mkdir boot
-cd boot
-../abootimg -x /tmp/boot.img
-mkdir initrd
-cd initrd
-cat ../initrd.img | gunzip | cpio -vid
-~~~~
+```
+$ mkdir boot
+$ cd boot
+$ ../abootimg -x /tmp/boot.img
+$ mkdir initrd
+$ cd initrd
+$ cat ../initrd.img | gunzip | cpio -vid
+```
 
 Take note of the boot parameters written to bootimg.cfg – you will need to these parameters later when booting your new kernel and ramdisk.
 
-~~~~
-berndt@osboxes:~/Desktop/abootimg/boot$ cat bootimg.cfg
+```
+$ ~/Desktop/abootimg/boot$ cat bootimg.cfg
 bootsize = 0x1600000
 pagesize = 0x800
 kerneladdr = 0x8000
@@ -393,10 +390,14 @@ secondaddr = 0xf00000
 tagsaddr = 0x2700000
 name =
 cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1
+```
+
 Modify default.prop and package your new ramdisk:
-cd initrd
-find . | cpio --create --format='newc' | gzip > ../myinitd.img
-~~~~
+
+```
+$ cd initrd
+$ find . | cpio --create --format='newc' | gzip > ../myinitd.img
+```
 
 ##### Customizing the Android Kernel
 
@@ -410,17 +411,17 @@ https://source.android.com/source/building-kernels.html#id-version
 
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, we need to clone the msm repo and check out one the android-msm-hammerhead branch (hammerhead is the “codename” of the Nexus 5., and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config file with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
 
-~~~~
+```
 $ git clone https://android.googlesource.com/kernel/msm.git
 $ cd msm
 $ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
 $ make hammerhead_defconfig
 $ vim .config
-~~~~
+```
 
 I recommend using the following settings to enable the most important tracing facilities, add loadable module support, and open up kernel memory for patching.
 
-~~~~
+```
 CONFIG_MODULES=Y
 CONFIG_STRICT_MEMORY_RWX=N
 CONFIG_DEVMEM=Y
@@ -434,28 +435,32 @@ CONFIG_HAVE_FUNCTION_GRAPH_TRACER=Y
 CONFIG_TRACING=Y
 CONFIG_FTRACE=Y
 CONFIG KDB=Y
-~~~~
+```
 
 Once you are finished editing save the .config file and build the kernel.
 
-~~~~
+```
 $ export ARCH=arm
 $ export SUBARCH=arm
 $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
 $ make
-~~~~
+```
 
 If the build process completes successfully, you will find the bootable kernel image at arch/arm/boot/zImage-dtb.
 
 ##### Booting the Custom Environment
 
 The fastboot boot command allows you to test your new kernel and ramdisk without actually flashing it (once you’re sure it everything works, you can make the changes permanent with fastboot flash). Restart the device in fastboot mode with the following command:
+
+```
 $ adb reboot bootloader
+```
 
 Then, use the fastboot command to boot Android with the new kernel and ramdisk, passing the boot parameters of the original image:
-~~~~
+
+```
 $ fastboot boot zImage-dtb myinitrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
-~~~~
+```
 
 To quickly verify that the new kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
@@ -473,9 +478,9 @@ Our target program is a simple license key validation program. Granted, you won'
 
 Angr is written in Python 2 and available from PyPI. It is easy to install on \*nix operating systems and Mac OS using pip:
 
-~~~
+```
 $ pip install angr
-~~~
+```
 
 It is recommended to create a dedicated virtual environment with Virtualenv as some of its dependencies contain forked versions Z3 and PyVEX that overwrite the original versions (you may skip this step if you don't use these libraries for anything else - on the other hand, using Virtualenv is generally a good idea).
 
@@ -495,7 +500,7 @@ https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_valida
 
 Running the executable on any Android device should give you the following output.
 
-~~~
+```
 $ adb push validate /data/local/tmp
 [100%] /data/local/tmp/validate
 $ adb shell chmod 755 /data/local/tmp/validate
@@ -503,7 +508,7 @@ $ adb shell /data/local/tmp/validate
 Usage: ./validate <serial>
 $ adb shell /data/local/tmp/validate 12345
 Incorrect serial (wrong format).
-~~~
+```
 
 So far, so good, but we really know nothing about how a valid license key might look like. Where do we start? Let's fire up IDA Pro to get a first good look at what is happening.
 
@@ -512,7 +517,7 @@ So far, so good, but we really know nothing about how a valid license key might 
 
 
 
-~~~
+```
 .text:00401760 ; =============== S U B R O U T I N E =======================================
 .text:00401760
 .text:00401760 ; Attributes: bp-based frame
@@ -608,12 +613,12 @@ So far, so good, but we really know nothing about how a valid license key might 
 .text:00401864                 SUB     SP, R11, #8
 .text:00401868                 LDMFD   SP!, {R4,R11,PC}
 .text:00401868 ; End of function sub_401760
-~~~
+```
 
 
 Solution:
 
-~~~
+```python
 #!/usr/bin/python
 
 # This is how we defeat the Android license check using Angr!
@@ -655,7 +660,7 @@ concrete_addr = found.state.se.any_int(addr)
 solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 
 print base64.b32encode(solution)
-~~~
+```
 
 ### References
 
