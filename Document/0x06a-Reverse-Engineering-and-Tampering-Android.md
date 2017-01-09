@@ -619,6 +619,16 @@ The 16-character base32 input string decodes to 10 bytes, so we know that the va
 
 We can see a loop with some XOR-magic happening at loc_1784, which supposedly decodes the input string. Starting from loc_17DC, we see a series of comparisons of the decoded values with values obtained from further sub-function calls. Even though this doesn't look like highly sophisticated stuff, we'd still need to do some more analysis to completely reverse this check and generate a license key that passes it. But now comes the twist: By using dynamic symbolic execution, we can construct a valid key automatically! The symbolic execution engine can map a path between the first instruction of the license check (0x1760) and the code printing the "Product activation passed" message (0x1840) and determine the constraints on each byte of the input string. The solver engine then finds an input that satisfies those constraints: The valid license key.
 
+We need to provide several inputs to the symbolic execution engine:
+
+- The address to start execution from. We initialize the state with the first instruction of the serial validation function. This makes the task significantly easier (and in this case, almost instant) to solve, as we avoid symbolically executing the Base32 implementation.
+
+- The address of the code block we want execution to reach. In this case, we want to find a path to the code responsible for printing the "Product activation passed" message. This block starts at 0x1840.
+
+- Addresses we don't want to reach. In this case, we're not interesting in any path that arrives at the block of code printing the "Incorrect serial" message, at 0x1854.
+
+Note that Angr loader will load the PIE executable with a base address of 0x400000, so we have to add this to the addresses above. The solution looks as follows.
+
 ```python
 #!/usr/bin/python
 
@@ -661,6 +671,14 @@ concrete_addr = found.state.se.any_int(addr)
 solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 
 print base64.b32encode(solution)
+```
+
+Running this script should return the following:
+
+```
+(angr) $ python solve.py
+WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
+JQAE6ACMABNAAIIA
 ```
 
 ### References
