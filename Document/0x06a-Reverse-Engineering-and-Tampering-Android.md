@@ -6,34 +6,33 @@ Its openness makes Android a favorable environment for reverse engineers. Howeve
 
 In comparison to iOS, Android offers some big advantages to reverse engineers. First of all transparency: You can study the source code of the Android Open Source Project (AOSP), build your ROMs, and so on. The OS is also much more friendly to developers and tinkerers in other way: From the developer options available by default, to the way debugging is set up and the tools shipping with the SDK, there's lot of niceties to make your life easier compared to "some other vendors".
 
-However, there's also a few challenges you'll encounter. For example, if you're used to analyzing native code, you'll need to add Java bytecode to your repertoire. As it is easy for developers to call into native code via the Java Native Interface (JNI), you'll often need to work with Java and native code at the same time. JNI is sometimes used on purpose to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to impede reverse engineering deliberately split functionality between Java bytecode and native code, structuring their apps such that execution frequently jumps between the two layers.
+However, there's also a few challenges you'll encounter. For example, if you're used to analyzing native code, you'll need to SMALI to your repertoire. As it is easy for developers to call into native code via the Java Native Interface (JNI), you'll often need to work with Java and native code at the same time. JNI is sometimes used on purpose to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to impede reverse engineering deliberately split functionality between Java bytecode and native code, structuring their apps such that execution frequently jumps between the two layers.
 
-Android reverse engineers need to understand both Java bytecode and ARM assembler, and have a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these things inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
+You'll need a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these components inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
 
 ### Environment and Toolset
 
-With a little effort you can build a reasonable reverse engineering environment for free. JD is a free Java de-compiler that integrates with Eclipse and IntelliJ. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps.
+#### Android SDK
 
-If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. According to the website, Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
+#### Free Reversing Tools
+
+With a little effort you can build a reasonable reverse engineering environment for free. JD [1] is a free Java de-compiler that integrates with Eclipse [2] and IntelliJ IDEA [3]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
+
+If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
 APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
 
-
-IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its great disassembler and powerful scripting and extension capabilities, IDA Pro is the unbeaten king for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with larger obfuscated apps a bit tedious.
-
-This is where dedicated Java de-compilers become useful. JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
-
--- TODO: Other tools
-
-Some things that should be mentioned:
-
-- Android SDK
 - Smali and Baksmali [3]
 - Androguard
-- apktool
 - ADB
 - DexDump
 - dex2jar
+
+#### Commercial Tools
+
+IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
+
+This is where dedicated Java de-compilers become useful. JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
 
 ### Manipulating Android Apps
 
@@ -683,16 +682,22 @@ JQAE6ACMABNAAIIA
 
 ### References
 
-- [1] http://repo.xposed.info/module/de.robv.android.xposed.installer
+- [1] JD Project - http://jd.benow.ca/
 
-- [2] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
+- [2] Eclipse - http://www.eclipse.org/
 
-- [3] https://github.com/JesusFreke/smali
+- [3] IntelliJ IDEA - https://www.jetbrains.com/idea/
 
-- [4] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
+- [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
 
-- [5] https://docs.angr.io/
+- [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 
-- [6] http://angr.io/api-doc/
+- [X] https://github.com/JesusFreke/smali
 
-- [7] https://en.wikipedia.org/wiki/Concolic_testing
+- [X] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
+
+- [X] https://docs.angr.io/
+
+- [X] http://angr.io/api-doc/
+
+- [X] https://en.wikipedia.org/wiki/Concolic_testing
