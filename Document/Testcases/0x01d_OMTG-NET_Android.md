@@ -14,70 +14,71 @@ Identify all external endpoints (backend APIs, third-party web services), which 
 
 The recommended approach is to intercept all network traffic coming to or from tested application and check if it is encrypted. A network traffic can be intercepted using one of the following approaches:
 
-* Capture all network traffic, using [Tcpdump]. You can begin live capturing via command:
+* Capture all network traffic, using Tcpdump. You can begin live capturing via command:
 ```
 adb shell "tcpdump -s 0 -w - | nc -l -p 1234"
 adb forward tcp:1234 tcp:1234
 ```
 
-Then you can display captured traffic in a human-readable way, using [Wireshark]
+Then you can display captured traffic in a human-readable way, using Wireshark
 ```
 nc localhost 1234 | sudo wireshark -k -S -i –
 ```
 
-* Capture all network traffic using intercept proxy, like [OWASP ZAP] or [Burp Suite] and observe whether all requests are using HTTPS instead of HTTP.
+* Capture all network traffic using intercept proxy, like OWASP ZAP [3] or Burp Suite [4] and observe whether all requests are using HTTPS instead of HTTP.
 
-> Please note, that some applications may not work with proxies like Burp or ZAP (because of customized HTTP/HTTPS implementation, or Cert Pinning). In such case you may use a VPN server to forward all traffic to your Burp/ZAP proxy. You can easily do this, using [Vproxy]
+> Please note, that some applications may not work with proxies like Burp or ZAP (because of customized HTTP/HTTPS implementation, or Cert Pinning). In such case you may use a VPN server to forward all traffic to your Burp/ZAP proxy. You can easily do this, using Vproxy.
 
 It is important to capture all traffic (TCP and UDP), so you should run all possible functions of tested application after starting interception. This should include a process of patching application, because sending a patch to application via HTTP may allow an attacker to install any application on victim's device (MiTM attacks).
 
 #### Remediation
 
-Ensure that sensitive information is being sent via secure channels, using [HTTPS], or [SSLSocket] for socket-level communication using TLS.
+Ensure that sensitive information is being sent via secure channels, using HTTPS [5], or SSLSocket [6] for socket-level communication using TLS.
 
-> Please be aware that `SSLSocket` **does not** verify hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. [Here] you can find an example of correct usage.
+> Please be aware that `SSLSocket` **does not** verify hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. Here [7] you can find an example of correct usage.
 
-Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure [Android IPC mechanism].
+Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure Android IPC mechanism [8].
 
 #### OWASP MASVS
 
 V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 
-#### OWASP Mobile Top 10
-
-M3 - Insecure Communication
-
 #### CWE
 
-[CWE 319]
+CWE 319 - Cleartext Transmission of Sensitive Information - https://cwe.mitre.org/data/definitions/319.html
+
+#### OWASP Mobile Top 10 2014
+
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 #### References
 
 - [1] https://cwe.mitre.org/data/definitions/319.html
 - [2] https://developer.android.com/training/articles/security-tips.html#Networking
+- [3] https://security.secure.force.com/security/tools/webapp/zapandroidsetup
+- [4] https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
+- [5] https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html
+- [6] https://developer.android.com/reference/javax/net/ssl/SSLSocket.html
+- [7] https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket
+- [8] https://developer.android.com/reference/android/app/Service.html
 
+#### Tools
 
-[Tcpdump]: http://www.androidtcpdump.com/
-[Wireshark]: https://www.wireshark.org/download.html
-[OWASP ZAP]: https://security.secure.force.com/security/tools/webapp/zapandroidsetup
-[Burp Suite]: https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
-[HTTPS]: https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html
-[SSLSocket]: https://developer.android.com/reference/javax/net/ssl/SSLSocket.html
-[Android IPC mechanism]: https://developer.android.com/reference/android/app/Service.html
-[CWE 319]: https://cwe.mitre.org/data/definitions/319.html
-[Vproxy]: https://github.com/B4rD4k/Vproxy
-[Here]: https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket
-
+Tcpdump - http://www.androidtcpdump.com/
+Wireshark - https://www.wireshark.org/
+OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+Burp Suite - https://portswigger.net/burp/
+Vproxy - https://github.com/B4rD4k/Vproxy
 
 ### <a name="[OMTG-NET-002]"></a>OMTG-NET-002: Test X.509 certificate verification
 
 #### Overview
 
-Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decides for easier, but less secure (e.g. self-signed certificates) solutions to ease a development process what often is not fixed after going on production [1].
+Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decides for easier, but less secure (e.g. accepting any certificate) solutions to ease a development process what often is not fixed after going on production [1], exposing at the same time an application to man-in-the-middle attacks [2].
 
 #### White-box Testing
 
-There are 2 main issues related with validating TLS connection: the first one is verification if a certificate comes from trusted source and the second one is a check whether the endpoint server presents the right certificate [2].
+There are 2 main issues related with validating TLS connection: the first one is verification if a certificate comes from trusted source and the second one is a check whether the endpoint server presents the right certificate [3].
 
 ##### Verifying server certificate
 
@@ -141,7 +142,9 @@ Ensure that your application verifies a hostname before setting trusted connecti
 
 #### Black-box Testing
 
-Improper TLS implementation may be found using static analysis tool called MalloDroid [3]. It simply decompiles an application and warns you if it finds something suspicious. You can check your application using a following command:
+Improper certificate verification may be found using static or dynamic analysis.
+
+* Static analysis approach is to decompile an application and simply look in a code for TrustManager and HostnameVerifier usage. You can find insecure usage examples in a "White-box Testing" section above. Such checks of improper certificate verification, may be done automatically, using a tool called MalloDroid [4]. It simply decompiles an application and warns you if it finds something suspicious. To run it, simply type this command:
 
 ```
 ./mallodroid.py -f ExampleApp.apk -d ./outputDir
@@ -149,13 +152,21 @@ Improper TLS implementation may be found using static analysis tool called Mallo
 
 Now, you should be warned if any suspicious code was found by MalloDroid and in `./outputDir` you will find decompiled application for further manual analysis.
 
-A TLS certificate of backend server can be inspected using SSLScan [4]:
+* Dynamic analysis approach will require usage of intercept proxy, e.g. Burp Suite. To test improper certificate verification, you should go through following control checks:
 
-```
-./sslscan hostname
-```
+ 1) Self-signed certificate.
 
-The above command will output any issues related with TLS implementation.
+  In Burp go to Proxy -> Options tab, go to Proxy Listeners section, highlight you listener and click Edit button. Then go to Certificate tab and check 'Use a self-signed certificate' and click Ok. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting self-signed certificates.
+
+ 2) Accepting invalid certificate.
+
+  In Burp go to Proxy -> Options tab, go to Proxy Listeners section, highlight you listener and click Edit button. Then go to Certificate tab, check 'Generate a CA-signed certificate with a specific hostname' and type hostname of a backend server. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any certificate.
+
+ 3) Accepting wrong hostname.
+
+  In Burp go to Proxy -> Options tab, go to Proxy Listeners section, highlight you listener and click Edit button. Then go to Certificate tab, check 'Generate a CA-signed certificate with a specific hostname' and type invalid hostname, e.g. 'example.org'. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any hostname.
+
+> **Note**, if you are interested in further MITM analysis or you face any problems with configuration of your intercept proxy, you may consider using Tapioca [6]. It's a CERT preconfigured VM appliance [7] for performing MITM analysis of software. All you have to do is deploy a tested application on emulator and start capturing traffic [8].
 
 #### Remediation
 
@@ -165,23 +176,27 @@ Ensure, that the hostname and certificate is verified correctly. You can find a 
 
 V5.2: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
-#### OWASP Mobile Top 10
-
-M3 - Insecure Communication
-
 #### CWE
 
-[CWE 295]
+CWE 295 - Improper Certificate Validation - https://cwe.mitre.org/data/definitions/295.html
+CWE 296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+CWE 297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+CWE 298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+
+#### OWASP Mobile Top 10 2014
+
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 #### References
 
 - [1] https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf
-- [2] https://developer.android.com/training/articles/security-ssl.html
-- [3] https://github.com/sfahl/mallodroid
-- [4] https://github.com/rbsec/sslscan
-
-[CWE 295]: https://cwe.mitre.org/data/definitions/295.html
-
+- [2] https://cwe.mitre.org/data/definitions/295.html
+- [3] https://developer.android.com/training/articles/security-ssl.html
+- [4] https://github.com/sfahl/mallodroid
+- [5] https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
+- [6] https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html
+- [7] http://www.cert.org/download/mitm/CERT_Tapioca.ova
+- [8] https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
 
 ### <a name="OMTG-NET-003"></a>OMTG-NET-003: Test SSL Pinning
 
