@@ -2,9 +2,22 @@
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+App Signing is the process of attaching a public-key certificate to the APK in order to identifiy/verify its owner who hold the corresponding private-key.
+
+The digital signature is required by Android system before installing/running an application, and it's also used to verify the identity of the owner for future updates of the application. This process can prevent an app from being Trojanized with malicious code.
+
+This test case aims to verify that the app use a strong passwords for the keystore and private key, and the configuration files doesn't leack the signing information.
 
 #### White-box Testing
+
+Analyze the source code to review the signing information :
+
+1. Import the source code in your favorite text editor ;
+2. Search the signing information using the following keywords : storePassword, keyPassword, keyAlias, storeFile ...
+
+If the application leack the keystore/key password, this is finding.
+If the application uses a weak password for keystore or private key, this is finding.
+
 
 #### Black-box Testing
 
