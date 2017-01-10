@@ -91,20 +91,6 @@ Some types of obfuscation that fall into this category are:
 
 #### Assessing the Quality of Functional Defenses
 
-The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
-
-Each individual defensive function is assessed on three properties:
--	Uniqueness: 1 – 3 points
--	API Layer: Up to 2 bonus points
--	Parallelism: Up to 2 bonus points
-
-Table 2 explains the scoring criteria in detail.
-
-|               | **Uniqueness**    | **API Layer**   | **Parallelism** |
-| ------------- |:-------------:| -----:| ------------------|
-| **Rationale**     | *Lower-level calls are more difficult to defeat than higher level calls.*  | *The more original and/or customized the anti-reversing trick, the less likely the adversary has seen it all before*.  |  *Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.*  |
-| **Level 1**  | Standard API (1 point): The feature relies on APIs that are specifically meant to hinder reverse engineering. It can be bypassed easily using generic |   System Library (1 point): The feature relies on public library functions or methods.| Single thread |
-| **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
-| **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
+(... TODO ...)
 
 ### Assessing Obfuscations
