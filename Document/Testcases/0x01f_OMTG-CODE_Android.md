@@ -4,24 +4,30 @@
 
 App Signing is the process of attaching a public-key certificate to the APK in order to identifiy/verify its owner who hold the corresponding private-key.
 
-The digital signature is required by Android system before installing/running an application, and it's also used to verify the identity of the owner for future updates of the application. This process can prevent an app from being Trojanized with malicious code.
+The digital signature is required by the Android system before installing/running an application, and it's also used to verify the identity of the owner for future updates of the application. This process can prevent an app from being trojanized with malicious code.
 
-This test case aims to verify that the app use a strong passwords for the keystore and private key, and the configuration files doesn't leack the signing information.
+This test case aims to verify that the app uses a strong passwords for the keystore and private key, and the configuration files doesn't leack the signing information.
 
 #### White-box Testing
 
-Analyze the source code to review the signing information :
+Analyze the source code in order review the signing information using the following keywords: 
+* storePassword
+* keyPassword
+* keyAlias
+* storeFile
 
-1. Import the source code in your favorite text editor ;
-2. Search the signing information using the following keywords : storePassword, keyPassword, keyAlias, storeFile ...
-
-If the application leack the keystore/key password, this is finding.
-If the application uses a weak password for keystore or private key, this is finding.
+The test fails, if the application:
+* leaks the keystore/key password or
+* uses a weak password for the keystore or private key.
 
 
 #### Black-box Testing
 
+TBD
+
 #### Remediation
+
+TBD
 
 #### References
 
@@ -32,6 +38,7 @@ If the application uses a weak password for keystore or private key, this is fin
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
+
 ### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test If the App is Debuggable
 
 #### Overview
@@ -40,7 +47,7 @@ If the application uses a weak password for keystore or private key, this is fin
 
 #### White-box Testing
 
-Check the AndroidManifest.xml for the value of "android:debuggable" attribute within the application element :
+Check the AndroidManifest.xml for the value of "android:debuggable" attribute within the application element:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
@@ -54,7 +61,7 @@ Check the AndroidManifest.xml for the value of "android:debuggable" attribute wi
 </manifest>
 ```
 
-This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" if it can be, And "false" if not. The default value is "false".
+This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" defines that debugging is activated and "false" means debugging is deactivated. The default value is "false".
 
 Although the `android:debuggable=""` flag can be bypassed by repacking the application, before shipping it, it is important to set the option `android:debuggable="false"` in the _AndroidManifest.xml_.
 
@@ -62,9 +69,7 @@ A comprehensive guide to debug an Android application can be found within the of
 
 #### Black-box Testing
 
-##### Static Test
-
-When targeting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF) and check the value of "android:debuggable" attribute.
+When targeting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the MSTG) and check the value of "android:debuggable" attribute.
 
 Otherwise, use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
 
@@ -78,7 +83,6 @@ Will return the following if android:debuggable parameter is set to true :
       A: android:debuggable(0x0101000f)=(type 0x12)0xffffffff
 ```
 
-##### Dynamic Test
 
 Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
 
@@ -96,6 +100,7 @@ For production releases, the attribute android:debuggable must be set to false w
 
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
 
 ### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Test for Debugging Symbols
 
@@ -126,6 +131,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 #### References
 
 - [link to relevant how-tos, papers, etc.]
+
 
 ### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
