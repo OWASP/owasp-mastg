@@ -93,7 +93,7 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 ~~~
 
 
-### Code Injection
+### Runtime Instrumentation
 
 
 #### Cynject

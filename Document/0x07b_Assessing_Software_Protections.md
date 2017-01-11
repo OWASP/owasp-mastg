@@ -1,5 +1,8 @@
 # Assessing the Quality of Software Protections
 
+
+*TODO...  Goal: Define repeatable processes for assessing the effectiveness of software protections. For now this is just a copy/paste from some old writeups. Needs to be synced with [OWASP RE Prevention](https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project), [Obfucation Metrics](https://github.com/b-mueller/obfuscation-metrics), [MASVS Reverse Engineering Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md).*
+
 Whether we’re talking about malware, banking apps, or mobile games: They all use anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that a given set of defenses (as a whole) is "good enough" to provide the desired level of protection? As it turns out, this is not an easy question to answer.
 
 The first problem is that there is no one-size-fits-all. Client-side tampering protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing server-side controls in the client. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. To work around this issue, we made modeling of client-side threats part of the requirements in MASVS-R: If one uses obfuscation and anti-tampering controls at all, they should be sure that they're doing it right, and without compromising the overall security architecture.
@@ -10,7 +13,6 @@ In this chapter, we outline a process called *resiliency testing*. Resiliency te
 
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
-
 
 ## Testing Software Protection Schemes
 
@@ -91,20 +93,6 @@ Some types of obfuscation that fall into this category are:
 
 #### Assessing the Quality of Functional Defenses
 
-The simple, score-based system described below is based practical experience and feedback from malware analysts and reverse engineers. For a given defensive category, each defense in the category is scored individually, and the scores are then added to obtain a final score. A “defense” in this context is a function, or group of functions, with a common modus operandi and goal.
-
-Each individual defensive function is assessed on three properties:
--	Uniqueness: 1 – 3 points
--	API Layer: Up to 2 bonus points
--	Parallelism: Up to 2 bonus points
-
-Table 2 explains the scoring criteria in detail.
-
-|               | **Uniqueness**    | **API Layer**   | **Parallelism** |
-| ------------- |:-------------:| -----:| ------------------|
-| **Rationale**     | *Lower-level calls are more difficult to defeat than higher level calls.*  | *The more original and/or customized the anti-reversing trick, the less likely the adversary has seen it all before*.  |  *Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.*  |
-| **Level 1**  | Standard API (1 point): The feature relies on APIs that are specifically meant to hinder reverse engineering. It can be bypassed easily using generic |   System Library (1 point): The feature relies on public library functions or methods.| Single thread |
-| **Level 2** | Published (2 points): A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization. |    Kernel (1 bonus point): The anti-reversing feature calls directly into the kernel.  | N/A  |
-| **Level 3** | Proprietary (3 points): The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer     |  Self-contained (2 bonus points): The feature does not require any library or system calls to work. | Multiple threads or processes (2 bonus points) |
+(... TODO ...)
 
 ### Assessing Obfuscations
