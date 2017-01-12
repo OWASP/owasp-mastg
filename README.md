@@ -19,11 +19,12 @@ The following lists contains the individual sections of the MSTG, along with the
    * [Android](Document/0x04a-Android.md) -- [Cláudio André](https://github.com/clviper)
    * [iOS](Document/0x04b-iOS.md) -- [Looking for Lead Authors](authors_guide.md)
 * [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md)
-   * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
-   * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
-* [Tampering and Reverse Engineering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
-   * [Android](Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-   * [iOS](Document/0x06b-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+  * Android
+    * [Basic Security Testing](Document/0x05a-Basic-Security_Testing_Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Tampering and Reverse Engineering](Document/0x05b-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
+  * iOS
+    * [Basic Security Testing](Document/0x05c-Basic-Security-Testing-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Tampering and Reverse Engineering](Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
 
 ### Detailed Howtos -> [Full list](all_tests.md)
 

@@ -672,6 +672,8 @@ solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 print base64.b32encode(solution)
 ```
 
+Note the last part of the program where the final input string is obtained - it appears if we were simply reading the solution from memory. We are however reading from symbolic memory - neither the string nor the pointer to it actually exist! What's really happening is that the solver is computing possible concrete values that could be found at that program state, would we observer the actual program run to that point.
+
 Running this script should return the following:
 
 ```
