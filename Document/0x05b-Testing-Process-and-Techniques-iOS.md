@@ -28,11 +28,16 @@ iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 
 ###### On non-Jailbroken devices
 
-On a non jailbreakon device, you are able to recover the ipa on MacOS with the following simple steps: 
+If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps: 
 
 - Download the app in itunes
 - Go to your itunes Apps Library 
 - Right-click on the app and select show in finder
+
+To extract ipa from ios devices
+
+TODO
+
 
 
 References:
