@@ -401,20 +401,24 @@ $ find . | cpio --create --format='newc' | gzip > ../myinitd.img
 
 ##### Customizing the Android Kernel
 
-Many operations performed by a process, such as allocating memory and accessing files, rely on services provided by the kernel in the form of system calls. In an ARM environment, system calls are done with the SVC instruction which triggers a software interrupt. This interrupt calls the vector_swi() kernel function, which then uses the system call number as an offset into a table of function pointers. In Android, this table is exported with the symbol name sys_call_table.
-System call hooking is a commonly used technique to monitor and manipulating the interface between user mode and kernel mode. Hooks can be installed in different ways, but rewriting the function pointers in sys_call_table is probably the easiest and most straight-forward.
-Newer stock Android kernels enforce some restrictions that prevent system call hooking. Specifically, the stock Lollipop and Marshmallow kernels for the Nexus 5 are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel code regions read-only data, which means that any attempts to patch kernel code or sys_call_table result in a segmentation fault and reboot. For the purpose of our sandbox however, we can simply build our own kernel that disables this feature.
-Given that we have to compile a custom kernel for our sandbox anyway, we’ll also add a couple more features for added convenience, such as LKM support and the /dev/kmem interface.
-To build the Android kernel you need a toolchain (set of programs to cross-compile the sources) as well as the appropriate version of the kernel sources. Instructions on how to identify the correct git repository and branch for a given device and Android version can be found at:
+The Android kernel is a powerful ally to the reverse engineer. While regular Android apps are hopelessly restricted and sandboxed, you - the reverser - can customize and alter the behavior of the operating system and kernel any way you wish. This gives you a really unfair advantage, because most integrity checks and anti-tampering features ultimately rely on services performed by the kernel. Deploying a kernel that abuses this trust, and unabashedly lies about itself and the environment, goes a long way in defeating most reversing defenses that malware authors (or normal developers) can throw at you.
+
+Android apps have several ways of interacting with the OS environment. The standard way is through the APIs of the Android Application Framework. On the lowest level however, many important functions, such as allocating memory and accessing files, are translated into perfectly old-school Linux system calls. In ARM Linux, system calls are invoked via the SVC instruction which triggers a software interrupt. This interrupt calls the vector_swi() kernel function, which then uses the system call number as an offset into a table of function pointers (a.k.a. sys_call_table on Android).
+
+The most straightforward way of intercepting system calls is injecting your own code into kernel memory, then overwriting the original function in the system call table to redirect execution. Unfortunately, current stock Android kernels enforce memory restrictions that prevent this from working. Specifically, stock Lollipop and Marshmallow kernel are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel memory regions marked as read-only, which means that any attempts to patch kernel code or the system call table result in a segmentation fault and reboot. A way to get around this is to build your own kernel: You can then deactivate this protection, and make many other useful customizations to make reverse engineering easier. If you're reversing Android apps on a regular basis, building your own reverse engineering sandbox is a no-brainer.
+
+For hacking purposes, I recommend using an AOSP-supported device. Google’s Nexus smartphones and tablets are the most logical candidates – kernels and system components built from the AOSP run on them without issues. Alternatively, Sony’s Xperia series is also known for its openness. To build the AOSP kernel you need a toolchain (set of programs to cross-compile the sources) as well as the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
 
 https://source.android.com/source/building-kernels.html#id-version
 
-For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, we need to clone the msm repo and check out one the android-msm-hammerhead branch (hammerhead is the “codename” of the Nexus 5., and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config file with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
+For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the "msm" repo and check out one the "android-msm-hammerhead" branch (hammerhead is the codenam” of the Nexus 5, and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
 
 ```
 $ git clone https://android.googlesource.com/kernel/msm.git
 $ cd msm
 $ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
+$ export ARCH=arm
+$ export SUBARCH=arm
 $ make hammerhead_defconfig
 $ vim .config
 ```
@@ -446,27 +450,264 @@ $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
 $ make
 ```
 
-If the build process completes successfully, you will find the bootable kernel image at arch/arm/boot/zImage-dtb.
+Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android 5.1, run make-standalone-toolchain.sh from the Android NDK package as follows:
+
+```
+$ cd android-ndk-rXXX
+$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+```
+
+Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
+the kernel.
+
+```
+$ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
+$ make
+```
 
 ##### Booting the Custom Environment
 
-The fastboot boot command allows you to test your new kernel and ramdisk without actually flashing it (once you’re sure it everything works, you can make the changes permanent with fastboot flash). Restart the device in fastboot mode with the following command:
+Before booting into the new Kernel, make a copy of the original boot image from your device. Look up the location of the boot partition as follows:
+
+```
+root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/         
+lrwxrwxrwx root     root              1970-08-30 22:31 DDR -> /dev/block/mmcblk0p24
+lrwxrwxrwx root     root              1970-08-30 22:31 aboot -> /dev/block/mmcblk0p6
+lrwxrwxrwx root     root              1970-08-30 22:31 abootb -> /dev/block/mmcblk0p11
+lrwxrwxrwx root     root              1970-08-30 22:31 boot -> /dev/block/mmcblk0p19
+(...)
+lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mmcblk0p28
+```
+
+Then, dump the whole thing into a file:
+
+```
+$ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
+$ adb pull /data/local/tmp/boot.img
+```
+
+Next, extract the ramdisk as well as some information about the structure of the boot image. There are various tools that can do this - I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
+
+```
+$ abootimg -x boot.img
+```
+
+This should create the files bootimg.cfg, initrd.img and zImage (your original kernel) in the local directory.
+
+You can now use fastboot to test the new kernel. The "fastboot boot" command allows you to run the kernel without actually flashing it (once you’re sure everything works, you can make the changes permanent with fastboot flash - but you don't have to). Restart the device in fastboot mode with the following command:
 
 ```
 $ adb reboot bootloader
 ```
 
-Then, use the fastboot command to boot Android with the new kernel and ramdisk, passing the boot parameters of the original image:
+Then, use the "fastboot boot" command to boot Android with the new kernel. In addition to the newly built kernel and the original ramdisk, specify the kernel offset, ramdisk offset, tags offset and commandline (use the values listed in your previously extracted bootimg.cfg).
 
 ```
-$ fastboot boot zImage-dtb myinitrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
+$ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
 ```
 
-To quickly verify that the new kernel is running, navigate to Settings->About phone and check the “kernel version” field.
+The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
-##### Loading Kernel Modules
+![Disassembly of function main.](Images/Chapters/0x06a/custom_kernel.jpg)
 
-##### Example: File Hiding
+##### System Call Hooking Using Kernel Modules
+
+System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
+
+![Disassembly of function main.](Images/Chapters/0x06a/syscall_hooking.jpg)
+
+The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
+
+```
+$ adb shell "su -c echo 0 > /proc/sys/kernel/kptr_restrict"
+$ adb shell cat /proc/kallsyms | grep sys_call_table
+c000f984 T sys_call_table
+```
+
+This is the only memory address we need for writing our kernel module - everything else can be calculated using offsets taken from the Kernel headers (hopefully you didn't delete them yet?).
+
+###### Example: File Hiding
+
+In this howto, we're going to use a Kernel module to hide a file. Let's create a file on the device so we can hide it later:
+
+$ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
+$ adb shell cat /data/local/tmp/nowyouseeme
+ABCD
+Finally it's time to write the kernel module. For file hiding purposes, we'll need to hook one of the system calls used to open (or check for the existence of) files. Actually, there many of those - open, openat, access, accessat, facessat, stat, fstat, and more. For now, we'll only hook the openat system call - this is the syscall used by the "/bin/cat" program when accessing a file, so it should be servicable enough for a demonstration.
+
+You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
+
+```
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/moduleparam.h>
+#include <linux/unistd.h>
+#include <linux/slab.h>
+#include <asm/uaccess.h>
+
+asmlinkage int (*real_openat)(int, const char __user*, int);
+
+void **sys_call_table;
+
+int new_openat(int dirfd, const char __user* pathname, int flags)
+{
+  char *kbuf;
+  size_t len;
+
+  kbuf=(char*)kmalloc(256,GFP_KERNEL);
+  len = strncpy_from_user(kbuf,pathname,255);
+
+  if (strcmp(kbuf, "/data/local/tmp/nowyouseeme") == 0) {
+    printk("Hiding file!\n");
+    return -ENOENT;
+  }
+
+  kfree(kbuf);
+
+  return real_openat(dirfd, pathname, flags);
+}
+
+int init_module() {
+
+  sys_call_table = (void*)0xc000f984;
+  real_openat = (void*)(sys_call_table[__NR_openat]);
+
+return 0;
+
+}
+```
+
+To build the kernel module, you need the kernel sources and a working toolchain - since you already built a complete kernel before, you are all set. Create a Makefile with the following content:
+
+```
+KERNEL=[YOUR KERNEL PATH]
+TOOLCHAIN=[YOUR TOOLCHAIN PATH]
+
+obj-m := kernel_hook.o
+
+all:
+        make ARCH=arm CROSS_COMPILE=$(TOOLCHAIN)/bin/arm-eabi- -C $(KERNEL) M=$(shell pwd) CFLAGS_MODULE=-fno-pic modules
+
+clean:
+        make -C $(KERNEL) M=$(shell pwd) clean
+```
+
+Run "make" to compile the code – this should create the file kernel_hook.ko. Copy the kernel_hook.ko file to the device and load it with the insmod command. Verify with the lsmod command that the module has been loaded successfully.
+
+```
+$ make
+(...)
+$ adb push kernel_hook.ko /data/local/tmp/
+[100%] /data/local/tmp/kernel_hook.ko
+$ adb shell su -c insmod /data/local/tmp/kernel_hook.ko
+$ adb shell lsmod
+kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
+```
+
+Now, we’ll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of our newly injected function (this could have been done directly in the kernel module as well, but using /dev/kmem gives us an easy way to toggle our hooks on and off). I have adapted the code from Dong-Hoon You’s Phrack article [1] for this purpose - however, I used the file interface instead of mmap(), as I found the latter to cause kernel panics for some reason. Create a file called kmem_util.c with the following code:
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <asm/unistd.h>
+#include <sys/mman.h>
+
+#define MAP_SIZE 4096UL
+#define MAP_MASK (MAP_SIZE - 1)
+
+int kmem;
+void read_kmem2(unsigned char *buf, off_t off, int sz)
+{
+  off_t offset; ssize_t bread;
+  offset = lseek(kmem, off, SEEK_SET);
+  bread = read(kmem, buf, sz);
+  return;
+}
+
+void write_kmem2(unsigned char *buf, off_t off, int sz) {
+  off_t offset; ssize_t written;
+  offset = lseek(kmem, off, SEEK_SET);
+  if (written = write(kmem, buf, sz) == -1) { perror("Write error");
+    exit(0);
+  }
+  return;
+}
+
+int main(int argc, char *argv[]) {
+
+  off_t sys_call_table;
+  unsigned int addr_ptr, sys_call_number;
+
+  if (argc < 3) {
+    return 0;
+  }
+
+  kmem=open("/dev/kmem",O_RDWR);
+
+  if(kmem<0){
+    perror("Error opening kmem"); return 0;
+  }
+
+  sscanf(argv[1], "%x", &sys_call_table); sscanf(argv[2], "%d", &sys_call_number);
+  sscanf(argv[3], "%x", &addr_ptr); char buf[256];
+  memset (buf, 0, 256); read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
+  printf("Original value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);       
+  write_kmem2((void*)&addr_ptr,sys_call_table+(sys_call_number*4),4);
+  read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
+  printf("New value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);
+  close(kmem);
+
+  return 0;
+}
+```
+
+Build kmem_util.c using the prebuilt toolchain and copy it to the device. Note that from Android Lollipop, all executables must be compiled with PIE support:
+
+```
+$ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
+$ adb push kmem_util /data/local/tmp/
+$ adb shell chmod 755 /data/local/tmp/kmem_util
+```
+
+Before we start messing with kernel memory we still need to know the correct offset into the system call table. The openat system call is defined in unistd.h which is found in the kernel sources:
+
+```
+$ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
+#define __NR_openat            (__NR_SYSCALL_BASE+322)
+```
+
+The final piece of the puzzle is the address of our replacement-openat. Again, we can get this address from /proc/kallsyms.
+
+```
+$ adb shell cat /proc/kallsyms | grep new_openat
+bf000000 t new_openat    [kernel_hook]
+```
+
+Now we have everything we need to overwrite the sys_call_table entry. The syntax for kmem_util is:
+
+```
+./kmem_util <syscall_table_base_address> <offset> <func_addr>
+```
+
+The following command patches the openat system call table to point to our new function.
+
+```
+$ adb shell su -c /data/local/tmp/kmem_util c000f984 322 bf000000
+Original value: c017a390
+New value: bf000000
+```
+
+Assuming that everything worked, /bin/cat should now be unable to "see" the file.
+
+```
+$ adb shell su -c cat /data/local/tmp/nowyouseeme
+tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
+```
+
+Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all usermode processes (note that there's a lot more you need to do to properly hide a file, including hooking stat(), access(), and other system calls, as well as hiding the file in directory listings).
+
+File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [x]
 
 ### <a name="binary_analysis"></a>Automating Binary Analysis Tasks
 
