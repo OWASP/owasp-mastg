@@ -85,7 +85,24 @@ In this case a search for “X509TrustManager” returned one class which implem
 The “return-void” opcode was added to the first line of each of these methods. The “return-void” statement is a Dalvik opcode to return ‘void’ or null. For more Dalvik opcodes refer to http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html.
 In this context, return-void means that no certificate checks are performed and the application will accept all certificates.
 
-![Screenshot showing the inserted opcode.](Images/Chapters/0x06a/patching-sslpinning.jpg)
+```smali
+.method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
+  .locals 3
+  .param p1, "chain"	# [Ljava/security/cert/X509Certificate;
+  .param p2, "authType"		# Ljava/lang/String;
+
+  .prologue     
+  return-void      # <-- OUR INSERTED OPCODE!
+  .line 102
+  iget-object v1, p0, Lasdf/t$a;->a:Ljava/util/ArrayList;
+
+  invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
+
+  move-result-object v1
+
+  :goto_0
+  invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+```
 
 #### Hooking Java methods with Xposed
 
