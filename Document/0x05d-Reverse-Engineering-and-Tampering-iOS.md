@@ -12,6 +12,8 @@ Class-dump by Steve Nygard [1] is a command-line utility for examining the Objec
 
 Class-dump-dyld by Elias Limneos [2] allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
+MachoOView [3] is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+
 ### Jailbreaking iOS Devices
 
 In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
@@ -214,9 +216,16 @@ sys.stdin.read()
 
 ### Reverse Engineering on iOS
 
+
+#### Statically Analyzing iOS Apps
+
+
+
+
+
 #### Dumping Decrypted Executables
 
-For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
+For iOS, distributed application packages are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application needs to be decrypted first.
 
 In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
 
@@ -228,6 +237,9 @@ iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xx
 ~~~
 
 The decrypted binary is saved in the current working directory.
+
+
+
 
 #### Analyzing Swift Apps
 
@@ -285,12 +297,9 @@ Attaching to process 2670...
 
 ### References
 
-- [1] http://stevenygard.com/projects/class-dump/
-
-- [2] https://github.com/limneos/classdump-dyld/
-
-- [3] https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
-
-- [4] http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
-
-- [5] http://iphonedevwiki.net/index.php/Debugserver
+- [1] Class-dump - http://stevenygard.com/projects/class-dump/
+- [2] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
+- [3] MachOView - https://sourceforge.net/projects/machoview/
+- [3] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
+- [4] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
+- [5] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
