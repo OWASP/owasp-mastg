@@ -11,9 +11,9 @@
 # the Free Software Foundation, version 3.
 
 if [ $# -ne 4 ]
-	then
-		echo "Usage: $0 <IPA> <dylib_to_inject> <provisioning_profile> <signing_identity>"
-		exit
+  then
+    echo "Usage: $0 <IPA> <dylib_to_inject> <provisioning_profile> <signing_identity>"
+    exit
 fi
 
 IPA=$1
