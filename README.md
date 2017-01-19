@@ -16,7 +16,7 @@ The following lists contains the individual sections of the MSTG, along with the
 ### High-Level Guides
 
 * [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md) - [Pishu Mahtani](https://github.com/mpishu)
-   * [Android](Document/0x04a-Android.md) -- [Cláudio André](https://github.com/clviper)
+   * [Android](Document/0x04a-Android.md) -- [Cláudio André](https://github.com/clviper),[Romuald Szkudlarek](https://github.com/romualdszkudlarek)
    * [iOS](Document/0x04b-iOS.md) -- [Pishu Mahtani](https://github.com/mpishu)
 * [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Looking for More Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
   * Android
