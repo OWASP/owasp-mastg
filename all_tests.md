@@ -15,8 +15,7 @@ The full list of mobile app security tests in the MSTG. Detailed how-tos will be
 | OMTG-DATAST-009 | Test for sensitive data in backups | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-009) iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.9 |
 | OMTG-DATAST-010 | Test if memory is cleared when the app is backgrounded | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-010) [iOS](Document/Testcases/0x02a_OMTG-DATAST_iOS.md#OMTG-DATAST-010) | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.10 |
 | OMTG-DATAST-011 | Test for sensitive data in memory | [Android](Document/Testcases/0x01a_OMTG-DATAST_Android.md#OMTG-DATAST-011) iOS| [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.11 |
-| OMTG-DATAST-012 | Test if local storage is wiped upon remote locking |  Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.12 |
-| OMTG-DATAST-013 | Test enforcement of device-access-security policy |  Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.13 |
+| OMTG-DATAST-012 | Test enforcement of device-access-security policy |  Android iOS | [Data Storage](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md) V2.12 |
 | OMTG-CRYPTO-001 | Test cryptographic modules |  Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) V3.1 - V3.5 |
 | OMTG-CRYPTO-002 | Verify that random values are generated using a sufficiently secure random number generator | Android iOS| [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) V3.6 |
 | OMTG-CRYPTO-003 | Verify that all keys and passwords are changeable, and are generated or replaced at installation time | Android iOS | [Cryptography](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x08-V3-Cryptography_Verification_Requirements.md) V3.7 |
@@ -34,15 +33,15 @@ The full list of mobile app security tests in the MSTG. Detailed how-tos will be
 | OMTG-NET-004 | Test the SSL configuration |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.4 |
 | OMTG-NET-005 | Test whether insecure, external communication channels are used | Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.5 |
 | OMTG-NET-006 | Test PKI mutual authentication |  Android iOS | [Network](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x10-V5-Network_communication_requirements.md) V5.6|
-| OMTG-ENV-001 | Test app permissions |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
+| OMTG-ENV-001 | Test of App permissions |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.1 |
 | OMTG-ENV-002 | Test validation of input from external sources |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.2  |
 | OMTG-ENV-003 | Test validation of user input |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.3  |
 | OMTG-ENV-004 | Test custom URL schemes |  Android iOS |  [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.4  |
 | OMTG-ENV-005 | Test IPC functionality | Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.5  |
-| OMTG-ENV-006 | Test WebViews |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.6 - V6.10 |
-| OMTG-ENV-007 | Verify that the app forces updates of outdated system components |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.11 |
-| OMTG-ENV-008 | Verify that the app checks its installation source |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.12  |
-| OMTG-ENV-009 | Test basic root / jailbreak detection |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.13 |
+| OMTG-ENV-006 | Test WebViews |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.6 - V6.9 |
+| OMTG-ENV-010 | Test for updating of Security Provider |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.10 |
+| OMTG-ENV-011 | Test that the app checks its installation source |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.11  |
+| OMTG-ENV-012 | Test basic root / jailbreak detection |  Android iOS | [Environment](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x11-V6_Interaction_with_the_environment.md) V6.12 |
 | OMTG-CODE-001 | Verify the app signature |  Android iOS | [Code](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.1 |
 | OMTG-CODE-002 | Test if the app is debuggable | [Android](Document/Testcases/0x01f_OMTG-CODE_Android.md#OMTG-CODE-002) iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.2 |
 | OMTG-CODE-003 | Test for debugging symbols |  [Android](Document/Testcases/0x01f_OMTG-CODE_Android.md#OMTG-CODE-003) iOS | [Code](Document/0x12-V7-Code_quality_and_build_setting_requirements.md) V7.3 |
@@ -66,4 +65,3 @@ The full list of mobile app security tests in the MSTG. Detailed how-tos will be
 | OMTG-RARE-012| Test device binding |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.12 |
 | OMTG-RARE-013 | Test advanced emulator detection |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.13 |
 | OMTG-RARE-014 | Test advanced obfuscation |  Android iOS | [Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md) V9.14 - V9.15 |
-

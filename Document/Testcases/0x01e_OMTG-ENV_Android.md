@@ -337,55 +337,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-008"></a>OMTG-ENV-008: Test for limited JavaScript usage in WebViews
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-
-##### OWASP MASVS
-
-- V6.8: "If JavaScript is required in a WebView, the WebView is restricted to a specific URL, and no unfiltered user input is rendered in the WebView."
-
-##### CWE
-
-- CWE-XXX - Title
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-
-##### Tools
-
-* Tool - Link
-
-
-### <a name="OMTG-ENV-009"></a>OMTG-ENV-009: Test for user supplied resources in WebViews
+### <a name="OMTG-ENV-008"></a>OMTG-ENV-008: Test for user supplied resources in WebViews
 
 #### Overview
 
@@ -433,56 +385,7 @@
 * Tool - Link
 
 
-
-### <a name="OMTG-ENV-009"></a>OMTG-ENV-009: Test for user supplied resources in WebViews
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-
-##### OWASP MASVS
-
-- V6.9: "The app does not load user-supplied local resources into WebViews."
-
-##### CWE
-
-- CWE-XXX - Title
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-
-##### Tools
-
-* Tool - Link
-
-
-### <a name="OMTG-ENV-010"></a>OMTG-ENV-010: Test for exposed Java Objects in WebViews
+### <a name="OMTG-ENV-009"></a>OMTG-ENV-009: Test for exposed Java Objects in WebViews
 
 #### Overview
 
@@ -532,7 +435,7 @@
 
 
 
-### <a name="OMTG-ENV-011"></a>OMTG-ENV-011: Test for updating of Security Provider
+### <a name="OMTG-ENV-010"></a>OMTG-ENV-010: Test for updating of Security Provider
 
 #### Overview
 
@@ -581,7 +484,7 @@ Check <sup>[1]</sup>
 * Tool - Link
 
 
-## <a name="OMTG-ENV-012"></a>OMTG-ENV-012: Test for installation source
+## <a name="OMTG-ENV-011"></a>OMTG-ENV-011: Test for installation source
 
 #### Overview
 
@@ -630,7 +533,7 @@ Check <sup>[1]</sup>
 
 
 
-## <a name="OMTG-ENV-013"></a>OMTG-ENV-013: Test for Root detection
+## <a name="OMTG-ENV-012"></a>OMTG-ENV-012: Test for Root detection
 
 #### Overview
 

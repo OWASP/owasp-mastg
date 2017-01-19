@@ -989,40 +989,7 @@ Tools:
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test If Local Storage Is Wiped upon Remote Locking
-
-#### Overview
-
-Many Apps process and store sensitive data ranging from financial over health information to personal details about the owner. Loosing a device could therefore result in a dramatic damage of the owners privacy. In many enterprises so called Mobile Device Management (MDM) systems are available that enforce a policy on the device to ensure a certain degree of security maturity, that can also involve the possibility of wiping a lost or stolen device.
-
-Private devices are unlikely to be managed in this manner, but high risk Apps should offer exactly such a solution to wipe the App data remotely in case the user want's it.
-
-#### Static Analysis
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-##### OWASP-MASVS
-
-- V2-12: "If a remote locking mechanism exists, local storage is wiped upon locking."
-
-##### OWASP Mobile Top 10
-
-##### CWE
-- CWE: [Link to CWE issue]
-
-- [link to relevant how-tos, papers, etc.]
-
-### <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
+### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Enforcement of Device-Access-Security Policy
 
 #### Overview
 
