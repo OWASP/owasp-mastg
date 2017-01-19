@@ -17,7 +17,9 @@ Copyright © 2016 The OWASP Foundation. This document is released under the Crea
 
 | Project Leaders | Core Authors | Contributors | Reviewers |
 | --- | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Gerhard Wagner, Abdessamad Temmar, Jin Kung Ong, Francesco Stillavato, Pawel Rzepa, Alexander Antukh | Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
+| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa | Gerhard Wagner, Jin Kung Ong, Alexander Antukh, Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
+
+Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [author's guide](../authors_guide.md#credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks.
 
 ## Revision History
 
