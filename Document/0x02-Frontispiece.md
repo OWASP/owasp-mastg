@@ -14,6 +14,7 @@ http://owasp.herokuapp.com/
 Copyright © 2016 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
 
 <a name="acknowledgements"></a>
+
 | Project Leaders | Core Authors | Contributors | Reviewers |
 | --- | --- | --- | --- |
 | Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Gerhard Wagner, Abdessamad Temmar, Jin Kung Ong, Francesco Stillavato, Pawel Rzepa, Alexander Antukh | Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
