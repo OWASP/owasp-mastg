@@ -2,6 +2,10 @@
 
 (... TODO ...)
 
+Android Security Mechanisms:
+
+-- TODO :Sandbox (Dalvik / ART according to API level), IPC mechanism and Reference monitor, Binder, Discretionary - Mandatory Access Control / UID - GID / Filesystem, Applicative Architecture of an application : Permissions & Manifest, Application Signing. May be a part of Static / Dynamic Analysis chapter : each security mechanism efficiency can be checked at a given phase. --
+
 Android is an open source platform that can be found nowadays on many devices:
 
 * Mobile Phones and Tablets
