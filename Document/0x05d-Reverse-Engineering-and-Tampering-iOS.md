@@ -220,27 +220,6 @@ sys.stdin.read()
 #### Statically Analyzing iOS Apps
 
 
-
-
-
-#### Dumping Decrypted Executables
-
-For iOS, distributed application packages are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application needs to be decrypted first.
-
-In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
-
-To use “dumpdecrypted”, connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
-
-~~~
-ssh root@<ip of idevice>
-iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
-~~~
-
-The decrypted binary is saved in the current working directory.
-
-
-
-
 #### Analyzing Swift Apps
 
 
