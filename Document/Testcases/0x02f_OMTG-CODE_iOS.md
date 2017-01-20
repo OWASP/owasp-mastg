@@ -50,22 +50,17 @@ These symbols can be saved either in "Stabs" format or the DWARF format. When us
 
 #### Static Analysis
 
-The symbol table can be inspected with the nm tool as follows:
+Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
 ~~~~
-$ nm -a TargetApp
-TargetApp (for architecture armv7):
-         U _ABAddressBookCopyArrayOfAllPeople
-         U _ABAddressBookCreateWithOptions
-         U _ABAddressBookGetAuthorizationStatus
-         U _ABAddressBookRequestAccessWithCompletion
-         U _ABMultiValueCopyValueAtIndex
-         U _ABMultiValueGetCount
-         U _ABMultiValueGetIndexForIdentifier
-(...)
-~~~~
+$ gobjdump --stabs --dwarf TargetApp
+In archive MyTargetApp:
 
-Stabs symbol entries are denoted with the character '-' [1].
+armv5te:     file format mach-o-arm
+
+
+aarch64:     file format mach-o-arm64
+~~~~
 
 #### Dynamic Analysis
 
