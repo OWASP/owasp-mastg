@@ -40,11 +40,27 @@ If the app is available on itunes, you are able to recover the ipa on MacOS with
 
 On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Stefan Esser's dumpdecrypted tool [1].
 
-Connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
+Download and compile dumpdecrypted as follows (requires XCode command line tools):
 
 ~~~
-ssh root@<ip of idevice>
-iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
+$ git clone https://github.com/stefanesser/dumpdecrypted
+$ cd dumpdecrypted
+$ make
+~~~
+
+This should create dumpdecrypted.dylib. Copy it to the /usr/lib directory on your device via SSH:
+
+~~~
+$ scp dumpdecrypted.dylib root@iphone:/usr/lib/
+~~~
+
+Then, connect to the device and run the main executable of the target app while setting the DYLD_INSERT_LIBRARIES environment variable.
+
+~~~
+$ ssh root@iphone
+iPhone:~ root# cd /usr/lib 
+iPhone:/usr/lib root#
+iPhone:/usr/lib root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib "/var/mobile/Containers/Bundle/Application/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE/Target.app/Target"
 ~~~
 
 The decrypted binary is saved in the current working directory.

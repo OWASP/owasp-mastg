@@ -45,25 +45,28 @@ Once you have deployed an iOS application, either through the App Store or as an
 #### Overview
 
 As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
-By default, Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable. This information is used to resolve references when linking dynamic libraries, and also makes it easier to keep track of the semantics of the code and debugging crashes. It can however be stripped from the release build, unless the goal is to release a dynamic library for public use.
 
-#### White-box Testing
+These symbols can be saved either in "Stabs" format or the DWARF format. When using the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. With the DWARF format, debugging symbols are stored in a special "__DWARF" segment within the the binary. DWARF debugging symbols can also be saved a separate debug-information file. In this test case, you verify that no debug symbols are contained in the release binary itself (either in the symbol table, ot the __DWARF segment).
 
-(TODO)
+#### Static Analysis
 
-#### Black-box Testing
-
-Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
+Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
 ~~~~
-berndt@osboxes:~/ $ objdump -t my_library.so
-my_library.so:     file format elf32-little
+$ gobjdump --stabs --dwarf TargetApp
+In archive MyTargetApp:
 
-SYMBOL TABLE:
-no symbols
+armv5te:     file format mach-o-arm
+
+
+aarch64:     file format mach-o-arm64
 ~~~~
 
-Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
+Gobjdump is part of binutils [1] and can be installed via Homebrew.
+
+#### Dynamic Analysis
+
+Not applicable.
 
 #### Remediation
 
@@ -71,7 +74,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+- [1] https://www.gnu.org/s/binutils/
 
 ### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
@@ -229,7 +232,7 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 * Stack smashing protection 
 
-Steps for enabling Stack smashing protection within an iOS application :
+Steps for enabling Stack smashing protection within an iOS application:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
 1. Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
