@@ -85,8 +85,18 @@ To sum up is two regular ways of running apps on a device:
 - [1] Apple's Crystal Prison and the Future of Open Platforms - https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms
 - [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
 
+### The App Sandbox
+
+In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releasees of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include [1]:
+
+- The app process is restricted to it's own directory(below /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism. 
+- The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable, preventing processes  from executing dynamically generated code. In combination with code signing and FairPlay, this places strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
+- Isolation from other running processes, even if they are owned by the same UID;
+- Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
+
 ### References
 
+- [1] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
 + [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
 + [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 + [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)
