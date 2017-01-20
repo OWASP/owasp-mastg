@@ -62,6 +62,8 @@ armv5te:     file format mach-o-arm
 aarch64:     file format mach-o-arm64
 ~~~~
 
+Gobjdump is part of binutils [1] and can be installed via Homebrew.
+
 #### Dynamic Analysis
 
 Not applicable.
@@ -72,7 +74,7 @@ Not applicable.
 
 #### References
 
-- [1] https://linux.die.net/man/1/nm
+- [1] https://www.gnu.org/s/binutils/
 
 ### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
