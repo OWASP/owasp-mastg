@@ -1,10 +1,11 @@
-## <a name="OMTG-NET-004"></a>OMTG-NET-004: Test SSL Pinning
+<a name="OMTG-NET-004"></a>
+### OMTG-NET-004: Test SSL Pinning
 
 #### Overview
 
 Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
 
-### White-box Testing
+#### White-box Testing
 
 The code presented below shows how it is possible to check if the certificate provided by the server reflects the certificate hard-coded  in the application. The method below implements the connection authentication tells the delegate that the connection will send a request for an authentication challenge.
 
@@ -28,15 +29,15 @@ else {
 }
 ```
 
-### Black-box Testing
+#### Black-box Testing
 
 Dynamic analysis can be done by following the same methodology used for the Android applications.
 
-### Remediation
+#### Remediation
 
 The SSL pinning process should be implemented as described on the static analysis section.
 
-### References
+#### References
 
 - Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 References

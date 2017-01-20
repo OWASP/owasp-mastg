@@ -1,7 +1,7 @@
 ## Android
 
-
-### <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Sensitive Data in Local Storage
+<a name="OMTG-DATAST-001"></a>
+### OMTG-DATAST-001: Test for Sensitive Data in Local Storage
 
 #### Overview
 
@@ -250,8 +250,8 @@ The following is a list of best practice used for secure storage of certificates
 * [Lint][a9965341]
 * [SQLite3][3b9b0b6f]
 
-
-### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
+<a name="OMTG-DATAST-002"></a>
+### OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
@@ -338,8 +338,8 @@ public static int wtf(...);
 * CWE-532: Information Exposure Through Log Files
 * CWE-534: Information Exposure Through Debug Log Files
 
-
-### <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
+<a name="OMTG-DATAST-003"></a>
+### OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
 #### Overview
 
@@ -415,8 +415,8 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 ##### CWE
 - CWE-200: Information Exposure [https://cwe.mitre.org/data/definitions/200.html]
 
-
-### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Whether Sensitive Data is Sent to Third Parties
+<a name="OMTG-DATAST-004"></a>
+### OMTG-DATAST-004: Test Whether Sensitive Data is Sent to Third Parties
 
 #### Overview
 
@@ -464,8 +464,8 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 ##### CWE
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
-
-### <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
+<a name="OMTG-DATAST-005"></a>
+### OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
 
 #### Overview
 
@@ -509,8 +509,8 @@ android:inputType="textNoSuggestions"
 ##### CWE
 - CWE-524: Information Exposure Through Caching
 
-
-### <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
+<a name="OMTG-DATAST-006"></a>
+### OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 
 #### Overview
 
@@ -573,7 +573,8 @@ android:longClickable="false"
 ##### CWE
 - CWE: [Link to CWE issue]
 
-### <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
+<a name="OMTG-DATAST-007"></a>
+### OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -723,8 +724,8 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-
-### <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots and the Screen
+<a name="OMTG-DATAST-008"></a>
+### OMTG-DATAST-008: Test for Sensitive Data in Screenshots and the Screen
 
 #### Overview
 
@@ -745,7 +746,7 @@ If not, the application is probably vulnerable to screen capturing.
 
 **(..TODO..) - Masking of sensitive data in input fields, how can it be implemented in Android**
 
-### Dynamic Analysis
+#### Dynamic Analysis
 
 To analyse if the application leaks any sensitive information, run the application on a device and try to acquire a screenshot of the activity or activities you want to test.
 
@@ -789,8 +790,8 @@ Note that this would automatically prevent the user from taking a manual screens
 ##### CWE
 - [CWE-200: Information Exposure](https://cwe.mitre.org/data/definitions/200.html)
 
-
-### <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
+<a name="OMTG-DATAST-009"></a>
+### OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 #### Overview
 
@@ -857,8 +858,8 @@ To prevent backing up the app's data, set the `android:allowBackup` attribute mu
 ##### CWE
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
-
-### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for sensitive information in screenshots when App is backgrounded
+<a name="OMTG-DATAST-010"></a>
+### OMTG-DATAST-010: Test for sensitive information in screenshots when App is backgrounded
 
 #### Overview
 
@@ -915,8 +916,8 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 ##### CWE
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
-
-### <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data in Memory
+<a name="OMTG-DATAST-011"></a>
+### OMTG-DATAST-011: Test for Sensitive Data in Memory
 
 #### Overview
 
@@ -988,8 +989,8 @@ Tools:
 ##### CWE
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
-
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Enforcement of Device-Access-Security Policy
+<a name="OMTG-DATAST-012"></a>
+### OMTG-DATAST-012: Test Enforcement of Device-Access-Security Policy
 
 #### Overview
 

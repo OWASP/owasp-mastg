@@ -484,7 +484,7 @@ Check <sup>[1]</sup>
 * Tool - Link
 
 
-## <a name="OMTG-ENV-011"></a>OMTG-ENV-011: Test for installation source
+### <a name="OMTG-ENV-011"></a>OMTG-ENV-011: Test for installation source
 
 #### Overview
 
@@ -533,7 +533,7 @@ Check <sup>[1]</sup>
 
 
 
-## <a name="OMTG-ENV-012"></a>OMTG-ENV-012: Test for Root detection
+### <a name="OMTG-ENV-012"></a>OMTG-ENV-012: Test for Root detection
 
 #### Overview
 

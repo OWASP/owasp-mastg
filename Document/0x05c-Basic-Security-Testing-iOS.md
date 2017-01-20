@@ -1,4 +1,4 @@
-## iOS
+## Basic Security Testing on iOS
 
 ### Static Analysis
 
@@ -58,7 +58,7 @@ Then, connect to the device and run the main executable of the target app while 
 
 ~~~
 $ ssh root@iphone
-iPhone:~ root# cd /usr/lib 
+iPhone:~ root# cd /usr/lib
 iPhone:/usr/lib root#
 iPhone:/usr/lib root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib "/var/mobile/Containers/Bundle/Application/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE/Target.app/Target"
 ~~~

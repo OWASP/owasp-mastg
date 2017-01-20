@@ -1,5 +1,7 @@
-# Testing Tools
-To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behaviour of running Apps and other test cases and automate them. 
+# Appendix
+
+## Testing Tools
+To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behaviour of running Apps and other test cases and automate them.
 
 - [Mobile Application Security Testing Distributions](#mobile-application-security-testing-distributions)
 - [All-in-one Mobile Security Frameworks](#all-in-one-mobile-security-frameworks)
@@ -15,11 +17,11 @@ To perform security testing different tools are available in order to be able to
  - [Tools for Network Interception](#tools-for-network-interception)
  - [IDE](#ide)
 
-#### Mobile Application Security Testing Distributions
+### Mobile Application Security Testing Distributions
 * [Appie](https://manifestsecurity.com/appie) - A portable software package for Android Pentesting and an awesome alternative to existing Virtual machines.
 * [Android Tamer](https://androidtamer.com/) - Android Tamer is a Virtual / Live Platform for Android Security professionals.
 * [AppUse](https://appsec-labs.com/AppUse/) - AppUse is a VM (Virtual Machine) developed by AppSec Labs.
-* [Androl4b](https://github.com/sh4hin/Androl4b) - A Virtual Machine For Assessing Android applications, Reverse Engineering and Malware Analysis 
+* [Androl4b](https://github.com/sh4hin/Androl4b) - A Virtual Machine For Assessing Android applications, Reverse Engineering and Malware Analysis
 * [Mobisec](http://sourceforge.net/projects/mobisec/) - Mobile security testing live environment.
 * [Santoku](https://santoku-linux.com/) - Santoku is an OS and can be run outside a VM as a standalone operating system.
 * [Vezir Project](https://github.com/oguzhantopgul/Vezir-Project) - Mobile Application Pentesting and Malware Analysis Environment.
@@ -42,10 +44,10 @@ To perform security testing different tools are available in order to be able to
 * [Qark](https://github.com/linkedin/qark) - This tool is designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs.
 * [SUPER](https://github.com/SUPERAndroidAnalyzer/super) - SUPER is a command-line application that can be used in Windows, MacOS X and Linux, that analyzes .apk files in search for vulnerabilities. It does this by decompressing APKs and applying a series of rules to detect those vulnerabilities.
 * [AndroBugs](https://github.com/AndroBugs/AndroBugs_Framework) - AndroBugs Framework is an efficient Android vulnerability scanner that helps developers or hackers find potential security vulnerabilities in Android applications. No need to install on Windows.
-* [Simplify](https://github.com/CalebFenton/simplify) - A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file. 
+* [Simplify](https://github.com/CalebFenton/simplify) - A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file.
 * [ClassNameDeobfuscator](https://github.com/HamiltonianCycle/ClassNameDeobfuscator) - Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines.
-* [Android backup extractor](https://github.com/nelenkov/android-backup-extractor) - Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP. 
- 
+* [Android backup extractor](https://github.com/nelenkov/android-backup-extractor) - Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP.
+
 #### Dynamic and Runtime Analysis
 * [Cydia Substrate](http://www.cydiasubstrate.com/) - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
 * [Xposed Framework](http://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053) - Xposed framework enables you to modify the system or application aspect and behaviour at runtime, without modifying any Android application package(APK) or re-flashing.
@@ -56,7 +58,7 @@ To perform security testing different tools are available in order to be able to
 * [AndBug](https://github.com/swdunlop/AndBug) - AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers.
 * [Cydia Substrate: Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
 * [Drozer](https://www.mwrinfosecurity.com/products/drozer/) - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
- 
+
 #### Bypassing Root Detection and SSL Pinning
 * [Xposed Module: Just Trust Me](https://github.com/Fuzion24/JustTrustMe) - Xposed Module to bypass SSL certificate pinning.
 * [Xposed Module: SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed) - Android Xposed Module to bypass SSL certificate validation (Certificate Pinning).
@@ -74,7 +76,7 @@ To perform security testing different tools are available in order to be able to
 
 #### Reverse Engineering and Static Analysis
 * [otool](http://www.unix.com/man-page/osx/1/otool/) - The otool command displays specified parts of object files or libraries.
-* [Clutch](http://cydia.radare.org/) - Decrypted the application and dump specified bundleID into binary or .ipa file. 
+* [Clutch](http://cydia.radare.org/) - Decrypted the application and dump specified bundleID into binary or .ipa file.
 * [Dumpdecrypted] (https://github.com/stefanesser/dumpdecrypted) - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 * [class-dump](http://stevenygard.com/projects/class-dump/) - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
 * [Weak Classdump] (https://github.com/limneos/weak_classdump) - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
@@ -82,7 +84,7 @@ To perform security testing different tools are available in order to be able to
 * [HopperApp](http://hopperapp.com/) - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
 * [Radare2](http://www.radare.org/) - Radare2 is a unix-like reverse engineering framework and commandline tools.
 * [iRET](https://www.veracode.com/iret-ios-reverse-engineering-toolkit) - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
- 
+
 #### Dynamic and Runtime Analysis
 * [cycript](http://www.cycript.org) - Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
 * [iNalyzer](https://appsec-labs.com/cydia/) - AppSec Labs iNalyzer is a framework for manipulating iOS applications, tampering with parameters and method.
@@ -101,18 +103,16 @@ To perform security testing different tools are available in order to be able to
 * [Xcon](http://apt.modmyi.com) - A tool for bypassing Jailbreak detection.
 * [tsProtector] (http://cydia.saurik.com/package/kr.typostudio.tsprotector8/) - Another tool for bypassing Jailbreak detection.
 
-
-
-## Tools for Network Interception 
+### Tools for Network Interception
 * [Tcpdump](http://www.androidtcpdump.com) - A command line packet capture utility.
 * [Wireshark](https://www.wireshark.org/download.html) - An open-source packet analyzer.
 * [Canape](http://www.contextis.com/services/research/canape/) - A network testing tool for arbitrary protocols.
 * [Mallory](https://intrepidusgroup.com/insight/mallory/) - A Man in The Middle Tool (MiTM) that use to monitor and manipulate traffic on mobile devices and applications.
-* [Burp Suite](https://portswigger.net/burp/download.html) - Burp Suite is an integrated platform for performing security testing of applications. 
+* [Burp Suite](https://portswigger.net/burp/download.html) - Burp Suite is an integrated platform for performing security testing of applications.
 * [Charles Proxy](http://www.charlesproxy.com) - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
 * [OWASP ZAP](https://github.com/zaproxy/zaproxy) - The OWASP Zed Attack Proxy (ZAP) is a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
 * [Fiddler](http://www.telerik.com/fiddler) - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
 
-## IDE 
+### IDEs
 * [IntelliJ](https://www.jetbrains.com/idea/download/) - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
 * [Eclipse](https://eclipse.org/) - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.

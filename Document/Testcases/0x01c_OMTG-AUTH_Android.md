@@ -1,4 +1,5 @@
-### <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
+<a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>
+### OMTG-[IDENTIFIER]:[Name]
 
 #### Overview
 
