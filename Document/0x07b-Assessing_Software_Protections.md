@@ -1,21 +1,23 @@
 # Assessing the Quality of Software Protections
 
-
 *TODO...  Goal: Define repeatable processes for assessing the effectiveness of software protections. For now this is just a copy/paste from some old writeups. Needs to be synced with [OWASP RE Prevention](https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project), [Obfucation Metrics](https://github.com/b-mueller/obfuscation-metrics), [MASVS Reverse Engineering Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md).*
+
+In prior chapters, you have learned basic reverse engineering techniques on both Android and iOS, and you've had a first glimpse at of the more advanced methods. We've shown examples for bypassing anti-tampering and de-obfuscating code. These skills are not only useful for regular security testing - with enough know-how and experience, you'll be able to give an assessment of how effective a particular set of anti-reversing measures is in practice. This process is called *resiliency testing*.
 
 Whether we’re talking about malware, banking apps, or mobile games: They all use anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that a given set of defenses (as a whole) is "good enough" to provide the desired level of protection? As it turns out, this is not an easy question to answer.
 
 The first problem is that there is no one-size-fits-all. Client-side tampering protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing server-side controls in the client. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. To work around this issue, we made modeling of client-side threats part of the requirements in MASVS-R: If one uses obfuscation and anti-tampering controls at all, they should be sure that they're doing it right, and without compromising the overall security architecture.
 
-Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection have been proven (in the scientific sense) to be effective. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research, throw in some practical experience and common sense, and base our standard on that.
+Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection is backed by rigorous proof. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research and a lot of practical experience.
 
-In this chapter, we outline a process called *resiliency testing*. Resiliency testing is analogous and complementary to security testing, with a few important differences. (... TODO ...)
+## The Resiliency Testing Process
+
+Resiliency testing usually follows the black-box approach.
 
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
 ## Testing Software Protection Schemes
-
 
 ### The Attacker's View
 
@@ -23,20 +25,19 @@ In this chapter, we outline a process called *resiliency testing*. Resiliency te
 
 Attack Steps, from: https://www.owasp.org/index.php/Architectural_Principles_That_Prevent_Code_Modification_or_Reverse_Engineering
 
-
 ### Software Protections Model
 
-On the highest level, we classify reverse engineering defenses into two categories: Functional defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
+On the highest level, we classify reverse engineering defenses into two categories: Tampering defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
 
-#### 1. Functional Defenses
+#### 1. Tampering Defenses
 
-*Functional defenses* are program functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
+*Tampering Defenses* are functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
 
 1. Preventive: Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may an operating system API to prevent debuggers from attaching to the process.
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
 
-We define five defensive categories, each of which corresponds to a process used by reverse engineers (Figure 2).
+Tampering defenses aim to hinder multiple processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
 
 ![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
 
@@ -85,7 +86,6 @@ Some types of obfuscation that fall into this category are:
 - Variable splitting
 - Virtualization
 - White-box cryptography
-
 
 ### Assessing the Threat Model and Architecture
 
