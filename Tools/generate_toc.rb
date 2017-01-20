@@ -3,7 +3,21 @@
 
 require "redcarpet"
 
-markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML_TOC, fenced_code_blocks: true)
+class CustomRender < Redcarpet::Render::HTML_TOC
+
+  def header(title, level)
+    case level
+    when 1
+      "<h1 id=\"firstheading\" class=\"firstheading\"><span dir=\"auto\">#{title}</h1>\n</span>"
+    when 2
+      "<h2>#{title}</h2>"
+    when 3
+      "<p>#{title}</p>\n"
+    end
+  end
+end
+
+markdown = Redcarpet::Markdown.new(CustomRender, fenced_code_blocks: true)
 
 Dir.foreach('../Document') do |fn|
   if fn =~ /\.md$/
@@ -20,4 +34,3 @@ Dir.foreach('../Document/Testcases') do |fn|
                 puts markdown.render(contents)
   end
 end
-
