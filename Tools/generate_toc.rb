@@ -2,25 +2,45 @@
 # Generate HTML TOC for the OWASP MSTG
 
 require "redcarpet"
+require "htmlentities"
 
 class CustomRender < Redcarpet::Render::HTML_TOC
 
   def header(title, level)
+
+    title = HTMLEntities.new.encode(title) # Securitay!
+    anchor = title.downcase.gsub!(' ','-')
+
     case level
     when 1
-      "<h1 id=\"firstheading\" class=\"firstheading\"><span dir=\"auto\">#{title}</h1>\n</span>"
+      "<a href=\"Document/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
     when 2
-      "<h2>#{title}</h2>"
+      "<a href=\"Document/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
     when 3
-      "<p>#{title}</p>\n"
+      "<p><a href=\"Document/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
     end
   end
 end
 
 markdown = Redcarpet::Markdown.new(CustomRender, fenced_code_blocks: true)
 
+puts '''
+<html>
+<head>
+<style>
+
+body { font-family: Arial, \'Helvetica Neue\', Helvetica, sans-serif; }
+
+p { font-size: 1.1em; }
+
+</style>
+</head>
+<body>
+'''
+
 Dir.foreach('../Document') do |fn|
   if fn =~ /\.md$/
+    $curfile = fn
     file = File.open("../Document/#{fn}")
                 contents = file.read
                 puts markdown.render(contents)
@@ -34,3 +54,5 @@ Dir.foreach('../Document/Testcases') do |fn|
                 puts markdown.render(contents)
   end
 end
+
+puts "</body>\n"
