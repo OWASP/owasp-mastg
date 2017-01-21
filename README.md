@@ -4,6 +4,10 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Table of Contents
 
+Use the [automatically generated document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
+
+## High-Level Structure
+
 The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [detailed list of security test cases](all_tests.md). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklist/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
 
 ### Introductionary
@@ -26,7 +30,7 @@ The following lists contains the individual sections of the MSTG, along with the
     * [Basic Security Testing](Document/0x05c-Basic-Security-Testing-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
     * [Tampering and Reverse Engineering](Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
 
-### Detailed Howtos -> [Full list](all_tests.md)
+### Detailed Howtos
 
   * Android
     * [Testing Data Storage](Document/Testcases/0x01a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
