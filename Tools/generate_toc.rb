@@ -13,11 +13,11 @@ class CustomRender < Redcarpet::Render::HTML_TOC
 
     case level
     when 1
-      "<a href=\"Document/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
+      "<a href=\"../Document/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
     when 2
-      "<a href=\"Document/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
+      "<a href=\"../Document/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
     when 3
-      "<p><a href=\"Document/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
+      "<p><a href=\"../Document/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
     end
   end
 end
