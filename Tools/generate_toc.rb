@@ -9,7 +9,7 @@ class DocumentRender < Redcarpet::Render::HTML_TOC
   def header(title, level)
 
     title = HTMLEntities.new.encode(title) # Securitay!
-    anchor = title.downcase.gsub!(' ','-')
+    anchor = title.downcase.gsub(' ','-').gsub(/[^0-9a-z\-]/i, '')
 
     case level
     when 1
@@ -27,7 +27,7 @@ class TestcaseRender < Redcarpet::Render::HTML_TOC
   def header(title, level)
 
     title = HTMLEntities.new.encode(title) # Securitay!
-    anchor = title.downcase.gsub!(' ','-')
+    anchor = title.downcase.gsub(' ','-').gsub(/[^0-9a-z\-]/i, '')
 
     case level
     when 1
@@ -40,7 +40,19 @@ class TestcaseRender < Redcarpet::Render::HTML_TOC
   end
 end
 
+def render_testcases()
+  markdown = Redcarpet::Markdown.new(TestcaseRender, fenced_code_blocks: true)
 
+  Dir.foreach('../Document/Testcases') do |fn|
+    if fn =~ /\.md$/
+      $curfile = fn    
+      file = File.open("../Document/Testcases/#{fn}")
+                  contents = file.read
+                  puts markdown.render(contents)
+    end
+  end
+
+end
 
 
 puts '''
@@ -60,6 +72,11 @@ p { font-size: 1.1em; }
 markdown = Redcarpet::Markdown.new(DocumentRender, fenced_code_blocks: true)
 
 Dir.foreach('../Document') do |fn|
+
+  if fn =~ /0x07a/ # Render test cases after chapter 6
+    render_testcases()
+  end
+
   if fn =~ /\.md$/
     $curfile = fn
     file = File.open("../Document/#{fn}")
@@ -68,14 +85,6 @@ Dir.foreach('../Document') do |fn|
   end
 end
 
-markdown = Redcarpet::Markdown.new(TestcaseRender, fenced_code_blocks: true)
 
-Dir.foreach('../Document/Testcases') do |fn|
-  if fn =~ /\.md$/
-    file = File.open("../Document/Testcases/#{fn}")
-                contents = file.read
-                puts markdown.render(contents)
-  end
-end
 
 puts "</body>\n"
