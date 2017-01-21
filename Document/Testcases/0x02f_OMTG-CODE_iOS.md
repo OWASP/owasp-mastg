@@ -1,4 +1,4 @@
-### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Properly Signed
+### OMTG-CODE-001: Verify that the App is Properly Signed
 
 #### Overview
 
@@ -16,7 +16,7 @@
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
-### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test whether the App is Debuggable
+### OMTG-CODE-002: Test whether the App is Debuggable
 
 #### Overview
 
@@ -40,7 +40,7 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 (TODO)
 
-### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
+### OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
 
 #### Overview
 
@@ -76,7 +76,7 @@ Not applicable.
 
 - [1] https://www.gnu.org/s/binutils/
 
-### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
+### OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
 #### Overview
 
@@ -94,7 +94,7 @@ Not applicable.
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-005"></a>OMTG-CODE-005: Test Exception Handling
+### OMTG-CODE-005: Test Exception Handling
 
 #### Overview
 
@@ -105,7 +105,7 @@ Not applicable.
 Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
-* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
+* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user.
 * C3
 
 #### Black-box Testing
@@ -120,7 +120,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-006"></a>OMTG-CODE-006: Verify that the App Fails Securely
+### OMTG-CODE-006: Verify that the App Fails Securely
 
 #### Overview
 
@@ -140,29 +140,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-007"></a>OMTG-CODE-007: Test Input Validation
-
-#### Overview
-
-(Give an overview about the functionality and it's potential weaknesses)
-
-#### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-- [link to relevant how-tos, papers, etc.]
-
-### <a name="OMTG-CODE-008"></a>OMTG-CODE-008: Test Memory Management
+### OMTG-CODE-007: Test Input Validation
 
 #### Overview
 
@@ -184,7 +162,29 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-009"></a>OMTG-CODE-009: Test Compiler Settings
+### OMTG-CODE-008: Test Memory Management
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
+#### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+#### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+#### References
+
+- [link to relevant how-tos, papers, etc.]
+
+### OMTG-CODE-009: Test Compiler Settings
 
 #### Overview
 
@@ -212,7 +212,7 @@ If the application was compiled with the stack smashing protection two undefined
 $ otool -Iv <app name> | grep PIE
 ```
 
-If the above command emit no output then the PIE protection isn't enabled. 
+If the above command emit no output then the PIE protection isn't enabled.
 
 * Check the ACR protection is enabled :
 
@@ -230,7 +230,7 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 #### Remediation
 
-* Stack smashing protection 
+* Stack smashing protection
 
 Steps for enabling Stack smashing protection within an iOS application:
 
@@ -246,7 +246,7 @@ Steps for building an iOS application as PIE :
 1. Verify that "Generate Position-Dependent Code" is set at its default value of NO.
 1. Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
 
-* ARC protection 
+* ARC protection
 
 Steps for enabling ACR protection within an iOS application :
 
@@ -258,6 +258,6 @@ Steps for enabling ACR protection within an iOS application :
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
 
-### <a name="OMTG-CODE-010"></a>OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
+### OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
 
 Not applicable on iOS.

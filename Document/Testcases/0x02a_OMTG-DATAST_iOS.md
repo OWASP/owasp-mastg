@@ -1,6 +1,5 @@
 ## iOS
 
-<a name="OMTG-DATAST-001-1"></a>
 ### OMTG-DATAST-001-1: Test Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
 
 #### Overview
@@ -42,7 +41,6 @@ The following is a list of best practice used for secure storage of certificates
 * [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
 * [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 
-<a name="OMTG-DATAST-001-2"></a>
 ### OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 #### Overview
@@ -152,7 +150,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 (... TODO ...)
 
-<a name="OMTG-DATAST-003"></a>
 ### OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
 #### Overview
@@ -167,7 +164,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-<a name="OMTG-DATAST-004"></a>
 ### OMTG-DATAST-004: Test If Sensitive Data Is Sent to Third Parties
 
 #### Overview
@@ -182,7 +178,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-<a name="OMTG-DATAST-005"></a>
 ### OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
 
 #### Overview
@@ -223,7 +218,6 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 - [link to relevant how-tos, papers, etc.]
 
 
-<a name="OMTG-DATAST-006"></a>
 ### OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 
 #### Overview
@@ -287,7 +281,6 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-<a name="OMTG-DATAST-007"></a>
 ### OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
@@ -302,7 +295,6 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
- <a name="OMTG-DATAST-008"></a>
 ### OMTG-DATAST-008: Test for Sensitive Data in Screenshots
 
 ##### Overview
@@ -317,7 +309,6 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-<a name="OMTG-DATAST-009"></a>
 ### OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 #### Overview
@@ -332,7 +323,6 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-<a name="OMTG-DATAST-010"></a>
 ### OMTG-DATAST-010: Test If Memory Is Cleared When the App Is Backgrounded
 
 #### Overview

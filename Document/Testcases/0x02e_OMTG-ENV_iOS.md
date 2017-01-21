@@ -1,4 +1,4 @@
-### <a name="OMTG-ENV-009"></a>OMTG-ENV-009 Test Basic Jailbreak Detection
+### OMTG-ENV-009 Test Basic Jailbreak Detection
 
 #### Overview
 

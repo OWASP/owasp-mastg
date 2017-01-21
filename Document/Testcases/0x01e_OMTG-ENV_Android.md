@@ -1,4 +1,4 @@
-### <a name="OMTG-ENV-001"></a>OMTG-ENV-001: Test of App permissions
+### OMTG-ENV-001: Test of App permissions
 
 #### Overview
 
@@ -46,7 +46,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-002"></a>OMTG-ENV-002: Test validation of external input
+### OMTG-ENV-002: Test validation of external input
 
 #### Overview
 
@@ -94,7 +94,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-003"></a>OMTG-ENV-003: Test input sanitization
+### OMTG-ENV-003: Test input sanitization
 
 #### Overview
 
@@ -143,7 +143,7 @@
 
 
 
-### <a name="OMTG-ENV-004"></a>OMTG-ENV-004: Test usage of custom URL schemes
+### OMTG-ENV-004: Test usage of custom URL schemes
 
 #### Overview
 
@@ -191,8 +191,7 @@
 * Tool - Link
 
 
-
-### <a name="OMTG-ENV-005"></a>OMTG-ENV-005: Test for export of sensitive functionality
+### OMTG-ENV-005: Test for export of sensitive functionality
 
 #### Overview
 
@@ -241,7 +240,7 @@
 
 
 
-### <a name="OMTG-ENV-006"></a>OMTG-ENV-006: Test for usage of JavaScript in WebViews
+### OMTG-ENV-006: Test for usage of JavaScript in WebViews
 
 #### Overview
 
@@ -289,7 +288,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-007"></a>OMTG-ENV-007: Test for usage of file access in WebViews
+### OMTG-ENV-007: Test for usage of file access in WebViews
 
 #### Overview
 
@@ -337,7 +336,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-008"></a>OMTG-ENV-008: Test for user supplied resources in WebViews
+### OMTG-ENV-008: Test for user supplied resources in WebViews
 
 #### Overview
 
@@ -385,7 +384,7 @@
 * Tool - Link
 
 
-### <a name="OMTG-ENV-009"></a>OMTG-ENV-009: Test for exposed Java Objects in WebViews
+### OMTG-ENV-009: Test for exposed Java Objects in WebViews
 
 #### Overview
 
@@ -435,7 +434,7 @@
 
 
 
-### <a name="OMTG-ENV-010"></a>OMTG-ENV-010: Test for updating of Security Provider
+### OMTG-ENV-010: Test for updating of Security Provider
 
 #### Overview
 
@@ -484,7 +483,7 @@ Check <sup>[1]</sup>
 * Tool - Link
 
 
-### <a name="OMTG-ENV-011"></a>OMTG-ENV-011: Test for installation source
+### OMTG-ENV-011: Test for installation source
 
 #### Overview
 
@@ -533,7 +532,7 @@ Check <sup>[1]</sup>
 
 
 
-### <a name="OMTG-ENV-012"></a>OMTG-ENV-012: Test for Root detection
+### OMTG-ENV-012: Test for Root detection
 
 #### Overview
 

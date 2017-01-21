@@ -1,4 +1,4 @@
-### <a name="OMTG-CRYPTO-001"></a>OMTG-CRYPTO-001: Test Key Management Process
+### OMTG-CRYPTO-001: Test Key Management Process
 
 #### Overview
 
@@ -96,7 +96,7 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 
 
 
-### <a name="OMTG-CRYPTO-002"></a>OMTG-CRYPTO-002: Test for Use of Custom Encryption Protocols
+### OMTG-CRYPTO-002: Test for Use of Custom Encryption Protocols
 
 #### Overview
 
@@ -126,7 +126,7 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 
 
-### <a name="OMTG-CRYPTO-003"></a>OMTG-CRYPTO-003: Test for Use of Insecure and/or Deprecated Algorithms
+### OMTG-CRYPTO-003: Test for Use of Insecure and/or Deprecated Algorithms
 
 #### Overview
 
@@ -180,7 +180,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
 
 
-### <a name="OMTG-CRYPTO-004"></a>OMTG-CRYPTO-004: Verify that random values are generated using a sufficiently secure random number generator
+### OMTG-CRYPTO-004: Verify that random values are generated using a sufficiently secure random number generator
 
 #### Overview
 
@@ -194,7 +194,7 @@ Sample weak random generation code:
 ```
 import java.util.Random;
 // ...
- 
+
 Random number = new Random(123L);
 //...
 for (int i = 0; i < 20; i++) {
@@ -220,7 +220,7 @@ Sample secure random generation:
 import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 // ...
- 
+
 public static void main (String args[]) {
   SecureRandom number = new SecureRandom();
   // Generate 20 integers 0..20

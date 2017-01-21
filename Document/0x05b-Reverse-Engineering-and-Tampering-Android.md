@@ -760,7 +760,7 @@ Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all userm
 
 File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [x]
 
-### <a name="binary_analysis"></a>Automating Binary Analysis Tasks
+### Automating Binary Analysis Tasks
 
 Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 

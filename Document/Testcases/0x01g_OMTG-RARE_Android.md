@@ -1,10 +1,10 @@
-### <a name="OMTG-RARE-004"></a>OMTG-RARE-004: Test Debugging Defenses
+### OMTG-RARE-004: Test Debugging Defenses
 
 #### Overview
 
-Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more. 
+Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more.
 
-(...TODO...) 
+(...TODO...)
 
 The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
 
