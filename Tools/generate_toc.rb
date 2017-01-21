@@ -4,7 +4,7 @@
 require "redcarpet"
 require "htmlentities"
 
-class CustomRender < Redcarpet::Render::HTML_TOC
+class DocumentRender < Redcarpet::Render::HTML_TOC
 
   def header(title, level)
 
@@ -13,16 +13,35 @@ class CustomRender < Redcarpet::Render::HTML_TOC
 
     case level
     when 1
-      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master//Document/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
+      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
     when 2
-      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master//Document/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
+      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
     when 3
-      "<p><a href=\"https://github.com/OWASP/owasp-mstg/blob/master//Document/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
+      "<p><a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
     end
   end
 end
 
-markdown = Redcarpet::Markdown.new(CustomRender, fenced_code_blocks: true)
+class TestcaseRender < Redcarpet::Render::HTML_TOC
+
+  def header(title, level)
+
+    title = HTMLEntities.new.encode(title) # Securitay!
+    anchor = title.downcase.gsub!(' ','-')
+
+    case level
+    when 1
+      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/#{$curfile}\##{anchor}\"><h1>#{title}</h1></a>\n"
+    when 2
+      "<a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/#{$curfile}\##{anchor}\"><h2>#{title}</h2></a>\n"
+    when 3
+      "<p><a href=\"https://github.com/OWASP/owasp-mstg/blob/master/Document/Testcases/#{$curfile}\##{anchor}\">#{title}</a>\</p>\n"
+    end
+  end
+end
+
+
+
 
 puts '''
 <html>
@@ -38,6 +57,8 @@ p { font-size: 1.1em; }
 <body>
 '''
 
+markdown = Redcarpet::Markdown.new(DocumentRender, fenced_code_blocks: true)
+
 Dir.foreach('../Document') do |fn|
   if fn =~ /\.md$/
     $curfile = fn
@@ -46,6 +67,8 @@ Dir.foreach('../Document') do |fn|
                 puts markdown.render(contents)
   end
 end
+
+markdown = Redcarpet::Markdown.new(TestcaseRender, fenced_code_blocks: true)
 
 Dir.foreach('../Document/Testcases') do |fn|
   if fn =~ /\.md$/
