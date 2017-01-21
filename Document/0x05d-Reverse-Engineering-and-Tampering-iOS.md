@@ -67,7 +67,6 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 References:
 
 
-
 ### Manipulating iOS Apps
 
 ### Hooking with MobileSubstrate
