@@ -13,9 +13,8 @@ The following lists contains the individual sections of the MSTG, along with the
 ### Introductionary
 
 - [Header](Document/0x00-Header.md)
-- [Foreword](Document/0x01-Foreword.md)
+- [Foreword](Document/0x01-Foreword.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 - [Frontispiece](Document/0x02-Frontispiece.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-- [The OWASP Mobile Security Project](Document/0x03-The-OWASP-Mobile-Security-Project.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 
 ### High-Level Guides
 
