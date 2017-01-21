@@ -92,7 +92,6 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
-<a name="OMTG-DATAST-002"></a>
 ### OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview

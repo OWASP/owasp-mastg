@@ -132,7 +132,6 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 - [link to relevant how-tos, papers, etc.]
 
-
 ### OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
 #### Overview
@@ -151,7 +150,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-005"></a>OMTG-CODE-005: Test Exception Handling
+### OMTG-CODE-005: Test Exception Handling
 
 #### Overview
 

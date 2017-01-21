@@ -1,4 +1,3 @@
-<a name="[OMTG-NET-001]"></a>
 ### OMTG-NET-001: Test for unencrypted sensitive data on the network
 
 #### Overview
@@ -69,7 +68,6 @@ OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 Burp Suite - https://portswigger.net/burp/
 Vproxy - https://github.com/B4rD4k/Vproxy
 
-<a name="[OMTG-NET-002]"></a>
 ### OMTG-NET-002: Test X.509 certificate verification
 
 #### Overview
@@ -198,7 +196,6 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 - [7] http://www.cert.org/download/mitm/CERT_Tapioca.ova
 - [8] https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
 
-<a name="OMTG-NET-003"></a>
 ### OMTG-NET-003: Test SSL Pinning
 
 #### Overview
