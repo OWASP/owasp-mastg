@@ -58,15 +58,15 @@ end
 puts '''
 <html>
 <head>
-<style>
 
-body { font-family: Arial, \'Helvetica Neue\', Helvetica, sans-serif; }
+<link rel="stylesheet" href="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Generated/style.css>
 
-p { font-size: 1.1em; }
-
-</style>
 </head>
 <body>
+
+    <div id="top">
+  <img height=100px src="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Document/images/OWASP_logo.png"/>
+    </div>
 '''
 
 markdown = Redcarpet::Markdown.new(DocumentRender, fenced_code_blocks: true)
