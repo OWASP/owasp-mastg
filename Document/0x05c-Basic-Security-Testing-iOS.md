@@ -65,19 +65,17 @@ iPhone:/usr/lib root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib "/var/mobile/Con
 
 The decrypted binary is saved in the current working directory.
 
-#### References
-
-* [1] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
-
 ### Dynamic Analysis
-
 
 #### On Jailbroken devices
 
+#### On Non-Jailbroken Devices
 
-#### On non-Jailbroken Devices
+If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store). A howto is provided in the chapter "Reverse Engineering and Tampering on iOS".
 
 
-References:
+### References
+
+* [1] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
 
 http://cydia.saurik.com/package/com.autopear.installipa/

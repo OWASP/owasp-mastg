@@ -14,7 +14,7 @@ Class-dump-dyld by Elias Limneos [2] allows dumping and retrieving symbols direc
 
 MachoOView [3] is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
 
-### Jailbreaking iOS Devices
+### Jailbreaking iOS
 
 In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
@@ -64,14 +64,12 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 ~~~
 
 
-References:
 
+### Tampering and Instrumentation
 
-### Manipulating iOS Apps
+#### Hooking with MobileSubstrate
 
-### Hooking with MobileSubstrate
-
-#### Example: Deactivating Anti-Debugging
+##### Example: Deactivating Anti-Debugging
 
 ~~~
 #import <substrate.h>
@@ -94,10 +92,8 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 ~~~
 
 
-### Runtime Instrumentation
 
-
-#### Cynject
+#### Cycript and Cynject
 
 Cycript is traditionally used in the iOS world. It also runs standalone on Android, however without injection support. It is based on a Java VM that can be injected into a running process using Cydia Substrate. The user then communicates with process through the Cycript console interface.
 
@@ -213,16 +209,16 @@ script.load()
 sys.stdin.read()
 ~~~~
 
-### Reverse Engineering on iOS
+#### Patching and Repackaging iOS Apps
+
+
+### Program Comprehension
 
 
 #### Statically Analyzing iOS Apps
 
 
-#### Analyzing Swift Apps
-
-
-### Debugging iOS Apps
+#### Debugging iOS Apps
 
 iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
 
