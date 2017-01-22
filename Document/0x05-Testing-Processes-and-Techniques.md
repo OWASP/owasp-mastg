@@ -41,9 +41,9 @@ Reverse engineering is an art, and describing every available facet of it would 
 
 There is no generic reverse engineering process that always works. That said, we'll describe commonly used methods and tools later on, and give examples for tackling the most common defenses.
 
-### Why Should You Even Bother?
+### Why You Need It
 
-To sum things up, mobile security testing requires at least basic reverse engineering skills for several reasons:
+Mobile security testing requires at least basic reverse engineering skills for several reasons:
 
 **1. To enable black-box testing of mobile apps.** Modern apps often employ technical controls that will hinder your ability to perform dynamic analysis. SSL pinning and E2E encryption could prevent you from intercepting or manipulating traffic with a proxy. Root detection could prevent the app from running on a rooted device, preventing you from using advanced testing tools. In this cases, you must be able to deactivate these defenses.
 
@@ -51,15 +51,17 @@ To sum things up, mobile security testing requires at least basic reverse engine
 
 **3. To assess resiliency against reverse engineering.**  Apps that implement the software protection measures listed in MASVS-R should be resilient against reverse engineering to a certain degree. In this case, testing the reverse engineering defenses ("resiliency assessment") is part of the overall security test. In the resiliency assessment, the tester assumes the role of the reverse engineer and attempts to bypass the defenses.
 
+In this guide, we'll cover basic tampering techniques such as patching and hooking, as well as common tools and processes for reverse engineering (and comprehending) mobile apps without access to the original source code. Reverse engineering is an immensely complex topic however - covering every possible aspect would easily fill several books. Links and pointers to useful resources are included in the "references" section at the end of each chapter. The best way to learn is hands-on experience: Be sure to have a go to the mobile crackmes available in the OWASP MSTG GitHub repository.
+
 ### Before You Start
 
 Before you dive into the world of mobile app reversing, we have some good news and some bad news for you. Let's start with the good news:
 
 **Ultimately, the reverse engineer always wins.**
 
-This is even more true in the mobile world, where less defensive options are available to developers: The way mobile apps are deployed and sandboxed is much more restrictive by design, and is simply not feasible to include the rootkit-like functionality that can often be found in Windows software (e.g. DRM systems). You - the reverse engineer - have a much higher degree of control over the mobile operating system, giving you easy auto-wins in many situations (assuming you know how to use that power).
+This is even more true in the mobile world, where the reverse engineer has a natural advantage: The way mobile apps are deployed and sandboxed is more restrictive by design, so it is simply not feasible to include the rootkit-like functionality like it is often found in Windows software (e.g. DRM systems). At least on Android, you have a much higher degree of control over the mobile OS, giving you easy wins in many situations (assuming you know how to use that power). On iOS, you get less control - but defensive options are even more limited.
 
-What is the bad news you ask? Reverse engineering jobs can still be extremely difficult, backbreaking (or better: brain-breaking) work in cases where the app does everything it can to make your life difficult. Dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted. By nature, the best software protection schemes are highly proprietary, and while many tasks can be automated, the way to successful reversing is plastered with good amounts of thinking, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
+On the other hand, dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted.  By nature, the best software protection schemes are highly proprietary, and while many tasks can be automated, the way to successful reversing is plastered with good amounts of thinking, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
 
 (... TODO ...)
 
