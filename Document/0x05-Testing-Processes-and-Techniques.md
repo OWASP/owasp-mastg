@@ -77,7 +77,7 @@ Patching means making changes to the compiled app - e.g. changing code in a bina
 
 One thing to keep in mind is that modern mobile OSes strictly enforce code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. Yep, security experts had a much easier life in the 90s! Fortunately, this is not all that difficult to do if you work on your own device - it simply means that you need to re-sign the app, or disable the default code signiture verification facilities to run modified code.
 
-#### Runtime Modifications
+#### Runtime Tampering
 
 Code injection is a very powerful technique that allows you to explore and modify processes during runtime. The injection process can be implemented in various ways*, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate it. These tools give you direct access to process memory and important structures such as live objects instantiated by the app, and come with many useful utility functions for resolving loaded libraries, hooking methods and native functions, and more. Tampering with process memory is more difficult to detect than patching files, making in the preferred method in the majority of cases.
 
@@ -109,7 +109,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 (todo... add some Frida console examples and links)
 
-### Static / Dynamic Binary Analysis - Old-Fashioned Way
+### Static and Dynamic Binary Analysis
 
 Reverse engineering is the process of reconstructing the semantics of the original source code from a compiled program. In other words, you take the program apart, run it, simulate parts of it, and do other unspeakable things to it, in order to understand what exactly it is doing and how.
 
@@ -119,7 +119,6 @@ Disassemblers and decompilers allow you to translate an app's binary code or byt
 
 A wide range of tools and frameworks is available: From expensive, but convenient GUI tools, to open source disassembler engines and reverse engineering frameworks. Advanced usage instructions for any of these tools often easily fill a book on their own. We'll introduce some of the most widely used disassemblers in the following section. The best way to get started is simply pick the tool that fits your needs and budget and buy a well-reviewed user guide along with it (some recommendations are listed below).
 
-
 TODO: introduce a few standard tools, IDA Pro, Hopper, Radare2, JEB (?)
 
 TODO: Talk about IDA Scripting and the many plugins developed by the community
@@ -127,7 +126,6 @@ TODO: Talk about IDA Scripting and the many plugins developed by the community
 #### Debugging
 
 #### Execution Tracing
-
 
 ### Advanced Techniques
 
