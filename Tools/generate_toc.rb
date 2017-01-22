@@ -59,7 +59,7 @@ puts '''
 <html>
 <head>
 
-<link rel="stylesheet" href="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Generated/style.css>
+<link rel="stylesheet" href="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Generated/style.css">
 
 </head>
 <body>
