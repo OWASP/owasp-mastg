@@ -54,12 +54,43 @@ def render_testcases()
 
 end
 
-
 puts '''
 <html>
 <head>
 
-<link rel="stylesheet" href="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Generated/style.css">
+<style>
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic);
+body, html{
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: \'Montserrat\', sans-serif;
+}
+@media (min-width: 1200px){
+  .container {
+    width: 960px;
+  }
+}
+h1{
+  font-weight: 700;
+  font-size: 30px;
+}
+h2{
+  font-size: 25px;
+}
+h3{
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 100;
+  line-height: 26px;
+}
+p{
+  font-size: 20px;
+  font-weight: 400;
+}
+</style>
 
 </head>
 <body>
@@ -67,6 +98,7 @@ puts '''
     <div id="top">
   <img height=100px src="https://raw.githubusercontent.com/OWASP/owasp-masvs/master/Document/images/OWASP_logo.png"/>
     </div>
+
 '''
 
 markdown = Redcarpet::Markdown.new(DocumentRender, fenced_code_blocks: true)
