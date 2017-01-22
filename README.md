@@ -57,7 +57,7 @@ The following lists contains the individual sections of the MSTG, along with the
 
 ## Suggestions and feedback
 
-To report and error or suggest an improvement, please create an [issue](https://github.com/b-mueller/owasp-mstg/issues).
+To report an error or suggest an improvement, please create an [issue](https://github.com/b-mueller/owasp-mstg/issues), or do a pull request.
 
 ## How to Contribute
 
