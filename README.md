@@ -4,7 +4,7 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Table of Contents
 
-Use the [automatically generated document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
+Use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
 
 ## High-Level Structure
 
