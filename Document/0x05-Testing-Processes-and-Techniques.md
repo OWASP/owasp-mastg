@@ -67,7 +67,7 @@ It's easy to get overwhelmed by the sheer scope of it in the beginning. The best
 
 ### Basic Tampering Techniques
 
-Tampering is the process of making changes to a mobile app (either the compiled app, or the running process) or its environment to affect its behavior. For example, an app might refuse to run on your rooted test device, making it impossible to run some of your tests. In cases like that, you'll want to alter that particular behavior. 
+Tampering is the process of making changes to a mobile app (either the compiled app, or the running process) or its environment to affect its behavior. For example, an app might refuse to run on your rooted test device, making it impossible to run some of your tests. In cases like that, you'll want to alter that particular behavior.
 
 In the following section we'll give a high level overview of the techniques most commonly used in mobile app security testing. Later, we'll drill down into OS-specific details for both Android and iOS.
 
@@ -75,25 +75,15 @@ In the following section we'll give a high level overview of the techniques most
 
 Patching means making changes to the compiled app - e.g. changing code in a binary executable file(s), modifying Java bytecode, or tampering with resources. Patches can be applied in any number of ways, from decompiling, editing and re-assembling an app, to editing binary files in a hex editor - anything goes (this rule applies to all of reverse engineering). We'll give some detailed examples for useful patches in later chapters.
 
-One thing to keep in mind is that modern mobile OSes strictly enforce code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. Yep, security experts had a much easier life in the 90s! Fortunately, this is not all that difficult to do if you work on your own device - it simply means that you need to re-sign the app, or disable the default code signiture verification facilities to run modified code.
+One thing to keep in mind is that modern mobile OSes strictly enforce code signing, so running modified apps is not as straightforward as it used to be in traditional Desktop environments. Yep, security experts had a much easier life in the 90s! Fortunately, this is not all that difficult to do if you work on your own device - it simply means that you need to re-sign the app, or disable the default code signature verification facilities to run modified code.
 
 #### Runtime Tampering
 
 Code injection is a very powerful technique that allows you to explore and modify processes during runtime. The injection process can be implemented in various ways*, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate it. These tools give you direct access to process memory and important structures such as live objects instantiated by the app, and come with many useful utility functions for resolving loaded libraries, hooking methods and native functions, and more. Tampering with process memory is more difficult to detect than patching files, making in the preferred method in the majority of cases.
 
-Substrate, Frida and XPosed are the most widely used code injection frameworks. The three frameworks differ in design philosophy and implementation details: Substrate and Xposed only focus on code injection and hooking, while Frida aims to be a full-blown "dynamic instrumentation framework" that incorporates both code injection and language bindings, as well as an injectable JavaScript VM and console. Substrate however does provide code injection support for Cycript, the programming environment (a.k.a. "Cycript-to-JavaScript" compiler) authored by Saurik of Cydia fame.
+Substrate, Frida and XPosed are the most widely used hooking & code injection frameworks in the mobile reversing world. The three frameworks differ in design philosophy and implementation details: Substrate and Xposed focus on code injection and/or hooking, while Frida aims to be a full-blown "dynamic instrumentation framework" that incorporates both code injection and language bindings, as well as an injectable JavaScript VM and console. However, you can also instrument apps with Substrate by using it to inject Cycript, the programming environment (a.k.a. "Cycript-to-JavaScript" compiler) authored by Saurik of Cydia fame. To complicate things even more, Frida's authors also created a fork of Cycript named ["frida-cycript"](https://github.com/nowsecure/frida-cycript) that replaces Cycript's runtime with a Frida-based runtime called Mjølner. This enables Cycript to run on all the platforms and architectures maintained by frida-core (if you are confused now don't worry, it's perfectly OK to be). The release was accompanied by a blog post by Frida's developer Ole titled "Cycript on Steroids", which [did not go that down that well with Saurik](https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/).
 
-##### Substrate, Frida and Xposed
-
-Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
-
-Xposed is another popular code injection framework for Android. Installing Xposed on a rooted Android device allows you to apply runtime modifications to processes. The Xposed framework is described in more detail in the [Android Reverse Engineering](/Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) chapter.
-
-Frida is a dynamic instrumentation framework that lets the user inject JavaScript into native apps on Windows, Mac, Linux, iOS, Android and QNX. We'll cover Frida in a bit more detail below.
-
-To complicate things, Frida's authors also created a fork of Cycript named ["frida-cycript"](https://github.com/nowsecure/frida-cycript) that replaces Cycript's runtime with a Frida-based runtime called Mjølner. This enables Cycript to run on all the platforms and architectures maintained by frida-core. The release was accompanies by a blog post by Ole titled "Cycript on Steroids", which prompted a vitriolic response by Saurik on [Reddit](https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/).
-
-Ultimately, you can achieve many of the same goals with either framework. Frida is however the most versatile, as it can inject a Javascript VM on both Android and iOS, while Cycript injection with Substrate only works on iOS.
+We'll include some examples for all three frameworks. For your first pick, it's probably best to start with Frida, as it is the most versatile of the three (for this reason we'll also include a bit more details on Frida). Notably, Frida can inject a Javascript VM into process on both Android and iOS, while Cycript injection with Substrate only works on iOS. Ultimately however, you can achieve many of the same end goals with either framework.
 
 ##### Dynamic Instrumentation with Frida
 

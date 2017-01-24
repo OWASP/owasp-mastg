@@ -95,7 +95,7 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 
 #### Cycript and Cynject
 
-Cycript is traditionally used in the iOS world. It also runs standalone on Android, however without injection support. It is based on a Java VM that can be injected into a running process using Cydia Substrate. The user then communicates with process through the Cycript console interface.
+Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
 
 Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
 
