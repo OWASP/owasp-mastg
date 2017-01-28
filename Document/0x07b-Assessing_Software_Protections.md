@@ -17,8 +17,6 @@ Resiliency testing usually follows the black-box approach.
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
-## Testing Software Protection Schemes
-
 ### The Attacker's View
 
 ![High-level Process](/Document/Images/Chapters/0x07b/Binary_Attack_Overview_Process_Graph.png "Reverse engineering processes")
