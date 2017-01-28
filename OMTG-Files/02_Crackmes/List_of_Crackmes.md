@@ -7,6 +7,8 @@ This app holds a secret inside. Can you find it?
 - Difficulty: Easy
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
+Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
+
 ### Solutions
 
 - N/A
@@ -19,6 +21,8 @@ Bonus challenge: De-obfuscate the virtual machine!
 
 - Difficulty: Medium
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+
+Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
 
 ### Solutions
 
