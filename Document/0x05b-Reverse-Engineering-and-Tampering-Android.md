@@ -778,7 +778,7 @@ Quite comprehensive documentation for angr is available on Gitbooks, including a
 
 ##### Using the Disassembler Backends
 
-
+<a name="symbolicexec"></a>
 ##### Symbolic Execution
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
