@@ -11,6 +11,10 @@ Objective: A secret string is hidden somewhere in this binary. Find a way to ext
 
 Bonus challenge: De-obfuscate the virtual machine!
 
+### Installation
+
+Open the "Device" window in XCode and drag the IPA file into the list below "Installed Apps". 
+
 Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
 
 ### Solutions
@@ -28,6 +32,12 @@ Objective: A secret string is hidden somewhere in this binary. Unfortunately, th
 
 Hint: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution. The secret code is related to alcoholic beverages!
 
+### Installation
+
+Open the "Device" window in XCode and drag the IPA file into the list below "Installed Apps". 
+
+Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
+
 ### Solutions
 
 - N/A
@@ -42,6 +52,20 @@ Objective: Find a valid serial that is accepted by this app.
 
 - Difficulty: Medium
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+
+### Installation
+
+Copy the binary to your Android device and run using the shell.
+
+```
+$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+$ adb shell chmod 755 /data/local/tmp/validate
+$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+$ adb shell /data/local/tmp/validate 1234
+Incorrect serial (wrong format).
+```
 
 ### Solutions
 
