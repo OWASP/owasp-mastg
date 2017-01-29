@@ -28,9 +28,9 @@ This app holds a secret inside - and this time it won't be tampered with!
 - Difficulty: Medium
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
-Objective: A secret string is hidden somewhere in this binary. Unfortunately, this time the won't be tampered with!
+Objective: Find the secret code - it is related to alcoholic beverages.
 
-Hint: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution. The secret code is related to alcoholic beverages!
+Note: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution. 
 
 ### Installation
 
