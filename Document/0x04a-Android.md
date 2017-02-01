@@ -251,3 +251,5 @@ An example how this is achieved in Nfc application:
 + [Android Security](https://source.android.com/security/)
 + [HAL](https://source.android.com/devices/)
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
++ [AProgrammer Blog](https://pierrchen.blogspot.com.br)
++ [keesj Android internals](https://github.com/keesj/gomo)
