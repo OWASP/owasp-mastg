@@ -189,119 +189,61 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
+
 ### Android Users and Groups
 
-Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a /etc/password file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
+Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a _/etc/password_ file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
 File [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
-File below depicts all users defined for Android Nougat:
+File below depicts some of the users defined for Android Nougat:
 ```
-    /* This is the master Users and Groups config for the platform.
-     * DO NOT EVER RENUMBER
-     */
-
     #define AID_ROOT             0  /* traditional unix root user */
 
     #define AID_SYSTEM        1000  /* system server */
-
-    #define AID_RADIO         1001  /* telephony subsystem, RIL */
-    #define AID_BLUETOOTH     1002  /* bluetooth subsystem */
-    #define AID_GRAPHICS      1003  /* graphics devices */
-    #define AID_INPUT         1004  /* input devices */
-    #define AID_AUDIO         1005  /* audio devices */
-    #define AID_CAMERA        1006  /* camera devices */
-    #define AID_LOG           1007  /* log devices */
-    #define AID_COMPASS       1008  /* compass device */
-    #define AID_MOUNT         1009  /* mountd socket */
-    #define AID_WIFI          1010  /* wifi subsystem */
-    #define AID_ADB           1011  /* android debug bridge (adbd) */
-    #define AID_INSTALL       1012  /* group for installing packages */
-    #define AID_MEDIA         1013  /* mediaserver process */
-    #define AID_DHCP          1014  /* dhcp client */
-    #define AID_SDCARD_RW     1015  /* external storage write access */
-    #define AID_VPN           1016  /* vpn system */
-    #define AID_KEYSTORE      1017  /* keystore subsystem */
-    #define AID_USB           1018  /* USB devices */
-    #define AID_DRM           1019  /* DRM server */
-    #define AID_MDNSR         1020  /* MulticastDNSResponder (service discovery) */
-    #define AID_GPS           1021  /* GPS daemon */
-    #define AID_UNUSED1       1022  /* deprecated, DO NOT USE */
-    #define AID_MEDIA_RW      1023  /* internal media storage write access */
-    #define AID_MTP           1024  /* MTP USB driver access */
-    #define AID_UNUSED2       1025  /* deprecated, DO NOT USE */
-    #define AID_DRMRPC        1026  /* group for drm rpc */
-    #define AID_NFC           1027  /* nfc subsystem */
-    #define AID_SDCARD_R      1028  /* external storage read access */
-    #define AID_CLAT          1029  /* clat part of nat464 */
-    #define AID_LOOP_RADIO    1030  /* loop radio devices */
-    #define AID_MEDIA_DRM     1031  /* MediaDrm plugins */
-    #define AID_PACKAGE_INFO  1032  /* access to installed package details */
-    #define AID_SDCARD_PICS   1033  /* external storage photos access */
-    #define AID_SDCARD_AV     1034  /* external storage audio/video access */
-    #define AID_SDCARD_ALL    1035  /* access all users external storage */
-    #define AID_LOGD          1036  /* log daemon */
-    #define AID_SHARED_RELRO  1037  /* creator of shared GNU RELRO files */
-    #define AID_DBUS          1038  /* dbus-daemon IPC broker process */
-    #define AID_TLSDATE       1039  /* tlsdate unprivileged user */
-    #define AID_MEDIA_EX      1040  /* mediaextractor process */
-    #define AID_AUDIOSERVER   1041  /* audioserver process */
-    #define AID_METRICS_COLL  1042  /* metrics_collector process */
-    #define AID_METRICSD      1043  /* metricsd process */
-    #define AID_WEBSERV       1044  /* webservd process */
-    #define AID_DEBUGGERD     1045  /* debuggerd unprivileged user */
-    #define AID_MEDIA_CODEC   1046  /* mediacodec process */
-    #define AID_CAMERASERVER  1047  /* cameraserver process */
-    #define AID_FIREWALL      1048  /* firewalld process */
-    #define AID_TRUNKS        1049  /* trunksd process (TPM daemon) */
-    #define AID_NVRAM         1050  /* Access-controlled NVRAM */
-    #define AID_DNS           1051  /* DNS resolution daemon (system: netd) */
-    #define AID_DNS_TETHER    1052  /* DNS resolution daemon (tether: dnsmasq) */
-    /* Changes to this file must be made in AOSP, *not* in internal branches. */
-
+	...
     #define AID_SHELL         2000  /* adb and debug shell user */
-    #define AID_CACHE         2001  /* cache access */
-    #define AID_DIAG          2002  /* access to diagnostic resources */
-
-    /* The range 2900-2999 is reserved for OEM, and must never be
-     * used here */
-    #define AID_OEM_RESERVED_START 2900
-    #define AID_OEM_RESERVED_END   2999
-
-    /* The 3000 series are intended for use as supplemental group id's only.
-     * They indicate special Android capabilities that the kernel is aware of. */
-    #define AID_NET_BT_ADMIN  3001  /* bluetooth: create any socket */
-    #define AID_NET_BT        3002  /* bluetooth: create sco, rfcomm or l2cap sockets */
-    #define AID_INET          3003  /* can create AF_INET and AF_INET6 sockets */
-    #define AID_NET_RAW       3004  /* can create raw INET sockets */
-    #define AID_NET_ADMIN     3005  /* can configure interfaces and routing tables. */
-    #define AID_NET_BW_STATS  3006  /* read bandwidth statistics */
-    #define AID_NET_BW_ACCT   3007  /* change bandwidth statistics accounting */
-    #define AID_NET_BT_STACK  3008  /* bluetooth: access config files */
-    #define AID_READPROC      3009  /* Allow /proc read access */
-    #define AID_WAKELOCK      3010  /* Allow system wakelock read/write access */
-
-    /* The range 5000-5999 is also reserved for OEM, and must never be used here. */
-    #define AID_OEM_RESERVED_2_START 5000
-    #define AID_OEM_RESERVED_2_END   5999
-
-    #define AID_EVERYBODY     9997  /* shared between all apps in the same profile */
-    #define AID_MISC          9998  /* access to misc storage */
-    #define AID_NOBODY        9999
-
+	...
     #define AID_APP          10000  /* first app user */
+	...
+```
+#### UID/GID of Normal Applications
 
-    #define AID_ISOLATED_START 99000 /* start of uids for fully isolated sandboxed processes */
-    #define AID_ISOLATED_END   99999 /* end of uids for fully isolated sandboxed processes */
-
-    #define AID_USER        100000  /* offset for uid ranges for each user */
-
-    #define AID_SHARED_GID_START 50000 /* start of gids for apps in each user to share */
-    #define AID_SHARED_GID_END   59999 /* start of gids for apps in each user to share */
+When a new application gets installed on Android a new UID is assigned to it. Generally apps are assigned UIDs in the range of 10000 (_AID_APP_) and 99999. Android apps also receive a user name based on its UID. As an example, application with UID 10188 receives the user name _u0_a188_. 
+If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the application.
+For example, the user ID of the application below is 10188, and it also belongs to group ID 3003 (_inet_) that is the group related to _android.permission.INTERNET_ permission. The result of the `id` command is shown below:
+```
+$ id
+uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
 ```
 
-What is shown when the `id` command is executed on an Android shell is the user and group ids applied for the current process.
+The relationship between group IDs and permissions are defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml)
 ```
-$ adb shell id
-uid=2000(shell) gid=2000(shell) groups=2000(shell),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats),3009(readproc) context=u:r:shell:s0
+<permission name="android.permission.INTERNET" >
+	<group gid="inet" />
+</permission>
+
+<permission name="android.permission.READ_LOGS" >
+	<group gid="log" />
+</permission>
+
+<permission name="android.permission.WRITE_MEDIA_STORAGE" >
+	<group gid="media_rw" />
+	<group gid="sdcard_rw" />
+</permission>
+```
+
+#### Application Data Sandbox
+
+Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. This way the calendar app can't access Chrome's data directory.
+```
+drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
+drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
+```
+However, if two applications are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other data directory.
+An example how this is achieved in Nfc application:
+```
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.android.nfc"
+	android:sharedUserId="android.uid.nfc">
 ```
 
 ### References
