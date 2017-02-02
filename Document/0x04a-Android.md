@@ -60,7 +60,7 @@ When installing new applications (From Google Play or External Sources), a new f
 
 Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. 
 
-![Sandbox](/Document/images/Chapters/0x04a/sandbox.png)
+![Sandbox](/Document/images/Chapters/0x04a/Selection_003.png)
 
 In this example, the Chrome and Calendar app are completly segmented with different UID and different folder permissions.
 
