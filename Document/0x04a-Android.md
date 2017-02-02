@@ -58,7 +58,13 @@ Applications are executed in the Android Application Sandbox that enforces isola
 
 When installing new applications (From Google Play or External Sources), a new folder is created in the filesystem in the path /data/data/\<package name>. This folder is going to be the private data folder for that particular application.
 
-Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. This way the calendar app can't access Chrome's data directory.
+Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. 
+
+![Sandbox](/Document/images/Chapters/0x04a/sandbox.png)
+
+In this example, the Chrome and Calendar app are completly segmented with different UID and different folder permissions.
+
+We can confirm this my looking at the filesystem permissions created for each folder:
 ```
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
