@@ -189,8 +189,67 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
+
+### Android Users and Groups
+
+Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a _/etc/password_ file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
+File [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
+File below depicts some of the users defined for Android Nougat:
+```
+    #define AID_ROOT             0  /* traditional unix root user */
+
+    #define AID_SYSTEM        1000  /* system server */
+	...
+    #define AID_SHELL         2000  /* adb and debug shell user */
+	...
+    #define AID_APP          10000  /* first app user */
+	...
+```
+#### UID/GID of Normal Applications
+
+When a new application gets installed on Android a new UID is assigned to it. Generally apps are assigned UIDs in the range of 10000 (_AID_APP_) and 99999. Android apps also receive a user name based on its UID. As an example, application with UID 10188 receives the user name _u0_a188_. 
+If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the application.
+For example, the user ID of the application below is 10188, and it also belongs to group ID 3003 (_inet_) that is the group related to _android.permission.INTERNET_ permission. The result of the `id` command is shown below:
+```
+$ id
+uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
+```
+
+The relationship between group IDs and permissions are defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml)
+```
+<permission name="android.permission.INTERNET" >
+	<group gid="inet" />
+</permission>
+
+<permission name="android.permission.READ_LOGS" >
+	<group gid="log" />
+</permission>
+
+<permission name="android.permission.WRITE_MEDIA_STORAGE" >
+	<group gid="media_rw" />
+	<group gid="sdcard_rw" />
+</permission>
+```
+
+#### Application Data Sandbox
+
+Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. This way the calendar app can't access Chrome's data directory.
+```
+drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
+drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
+```
+However, if two applications are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other data directory.
+An example how this is achieved in Nfc application:
+```
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.android.nfc"
+	android:sharedUserId="android.uid.nfc">
+```
+
 ### References
 
 + [Android Security](https://source.android.com/security/)
 + [HAL](https://source.android.com/devices/)
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
++ [AProgrammer Blog](https://pierrchen.blogspot.com.br)
++ [keesj Android internals](https://github.com/keesj/gomo)
