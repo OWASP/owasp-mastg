@@ -81,7 +81,33 @@ An example how this is achieved in Nfc application:
 
 The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of the layers below. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
-(... TODO ...)
+### Components
+
+Android Application are composed by several components:
+
+#### Activities
+
+Activities are the visible components of any application. They are the application GUI, that allow the user to interact with it.
+
+.....
+
+#### Broadcast Receivers
+
+Broadcast Receivers are components that allow to receive notifications sent from other applications and from the system itself.
+
+....
+
+#### Content Providers
+
+Content Providers are components that create an abstraction layer to allow an application to share their data with other applications (Can be used only for the application itself, without being shared to other applications). 
+
+....
+
+#### Services
+
+Services are components that will perform tasks in the background, without presenting any kind of user interface.
+
+....
 
 ### Inter-Process Communication
 
