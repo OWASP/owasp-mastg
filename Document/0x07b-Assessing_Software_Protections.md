@@ -2,13 +2,15 @@
 
 *TODO...  Goal: Define repeatable processes for assessing the effectiveness of software protections. For now this is just a copy/paste from some old writeups. Needs to be synced with [OWASP RE Prevention](https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project), [Obfucation Metrics](https://github.com/b-mueller/obfuscation-metrics), [MASVS Reverse Engineering Resiliency](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V9-Resiliency_Against_Reverse_Engineering_Requirements.md).*
 
-In prior chapters, you have learned basic reverse engineering techniques on both Android and iOS, and you've had a first glimpse at of the more advanced methods. We've shown examples for bypassing anti-tampering and de-obfuscating code. These skills are not only useful for regular security testing - with enough know-how and experience, you'll be able to give an assessment of how effective a particular set of anti-reversing measures is in practice. This process is called *resiliency testing*.
+In prior chapters, you have learned reverse engineering techniques that work with apps built for Android and iOS. We've shown examples for bypassing anti-tampering and de-obfuscating code. These skills are not only useful for  security testing - with enough practice, you'll be able to give an assessment of how effective a particular set of anti-reversing measures is. This process is called *resiliency testing*.
 
-Whether we’re talking about malware, banking apps, or mobile games: They all use anti-reversing strategies made from the same building blocks. This includes defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. The question is, how do we verify that a given set of defenses (as a whole) is "good enough" to provide the desired level of protection? As it turns out, this is not an easy question to answer.
+Mobile software anti-reversing schemes are all made from the same building blocks. On the one hand, apps implement defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. On the other hand obfuscation is employed to make code and data incomprehensible. How can you verify that a given set of defenses (as a whole) is "good enough" to provide an appropriate level of protection? As it turns out, this is not an easy question to answer.
 
-The first problem is that there is no one-size-fits-all. Client-side tampering protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing server-side controls in the client. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. To work around this issue, we made modeling of client-side threats part of the requirements in MASVS-R: If one uses obfuscation and anti-tampering controls at all, they should be sure that they're doing it right, and without compromising the overall security architecture.
+First of all, there is no one-size-fits-all. Client-side protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing security controls on the client that would better be located on the server. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper modeling of client-side threats is a necessary prerequisite before any form of software protections are implemented.
 
-Another issue is that assessment methods and metrics for software protections are not widely available, and those that exist are often controversial. Currently, no form of software protection is backed by rigorous proof. What we can do however is present a comprehensive survey of the available (de-)obfuscation and (anti-)tampering research and a lot of practical experience.
+## The Eternal War
+
+Historically, 
 
 ## The Resiliency Testing Process
 
@@ -23,9 +25,9 @@ Resiliency testing usually follows the black-box approach.
 
 Attack Steps, from: https://www.owasp.org/index.php/Architectural_Principles_That_Prevent_Code_Modification_or_Reverse_Engineering
 
-### Software Protections Model
+### Software Protections Model and Taxonomy
 
-On the highest level, we classify reverse engineering defenses into two categories: Tampering defenses and obfuscations. Both are used in tandem to achieve resiliency. Table 1 gives an overview of the categories and sub-categories as they appear in the guide.
+On the highest level, we classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both are used in tandem to achieve resiliency.
 
 #### 1. Tampering Defenses
 
@@ -35,7 +37,7 @@ On the highest level, we classify reverse engineering defenses into two categori
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached.
 
-Tampering defenses aim to hinder multiple processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
+Tampering defenses aim to hinder various processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
 
 ![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
 
@@ -89,8 +91,43 @@ Some types of obfuscation that fall into this category are:
 
 (... TODO ...)
 
-#### Assessing the Quality of Functional Defenses
+#### Assessing the Quality of Tampering Defenses
 
 (... TODO ...)
 
-### Assessing Obfuscations
+### Assessing Obfuscation
+
+The goal of obfuscation is increasing unintelligibility of the code. For the purpose of the assessment, any modification applied to the source or binary code that serves to confuse a human reverse engineer or cause static analysis tools to fail is counted into this category. 
+
+Obfuscations are static, i.e. they do exhibit any kind of runtime behavior. This is an important difference to our definition of anti-tampering defenses, which are programmatic features that respond to the actions of the adversary.
+Various definitions and measures of obfuscation have been proposed in the academic literature. While there is no single formal definition of obfuscation, what everyone more or less agrees on is its goal: To make human comprehension of code more difficult while preserving functionality. It seems clear that a good obfuscation metric should indicate whether, and by how much, an obfuscated program is more complex than the original with respect to program understanding (7). 
+
+Things become complicated when it comes to pinpointing the exact definition. In an often cited paper, Barak et. al describe the black-box model of obfuscation. The black-box model considers a program P’ obfuscated if any property that can be learned from P′ can also be obtained by a simulator with only oracle access to P. In other words, P’ does not reveal anything except its input-output behavior. The authors also show that obfuscation is impossible given their own definition by constructing an un-obfuscatable family of programs (8).
+
+Does this mean that obfuscation is impossible? Well, it depends on what we obfuscate and how we define obfuscation. Barack’s result only shows that *some* programs cannot be obfuscated, if we use a very strong definition of obfuscation. Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9).
+
+Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9). The question is, how can we put a number on that?
+
+#### Using Complexity Metrics
+
+Collberg et. al. introduce potency as an estimate of the degree of reverse engineering difficulty. A potent obfuscating transformation is any transformation that increases program complexity. Additionally, they propose the concept of resilience which measures how well a transformation holds up under attack from an automatic de-obfuscator. The same paper also contains a useful taxonomy of obfuscating transformations (10).
+
+Potency can be estimated using a number of methods.  Anaeckart et. al apply traditional software complexity metrics to a control flow graphs generated from executed code (7). The metrics applied are instruction count, cyclomatic number (i.e. number of decision points in the graph) and knot count (number of crossing in a function’s control flow graph). Simply put, the more instructions there are, and the more alternate paths and less expected structure the code has, the more complex it is.
+
+Jacubowsky et. al. use the same method and add further metrics, such as number of variables per instruction, variable indirection, operational indirection, code homogeneity and dataflow complexity (11). Other complexity metrics such as N-Scope (12), which is determined by the nesting levels of all branches in a program, can be used for the same purpose (13).
+
+All these methods are more or less useful for approximating the complexity of a program, but they don’t always accurately reflect the robustness of the obfuscating transformations. Tsai et al. attempt to remediate this by adding a distance metric that reflects the degree of difference between the original program and the obfuscated program. Essentially, this metric captures how the obfuscated call graph differs from the original one. Taken together, a large distance and potency is thought to be correlated to better robustness against reverse engineering (14).
+
+In the same paper, the authors also make the important observation is that measures of obfuscation express the relationship between the original and the transformed program, but are unable to quantify the amount of effort required for reverse engineering. They recognize that these measure can merely serve as heuristic, general indicators of security. This is perhaps the most pervasive problem that came to light during my initial research: There is a lack of scientific evidence in how far obfuscations are effective in terms of slowing down human attackers.
+
+Taking a human-centered approach, Tamada et. al. describe a mental simulation model to evaluate obfuscation (15). In this model, the short-term memory of the human adversary is simulated as a FIFO queue of limited size. The authors then compute six metrics that are supposed to reflect the difficulty encountered by the adversary in reverse engineering the program. Nakamura et. al. propose similar metrics reflecting the cost of mental simulation (16).
+
+More recently, Rabih Mosen and Alexandre Miranda Pinto proposed the use of a normalized version of Kolmogorov complexity as a metric for obfuscation effectiveness. The intuition behind their approach is based on the following argument: if an adversary fails to capture some patterns (regularities) in an obfuscated code, then the adversary will have difficulty comprehending that code: it cannot provide a valid and brief, i.e., simple description. On the other hand, if these regularities are simple to explain, then describing them becomes easier, and consequently the code will not be difficult to understand (17). The authors also provide empirical results showing that common obfuscation techniques managed to produce a substantial increase in the proposed metric. They also found that the metric was more sensitive then Cyclomatic measure at detecting any increase in complexity comparing to original un-obfuscated code (18).
+
+In other words, the reverse engineering effort increases with the amount of random noise in the program being reverse engineered. An obfuscated program has more non-essential information, and thus higher complexity, than a non-obfuscated one, and the reverse engineer has to comprehend at least some of this information to fully understand what’s going on. The authors also provide empirical results showing that common obfuscation techniques managed to produce a substantial increase in the proposed metric. They also found that the metric was more sensitive then Cyclomatic measure at detecting any increase in complexity comparing to original un-obfuscated code (18). 
+
+This makes intuitive sense – even though it doesn’t necessarily always hold true. Even so, I the Kolmogorov metric is a useful for approximating the overall increase in complexity added by an obfuscation scheme.
+
+
+
+
