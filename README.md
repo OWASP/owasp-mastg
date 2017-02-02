@@ -4,42 +4,46 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Table of Contents
 
-The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [detailed list of security test cases](all_tests.md). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklist/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
+Use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
+
+## High-Level Structure
+
+The following lists contains the individual sections of the MSTG, along with the person(s) responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
 
 ### Introductionary
 
 - [Header](Document/0x00-Header.md)
-- [Foreword](Document/0x01-Foreword.md)
+- [Foreword](Document/0x01-Foreword.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 - [Frontispiece](Document/0x02-Frontispiece.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-- [The OWASP Mobile Security Project](Document/0x03-The-OWASP-Mobile-Security-Project.md) -- [Bernhard Mueller](https://github.com/b-mueller)
 
 ### High-Level Guides
 
-* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md)  --  [Stephen Corbiaux](https://github.com/stephenreda)
-    * [Android](Document/0x04a-Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-    * [iOS](Document/0x04b-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite), [Stephen Corbiaux](https://github.com/stephenreda)
-   * [Android](Document/0x05a-Testing-Process-and-Techniques-Android.md) -- [Stefanie Vanroelen](https://github.com/grumpysnowwhite)
-   * [iOS](Document/0x05b-Testing-Process-and-Techniques-iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-* [Tampering and Reverse Engineering](Document/0x06-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
-   * [Android](Document/0x06a-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-   * [iOS](Document/0x06b-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+* [Mobile Platforms Overview](Document/0x04-Mobile-Platfoms-Overview.md) - [Pishu Mahtani](https://github.com/mpishu)
+   * [Android](Document/0x04a-Android.md) -- [Cláudio André](https://github.com/clviper), [Romuald Szkudlarek](https://github.com/romualdszkudlarek)
+   * [iOS](Document/0x04b-iOS.md) -- [Pishu Mahtani](https://github.com/mpishu)
+* [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Looking for More Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+  * Android
+    * [Basic Security Testing](Document/0x05a-Basic-Security-Testing-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Tampering and Reverse Engineering](Document/0x05b-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
+  * iOS
+    * [Basic Security Testing](Document/0x05c-Basic-Security-Testing-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Tampering and Reverse Engineering](Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
 
-### Detailed Howtos -> [Full list](all_tests.md)
+### Detailed Howtos
 
   * Android
     * [Testing Data Storage](Document/Testcases/0x01a_OMTG-DATAST_Android.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
-    * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-    * [Testing Network Communication](Document/Testcases/0x01d_OMTG-NET_Android.md) -- [Jeroen Willemsen](https://github.com/commjoen)
+    * [Testing Cryptography](Document/Testcases/0x01b_OMTG-CRYPTO_Android.md) --  [Alexander Antukh](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
+    * [Testing Authentication and Session Management](Document/Testcases/0x01c_OMTG-AUTH_Android.md) -- [Daniel Ramirez](https://github.com/ram7rez)
+    * [Testing Network Communication](Document/Testcases/0x01d_OMTG-NET_Android.md) -- [Pawel Rzepa](https://github.com/th3g1itch), [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x01e_OMTG-ENV_Android.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x01f_OMTG-CODE_Android.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x01g_OMTG-RARE_Android.md) -- [Bernhard Mueller](https://github.com/b-mueller)
   * iOS
     * [Testing Data Storage](Document/Testcases/0x02a_OMTG-DATAST_iOS.md) -- [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Cryptography](Document/Testcases/0x02b_OMTG-CRYPTO_iOS.md) --  [Gerhard Wagner](https://github.com/thec00n)
-    * [Testing Authentication and Session Management](Document/Testcases/0x02c_OMTG-AUTH_iOS.md) -- [Stephen Corbiaux](https://github.com/stephenreda)
-    * [Testing Network Communication](Document/Testcases/0x02d_OMTG-NET_iOS.md) -- [Jeroen Willemsen](https://github.com/commjoen)
+    * [Testing Cryptography](Document/Testcases/0x02b_OMTG-CRYPTO_iOS.md) --  [Alexander Anthuk](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
+    * [Testing Authentication and Session Management](Document/Testcases/0x02c_OMTG-AUTH_iOS.md) --  [Daniel Ramirez](https://github.com/ram7rez)
+    * [Testing Network Communication](Document/Testcases/0x02d_OMTG-NET_iOS.md) -- [Pawel Rzepa](https://github.com/th3g1itch), [Jeroen Willemsen](https://github.com/commjoen)
     * [Testing Environmental Interaction](Document/Testcases/0x02e_OMTG-ENV_iOS.md) -- [Sven Schleier](https://github.com/sushi2k)
     * [Testing Code Quality and Build Settings](Document/Testcases/0x02f_OMTG-CODE_iOS.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
     * [Testing Resiliency Against Reverse Engineering](Document/Testcases/0x02g_OMTG-RARE_iOS.md) -- [Bernhard Mueller](https://github.com/b-mueller)
@@ -47,13 +51,13 @@ The following lists contains the individual sections of the MSTG, along with the
 ### Complementary
 
 * [Security Testing in the Application Development Lifecycle](Document/0x07a-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
-* [Assessing the Quality of Software Protections](Document/0x07b_Assessing_Software_Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-* [Testing Tools](Document/0x08-Testing-Tools.md) - T.b.d.
+* [Assessing the Quality of Software Protections](Document/0x07b-Assessing_Software_Protections.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+* [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/)
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
 
 ## Suggestions and feedback
 
-To report and error or suggest an improvement, please create an [issue](https://github.com/b-mueller/owasp-mstg/issues).
+To report an error or suggest an improvement, please create an [issue](https://github.com/b-mueller/owasp-mstg/issues), or do a pull request.
 
 ## How to Contribute
 

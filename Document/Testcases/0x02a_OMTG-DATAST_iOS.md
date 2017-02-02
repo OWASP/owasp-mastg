@@ -1,13 +1,15 @@
-## <a name="OMTG-DATAST-001-1"></a>OMTG-DATAST-001-1: Test Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
+## iOS
 
-### Overview
+### OMTG-DATAST-001-1: Test Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
+
+#### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. Some of the possible options for the application to store it's data locally includes:
- 
+
 * CoreData/SQLite Databases
 * NSUserDefaults
 * Property List (Plist) files
@@ -16,16 +18,16 @@ A way to identify if sensitive information like credentials and keys are stored 
 Steps :
 
 1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/` 
+2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
 3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
-Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases. 
+Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.
 
-### White-box Testing
-When going through the source code it should be analyzed if native mechanisms that are offered by iOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain. 
+#### White-box Testing
+When going through the source code it should be analyzed if native mechanisms that are offered by iOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain.
 
-### Remediation
+#### Remediation
 If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
@@ -34,13 +36,12 @@ The following is a list of best practice used for secure storage of certificates
 * Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
 
 
-### References
+#### References
 
 * [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
 * [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 
-
-## <a name="OMTG-DATAST-001-2"></a>OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
+### OMTG-DATAST-001-2: Test for Sensitive Data Disclosure in Local Storage
 
 #### Overview
 
@@ -52,27 +53,27 @@ Storing data is essential for many mobile applications, for example in order to 
 * Plain files
 
 
-### Black-box Testing
+#### Black-box Testing
 
 Install and use the App as it is intended. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. Afterwards check the following items:
 
 (... TODO ...)
 
 
-### White-box Testing
+#### White-box Testing
 
-#### CoreData/SQLite Databases
+##### CoreData/SQLite Databases
 
-- `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level. 
+- `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level.
 
-- `sqlite3`: The ‘libsqlite3.dylib’ library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands. 
+- `sqlite3`: The ‘libsqlite3.dylib’ library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands.
 
 
-#### NSUserDefaults
+##### NSUserDefaults
 
-The `NSUserDefaults` class provides a programmatic interface for interacting with the defaults system. The defaults system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data. 
+The `NSUserDefaults` class provides a programmatic interface for interacting with the defaults system. The defaults system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
 
-#### Plain files / Plist files
+##### Plain files / Plist files
 
 * `NSData`: Creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
   * Options for methods used to write NSData objects: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
@@ -80,26 +81,25 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 * Managing File Paths:  `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
 * The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
 
-### Remediation
+#### Remediation
 
 (... TODO ...)
 
-### References
+#### References
 
 * [File System Basics](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 * [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
-
-## <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
+### OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the application developer/company once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
 Log files can be created in various ways on each of the different operating systems. The following list shows the mechanisms that are available on iOS:
 
-* NSLog Method 
+* NSLog Method
 * printf-like function
 * NSAssert-like function
 * Macro
@@ -135,7 +135,7 @@ Check the source code for usage of predefined/custom Logging statements using th
 
 #### Remediation
 
-Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (*.pch) file:
+Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (\*.pch) file:
 
 ```C#
 #ifdef DEBUG
@@ -149,44 +149,41 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 (... TODO ...)
 
+### OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
-## <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
-
-### Overview
-
-(... TODO ...)
-
-### Black-box Testing
-
-### White-box Testing
-
-### Remediation
-
-### References
-
-
-## <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test If Sensitive Data Is Sent to Third Parties
-
-### Overview
+#### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
 
-### White-box Testing
+#### White-box Testing
 
-### Remediation
+#### Remediation
 
-### References
+#### References
 
+### OMTG-DATAST-004: Test If Sensitive Data Is Sent to Third Parties
 
-## <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
-
-### Overview
+#### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
+
+#### White-box Testing
+
+#### Remediation
+
+#### References
+
+### OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
+
+#### Overview
+
+(... TODO ...)
+
+#### Black-box Testing
 
 1.) Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
@@ -197,7 +194,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
-### White-box Testing
+#### White-box Testing
 
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
@@ -206,7 +203,7 @@ Search through the source code provided to look the following similar implementa
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
 
-### Remediation
+#### Remediation
 
 The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textField.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
 
@@ -215,23 +212,22 @@ UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
 
-### References
+#### References
 
 - [link to relevant how-tos, papers, etc.]
 
 
-
-## <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
+### OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
 
 #### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
 
-Proceeed to a view in the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. 
+Proceeed to a view in the application that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc.
 
-Enter some values and double tap on the input field. 
+Enter some values and double tap on the input field.
 
 If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define".
 
@@ -239,9 +235,9 @@ The "Cut" and "Copy" option should be disabled for sensitive input fields, since
 
 If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
 
-### White-box Testing
+#### White-box Testing
 
-Search through the source code provided to look for any implemented subclass of `UITextField`. 
+Search through the source code provided to look for any implemented subclass of `UITextField`.
 
 ```
 @interface name_of_sub_class : UITextField
@@ -249,7 +245,7 @@ action == @select(cut:)
 action == @select(copy:)
 ```
 
-### Remediation
+#### Remediation
 
 Possible remediation method:
 
@@ -282,56 +278,51 @@ Possible remediation method:
 ```
 http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
 
-### References
+#### References
 
-
-
-## <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
+### OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
 
-### White-box Testing
+#### White-box Testing
 
-### Remediation
+#### Remediation
 
-### References
+#### References
 
+### OMTG-DATAST-008: Test for Sensitive Data in Screenshots
 
-## <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots
+##### Overview
+
+(... TODO ...)
+
+#### Black-box Testing
+
+#### White-box Testing
+
+#### Remediation
+
+#### References
+
+### OMTG-DATAST-009: Test for Sensitive Data in Backups
 
 #### Overview
 
 (... TODO ...)
 
-### Black-box Testing
+#### Black-box Testing
 
-### White-box Testing
+#### White-box Testing
 
-### Remediation
+#### Remediation
 
-### References
+#### References
 
-
-## <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
-
-#### Overview
-
-(... TODO ...)
-
-### Black-box Testing
-
-### White-box Testing
-
-### Remediation
-
-### References
-
-
-## <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test If Memory Is Cleared When the App Is Backgrounded
+### OMTG-DATAST-010: Test If Memory Is Cleared When the App Is Backgrounded
 
 #### Overview
 
@@ -351,7 +342,7 @@ It is highly recommended to have a default screenshot that will be cached whenev
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded.
 
-### Remediation
+#### Remediation
 
 Possible remediation method that will set a default screenshot:
 
@@ -365,10 +356,3 @@ Possible remediation method that will set a default screenshot:
 }
 ```
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
-
-### References
-
-The application must obsucate/hide any sensitive informations before being backgrouded, either by bluring the screen (e.g. using GPUImageiOSBlurFilter) or overriding the current view in the applicationDidEnterBackground state transition method.
-
-
-- [link to relevant how-tos, papers, etc.]
