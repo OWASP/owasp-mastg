@@ -18,11 +18,104 @@ The software stack of Android comprises of different layers, where each layer is
 
 ![Android Software Stack](https://source.android.com/security/images/android_software_stack.png)
 
-On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Applications are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM. With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART). Applications are executed in the Android Application Sandbox that enforces isolation of application data and code execution from other applications on the device, that adds an additional layer of security.
+On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Applications are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM.
+In the next image we can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
+
+![Java vs Dalvik](/Document/images/Chapters/0x04a/java_vs_dalvik.png)
+
+With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART).
+
+TODO: Explain the differences between ART and Dalvik.
+
+#### UID/GID of Normal Applications
+
+When a new application gets installed on Android a new UID is assigned to it. Generally apps are assigned UIDs in the range of 10000 (_AID_APP_) and 99999. Android apps also receive a user name based on its UID. As an example, application with UID 10188 receives the user name _u0_a188_. 
+If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the application.
+For example, the user ID of the application below is 10188, and it also belongs to group ID 3003 (_inet_) that is the group related to _android.permission.INTERNET_ permission. The result of the `id` command is shown below:
+```
+$ id
+uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
+```
+
+The relationship between group IDs and permissions are defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml)
+```
+<permission name="android.permission.INTERNET" >
+	<group gid="inet" />
+</permission>
+
+<permission name="android.permission.READ_LOGS" >
+	<group gid="log" />
+</permission>
+
+<permission name="android.permission.WRITE_MEDIA_STORAGE" >
+	<group gid="media_rw" />
+	<group gid="sdcard_rw" />
+</permission>
+```
+#### Application Data Sandbox
+
+Applications are executed in the Android Application Sandbox that enforces isolation of application data and code execution from other applications on the device, that adds an additional layer of security.
+
+When installing new applications (From Google Play or External Sources), a new folder is created in the filesystem in the path /data/data/\<package name>. This folder is going to be the private data folder for that particular application.
+
+Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. 
+
+![Sandbox](/Document/images/Chapters/0x04a/Selection_003.png)
+
+In this example, the Chrome and Calendar app are completly segmented with different UID and different folder permissions.
+
+We can confirm this my looking at the filesystem permissions created for each folder:
+```
+drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
+drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
+```
+However, if two applications are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other data directory.
+An example how this is achieved in Nfc application:
+```
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.android.nfc"
+	android:sharedUserId="android.uid.nfc">
+```
+
+
 
 The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of the layers below. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
-(... TODO ...)
+### Components
+
+Android Applications are composed by several components:
+
+#### Intents
+
+An *Intent* is a messaging object that can be used to request an action from another app component.
+
+#### Activities
+
+Activities are the visible components of any application. They are the application GUI, that allow the user to interact with it.
+
+.....
+
+#### Fragments
+
+A Fragment represents a behavior or a portion of user interface in an Activity.
+
+#### Broadcast Receivers
+
+Broadcast Receivers are components that allow to receive notifications sent from other applications and from the system itself.
+
+....
+
+#### Content Providers
+
+Content Providers are components that create an abstraction layer to allow an application to share their data with other applications (Can be used only for the application itself, without being shared to other applications). 
+
+....
+
+#### Services
+
+Services are components that will perform tasks in the background, without presenting any kind of user interface.
+
+....
 
 ### Inter-Process Communication
 
@@ -205,50 +298,13 @@ File below depicts some of the users defined for Android Nougat:
     #define AID_APP          10000  /* first app user */
 	...
 ```
-#### UID/GID of Normal Applications
 
-When a new application gets installed on Android a new UID is assigned to it. Generally apps are assigned UIDs in the range of 10000 (_AID_APP_) and 99999. Android apps also receive a user name based on its UID. As an example, application with UID 10188 receives the user name _u0_a188_. 
-If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the application.
-For example, the user ID of the application below is 10188, and it also belongs to group ID 3003 (_inet_) that is the group related to _android.permission.INTERNET_ permission. The result of the `id` command is shown below:
-```
-$ id
-uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
-```
 
-The relationship between group IDs and permissions are defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml)
-```
-<permission name="android.permission.INTERNET" >
-	<group gid="inet" />
-</permission>
-
-<permission name="android.permission.READ_LOGS" >
-	<group gid="log" />
-</permission>
-
-<permission name="android.permission.WRITE_MEDIA_STORAGE" >
-	<group gid="media_rw" />
-	<group gid="sdcard_rw" />
-</permission>
-```
-
-#### Application Data Sandbox
-
-Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. This way the calendar app can't access Chrome's data directory.
-```
-drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
-drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
-```
-However, if two applications are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other data directory.
-An example how this is achieved in Nfc application:
-```
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.android.nfc"
-	android:sharedUserId="android.uid.nfc">
-```
 
 ### References
 
 + [Android Security](https://source.android.com/security/)
++ [Android Developer: App Components](https://developer.android.com/guide/components/index.html)
 + [HAL](https://source.android.com/devices/)
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
