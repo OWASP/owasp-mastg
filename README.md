@@ -23,7 +23,7 @@ The following lists contains the individual sections of the MSTG, along with the
    * [iOS](Document/0x04b-iOS.md) -- [Pishu Mahtani](https://github.com/mpishu)
 * [Security Testing Processes, Tools and Techniques](Document/0x05-Testing-Processes-and-Techniques.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Looking for More Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
   * Android
-    * [Basic Security Testing](Document/0x05a-Basic-Security-Testing-Android.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
+    * [Basic Security Testing](Document/0x05a-Basic-Security-Testing-Android.md) -- [Luander Ribeiro], [Sven Schleier] (https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
     * [Tampering and Reverse Engineering](Document/0x05b-Reverse-Engineering-and-Tampering-Android.md) -- [Bernhard Mueller](https://github.com/b-mueller), [Sebastian Banescu](https://github.com/banescusebi)
   * iOS
     * [Basic Security Testing](Document/0x05c-Basic-Security-Testing-iOS.md) -- [Looking for Lead Authors](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md)
