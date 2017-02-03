@@ -83,13 +83,21 @@ The Android Framework is creating an abstraction layer for all the layers below,
 
 ### Components
 
-Android Application are composed by several components:
+Android Applications are composed by several components:
+
+#### Intents
+
+An *Intent* is a messaging object that can be used to request an action from another app component.
 
 #### Activities
 
 Activities are the visible components of any application. They are the application GUI, that allow the user to interact with it.
 
 .....
+
+#### Fragments
+
+A Fragment represents a behavior or a portion of user interface in an Activity.
 
 #### Broadcast Receivers
 
