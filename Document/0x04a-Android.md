@@ -304,6 +304,7 @@ File below depicts some of the users defined for Android Nougat:
 ### References
 
 + [Android Security](https://source.android.com/security/)
++ [Android Developer: App Components](https://developer.android.com/guide/components/index.html)
 + [HAL](https://source.android.com/devices/)
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
