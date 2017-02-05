@@ -85,7 +85,7 @@ Substrate, Frida and XPosed are the most widely used hooking & code injection fr
 
 We'll include some examples for all three frameworks. For your first pick, it's probably best to start with Frida, as it is the most versatile of the three (for this reason we'll also include a bit more details on Frida). Notably, Frida can inject a Javascript VM into process on both Android and iOS, while Cycript injection with Substrate only works on iOS. Ultimately however, you can achieve many of the same end goals with either framework.
 
-##### Dynamic Instrumentation with Frida
+##### Dynamic Instrumentation
 
 Code injection can be achieved in different ways. For example, Xposed makes some permanent modifications to the Android app loader that provide hooks to run your own code every time a new process is started. In contrast, Frida achieves code injection by writing code directly into process memory. The process is outlined in a bit more detail below.
 
@@ -213,11 +213,11 @@ An obfuscation scheme is effective if:
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
 
-####### Packing and Encryption
+**Packing and Encryption**
 
 Simple transformations with little impact on program complexity can be used to defeat standard static analysis tools without causing too much size and performance penalties. The execution trace of the obfuscated function(s) remains more or less unchanged. De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
 
-####### Transforming Code and/or Data
+**Transforming Code and/or Data**
 
 Advanced methods aim to hide the semantics of a computation by computing the same function in a more complicated way, or encoding code and data in ways that are not easily comprehensible. Transformations in this category have the following properties:
 
@@ -245,8 +245,9 @@ Some types of obfuscation that fall into this category are:
 
 For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
 
-#### Assessing Obfuscation
+(... TODO ...)
 
+#### Assessing Obfuscation
 
 ## References
 
