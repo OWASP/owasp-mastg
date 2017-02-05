@@ -148,7 +148,7 @@
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-04: Test Debugging Defenses
+### OMTG-RARE-004: Test Debugging Defenses
 
 #### Overview
 
