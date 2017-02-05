@@ -1,4 +1,4 @@
-### <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-AUTH-001:Test for Bypass Client Side Authentication
+### OMTG-AUTH-001:Test for Bypass Client Side Authentication
 #### Overview
 Some applications are doing the authentication relying on the client side, that means that the developer creates some method that will check the username and password on the client 
 side instead of sending the credentials into the backend API.
@@ -43,7 +43,7 @@ For prevent that, once the application ask for username and password after we pr
 - [1] http://resources.infosecinstitute.com/ios-application-security-part-8-method-swizzling-using-cycript/#gref
 - [2] https://www.owasp.org/index.php/Mobile_Top_10_2014-M5
 
-### <a name="[Anchor, e.g.: OMTG-DATAST-002]"></a>OMTG-AUTH-002:Testing the Logout Functionality
+### OMTG-AUTH-002:Testing the Logout Functionality
 #### Overview
 Session termination is an important part of the session lifecycle. Reducing the lifetime of the session tokens to a minimum decreases the likelihood of a successful session hijacking attack.
  
@@ -85,7 +85,7 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 - [1] https://www.owasp.org/index.php/Testing_for_logout_functionality_(OTG-SESS-006)
 - [2] https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
-### <a name="[Anchor, e.g.: OMTG-DATAST-003]"></a>OMTG-AUTH-003:Testing the Session Timeout
+### OMTG-AUTH-003:Testing the Session Timeout
 #### Overview
 Compared to web applications most mobile applications don’t have a session timeout mechanism that terminates the session after some period of inactivity and force the user to login again. For most mobile applications users need to enter the credentials once. After authenticating on server side an access token is stored on the device which is used to authenticate. If the token is about to expire the token will be renewed without entering the credentials again. Applications that handle sensitive data like patient data or critical functions like financial transactions should implement a session timeout as a security-in-depth measure that forces users to re-login after a defined period.
  
@@ -144,7 +144,7 @@ End<br>
 - [1] OWASP web application test guide https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
 - [2] OWASP Session management cheatsheet https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
-### <a name="[Anchor, e.g.: OMTG-DATAST-004]"></a>OMTG-AUTH-004:Testing Excessive Login Attempts
+### OMTG-AUTH-004:Testing Excessive Login Attempts
 #### Overview
 We all have heard about brute force attacks, right? That is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of username and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be compromised.
  
