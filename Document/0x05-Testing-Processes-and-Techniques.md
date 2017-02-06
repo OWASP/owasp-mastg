@@ -1,5 +1,10 @@
 # Testing Processes and Techniques
 
+## Difference to Web Application Vulnerabilites
+
+XSS, CSRF etc. 
+** ToDo for Sven **
+
 ## Static Analysis
 
 
