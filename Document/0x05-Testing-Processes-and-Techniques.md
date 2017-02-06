@@ -3,7 +3,8 @@
 ## Difference to Web Application Vulnerabilites
 
 XSS, CSRF etc. 
-** ToDo for Sven **
+
+(.. TODO ..) Will be done by Sven
 
 ## Static Analysis
 
