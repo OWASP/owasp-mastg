@@ -2,9 +2,22 @@
 
 ## Difference to Web Application Vulnerabilites
 
-XSS, CSRF etc. 
+### Cross-Site Scripting (XSS)
 
-(.. TODO ..) Will be done by Sven
+A typical reflected XSS attack is executed by sending a URL to the victim(s) that contains the XSS exploit to connect to some exploitation framework like BeeF [2]. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical reflected Cross-Site Scripting attack that targets a WebView in an App will not work.
+
+If an attacker finds a stored Cross-Site Scripting in an endpoint, then the exploit will be sent back within the response. The XSS attack will then be executed within the WebView. This can become dangerous in case:
+
+* JavaScript is not deactivated in the WebView (see OMTG-ENV-005)
+* File access is not deactivated in the WebView (see OMTG-ENV-006)
+* The function addJavascriptInterface() is used (see OMTG-ENV-008)
+
+As a summary reflected XSS is no concern for a mobile App, but stored XSS can become a dangerous vulnerability if the WebView in use is lax configured.
+
+### Cross-Site Request Forgery (CSRF)
+
+The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like user creation of triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an App is not applicable.
+
 
 ## Static Analysis
 
