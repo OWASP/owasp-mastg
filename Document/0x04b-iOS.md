@@ -76,16 +76,24 @@ $ ipainstaller App_in_scope.ipa
 
 Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison [1].
 
-To protect regular apps downloaded from the App Store, iOS implements a version of Apple FairPlay. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account.
+(... TODO ... Code signing)
 
-To sum up is two regular ways of running apps on a device:
+In addition to code signing, *FairPlay Code Encryption* is applied to apps downloaded from the App Store. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account. The private key is stored securely on your device. This means that Fairplay-encrypted code can be decrypted only on devices associated with your account (TODO... this needs to be more specific). The usual way to obtain reverse FairPlay encryption is to run the app on the device and then dump the decrypted code from memory (see also "Basic Security Testing on iOS").
 
-(... Todo ...)
+### The App Sandbox
+
+In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releasees of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include [3]:
+
+- The app process is restricted to it's own directory(below /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism.
+- The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable, preventing processes  from executing dynamically generated code. In combination with code signing and FairPlay, this places strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
+- Isolation from other running processes, even if they are owned by the same UID;
+- Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
+
+### References
 
 - [1] Apple's Crystal Prison and the Future of Open Platforms - https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms
 - [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
-
-### References
+- [3] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
 
 + [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
 + [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)

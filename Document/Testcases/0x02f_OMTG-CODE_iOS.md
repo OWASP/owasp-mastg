@@ -1,4 +1,4 @@
-### <a name="OMTG-CODE-001"></a>OMTG-CODE-001: Verify that the App is Properly Signed
+### OMTG-CODE-001: Verify that the App is Properly Signed
 
 #### Overview
 
@@ -16,7 +16,7 @@
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
-### <a name="OMTG-CODE-002"></a>OMTG-CODE-002: Test whether the App is Debuggable
+### OMTG-CODE-002: Test whether the App is Debuggable
 
 #### Overview
 
@@ -40,30 +40,33 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 (TODO)
 
-### <a name="OMTG-CODE-003"></a>OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
+### OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
 
 #### Overview
 
 As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
-By default, Mach-O binaries have a symbol table that contains debugging information, including the names of functions, global variables and types used in the executable. This information is used to resolve references when linking dynamic libraries, and also makes it easier to keep track of the semantics of the code and debugging crashes. It can however be stripped from the release build, unless the goal is to release a dynamic library for public use.
 
-#### White-box Testing
+These symbols can be saved either in "Stabs" format or the DWARF format. When using the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. With the DWARF format, debugging symbols are stored in a special "__DWARF" segment within the the binary. DWARF debugging symbols can also be saved a separate debug-information file. In this test case, you verify that no debug symbols are contained in the release binary itself (either in the symbol table, ot the __DWARF segment).
 
-(TODO)
+#### Static Analysis
 
-#### Black-box Testing
-
-Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
+Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
 ~~~~
-berndt@osboxes:~/ $ objdump -t my_library.so
-my_library.so:     file format elf32-little
+$ gobjdump --stabs --dwarf TargetApp
+In archive MyTargetApp:
 
-SYMBOL TABLE:
-no symbols
+armv5te:     file format mach-o-arm
+
+
+aarch64:     file format mach-o-arm64
 ~~~~
 
-Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
+Gobjdump is part of binutils [1] and can be installed via Homebrew.
+
+#### Dynamic Analysis
+
+Not applicable.
 
 #### Remediation
 
@@ -71,9 +74,9 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+- [1] https://www.gnu.org/s/binutils/
 
-### <a name="OMTG-CODE-004"></a>OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
+### OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
 
 #### Overview
 
@@ -91,7 +94,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-005"></a>OMTG-CODE-005: Test Exception Handling
+### OMTG-CODE-005: Test Exception Handling
 
 #### Overview
 
@@ -102,7 +105,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
-* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user. 
+* Verify that the application doesn't expose sensitive information while handeling exceptions, but are still verbose enough to explain the issue to the user.
 * C3
 
 #### Black-box Testing
@@ -117,7 +120,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-006"></a>OMTG-CODE-006: Verify that the App Fails Securely
+### OMTG-CODE-006: Verify that the App Fails Securely
 
 #### Overview
 
@@ -137,29 +140,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-007"></a>OMTG-CODE-007: Test Input Validation
-
-#### Overview
-
-(Give an overview about the functionality and it's potential weaknesses)
-
-#### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-- [link to relevant how-tos, papers, etc.]
-
-### <a name="OMTG-CODE-008"></a>OMTG-CODE-008: Test Memory Management
+### OMTG-CODE-007: Test Input Validation
 
 #### Overview
 
@@ -181,7 +162,29 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### <a name="OMTG-CODE-009"></a>OMTG-CODE-009: Test Compiler Settings
+### OMTG-CODE-008: Test Memory Management
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
+#### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+#### Black-box Testing
+
+[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+#### References
+
+- [link to relevant how-tos, papers, etc.]
+
+### OMTG-CODE-009: Test Compiler Settings
 
 #### Overview
 
@@ -209,7 +212,7 @@ If the application was compiled with the stack smashing protection two undefined
 $ otool -Iv <app name> | grep PIE
 ```
 
-If the above command emit no output then the PIE protection isn't enabled. 
+If the above command emit no output then the PIE protection isn't enabled.
 
 * Check the ACR protection is enabled :
 
@@ -227,9 +230,9 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 #### Remediation
 
-* Stack smashing protection 
+* Stack smashing protection
 
-Steps for enabling Stack smashing protection within an iOS application :
+Steps for enabling Stack smashing protection within an iOS application:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
 1. Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
@@ -243,7 +246,7 @@ Steps for building an iOS application as PIE :
 1. Verify that "Generate Position-Dependent Code" is set at its default value of NO.
 1. Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
 
-* ARC protection 
+* ARC protection
 
 Steps for enabling ACR protection within an iOS application :
 
@@ -255,6 +258,6 @@ Steps for enabling ACR protection within an iOS application :
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
 
-### <a name="OMTG-CODE-010"></a>OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
+### OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
 
 Not applicable on iOS.

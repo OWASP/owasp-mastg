@@ -1,10 +1,7 @@
-## Android
+## Basic Security Testing on Android
 
 ### Most Common Attacks
 --TODO : Cf OWASP Mobile Top 10 at https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10. Consider Permissions, Leakage from Logs and IPC Endpoint (In)Security --
-
-### Android Security Mechanisms
--- TODO : for all, check if not duplicate with previous chapter!!! Sandbox (Dalvik / ART according to API level), IPC mechanism and Reference monitor, Binder, Discretionary - Mandatory Access Control / UID - GID / Filesystem, Applicative Architecture of an application : Permissions & Manifest, Application Signing. May be a part of Static / Dynamic Analysis chapter : each security mechanism efficiency can be checked at a given phase. --
 
 ### Setting Up Your Testing Environment
 #### Hardware Considerations
@@ -29,3 +26,5 @@
 
 ### Dynamic Analysis
 -- TODO : Description, what it can bring --
+
+### References

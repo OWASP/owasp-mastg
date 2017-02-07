@@ -1,7 +1,6 @@
 ## Android
 
-
-### <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Sensitive Data in Local Storage
+### OMTG-DATAST-001: Test for Sensitive Data in Local Storage
 
 #### Overview
 
@@ -251,7 +250,7 @@ The following is a list of best practice used for secure storage of certificates
 * [SQLite3][3b9b0b6f]
 
 
-### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
+### OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
@@ -339,84 +338,8 @@ public static int wtf(...);
 * CWE-534: Information Exposure Through Debug Log Files
 
 
-### <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
-#### Overview
-
-Android provides two ways for Apps to backup their data to the cloud:
-* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
-* Key/Value Backup (Backup API), which uploads the data to the Android Backup Service.
-
-#### Static Analysis
-
-Regardless of using either key/value or auto backup, it need to be identified:
-* what files are sent to the cloud (e.g. SharedPreferences),
-* if the files contain sensitive information,
-* if sensitive information is protected through encryption before sending it to the cloud.
-
-##### Auto Backup
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. If this attribute is not available auto backup is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
-
-```xml
-<application ...
-    android:allowBackup="true">
-</app>
-```
-
-The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Oder Android version will be using key/value backup instead.
-
-```xml
-android:fullBackupOnly
-```
-
-Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
-
-##### Key/Value Backup
-To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
-
-```xml
-android:backupAgent
-```
-
-To implement the key/value backup, either one of the following classes need to be extended:
-* BackupAgent
-* BackupAgentHelper
-
-
-#### Dynamic Analysis
-
-The APK should be decompiled in order to read the manifest file **[LINK TO GUIDE TO DECOMPILE APK]**. According to the attributes set, it can be identified if backup features are used or not. See White-box testing for details.
-
-#### Remediation
-
-Sensitive information should not be sent in clear text to the cloud. It should either be:
-
-* avoided to store the information in the first place or
-* encrypt the information in rest, before sending it to the cloud.
-
-Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
-
-#### References
-
-* [Backing up App Data to the Cloud][fd7bd757]
-* [Key/Value Backup][1aee61a9]
-* [BackupAgentHelper][48d8d464]
-* [BackupAgent][03c7b547]
-* [Auto Backup][bf8bd4ca]
-
-##### OWASP MASVS
-
-- V2.3: "No sensitive data is synced with cloud storage."
-
-##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
-
-##### CWE
-- CWE-200: Information Exposure [https://cwe.mitre.org/data/definitions/200.html]
-
-
-### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Whether Sensitive Data is Sent to Third Parties
+### OMTG-DATAST-003: Test Whether Sensitive Data is Sent to Third Parties
 
 #### Overview
 
@@ -455,7 +378,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 ##### OWASP MASVS
 
-- V2.4: "No sensitive data is sent to third parties."
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -465,7 +388,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 
-### <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
+### OMTG-DATAST-004: Test for Disabled Keyboard Cache for Text Input Fields
 
 #### Overview
 
@@ -500,7 +423,7 @@ android:inputType="textNoSuggestions"
 
 ##### OWASP MASVS
 
-- V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -510,7 +433,8 @@ android:inputType="textNoSuggestions"
 - CWE-524: Information Exposure Through Caching
 
 
-### <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
+
+### OMTG-DATAST-005: Test for Sensitive Data in the Clipboard
 
 #### Overview
 
@@ -564,7 +488,7 @@ android:longClickable="false"
 
 ##### OWASP MASVS
 
-- V2.6: "The clipboard is deactivated on text fields that may contain sensitive data."
+- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -573,7 +497,8 @@ android:longClickable="false"
 ##### CWE
 - CWE: [Link to CWE issue]
 
-### <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
+
+### OMTG-DATAST-006: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -713,7 +638,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 ##### OWASP MASVS
 
-- V2.7: "No sensitive data is exposed via IPC mechanisms."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -723,8 +648,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-
-### <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots and the Screen
+### OMTG-DATAST-007: Test for Sensitive Data in Screenshots and the Screen
 
 #### Overview
 
@@ -745,7 +669,7 @@ If not, the application is probably vulnerable to screen capturing.
 
 **(..TODO..) - Masking of sensitive data in input fields, how can it be implemented in Android**
 
-### Dynamic Analysis
+#### Dynamic Analysis
 
 To analyse if the application leaks any sensitive information, run the application on a device and try to acquire a screenshot of the activity or activities you want to test.
 
@@ -781,7 +705,7 @@ Note that this would automatically prevent the user from taking a manual screens
 
 ##### OWASP MASVS
 
-- V2.8: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
+- V2.7: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
 
 ##### OWASP Mobile Top 10
 * M4 - Unintended Data Leakage
@@ -790,16 +714,22 @@ Note that this would automatically prevent the user from taking a manual screens
 - [CWE-200: Information Exposure](https://cwe.mitre.org/data/definitions/200.html)
 
 
-### <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
+
+### OMTG-DATAST-008: Test for Sensitive Data in Backups
 
 #### Overview
 
-When backup options are available, it is important to consider that user data may be stored within application configuration data.  This feature could potentially leak sensitive information such as sessions, usernames, email addresses, passwords, keys and much more.
-Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required.
+When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifier, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
+
+Besides a local backup, Android provides two ways for Apps to backup their data to the cloud:
+* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
+* Key/Value Backup (Backup API or Android Backup Service), which uploads the data to the Android Backup Service.
 
 #### Static Analysis
 
-In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows user to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+##### Local
+
+In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -809,7 +739,36 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory.
+If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory after using it extensively.
+
+
+Regardless of using either key/value or auto backup, it need to be identified:
+* what files are sent to the cloud (e.g. SharedPreferences),
+* if the files contain sensitive information,
+* if sensitive information is protected through encryption before sending it to the cloud.
+
+##### Auto Backup
+When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Other Android version will be using key/value backup instead.
+
+```xml
+android:fullBackupOnly
+```
+
+Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
+
+##### Key/Value Backup
+To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+
+```xml
+android:backupAgent
+```
+
+To implement the key/value backup, either one of the following classes need to be extended:
+* BackupAgent
+* BackupAgentHelper
+
+Look for these classes within the source code to check for implementations of Key/Value backup.
+
 
 #### Dynamic Analysis
 
@@ -840,15 +799,29 @@ $ tar xvf mybackup.tar
 
 #### Remediation
 
-To prevent backing up the app's data, set the `android:allowBackup` attribute must be set to **false** in `AndroidManifest.xml`.
+To prevent backing up the app's data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
+
+Sensitive information should not be sent in clear text to the cloud. It should either be:
+
+* avoided to store the information in the first place or
+* encrypt the information in rest, before sending it to the cloud.
+
+Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
+
 
 #### References
 
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
+* [Backing up App Data to the Cloud][fd7bd757]
+* [Key/Value Backup][1aee61a9]
+* [BackupAgentHelper][48d8d464]
+* [BackupAgent][03c7b547]
+* [Auto Backup][bf8bd4ca]
+
 
 ##### OWASP MASVS
 
-- V2.9: "No sensitive data is included in backups."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -858,7 +831,8 @@ To prevent backing up the app's data, set the `android:allowBackup` attribute mu
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for sensitive information in screenshots when App is backgrounded
+
+### OMTG-DATAST-009: Test for sensitive information in screenshots when App is backgrounded
 
 #### Overview
 
@@ -906,7 +880,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 
 ##### OWASP MASVS
 
-- V2.10: "The app removes sensitive data from views when backgrounded."
+- V2.9: "The app removes sensitive data from views when backgrounded."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -916,7 +890,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data in Memory
+### OMTG-DATAST-010: Test for Sensitive Data in Memory
 
 #### Overview
 
@@ -979,7 +953,7 @@ Tools:
 
 * OWASP MASVS
 
-- V2.11: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -989,7 +963,7 @@ Tools:
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test Enforcement of Device-Access-Security Policy
+### OMTG-DATAST-011: Test Enforcement of Device-Access-Security Policy
 
 #### Overview
 
@@ -1026,12 +1000,62 @@ Different checks on the Android device can be implemented by querying different 
 
 ##### OWASP MASVS
 
-- V2-13: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
 
 ##### CWE
 - CWE: [Link to CWE issue] - (.. TODO ..)
+
+
+### OMTG-DATAST-012: Test for User Education
+
+#### Overview
+
+Educating users is a crucial part in the usage of mobile Apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
+
+The following list shows potential warnings or advises for a user when opening the App the first time and using it:
+* App shows after starting it the first time a list of data it is storing locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
+* If a new user account is created within the App it should show the user if the password provided is considered as secure and applies to best practice password policies.
+* If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
+* If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
+
+**(..TODO..) - What else can be a warning on Android?**
+
+#### Static Analysis
+
+**...TODO...**
+
+#### Dynamic Analysis
+
+After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
+**...TODO...**
+
+#### Remediation
+
+Warnings should be implemented that address the key points listed in the overview section.
+**...TODO...**
+
+#### References
+
+**...TODO...**
+
+##### OWASP MASVS
+
+- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+
+##### CWE
+- CWE: [Link to CWE issue] - **.. TODO ...**
+
+
+
+
+
+
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->

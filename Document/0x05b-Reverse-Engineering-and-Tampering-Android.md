@@ -51,8 +51,7 @@ This is where dedicated Java de-compilers become useful. JEB, a commercial decom
 
 ###### Angr
 
-
-##### Emulation/Introspection based
+##### Emulation/Introspection-Based
 
 ###### DroidScope
 
@@ -80,7 +79,6 @@ https://github.com/moyix/panda/blob/master/docs/
 
 Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
 
-
 #### References - Tools Section
 
 TODO
@@ -92,7 +90,7 @@ TODO
 - [5]
 - [6]
 
-### Manipulating Android Apps
+### Tampering and Instrumentation
 
 #### Patching and Re-Packaging
 
@@ -162,7 +160,7 @@ In this context, return-void means that no certificate checks are performed and 
   invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 ```
 
-#### Hooking Java methods with Xposed
+#### Hooking Java Methods with Xposed
 
 Xposed is a "framework for modules that can change the behavior of the system and apps without touching any APKs" [1]. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. By running Java code in the context of the newly instantiated app, it is possible to resolve, hook and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the runtime of the process - no patches to the application files are made.
 
@@ -267,9 +265,9 @@ script.load()
 sys.stdin.read()
 ```
 
-### Reverse Engineering on Android
+### Program Comprehension
 
-#### Statically Analyzing Java Code
+#### Decompiling and Analyzing Java Code
 
 TODO: Pulling APK File from the device
 
@@ -600,7 +598,7 @@ asmlinkage int (*real_openat)(int, const char __user*, int);
 
 void **sys_call_table;
 
-int new_openat(int dirfd, const char __user* pathname, int flags)
+int new_openat(int dirfd, const char \__user* pathname, int flags)
 {
   char *kbuf;
   size_t len;
@@ -760,7 +758,7 @@ Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all userm
 
 File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [x]
 
-### <a name="binary_analysis"></a>Automating Binary Analysis Tasks
+### Automating Binary Analysis Tasks
 
 Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
@@ -780,8 +778,8 @@ Quite comprehensive documentation for angr is available on Gitbooks, including a
 
 ##### Using the Disassembler Backends
 
-
-##### <a name="symbolic_exec"></a>Symbolic Execution
+<a name="symbolicexec"></a>
+##### Symbolic Execution
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 

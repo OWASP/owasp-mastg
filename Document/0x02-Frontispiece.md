@@ -11,13 +11,11 @@ http://owasp.herokuapp.com/
 ## Copyright and License
 
 ![license](images/license.png)
-Copyright © 2016 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © 2017 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
 
-<a name="acknowledgements"></a>
-
-| Project Leaders | Core Authors | Contributors | Reviewers |
+| Project Leaders | Authors | Contributors | Reviewers |
 | --- | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa | Gerhard Wagner, Jin Kung Ong, Alexander Antukh, Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
+| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa | Gerhard Wagner, Daniel Ramirez Martin, Jin Kung Ong, Alexander Antukh, Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
 
 Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [author's guide](../authors_guide.md#credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks.
 
@@ -29,7 +27,7 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
-| Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
+| Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
 
 ### OWASP MSTG Beta 1 (Google Doc)
 
