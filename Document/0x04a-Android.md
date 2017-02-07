@@ -167,11 +167,11 @@ On Android versions before Marshmallow (API 23) all permissions requested by an 
 
 ##### Protection Levels
 Android permissions are classified in four different categories based on the protection level it offers.
-- *Normal*: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted at installation. It is the default value.
+- *Normal*: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value.
 Example: `android.permission.INTERNET`
 - *Dangerous*: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not.
 Example: `android.permission.RECORD_AUDIO`
-- *Signature*: This permission is granted only the the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted.
+- *Signature*: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted.
 Example: `android.permission.ACCESS_MOCK_LOCATION`
 - *SystemOrSignature*: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
@@ -205,7 +205,7 @@ The example below shows an application declaring a permission of protection leve
 Only applications signed with the same developer certificate can use this permission.
 
 ##### Enforcing Permissions on Android Components
-It is possible to protect Android components using permissions. Activities, Services, Content Providers and Content Providers all can use the permission mechanism to protect its interfaces.
+It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers all can use the permission mechanism to protect its interfaces.
 *Activities*, *Services* and *Broadcast Receivers* can enforce a permission by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
 ```
 <receiver
@@ -215,7 +215,7 @@ It is possible to protect Android components using permissions. Activities, Serv
     ...
 </receiver>
 ```
-*Content Providers* are a little bit different it that they allow separate permissions for read, write or access the Content Provider using a content URI.
+*Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
 - `android:writePermission`, `android:readPermission`: The developer can set separate permissions to read or write.
 - `android:permission`: General permission that will control read and write to the Content Provider.
 - `android:grantUriPermissions`: True if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
