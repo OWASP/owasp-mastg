@@ -177,7 +177,7 @@ Example: `android.permission.ACCESS_MOCK_LOCATION`
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 ##### Requesting Permissions
-Applications can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permisison />` to its Android Manifest file.
+Applications can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
 The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
