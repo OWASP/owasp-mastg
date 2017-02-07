@@ -1,7 +1,6 @@
 ## Android
 
-
-### <a name="OMTG-DATAST-001"></a>OMTG-DATAST-001: Test for Sensitive Data in Local Storage
+### OMTG-DATAST-001: Test for Sensitive Data in Local Storage
 
 #### Overview
 
@@ -142,7 +141,7 @@ This vulnerability occurs when sensitive data is not properly protected by an ap
 This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from Apps that have a payment option in order to attack and abuse it.
 
 
-#### White-box Testing
+#### Static Analysis
 
 ##### Local Storage
 
@@ -182,7 +181,7 @@ The code should also be analysed if sensitive data is used properly and securely
 * Use immutable objects for sensitive data so it cannot be changed.
 
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Install and use the App as it is intended and execute all functions at least once. Afterwards check the following items:
 
@@ -251,7 +250,7 @@ The following is a list of best practice used for secure storage of certificates
 * [SQLite3][3b9b0b6f]
 
 
-### <a name="OMTG-DATAST-002"></a>OMTG-DATAST-002: Test for Sensitive Data in Logs
+### OMTG-DATAST-002: Test for Sensitive Data in Logs
 
 #### Overview
 
@@ -265,7 +264,7 @@ Log files can be created in various ways on each of the different operating syst
 
 Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
 
-#### White-box Testing
+#### Static Analysis
 
 Check the source code for usage of Logging functions, by searching for the following terms:
 
@@ -280,7 +279,7 @@ Check the source code for usage of Logging functions, by searching for the follo
   * logs
   * `System.out.print` | `System.out.println`
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Use the mobile app extensively so that all functionality is at least triggered once.
 
@@ -339,84 +338,8 @@ public static int wtf(...);
 * CWE-534: Information Exposure Through Debug Log Files
 
 
-### <a name="OMTG-DATAST-003"></a>OMTG-DATAST-003: Test for Sensitive Data in Cloud Storage
 
-#### Overview
-
-Android provides two ways for Apps to backup their data to the cloud:
-* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
-* Key/Value Backup (Backup API), which uploads the data to the Android Backup Service.
-
-#### White-box Testing
-
-Regardless of using either key/value or auto backup, it need to be identified:
-* what files are sent to the cloud (e.g. SharedPreferences),
-* if the files contain sensitive information,
-* if sensitive information is protected through encryption before sending it to the cloud.
-
-##### Auto Backup
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. If this attribute is not available auto backup is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
-
-```xml
-<application ...
-    android:allowBackup="true">
-</app>
-```
-
-The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Oder Android version will be using key/value backup instead.
-
-```xml
-android:fullBackupOnly
-```
-
-Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
-
-##### Key/Value Backup
-To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
-
-```xml
-android:backupAgent
-```
-
-To implement the key/value backup, either one of the following classes need to be extended:
-* BackupAgent
-* BackupAgentHelper
-
-
-#### Black-box Testing
-
-The APK should be decompiled in order to read the manifest file **[LINK TO GUIDE TO DECOMPILE APK]**. According to the attributes set, it can be identified if backup features are used or not. See White-box testing for details.
-
-#### Remediation
-
-Sensitive information should not be sent in clear text to the cloud. It should either be:
-
-* avoided to store the information in the first place or
-* encrypt the information in rest, before sending it to the cloud.
-
-Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
-
-#### References
-
-* [Backing up App Data to the Cloud][fd7bd757]
-* [Key/Value Backup][1aee61a9]
-* [BackupAgentHelper][48d8d464]
-* [BackupAgent][03c7b547]
-* [Auto Backup][bf8bd4ca]
-
-##### OWASP MASVS
-
-- V2.3: "No sensitive data is synced with cloud storage."
-
-##### OWASP Mobile Top 10
-* M1 - Improper Platform Usage
-* M2 - Insecure Data Storage
-
-##### CWE
-- CWE-200: Information Exposure [https://cwe.mitre.org/data/definitions/200.html]
-
-
-### <a name="OMTG-DATAST-004"></a>OMTG-DATAST-004: Test Whether Sensitive Data is Sent to Third Parties
+### OMTG-DATAST-003: Test Whether Sensitive Data is Sent to Third Parties
 
 #### Overview
 
@@ -427,7 +350,7 @@ The downside is that a developer doesn’t know in detail what code is executed 
 * By using a standalone library, like a Jar in an Android project that is getting included into the APK.
 * By using a full SDK.
 
-#### White-box Testing
+#### Static Analysis
 
 Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the `AnroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also **OMTG-ENV-XXX**. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
 
@@ -435,7 +358,7 @@ The same thing applies when adding a library or SDK manually. The source code sh
 
 The libraries loaded into the project should be reviewed in order to identify with the developers if they are needed and also if they are out of date and contain known vulnerabilities.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 All requests made to the external service should be analyzed if any sensitive information is embedded into them.
 * Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service.
@@ -455,7 +378,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 ##### OWASP MASVS
 
-- V2.4: "No sensitive data is sent to third parties."
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -464,13 +387,14 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 ##### CWE
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
-### <a name="OMTG-DATAST-005"></a>OMTG-DATAST-005: Test for Sensitive Data in the Keyboard Cache
+
+### OMTG-DATAST-004: Test for Disabled Keyboard Cache for Text Input Fields
 
 #### Overview
 
 When keying in data into input fields, the software keyboard automatically suggests what data the user might want to key in. This feature can be very useful in messaging Apps to write text messages more efficient. For input fields that are asking for sensitive information like passwords or credit card data the keyboard cache might disclose sensitive information already when the input field is selected. This feature should therefore be disabled for input fields that are asking for sensitive information.
 
-#### White-box Testing
+#### Static Analysis
 
 In the layout definition of an activity, TextViews can be defined that have XML attributes. When the XML attribute android:inputType is set with the constant "textNoSuggestions" the keyboard cache is not shown if the input field is selected. Only the keyboard is shown and the user needs to type everything manually and nothing is suggested to him.
 
@@ -481,7 +405,7 @@ In the layout definition of an activity, TextViews can be defined that have XML 
 ```
 
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Start the app and click into the input fields that ask for sensitive data. If strings are suggested the keyboard cache is not disabled for this input field.
 
@@ -499,7 +423,7 @@ android:inputType="textNoSuggestions"
 
 ##### OWASP MASVS
 
-- V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -509,18 +433,19 @@ android:inputType="textNoSuggestions"
 - CWE-524: Information Exposure Through Caching
 
 
-### <a name="OMTG-DATAST-006"></a>OMTG-DATAST-006: Test for Sensitive Data in the Clipboard
+
+### OMTG-DATAST-005: Test for Sensitive Data in the Clipboard
 
 #### Overview
 
 (... TODO ...)
 
 
-#### White-box Testing
+#### Static Analysis
 
 Input fields that are asking for sensitive information need to be identified and afterwards be investigated if any countermeasures are in place to mitigate the clipboard of showing up. See the remediation section for code snippets that could be applied.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Start the app and click into the input fields that ask for sensitive data. When it's possible to get the menu to copy/paste data the functionality is not disabled for this input field.
 
@@ -563,7 +488,7 @@ android:longClickable="false"
 
 ##### OWASP MASVS
 
-- V2.6: "The clipboard is deactivated on text fields that may contain sensitive data."
+- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -572,7 +497,8 @@ android:longClickable="false"
 ##### CWE
 - CWE: [Link to CWE issue]
 
-### <a name="OMTG-DATAST-007"></a>OMTG-DATAST-007: Test If Sensitive Data Is Exposed via IPC Mechanisms
+
+### OMTG-DATAST-006: Test If Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -586,7 +512,7 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 * [Intents][a28d43d1]
 * [ContentProviders][6a30e426]
 
-#### White-box Testing
+#### Static Analysis
 
 The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the App. You will want to identify elements such as:
 
@@ -658,7 +584,7 @@ private void vulnerableBroadcastFunction() {
   this.sendBroadcast(VulnIntent);
 ```
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Similar to the White-box testing, you should decompile the application (if possible) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
 
@@ -712,7 +638,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 ##### OWASP MASVS
 
-- V2.7: "No sensitive data is exposed via IPC mechanisms."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -722,8 +648,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-
-### <a name="OMTG-DATAST-008"></a>OMTG-DATAST-008: Test for Sensitive Data in Screenshots and the Screen
+### OMTG-DATAST-007: Test for Sensitive Data in Screenshots and the Screen
 
 #### Overview
 
@@ -731,7 +656,7 @@ Sensitive data could be exposed if a user deliberately takes a screenshot of the
 
 Masking of sensitive data when presented within an activity of an App should also be enforced to prevent disclosure and mitigate for example shoulder surfing.
 
-#### White-box Testing
+#### Static Analysis
 
 To verify if the application may expose sensitive information via the user interface or screenshot, detect if the `[FLAG_SECURE][ee87d351]` options is set in the activity that needs to be protected.
 
@@ -744,7 +669,7 @@ If not, the application is probably vulnerable to screen capturing.
 
 **(..TODO..) - Masking of sensitive data in input fields, how can it be implemented in Android**
 
-### Black-box Testing
+#### Dynamic Analysis
 
 To analyse if the application leaks any sensitive information, run the application on a device and try to acquire a screenshot of the activity or activities you want to test.
 
@@ -780,7 +705,7 @@ Note that this would automatically prevent the user from taking a manual screens
 
 ##### OWASP MASVS
 
-- V2.8: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
+- V2.7: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
 
 ##### OWASP Mobile Top 10
 * M4 - Unintended Data Leakage
@@ -789,16 +714,22 @@ Note that this would automatically prevent the user from taking a manual screens
 - [CWE-200: Information Exposure](https://cwe.mitre.org/data/definitions/200.html)
 
 
-### <a name="OMTG-DATAST-009"></a>OMTG-DATAST-009: Test for Sensitive Data in Backups
+
+### OMTG-DATAST-008: Test for Sensitive Data in Backups
 
 #### Overview
 
-When backup options are available, it is important to consider that user data may be stored within application configuration data.  This feature could potentially leak sensitive information such as sessions, usernames, email addresses, passwords, keys and much more.
-Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required.
+When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifier, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
 
-#### White-box Testing
+Besides a local backup, Android provides two ways for Apps to backup their data to the cloud:
+* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
+* Key/Value Backup (Backup API or Android Backup Service), which uploads the data to the Android Backup Service.
 
-In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows user to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+#### Static Analysis
+
+##### Local
+
+In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -808,9 +739,38 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory.
+If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory after using it extensively.
 
-#### Black-box Testing
+
+Regardless of using either key/value or auto backup, it need to be identified:
+* what files are sent to the cloud (e.g. SharedPreferences),
+* if the files contain sensitive information,
+* if sensitive information is protected through encryption before sending it to the cloud.
+
+##### Auto Backup
+When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Other Android version will be using key/value backup instead.
+
+```xml
+android:fullBackupOnly
+```
+
+Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
+
+##### Key/Value Backup
+To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+
+```xml
+android:backupAgent
+```
+
+To implement the key/value backup, either one of the following classes need to be extended:
+* BackupAgent
+* BackupAgentHelper
+
+Look for these classes within the source code to check for implementations of Key/Value backup.
+
+
+#### Dynamic Analysis
 
 Attempt to make a backup using `adb` and, if successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
@@ -839,15 +799,29 @@ $ tar xvf mybackup.tar
 
 #### Remediation
 
-To prevent backing up the app's data, set the `android:allowBackup` attribute must be set to **false** in `AndroidManifest.xml`.
+To prevent backing up the app's data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
+
+Sensitive information should not be sent in clear text to the cloud. It should either be:
+
+* avoided to store the information in the first place or
+* encrypt the information in rest, before sending it to the cloud.
+
+Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
+
 
 #### References
 
 - Documentation for the Application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
+* [Backing up App Data to the Cloud][fd7bd757]
+* [Key/Value Backup][1aee61a9]
+* [BackupAgentHelper][48d8d464]
+* [BackupAgent][03c7b547]
+* [Auto Backup][bf8bd4ca]
+
 
 ##### OWASP MASVS
 
-- V2.9: "No sensitive data is included in backups."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -857,13 +831,14 @@ To prevent backing up the app's data, set the `android:allowBackup` attribute mu
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### <a name="OMTG-DATAST-010"></a>OMTG-DATAST-010: Test for sensitive information in screenshots when App is backgrounded
+
+### OMTG-DATAST-009: Test for sensitive information in screenshots when App is backgrounded
 
 #### Overview
 
 Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
 
-#### White-box Testing
+#### Static Analysis
 
 In Android, when the App goes into background a screenshot of the current activity is taken and is used to give a pleasing effect when the App is next entered. However, this would leak sensitive information that is present within the App.
 
@@ -874,7 +849,7 @@ LayoutParams.FLAG_SECURE
 ```
 If not, the application is probably vulnerable to screen capturing.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 During black-box testing, open any screen within the App that contains sensitive information and click on Home button so that the App goes into background. Now press the task-switcher button, to see the snapshot. As showed below, if `SECURE_FLAG` is set (image on the left), the snapshot is entirely black, while if the `SECURE_FLAG` is not set (image on the right), information within the activity are shown:
 
@@ -905,7 +880,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 
 ##### OWASP MASVS
 
-- V2.10: "The app removes sensitive data from views when backgrounded."
+- V2.9: "The app removes sensitive data from views when backgrounded."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -915,7 +890,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### <a name="OMTG-DATAST-011"></a>OMTG-DATAST-011: Test for Sensitive Data in Memory
+### OMTG-DATAST-010: Test for Sensitive Data in Memory
 
 #### Overview
 
@@ -924,11 +899,11 @@ Analyzing the memory can help to identify the root cause of different problems, 
 To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the decompiled code before making any memory analysis.
 Once sensitive functions are identified (like decryption of data) the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
 
-#### White-box Testing
+#### Static Analysis
 
 It needs to be identified within the code when sensitive information is stored within a variable or processed and is therefore available within the memory. This information can then be used in dynamic testing when using the App.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 To analyse the memory of an App, the app must be **debuggable**.
 See the instructions in XXX (**#TODO-Link to repackage and sign**) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
@@ -978,7 +953,7 @@ Tools:
 
 * OWASP MASVS
 
-- V2.11: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
@@ -988,84 +963,99 @@ Tools:
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-
-### <a name="OMTG-DATAST-012"></a>OMTG-DATAST-012: Test if local storage is wiped upon remote locking
+### OMTG-DATAST-011: Test Enforcement of Device-Access-Security Policy
 
 #### Overview
 
+Apps that are processing or querying for sensitive information should ensure that they are running on a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
 
-#### White-box Testing
+* PIN or password set to unlock the device
+* Usage of a minimum Android OS version
+* Detection of activated USB Debugging
+* Detection of encrypted device
+* Detection of rooted device (see also OMTG-ENV-006)
 
 
-#### Black-box Testing
+#### Static Analysis
 
+In oder to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy need to be provided. The policy should define what checks are available and how they are enforced. For example one check could enforce that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
 
+The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
+
+#### Dynamic Analysis
+
+The dynamic analysis depends on the checks that are enforced by App and their expected behavior and need to be checked if they can be bypassed.
 
 #### Remediation
 
+Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanism to create security aware applications, that are able to enforce password policies or encryption of the device.
 
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+- [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
+- [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
 
 #### References
 
 ##### OWASP MASVS
 
-- V2-12: "If a remote locking mechanism exists, local storage is wiped upon locking."
+- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+- CWE: [Link to CWE issue] - (.. TODO ..)
 
 
-
-### <a name="OMTG-DATAST-013"></a>OMTG-DATAST-013: Test Enforcement of Device-Access-Security Policy
+### OMTG-DATAST-012: Test for User Education
 
 #### Overview
 
-Usage of mobile devices is omnipresent within every enterprise and is also ever-increasing through the _"Bring your own device"_ (BYOD) mentality. In order to be able as an enterprise to manage also personal mobile devices of the employees that are used in the corporate network, Mobile Device Management solutions are in place to achieve exactly this. Different enterprise solutions are out there and can enforce for example the following:
+Educating users is a crucial part in the usage of mobile Apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
 
-* Strong PIN or password to unlock the device
-* Remote locking and wiping of a device when lost (see also OMTG-DATAST-012)
-* Revoke access if employee leaves the company
-* Usage of the latest Android OS version
-* Disable USB file transfer
-* Disable Hotspot usage
+The following list shows potential warnings or advises for a user when opening the App the first time and using it:
+* App shows after starting it the first time a list of data it is storing locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
+* If a new user account is created within the App it should show the user if the password provided is considered as secure and applies to best practice password policies.
+* If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
+* If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
-#### White-box Testing
+**(..TODO..) - What else can be a warning on Android?**
 
-In oder to be able to test the device access security policy, a copy of the policy that is enforced on the devices in scope need to be provided. This can be achieved either by:
+#### Static Analysis
 
-* providing screenshots of the settings or
-* export the configuration of the MDM.
+**...TODO...**
 
-Then, the enforced security settings need to be checked on a provisioned device that is managed by the MDM.
+#### Dynamic Analysis
 
-#### Black-box Testing
-
-This test cannot be executed as a black-box test, as without proper knowledge of the enforced policy through the MDM no baseline is available to test against.
+After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
+**...TODO...**
 
 #### Remediation
 
-**Are there any best practices what an MDM Should enforce for Android?**
+Warnings should be implemented that address the key points listed in the overview section.
+**...TODO...**
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
-
-#### References
+**...TODO...**
 
 ##### OWASP MASVS
 
-- V2-13: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
 
 ##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+- CWE: [Link to CWE issue] - **.. TODO ...**
+
+
+
+
+
+
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->

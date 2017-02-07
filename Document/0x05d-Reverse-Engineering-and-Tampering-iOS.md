@@ -12,7 +12,9 @@ Class-dump by Steve Nygard [1] is a command-line utility for examining the Objec
 
 Class-dump-dyld by Elias Limneos [2] allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
-### Jailbreaking iOS Devices
+MachoOView [3] is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+
+### Jailbreaking iOS
 
 In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
@@ -23,6 +25,10 @@ In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. 
 (... TODO: Jailbreaking How-to ...)
 
 #### Jailbreak Detection
+
+Many apps nowadays attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
+
+The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. Also, MASVS L2 requires displaying a warning to the user, or terminate the app, when a jailbreak has been detected - the idea here is to inform users opting to jailbreak their device about the potential security implications (and not so much hindering determined reverse engineers).
 
 Some typical Jailbreak detection techniques:
 
@@ -62,15 +68,12 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 ~~~
 
 
-References:
 
+### Tampering and Instrumentation
 
+#### Hooking with MobileSubstrate
 
-### Manipulating iOS Apps
-
-### Hooking with MobileSubstrate
-
-#### Example: Deactivating Anti-Debugging
+##### Example: Deactivating Anti-Debugging
 
 ~~~
 #import <substrate.h>
@@ -93,12 +96,10 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 ~~~
 
 
-### Runtime Instrumentation
 
+#### Cycript and Cynject
 
-#### Cynject
-
-Cycript is traditionally used in the iOS world. It also runs standalone on Android, however without injection support. It is based on a Java VM that can be injected into a running process using Cydia Substrate. The user then communicates with process through the Cycript console interface.
+Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
 
 Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
 
@@ -212,27 +213,16 @@ script.load()
 sys.stdin.read()
 ~~~~
 
-### Reverse Engineering on iOS
-
-#### Dumping Decrypted Executables
-
-For iOS, distributed application package are usually stored in an IPA format which an archive file containing application bundles which contain executable binary, resource files, support files and application properties. But when an application is released to the App Store, application's binary will be encrypted by Apple's FairPlay (DRM). Therefore, to perform a static analysis, a binary of an application need to be decrypted first.
-
-In order to analyze the iOS application from App Store, Tester need to decrypt the application which can be automatically conducted using “dumpdecrypted” tool developed by Stefan Esser.
-
-To use “dumpdecrypted”, connect to the iOS device using SSH and set the DYLD_INSERT_LIBRARIES environment variable when executing the target binary:
-
-~~~
-ssh root@<ip of idevice>
-iPod:root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/mobile/Applications/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Example.app/Example
-~~~
-
-The decrypted binary is saved in the current working directory.
-
-#### Analyzing Swift Apps
+#### Patching and Repackaging iOS Apps
 
 
-### Debugging iOS Apps
+### Program Comprehension
+
+
+#### Statically Analyzing iOS Apps
+
+
+#### Debugging iOS Apps
 
 iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
 
@@ -285,12 +275,9 @@ Attaching to process 2670...
 
 ### References
 
-- [1] http://stevenygard.com/projects/class-dump/
-
-- [2] https://github.com/limneos/classdump-dyld/
-
-- [3] https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
-
-- [4] http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
-
-- [5] http://iphonedevwiki.net/index.php/Debugserver
+- [1] Class-dump - http://stevenygard.com/projects/class-dump/
+- [2] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
+- [3] MachOView - https://sourceforge.net/projects/machoview/
+- [3] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
+- [4] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
+- [5] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver

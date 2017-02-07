@@ -2,7 +2,7 @@
 
 ## About the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes technical processes for verifying the controls listed in the OWASP Mobile Application Verification Standard (MASVS). The MSTG is meant to provide a baseline set of test cases for black-box and white-box security tests, and to help ensure completeness and consistency of the tests.
+The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes technical processes for verifying the controls listed in the OWASP Mobile Application Verification Standard (MASVS). The MSTG is meant to provide a baseline set of test cases for static and dynamic security tests, and to help ensure completeness and consistency of the tests.
 
 OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Testing Guide, please join the discuss the MASVS or MSTG join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up here:
 
@@ -11,11 +11,13 @@ http://owasp.herokuapp.com/
 ## Copyright and License
 
 ![license](images/license.png)
-Copyright © 2016 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © 2017 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
 
-| Project Leads | Lead Authors | Contributors and Reviewers |
-| --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Sebastian Banescu, Bernhard Mueller, Prathan Phongthiproek, Sven Schleier, Francesco Stillavato, Abdessamad Temmar, Gerhard Wagner, Jeroen Willemsen | Cláudio André, Davide Cioccia, Stephen Corbiaux, Bao Le, Shiv Patel, Abhinav Sejpal, Anant Shrivastava, Milan Singh Thakur, Pragati Singh, Blessen Thomas, Dennis Titze, Stephanie Vanroelen, Bernard Wagner |
+| Project Leaders | Authors | Contributors | Reviewers |
+| --- | --- | --- | --- |
+| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier, Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa | Gerhard Wagner, Daniel Ramirez Martin, Jin Kung Ong, Alexander Antukh, Ali Yazdani, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux | Anant Shrivastava, Milan Singh Thakur, Stephanie Vanroelen |
+
+Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [author's guide](../authors_guide.md#credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks.
 
 ## Revision History
 
@@ -25,7 +27,7 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
-| Milan Singh Thakur, Abhinav Sejpal, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Gerhard Wagner | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
+| Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
 
 ### OWASP MSTG Beta 1 (Google Doc)
 

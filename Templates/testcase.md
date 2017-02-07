@@ -1,4 +1,4 @@
-### <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
+### OMTG-[IDENTIFIER]:[Name]
 
 #### Overview
 
@@ -32,6 +32,11 @@
 ##### OWASP MASVS
 
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+
+##### CWE
+
+- CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
