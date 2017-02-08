@@ -370,7 +370,7 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 #### Overview
 
-WebViews can load content remotely, but can also load it locally from the App data directory or external storage.
+WebViews can load content remotely, but can also load it locally from the App data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
 **..TODO..**
 
 #### Static Analysis
@@ -391,6 +391,9 @@ webview.loadUrl("file:///" +
 Environment.getExternalStorageDirectory().getPath() +
 "filename.html");
 ```
+
+The URL specified in loadURL() should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
+
 
 ##### Without Source Code
 
@@ -439,13 +442,29 @@ If the WebView is implemented too lax without security restrictions JavaScript c
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
 ##### With Source Code
 
+In Android API level 17 and above a special annotation is used to explicitly allow the access from JavaScript to a Java method.
+
+```Java
+@JavascriptInterface
+public String returnString () {
+    return "Secret String";
+}```
+
+If the annotation `@JavascriptInterface` is used, this method can be called from JavaScript.
+
+```Javascript
+var result = window.Android.returnString();
+```
+
+If an attacker has access to the JavaScript code, through for example stored XSS or a MITM position he can directly call the exposed Java method. 
+
+**..TODO..**
+
 ##### Without Source Code
+
+**..TODO..**
 
 #### Dynamic Analysis
 
@@ -453,7 +472,17 @@ If the WebView is implemented too lax without security restrictions JavaScript c
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+If addJavascriptInterface() is needed only JavaScript provided with the APK should be allowed to call it but no JavaScript loaded from remote endpoints.
+
+Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the App. For these API levels, only public methods that are annotated with JavascriptInterface can be accessed from JavaScript<sup>[1]</sup>.
+
+```xml
+<uses-sdk android:minSdkVersion="17" />
+...
+
+</manifest>
+```
+
 
 #### References
 
@@ -471,7 +500,7 @@ If the WebView is implemented too lax without security restrictions JavaScript c
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] DRD13 addJavascriptInterface()  - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614
 
 
 ##### Tools
