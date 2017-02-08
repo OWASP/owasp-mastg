@@ -338,7 +338,7 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 * **apktool.yml** : This file contains information about the output of apktool.
 * **assets**: A directory containing applications assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
 * **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-* **original**: TBD
+* **original**: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
