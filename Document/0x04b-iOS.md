@@ -2,15 +2,64 @@
 
 (...TODO...)
 
-As every platform, also iOS provides a SDK (Software Development Kit) that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. iOS applications are implemented either by using Objective-C or Swift.
+As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
 
-Objective-C is an object-oriented programming language that is based on C and is used on macOS and iOS to develop (mobile) applications. Even macOS and iOS itself is mainly implemented by using Objective-C.
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
 
 Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
 
 ### iOS Security Architecture
 
 (...TODO...)
+
+The core features of the iOS security architecture:
+
+Secure Boot
+Sandbox
+Code Signing
+Encryption and Data Protection
+General Exploit Mitigations
+
+Secure Boot
+
+When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. During this booting process, the "Secure Boot Chain" ensures that it is running on validated Apple devices. The process will only proceed if the next step is secure and verification is successful. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. (...TODO...)
+
+
+Code Signing
+
+(...TODO...)
+
+
+Sandbox
+
+The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised. All apps which is distributed via the iOS AppStore must adopt the sandbox for this purpose. (...TODO...)
+
+
+Encryption and Data Protection
+
+Apple has built encryption into the hardware and firmware of its iOS devices since the release of the iPhone 3GS. Every device has a dedicated hardware level based crypto engine, based on 256-bit Advanced Encryption Standard (AES), that works in conjunction with a SHA-1 cryptographic hash function.
+
+Besides that, there is unique identifier (UID) built into the device's hardware with an AES 256-bit key fused into the application processor. This UID is specific to the device and is not recorded else. As of writing, it is not possible for software or firmware to read it directly. As the key is burnt into the silicon chip, it cannot be tampered with or bypassed. It is only the crypto engine which can access it. It is through this that data is eventually cryptographically tied to a specific device and therefore cannot be related to any other identifier or device.
+
+Building encryption into the physical architecture makes it easier to encrypt all data stored on an iOS device. This allows Apple to enable this level of encryption by default and disabling this is not permitted. The use of this encryption only functions as a way to only facilitate a fast, secure wipe of the system. This is an important feature, especially if a device is lost or stolen and remote wipe has been configured beforehand. Under such circumstances, a device's data can theoretically be erased before someone can hack or jailbreak it. But if a device can't be wiped quickly enough, a hacker can crack the security and get at sensitive data.
+
+Data protection is implemented at the software level and works with the hardware and firmware encryption to provide a greater degree of security.
+
+When data protection is enabled, each data file is associated with a specific class that supports a different level of accessibility and protects data based on when it needs to be accessed. The encryption and decryption operations associated with each class are based on multiple key mechanisms that utilizes the device's UID and passcode, plus a class key, file system key and per-file key. The per-file key is used to encrypt the file content. The class key is wrapped around the per file key and stored in the file's metadata. The file system key is used to encrypt the metadata. The UID and passcode protect the class key. This operation is invisible to users and for a device to utilize data protection, a passcode must be used when accessing that device. The passcode not only unlocks the device, but also combined with the UID to create iOS encryption keys that are more resistant to hacking efforts and brute-force attacks. It is with this that users need to enable passcodes on their devices to enable data protection.
+
+(...TODO...)
+
+
+Exploit Code Mitigations
+
+iOS currently implements two specific security mechanisms, namely address space layout randomization (ASLR) and eXecute Never (XN) bit, to prevent code execution attacks.
+
+ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked.
+
+Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions. (...TODO...)
+
+
+
 
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
