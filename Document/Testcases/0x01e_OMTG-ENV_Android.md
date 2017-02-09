@@ -438,29 +438,110 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 #### Overview
 
-If the WebView is implemented too lax without security restrictions JavaScript can still be used to to attack the App and even get control over it.
+Android offers two different ways that enables JavaScript, executed  in a WebView, to call and use native functions within an Android App:
+
+* `shouldOverrideUrlLoading()`<sup>[4]</sup>
+* `addJavascriptInterface()`<sup>[5]</sup>
+
+**shouldOverrideUrlLoading**
+
+This method gives the host application a chance to take over the control when a new url is about to be loaded in the current WebView.  The method shouldOverrideUrlLoading() is available with two different method signatures:
+
+* boolean shouldOverrideUrlLoading (WebView view, String url)
+  * This method was deprecated in API level 24.
+* boolean shouldOverrideUrlLoading (WebView view, WebResourceRequest request)
+  * This method was added in API level 24
+
+**addJavascriptInterface**
+
+The `addJavascriptInterface()` method allows to expose Java Objects to WebViews. When using this method in an Android App it is possible for JavaScript code in a WebView to invoke native methods of the Android App.
+
+Before Android 4.2 JELLY_BEAN (API Level 17) a vulnerability was discovered in the implementation of addJavascriptInterface(), by using reflection that leads to remote code execution when injecting malicious JavaScript in a WebView<sup>[2]</sup>.
+
+With API Level 17 this vulnerability was fixed and the access granted to methods of a Java Object for JavaScript was changed. When using addJavascriptInterface(), methods of a Java Object are only accessible for JavaScript when the annotation `@JavascriptInterface` is explicitly added. Before API Level 17 all methods of the Java Object were accessible by default.
+
+An App that is targeting an Android version before Android 4.2 is still vulnerable to the identified flaw in addJavascriptInterface() and should only be used with extreme care. Therefore several best practices should be applied in case this method is needed.
+
 
 #### Static Analysis
 
 ##### With Source Code
 
-In Android API level 17 and above a special annotation is used to explicitly allow the access from JavaScript to a Java method.
+**shouldOverrideUrlLoading**
+
+It need to be verified if and how the method `shouldOverrideUrlLoading()` is used and if it's possible for an attacker to inject malicious JavaScript.
+
+The following example illustrates how the method can be used.
 
 ```Java
-@JavascriptInterface
-public String returnString () {
-    return "Secret String";
-}```
+@Override
+public boolean shouldOverrideUrlLoading (WebView view, WebResourceRequest request) {
+    URL url = new URL(request.getUrl().toString());
+    // execute functions according to values in URL
+  }
+}
+```
 
-If the annotation `@JavascriptInterface` is used, this method can be called from JavaScript.
+If an attacker has access to the JavaScript code, through for example stored XSS or a MITM position he can directly trigger native functions if the exposed Java methods are implemented in an insecure way.
+
+```javascript
+window.location = http://example.com/method?parameter=value
+```
+
+
+**addJavascriptInterface**
+
+It need to be verified if and how the method `addJavascriptInterface()` is used and if it's possible for an attacker to inject malicious JavaScript.
+
+The following example shows how addJavascriptInterface is used in a WebView to bridge a Java Object to JavaScript:
+
+```Java
+WebView webview = new WebView(this);
+WebSettings webSettings = webview.getSettings();
+webSettings.setJavaScriptEnabled(true);
+
+MSTG_ENV_008_JS_Interface jsInterface = new MSTG_ENV_008_JS_Interface(this);
+
+myWebView.addJavascriptInterface(jsInterface, "Android");
+myWebView.loadURL("http://example.com/file.html");
+setContentView(myWebView);
+```
+
+In Android API level 17 and above a special annotation is used to explicitly allow the access from JavaScript to a Java method.
+
+
+```Java
+public class MSTG_ENV_008_JS_Interface {
+
+        Context mContext;
+
+        /** Instantiate the interface and set the context */
+        MSTG_ENV_005_JS_Interface(Context c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public String returnString () {
+            return "Secret String";
+        }
+
+        /** Show a toast from the web page */
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+}
+```
+
+If the annotation `@JavascriptInterface` is used, this method can be called from JavaScript. If the App is targeting API level < 17 then all methods of the Java Object are exposed to JavaScript and can be called.
+
+In JavaScript the method `returnString()` can now be called and the return value can be stored in the parameter `result`.
 
 ```Javascript
 var result = window.Android.returnString();
 ```
 
-If an attacker has access to the JavaScript code, through for example stored XSS or a MITM position he can directly call the exposed Java method. 
-
-**..TODO..**
+If an attacker has access to the JavaScript code, through for example stored XSS or a MITM position he can directly call the exposed Java methods in order to exploit them.
 
 ##### Without Source Code
 
@@ -469,10 +550,13 @@ If an attacker has access to the JavaScript code, through for example stored XSS
 #### Dynamic Analysis
 
 [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+**..TODO..**
 
 #### Remediation
 
-If addJavascriptInterface() is needed only JavaScript provided with the APK should be allowed to call it but no JavaScript loaded from remote endpoints.
+If `shouldOverrideUrlLoading()` is needed it should be verified how the input is processed and if it's possible to execute native functions through malicious JavaScript.
+
+If `addJavascriptInterface()` is needed only JavaScript provided with the APK should be allowed to call it but no JavaScript loaded from remote endpoints.
 
 Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the App. For these API levels, only public methods that are annotated with JavascriptInterface can be accessed from JavaScript<sup>[1]</sup>.
 
@@ -482,7 +566,6 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 </manifest>
 ```
-
 
 #### References
 
@@ -501,7 +584,9 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 ##### Info
 
 - [1] DRD13 addJavascriptInterface()  - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614
-
+- [2] WebView addJavascriptInterface Remote Code Execution - https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/
+- [3] Method shouldOverrideUrlLoading() - https://developer.android.com/reference/android/webkit/WebViewClient.html#shouldOverrideUrlLoading(android.webkit.WebView,%20java.lang.String)
+- [4] Method addJavascriptInterface() - https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
 
 ##### Tools
 
