@@ -1,3 +1,40 @@
+### OMTG-NET-001: Test for unencrypted sensitive data on the network
+TODO
+#### Overview
+TODO
+#### White-box Testing
+TODO
+#### Black-box Testing
+TODO
+#### Remediation
+TODO
+#### References
+TODO
+
+### OMTG-NET-002: Test TLS best practices
+TODO
+#### Overview
+TODO
+#### White-box Testing
+TODO
+#### Black-box Testing
+TODO
+#### Remediation
+TODO
+#### References
+TODO
+### OMTG-NET-003: Test X.509 certificate verification
+TODO
+#### Overview
+TODO
+#### White-box Testing
+TODO
+#### Black-box Testing
+TODO
+#### Remediation
+TODO
+#### References
+TODO
 ### OMTG-NET-004: Test SSL Pinning
 
 #### Overview
@@ -11,21 +48,21 @@ The code presented below shows how it is possible to check if the certificate pr
 The delegate must implement connection:canAuthenticateAgainstProtectionSpace: and connection: forAuthenticationChallenge. Within connection: forAuthenticationChallenge, the delegate must call SecTrustEvaluate to perform customary X509 checks. Below a snippet who implements a check of the certificate.  
 
 ```Objective-C
-(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
-SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, 0);
-NSData *remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
-NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"MyLocalCertificate" ofType:@"cer"];
-NSData *localCertData = [NSData dataWithContentsOfFile:cerPath];
-The control below can verify if the certificate received by the server is matching the one pinned in the client.
-if ([remoteCertificateData isEqualToData:localCertData]) {
-NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-[[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-}
-else {
-[[challenge sender] cancelAuthenticationChallenge:challenge];
-}
+  (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+  {
+  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
+  SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, 0);
+  NSData *remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
+  NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"MyLocalCertificate" ofType:@"cer"];
+  NSData *localCertData = [NSData dataWithContentsOfFile:cerPath];
+  The control below can verify if the certificate received by the server is matching the one pinned in the client.
+  if ([remoteCertificateData isEqualToData:localCertData]) {
+  NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
+  [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+  }
+  else {
+  [[challenge sender] cancelAuthenticationChallenge:challenge];
+  }
 ```
 
 #### Black-box Testing
@@ -41,3 +78,17 @@ The SSL pinning process should be implemented as described on the static analysi
 - Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 References
 - OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
+
+
+### OMTG-NET-005: Test insecure communcation channels
+TODO
+#### Overview
+TODO
+#### White-box Testing
+TODO
+#### Black-box Testing
+TODO
+#### Remediation
+TODO
+#### References
+TODO
