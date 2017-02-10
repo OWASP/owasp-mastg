@@ -4,7 +4,7 @@
 
 Android Security Mechanisms:
 
--- TODO :Sandbox (Dalvik / ART according to API level), IPC mechanism and Reference monitor, Binder, Discretionary - Mandatory Access Control / UID - GID / Filesystem, Applicative Architecture of an application : Permissions & Manifest, Application Signing. May be a part of Static / Dynamic Analysis chapter : each security mechanism efficiency can be checked at a given phase. --
+-- TODO :IPC mechanism and Reference monitor, Binder, Discretionary - Mandatory Access Control / UID - GID / Filesystem, Applicative Architecture of an application : Permissions & Manifest, Application Signing. May be a part of Static / Dynamic Analysis chapter : each security mechanism efficiency can be checked at a given phase. --
 
 Android is an open source platform that can be found nowadays on many devices:
 
@@ -25,7 +25,10 @@ In the next image we can see the differences between the normal process of compi
 
 With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART).
 
-TODO: Explain the differences between ART and Dalvik.
+ART, a.k.a Android RunTime, was born with KitKat (Android 4.4). However, it has really been set for general use only in Lollipop (Android 5.0, API 21) in November 2014, where it replaced Dalvik : in KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitely. When no user action was done to modify the normal behaviour of the mobile, Dalvik was used.
+
+In Android, applications are executed into their own environnement in a Virtual Machine (VM), that was called Dalvik, located in the RunTime environnement. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access: applications do not have direct access to hardware resources, and their execution environnements are therefore separate from each other. This allows fine-grained control over resources and applications: for instance, when an application crashes, it does not prevent other applications from working and only their environnement and the application itself have to be restarted. Also, the fact applications are not run directly on the mobile hardware allow the use of the same application (same bytecode) on different hardwares as the VM emulates a common hardware for the application. At the same time, the VM controls the maximum amount of resources provided to an application, preventing one application from using all resources while leaving only few resources to others.
+In Android, applications are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode was compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done everytime an application is executed on a given mobile. As a consequence, Dalvik has been improved to compile an application only once, at installation time (the principle is called AOT, a.k.a. Ahead  Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an application may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use its battery for more time..
 
 #### UID/GID of Normal Applications
 
