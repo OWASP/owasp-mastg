@@ -2,26 +2,78 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+Android assigns every installed with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical is the data or feature, Android system will grant the permission automatically or ask the user to approve the request. 
+
+Android permissions are classified in four different categories based on the protection level it offers.
+
+**Normal**: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
+**Dangerous**: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not. Example: android.permission.RECORD_AUDIO
+**Signature**: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
+**SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
+
+Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS) 
+
+
+Apps can define custom permissions, this is to share its resources and capabilities with other apps. 
+
+**TODO** Explanation custom permission 
+
+List of [Android Permissions](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS) 
+
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-
 ##### With Source Code
 
+#####Android Permissions 
 Permissions should be checked if they are really need within the App. For example in order for an Activity to load a web page into a WebView the INTERNET permission in the Android Manifest file is needed.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-
-
+#####Custom Permissions
+**TODO** Test case to evaluate custom Permissions
 
 ##### Without Source Code
+
+To review application permissions via Android Manifest file, the APK file will need to be unpack with apktool. It will then generate a folder that contains AndroidManifest file. 
+
+```bash
+$apktool d test.apk
+
+I: Using Apktool 2.2.1 on test.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/tnayr/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Baksmaling classes2.dex...
+I: Copying assets and libs...
+I: Copying unknown files…
+I: Copying original files...
+```
+
+Within the manifest file, requested permissions will be declared as "uses-permissions" tag.
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package=“com.owasp.mstg.myapp" >
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    ...
+</manifest>
+```
+
+Alternatively, Android Asset Packaging tool can be used to examine permissions. 
+
+```bash
+$ aapt d permissions com.owasp.mstg.myapp
+uses-permission: android.permission.WRITE_CONTACTS
+uses-permission: android.permission.CHANGE_CONFIGURATION
+uses-permission: android.permission.SYSTEM_ALERT_WINDOW
+uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
+```
 
 #### Dynamic Analysis
 
@@ -47,55 +99,8 @@ Permissions should be checked if they are really need within the App. For exampl
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-
-##### Tools
-
-* Tool - Link
-
-
-### OMTG-ENV-002: Test validation and sanitization of input
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-
-##### OWASP MASVS
-
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-
-- CWE-XXX - Title
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] Android Permissions - https://developer.android.com/guide/topics/permissions/requesting.html
+- [2] Custom Permissions - https://developer.android.com/guide/topics/permissions/defining.html
 
 
 ##### Tools
