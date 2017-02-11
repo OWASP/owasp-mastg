@@ -13,11 +13,11 @@ http://owasp.herokuapp.com/
 ![license](images/license.png)
 Copyright © 2017 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
 
+Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [README](../README.md#user-content-authoring-credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
+
 | Project Leaders | Authors | Contributors | Reviewers |
 | --- | --- | --- | --- |
 | Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier | Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa, Gerhard Wagner, Daniel Ramirez Martin, Jin Kung Ong, Alexander Antukh, Claudia André, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Luander Ribeiro, Pishu Mahtani, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux,  Ali Yazdani | Anant Shrivastava, Stephanie Vanroelen |
-
-Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [README](../README.md#credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
 
 ## Revision History
 
