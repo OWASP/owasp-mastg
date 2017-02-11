@@ -12,7 +12,7 @@ We need more authors! The best way of to get started is by browsing the [existin
 
 http://owasp.herokuapp.com/
 
-Before you start contribution, please also read our brief [style guide](https://github.com/b-mueller/owasp-mstg/blob/master/style_guide.md) containing some basic writing rules.
+Before you start contribution, please also read our brief [style guide](https://github.com/b-mueller/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
 
 You can also suggest improvements by creating an [issue](https://github.com/b-mueller/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
 
