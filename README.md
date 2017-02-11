@@ -16,14 +16,14 @@ The following lists contains the individual sections of the MSTG, along with the
 - [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 
-Main Contact: [Bernhard Mueller](https://github.com/b-mueller)
+Main Contact: [Bernhard Mueller](https://github.com/b-mueller) - Slack: bernhardm
 
 ### Overview
 
 * [Overview](0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
-Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *berhardm*
+Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
 
 ### Android Testing Guide
 
