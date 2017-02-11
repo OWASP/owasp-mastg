@@ -11,3 +11,7 @@ For Google, their Android operating system is based on the Linux kernel. It powe
 Both Apple and Google have their respective digital distribution platform; for Apple this being the App Store for iOS applications and for Google, via their Play Store for Android applications.
 
 ## Organization of the Testing Guide
+
+
+## Common Attacks on Mobile Apps
+--TODO : Cf OWASP Mobile Top 10 at https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10. Consider Permissions, Leakage from Logs and IPC Endpoint (In)Security --
