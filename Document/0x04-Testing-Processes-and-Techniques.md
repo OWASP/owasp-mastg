@@ -1,18 +1,22 @@
 # Testing Processes and Techniques
 
-## Static Analysis
+## Mobile Security Testing Methodology
 
 ### References
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
-## Dynamic Analysis
+## Analysis Techniques
 
-### Runtime Analysis
+### Static Analysis
+
+### Dynamic Analysis
+
+#### Runtime Analysis
 (.. TODO ..)
 
-### Traffic Analysis
+#### Traffic Analysis
 
 Dynamic analysis of the traffic exchanged between client and server can be performed by launching a Man-in-the-middle (MITM) attack. This can be achieved by using an interception proxy like Burp Suite (Professional) or OWASP ZAP for HTTP traffic.  
 
@@ -23,7 +27,7 @@ In case another (proprietary) protocol is used in a mobile App that is not HTTP,
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
 
-### Input Fuzzing
+#### Input Fuzzing
 Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input.
 Steps in fuzzing
 * Identifying a target
