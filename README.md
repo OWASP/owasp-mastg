@@ -18,7 +18,7 @@ You can also suggest improvements by creating an [issue](https://github.com/b-mu
 
 ## High-Level Structure
 
-The following lists contains the individual sections of the MSTG, along with the main contacts responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
+The following lists contains the individual sections of the MSTG, along with the main contacts responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download the magic [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
 
 ### Introductionary
 
