@@ -15,11 +15,13 @@ Copyright © 2017 The OWASP Foundation. This document is released under the Crea
 
 Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [README](../README.md#user-content-authoring-credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
 
+## Acknowledgements
+
 | Project Leaders | Authors | Contributors | Reviewers |
 | --- | --- | --- | --- |
 | Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier | Abdessamad Temmar, Francesco Stillavato, Pawel Rzepa, Gerhard Wagner, Daniel Ramirez Martin, Jin Kung Ong, Alexander Antukh, Claudia André, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Luander Ribeiro, Pishu Mahtani, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux,  Ali Yazdani | Anant Shrivastava, Stephanie Vanroelen |
 
-## Revision History
+### Older Versions
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
 
