@@ -64,7 +64,7 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
 
-### Apps on iOS
+### How iOS Apps Work
 
 iOS applications are distributed in IPA (iOS App Store Package) archives. This IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be easily decompressed.
 An IPA has a built-in structure for iTunes and App Store to recognize, The example below shows the high level structure of an IPA.
