@@ -1,7 +1,5 @@
 ## Tampering and Reverse Engineering on iOS
 
-### Basics
-
 ### Environment and Toolset
 
 #### XCode and iOS SDK
