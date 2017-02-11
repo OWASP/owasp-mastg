@@ -1,4 +1,7 @@
-### OMTG-AUTH-001:Test for Bypass Client Side Authentication
+## Testing Authentication and Session Management
+
+### OMTG-AUTH-001: Testing for Bypass Client Side Authentication
+
 #### Overview
 Some applications are doing the authentication relying on the client side, that means that the developer creates some method that will check the username and password on the client 
 side instead of sending the credentials into the backend API.

@@ -1,4 +1,6 @@
-### OMTG-CRYPTO-001: Test Key Management Process
+## Testing Cryptography
+
+### OMTG-CRYPTO-001: Testing the Key Management Process
 
 #### Overview
 

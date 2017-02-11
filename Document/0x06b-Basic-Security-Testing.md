@@ -1,4 +1,4 @@
-## Basic Security Testing on iOS
+## Basic Security Testing
 
 ### Static Analysis
 

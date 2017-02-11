@@ -1,4 +1,6 @@
-### OMTG-NET-004: Test SSL Pinning
+## Testing Network Communication
+
+### OMTG-NET-004: Testing SSL Pinning
 
 #### Overview
 

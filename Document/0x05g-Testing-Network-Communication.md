@@ -1,4 +1,6 @@
-### OMTG-NET-001: Test for unencrypted sensitive data on the network
+## Testing Network Communcation
+
+### OMTG-NET-001: Testing for Unencrypted Sensitive Data on the Network
 
 #### Overview
 
@@ -196,7 +198,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 - [7] http://www.cert.org/download/mitm/CERT_Tapioca.ova
 - [8] https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
 
-### OMTG-NET-003: Test SSL Pinning
+### OMTG-NET-003: Testing SSL Pinning
 
 #### Overview
 

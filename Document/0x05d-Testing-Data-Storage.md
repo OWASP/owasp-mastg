@@ -1,6 +1,6 @@
-## Android
+## Testing Data Storage
 
-### OMTG-DATAST-001: Test for Sensitive Data in Local Storage
+### OMTG-DATAST-001: Testing for Sensitive Data in Local Storage
 
 #### Overview
 
@@ -250,7 +250,7 @@ The following is a list of best practice used for secure storage of certificates
 * [SQLite3][3b9b0b6f]
 
 
-### OMTG-DATAST-002: Test for Sensitive Data in Logs
+### OMTG-DATAST-002: Testing for Sensitive Data in Logs
 
 #### Overview
 
@@ -339,7 +339,7 @@ public static int wtf(...);
 
 
 
-### OMTG-DATAST-003: Test Whether Sensitive Data is Sent to Third Parties
+### OMTG-DATAST-003: Testing Whether Sensitive Data is Sent to Third Parties
 
 #### Overview
 
@@ -388,7 +388,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 
-### OMTG-DATAST-004: Test for Disabled Keyboard Cache for Text Input Fields
+### OMTG-DATAST-004: Testing for Disabled Keyboard Cache for Text Input Fields
 
 #### Overview
 
@@ -434,7 +434,7 @@ android:inputType="textNoSuggestions"
 
 
 
-### OMTG-DATAST-005: Test for Sensitive Data in the Clipboard
+### OMTG-DATAST-005: Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
@@ -498,7 +498,7 @@ android:longClickable="false"
 - CWE: [Link to CWE issue]
 
 
-### OMTG-DATAST-006: Test If Sensitive Data Is Exposed via IPC Mechanisms
+### OMTG-DATAST-006: Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -648,7 +648,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-### OMTG-DATAST-007: Test for Sensitive Data in Screenshots and the Screen
+### OMTG-DATAST-007: Testing for Sensitive Data in Screenshots and the Screen
 
 #### Overview
 
@@ -715,7 +715,7 @@ Note that this would automatically prevent the user from taking a manual screens
 
 
 
-### OMTG-DATAST-008: Test for Sensitive Data in Backups
+### OMTG-DATAST-008: Testing for Sensitive Data in Backups
 
 #### Overview
 
@@ -890,7 +890,7 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
 
 
-### OMTG-DATAST-010: Test for Sensitive Data in Memory
+### OMTG-DATAST-010: Testing for Sensitive Data in Memory
 
 #### Overview
 
@@ -963,7 +963,7 @@ Tools:
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
 
-### OMTG-DATAST-011: Test Enforcement of Device-Access-Security Policy
+### OMTG-DATAST-011: Testing Enforcement of Device-Access-Security Policy
 
 #### Overview
 
@@ -1009,7 +1009,7 @@ Different checks on the Android device can be implemented by querying different 
 - CWE: [Link to CWE issue] - (.. TODO ..)
 
 
-### OMTG-DATAST-012: Test for User Education
+### OMTG-DATAST-012: Testing for User Education
 
 #### Overview
 

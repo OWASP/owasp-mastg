@@ -1,4 +1,6 @@
-### MTG-CODE-001: Verify that the App is Properly Signed
+## Testing Code Quality and Build Settings
+
+### MTG-CODE-001: Verifying That the App is Properly Signed
 
 #### Overview
 
