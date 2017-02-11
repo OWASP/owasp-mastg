@@ -269,7 +269,7 @@ For real-world apps, automated static/dynamic analysis is insufficient to prove 
 
 ## Considerations
 
-### Typical Web Application Vulnerabilities in The Context Of Mobile Apps
+### Eliminating False Positives
 
 #### Cross-Site Scripting (XSS)
 
@@ -283,7 +283,7 @@ If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint,
 
 As a summary reflected XSS is no concern for a mobile App, but stored XSS or injected JavaScript through MITM can become a dangerous vulnerability if the WebView in use is configured insecurely.
 
-### Cross-Site Request Forgery (CSRF)
+#### Cross-Site Request Forgery (CSRF)
 
 The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account of triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an App is not applicable.
 
