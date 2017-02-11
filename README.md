@@ -42,7 +42,7 @@ Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [
 - [Testing Cryptography](Document/0x05e-Testing-Cryptography.md) --  [Alexander Antukh](https://github.com/c0rdis) - *alex*, [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
 - [Testing Authentication and Session Management](Document/0x05f-Testing-Authentication.md) -- [Daniel Ramirez](https://github.com/ram7rez) - *ramirez*
 - [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch) - *xep624*, [Jeroen Willemsen](https://github.com/commjoen) - *jeroenwillemsen*
-- [Testing Environmental Interaction](Document/0x05h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Testing Platform Interaction](Document/0x05h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
 - [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR) - *temmar*
 - [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
 
