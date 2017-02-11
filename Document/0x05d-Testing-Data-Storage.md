@@ -1009,7 +1009,7 @@ Different checks on the Android device can be implemented by querying different 
 - CWE: [Link to CWE issue] - (.. TODO ..)
 
 
-### Verifying User Education
+### Verifying User Education Controls
 
 #### Overview
 

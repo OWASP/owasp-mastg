@@ -48,7 +48,7 @@
 * Tool - Link
 
 
-### Testing Validation and Sanitization of Input
+### Testing Input Validation and Sanitization
 
 #### Overview
 
