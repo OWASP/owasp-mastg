@@ -6,9 +6,17 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 Use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
 
+## Contributions and Feedback
+
+We need more authors! The best way of to get started is by reading the [author's guide](https://github.com/b-mueller/owasp-mstg/blob/master/authors_guide.md) and browsing the [existing content](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) first. You'll find a lot of places that still don't have content, are incomplete, or need improvements, and you'll probably start feeling a strong urge to contribute. The list below has contact data for the people responsible for each section. PM them on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/) to coordinate the work (otherwise, you might start working on something that's already in progress). You can sign up for Slack here:
+
+http://owasp.herokuapp.com/
+
+You can also suggest improvements by creating an [issue](https://github.com/b-mueller/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
+
 ## High-Level Structure
 
-The following lists contains the individual sections of the MSTG, along with the main contact persons responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
+The following lists contains the individual sections of the MSTG, along with the main contacts responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download this as an [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
 
 ### Introductionary
 
@@ -57,14 +65,3 @@ Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [
 * [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/) - *tan_prathan*
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - N/A
 
-## Suggestions and feedback
-
-To report an error or suggest an improvement, please create an [issue](https://github.com/b-mueller/owasp-mstg/issues), or do a pull request.
-
-## How to Contribute
-
-**Please read the [author's guide](https://github.com/b-mueller/owasp-mstg/blob/master/authors_guide.md) first if you want to contribute.**
-
-The MSTG is an open source effort and we welcome contributions and feedback. To discuss the MASVS or MSTG join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up here:
-
-http://owasp.herokuapp.com/
