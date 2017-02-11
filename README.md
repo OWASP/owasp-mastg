@@ -23,39 +23,39 @@ Main Contact: [Bernhard Mueller](https://github.com/b-mueller)
 * [Overview](0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
-Main Contacts: [Pishu Mahtani](https://github.com/mpishu), [Bernhard Mueller](https://github.com/b-mueller)
+Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *berhardm*
 
 ### Android Testing Guide
 
-- [Platform Overview](Document/0x05a-Platform-Overview.md) -- [Cláudio André](https://github.com/clviper), [Romuald Szkudlarek](https://github.com/romualdszkudlarek)
-- [Basic Security Testing on Android](Document/0x05b-Basic-Security_Testing.md) -- [Luander Ribeiro](https://github.com/luander), [Sven Schleier](https://github.com/sushi2k)
-- [Tampering and Reverse Engineering on Android](Document/0x05b-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-- [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md) -- [Francesco Stillavato](https://github.com/litsnarf), [Sven Schleier](https://github.com/sushi2k)
-- [Testing Cryptography](Document/0x05e-Testing-Cryptography.md) --  [Alexander Antukh](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
+- [Platform Overview](Document/0x05a-Platform-Overview.md) -- [Cláudio André](https://github.com/clviper) - *clviper*, [Romuald Szkudlarek](https://github.com/romualdszkudlarek) - *romualds*
+- [Basic Security Testing on Android](Document/0x05b-Basic-Security_Testing.md) -- [Luander Ribeiro](https://github.com/luander) - *luander*, [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Tampering and Reverse Engineering on Android](Document/0x05b-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
+- [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md) -- [Francesco Stillavato](https://github.com/litsnarf) - *litsnarf*, [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Testing Cryptography](Document/0x05e-Testing-Cryptography.md) --  [Alexander Antukh](https://github.com/c0rdis) - *alex*, [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
 - [Testing Authentication and Session Management](Document/0x05f-Testing-Authentication.md) -- [Daniel Ramirez](https://github.com/ram7rez)
-- [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch), [Jeroen Willemsen](https://github.com/commjoen)
-- [Testing Environmental Interaction](Document/0x05h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k)
-- [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
-- [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+- [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch) - *xep624*, [Jeroen Willemsen](https://github.com/commjoen) - *jeroenwillemsen*
+- [Testing Environmental Interaction](Document/0x05h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR) - *temmar*
+- [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
 
 ### iOS Testing Guide
 
-- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu)
-- [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k)
-- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
-- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n)
-- [Testing Cryptography](Document/0x06e-Testing-Cryptography.md) --  [Alexander Anthuk](https://github.com/c0rdis), [Gerhard Wagner](https://github.com/thec00n)
+- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu) - *pmathani*
+- [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
+- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
+- [Testing Cryptography](Document/0x06e-Testing-Cryptography.md) --  [Alexander Anthuk](https://github.com/c0rdis) - *alex*, [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
 - [Testing Authentication and Session Management](Document/0x06f-Testing-Authentication-and-Session-Management.md) --  [Daniel Ramirez](https://github.com/ram7rez)
-- [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch), [Jeroen Willemsen](https://github.com/commjoen)
-- [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k)
-- [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR)
-- [Testing Resiliency Against Reverse Engineering](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller)
+- [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch), [Jeroen Willemsen](https://github.com/commjoen) - *jeroenwillemsen*
+- [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
+- [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR) - *temmar*
+- [Testing Resiliency Against Reverse Engineering](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
 
 ### Appendix
 
-* [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)
-* [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/)
-* [Suggested Reading](Document/0x09-Suggested-Reading.md) - T.b.d.
+* [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md) -- [Stefan Streichsbier](https://github.com/streichsbaer)- *stefan*
+* [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/) - *tan_prathan*
+* [Suggested Reading](Document/0x09-Suggested-Reading.md) - N/A
 
 ## Suggestions and feedback
 
