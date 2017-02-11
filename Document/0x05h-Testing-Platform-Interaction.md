@@ -1,4 +1,6 @@
-### OMTG-ENV-001: Test of App permissions
+## Testing Platform Interaction
+
+### Testing App Permissions
 
 #### Overview
 
@@ -108,8 +110,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 * Tool - Link
 
 
-
-### OMTG-ENV-002: Test validation and sanitization of input
+### Testing Input Validation and Sanitization
 
 #### Overview
 
@@ -138,27 +139,29 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
 
-
-### OMTG-ENV-003: Test usage of custom URL schemes
+### Testing Custom URL Schemes
 
 #### Overview
 
@@ -206,7 +209,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 * Tool - Link
 
 
-### OMTG-ENV-004: Test for export of sensitive functionality through IPC
+### Testing For Sensitive Functionality Exposure Through IPC
 
 #### Overview
 
@@ -255,7 +258,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 
 
-### OMTG-ENV-005: Test for usage of JavaScript in WebViews
+### Testing JavaScript Execution in WebViews
 
 #### Overview
 
@@ -337,8 +340,7 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 * Tool - Link
 
 
-
-### OMTG-ENV-006: Test for protocol handlers in WebViews
+### Testing WebView Protocol Handlers
 
 #### Overview
 
@@ -421,7 +423,7 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 
 
-### OMTG-ENV-007: Test for user supplied local resources in WebViews
+### Testing for Local File Inclusion in WebViews
 
 #### Overview
 
@@ -489,7 +491,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 * Tool - Link
 
 
-### OMTG-ENV-008: Test for exposed Java Objects in WebViews
+### Testing Whether Java Objects Are Exposed Through WebViews
 
 #### Overview
 
@@ -648,9 +650,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 * Tool - Link
 
 
-
-
-### OMTG-ENV-009: Test for object serialization
+### Testing Object (De-)Serialization
 
 #### Overview
 
@@ -700,7 +700,7 @@ Check <sup>[1]</sup>
 
 
 
-### OMTG-ENV-010: Test for Root detection
+### Testing Root Detection
 
 #### Overview
 

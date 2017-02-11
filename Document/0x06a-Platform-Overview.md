@@ -1,4 +1,4 @@
-## iOS
+## iOS Platform Overview
 
 (...TODO...)
 
@@ -8,17 +8,17 @@ Objective-C is an object-oriented programming language that adds Smalltalk-style
 
 Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
 
-### iOS Security Architecture
+### The iOS Security Architecture
 
 (...TODO...)
 
 The core features of the iOS security architecture:
 
-Secure Boot
-Sandbox
-Code Signing
-Encryption and Data Protection
-General Exploit Mitigations
+- Secure Boot
+- Sandbox
+- Code Signing
+- Encryption and Data Protection
+- General Exploit Mitigations
 
 Secure Boot
 
@@ -35,7 +35,7 @@ Sandbox
 The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised. All apps which is distributed via the iOS AppStore must adopt the sandbox for this purpose. (...TODO...)
 
 
-Encryption and Data Protection
+#### Encryption and Data Protection
 
 Apple has built encryption into the hardware and firmware of its iOS devices since the release of the iPhone 3GS. Every device has a dedicated hardware level based crypto engine, based on 256-bit Advanced Encryption Standard (AES), that works in conjunction with a SHA-1 cryptographic hash function.
 
@@ -50,7 +50,7 @@ When data protection is enabled, each data file is associated with a specific cl
 (...TODO...)
 
 
-Exploit Code Mitigations
+#### Exploit Mitigations
 
 iOS currently implements two specific security mechanisms, namely address space layout randomization (ASLR) and eXecute Never (XN) bit, to prevent code execution attacks.
 
@@ -64,7 +64,7 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
 
-### Structure of an iOS Application
+### How iOS Apps Work
 
 iOS applications are distributed in IPA (iOS App Store Package) archives. This IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be easily decompressed.
 An IPA has a built-in structure for iTunes and App Store to recognize, The example below shows the high level structure of an IPA.
@@ -107,7 +107,7 @@ The following figure represents the application’s folder structure:
 
 ![iOS App Folder Structure](http://bb-conservation.de/sven/iOS.png)
 
-### App Installation Process
+#### The Installation Process
 
 Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. ITunes Packages exist for OS X as well as for Windows. iTunes allows you to download applications through the App Store, after which you can synchronise them to an iOS device. The App store is the official application distribution platform from Apple. You can also use iTunes to load an ipa to a device. This can be done by adding “dragging” it into the Apps section, after which we can then add it to a device.
 
@@ -121,7 +121,7 @@ The IPA can also be installed directly from command line by using [ipainstaller]
 $ ipainstaller App_in_scope.ipa
 ```
 
-### Code Signing and Encryption
+#### Code Signing and Encryption
 
 Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison [1].
 
@@ -129,7 +129,7 @@ Apple has implemented an intricate DRM system to make sure that only valid & app
 
 In addition to code signing, *FairPlay Code Encryption* is applied to apps downloaded from the App Store. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account. The private key is stored securely on your device. This means that Fairplay-encrypted code can be decrypted only on devices associated with your account (TODO... this needs to be more specific). The usual way to obtain reverse FairPlay encryption is to run the app on the device and then dump the decrypted code from memory (see also "Basic Security Testing on iOS").
 
-### The App Sandbox
+#### The App Sandbox
 
 In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releasees of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include [3]:
 

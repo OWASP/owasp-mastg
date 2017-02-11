@@ -1,8 +1,5 @@
 ## Basic Security Testing on Android
 
-### Most Common Attacks
---TODO : Cf OWASP Mobile Top 10 at https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10. Consider Permissions, Leakage from Logs and IPC Endpoint (In)Security --
-
 ### Setting Up Your Testing Environment
 #### Hardware Considerations
 ##### Rooting your device
