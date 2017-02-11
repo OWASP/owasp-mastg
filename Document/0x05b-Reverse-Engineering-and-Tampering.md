@@ -1,4 +1,4 @@
-## Tampering and Reverse Engineering 
+## Tampering and Reverse Engineering on Android
 
 Its openness makes Android a favorable environment for reverse engineers. However, dealing with both Java and native code can make things more complicated at times. In the following chapter, we'll look at some peculiarities of Android reversing and OS-specific tools as processes.
 

@@ -1,11 +1,13 @@
-# Security Testing in the Software Development Lifecycle
+# Appendix
 
-## What is Agile, what is DevOps.
+## Security Testing in the Software Development Lifecycle
+
+### Agile and DevOps
 
 Cross Functional teams, deployment frequencies, etc
 Why are they changing the paradigm.
 
-## Approach
+### Approach
 
 Start by doing risk assessment
 -> Define data classification (What is considered sensitive data in your org)
@@ -18,24 +20,29 @@ Start by doing risk assessment
 -> Perform exploratory security testing
 -> Close feedback loop to dev team
 
-## General Considerations:
+### General Considerations
 
 * Release time for apple store
 * Why are black listed, and how to avoid it.
 * Common gotchas: Ensure that the app is always fully removed and re-installed. Otherwise there might be issues that are hard to re-produce.
 *
 
-## SDLC overview
+### SDLC Overview
+
 -- TODO : 
-  SDLC complements classical software development lifecycles and can be integrated in all of them
-  SDLC diagram and description
-  Quick description of all phases
+
+- SDLC complements classical software development lifecycles and can be integrated in all of them
+- SDLC diagram and description
+- Quick description of all phases
+
 --
 
-## Secure Software Testing
+### Secure Software Testing
 -- TODO : 
-  Explain how it relates to and differs from Quality testing
-  Explain the different types of tests (unit, Verification, Validation, ....)
+
+- Explain how it relates to and differs from Quality testing
+- Explain the different types of tests (unit, Verification, Validation, ....)
+
 --
 ### Technical Management
 #### Test Strategy
@@ -50,6 +57,8 @@ Start by doing risk assessment
 #### Black box
 ### Team management
 -- TODO : 
-  explain the importance of Separation of Duties (developers VS testers, ...)
-  internal VS sub-contracted pentests 
+
+- explain the importance of Separation of Duties (developers VS testers, ...)
+- internal VS sub-contracted pentests 
+
 --

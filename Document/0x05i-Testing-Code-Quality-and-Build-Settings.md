@@ -1,6 +1,6 @@
 ## Testing Code Quality and Build Settings
 
-### MTG-CODE-001: Verifying That the App is Properly Signed
+### Verifying That the App is Properly Signed
 
 #### Overview
 
@@ -41,7 +41,7 @@ TBD
 - V7.1: "The app is signed and provisioned with valid certificate."
 
 
-### OMTG-CODE-002: Test If the App is Debuggable
+### Testing If the App is Debuggable
 
 #### Overview
 
@@ -104,7 +104,7 @@ For production releases, the attribute android:debuggable must be set to false w
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 
-### OMTG-CODE-003: Test for Debugging Symbols
+### Testing for Debugging Symbols
 
 #### Overview
 
@@ -134,7 +134,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
+### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
 
@@ -152,7 +152,7 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-005: Test Exception Handling
+### Testing Exception Handling
 
 #### Overview
 
@@ -178,7 +178,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-006: Test Input Validation
+### Testing Input Validation
 
 #### Overview
 
@@ -200,7 +200,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-007: Test Memory Management
+### Testing Memory Management
 
 #### Overview
 
@@ -222,7 +222,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-008: Test Compiler Settings
+### Verifying Compiler Settings
 
 #### Overview
 
@@ -244,7 +244,7 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-009: Verify that Java Bytecode Has Been Minifed
+### Verifying that Java Bytecode Has Been Minifed
 
 #### Overview
 

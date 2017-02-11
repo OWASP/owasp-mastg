@@ -1,6 +1,6 @@
 ## Testing Platform Interaction
 
-### OMTG-ENV-001: Testing App permissions
+### Testing App permissions
 
 #### Overview
 
@@ -48,7 +48,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-002: Testing Validation and Sanitization of Input
+### Testing Validation and Sanitization of Input
 
 #### Overview
 
@@ -96,7 +96,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-003: Testing Custom URL Schemes
+### Testing Custom URL Schemes
 
 #### Overview
 
@@ -144,7 +144,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-004: Testing for Sensitive Functionality Exported Through IPC
+### Testing for Sensitive Functionality Exposed Through IPC
 
 #### Overview
 
@@ -193,7 +193,7 @@
 
 
 
-### OMTG-ENV-005: Testing JavaScript Execution in WebViews
+### Testing JavaScript Execution in WebViews
 
 #### Overview
 
@@ -241,7 +241,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-006: Testing WebView Protocol Handlers
+### Testing WebView Protocol Handlers
 
 #### Overview
 
@@ -289,7 +289,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-007: Testing for Local File Inclusion in WebViews
+### Testing for Local File Inclusion in WebViews
 
 #### Overview
 
@@ -337,7 +337,7 @@
 * Tool - Link
 
 
-### OMTG-ENV-008: Testing Whether Java Objects Are Exposed Through WebViews
+### Testing Whether Java Objects Are Exposed Through WebViews
 
 #### Overview
 
@@ -387,7 +387,7 @@
 
 
 
-### OMTG-ENV-009: Testing Object Serialization
+### Testing Object Serialization
 
 #### Overview
 
@@ -437,7 +437,7 @@ Check <sup>[1]</sup>
 
 
 
-### OMTG-ENV-010: Testing Jailbreak Detection
+### Testing Jailbreak Detection
 
 #### Overview
 

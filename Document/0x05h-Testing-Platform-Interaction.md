@@ -1,6 +1,6 @@
 ## Testing Platform Interaction
 
-### OMTG-ENV-001: Testing App Permissions
+### Testing App Permissions
 
 #### Overview
 
@@ -110,7 +110,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 * Tool - Link
 
 
-### OMTG-ENV-003: Testing Custom URL schemes
+### Testing Custom URL schemes
 
 #### Overview
 
@@ -158,7 +158,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 * Tool - Link
 
 
-### OMTG-ENV-004: Testing for Sensitive Functionality Exposed Through IPC
+### Testing for Sensitive Functionality Exposure Through IPC
 
 #### Overview
 
@@ -207,7 +207,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 
 
-### OMTG-ENV-005: Testing JavaScript Execution in WebViews
+### Testing JavaScript Execution in WebViews
 
 #### Overview
 
@@ -289,7 +289,7 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 * Tool - Link
 
 
-### OMTG-ENV-006: Testing WebView Protocol Handlers
+### Testing WebView Protocol Handlers
 
 #### Overview
 
@@ -372,7 +372,7 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 
 
-### OMTG-ENV-007: Testing for Local File Inclusion in WebViews
+### Testing for Local File Inclusion in WebViews
 
 #### Overview
 
@@ -440,7 +440,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 * Tool - Link
 
 
-### OMTG-ENV-008: Testing Whether Java Objects Are Exposed Through WebViews
+### Testing Whether Java Objects Are Exposed Through WebViews
 
 #### Overview
 
@@ -599,7 +599,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 * Tool - Link
 
 
-### OMTG-ENV-009: Testing Object Serialization
+### Testing Object (De-)Serialization
 
 #### Overview
 
@@ -649,7 +649,7 @@ Check <sup>[1]</sup>
 
 
 
-### OMTG-ENV-010: Testing Root Detection
+### Testing Root Detection
 
 #### Overview
 

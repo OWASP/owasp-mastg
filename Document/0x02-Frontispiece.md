@@ -23,13 +23,13 @@ Note: This table is generated from based on the [contribution log](https://githu
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
 
-### OWASP MSTG Beta 2 (Google Doc)
+**OWASP MSTG Beta 2 (Google Doc)**
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
 
-### OWASP MSTG Beta 1 (Google Doc)
+**OWASP MSTG Beta 1 (Google Doc)**
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |

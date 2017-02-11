@@ -1,6 +1,6 @@
 ## Testing Data Storage
 
-### OMTG-DATAST-001-1: Testing Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
+### Testing Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
 
 #### Overview
 
@@ -41,7 +41,7 @@ The following is a list of best practice used for secure storage of certificates
 * [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
 * [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 
-### OMTG-DATAST-001-2: Testing for Sensitive Data Disclosure in Local Storage
+### Testing for Sensitive Data Disclosure in Local Storage
 
 #### Overview
 
@@ -92,7 +92,7 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
-### OMTG-DATAST-002: Testing for Sensitive Data in Logs
+### Testing for Sensitive Data in Logs
 
 #### Overview
 
@@ -149,7 +149,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 (... TODO ...)
 
-### OMTG-DATAST-003: Testing for Sensitive Data in Cloud Storage
+### Testing for Sensitive Data in Cloud Storage
 
 #### Overview
 
@@ -163,7 +163,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-### OMTG-DATAST-004: Testing Whether Sensitive Data Is Sent to Third Parties
+### Testing Whether Sensitive Data Is Sent to Third Parties
 
 #### Overview
 
@@ -177,7 +177,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-### OMTG-DATAST-005: Testing for Sensitive Data in the Keyboard Cache
+### Testing for Sensitive Data in the Keyboard Cache
 
 #### Overview
 
@@ -217,7 +217,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 - [link to relevant how-tos, papers, etc.]
 
 
-### OMTG-DATAST-006: Testing for Sensitive Data in the Clipboard
+### Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
@@ -280,7 +280,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### OMTG-DATAST-007: Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
+### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
@@ -294,7 +294,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### OMTG-DATAST-008: Testing For Sensitive Data in Screenshots
+### Testing For Sensitive Data in Screenshots
 
 ##### Overview
 
@@ -308,7 +308,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### OMTG-DATAST-009: Testing for Sensitive Data in Backups
+### Testing for Sensitive Data in Backups
 
 #### Overview
 
@@ -322,7 +322,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### OMTG-DATAST-010: Testing If Memory Is Cleared When the App Is Backgrounded
+### Testing If Memory Is Cleared When the App Is Backgrounded
 
 #### Overview
 

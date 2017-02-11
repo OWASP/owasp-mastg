@@ -18,7 +18,7 @@ In case another (proprietary) protocol is used in a mobile App that is not HTTP,
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
 
-### Fuzz Testing
+### Input Fuzzing
 Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input.
 Steps in fuzzing
 * Identifying a target

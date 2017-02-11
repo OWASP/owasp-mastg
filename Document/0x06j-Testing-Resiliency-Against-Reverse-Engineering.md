@@ -1,6 +1,6 @@
 ## Testing Resiliency Against Reverse Engineering
 
-### OMTG-RARE-001: Testing the Custom Keyboard
+### Testing the Custom Keyboard
 
 #### Overview
 
@@ -50,7 +50,7 @@
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-002: Testing Custom UI Elements
+### Testing Custom UI Elements
 
 #### Overview
 
@@ -100,7 +100,7 @@
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-003: Testing Root Detection
+### Testing Root Detection
 
 #### Overview
 
@@ -150,7 +150,7 @@
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-004: Testing Debugging Defenses
+### Testing Debugging Defenses
 
 #### Overview
 
@@ -184,7 +184,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-RARE-005: Testing File Integrity Checks
+### Testing File Integrity Checks
 
 #### Overview
 
@@ -234,7 +234,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-006: Testing Detection of Reverse Engineering Tools
+### Testing Detection of Reverse Engineering Tools
 
 #### Overview
 
@@ -284,7 +284,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-007: Testing Simple Emulator Detection
+### Testing Simple Emulator Detection
 
 #### Overview
 
@@ -334,7 +334,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-008: Testing Memory Integrity Checks
+### Testing Memory Integrity Checks
 
 #### Overview
 
@@ -384,7 +384,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-009: Verifying Variablility of Tampering Responses
+### Verifying Variablility of Tampering Responses
 
 #### Overview
 
@@ -434,7 +434,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-010: Testing Simple Obfuscation
+### Testing Simple Obfuscation
 
 #### Overview
 
@@ -484,7 +484,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-011: Verifying Integration of Defenses
+### Verifying Integration of Defenses
 
 #### Overview
 
@@ -534,7 +534,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-012: Testing Device Binding
+### Testing Device Binding
 
 #### Overview
 
@@ -584,7 +584,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-013: Testing Advanced Anti-Debugging
+### Testing Advanced Anti-Debugging
 
 #### Overview
 
@@ -634,7 +634,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### OMTG-RARE-014-015: Testing Advanced Obfuscation
+### Testing Advanced Obfuscation
 
 #### Overview
 

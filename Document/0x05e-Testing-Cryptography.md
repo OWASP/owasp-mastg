@@ -1,6 +1,6 @@
 ## Testing Cryptography
 
-### OMTG-CRYPTO-001: Testing the Key Management Process
+### Verifying Key Management
 
 #### Overview
 
@@ -96,9 +96,7 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
 
 
-
-
-### OMTG-CRYPTO-002: Test for Use of Custom Encryption Protocols
+### Testing Custom Implementations of Cryptography
 
 #### Overview
 
@@ -128,7 +126,7 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 
 
-### OMTG-CRYPTO-003: Test for Use of Insecure and/or Deprecated Algorithms
+### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
 
@@ -182,7 +180,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
 
 
-### OMTG-CRYPTO-004: Verify that random values are generated using a sufficiently secure random number generator
+### Testing Random Number Generation
 
 #### Overview
 
