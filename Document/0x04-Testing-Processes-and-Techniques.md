@@ -2,6 +2,11 @@
 
 ## Static Analysis
 
+### References
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
 ## Dynamic Analysis
 
 ### Runtime Analysis
@@ -29,6 +34,11 @@ Steps in fuzzing
 [OWASP Fuzzing guide](https://www.owasp.org/index.php/Fuzzing)
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
+
+### References
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ## Tampering and Reverse Engineering
 
@@ -146,6 +156,11 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### Domain-Specific De-Obfuscation Attacks
 
+### References
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
 ## Assessing Software Protections
 
 Mobile software anti-reversing schemes are all made from the same building blocks. On the one hand, apps implement defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. On the other hand obfuscation is employed to make code and data incomprehensible. How can you verify that a given set of defenses (as a whole) is "good enough" to provide an appropriate level of protection? As it turns out, this is not an easy question to answer.
@@ -248,6 +263,10 @@ For real-world apps, automated static/dynamic analysis is insufficient to prove 
 
 #### Assessing Obfuscation
 
+### References
+
+- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+
 ## Considerations
 
 ### Typical Web Application Vulnerabilities in The Context Of Mobile Apps
@@ -272,6 +291,6 @@ The basis for CSRF attacks, access to session cookies of all browser tabs and at
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
-## References
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
-[1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf

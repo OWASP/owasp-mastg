@@ -61,4 +61,7 @@ Start by doing risk assessment
 - explain the importance of Separation of Duties (developers VS testers, ...)
 - internal VS sub-contracted pentests 
 
---
+### References
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html

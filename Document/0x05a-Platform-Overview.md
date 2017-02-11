@@ -345,13 +345,13 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
-
 ### Android Users and Groups
 
 Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a _/etc/password_ file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
 File [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
 File below depicts some of the users defined for Android Nougat:
-```
+
+~~~
     #define AID_ROOT             0  /* traditional unix root user */
 
     #define AID_SYSTEM        1000  /* system server */
@@ -360,9 +360,7 @@ File below depicts some of the users defined for Android Nougat:
 	...
     #define AID_APP          10000  /* first app user */
 	...
-```
-
-
+~~~
 
 ### References
 
@@ -372,3 +370,4 @@ File below depicts some of the users defined for Android Nougat:
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
 + [keesj Android internals](https://github.com/keesj/gomo)
+
