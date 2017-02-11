@@ -195,6 +195,8 @@ The relationship between group IDs and permissions are defined in the file [fram
 </permission>
 ```
 
+An important element to understand Android security is that all applications have the same level of privileges: both native and third-party applications are built on the same APIs and are run in similar environnements. Also, all applications are executed not as 'root', but with the user level of privileges. That means that, basically, applications cannot perform some actions or access some parts of the file system. In order to be able to execute an application with 'root' privileges (inject packets in a network, run interpreters like for Python, ...), mobiles need to be rooted.
+
 #### The App Sandbox
 
 Applications are executed in the Android Application Sandbox that enforces isolation of application data and code execution from other applications on the device, that adds an additional layer of security.
