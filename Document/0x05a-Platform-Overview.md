@@ -52,6 +52,22 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Understanding Android Apps
 
+#### Communication with the Operating System
+
+In Android, applications are developed in Java, and the Operating System offers an API to interact with system resources: communication media (Wifi, Bluetooth, NFC, ...), files, cameras, geolocation (GPS), microphone, ... . System resources cannot be accessed directly, and APIs mediate the access for the user. At the time of writting this guide, the current version of Android API is 7.1.1 Nougat, API 25. 
+
+APIs have evolved a lot since Android creation (the first release happened in September 2008). Early versions are not supported anymore; however, Android is a living project and new features and bug fixes are periodically made. 
+
+Noteworthy recent API versions are:
+- Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
+- Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default)
+- Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced)
+- Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features)
+- Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
+- Android 7.0 Nougat (API 24) in August 2016 (new JIT compiler on ART)
+
+After being developed, applications can be installed on mobiles from a variety of sources: locally through USB, from Google official store (Google Play) or from alternate stores. 
+
 #### App Folder Structure
 
 Android applications installed (from Google Play Store or from external sources) are located at /data/app/. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
@@ -372,4 +388,4 @@ Messages sent by the remote process via the messenger are delivered to the local
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
 + [keesj Android internals](https://github.com/keesj/gomo)
-
++ [Android Versions] (https://en.wikipedia.org/wiki/Android_version_history)
