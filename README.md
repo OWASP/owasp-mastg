@@ -8,9 +8,11 @@ Use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OW
 
 ## Contributions and Feedback
 
-We need more authors! The best way of to get started is by reading the [author's guide](https://github.com/b-mueller/owasp-mstg/blob/master/authors_guide.md) and browsing the [existing content](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) first. You'll find a lot of places that still don't have content, are incomplete, or need improvements, and you'll probably start feeling a strong urge to contribute. The list below has contact data for the people responsible for each section. PM them on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/) to coordinate the work (otherwise, you might start working on something that's already in progress). You can sign up for Slack here:
+We need more authors! The best way of to get started is by browsing the [existing content](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). You'll find a lot of places that still lack content, are incomplete, or need improvements, and you'll most likely start feeling a strong urge to contribute. The high-level chapter list below has contact data for the people responsible for each section. PM them on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/) to coordinate the work (otherwise, you might start working on something that's already in progress). You can sign up for Slack here:
 
 http://owasp.herokuapp.com/
+
+Before you start contribution, please also read our brief [style guide](https://github.com/b-mueller/owasp-mstg/blob/master/style_guide.md) containing some basic writing rules.
 
 You can also suggest improvements by creating an [issue](https://github.com/b-mueller/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
 
