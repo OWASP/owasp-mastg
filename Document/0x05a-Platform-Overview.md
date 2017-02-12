@@ -52,6 +52,22 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Understanding Android Apps
 
+#### Communication with the Operating System
+
+In Android, applications are developed in Java, and the Operating System offers an API to interact with system resources: communication media (Wifi, Bluetooth, NFC, ...), files, cameras, geolocation (GPS), microphone, ... . System resources cannot be accessed directly, and APIs mediate the access for the user. At the time of writting this guide, the current version of Android API is 7.1.1 Nougat, API 25. 
+
+APIs have evolved a lot since Android creation (the first release happened in September 2008). Early versions are not supported anymore; however, Android is a living project and new features and bug fixes are periodically made. 
+
+Noteworthy recent API versions are:
+- Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
+- Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default)
+- Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced)
+- Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features)
+- Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
+- Android 7.0 Nougat (API 24) in August 2016 (new JIT compiler on ART)
+
+After being developed, applications can be installed on mobiles from a variety of sources: locally through USB, from Google official store (Google Play) or from alternate stores. 
+
 #### App Folder Structure
 
 Android applications installed (from Google Play Store or from external sources) are located at /data/app/. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
@@ -195,6 +211,8 @@ The relationship between group IDs and permissions are defined in the file [fram
 </permission>
 ```
 
+An important element to understand Android security is that all applications have the same level of privileges: both native and third-party applications are built on the same APIs and are run in similar environnements. Also, all applications are executed not as 'root', but with the user level of privileges. That means that, basically, applications cannot perform some actions or access some parts of the file system. In order to be able to execute an application with 'root' privileges (inject packets in a network, run interpreters like for Python, ...), mobiles need to be rooted.
+
 #### The App Sandbox
 
 Applications are executed in the Android Application Sandbox that enforces isolation of application data and code execution from other applications on the device, that adds an additional layer of security.
@@ -224,21 +242,44 @@ The Android Framework is creating an abstraction layer for all the layers below,
 
 #### App Components
 
-Android Applications are composed by several components:
+Android applications are made of several high-level components that make up their architectures. The main components are activities, fragments, intents, broadcast receivers, content providers and services. All these elements are provided by the Android operating system in the form of predefined classes available through APIs. 
 
-##### Intents
+##### Application lifecycle
 
-An *Intent* is a messaging object that can be used to request an action from another app component.
+Android applications have their own lifecycles, that is under the control of the operating system. Therefore, applications need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, applications may be killed. The system selects the ones that will be killed according to the application priority: active applications have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance applications that are still open but not in use since a significant time). 
 
-#### Activities
+Applications implement several event managers to handle events: for example, the onCreate handler implements what is to be done on application creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
-Activities are the visible components of any application. They are the application GUI, that allow the user to interact with it.
+##### Activities
 
-.....
+Activities make up the visible part of any application. More specifically, one activity exists per screen (e.g. user interface) in an application: for instance, applications that have 3 different screens implement 3 different activities, where the user can interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
+
+Activities implement manifest files. Each activity needs to be declared in the application manifest with the following syntax:
+```
+<activity android:name=".ActivityName>
+</activity>
+```
+When activities are not declared in manifests, they cannot be displayed and would raise an exception.
+
+In the same way as applications do, activities also have their own lifecycles and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating systems. Accordingly, activities can implement the following event managers:
+- onCreate
+- onSaveInstanceState
+- onStart
+- onResume
+- onRestoreInstanceState
+- onPause
+- onStop
+- onRestart
+- onDestroy
+An application may not explicitely implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overriden by application developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitely released (like network connections or connections to databases) or specific actions need to take place at the end of the application. 
 
 ##### Fragments
 
 A Fragment represents a behavior or a portion of user interface in an Activity.
+
+##### Intents
+
+An *Intent* is a messaging object that can be used to request an action from another app component.
 
 ##### Broadcast Receivers
 
@@ -248,17 +289,15 @@ Broadcast Receivers are components that allow to receive notifications sent from
 
 ##### Content Providers
 
-Content Providers are components that create an abstraction layer to allow an application to share their data with other applications (Can be used only for the application itself, without being shared to other applications). 
+Android is using SQLite to store data permanently: as it is in Linux, data is stored in files. SQLite is an open-source, light and efficient technology for relational data storage that does not require much processing power, making it ideal for use in the mobile world. An entire API is available to the developer with specific classes (Cursor, ContentValues, SQLiteOpenHelper, ContentProvider, ContentResolver, ...). 
+SQLite is not run in a separate process from a given application, but it is part of it. 
+By default, a database belonging to a given application is only accessible to this application. However, Content Providers offer a great mechanism to abstract data sources (including databases, but also flat files) for a more easy use in an application; they also provide a standard and efficient mechanism to share data between applications, including native ones. In order to be accessible to other applications, content providers need to be explicitely declared in the Manifest file of the application that will share it. As long as Content Providers are not declared, they are not exported and can only be called by the application that creates them.
 
-....
+Content Providers are implemented through a URI addressing scheme: they all use the content:// model. Whatever the nature of sources is (SQLite database, flat file, ...), the addressing scheme is always the same, abstracting what sources are and offering a unique scheme to the developer. Content providers offer all regular operations on databases: create, read, update, delete. That means that any application with proper rights in its manifest file can manipulate the data from other applications.
 
 ##### Services
 
-Services are components that will perform tasks in the background, without presenting any kind of user interface.
-
-....
-
-
+Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...), without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active applications have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main application thread. They are great candidates to run asynchronous tasks. 
 
 ##### Permissions
 Because Android applications are installed in a sandbox and initially it does not have access to neither user information nor access to system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the application can request.
@@ -372,4 +411,4 @@ Messages sent by the remote process via the messenger are delivered to the local
 + "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
 + [keesj Android internals](https://github.com/keesj/gomo)
-
++ [Android Versions] (https://en.wikipedia.org/wiki/Android_version_history)
