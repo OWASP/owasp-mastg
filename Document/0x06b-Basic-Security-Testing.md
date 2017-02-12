@@ -6,7 +6,7 @@
 
 In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037) [3].
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabigit ility in the Photos app (CVE-2015-7037) [3].
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
@@ -18,7 +18,7 @@ In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. 
 
 #### Without Source Code
 
-##### Recovering an IPA file from an installed app
+##### Recovering an IPA File From an Installed App
 
 ###### From Jailbroken devices
 
@@ -141,9 +141,19 @@ Follow the instructions in the NCC Group blog artice [3].
 ##### Patching, Repackaging and Re-Signing
 
 ~~~
-$ unzip UnCrackable_Level_1.ipa
-$ optool install -c load -p FridaGadget.dylib -t Payload/Fuckmeup.app/Fuckmeup
+$ unzip UnCrackable_Level_2.ipa
+$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 2.app/
+$ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 2.app/UnCrackable\ Level\ 2 
+Found FAT Header
+Found thin header...
+Found thin header...
+Inserting a LC_LOAD_DYLIB command for architecture: arm
+Successfully inserted a LC_LOAD_DYLIB command for arm
+Inserting a LC_LOAD_DYLIB command for architecture: arm64
+Successfully inserted a LC_LOAD_DYLIB command for arm64
+Writing executable to Payload/UnCrackable Level 2.app/UnCrackable Level 2...
 ~~~
+
 
 Get entitlements:
 
@@ -170,28 +180,20 @@ $ cat entitlements.plist
 ~~~
 
 
+Copy the new provisioning profile into the app bundle:
+
+~~~
+$ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 2.app/embedded.mobileprovision
+$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 2.app/Info.plist
+~~~
+
+
 
 ~~~
 $ rm -rf Payload/F/_CodeSignature
-$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 2.app/
-$ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 2.app/UnCrackable\ Level\ 2
-Found FAT Header
-Found thin header...
-Found thin header...
-Inserting a LC_LOAD_DYLIB command for architecture: arm
-Successfully inserted a LC_LOAD_DYLIB command for arm
-Inserting a LC_LOAD_DYLIB command for architecture: arm64
-Successfully inserted a LC_LOAD_DYLIB command for arm64
-Writing executable to Payload/UnCrackable Level 2.app/UnCrackable Level 2...
-~~~
-
-
-
-~~~
-$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 2.app/Info.plist
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 2.app/UnCrackable\ Level\ 2
 Payload/UnCrackable Level 2.app/UnCrackable Level 2: replacing existing signature
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 Payload/UnCrackable\ Level\ 2.app/FridaGadget.dylib
+$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 2.app/FridaGadget.dylib
 Payload/UnCrackable Level 2.app/FridaGadget.dylib: replacing existing signature
 ~~~
 
@@ -199,7 +201,7 @@ Payload/UnCrackable Level 2.app/FridaGadget.dylib: replacing existing signature
 
 
 ~~~
-$ ios-deploy --debug --bundle
+$ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 2.app/
 ~~~
 
 ### References
