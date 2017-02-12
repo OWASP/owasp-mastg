@@ -206,6 +206,15 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
+
+~~~
+$ frida-ps -U
+PID  Name
+---  ------
+499  Gadget
+~~~
+
+
 For troubleshooting see [4].
 
 
@@ -213,7 +222,7 @@ For troubleshooting see [4].
 
 (... TODO - clean this up ...)
 
-http://cydia.saurik.com/package/com.autopear.installipa/
+* [x] http://cydia.saurik.com/package/com.autopear.installipa/
 * [1] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
 * [2] Apple Developer Portal - https://developer.apple.com/
 * [3] https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
