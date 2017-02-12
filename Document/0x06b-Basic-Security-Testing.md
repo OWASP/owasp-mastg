@@ -107,6 +107,8 @@ $ security find-identity -p codesigning -v
   2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
 ~~~
 
+Make sure it's a developer certificate and not a distribution certificate, otherwise you won't be able to attach a debugger to the app.
+
 ##### Preparations
 
 Building OPTool
@@ -143,7 +145,7 @@ Follow the instructions in the NCC Group blog artice [3].
 ~~~
 $ unzip UnCrackable_Level_1.ipa
 $ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
-$ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
+$ optool install -c load -p "@executable_path/FridaGadget.dylib" -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Found FAT Header
 Found thin header...
 Found thin header...
@@ -204,6 +206,9 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
+For troubleshooting see [4].
+
+
 ### References
 
 (... TODO - clean this up ...)
@@ -212,3 +217,4 @@ http://cydia.saurik.com/package/com.autopear.installipa/
 * [1] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
 * [2] Apple Developer Portal - https://developer.apple.com/
 * [3] https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
+* [4] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
