@@ -224,21 +224,44 @@ The Android Framework is creating an abstraction layer for all the layers below,
 
 #### App Components
 
-Android Applications are composed by several components:
+Android applications are made of several high-level components that make up their architectures. The main components are activities, fragments, intents, broadcast receivers, content providers and services. All these elements are provided by the Android operating system in the form of predefined classes available through APIs. 
 
-##### Intents
+##### Application lifecycle
 
-An *Intent* is a messaging object that can be used to request an action from another app component.
+Android applications have their own lifecycles, that is under the control of the operating system. Therefore, applications need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, applications may be killed. The system selects the ones that will be killed according to the application priority: active applications have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance applications that are still open but not in use since a significant time). 
 
-#### Activities
+Applications implement several event managers to handle events: for example, the onCreate handler implements what is to be done on application creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
-Activities are the visible components of any application. They are the application GUI, that allow the user to interact with it.
+##### Activities
 
-.....
+Activities make up the visible part of any application. More specifically, one activity exists per screen (e.g. user interface) in an application: for instance, applications that have 3 different screens implement 3 different activities, where the user can interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
+
+Activities implement manifest files. Each activity needs to be declared in the application manifest with the following syntax:
+```
+<activity android:name=".ActivityName>
+</activity>
+```
+When activities are not declared in manifests, they cannot be displayed and would raise an exception.
+
+In the same way as applications do, activities also have their own lifecycles and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating systems. Accordingly, activities can implement the following event managers:
+- onCreate
+- onSaveInstanceState
+- onStart
+- onResume
+- onRestoreInstanceState
+- onPause
+- onStop
+- onRestart
+- onDestroy
+An application may not explicitely implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overriden by application developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitely released (like network connections or connections to databases) or specific actions need to take place at the end of the application. 
 
 ##### Fragments
 
 A Fragment represents a behavior or a portion of user interface in an Activity.
+
+##### Intents
+
+An *Intent* is a messaging object that can be used to request an action from another app component.
 
 ##### Broadcast Receivers
 
