@@ -6,7 +6,7 @@
 
 In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037) [3].
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037).
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
@@ -87,9 +87,9 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Unfortunately, thanks to Apple's confusing provisioning and code signing system, this is more challenging to get this right than one would expect: iOS will refuse to run an app unless you get the provisioning profile and code signature header absolutely spot on. This requires you to know about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be an exhilarating process.
 
-The toolset we're going to use consists of optool, Apple's build tools and some shell commands. The method is inspired by the resign script from Vincent Tan's Swizzler project [4]. An alternative way of repackaging using different tools was described by NCC group [3].
+The toolset we're going to use consists of optool, Apple's build tools and some shell commands. The method is inspired by the resign script from Vincent Tan's Swizzler project [4]. An alternative way of repackaging using different tools was described by NCC group [5].
 
-To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo [5].
+To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo [6].
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -107,10 +107,11 @@ If you don't have a signing identity yet, you can create a new one via Xcode [10
 
 Once you have generated the signing identity, you'll need to issue a developer provisioning profile that allows you to run the repackaged apps on your device(s). You have two options for doing this:
 
-1. If you are registered as a developer: Use the "regular" way through the Apple Developer Portal to register an App ID and issue the profile [1].
+1. If you are registered as a developer: Use the "regular" way through the Apple Developer Portal to register an App ID and issue the profile [8].
 
-2. With a regular Apple account: Create a signing identity in Xcode and build an empty iOS project. Then, extract embedded.mobileprovision from the app container [3].
+2. With a regular Apple account: Create a signing identity in Xcode and build an empty iOS project. Then, extract embedded.mobileprovision from the app container [4].
 
+(.. TODO ..)
 
 This should yield you a file called AwesomeRepackaging.mobileprovision.
 
@@ -281,8 +282,8 @@ For troubleshooting see [4].
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
 * [2] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
 * [3] Optool - https://github.com/alexzielenski/optool
-* [4] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
-* [5] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
+* [4] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
+* [5] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
 * [6] Uncrackable Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1
 * [7] Maintaining Certificates - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html
 * [8] Maintaining Provisioning Profiles - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html
