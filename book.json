@@ -1,5 +1,7 @@
 { 
+  "root" : "./Document",
+
   "structure": { 
-    "readme": "./Document/0x01-Foreword.md" 
+    "readme": "0x01-Foreword.md" 
   } 
 }
