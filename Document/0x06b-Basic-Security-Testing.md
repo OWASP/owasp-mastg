@@ -142,8 +142,8 @@ Follow the instructions in the NCC Group blog artice [3].
 
 ~~~
 $ unzip UnCrackable_Level_2.ipa
-$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 2.app/
-$ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 2.app/UnCrackable\ Level\ 2 
+$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
+$ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Found FAT Header
 Found thin header...
 Found thin header...
@@ -151,7 +151,7 @@ Inserting a LC_LOAD_DYLIB command for architecture: arm
 Successfully inserted a LC_LOAD_DYLIB command for arm
 Inserting a LC_LOAD_DYLIB command for architecture: arm64
 Successfully inserted a LC_LOAD_DYLIB command for arm64
-Writing executable to Payload/UnCrackable Level 2.app/UnCrackable Level 2...
+Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ~~~
 
 
@@ -183,25 +183,25 @@ $ cat entitlements.plist
 Copy the new provisioning profile into the app bundle:
 
 ~~~
-$ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 2.app/embedded.mobileprovision
-$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 2.app/Info.plist
+$ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
+$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ~~~
 
 
 
 ~~~
 $ rm -rf Payload/F/_CodeSignature
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 2.app/UnCrackable\ Level\ 2
-Payload/UnCrackable Level 2.app/UnCrackable Level 2: replacing existing signature
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 2.app/FridaGadget.dylib
-Payload/UnCrackable Level 2.app/FridaGadget.dylib: replacing existing signature
+$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
+Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
+$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
+Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
+
 ~~~
 
 ##### Installing and Running the App
 
-
 ~~~
-$ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 2.app/
+$ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
 ### References
