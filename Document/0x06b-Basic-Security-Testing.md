@@ -141,7 +141,7 @@ Follow the instructions in the NCC Group blog artice [3].
 ##### Patching, Repackaging and Re-Signing
 
 ~~~
-$ unzip UnCrackable_Level_2.ipa
+$ unzip UnCrackable_Level_1.ipa
 $ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
 $ optool install -c load -p FridaGadget.dylib -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Found FAT Header
