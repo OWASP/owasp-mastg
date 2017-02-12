@@ -1,8 +1,5 @@
 # Summary
 
-### Introduction
-
-- [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 
 ### Overview

@@ -1,3 +1,5 @@
-{
-    "structure.readme": "./Document/0x01-Foreword.md"
+{ 
+  "structure": { 
+    "readme": "./Document/0x01-Foreword.md" 
+  } 
 }
