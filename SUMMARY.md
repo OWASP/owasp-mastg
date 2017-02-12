@@ -4,8 +4,8 @@
 
 ### Overview
 
-* [Overview](0x03-Overview.md)
-* [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
+- [Introduction to Mobile App Security](Document/0x03-Overview.md)
+- [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
 ### Android Testing Guide
 
