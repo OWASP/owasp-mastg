@@ -271,17 +271,15 @@ Broadcast Receivers are components that allow to receive notifications sent from
 
 ##### Content Providers
 
-Content Providers are components that create an abstraction layer to allow an application to share their data with other applications (Can be used only for the application itself, without being shared to other applications). 
+Android is using SQLite to store data permanently: as it is in Linux, data is stored in files. SQLite is an open-source, light and efficient technology for relational data storage that does not require much processing power, making it ideal for use in the mobile world. An entire API is available to the developer with specific classes (Cursor, ContentValues, SQLiteOpenHelper, ContentProvider, ContentResolver, ...). 
+SQLite is not run in a separate process from a given application, but it is part of it. 
+By default, a database belonging to a given application is only accessible to this application. However, Content Providers offer a great mechanism to abstract data sources (including databases, but also flat files) for a more easy use in an application; they also provide a standard and efficient mechanism to share data between applications, including native ones. In order to be accessible to other applications, content providers need to be explicitely declared in the Manifest file of the application that will share it. As long as Content Providers are not declared, they are not exported and can only be called by the application that creates them.
 
-....
+Content Providers are implemented through a URI addressing scheme: they all use the content:// model. Whatever the nature of sources is (SQLite database, flat file, ...), the addressing scheme is always the same, abstracting what sources are and offering a unique scheme to the developer. Content providers offer all regular operations on databases: create, read, update, delete. That means that any application with proper rights in its manifest file can manipulate the data from other applications.
 
 ##### Services
 
-Services are components that will perform tasks in the background, without presenting any kind of user interface.
-
-....
-
-
+Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...), without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active applications have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main application thread. They are great candidates to run asynchronous tasks. 
 
 ##### Permissions
 Because Android applications are installed in a sandbox and initially it does not have access to neither user information nor access to system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the application can request.
