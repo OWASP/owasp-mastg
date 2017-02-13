@@ -39,7 +39,7 @@ Main Contact: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhar
 * [Overview](0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
-Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
+Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmahtani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
 
 ### Android Testing Guide
 
@@ -56,7 +56,7 @@ Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [
 
 ### iOS Testing Guide
 
-- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu) - *pmathani*
+- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu) - *pmahtani*
 - [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
 - [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
