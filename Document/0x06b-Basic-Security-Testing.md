@@ -107,18 +107,15 @@ $ security find-identity -p codesigning -v
   2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
 ~~~
 
-Log into the Apple Developer portal to issue a new App ID, then issue and download the profile [8]. The App ID can be anything - you can use the same App ID for re-signing multiple apps.
+Log into the Apple Developer portal to issue a new App ID, then issue and download the profile [8]. The App ID can be anything - you can use the same App ID for re-signing multiple apps. Make sure you create a *development* profile and not a *distribution* profile, as you'll want to be able to debug the app.
+
+In the examples below I'm using my own signing identity which is associated with my company's development team. I created the app-id "sg.vp.repackaged", as well as a provisioning profile aptly named "AwesomeRepackaging" for this purpose, and ended up with the file AwesomeRepackaging.mobileprovision - exchange this with your own filename in the shell commands below.
 
 **With a regular iTunes account:**
 
-If you don't have a signing identity yet, you can create a new one via Xcode [10]. Mercifully, Apple allows you to do this with a regular Apple ID, and will even issue free provisioning profiles for deploying apps on your own devices! 
+Mercifully, Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode using your regular Apple account - simply build an empty iOS project and extract embedded.mobileprovision from the app container. The NCC blog explains this process in great detail [4].
 
-Build an empty iOS project. Then, extract embedded.mobileprovision from the app container [4].
-
-
-Once you have obtained the provisioning profile, you can check its contents with the *security* tool. Note that in the examples shown below, I'm using my own signing certificate which is associated with my company's development team.
-
-The entitlements (including application ID) in the code signature header must match the entitlements in the embedded provisioning profile. Extract the entitlements from the profile as follows:
+Once you have obtained the provisioning profile, you can check its contents with the *security* tool. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those later for code signing, so extract them to a separate plist file as shown below. It is also worth having a look at the contents of the file to check if everything looks as expected.
 
 ~~~
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
@@ -142,13 +139,19 @@ $ cat entitlements.plist
 </plist>
 ~~~
 
-Note the application identitifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). Also, the "get-task-allow" key must be set to "true" - this allows other processes, such as the debugging server, to attach to the app process.
-
-Note that the target device id needs to be listed in the entitlements contained in the profile. 
+Note the application identitifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
 
 ##### Other Preparations
 
-To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. Use optool [3] to automate this process:
+To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. Optool [3] can be used to automate this process:
+
+~~~
+$ git clone https://github.com/alexzielenski/optool.git
+$ cd optool/
+$ git submodule update --init --recursive
+~~~
+
+We'll also use ios-deploy [10], a tools that enables deploying and debugging of iOS apps without using Xcode:
 
 ~~~
 git clone https://github.com/alexzielenski/optool.git
@@ -156,19 +159,17 @@ cd optool/
 git submodule update --init --recursive
 ~~~
 
-Another useful tool is ios-deploy [10]
-
-You'll also need FridaGadget.dylib:
+To follow the examples below, you also need FridaGadget.dylib:
 
 ~~~
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ~~~
 
-We'll also be using some standard tools that come with OS X and Xcode (make sure you have the Xcode command line developer tools installed).
+Besides the tools listed above, we'll be using standard tools that come with OS X and Xcode (make sure you have the Xcode command line developer tools installed).
 
 ##### Patching, Repackaging and Re-Signing
 
-Time to get serious! As you already now, IPA files are actually ZIP archives, so feel free to use any zip tool to unpack the archive. Then, copy  FridaGadget.dylib into the app directory, and add the load command to "UnCrackable Level 1" using optool.
+Time to get serious! As you already now, IPA files are actually ZIP archives, so use any zip tool to unpack the archive. Then, copy FridaGadget.dylib into the app directory, and add a load command to the "UnCrackable Level 1" binary using optool.
 
 ~~~
 $ unzip UnCrackable_Level1.ipa
@@ -184,21 +185,21 @@ Successfully inserted a LC_LOAD_DYLIB command for arm64
 Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ~~~
 
-Of course, due to all your tampering, the code signature of the main executable won't match anymore, so this won't run on a non-jailbroken device. You also need to sign FridaGadget.dylib with a trusted certificate. We'll have to add our provisioning profile to the app and re-sign both binaries with the appropriate signing identity and entitlements.
+Due to all this tampering, the code signature of the main executable has been invalidated, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and FridaGadget.dylib with the certificate listed in the profile.
 
-Everything looks good, so we add the provisioning profile to the app package:
+First, let's add our own provisioning profile to the package:
 
 ~~~
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ~~~
 
-Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. One reason for this is that the "codesign" tool will read the Bundle ID from Info.plist - a wrong value will lead to an invalid signature.
+Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. The reason for this is that the "codesign" tool will read the Bundle ID from Info.plist during signing - a wrong value will lead to an invalid signature.
 
 ~~~
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ~~~
 
-Finally, use codesign to re-sign both binaries:
+Finally, we use the codesign tool to re-sign both binaries:
 
 ~~~
 $ rm -rf Payload/F/_CodeSignature
@@ -206,7 +207,6 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Pay
 Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
-
 ~~~
 
 ##### Installing and Running the App
@@ -217,7 +217,7 @@ Now you should be all set for running the modified app. Deploy and run the app o
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
-If everything went well, the app should launch on the device in debugging mode (with lldb attached). Frida should now be able to attach to the app. You can verify this with the frida-ps command:
+If everything went well, the app should launch on the device in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the frida-ps command:
  
 ~~~
 $ frida-ps -U
@@ -228,11 +228,9 @@ PID  Name
 
 ##### Troubleshooting.
 
-For troubleshooting see [4].
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
 
 ### References
-
-(... TODO - clean this up ...)
 
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
 * [2] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
