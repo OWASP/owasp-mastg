@@ -317,11 +317,32 @@ In the same way as applications do, activities also have their own lifecycles an
 - onStop
 - onRestart
 - onDestroy
+
 An application may not explicitely implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overriden by application developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitely released (like network connections or connections to databases) or specific actions need to take place at the end of the application. 
 
 ##### Fragments
 
-A Fragment represents a behavior or a portion of user interface in an Activity.
+Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11). 
+
+User interfaces are made of  several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons, ...); however, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
+As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to Android specification for more details.
+
+Fragments can be implemented easily by extending the Fragment class provided by Android:
+```
+public class myFragment extends Fragment {
+	...
+}
+```
+
+Fragments don't need to be declared in manifest files as they depend on activities. 
+
+In order to manage its fragments, an Activity can use a Fragment Manager (FragmentManager class). This class makes it easy to find, add, remove and replace associated fragmens. 
+Fragment Managers can be created simply with the following:
+```
+FragmentManager fm = getFragmentManager();
+```
+
+Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an application, for instance when a fragment is declared as persistent while its parent activity may be destroyed and created again. 
 
 ##### Intents
 
@@ -493,3 +514,4 @@ Messages sent by the remote process via the messenger are delivered to the local
 + [AProgrammer Blog](https://pierrchen.blogspot.com.br)
 + [keesj Android internals](https://github.com/keesj/gomo)
 + [Android Versions] (https://en.wikipedia.org/wiki/Android_version_history)
++ "Professional Android 4 Application Development" by Reto MEIER
