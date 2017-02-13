@@ -20,7 +20,7 @@ http://owasp.herokuapp.com/
 
 Before you start contribution, please also read our brief [style guide](https://github.com/b-mueller/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
 
-You can also suggest improvements by creating an [issue](https://github.com/b-mueller/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
+You can also suggest improvements by creating an [issue](https://github.com/OWASP/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
 
 ## High-Level Structure
 
