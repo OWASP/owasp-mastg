@@ -1,4 +1,6 @@
-### OMTG-CODE-001: Verify that the App is Properly Signed
+## Testing Code Quality and Build Settings
+
+### Verifying that the App is Properly Signed
 
 #### Overview
 
@@ -16,7 +18,7 @@
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
-### OMTG-CODE-002: Test whether the App is Debuggable
+### Testing Whether the App is Debuggable
 
 #### Overview
 
@@ -40,7 +42,7 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 (TODO)
 
-### OMTG-CODE-003: Verify that Debugging Symbols Have Been Removed
+### Verifying that Debugging Symbols Have Been Removed
 
 #### Overview
 
@@ -76,7 +78,7 @@ Not applicable.
 
 - [1] https://www.gnu.org/s/binutils/
 
-### OMTG-CODE-004: Test for Debugging Code and Verbose Error Logging
+### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
 
@@ -94,7 +96,7 @@ Not applicable.
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-005: Test Exception Handling
+### Testing Exception Handling
 
 #### Overview
 
@@ -120,7 +122,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-006: Verify that the App Fails Securely
+### Verifying that the App Fails Securely
 
 #### Overview
 
@@ -140,51 +142,7 @@ Review the source code to understand/identify who the application handle various
 
 - [link to relevant how-tos, papers, etc.]
 
-### OMTG-CODE-007: Test Input Validation
-
-#### Overview
-
-(Give an overview about the functionality and it's potential weaknesses)
-
-#### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-- [link to relevant how-tos, papers, etc.]
-
-### OMTG-CODE-008: Test Memory Management
-
-#### Overview
-
-(Give an overview about the functionality and it's potential weaknesses)
-
-#### White-box Testing
-
-(Describe how to assess this with access to the source code and build configuration)
-
-#### Black-box Testing
-
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue]
-
-#### References
-
-- [link to relevant how-tos, papers, etc.]
-
-### OMTG-CODE-009: Test Compiler Settings
+### Testing Compiler Settings
 
 #### Overview
 
@@ -258,6 +216,6 @@ Steps for enabling ACR protection within an iOS application :
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
 
-### OMTG-CODE-010: Verify that Java Bytecode Has Been Minifed
+### Verifying that Java Bytecode Has Been Minifed
 
 Not applicable on iOS.

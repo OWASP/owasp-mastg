@@ -1,5 +1,3 @@
-# Appendix
-
 ## Testing Tools
 To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behaviour of running Apps and other test cases and automate them.
 

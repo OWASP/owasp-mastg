@@ -2,8 +2,6 @@
 
 Its openness makes Android a favorable environment for reverse engineers. However, dealing with both Java and native code can make things more complicated at times. In the following chapter, we'll look at some peculiarities of Android reversing and OS-specific tools as processes.
 
-### Basics
-
 In comparison to iOS, Android offers some big advantages to reverse engineers. First of all transparency: You can study the source code of the Android Open Source Project (AOSP), build your ROMs, and so on. The OS is also much more friendly to developers and tinkerers in other way: From the developer options available by default, to the way debugging is set up and the tools shipping with the SDK, there's lot of niceties to make your life easier compared to "some other vendors".
 
 However, there's also a few challenges you'll encounter. For example, if you're used to analyzing native code, you'll need to SMALI to your repertoire. As it is easy for developers to call into native code via the Java Native Interface (JNI), you'll often need to work with Java and native code at the same time. JNI is sometimes used on purpose to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to impede reverse engineering deliberately split functionality between Java bytecode and native code, structuring their apps such that execution frequently jumps between the two layers.

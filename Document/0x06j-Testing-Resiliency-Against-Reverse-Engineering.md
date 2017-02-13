@@ -1,4 +1,6 @@
-### OMTG-ENV-001: Test of App permissions
+## Testing Resiliency Against Reverse Engineering
+
+### Testing the Custom Keyboard
 
 #### Overview
 
@@ -27,26 +29,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.1: "The app only requires the minimum set of permissions necessary."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-### OMTG-ENV-002: Test validation and sanitization of input
+### Testing Custom UI Elements
 
 #### Overview
 
@@ -75,26 +79,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-### OMTG-ENV-003: Test usage of custom URL schemes
+### Testing Root Detection
 
 #### Overview
 
@@ -123,26 +129,62 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
+### Testing Debugging Defenses
 
-### OMTG-ENV-004: Test for export of sensitive functionality through IPC
+#### Overview
+
+Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more.
+
+(...TODO...)
+
+The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
+
+#### White-box Testing
+
+(Describe how to assess this with access to the source code and build configuration)
+
+#### Black-box Testing
+
+(... TODO ... testing in basic form vs. advanced defenses)
+
+Attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
+
+(TODO example)
+
+(TODO JDWP)
+
+Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue]
+
+#### References
+
+- [link to relevant how-tos, papers, etc.]
+
+### Testing File Integrity Checks
 
 #### Overview
 
@@ -171,27 +213,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-
-### OMTG-ENV-005: Test for usage of JavaScript in WebViews
+### Testing Detection of Reverse Engineering Tools
 
 #### Overview
 
@@ -220,26 +263,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-### OMTG-ENV-006: Test for protocol handlers in WebViews
+### Testing Simple Emulator Detection
 
 #### Overview
 
@@ -268,26 +313,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-### OMTG-ENV-007: Test for user supplied resources in WebViews
+### Testing Memory Integrity Checks
 
 #### Overview
 
@@ -316,26 +363,28 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.7: "The app does not load user-supplied local resources into WebViews."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-### OMTG-ENV-008: Test for exposed Java Objects in WebViews
+### Verifying Variablility of Tampering Responses
 
 #### Overview
 
@@ -364,33 +413,32 @@
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.8: "If Java objects are exposed in a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-
-
-### OMTG-ENV-009: Test for object serialization
+### Testing Simple Obfuscation
 
 #### Overview
 
-Check <sup>[1]</sup>
-
+[Provide a general description of the issue.]
 
 #### Static Analysis
 
@@ -415,33 +463,32 @@ Check <sup>[1]</sup>
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
-- [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
-
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
 
-
-
-### OMTG-ENV-010: Test for Jailbreak detection
+### Verifying Integration of Defenses
 
 #### Overview
 
-iOS implements containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
-
-The risk of malicious code running as root is higher on jailbroken devices, as many of the default integrity checks are disabled. Developers of apps that handle highly sensitive data should therefore consider implementing checks that either prevent the app from running under these conditions, or at least warn the user about the increased risks.
+[Provide a general description of the issue.]
 
 #### Static Analysis
 
@@ -466,20 +513,173 @@ The risk of malicious code running as root is higher on jailbroken devices, as m
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
 - CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
 * Tool - Link
+* Enjarify - https://github.com/google/enjarify
+
+### Testing Device Binding
+
+#### Overview
+
+[Provide a general description of the issue.]
+
+#### Static Analysis
+
+[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+
+[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+
+##### With Source Code
+
+##### Without Source Code
+
+#### Dynamic Analysis
+
+[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue.]
+
+#### References
+
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+
+##### CWE
+
+- CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
+##### Tools
+
+* Tool - Link
+* Enjarify - https://github.com/google/enjarify
+
+### Testing Advanced Anti-Debugging
+
+#### Overview
+
+[Provide a general description of the issue.]
+
+#### Static Analysis
+
+[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+
+[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+
+##### With Source Code
+
+##### Without Source Code
+
+#### Dynamic Analysis
+
+[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue.]
+
+#### References
+
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+
+##### CWE
+
+- CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
+##### Tools
+
+* Tool - Link
+* Enjarify - https://github.com/google/enjarify
+
+### Testing Advanced Obfuscation
+
+#### Overview
+
+[Provide a general description of the issue.]
+
+#### Static Analysis
+
+[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+
+[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+
+##### With Source Code
+
+##### Without Source Code
+
+#### Dynamic Analysis
+
+[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+
+#### Remediation
+
+[Describe the best practices that developers should follow to prevent this issue.]
+
+#### References
+
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+
+##### CWE
+
+- CWE-XXX - Title
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
+##### Tools
+
+* Tool - Link
+* Enjarify - https://github.com/google/enjarify
