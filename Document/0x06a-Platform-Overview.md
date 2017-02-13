@@ -27,7 +27,9 @@ When the iOS device is powered on, it reads the initial instructions from the re
 
 Code Signing
 
-(...TODO...)
+Before any iOS application can be installed, it's origins needs to be authenticated. If an iOS app was downloaded from a random website, there is a significant risk that it could be classified as a malware. The risk can be greatly reduced and if the software’s origin can be verified, it can also be further assured that it has not been modified in transit.
+
+Thus, code signing provides this mechanism to provide this assurance. Through the use of X.509v3 certificates, which is the case of developers signing their public key with the private key of the issuer, this allows developers to authenicate their identity by virtue of signing their applications. (...TODO...) 
 
 
 Sandbox
