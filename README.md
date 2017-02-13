@@ -6,7 +6,7 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 The MSTG doesn't have an official release yet. There are however several options to convert the it into an easily readable format:
 
-1. Read it on [Gitbook](https://www.gitbook.com/book/b-mueller/owasp-mobile-security-testing-guide/details). The book is auto-synced with the main repo.
+1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can also use Gitbook to generate PDF, epub, and other e-book formats.
 
 2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
 
