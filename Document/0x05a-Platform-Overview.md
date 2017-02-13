@@ -279,13 +279,48 @@ A Fragment represents a behavior or a portion of user interface in an Activity.
 
 ##### Intents
 
-An *Intent* is a messaging object that can be used to request an action from another app component.
+Intents are messaging components used between applications and components. They can be used by an application to send information to its own components (for instance, start inside the application a new activity) or to other applications, and may be received from other applications or from the operating system. Intents can be used to start activities or services, run an action on a given set of data, or broadcast a message to the whole system. They are a convenient way to decouple components.
+
+There are two kinds of intents : explicit and implicit. 
+- explicit intents exactly name the activity class to be used. For instance:
+```
+	Intent intent = new Intent(this, myActivity.myClass);
+```
+- implicit intents are sent to the system with a given action to perform on a given set of data ("http://www.example.com" in our example below). It is up to the system to decide which application or class will perform the corresponding service. For instance:
+```
+	Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("http://www.example.com"));
+```
+
+Android uses intents to broadcast messages to applications, like an incoming call or SMS, important information on power supply (low battery for example) or network changes (loss of connection for instance). Extra data may be added to intents (through putExtra / getExtras). 
+
+Here is a short list of intents from the operating system. All constants are defined in the Intent class, and the whole list can be found in Android official documentation:
+- ACTION_CAMERA_BUTTON
+- ACTION_MEDIA_EJECT
+- ACTION_NEW_OUTGOING_CALL
+- ACTION_TIMEZONE_CHANGED
+
+In order to improve security and privacy, a Local Broadcast Manager exists and is used to send and receive intents inside an application, without having them sent to the outside world (other applications or operating system). This is very useful to guarantee sensitive or private data do not leave the application perimeter (geolocation data for instance). 
 
 ##### Broadcast Receivers
 
-Broadcast Receivers are components that allow to receive notifications sent from other applications and from the system itself.
+Broadcast Receivers are components that allow to receive notifications sent from other applications and from the system itself. This way, applications can react to events (either internal, from other applications or from the operating system). They are generally used to update a user interface, start services, update content or create user notifications. 
 
-....
+Broadcast Receivers need to be declared in the Manifest file of the application. Any Broadcast Receiver must be associated to an intent filter in the manifest to specify which actions it is meant to listen with which kind of data. If they are not declared, the application will not listen to broadcasted messages. However, applications do not need to be started to receive intents: they are automatically started by the system when a relevant intent is raised. 
+
+An example of declaring a Broadcast Receiver with an Intent Filter in a manifest is:
+```
+	<receiver android:name=".myReceiver" >
+		<intent-filter>
+			<action android:name="com.owasp.myapplication.MY_ACTION" />
+		</intent-filter>
+	</receiver>
+```
+
+When receiving an implicit intent, Android will list all applications that have registered a given action in their filters. If more than one application is matching, then Android will list all those applications and will require the user to make a selection.
+
+An interesting feature concerning Broadcast Receivers is that they be affected a priority; this way, an intent will be delivered to all receivers authorized to get them according to their priority. 
+
+A Local Broadcast Manager can be used to make sure intents are received only from the internal application, and that any intent from any other application will be discarded. This is very useful to improve security.
 
 ##### Content Providers
 
