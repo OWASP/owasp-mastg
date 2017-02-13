@@ -87,9 +87,9 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Unfortunately, thanks to Apple's confusing provisioning and code signing system, this is more challenging to get this right than one would expect: iOS will refuse to run an app unless you get the provisioning profile and code signature header absolutely spot on. This requires you to know about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be an exhilarating process.
 
-The toolset we're going to use consists of optool, Apple's build tools and some shell commands. The method is inspired by the resign script from Vincent Tan's Swizzler project [4]. An alternative way of repackaging using different tools was described by NCC group [5].
+The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from Vincent Tan's Swizzler project [4]. An alternative way of repackaging using different tools was described by NCC group [5].
 
-To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo [6].
+To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo [6]. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida. 
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -176,11 +176,10 @@ $ security cms -D -i AwesomeRepackaging.mobileprovision
 </plist>
 ~~~
 
-Note that the target device id needs to be listed in the entitlements contained in the profile. Also, the "get-task-allow" key must be set to "true" - this allows other processes, such as the debugging server, to attach to the app process.
-
+Note that the target device id needs to be listed in the entitlements contained in the profile. 
 ##### Other Preparations
 
-Our goal is to make the app load FridaGadget.dylib during startup so we can instrument it using Frida. To achieve this, we'll need to insert an additional load command into the Mach-O header of the main executable. Install otool [3] to automate this process:
+To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. Install optool [3] to automate this process:
 
 ~~~
 git clone https://github.com/alexzielenski/optool.git
@@ -197,6 +196,7 @@ $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 
 ##### Patching, Repackaging and Re-Signing
 
+Time to get serious! As you already now, IPA files are actually ZIP archives, so feel free to use any zip tool to unpack the archive. Then, copy  FridaGadget.dylib into the app directory, and add the load command to "UnCrackable Level 1" using optool.
 
 
 ~~~
@@ -213,8 +213,9 @@ Successfully inserted a LC_LOAD_DYLIB command for arm64
 Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ~~~
 
+Of course, due to all your tampering, the code signature of the main executable won't match anymore, so this won't run on a non-jailbroken device. You also need to sign FridaGadget.dylib with a trusted certificate. We'll have to add our provisioning profile to the app and re-sign both binaries with the appropriate signing identity and entitlements.
 
-Get entitlements:
+The entitlements (including application ID) in the code signature header must match the entitlements in the embedded provisioning profile. Extract the entitlements from the profile as follows:
 
 ~~~
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
@@ -239,14 +240,21 @@ $ cat entitlements.plist
 ~~~
 
 
-Copy the new provisioning profile into the app bundle:
+Note the application identitifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). Also, the "get-task-allow" key must be set to "true" - this allows other processes, such as the debugging server, to attach to the app process.
+
+Everything looks good, so we add the provisioning profile to the app package:
 
 ~~~
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
+~~~
+
+Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. One reason for this is that the "codesign" tool will read the Bundle ID from Info.plist - a wrong value will lead to an invalid signature.
+
+~~~
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ~~~
 
-
+Finally, remove the original _CodeSingature file and use the codesign tool to re-sign both binaries:
 
 ~~~
 $ rm -rf Payload/F/_CodeSignature
@@ -258,6 +266,8 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 ~~~
 
 ##### Installing and Running the App
+
+
 
 ~~~
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
