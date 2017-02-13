@@ -250,6 +250,52 @@ Android applications have their own lifecycles, that is under the control of the
 
 Applications implement several event managers to handle events: for example, the onCreate handler implements what is to be done on application creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
+##### Manifest files
+
+Every application must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every application. It is located in the root tree of the .apk file in which the application is published. 
+
+A Manifest file describes the application structure as well as its exposed components (activities, services, content providers and intent receivers) and the rights required by the application (required permissions are listed, and filters can be implemented to refine the way the application will interact with the outside world). It also contains general metadata about the application, like its icon, its version number and the theme is uses for User Experience (UX). It may also list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of memory is can be installed in (external or internal). 
+
+Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used), the application version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters, and the description of the application itself with its activities:
+```
+<manifest 
+	package="com.owasp.myapplication"
+	android:versionCode="0.1" >
+	
+	<uses-sdk android:minSdkVersion="12"
+		android:targetSdkVersion="22"
+		android:maxSdkVersion="25" />
+	
+	<uses-permission android:name="android.permission.INTERNET" />
+	
+	<provider
+		android:name="com.owasp.myapplication.myProvider"
+		android:exported="false" />
+
+	<receiver android:name=".myReceiver" >
+		<intent-filter>
+			<action android:name="com.owasp.myapplication.myaction" />
+		</intent-filter>
+	</receiver>
+	
+	<application
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/Theme.Material.Light" >
+		<activity
+			android:name="com.owasp.myapplication.MainActivity" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+	</application>
+</manifest>
+```
+
+Manifests are text files and can be edited with any text editor. However, Android Studio, Google prefered IDE for Android development, embeds a graphical editor.
+
+A lot more useful options can be added to manifest files. The reader is invited to refer to Android official documentation available at https://developer.android.com/index.html for more details: even if numerous examples are given in this section, in no way this guide should be considered as a reference on the topic.
+
 ##### Activities
 
 Activities make up the visible part of any application. More specifically, one activity exists per screen (e.g. user interface) in an application: for instance, applications that have 3 different screens implement 3 different activities, where the user can interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
