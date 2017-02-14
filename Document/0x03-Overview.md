@@ -12,7 +12,9 @@ Security concerns in the mobile app space differ from traditional Desktop softwa
 
 From the view of a mobile app, this means that extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user? 
 
-(... TODO - write about untrusted network comm. ...)
+Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - the bad guys use whatever works).
+
+(...TODO... what is the OWASP Mobile Top 10)
 
 ### the OWASP Mobile Top 10
 
