@@ -648,7 +648,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-### Testing for Sensitive Data in Screenshots and the Screen
+### Testing for Sensitive Data in Screenshots and on the Screen
 
 #### Overview
 
