@@ -10,12 +10,7 @@ Every new technology introduces new security risks, and mobile computing is no d
 
 Security concerns in the mobile app space differ from traditional Desktop software in some important ways. Firstly, while not many people opt to carry a Desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored.
 
-From the view of a mobile app, extra care must be taken 
-
-
-(... TODO ...)
-
-this is a problem: How does it make sure that the device its running on is secure? Is the keychain locked with a passcode? Can and should the app even verify this, or is it the responsibility of the user? What if the device is lacking dedicated security hardware?
+From the view of a mobile app, this means that extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user? 
 
 (... TODO - write about untrusted network comm. ...)
 
