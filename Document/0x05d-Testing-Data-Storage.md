@@ -388,7 +388,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 
-### Testing for Disabled Keyboard Cache for Text Input Fields
+### Testing Whether the Keyboard Cache Is Disabled for Text Input Fields
 
 #### Overview
 

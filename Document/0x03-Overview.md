@@ -8,11 +8,14 @@ Every new technology introduces new security risks, and mobile computing is no d
 
 ## Mobile Application Threats
 
-Security concerns in the mobile app space differ from traditional Desktop software in some important ways. Firstly, while not many people opt to carry a Desktop tower around in their trouser pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to the device. 
+Security concerns in the mobile app space differ from traditional Desktop software in some important ways. Firstly, while not many people opt to carry a Desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored.
+
+From the view of a mobile app, extra care must be taken 
+
 
 (... TODO ...)
 
-From the view of the mobile app seeking to protect the user's data, this is a problem: How does it make sure that the device its running on is secure? Is the keychain locked with a passcode? Can and should the app even verify this, or is it the responsibility of the user? What if the device is lacking dedicated security hardware?
+this is a problem: How does it make sure that the device its running on is secure? Is the keychain locked with a passcode? Can and should the app even verify this, or is it the responsibility of the user? What if the device is lacking dedicated security hardware?
 
 (... TODO - write about untrusted network comm. ...)
 
