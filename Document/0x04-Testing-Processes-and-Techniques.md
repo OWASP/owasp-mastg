@@ -165,7 +165,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
-## Assessing Software Protections
+## Assessing the Effectiveness of Anti-Tampering and Obfuscation
 
 Mobile software anti-reversing schemes are all made from the same building blocks. On the one hand, apps implement defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. On the other hand obfuscation is employed to make code and data incomprehensible. How can you verify that a given set of defenses (as a whole) is "good enough" to provide an appropriate level of protection? As it turns out, this is not an easy question to answer.
 
