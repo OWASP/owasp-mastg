@@ -9,6 +9,6 @@
 
 ---
 
-The first rule of the OWASP Mobile Security Testing Guide is: Don't just follow the OWASP Mobile Security Testing Guide. Successful hacking requires a deep understanding of the object being hacked. Make sure to study and understand mobile hardware architectures, operating systems and APIs, and develop your own mobile apps. 
+**The first rule of the OWASP Mobile Security Testing Guide is: Don't just follow the OWASP Mobile Security Testing Guide.**
 
-(TODO ... write a clever and inspriring text that, while entertaining, also teaches the reader a valuable lesson)
+(... TODO - write a clever and inspriring text that, while entertaining, also teaches the reader a valuable lesson. Will be added at the very end ...)
