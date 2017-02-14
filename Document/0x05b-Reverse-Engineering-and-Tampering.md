@@ -225,7 +225,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 }
 ```
 
-#### Code Injection with FRIDA
+#### Dynamic Instrumentation with FRIDA
 
 Here are some more APIs FRIDA offers on Android:
 

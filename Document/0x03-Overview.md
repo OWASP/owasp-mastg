@@ -20,9 +20,6 @@ Another key difference to their more stationary cousins is that mobile devices r
 
 (... TODO ...)
 
-
-
-
 ## Using the OWASP Mobile Security Testing Guide
 
 This guide belongs to a set of three mobile appsec-related documents produced by OWASP. Those three documents are closely related: They all map to the same basic set of requirements. Depending on the context, they can be used stand-alone or in combination to achieve different objectives:
@@ -33,6 +30,6 @@ This guide belongs to a set of three mobile appsec-related documents produced by
 
 - The **Mobile App Security Checklist** can be used to apply the MASVS requirements during practical assessments. It also conveniently links to the MSTG test case for each requirement, making mobile penetration testing a breeze.
 
-![Document Overview](/Document/images/Chapters/0x03/owasp-mobile-overview.jpg)
+![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
 (... TODO ...)
