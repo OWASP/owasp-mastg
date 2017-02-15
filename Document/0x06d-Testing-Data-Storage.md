@@ -347,34 +347,12 @@ This will cause the background image to be set to the "overlayImage.png" instead
 
 #### Overview
 
-Apps that are processing or querying for sensitive information should ensure that they are running on a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
-
-* PIN or password set to unlock the device
-* Usage of a minimum Android OS version
-* Detection of activated USB Debugging
-* Detection of encrypted device
-* Detection of rooted device (see also OMTG-ENV-006)
-
 
 #### Static Analysis
 
-In oder to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy need to be provided. The policy should define what checks are available and how they are enforced. For example one check could enforce that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
-
-The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
-
 #### Dynamic Analysis
 
-The dynamic analysis depends on the checks that are enforced by App and their expected behavior and need to be checked if they can be bypassed.
-
 #### Remediation
-
-Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanism to create security aware applications, that are able to enforce password policies or encryption of the device.
-
-
-#### References
-
-- [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
-- [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
 
 #### References
 
