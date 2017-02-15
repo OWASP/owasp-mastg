@@ -149,20 +149,6 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 (... TODO ...)
 
-### Testing for Sensitive Data in Cloud Storage
-
-#### Overview
-
-(... TODO ...)
-
-#### Black-box Testing
-
-#### White-box Testing
-
-#### Remediation
-
-#### References
-
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
 #### Overview
@@ -294,7 +280,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### Testing For Sensitive Data in Screenshots
+### Testing for Sensitive Data Disclosure Through the User Interface
 
 ##### Overview
 
@@ -322,7 +308,7 @@ http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-al
 
 #### References
 
-### Testing If Memory Is Cleared When the App Is Backgrounded
+### Testing For Sensitive Information in Auto-Generated Screenshots
 
 #### Overview
 
@@ -356,3 +342,91 @@ Possible remediation method that will set a default screenshot:
 }
 ```
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
+
+### Testing the Device-Access-Security Policy
+
+#### Overview
+
+Apps that are processing or querying for sensitive information should ensure that they are running on a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
+
+* PIN or password set to unlock the device
+* Usage of a minimum Android OS version
+* Detection of activated USB Debugging
+* Detection of encrypted device
+* Detection of rooted device (see also OMTG-ENV-006)
+
+
+#### Static Analysis
+
+In oder to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy need to be provided. The policy should define what checks are available and how they are enforced. For example one check could enforce that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
+
+The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
+
+#### Dynamic Analysis
+
+The dynamic analysis depends on the checks that are enforced by App and their expected behavior and need to be checked if they can be bypassed.
+
+#### Remediation
+
+Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanism to create security aware applications, that are able to enforce password policies or encryption of the device.
+
+
+#### References
+
+- [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
+- [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
+
+#### References
+
+##### OWASP MASVS
+
+- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+
+##### CWE
+- CWE: [Link to CWE issue] - (.. TODO ..)
+
+
+### Verifying User Education Controls
+
+#### Overview
+
+Educating users is a crucial part in the usage of mobile Apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
+
+The following list shows potential warnings or advises for a user when opening the App the first time and using it:
+* App shows after starting it the first time a list of data it is storing locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
+* If a new user account is created within the App it should show the user if the password provided is considered as secure and applies to best practice password policies.
+* If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
+* If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
+
+**(..TODO..) - What else can be a warning on Android?**
+
+#### Static Analysis
+
+**...TODO...**
+
+#### Dynamic Analysis
+
+After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
+**...TODO...**
+
+#### Remediation
+
+Warnings should be implemented that address the key points listed in the overview section.
+**...TODO...**
+
+#### References
+
+**...TODO...**
+
+##### OWASP MASVS
+
+- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+
+##### CWE
+- CWE: [Link to CWE issue] - **.. TODO ...**
