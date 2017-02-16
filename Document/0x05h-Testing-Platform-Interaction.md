@@ -698,8 +698,6 @@ Check <sup>[1]</sup>
 
 * Tool - Link
 
-
-
 ### Testing Root Detection
 
 #### Overview
