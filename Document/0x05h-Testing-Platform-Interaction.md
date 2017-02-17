@@ -8,10 +8,10 @@ Android assigns every installed with a distinct system identity (Linux user ID a
 
 Android permissions are classified in four different categories based on the protection level it offers.
 
-**Normal**: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
-**Dangerous**: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not. Example: android.permission.RECORD_AUDIO
-**Signature**: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
-**SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
+- **Normal**: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
+- **Dangerous**: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not. Example: android.permission.RECORD_AUDIO
+- **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
+- **SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
 
 Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS)
 
@@ -697,8 +697,6 @@ Check <sup>[1]</sup>
 ##### Tools
 
 * Tool - Link
-
-
 
 ### Testing Root Detection
 

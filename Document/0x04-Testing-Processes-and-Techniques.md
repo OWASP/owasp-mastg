@@ -165,7 +165,11 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
-## Assessing Software Protections
+## Assessing the Effectiveness of Anti-Tampering and Obfuscation
+
+In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
+
+A sizable percentage of security experts would now interject: "But reverse engineering defenses can be bypassed. They don't add anything but security-by-obscurity!". And they would be right: Ultimately, software-based defenses can always be defeated, and they should **never** be used in place of good security controls. The point of this kind of defenses is indeed to add certain amount of obscurity - just enough to deter some groups of adversaries from attaining a particular goal. Your task as a security tester is to answer the question whether a given set of defenses is sufficient to achieve this, while leaving your ideology at the doorstep.
 
 Mobile software anti-reversing schemes are all made from the same building blocks. On the one hand, apps implement defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. On the other hand obfuscation is employed to make code and data incomprehensible. How can you verify that a given set of defenses (as a whole) is "good enough" to provide an appropriate level of protection? As it turns out, this is not an easy question to answer.
 

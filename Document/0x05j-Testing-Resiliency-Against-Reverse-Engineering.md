@@ -104,7 +104,18 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+The goal of root detection (in the context of reverse engineering defense) is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not a very effective on its own, but having some root checks can improve the effectiveness of the overall anti-tampering scheme.
+
+An effective root detection scheme should fulfill the following criteria:
+
+- Multiple root detection methods are scattered throughout the app (as opposed to using only a single check);
+- The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
+- The mechanisms have some level of originality (not just copy/paste from StackOverflow);
+- The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
+
+##### Common root detection methods
+
+[... TODO ...]
 
 #### Static Analysis
 

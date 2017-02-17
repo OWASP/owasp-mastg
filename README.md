@@ -14,17 +14,17 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 ## Contributions and Feedback
 
-We need more authors! The best way of to get started is by browsing the [existing content](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). You'll find a lot of places that still lack content, are incomplete, or need improvements, and you'll most likely start feeling a strong urge to contribute. The high-level chapter list below has contact data for the people responsible for each section. PM them on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/) to coordinate the work (otherwise, you might start working on something that's already in progress). You can sign up for Slack here:
+We need more authors! The best way of to get started is by browsing the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). You'll find a lot of places that still lack content, are incomplete, or need improvements, and you'll most likely start feeling a strong urge to contribute. The high-level chapter list below has contact data for the people responsible for each section. PM them on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/) to coordinate the work (otherwise, you might start working on something that's already in progress). You can sign up for Slack here:
 
 http://owasp.herokuapp.com/
 
 Before you start contribution, please also read our brief [style guide](https://github.com/b-mueller/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
 
-You can also suggest improvements by creating an [issue](https://github.com/b-mueller/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
+You can also suggest improvements by creating an [issue](https://github.com/OWASP/owasp-mstg/issues) on GitHub or creating a pull request (actually, pull request are the preferred choice).
 
 ## High-Level Structure
 
-The following lists contains the individual sections of the MSTG, along with the main contacts responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download the magic [Excel sheet](Checklists/OWASP-MSTG-Mobile-AppSec-Tests.xlsx).
+The following lists contains the individual sections of the MSTG, along with the main contacts responsible for each section. Please contact them directly to join as an author or give feedback. Another good place to start browsing is the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, you can also download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
 
 ### Introductionary
 
@@ -36,10 +36,10 @@ Main Contact: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhar
 
 ### Overview
 
-* [Overview](0x03-Overview.md)
+* [Overview](Document/0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
-Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
+Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmahtani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
 
 ### Android Testing Guide
 
@@ -56,7 +56,7 @@ Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmathani*, [
 
 ### iOS Testing Guide
 
-- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu) - *pmathani*
+- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Pishu Mahtani](https://github.com/mpishu) - *pmahtani*
 - [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
 - [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*

@@ -388,7 +388,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 
-### Testing for Disabled Keyboard Cache for Text Input Fields
+### Testing Whether the Keyboard Cache Is Disabled for Text Input Fields
 
 #### Overview
 
@@ -648,7 +648,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
 
 
-### Testing for Sensitive Data in Screenshots and the Screen
+### Testing for Sensitive Data Disclosure Through the User Interface
 
 #### Overview
 
@@ -829,7 +829,6 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 
 ##### CWE
 * [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
-
 
 
 ### Testing for Sensitive Information in Auto-Generated Screenshots

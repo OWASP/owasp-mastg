@@ -216,6 +216,24 @@ Steps for enabling ACR protection within an iOS application :
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
 
+### Testing for Memory Management Bugs
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
+#### White-box Testing
+
+#### Black-box Testing
+
+#### Remediation
+
+#### References
+
+##### OWASP MASVS
+
+- V7.7: "In unmanaged code, memory is allocated, freed and used securely."
+
 ### Verifying that Java Bytecode Has Been Minifed
 
 Not applicable on iOS.
