@@ -296,6 +296,7 @@ The SSL pinning process should be implemented as described on the static analysi
 - Setting Burp Suite as a proxy for Android Devices : https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
 - OWASP - Certificate Pinning for Android :  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
 
+
 ### Verifying that Critical Operations Use Secure Communication Channels
 
 #### Overview
