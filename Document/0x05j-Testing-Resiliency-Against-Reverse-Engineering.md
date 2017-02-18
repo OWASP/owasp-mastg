@@ -106,13 +106,6 @@
 
 The goal of root detection (in the context of reverse engineering defense) is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not a very effective on its own, but having some root checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
-Effective root detection should fulfill the following criteria:
-
-- Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
-- The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
-- The mechanisms have some level of originality (not just copy/paste from StackOverflow);
-- The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
-
 On Android, we define the term "root detection" a bit more broadly to include detection of custom ROMs, i.e. verifying whether the device is a stock Android build or not.
 
 ##### Common Root Detection Methods
@@ -140,22 +133,28 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
   "basicIntegrity": true,
 }~~~
 
-https://developer.android.com/training/safetynet/index.html
-
 ###### Self-made Checks
 
 **File checks**
 
 Checking for the existance of files typically found on rooted devices is a very common method. This includes app packages of common rooting tools
 
+/system/app/Superuser.apk
 
-One could also attmept to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations, or attempting to execute *su* and checking the return value. Typical binaries checked for are:
+One could also attempt to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations, or attempting to execute *su* and checking the return value. Typical binaries checked for are:
 
 ~~~
+/sbin/su
 /system/bin/su
 /system/xbin/su
 /system/xbin/busybox
+/data/local/su
+/data/local/xbin/su
 ~~
+
+Executing the su command:
+
+The first method created an interface to the environment, where the app was running, through getting a singleton instance by invoking getRuntime() and passing the “su” command. If an IOException error was not encountered, the command was determined successful.
 
 **Checking running processes**
 
@@ -166,10 +165,16 @@ daemonsu
 
 **Checking installed app packages**
 
-The Android package manager can be used to obtain a list of installed packages. 
+The Android package manager can be used to obtain a list of installed packages.
 
+~~~
+com.thirdparty.superuser
+eu.chainfire.supersu
 com.noshufou.android.su
-com.chainfire.supersu
+com.koushikdutta.superuser
+com.zachspong.temprootremovejb
+com.ramdroid.appquarantine
+~~~
 
 **Checking for writable partitions and system directories**
 
@@ -188,20 +193,28 @@ Rooting makes certain root folders readable, like /data, or writable, like /etc,
 
 **Checking for custom Android builds**
 
-** Checking the BUILD tag for test-keys **
+**Checking the BUILD tag for test-keys **
+
+~~~
+private boolean isTestKeyBuild()
+{
+String str = Build.TAGS;
+if ((str != null) && (str.contains("test-keys")));
+for (int i = 1; ; i = 0)
+  return i;
+}
+~~~
 
 ** Checking for Over The Air (OTA) certs. On stock Android builds, OTA updates use Google's public certificates. If these certificates are missing, this indicates that a custom ROM is installed [3]. **
 
-
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+Check the original or decompiled source code for the presence of root detection, and verify that multiple root detection methods have been implemented. Effective root detection should fulfill the following criteria:
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
+- Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
+- The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
+- The mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
+- The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
 
 #### Dynamic Analysis
 
@@ -216,6 +229,8 @@ Rooting makes certain root folders readable, like /data, or writable, like /etc,
 [1] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
 [2] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
 [3] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
+[4] InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
+[4] Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
 
 ##### OWASP Mobile Top 10 2014
 
@@ -256,7 +271,7 @@ The app should either actively prevent debuggers from attaching, or terminate wh
 
 (... TODO ... testing in basic form vs. advanced defenses)
 
-Attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
+Attach a debugger to the running process. This should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
 
 (TODO example)
 
