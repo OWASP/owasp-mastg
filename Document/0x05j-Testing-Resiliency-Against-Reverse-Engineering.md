@@ -193,11 +193,6 @@ Rooting makes certain root folders readable, like /data, or writable, like /etc,
 ** Checking for Over The Air (OTA) certs. On stock Android builds, OTA updates use Google's public certificates. If these certificates are missing, this indicates that a custom ROM is installed [3]. **
 
 
-–  Test keys: If a custom kernel is used on a device the build version shows that “test-keys” are used instead of “release-keys”. Some apps assume
-“test-keys” means the device is rooted, which is not always the case. Also, the presence of “release-keys” does not indicate the device is not rooted.
-–  Build version: We encountered specific checks of the seong “ro.modversion” as well, which can be used to iden7fy certain custom Android ROMs (such as Cyanogenmod).
-
-
 #### Static Analysis
 
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
