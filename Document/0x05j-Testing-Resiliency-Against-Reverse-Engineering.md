@@ -142,15 +142,38 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
 
 https://developer.android.com/training/safetynet/index.html
 
-###### Home-made Checks
+###### Self-made Checks
 
 **File checks**
 
+Checking for the existance of files typically found on rooted devices is a very common method. This includes app packages of common rooting tools
 
-**Checking installed application packages**
+
+One could also attmept to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations, or attempting to execute *su* and checking the return value. Typical binaries checked for are:
+
+~~~
+/system/bin/su
+/system/xbin/su
+/system/xbin/busybox
+~~
+
+**Checking running processes**
+
+ActivityManager.getRunningAppProcesses 
+
+daemonsu
 
 
-**Checking directory permissions**
+**Checking installed app packages**
+
+The Android package manager can be used to obtain a list of installed packages. 
+
+com.noshufou.android.su
+com.chainfire.supersu
+
+**Checking for writable partitions and system directories**
+
+Unusual permissions on system directories can indicate a customized or rooted device.
 
 ~~~
 /system
@@ -160,10 +183,19 @@ https://developer.android.com/training/safetynet/index.html
 /vendor/bin
 ~~~
 
+Rooting makes certain root folders readable, like /data, or writable, like /etc, /system/xbin, /system, /proc, /vendor/bin etc. Run the mount command and check if any device is mounted with “rw” flag, or try to create a file under “/system” or “/data” folder.
+
+
+**Checking for custom Android builds**
 
 ** Checking the BUILD tag for test-keys **
 
 ** Checking for Over The Air (OTA) certs. On stock Android builds, OTA updates use Google's public certificates. If these certificates are missing, this indicates that a custom ROM is installed [3]. **
+
+
+–  Test keys: If a custom kernel is used on a device the build version shows that “test-keys” are used instead of “release-keys”. Some apps assume
+“test-keys” means the device is rooted, which is not always the case. Also, the presence of “release-keys” does not indicate the device is not rooted.
+–  Build version: We encountered specific checks of the seong “ro.modversion” as well, which can be used to iden7fy certain custom Android ROMs (such as Cyanogenmod).
 
 
 #### Static Analysis
