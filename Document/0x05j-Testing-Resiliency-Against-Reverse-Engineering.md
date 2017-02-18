@@ -104,18 +104,67 @@
 
 #### Overview
 
-The goal of root detection (in the context of reverse engineering defense) is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not a very effective on its own, but having some root checks can improve the effectiveness of the overall anti-tampering scheme.
+The goal of root detection (in the context of reverse engineering defense) is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not a very effective on its own, but having some root checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
-An effective root detection scheme should fulfill the following criteria:
+Effective root detection should fulfill the following criteria:
 
-- Multiple root detection methods are scattered throughout the app (as opposed to using only a single check);
+- Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
 - The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
 - The mechanisms have some level of originality (not just copy/paste from StackOverflow);
 - The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
 
-##### Common root detection methods
+On Android, we define the term "root detection" a bit more broadly to include detection of custom ROMs, i.e. verifying whether the device is a stock Android build or not.
 
-[... TODO ...]
+##### Common Root Detection Methods
+
+###### SafetyNet
+
+SafetyNet is an Android API that creates a profile of the device using software and hardware information. This profile is then compared against a list of white-listed device models that have passed Android compatibility testing. In part, this is meant to asses to be used to assess the integrity and safety of the device. Google recommends using the feature as "an additional in-depth defense signal as part of an anti-abuse system" [1].
+
+What exactly SafetyNet does under the hood is not well documented, and may change at any time: When you call this API, the service actually downloads a binary package containing the device vaidation code from Google, which is then dynamically executed using reflection. Some analysis shows that the checks performed by SafetyNet also attempt to detect whether the device is rooted, although it is unclear how extacly this is determined [2].
+
+To use the API, an app may the SafetyNetApi.attest() method with returns a JWS message with the *Attestation Result*, and then check the following fields:
+
+- ctsProfileMatch: Of "true", the device profile matches one of Google's listed devices that have passed  Android compatibility testing.
+- basicIntegrity: The device running the app likely wasn't tampered with.
+
+~~~
+{
+  "nonce": "R2Rra24fVm5xa2Mg",
+  "timestampMs": 9860437986543,
+  "apkPackageName": "com.package.name.of.requesting.app",
+  "apkCertificateDigestSha256": ["base64 encoded, SHA-256 hash of the
+                                  certificate used to sign requesting app"],
+  "apkDigestSha256": "base64 encoded, SHA-256 hash of the app's APK",
+  "ctsProfileMatch": true,
+  "basicIntegrity": true,
+}~~~
+
+https://developer.android.com/training/safetynet/index.html
+
+###### Home-made Checks
+
+**File checks**
+
+
+**Checking installed application packages**
+
+
+**Checking directory permissions**
+
+~~~
+/system
+/system/bin
+/system/sbin
+/system/xbin
+/vendor/bin
+~~~
+
+
+** Checking the BUILD tag for test-keys **
+
+** Checking for Over The Air (OTA) certs. On stock Android builds, OTA updates use Google's public certificates. If these certificates are missing, this indicates that a custom ROM is installed [3]. **
+
 
 #### Static Analysis
 
@@ -137,14 +186,17 @@ An effective root detection scheme should fulfill the following criteria:
 
 #### References
 
+[1] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
+[2] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
+[3] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
+
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M10 - Lack of Binary Protections - https://www.owasp.org/index.php/Mobile_Top_10_2014-M10
 
 ##### OWASP MASVS
 
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.3: "The app implements two or more functionally independent methods of root detection and responds to the presence of a rooted device either by alerting the user or terminating the app."
 
 ##### CWE
 
@@ -153,13 +205,11 @@ An effective root detection scheme should fulfill the following criteria:
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
+- [2] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
+- [3] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
 
 ##### Tools
-
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
 
 ### Testing Debugging Defenses
 
@@ -232,8 +282,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+- N/A
 
 ##### Info
 
