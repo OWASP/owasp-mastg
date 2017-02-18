@@ -131,7 +131,8 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
   "apkDigestSha256": "base64 encoded, SHA-256 hash of the app's APK",
   "ctsProfileMatch": true,
   "basicIntegrity": true,
-}~~~
+}
+~~~
 
 ###### Self-made Checks
 
@@ -150,7 +151,7 @@ One could also attempt to detect binaries that are usually installed once a devi
 /system/xbin/busybox
 /data/local/su
 /data/local/xbin/su
-~~
+~~~ 
 
 Executing the su command:
 
@@ -161,7 +162,6 @@ The first method created an interface to the environment, where the app was runn
 ActivityManager.getRunningAppProcesses 
 
 daemonsu
-
 
 **Checking installed app packages**
 
