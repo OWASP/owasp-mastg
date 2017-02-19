@@ -178,12 +178,11 @@ com.ramdroid.appquarantine
 
 **Checking for writable partitions and system directories**
 
-
 Unusual permissions on system directories can indicate a customized or rooted device. While under normal circumstances, the system and data directories are always mounted as readonly, you'll sometimes find them mounted as read-write when the device is rooted. This can be tested for by checking whether these filesystems have been mounted with the "rw" flag, or attempting to create a file in these directories
 
 **Checking for custom Android builds**
 
-**Checking the BUILD tag for test-keys **
+Besides checking whether the device is rooted, it is also helpful to check for signs of test builds and custom ROMs. One method of doing this is checking whether the BUILD tag contains test-keys, which normally indicates a custom Android image [5]. This can be checked as follows [6]:
 
 ~~~
 private boolean isTestKeyBuild()
@@ -195,7 +194,7 @@ for (int i = 1; ; i = 0)
 }
 ~~~
 
-** Checking for Over The Air (OTA) certs. On stock Android builds, OTA updates use Google's public certificates. If these certificates are missing, this indicates that a custom ROM is installed [3]. **
+Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM, as on stock Android builds, OTA updates use Google's public certificates [3].
 
 #### Static Analysis
 
@@ -208,7 +207,15 @@ Check the original or decompiled source code for the presence of root detection,
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+Attempt to identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling all root detection mechanisms one-by-one is your first step.
+
+Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection.
+
+You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
+
+1. Renaming binaries (try not to break your enviroment!);
+2. Using Frida or Xposed to hook APIs on the Java and native layers. By doing this, you can hide files and processes, hide the actual content of files, or return all kinds of bogus values the app requests;
+3. Use Kernel modules to hook low-level APIs.
 
 #### Remediation
 
@@ -240,6 +247,10 @@ Check the original or decompiled source code for the presence of root detection,
 - [1] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
 - [2] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
 - [3] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
+- [4] Infosec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
+- [5] Joey Conway: Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
+- [6] https://source.android.com/devices/tech/ota/sign_builds.html
+
 
 ##### Tools
 
