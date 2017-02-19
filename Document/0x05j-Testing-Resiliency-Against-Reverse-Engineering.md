@@ -138,11 +138,13 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
 
 **File checks**
 
-Checking for the existance of files typically found on rooted devices is a very common method. This includes app packages of common rooting tools
+Checking for the existance of files typically found on rooted devices is a very common method. This includes app packages of common rooting tools such as Superuser:
 
+~~~
 /system/app/Superuser.apk
+~~~
 
-One could also attempt to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations, or attempting to execute *su* and checking the return value. Typical binaries checked for are:
+One could also attempt to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations. Su is usually found in the following locations:
 
 ~~~
 /sbin/su
@@ -153,15 +155,13 @@ One could also attempt to detect binaries that are usually installed once a devi
 /data/local/xbin/su
 ~~~ 
 
-Executing the su command:
+**Executing su and other commands**
 
-The first method created an interface to the environment, where the app was running, through getting a singleton instance by invoking getRuntime() and passing the “su” command. If an IOException error was not encountered, the command was determined successful.
+Another way of determining whether su exists is attempting to execute it through Runtime.getRuntime.exec(). This will throw an IOException if su is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
-ActivityManager.getRunningAppProcesses 
-
-daemonsu
+Su on Android depends on a background process called *daemonsu*, so the presence of process is another sign of a rooted device. Running processes can be enumerated through ActivityManager.getRunningAppProcesses() API, the *ps* command, or walking through the */proc* directory.
 
 **Checking installed app packages**
 
@@ -178,18 +178,8 @@ com.ramdroid.appquarantine
 
 **Checking for writable partitions and system directories**
 
-Unusual permissions on system directories can indicate a customized or rooted device.
 
-~~~
-/system
-/system/bin
-/system/sbin
-/system/xbin
-/vendor/bin
-~~~
-
-Rooting makes certain root folders readable, like /data, or writable, like /etc, /system/xbin, /system, /proc, /vendor/bin etc. Run the mount command and check if any device is mounted with “rw” flag, or try to create a file under “/system” or “/data” folder.
-
+Unusual permissions on system directories can indicate a customized or rooted device. While under normal circumstances, the system and data directories are always mounted as readonly, you'll sometimes find them mounted as read-write when the device is rooted. This can be tested for by checking whether these filesystems have been mounted with the "rw" flag, or attempting to create a file in these directories
 
 **Checking for custom Android builds**
 
