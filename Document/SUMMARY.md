@@ -4,7 +4,7 @@
 
 ### Overview
 
-- [Introduction to Mobile App Security](0x03-Overview.md)
+- [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
 - [Testing Processes and Techniques](0x04-Testing-Processes-and-Techniques.md)
 
 ### Android Testing Guide
