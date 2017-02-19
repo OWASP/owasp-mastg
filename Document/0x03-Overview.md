@@ -1,4 +1,4 @@
-# Introduction to Mobile App Security
+# Introduction to the Mobile Security Testing Guide
 
 Technological revolutions can happen quickly. Less than a decade ago, smartphones were clunky devices with little keyboards - expensive playthings for tech-savvy business users. Today, smartphones are an essential part of our lives. We've come to rely on them for information, navigation and communication, and they are ubiquitous both in business and in our social lives.
 
