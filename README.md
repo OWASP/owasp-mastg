@@ -29,14 +29,14 @@ The following lists contains the individual sections of the MSTG, along with the
 ### Introductionary
 
 - [Header](Document/0x00-Header.md)
-- [Foreword](Document/0x01-Foreword.md)
+- [Foreword](Document/Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 
 Main Contact: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
 
 ### Overview
 
-* [Overview](Document/0x03-Overview.md)
+* [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
 Main Contacts: [Pishu Mahtani](https://github.com/mpishu) - Slack: *pmahtani*, [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
