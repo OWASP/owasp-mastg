@@ -2,13 +2,13 @@
 
 ### Setting Up Your Testing Environment
 
-When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point and ports are blocked making it more difficult to start a dynamic analysis of the App. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also Root detection and other countermeasures can lead to significant extra work just to be able to finally test the App.
+When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made between clients (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the App. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also Root detection and other countermeasures implemented within an App can lead to significant extra work just to be able to finally test the App.
 
 This section will give an overview of different methods on how an Android App can be tested and will illustrate also it's limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
 
 #### Preparation
 
-The goal of a test is to verify if the App and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or Root detection might be implemented that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+The goal of a test is to verify if the App and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or Root detection might be implemented, that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
 During the preparation phase it should be discussed with the company developing the mobile App, to provide two versions of the App. One App should be build as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same App should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
@@ -20,11 +20,13 @@ Either way, the following items should be discussed with the company developing 
 
 SSL Pinning is already a strong mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the App will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
 
-For a black box test, there are several ways to bypass SSL Pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed) or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller). Therefore bypassing can be done within seconds, but only if the App uses the API functions that are covered for these tools. If the App is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning need to be done manually and can become time consuming.
+For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the App uses the API functions that are covered for these tools. If the App is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning need to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
-* Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/) or [ADBI](https://github.com/crmulliner/adbi)
-* Disassembling the APK, identify the SSL Pinning logic in smali code and patch it and reassemble the APK.  
+* Dynamical Patching while running the App, by using Frida<sup>[9] [13]</sup> or ADBI<sup>[10]</sup>
+* Disassembling the APK, identify the SSL Pinning logic in smali code and patch it and reassemble the APK<sup>[7] [8]</sup>
+
+Once successful the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
 See also test case "Testing Custom Certificate Stores and SSL Pinning" for further details.
 
@@ -33,22 +35,27 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 A debug build has several benefits, when provided during a (white box) test:
 * Code obfuscation from ProGuard is not applied
 * Debugger can be attached to the running App
+* Analysis of the App with Android Studio while running it
+
 **(..TODO..)**
 
 See also test case "Testing If the App is Debuggable" for further details.
 
 ##### Root detection
 
-To implement Root detection on Android several libraries are available like [RootBeer](https://github.com/scottyab/rootbeer). The approach for root detection is:
-* Checking for default files, like verifying the BUILD tag for test-keys in the parameter `ro.build.tags`.
-* Checking installed files and packages to identify a rooted device, like verifiying the presence of Superuser.apk
+To implement Root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the App to verify if the device is rooted or not. The following checks are the most common ones for root detection:
+* Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
+* Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
+* Checking for installed Apps that allow or support rooting of a device, like verifying the presence of Superuser.apk.
 * Checking available commands, like is it possible to execute `su` and being root afterwards.
-**(..TODO..)**
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
 
-For a black box test in order to be able to start the tests, the root detection need to be bypassed. First the root detection mechanisms need to be identified and then disabled, either by dynamically patching the App or changes made to the test environment. This can be as easy as renaming the command that is used for root detection (renaming `su` to `su0`), but can become difficult if several different checks are part of the root detection mechanism.  Dynamically patching the App can also become difficult if countermeasures are implemented that prevent runtime manipulation.
-**(..TODO..)**
+For a black box test in order to be able to start the tests, the root detection need to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the App that is not covered in RootCloak, this mechanism need to be identified and added to RootCloak in order to disable it.
+
+Other options are dynamically patching the App with Friday or repackaging the App. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism.  Dynamically patching the App can also become difficult if countermeasures are implemented that prevent runtime manipulation.
+
+If the root detection mechanisms cannot be defeated in a certain time window, it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup.
 
 See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
 
@@ -63,7 +70,10 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Restrictions when using a non-rooted device
 
-When using a non-rooted Android device it is still possible to execute dynamic analysis of the App.
+When using a non-rooted Android device it is still possible to  execute several test cases to the App.
+
+Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the App can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed.  
+
 **(..TODO..)**
 
 
@@ -141,6 +151,7 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 
 It is also possible to simply create an AVD and use this for testing.
 
+**(..TODO..)**
 
 ### References
 
@@ -152,3 +163,11 @@ It is also possible to simply create an AVD and use this for testing.
 - [5] Create and Manage Virtual Devices - https://developer.android.com/studio/run/managing-avds.html
 - [6] GPS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#geo
 - [7] SMS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#sms
+- [8] Mobile Security Certificate Pinning -  http://blog.dewhurstsecurity.com/2015/11/10/mobile-security-certificate-pining.html
+- [8] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
+- [9] Frida - https://www.frida.re/docs/android/
+- [10] ADBI - https://github.com/crmulliner/adbi
+- [11] SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
+- [12] Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
+- [13] Defeating SSL Pinning in Coin's Android Application -  http://rotlogix.com/2015/09/13/defeating-ssl-pinning-in-coin-for-android/
+- [14] RootBeet - https://github.com/scottyab/rootbeer
