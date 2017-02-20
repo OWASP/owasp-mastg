@@ -267,7 +267,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-TODO: Pulling APK File from the device
+One thing that's great about reversing Java byte
 
 TODO: DEX vs. OAT
 
@@ -275,10 +275,17 @@ TODO: DEX vs. OAT
 
 #### Debugging Android Apps
 
+Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer. 
+
+JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries. 
+
+The *adb* command line, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
+
+TOOD ... example & native debugging ...
+
 #### Execution Tracing
 
-The JDB command line tool offers basic execution tracing functionality.
-To trace an app right from the start we can pause the app using the Android “Wait for Debugger” feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
+Besides being useful for debugging, the JDB command line tool also offers basic execution tracing functionality. To trace an app right from the start we can pause the app using the Android "Wait for Debugger" feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
 
 ```bash
 $ adb forward tcp:7777 jdwp:7288
@@ -367,16 +374,19 @@ Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to prov
 Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
 ##### Preparing a development environment
+
 To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
+
 https://developer.android.com/develop/index.html
+
 You’ll also need the Android NDK for compiling anything that creates native code. The NDK contains prebuilt toolchains for cross-compiling native code for different architectures. The NDK is available as a separate download:
 https://developer.android.com/ndk/downloads/index.html
+
 After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
 
 ```bash
 $ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
 ```
-
 
 ##### Customizing the RAMDisk
 

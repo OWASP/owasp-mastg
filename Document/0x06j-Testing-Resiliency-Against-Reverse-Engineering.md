@@ -100,11 +100,11 @@
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### Testing Root Detection
+### Testing Jailbreak Detection
 
 #### Overview
 
-[Provide a general description of the issue.]
+In the context of reverse engineering defense, jailbreak detection mechansism are added to make it a bit more difficult to run the app on a jailbroken device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, jailbreak detection is not a very effective on its own, but having some checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
 #### Static Analysis
 

@@ -198,7 +198,9 @@ Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM,
 
 #### Static Analysis
 
-Check the original or decompiled source code for the presence of root detection, and verify that multiple root detection methods have been implemented. Effective root detection should fulfill the following criteria:
+Check the original or decompiled source code for the presence of root detection mechanisms, and compare them against the following criteria:
+
+To qualify as "advanced", the scheme should not be easily bypassable using widely available tools such as RootCloak. Effective root detection should fulfill the following criteria:
 
 - Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
 - The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
@@ -207,19 +209,21 @@ Check the original or decompiled source code for the presence of root detection,
 
 #### Dynamic Analysis
 
-Attempt to identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling all root detection mechanisms one-by-one is your first step.
+Attempt to identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling all root detection mechanisms is your first step.
 
-Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection.
+Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one.
 
 You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
-1. Renaming binaries (try not to break your enviroment!);
+1. Renaming binaries. For example, in some cases simply renaming the "su" binary to something else is enough to defeat root detection (try not to break your enviroment though!).
+2. Unmounting /proc to prevent reading of process lists etc.
 2. Using Frida or Xposed to hook APIs on the Java and native layers. By doing this, you can hide files and processes, hide the actual content of files, or return all kinds of bogus values the app requests;
-3. Use Kernel modules to hook low-level APIs.
+3. Hooking low-level APIs using Kernel modules.
+4. Patching the app to remove the checks.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+If the root detection mechanisms are found to be insufficient, propose additional checks so the protection scheme fulfills the criteria listed above.
 
 #### References
 
@@ -239,8 +243,7 @@ You can use a number of techniques to bypass these checks, most of which were in
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+N/A
 
 ##### Info
 
@@ -251,16 +254,13 @@ You can use a number of techniques to bypass these checks, most of which were in
 - [5] Joey Conway: Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
 - [6] https://source.android.com/devices/tech/ota/sign_builds.html
 
-
 ##### Tools
 
 ### Testing Debugging Defenses
 
 #### Overview
 
-Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more.
-
-(...TODO...)
+Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect the state of variables, read and modify memory, and a lot more.
 
 The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
 
