@@ -4,13 +4,13 @@
 
 When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made between clients (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the App. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also Root detection and other countermeasures implemented within an App can lead to significant extra work just to be able to finally test the App.
 
-This section will give an overview of different methods on how an Android App can be tested and will illustrate also it's limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
+This section will give an overview of different methods on how an Android App can be tested and will illustrate also its limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
 
 #### Preparation
 
 The goal of a test is to verify if the App and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or Root detection might be implemented, that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
-During the preparation phase it should be discussed with the company developing the mobile App, to provide two versions of the App. One App should be build as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same App should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
+During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same App should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
 This approach need of course to align with the scope of the engagement and if it's a black box or white box test(Link to section in MSTG describing Black and White Box). For a white box test requesting for a production and debug build will help to be able to go through all test cases and give a clear statement of the security maturity of the App. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production App and how effective the implemented security controls are.
 
@@ -101,7 +101,7 @@ Rooting of an emulator is therefore not needed as root access can be granted thr
 
 ##### Restrictions when testing with an emulator
 
-There are several downsides when using an emulator. You might not be able to test an App properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on it's own.
+There are several downsides when using an emulator. You might not be able to test an App properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
 
 Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]</sup> or SMS<sup>[7]</sup> and many more.
 
