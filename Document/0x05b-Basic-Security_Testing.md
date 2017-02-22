@@ -118,8 +118,8 @@ Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]<
 Static analysis is the act of looking into App components, source code and other resources without actually executing it. This test is focused on finding misconfigured or unprotected Android IPC components as well as finding programming mistakes such as misuse of cryptography routines, find libraries with known vulnerabilities and even dynamic code loading routines.
 
 When we are performing static analysis of applications, several tools can be used. The most commonly used are Static Analyzers. The most useful ones are Androbugs, Linkedin's QARK, Android Lint and the paid HP's Fortify. However there are a plethora of static code analyzers that can be used.
-Some Static Analyzers rely on the availability of the source code while others take the compiled apk as input. 
-I is important to keep in mind that while static analyzers can help us to focus attention on potential problems, they may not be able to find all the problems by itself, go through each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
+Some Static Analyzers rely on the availability of the source code while others take the compiled apk as input.
+It is important to keep in mind that while static analyzers can help us to focus attention on potential problems, they may not be able to find all the problems by itself, go through each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
 Static Analysis can be divided into two categories, White box and Black box. The first is when the source code is available and the other is when we only have the compiled application or library. We will now go into more details on each category.
 
 #### With Source Code ("White box")
@@ -135,7 +135,7 @@ Black box testing, when compared to White box testing you will not have access t
 If the application is based solely on Java and does not have any native library (code written in C/C++) the reverse engineering process is relatively easy and recovers almost the entire source code. Applications that contain a native library can still be reverse engineered by require low level knowledge and the process is not automated.
 More details and tools about the Android reverse engineering topic can be found at [Tampering and Reverse Engineering on Android](0x05b-Reverse-Engineering-and-Tampering.md) section.
 Besides reverse engineering, there is a handful of automated tools that perform security analysis on the APK itself searching for vulnerabilities.
-They are, for example, [QARK](https://github.com/linkedin/qark/), [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework) and [JAADAS](https://github.com/flankerhqd/JAADAS).
+They are, for example, QARK<sup>[18]</sup>, Androbugs<sup>[19]</sup> and JAADAS<sup>[20]</sup>.
 
 
 ### Dynamic Analysis
@@ -189,3 +189,6 @@ It is also possible to simply create an AVD and use this for testing.
 - [15] Android Lint - https://sites.google.com/a/android.com/tools/tips/lint/
 - [16] devknox - https://devknox.io/
 - [17] Android application package - https://en.wikipedia.org/wiki/Android_application_package
+- [18] QARK - https://github.com/linkedin/qark/
+- [19] Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
+- [20] JAADAS - https://github.com/flankerhqd/JAADAS
