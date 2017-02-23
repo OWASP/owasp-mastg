@@ -218,7 +218,7 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 - V7.7: "In unmanaged code, memory is allocated, freed and used securely."
 
-### Verifying that Java Bytecode Has Been Minifed
+### Verifying that Java Bytecode Has Been Minified
 
 #### Overview
 
