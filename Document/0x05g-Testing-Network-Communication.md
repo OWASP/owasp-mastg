@@ -95,7 +95,7 @@ sslyze --regular www.example.com:443
 
 #### Remediation
 
-To properly configure transport layer protection for network communication, please follow the OWASP TLS cheat sheet [2].
+To properly configure transport layer protection for network communication, please follow the OWASP Transport Layer Protection cheat sheet [2].
 
 #### References
 
