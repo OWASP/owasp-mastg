@@ -51,7 +51,7 @@ To implement Root detection on Android, libraries can be used like RootBeer<sup>
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
 
-For a black box test in order to be able to start the tests, the root detection need to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the App that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+For a black box test in order to be able to start the tests, the root detection needs to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the App that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
 
 Other options are dynamically patching the App with Friday or repackaging the App. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism.  Dynamically patching the App can also become difficult if countermeasures are implemented that prevent runtime manipulation.
 
@@ -140,7 +140,7 @@ Once the network is configured and connectivity is established between the testi
 * The proxy in the network settings of the WiFi connection of the Android device need to configured properly to point to the interception proxy in use<sup>[1]</sup>.
 * The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage <sup>[2]</sup> of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
-After finishing this steps and starting the App the requests should show up in the interception proxy.
+After finishing these steps and starting the App the requests should show up in the interception proxy.
 
 #### Using an emulator
 

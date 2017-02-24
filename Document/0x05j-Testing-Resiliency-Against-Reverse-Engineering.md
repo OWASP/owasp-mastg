@@ -262,7 +262,28 @@ N/A
 
 Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect the state of variables, read and modify memory, and a lot more.
 
-The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
+As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to have defenses against both debugger types.
+
+Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, one should combine multiple defenses that rely on different methods of prevention and detection, operate on multiple different API layers, and are distributed throughout the app. 
+
+##### Common Anti-JDWP-Debugging Methods
+
+**isDebuggerActive**
+
+**Messing with memory structures**
+
+
+##### Common Anti-Native-Debugging Methods
+
+
+**Calling ptrace**
+
+
+**Fork/ptrace**
+
+
+**Breakpoint detection**
+
 
 #### White-box Testing
 
