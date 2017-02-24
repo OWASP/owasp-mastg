@@ -64,7 +64,12 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Rooting your device
 
--- TODO : Which devices can be used : Nexus / Pixel --
+###### Which mobiles can be rooted?
+
+Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux library called 'su' used for Switching Users. 
+
+The first step in rooting a mobile is to unlock its Boot Loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers, the device warranty is not nullified when the Boot Loader is unlocked and because Google provides many tools to support the root itself and to work with rooted devices. Those mobiles belong to a commercial range now called Pixel (the prior name was Nexus). 
+
 -- TODO : Boot Process Description --
 -- TODO : Boot Loaders and ROMs--
 
