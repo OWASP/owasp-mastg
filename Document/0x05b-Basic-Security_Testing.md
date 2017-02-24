@@ -140,7 +140,7 @@ Once the network is configured and connectivity is established between the testi
 * The proxy in the network settings of the WiFi connection of the Android device need to configured properly to point to the interception proxy in use<sup>[1]</sup>.
 * The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage <sup>[2]</sup> of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
-After finishing this steps and starting the App the requests should show up in the interception proxy.
+After finishing these steps and starting the App the requests should show up in the interception proxy.
 
 #### Using an emulator
 
