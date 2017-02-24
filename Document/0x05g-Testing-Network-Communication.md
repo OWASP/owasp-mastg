@@ -95,7 +95,7 @@ sslyze --regular www.example.com:443
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+To properly configure transport layer protection for network communication, please follow the OWASP TLS cheat sheet [2].
 
 #### References
 
@@ -114,6 +114,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 ##### Info
 
 - [1] Testing for Weak SSL/TLS Ciphers - https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001)
+- [2] Transport Layer Protection Cheat Sheet - https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
 
 ##### Tools
 
@@ -342,7 +343,3 @@ The SSL pinning process should be implemented as described on the static analysi
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
-##### Tools
-
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
