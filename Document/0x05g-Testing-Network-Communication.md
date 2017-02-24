@@ -64,31 +64,34 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 
 #### Tools
 
-Tcpdump - http://www.androidtcpdump.com/
-Wireshark - https://www.wireshark.org/
-OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-Burp Suite - https://portswigger.net/burp/
-Vproxy - https://github.com/B4rD4k/Vproxy
+* Tcpdump - http://www.androidtcpdump.com/
+* Wireshark - https://www.wireshark.org/
+* OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+* Burp Suite - https://portswigger.net/burp/
+* Vproxy - https://github.com/B4rD4k/Vproxy
 
 ### Verifying the TLS Settings
 
 #### Overview
 
-[Provide a general description of the issue.]
+Using encryption is essential when you are sending confidential data. However, encryption can defend your privacy, only if it uses enough strong cryptography. To reach this goal SSL-based services should not offer the possibility to choose weak cipher suite. A cipher suite is specified by an encryption protocol (e.g. DES, RC4, AES), the encryption key length (e.g. 40, 56, or 128 bits), and a hash algorithm (e.g. SHA, MD5) used for integrity checking. To ensure, that your encryption cannot be easily defeated, you should verify your TLS configuration that it does not use any weak cipher/protocol/key [1].
+
+
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
+Static analysis is not applicable for this point.
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+After identifying all servers communicating with your application (e.g. using Tcpdump, or Burp Suite) you should verify if a server/-s allow for using weak cipher/protocol/key. It can be done, using different tools:
+
+* Qualys SSL Labs: put server's URL in the following online scanner https://www.ssllabs.com/ssltest/ and click submit.
+* sslyze: via following command:
+
+```
+sslyze --regular www.example.com:443
+```
 
 #### Remediation
 
@@ -98,27 +101,24 @@ Vproxy - https://github.com/B4rD4k/Vproxy
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-327 - Use of a Broken or Risky Cryptographic Algorithm - https://cwe.mitre.org/data/definitions/327.html
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Testing for Weak SSL/TLS Ciphers - https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001)
 
 ##### Tools
 
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
+* Qualys SSL Labs - https://www.ssllabs.com/ssltest/
+* sslyze - https://github.com/nabla-c0d3/sslyze
 
 ### Testing Endpoint Identify Verification
 
@@ -224,7 +224,7 @@ Ensure, that the hostname and certificate is verified correctly. You can find a 
 
 #### OWASP MASVS
 
-V5.2: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+V5.3: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
 #### CWE
 
