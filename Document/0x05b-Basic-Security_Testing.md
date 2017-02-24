@@ -64,6 +64,7 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Rooting your device
 
+-- TODO : Maybe add a warning on rooting devices (brickification, additional security risks, warranty nullified, ...), disclaimer --
 -- TODO : Which devices can be used : Nexus / Pixel --
 -- TODO : Boot Process Description --
 -- TODO : Boot Loaders and ROMs--
