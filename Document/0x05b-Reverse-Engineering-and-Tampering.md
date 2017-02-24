@@ -268,11 +268,16 @@ TODO: DEX vs. OAT
 
 Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer. 
 
+##### Debugging Java Code
+
 JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries. 
 
-The *adb* command line, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
+The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
 TOOD ... example & native debugging ...
+
+##### Debugging Native Code
+
 
 #### Execution Tracing
 
