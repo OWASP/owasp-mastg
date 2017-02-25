@@ -219,9 +219,9 @@ Attackers may modify a mobile application and redistribute it in a repackaged fo
 
 #### Types of Defenses
 
-We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency. 
+We classify reverse engineering defenses into two categories: Anti-tampering and obfuscation. Both types of defenses are used in tandem to achieve resiliency. 
 
-#### Testing Tampering Defenses
+#### Testing Anti-Tampering
 
 *Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
 
