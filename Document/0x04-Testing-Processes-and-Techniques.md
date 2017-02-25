@@ -162,8 +162,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ### References
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
 
 ## Assessing the Effectiveness of Anti-Tampering and Obfuscation
 
@@ -277,13 +276,9 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ###### "Simple" Versus. "Advanced" Obfuscation
 
-
-
-
-
 ### References
 
-- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+
 
 ## Additional Considerations
 
