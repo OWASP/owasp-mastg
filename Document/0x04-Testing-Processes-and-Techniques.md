@@ -215,7 +215,7 @@ Attackers may modify a mobile application to disclose highly sensitive assets co
 
 **Denial of Service**
 
-Attackers may alter a mobile device application and force it to periodically crash or permanently disable itself to prevent the user from accessing online services through their device;d
+Attackers may alter a mobile device application and force it to periodically crash or permanently disable itself to prevent the user from accessing online services through their device;
 
 **Elevation of Privilege**
 
