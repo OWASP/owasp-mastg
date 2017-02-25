@@ -188,7 +188,9 @@ Resiliency testing can be performed in the context of a regular mobile app secur
 
 #### Assessing the Threat Model and Software Protection Architecture
 
-(... TODO ...)### Software Protections Model and Taxonomy
+(... TODO ...)
+
+### Software Protections Model and Taxonomy
 
 We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency. The following section contains an overview of the taxonomy used in the guide.
 
