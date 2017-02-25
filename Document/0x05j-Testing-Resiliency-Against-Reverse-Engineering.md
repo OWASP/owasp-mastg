@@ -562,7 +562,16 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-[Provide a general description of the issue.]
+[TODO]
+
+##### Simple Tricks
+
+- Modifying the DEX file so static analysis tools can't load it;
+- Using dynamic class loading and reflection to obfuscated the control flow;
+- Pack or encrypt portions of the code and/or data;
+- Frequently jumping between Java and native code.
+
+
 
 #### Static Analysis
 
