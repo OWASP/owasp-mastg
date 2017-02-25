@@ -559,13 +559,13 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
-![Disassembly of function main.](Images/Chapters/0x06a/custom_kernel.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/custom_kernel.jpg)
 
 ##### System Call Hooking Using Kernel Modules
 
 System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
 
-![Disassembly of function main.](Images/Chapters/0x06a/syscall_hooking.jpg)
+![Disassembly of function main.](Images/Chapters/0x5c/syscall_hooking.jpg)
 
 The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
 
@@ -803,7 +803,7 @@ Incorrect serial (wrong format).
 
 So far, so good, but we really know nothing about how a valid license key might look like. Where do we start? Let's fire up IDA Pro to get a first good look at what is happening.
 
-![Disassembly of function main.](Images/Chapters/0x06a/license-check-1.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/license-check-1.jpg)
 
 The main function is located at address 0x1874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address). Function names have been stripped, but luckily we can see some references to debugging strings: It appears that the input string is base32-decoded (call to sub_1340). At the beginning of main, there's also a length check at loc_1898 that verifies that the length of the input string is exactly 16. So we're looking for a 16 character base32-encoded string! The decoded input is then passed to the function sub_1760, which verifies the validity of the license key.
 
