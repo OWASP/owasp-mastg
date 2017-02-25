@@ -184,7 +184,7 @@ If the above command emit no output then the ACR protection isn't enabled.
 
 IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB gui and click the "Analyze Binary…" button.
 
-![alt tag](/Document/Images/Testcases/OMTG-CODE_iOS/idb.png)
+![alt tag](Images/0x06i/idb.png)
 
 #### Remediation
 
