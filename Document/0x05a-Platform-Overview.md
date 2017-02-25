@@ -383,7 +383,7 @@ An example of declaring a Broadcast Receiver with an Intent Filter in a manifest
 
 When receiving an implicit intent, Android will list all applications that have registered a given action in their filters. If more than one application is matching, then Android will list all those applications and will require the user to make a selection.
 
-An interesting feature concerning Broadcast Receivers is that they be affected a priority; this way, an intent will be delivered to all receivers authorized to get them according to their priority. 
+An interesting feature concerning Broadcast Receivers is that they be assigned a priority; this way, an intent will be delivered to all receivers authorized to get them according to their priority. 
 
 A Local Broadcast Manager can be used to make sure intents are received only from the internal application, and that any intent from any other application will be discarded. This is very useful to improve security.
 
