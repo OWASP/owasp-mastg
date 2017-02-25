@@ -191,7 +191,35 @@ We classify reverse engineering defenses into two categories: Tampering defenses
 
 #### Assessing the Threat Model and Software Protection Architecture
 
-(... TODO ...)
+The first step in assessing any protection scheme is whether having it makes sense in the first place. This involves asking the following questions:
+
+##### Application Integrity Threats
+
+The software protection scheme must be designed to protect against clearly defined threats - otherwise it is just a random collection of anti-debugging threats, with no of assessing its effectiveness. The OWASP Reverse Engineering and Code Modification Prevention Project [1] lists the following potential threats associated with reverse engineering and tampering:
+
+**Spoofing Identity**
+
+Attackers may attempt to modify the mobile application code on a victim’s device to force the application to transmit a user’s authentication credentials (username and password) to a third party malicious site. Hence, the attacker can masquerade as the user in future transactions;
+
+**Tampering**
+
+Attackers may wish to alter higher-level business logic embedded within the application to gain some additional value for free. For instance, an attacker may alter digital rights management code embedded in a mobile application to attain digital assets like music for free;
+
+**Repudiation**
+
+Attackers may disable logging or auditing controls embedded within the mobile application to prevent an organization from verifying that the user performed particular transactions;
+
+**Information Disclosure**
+
+Attackers may modify a mobile application to disclose highly sensitive assets contained within the mobile application. Assets of interest include: digital keys, certificates, credentials, metadata, and proprietary algorithms;
+
+**Denial of Service**
+
+Attackers may alter a mobile device application and force it to periodically crash or permanently disable itself to prevent the user from accessing online services through their device;d
+
+**Elevation of Privilege**
+
+Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
 #### Testing Tampering Defenses
 
@@ -278,7 +306,8 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ### References
 
-
+- [1] OWASP Reverse Engineering and Code Modification Prevention Project - https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project
+- [2] OWASP: Architectural Principles That Prevent Code Modification or Reverse Engineering - https://www.owasp.org/index.php/Architectural_Principles_That_Prevent_Code_Modification_or_Reverse_Engineering#Application_Integrity_Threats
 
 ## Additional Considerations
 
