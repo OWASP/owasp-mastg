@@ -565,7 +565,7 @@ The system should now boot normally. To quickly verify that the correct kernel i
 
 System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
 
-![Disassembly of function main.](Images/Chapters/0x5c/syscall_hooking.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/syscall_hooking.jpg)
 
 The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
 
