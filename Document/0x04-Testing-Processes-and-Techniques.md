@@ -235,7 +235,7 @@ Tampering defenses aim to hinder various processes used by reverse engineers, wh
 
 For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
 
-##### "Basic" Versus "Advanced" Anti-Tampering
+##### Anti-Tampering Requirements in the MASVS
 
 (...TODO...)
 
@@ -302,7 +302,7 @@ An obfuscation scheme is effective if:
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
 
-###### "Simple" Versus. "Advanced" Obfuscation
+###### Obfuscation Requirements in the MASVS
 
 ### References
 
