@@ -106,7 +106,7 @@ When you "attach" Frida to a running app, it uses ptrace to hijack a thread in a
 
 Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
 
-![Frida](Images/Chapters/0x06/frida.png)
+![Frida](Images/Chapters/0x04/frida.png)
 
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
@@ -231,7 +231,7 @@ Attackers may modify a mobile application and redistribute it in a repackaged fo
 
 Tampering defenses aim to hinder various processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
 
-![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
+![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
 For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
 
