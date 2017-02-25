@@ -19,7 +19,7 @@ The software stack of Android comprises of different layers, where each layer is
 On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Applications are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM.
 In the next image we can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
 
-![Java vs Dalvik](/Document/images/Chapters/0x04a/java_vs_dalvik.png)
+![Java vs Dalvik](/Images/Chapters/0x05a/java_vs_dalvik.png)
 
 With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART).
 
@@ -219,7 +219,7 @@ When installing new applications (From Google Play or External Sources), a new f
 
 Since every application has its own unique Id, Android separates application data folders configuring the mode to _read_ and _write_ only to the owner of the application. 
 
-![Sandbox](/Document/images/Chapters/0x04a/Selection_003.png)
+![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
 In this example, the Chrome and Calendar app are completly segmented with different UID and different folder permissions.
 
@@ -465,7 +465,7 @@ As we know, every process on Android has its own sandboxed address space. Inter-
 
 In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
 
-![Binder Overview](/Document/Images/Chapters/0x04a/binder.jpg)
+![Binder Overview](Images/Chapters/0x05a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
 
 #### High-Level Abstractions
