@@ -571,7 +571,8 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - Pack or encrypt portions of the code and/or data;
 - Frequently jumping between Java and native code.
 
-
+![Identifier Renaming with ProGuard](Images/Chapters/0x05j/proguard.jpg)
+*Identifier renaming with ProGuard.*
 
 #### Static Analysis
 
