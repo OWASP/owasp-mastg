@@ -184,11 +184,13 @@ Resiliency testing can be performed in the context of a regular mobile app secur
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
-#### Software Protections Model and Taxonomy
+#### Assessing the Threat Model and Software Protection Architecture
+
+(... TODO ...)### Software Protections Model and Taxonomy
 
 We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency. The following section contains an overview of the taxonomy used in the guide.
 
-##### 1. Tampering Defenses
+#### Testing Tampering Defenses
 
 *Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
 
@@ -200,7 +202,13 @@ Tampering defenses aim to hinder various processes used by reverse engineers, wh
 
 ![Reverse engineering processes](/Document/Images/Chapters/0x07b/reversing-processes.png "Reverse engineering processes")
 
-##### 2. Obfuscation
+For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
+
+##### "Basic" Versus "Advanced" Anti-Tampering
+
+(...TODO...)
+
+#### Testing Obfuscation Effectiveness
 
 Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. The simplest way of making code less comprehensible is stripping information that is meaningful to humans, such as function and variable names. A standard implementation of a cryptographic primitive can be replaced by a network of key-dependent lookup tables so the regular cryptographic key is not exposed in memory ("white-box cryptography"). Code can be into a secret byte-code language that is then run on an interpreter ("virtualization"). There's unlimited ways of encoding and transforming code and data!
 
@@ -210,12 +218,14 @@ Does this mean that obfuscation is impossible? Well, it depends on what we obfus
 
 Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9).
 
+##### Obfuscation Types
+
 *Obfuscating transformations* are modifications applied during the build process to the source code, binary, intermediate representation of the code, or other elements such as data or executable headers. We categorize them into two types:
 
 1. Strip information
 2. Obfuscate control flow and data
 
-###### 1. Strip Meaningful Information
+**1. Strip Meaningful Information**
 
 Compiled programs often retain explanative information that is helpful for the reverse engineer, but isn’t actually needed for the program to run. Debugging symbols that map machine code or byte code to line numbers, function names and variable names are an obvious example.
 
@@ -223,23 +233,15 @@ For instance, class files generated with the standard Java compiler include the 
 
 Stripping this information makes a compiled program less intelligible while fully preserving its functionality. Possible methods include removing tables with debugging symbols, or renaming functions and variables to random character combinations instead of meaningful names. This process sometimes reduces the size of the compiled program and doesn’t affect its runtime behavior.
 
-###### 2. Obfuscate Control Flow and Data
+**2. Obfuscate Control Flow and Data**
 
 Program code and data can be obfuscated in unlimited ways - and indeed, there is a rich body of informal and academic research dedicated to it.
 
-An obfuscation scheme is effective if:
-
-1. Robust transformations are applied appropriately to the code and/or data;
-2. A sufficient increase in program complexity is achieved so that manual analysis becomes infeasible;
-3. The transformations used are resilient against state-of-the-art de-obfuscation techniques.
-
-Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
-
-**Packing and Encryption**
+*Packing and Encryption*
 
 Simple transformations with little impact on program complexity can be used to defeat standard static analysis tools without causing too much size and performance penalties. The execution trace of the obfuscated function(s) remains more or less unchanged. De-obfuscation is relatively trivial, and can be accomplished with standard tools without scripting or customization.
 
-**Transforming Code and/or Data**
+*Transforming Code and/or Data*
 
 Advanced methods aim to hide the semantics of a computation by computing the same function in a more complicated way, or encoding code and data in ways that are not easily comprehensible. Transformations in this category have the following properties:
 
@@ -259,23 +261,23 @@ Some types of obfuscation that fall into this category are:
 - Virtualization
 - White-box cryptography
 
-#### Assessing the Threat Model and Architecture
+##### Obfuscation Effectiveness
 
-(... TODO ...)
+An obfuscation scheme is effective if:
 
-#### Assessing the Quality of Tampering Defenses
+1. Robust transformations are applied appropriately to the code and/or data;
+2. A sufficient increase in program complexity is achieved so that manual analysis becomes infeasible;
+3. The transformations used are resilient against state-of-the-art de-obfuscation techniques.
 
-For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
+Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
 
-(... TODO ...)
-
-#### Assessing Obfuscation
+(...TODO...)
 
 ### References
 
 - [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
 
-## Considerations
+## Additional Considerations
 
 ### Eliminating False Positives
 
