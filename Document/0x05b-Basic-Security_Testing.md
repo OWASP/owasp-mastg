@@ -64,6 +64,8 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Rooting your device
 
+-- TODO : Maybe add a warning on rooting devices (brickification, additional security risks, warranty nullified, ...), disclaimer --
+
 ###### Which mobiles can be rooted?
 
 Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux library called 'su' used for Switching Users. 
