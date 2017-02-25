@@ -65,7 +65,13 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 ##### Rooting your device
 
 -- TODO : Maybe add a warning on rooting devices (brickification, additional security risks, warranty nullified, ...), disclaimer --
--- TODO : Which devices can be used : Nexus / Pixel --
+
+###### Which mobiles can be rooted?
+
+Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux library called 'su' used for Switching Users. 
+
+The first step in rooting a mobile is to unlock its Boot Loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers, the device warranty is not nullified when the Boot Loader is unlocked and because Google provides many tools to support the root itself and to work with rooted devices. Those mobiles belong to a commercial range now called Pixel (the prior name was Nexus). 
+
 -- TODO : Boot Process Description --
 -- TODO : Boot Loaders and ROMs--
 
@@ -108,7 +114,18 @@ Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]<
 
 
 #### Software
--- TODO : Existing testing tools & tool suites : proxies, fuzzers, debuggers, vulnerability scanners, ... Most common tools : Binwalk, apktool, Dex2Jar, jad, Drozer, IDA --
+
+As for Web Application testing, there are several kinds of testing tools when referring to Mobile testing: these categories include proxies (useful to intercept network traffic between a mobile and a backend server, for testing Authorization, Session Management, ...), fuzzers (to send malformed requests to an application to check its behaviour, for Error Handling, Input Validation, ...), decompilers and debuggers (to retrieve code, execute the application and test its behaviour dynamically, to change its flow, manipulate the memory of the mobile, ...) and vulnerability scanners (to test for common errors in an automated way in the code of the application itself).
+
+Examples of most common tools include:
+* Proxies: most intercepting proxies are free, eventually with a paid version. The most famous are ZED Attack Proxy, Fiddler and Burp Suite (including a paid version, with more features than the free one). 
+* Fuzzers: notables ones are WSFuzzer and Burp Suite.
+* Decompilers: common ones are Dex2jar, jad and apktool.
+* Debuggers: popular ones include binwalk and IDA.
+* A popular testing framework for Android that includes many tools to test different aspects of an application is Drozer.
+
+Several all these tools can be found in an integrated environnement often used for security testing called Kali: for instance, Burp Suite (free version), ZED Attack proxy, Dex2jar, jad, apktool and binwalk come natively with Kali. As it runs on Linux, additional tools can be easily installed on Kali with its package manager. Also, Kali natively runs languages like Python; others like Ruby and Perl can be quickly installed.
+
 -- TODO: Link to testing tools section
 
 
