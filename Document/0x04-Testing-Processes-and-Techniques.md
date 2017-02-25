@@ -185,7 +185,7 @@ Resiliency testing can be performed in the context of a regular mobile app secur
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
-We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency.
+We classify reverse engineering defenses into two categories: defenses against tampering and obfuscation. Both types of defenses are used in tandem to achieve resiliency.
 
 (...TODO...)
 
