@@ -186,13 +186,13 @@ Resiliency testing can be performed in the context of a regular mobile app secur
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
+We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency.
+
+(...TODO...)
+
 #### Assessing the Threat Model and Software Protection Architecture
 
 (... TODO ...)
-
-### Software Protections Model and Taxonomy
-
-We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency. The following section contains an overview of the taxonomy used in the guide.
 
 #### Testing Tampering Defenses
 
@@ -275,7 +275,11 @@ An obfuscation scheme is effective if:
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
 
-(...TODO...)
+###### "Simple" Versus. "Advanced" Obfuscation
+
+
+
+
 
 ### References
 
