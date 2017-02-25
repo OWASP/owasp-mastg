@@ -233,7 +233,7 @@ Tampering defenses aim to hinder various processes used by reverse engineers, wh
 
 ![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
-For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
+For real-world apps, automated static/dynamic analysis is insufficient to prove security level of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
 
 ##### Anti-Tampering Requirements in the MASVS
 
