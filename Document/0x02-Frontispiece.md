@@ -10,7 +10,7 @@ http://owasp.herokuapp.com/
 
 ## Copyright and License
 
-![license](images/license.png)
+![license](Images/license.png)
 Copyright © 2017 The OWASP Foundation. This document is released under the Creative Commons Attribution ShareAlike 3.0 license. For any reuse or distribution, you must make clear to others the license terms of this work.
 
 ## Acknowledgements
