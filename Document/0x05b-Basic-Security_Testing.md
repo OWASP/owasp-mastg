@@ -2,25 +2,25 @@
 
 ### Setting Up Your Testing Environment
 
-When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made between clients (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the App. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also Root detection and other countermeasures implemented within an App can lead to significant extra work just to be able to finally test the App. Either way, the testing team responsible for the Android assesment need to work together with the App developer(s) and operation team in order to find a proper solution for a working testing environment. 
+When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the app. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also root detection and other countermeasures implemented within an app can lead to significant extra work just to be able to finally test the app. Either way, the testing team responsible for the Android assessment need to work together with the app developer(s) and operation team in order to find a proper solution for a working testing environment.
 
-This section will give an overview of different methods on how an Android App can be tested and will illustrate also its limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
+This section will give an overview of different methods on how an Android app can be tested and will illustrate also its limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
 
 #### Preparation
 
-The goal of a test is to verify if the App and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or Root detection might be implemented, that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented, that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
-During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same App should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
+During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
-This approach need of course to align with the scope of the engagement and if it's a black box or white box test (Link to section in MSTG describing Black and White Box). For a white box test requesting for a production and debug build will help to be able to go through all test cases and give a clear statement of the security maturity of the App. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production App and how effective the implemented security controls are.
+This approach need of course to align with the scope of the engagement and if it's a black box or white box test (Link to section in MSTG describing Black and White Box). For a white box test requesting for a production and debug build will help to be able to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
 
-Either way, the following items should be discussed with the company developing the mobile App and it should be decided if the implemented security controls can be adjusted to get the best out of the testing exercise.  
+Either way, the following items should be discussed with the company developing the mobile app and it should be decided if the implemented security controls can be adjusted to get the best out of the testing exercise.  
 
 ##### SSL Pinning
 
-SSL Pinning is already a strong mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the App will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
+SSL Pinning is already a strong mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
 
-For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the App uses the API functions that are covered for these tools. If the App is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning need to be done manually and can become time consuming.
+For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning need to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
 * Dynamical Patching while running the App, by using Frida<sup>[9] [13]</sup> or ADBI<sup>[10]</sup>
@@ -32,17 +32,17 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 
 ##### Debug build
 
-A debug build has several benefits, when provided during a (white box) test:
+A debug build has several benefits, when provided during a (white box) test that allows a more comprehensive analysis:
 * Debugger can be attached to the running App
-* Analysis of the App with Android Studio or other tools while running it
+* Debug log files of the App are available
 
 **(..TODO..)**
 
-See also test case "Testing If the App is Debuggable" for further details.
+See also test case "Testing If the app is Debuggable" for further details.
 
 ##### Root detection
 
-To implement Root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the App to verify if the device is rooted or not. The following checks are the most common ones for root detection:
+To implement root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the app to verify if the device is rooted or not. The following checks are the most common ones for root detection:
 * Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
 * Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
 * Checking for installed Apps that allow or support rooting of a device, like verifying the presence of Superuser.apk.
@@ -50,14 +50,22 @@ To implement Root detection on Android, libraries can be used like RootBeer<sup>
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
 
-For a black box test in order to be able to start the tests, the root detection needs to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the App that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+For a black box test in order to be able to start the tests, the root detection needs to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
 
-Other options are dynamically patching the App with Friday or repackaging the App. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism.  Dynamically patching the App can also become difficult if countermeasures are implemented that prevent runtime manipulation.
+Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation.
 
 If the root detection mechanisms cannot be defeated in a certain time window, it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup.
 
 See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
 
+
+##### Tampering
+
+Another security control is checking for so called tampering of the app. This means either checks are in place to prevent repackaging of the app, for example to deactivate SSL Pinning in a black box test or to dynamically patch it while running the app with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
+
+To be able to efficiently test during a white box test, a debug build with disabled tampering checks should be provided.
+
+See also "Verifying the Variability of Tampering Responses" for further details.
 
 #### Hardware
 
@@ -67,18 +75,18 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ###### Which mobiles can be rooted?
 
-Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux library called 'su' used for Switching Users. 
+Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
 
-The first step in rooting a mobile is to unlock its Boot Loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers, the device warranty is not nullified when the Boot Loader is unlocked and because Google provides many tools to support the root itself and to work with rooted devices. Those mobiles belong to a commercial range now called Pixel (the prior name was Nexus). 
+The first step in rooting a mobile is to unlock its Boot Loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the Boot Loader is unlocked and because Google provides many tools to support the root itself to work with rooted devices. Those mobiles belong to a commercial range now called Pixel (the prior name was Nexus).
 
 -- TODO : Boot Process Description --
 -- TODO : Boot Loaders and ROMs--
 
 ##### Restrictions when using a non-rooted device
 
-When using a non-rooted Android device it is still possible to  execute several test cases to the App.
+When using a non-rooted Android device it is still possible to  execute several test cases to the app.
 
-Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the App can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed.  
+Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed.  
 
 **(..TODO..)**
 
@@ -107,23 +115,26 @@ Rooting of an emulator is therefore not needed as root access can be granted thr
 
 ##### Restrictions when testing with an emulator
 
-There are several downsides when using an emulator. You might not be able to test an App properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
+There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
 
 Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]</sup> or SMS<sup>[7]</sup> and many more.
 
 
 #### Software
 
-As for Web Application testing, there are several kinds of testing tools when referring to Mobile testing: these categories include proxies (useful to intercept network traffic between a mobile and a backend server, for testing Authorization, Session Management, ...), fuzzers (to send malformed requests to an application to check its behaviour, for Error Handling, Input Validation, ...), decompilers and debuggers (to retrieve code, execute the application and test its behaviour dynamically, to change its flow, manipulate the memory of the mobile, ...) and vulnerability scanners (to test for common errors in an automated way in the code of the application itself).
+As for Web Application testing, there are several kinds of testing tools when referring to Mobile testing, these categories include:
+* **proxies:** Useful to intercept network traffic between a mobile and a backend server for testing Authorization, Session Management etc.
+* **decompilers and debuggers:** To retrieve code, execute the application and test its behaviour dynamically, to change its flow, manipulate the memory of the mobile, etc.
+* **vulnerability scanners:** To test for common errors in an automated way in the code of the application itself
+
 
 Examples of most common tools include:
-* Proxies: most intercepting proxies are free, eventually with a paid version. The most famous are ZED Attack Proxy, Fiddler and Burp Suite (including a paid version, with more features than the free one). 
-* Fuzzers: notables ones are WSFuzzer and Burp Suite.
+* Proxies: most intercepting proxies are free, eventually with a paid version. The most famous are Zed Attack Proxy (ZAP), Fiddler and Burp Suite (including a paid version, with more features than the free one).
 * Decompilers: common ones are Dex2jar, jad and apktool.
 * Debuggers: popular ones include binwalk and IDA.
 * A popular testing framework for Android that includes many tools to test different aspects of an application is Drozer.
 
-Several all these tools can be found in an integrated environnement often used for security testing called Kali: for instance, Burp Suite (free version), ZED Attack proxy, Dex2jar, jad, apktool and binwalk come natively with Kali. As it runs on Linux, additional tools can be easily installed on Kali with its package manager. Also, Kali natively runs languages like Python; others like Ruby and Perl can be quickly installed.
+Most of the tools tools can be found in an integrated environment often used for security testing, called Kali. For instance, Burp Suite (free version), Zed Attack proxy, Dex2jar, jad, apktool and binwalk come natively with Kali. As it runs on Linux, additional tools can be easily installed on Kali with its package manager. Also, Kali natively runs languages like Python; others like Ruby and Perl can be quickly installed.
 
 -- TODO: Link to testing tools section
 
@@ -133,7 +144,7 @@ Several all these tools can be found in an integrated environnement often used f
 
 ### Static Analysis
 
-Static analysis is the act of looking into App components, source code and other resources without actually executing it. This test is focused on finding misconfigured or unprotected Android IPC components as well as finding programming mistakes such as misuse of cryptography routines, find libraries with known vulnerabilities and even dynamic code loading routines.
+Static analysis is the act of looking into app components, source code and other resources without actually executing it. This test is focused on finding misconfigured or unprotected Android IPC components as well as finding programming mistakes such as misuse of cryptography routines, find libraries with known vulnerabilities and even dynamic code loading routines.
 
 Static analysis should be supported through the usage of tools, to make the analysis efficient and to allow the tester to focus on the more complicated business logic. There are a plethora of static code analyzers that can be used, ranging from open source scanners to full blown enterprise ready scanners. The decision on which tool to use depends on the budget, requirements by the client and the preferences of the tester.
 
@@ -170,13 +181,13 @@ They are, for example, QARK<sup>[18]</sup>, Androbugs<sup>[19]</sup> and JAADAS<
 
 ### Dynamic Analysis
 
-Compared to static analysis, dynamic analysis is applied while executing the mobile App. The test cases can range from investigating the file system and changes made to it on the mobile device or monitoring the communication with the endpoint while using the App.
+Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device or monitoring the communication with the endpoint while using the app.
 
-When we are talking about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP, Burp Suite Professional or Fiddler to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position, in order to read and/or modify all requests made from the App and responses made from the endpoint.
+When we are talking about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP, Burp Suite Professional or Fiddler to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position, in order to read and/or modify all requests made from the app and responses made from the endpoint.
 
 #### Using a hardware device
 
-Different preparation steps need to be applied before a dynamic analysis of a mobile App can be started. Ideally the device is rooted, as otherwise some test cases cannot be tested properly. See "Rooting your device" for more information.
+Different preparation steps need to be applied before a dynamic analysis of a mobile app can be started. Ideally the device is rooted, as otherwise some test cases cannot be tested properly. See "Rooting your device" for more information.
 
 The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or an ad-hoc wireless network is created<sup>[3]</sup>.
 
@@ -185,11 +196,11 @@ Once the network is configured and connectivity is established between the testi
 * The proxy in the network settings of the WiFi connection of the Android device need to configured properly to point to the interception proxy in use<sup>[1]</sup>.
 * The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage <sup>[2]</sup> of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
-After finishing these steps and starting the App the requests should show up in the interception proxy.
+After finishing these steps and starting the app the requests should show up in the interception proxy.
 
 #### Using an emulator
 
-All of the above steps to prepare a hardware testing device do also apply if an emulator is used<sup>[4]</sup>. For dynamic testing several tools or VMs are available that can be used to test an App within an emulator environment:
+All of the above steps to prepare a hardware testing device do also apply if an emulator is used<sup>[4]</sup>. For dynamic testing several tools or VMs are available that can be used to test an app within an emulator environment:
 
 * AppUse
 * MobSF
