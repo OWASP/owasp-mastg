@@ -178,7 +178,7 @@ Effective anti-reversing schemes combine a variety of tampering defenses and obf
 
 ### Resiliency Testing Approach
 
-In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing reverse engineering defenses requires a extended skillset: The tester must able to deal with advanced anti-reversing tricks and obfuscation technqiues. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize on this. We therefore also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
+In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing reverse engineering defenses requires a extended skillset: The tester must able to deal with advanced anti-reversing tricks and obfuscation technqiues. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize in this. We therefore also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
 
 The OWASP Mobile Application Verification Standard defines "Resiliency Against Reverse Engineering and Tampering" as follows [1]:
 
