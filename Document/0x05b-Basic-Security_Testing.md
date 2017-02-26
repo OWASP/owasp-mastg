@@ -63,7 +63,25 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Rooting your device
 
--- TODO : Maybe add a warning on rooting devices (brickification, additional security risks, warranty nullified, ...), disclaimer --
+###### Risks of rooting your device - Disclaimer
+
+Rooting a mobile can seem attractive at first sight. After a device has been rooted, the user is granted additional privileges and can easily overcome limitations: manufacturers introduce limitations in their phones and tablets so that apps are executed with user-level privileges, mitigating security attacks and preventing the user from running restricted features. When a mobile is rooted, a user can:
+* run special apps (like network sniffers and other security testing tools),
+* use previously restricted features,
+* customize their phones and tablets and benefit from optimized UIs,
+* more easily block advertisements
+* and better manage internal storage.
+
+** However, rooting a device is not an easy process and requires advanced knowledge of Android internals and ecosystem. Rooting is a risky process**, and the reader has to be warned of several elements. Rooting:
+* usually voids the device guarantee (always check the user guide from the manufacturer before taking any action),
+* may "brick" the device, e.g. render it unoperable and unusable. Moreover, often it is not possible to put it back in a stable state, and the outcome is often that the device is lost.
+* brings additional security risks: whereas privileges are restricted in a non-rooted device and apps run in their own  environnement limited to themselves, thereby protecting users, rooted devices do not provide such security mechanisms anymore, making the introduction of worms / malware / viruses more dangerous (for instance, such malicious code is able to execute through the whole system and to use dangerous features).
+* may decrease performance.
+* may hinder the update process.
+
+Using a rooted mobile device on a Corporate network may therefore prove dangerous for the whole company (malware introduction, ...) and may raise suspicion as some companies explicitely forbid using rooted devices and enforce such a policy by regularly scanning their networks with MDM (Mobile Device Management) systems. Sometimes, rooted devices may not work in such networks.
+
+** In no way shall OWASP be help responsible for any damage (to devices, networks, ...) in case the reader makes the decision to root his/her mobile. The reader shall bear all the consequences of rooting. Always seek expert advice before rooting your device. **
 
 ###### Which mobiles can be rooted?
 
