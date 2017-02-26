@@ -178,24 +178,20 @@ Effective anti-reversing schemes combine a variety of tampering defenses and obf
 
 ### Resiliency Testing Approach
 
-In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing defenses against reverse engineering requires a extended skillset: The tester must able to deal with advanced anti-reversing tricks and obfuscation technqiues. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize on this. We therefore also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
+In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing defenses against reverse engineering requires an extended skillset: The tester must be able to deal with advanced anti-reversing tricks and obfuscation techniques. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize in this. We also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
 
-Resiliency testing can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process contains of the following high-level steps:
+The OWASP Mobile Application Verification Standard defines "Resiliency Against Reverse Engineering and Tampering" as follows [1]:
+
+"The app has state-of-the-art security, and is also resilient against specific, clearly defined client-side attacks, such as tampering, modding, or reverse engineering to extract sensitive code or data. Such an app either leverages hardware security features or sufficiently strong and verifiable software protection techniques. MASVS-R is applicable to apps that handle highly sensitive data and may serve as a means of protecting intellectual property or tamper-proofing an app."
+
+Resiliency testing is the process of verifying that the above is true. It can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process consists of the following high-level steps:
 
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering using hybrid static/dynamic analysis.
 
-We classify reverse engineering defenses into two categories: Tampering defenses and obfuscation. Both types of defenses are used in tandem to achieve resiliency.
-
-(...TODO...)
-
 #### Assessing the Threat Model and Software Protection Architecture
 
-The first step in assessing any protection scheme is whether having it makes sense in the first place. This involves asking the following questions:
-
-##### Application Integrity Threats
-
-The software protection scheme must be designed to protect against clearly defined threats - otherwise it is just a random collection of anti-debugging threats, with no of assessing its effectiveness. The OWASP Reverse Engineering and Code Modification Prevention Project [1] lists the following potential threats associated with reverse engineering and tampering:
+The software protection scheme must be designed to protect against clearly defined threats - otherwise it is no more than a random collection of anti-debugging tricks. The OWASP Reverse Engineering and Code Modification Prevention Project [1] lists the following potential threats associated with reverse engineering and tampering:
 
 **Spoofing Identity**
 
@@ -215,13 +211,17 @@ Attackers may modify a mobile application to disclose highly sensitive assets co
 
 **Denial of Service**
 
-Attackers may alter a mobile device application and force it to periodically crash or permanently disable itself to prevent the user from accessing online services through their device;d
+Attackers may alter a mobile device application and force it to periodically crash or permanently disable itself to prevent the user from accessing online services through their device;
 
 **Elevation of Privilege**
 
 Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
-#### Testing Tampering Defenses
+#### Types of Defenses
+
+We classify reverse engineering defenses into two categories: Anti-tampering and obfuscation. Both types of defenses are used in tandem to achieve resiliency. 
+
+#### Testing Anti-Tampering
 
 *Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way a debugger is attached. They can be further categorized into two modi operandi:
 
@@ -237,17 +237,18 @@ For real-world apps, automated static/dynamic analysis is insufficient to prove 
 
 ##### Anti-Tampering Requirements in the MASVS
 
-(...TODO...)
 
 #### Testing Obfuscation Effectiveness
 
-Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. The simplest way of making code less comprehensible is stripping information that is meaningful to humans, such as function and variable names. A standard implementation of a cryptographic primitive can be replaced by a network of key-dependent lookup tables so the regular cryptographic key is not exposed in memory ("white-box cryptography"). Code can be into a secret byte-code language that is then run on an interpreter ("virtualization"). There's unlimited ways of encoding and transforming code and data!
+Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. Think translating an English sentence to an French one that says the same thing (or pick a different language if you speak French - you get the point).
 
-Things become complicated when it comes to pinpointing an exact academical definition. In an often cited paper, Barak et. al describe the black-box model of obfuscation. The black-box model considers a program P’ obfuscated if any property that can be learned from P′ can also be obtained by a simulator with only oracle access to P. In other words, P’ does not reveal anything except its input-output behavior. The authors also show that obfuscation is impossible given their own definition by constructing an un-obfuscatable family of programs (8).
+The simplest way of making code less comprehensible is stripping information that is meaningful to humans, such as function and variable names. Many more intricate ways have been invented by software authors - especially those writing malware and DRM - over the past decades, from encrypting portions of code and data, to self-modifying and self-compiling code.
 
-Does this mean that obfuscation is impossible? Well, it depends on what we obfuscate and how we define obfuscation. Barack’s result only shows that *some* programs cannot be obfuscated, if we use a very strong definition of obfuscation. Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9).
+A standard implementation of a cryptographic primitive can be replaced by a network of key-dependent lookup tables so the original cryptographic key is not exposed in memory ("white-box cryptography"). Code can be into a secret byte-code language that is then run on an interpreter ("virtualization"). There are infinite ways of encoding and transforming code and data!
 
-Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9).
+Things become complicated when it comes to pinpointing an exact academical definition. In an often cited paper, Barak et. al describe the black-box model of obfuscation. The black-box model considers a program P' obfuscated if any property that can be learned from P' can also be obtained by a simulator with only oracle access to P. In other words, P’ does not reveal anything except its input-output behavior. The authors also show that obfuscation is impossible given their own definition by constructing an un-obfuscatable family of programs (8).
+
+Does this mean that obfuscation is impossible? Well, it depends on what you obfuscate and how you define obfuscation. Barack’s result only shows that *some* programs cannot be obfuscated - but only if we use a very strong definition of obfuscation. Intuitively, most of us know from experience that code can have differing amounts of intelligibility and that understanding the code becomes harder as code complexity increases. Often enough, this happens unintentionally, but we can also observe that implementations of obfuscators exist and are more or less successfully used in practice (9).
 
 ##### Obfuscation Types
 
@@ -292,7 +293,7 @@ Some types of obfuscation that fall into this category are:
 - Virtualization
 - White-box cryptography
 
-##### Obfuscation Effectiveness
+##### Assessing Obfuscation
 
 An obfuscation scheme is effective if:
 
@@ -306,8 +307,7 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ### References
 
-- [1] OWASP Reverse Engineering and Code Modification Prevention Project - https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project
-- [2] OWASP: Architectural Principles That Prevent Code Modification or Reverse Engineering - https://www.owasp.org/index.php/Architectural_Principles_That_Prevent_Code_Modification_or_Reverse_Engineering#Application_Integrity_Threats
+- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
 
 ## Additional Considerations
 
@@ -333,8 +333,8 @@ The basis for CSRF attacks, access to session cookies of all browser tabs and at
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
 ### References
+
+
+
 
