@@ -33,9 +33,8 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 ##### Debug build
 
 A debug build has several benefits, when provided during a (white box) test:
-* Code obfuscation from ProGuard is not applied
 * Debugger can be attached to the running App
-* Analysis of the App with Android Studio while running it
+* Analysis of the App with Android Studio or other tools while running it
 
 **(..TODO..)**
 
