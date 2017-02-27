@@ -4,17 +4,16 @@
 
 #### Overview
 
-Android assigns every installed with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical is the data or feature, Android system will grant the permission automatically or ask the user to approve the request.
+Android assigns every installed app with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical the data or feature is, Android system will grant the permission automatically or ask the user to approve the request.
 
 Android permissions are classified in four different categories based on the protection level it offers.
 
-- **Normal**: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
-- **Dangerous**: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not. Example: android.permission.RECORD_AUDIO
-- **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
+- **Normal**: This permission gives apps access to isolated application-level features, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
+- **Dangerous**: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not. Example: android.permission.RECORD_AUDIO
+- **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
 - **SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
 
 Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS)
-
 
 Apps can define custom permissions, this is to share its resources and capabilities with other apps.
 
@@ -28,17 +27,22 @@ List of [Android Permissions](https://developer.android.com/reference/android/Ma
 ##### With Source Code
 
 #####Android Permissions
+
 Permissions should be checked if they are really need within the App. For example in order for an Activity to load a web page into a WebView the INTERNET permission in the Android Manifest file is needed.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+
+During using the app while testing it, certain permissions might seem optional, but there might be valid reasons for them. Therefore, the identified permissions in the Manifest should be extracted and it should be verified with the developer(s) together if all permissions are needed.
+
 #####Custom Permissions
+
 **TODO** Test case to evaluate custom Permissions
 
 ##### Without Source Code
 
-To review application permissions via Android Manifest file, the APK file will need to be unpack with apktool. It will then generate a folder that contains AndroidManifest file.
+To review application permissions via Android Manifest file, the APK file will need to be unpacked with apktool. It will then generate a folder that contains the AndroidManifest file.
 
 ```bash
 $apktool d test.apk
@@ -79,11 +83,11 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+Dynamic analysis is not applicable and a solid statement and result for this test case can only be done after reviewing the AndroidManifest. See "Static Analysis" for details.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+Only permissions that are used within the app should be requested in the AndroidManifest. All other permissions should be removed. 
 
 #### References
 

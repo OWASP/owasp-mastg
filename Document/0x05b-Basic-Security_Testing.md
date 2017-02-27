@@ -61,7 +61,7 @@ See also test case "Testing Root Detection" and "Testing Advanced Root Detection
 
 ##### Tampering
 
-Another security control is checking for so called tampering of the app. This means either checks are in place to prevent repackaging of the app, for example to deactivate SSL Pinning in a black box test or to dynamically patch it while running the app with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
+Another security control available in mobile apps, is checking for so called tampering of the app. This means either checks are in place to prevent repackaging of the app, for example to deactivate SSL Pinning in a black box test or to dynamically patch the app while running with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
 
 To be able to efficiently test during a white box test, a debug build with disabled tampering checks should be provided.
 
