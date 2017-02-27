@@ -240,7 +240,7 @@ For real-world apps, automated static/dynamic analysis is insufficient to prove 
 
 #### Testing Obfuscation Effectiveness
 
-Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. Think translating an English sentence to an French one that says the same thing (or pick a different language if you speak French - you get the point).
+Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. Think about translating an English sentence into an French one that says the same thing (or pick a different language if you speak French - you get the point).
 
 The simplest way of making code less comprehensible is stripping information that is meaningful to humans, such as function and variable names. Many more intricate ways have been invented by software authors - especially those writing malware and DRM systems - over the past decades, from encrypting portions of code and data, to self-modifying and self-compiling code.
 
