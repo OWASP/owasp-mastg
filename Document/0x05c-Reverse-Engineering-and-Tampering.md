@@ -10,15 +10,18 @@ You'll need a working knowledge about both the Java-based Android environment an
 
 ### Environment and Toolset
 
-At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also need a basic disassembler to translate Java bytecode back to SMALI or Java code - APKTool [2] is the most popular free tool to do, plus you can use it to modify and re-assemble apps.
+At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also need a basic disassembler to translate Java bytecode into SMALI or Java code - APKTool [2] is the most popular free tool to do, plus you can use it to modify and re-assemble apps.
 
-Other than that, it's really a matter of preference and your preferred approach. A **lot** of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll discuss some of them below.
-
-#### Getting the Android SDK
+Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll discuss some of them below.
 
 (TODO)
 
-#### Building a Reverse Engineering Environment for Free
+- Androguard
+- ADB
+- DexDump
+- dex2jar
+
+#### Building a GUI-based Reverse Engineering Environment For Free
 
 With a little effort you can build a reasonable reverse engineering environment for free. JD [1] is a free Java de-compiler that integrates with Eclipse [2] and IntelliJ IDEA [3]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
 
@@ -26,22 +29,15 @@ If you don’t mind looking at SMALI instead of Java code, you can use the smali
 
 APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
 
-- Androguard
-- ADB
-- DexDump
-- dex2jar
-
 #### Commercial Tools
 
-##### Disassemblers and Decompilers
+###### JEB
+
+ JEB, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
 
 ###### IDA Pro
 
 IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
-
-###### JEB
-
-This is where dedicated Java de-compilers become useful. JEB, a commercial decompiler, outs all the functionality one might need in a convenient-to-use all-in-one package, is reasonably reliable and you get quick support. It also has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the annotated sources is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Unfortunately, convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
 
 ##### Reverse Engineering Frameworks
 
@@ -53,15 +49,11 @@ This is where dedicated Java de-compilers become useful. JEB, a commercial decom
 
 ###### DroidScope
 
-DroidScope is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
+DroidScope [3] - an extension to the DECAF dynamic analysis framework - is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
 
 DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls or Java method calls.
 
 All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
-
-DroidScope is available as an extension to the DECAF dynamic analysis framework at:
-
-https://github.com/sycurelab/DECAF
 
 ###### PANDA
 
@@ -69,22 +61,21 @@ PANDA is another QEMU-based dynamic analysis platform. Similar to DroidScope, PA
 
 PANDA comes with some premade plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository14 and build PANDA as follows:MM
 
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo:
-
-https://github.com/moyix/panda/blob/master/docs/
+As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo [4].
 
 ##### VxStripper
 
-Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [Malware Dynamic Recompilation](http://ieeexplore.ieee.org/document/6759227/) for more information.
+Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [5] for more information.
 
-#### References - Tools Section
+#### References
 
-TODO
+(TODO)
 
 - [1]
 - [2]
-- [3]
-- [4]
+- [3] https://github.com/sycurelab/DECAF
+- [4] https://github.com/moyix/panda/blob/master/docs/
+- [5] Malware Dynamic Recompilation - http://ieeexplore.ieee.org/document/6759227/
 - [5]
 - [6]
 
@@ -225,7 +216,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 }
 ```
 
-#### Code Injection with FRIDA
+#### Dynamic Instrumentation with FRIDA
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -267,7 +258,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-TODO: Pulling APK File from the device
+One thing that's great about reversing Java byte
 
 TODO: DEX vs. OAT
 
@@ -275,10 +266,22 @@ TODO: DEX vs. OAT
 
 #### Debugging Android Apps
 
+Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer. 
+
+##### Debugging Java Code
+
+JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries. 
+
+The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
+
+TOOD ... example & native debugging ...
+
+##### Debugging Native Code
+
+
 #### Execution Tracing
 
-The JDB command line tool offers basic execution tracing functionality.
-To trace an app right from the start we can pause the app using the Android “Wait for Debugger” feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
+Besides being useful for debugging, the JDB command line tool also offers basic execution tracing functionality. To trace an app right from the start we can pause the app using the Android "Wait for Debugger" feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
 
 ```bash
 $ adb forward tcp:7777 jdwp:7288
@@ -360,23 +363,24 @@ Unfortunately, it is not possible to generate a complete guest instruction trace
 
 Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to provide more complete tracing functionality. PANDA/PANDROID is your best if you’re going for a CPU-trace based analysis, as it allows you to easily record and replay a full trace, and is relatively easy to set up if you follow the build instructions for Ubuntu.
 
-
-
 #### Customizing Android
 
 Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
 ##### Preparing a development environment
+
 To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
+
 https://developer.android.com/develop/index.html
+
 You’ll also need the Android NDK for compiling anything that creates native code. The NDK contains prebuilt toolchains for cross-compiling native code for different architectures. The NDK is available as a separate download:
 https://developer.android.com/ndk/downloads/index.html
+
 After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
 
 ```bash
 $ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
 ```
-
 
 ##### Customizing the RAMDisk
 
@@ -555,13 +559,13 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
-![Disassembly of function main.](Images/Chapters/0x06a/custom_kernel.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/custom_kernel.jpg)
 
 ##### System Call Hooking Using Kernel Modules
 
 System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
 
-![Disassembly of function main.](Images/Chapters/0x06a/syscall_hooking.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/syscall_hooking.jpg)
 
 The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
 
@@ -799,7 +803,7 @@ Incorrect serial (wrong format).
 
 So far, so good, but we really know nothing about how a valid license key might look like. Where do we start? Let's fire up IDA Pro to get a first good look at what is happening.
 
-![Disassembly of function main.](Images/Chapters/0x06a/license-check-1.jpg)
+![Disassembly of function main.](Images/Chapters/0x05c/license-check-1.jpg)
 
 The main function is located at address 0x1874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address). Function names have been stripped, but luckily we can see some references to debugging strings: It appears that the input string is base32-decoded (call to sub_1340). At the beginning of main, there's also a length check at loc_1898 that verifies that the length of the input string is exactly 16. So we're looking for a 16 character base32-encoded string! The decoded input is then passed to the function sub_1760, which verifies the validity of the license key.
 

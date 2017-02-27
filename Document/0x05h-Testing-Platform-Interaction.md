@@ -4,17 +4,16 @@
 
 #### Overview
 
-Android assigns every installed with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical is the data or feature, Android system will grant the permission automatically or ask the user to approve the request.
+Android assigns every installed app with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical the data or feature is, Android system will grant the permission automatically or ask the user to approve the request.
 
 Android permissions are classified in four different categories based on the protection level it offers.
 
-**Normal**: Is the lower level of protection, it gives applications access to isolated application-level feature, with minimal risk to other applications, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
-**Dangerous**: This permission usually gives the application control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the application should have the permission or not. Example: android.permission.RECORD_AUDIO
-**Signature**: This permission is granted only if the requesting app was signed with the same certificate as the application that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
-**SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
+- **Normal**: This permission gives apps access to isolated application-level features, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: android.permission.INTERNET
+- **Dangerous**: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not. Example: android.permission.RECORD_AUDIO
+- **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted. Example: android.permission.ACCESS_MOCK_LOCATION
+- **SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: android.permission.ACCESS_DOWNLOAD_MANAGER
 
 Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS)
-
 
 Apps can define custom permissions, this is to share its resources and capabilities with other apps.
 
@@ -28,17 +27,22 @@ List of [Android Permissions](https://developer.android.com/reference/android/Ma
 ##### With Source Code
 
 #####Android Permissions
+
 Permissions should be checked if they are really need within the App. For example in order for an Activity to load a web page into a WebView the INTERNET permission in the Android Manifest file is needed.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+
+During using the app while testing it, certain permissions might seem optional, but there might be valid reasons for them. Therefore, the identified permissions in the Manifest should be extracted and it should be verified with the developer(s) together if all permissions are needed.
+
 #####Custom Permissions
+
 **TODO** Test case to evaluate custom Permissions
 
 ##### Without Source Code
 
-To review application permissions via Android Manifest file, the APK file will need to be unpack with apktool. It will then generate a folder that contains AndroidManifest file.
+To review application permissions via Android Manifest file, the APK file will need to be unpacked with apktool. It will then generate a folder that contains the AndroidManifest file.
 
 ```bash
 $apktool d test.apk
@@ -61,7 +65,7 @@ Within the manifest file, requested permissions will be declared as "uses-permis
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package=“com.owasp.mstg.myapp" >
+    package="com.owasp.mstg.myapp" >
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     ...
 </manifest>
@@ -79,11 +83,11 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+Dynamic analysis is not applicable and a solid statement and result for this test case can only be done after reviewing the AndroidManifest. See "Static Analysis" for details.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+Only permissions that are used within the app should be requested in the AndroidManifest. All other permissions should be removed.
 
 #### References
 
@@ -699,30 +703,66 @@ Check <sup>[1]</sup>
 * Tool - Link
 
 
-
 ### Testing Root Detection
 
 #### Overview
 
-[Provide a general description of the issue.]
+Checking the integrity of the environment where the app is running is getting more and more common on the Android platform. Due to the usage of rooted devices several fundamental security mechanisms of Android are deactivated or can easily be bypassed by any app. Apps that process sensitive information or have built in largely intellectual property (IP) like gaming apps might want to avoid to run on a rooted phone to protect data or their IP.
+
+Keep in mind that root detection is not protecting an app from attackers, but can slow down an attacker dramatically and higher the bar for successful local attacks. Root detection should be considered as part of a broad security-in-depth strategy, to be more resilient against attackers and make analysis harder.
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
 ##### With Source Code
+
+Root detection can either be implemented by leveraging existing root detection libraries, one for Android is called `Rootbeer`<sup>[1]</sup>, or by implementing the checks manually.
+
+Check the source code for the string "rootbeer" and also the gradle file, if a dependency is defined for Rootbeer:
+
+```java
+dependencies {
+    compile 'com.scottyab:rootbeer-lib:0.0.4'
+}
+```
+
+If this library is used, code like the following might be used for root detection.
+
+```java
+        RootBeer rootBeer = new RootBeer(context);
+        if(rootBeer.isRooted()){
+            //we found indication of root
+        }else{
+            //we didn't find indication of root
+        }
+```
+
+If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:
+* Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
+* Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
+* Checking for installed Apps that allow or support rooting of a device, like verifying the presence of Superuser.apk.
+* Checking available commands, like is it possible to execute `su` and being root afterwards.
+
 
 ##### Without Source Code
 
+**TODO**
+
+
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
+
+In case of a black box test an implemented root detection can be challenging, if for example the app is immediately terminated because of a rooted phone. Ideally a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection need to be defeated first in that case. To identify the implemented root detection logic without source code in a dynamic scan can be fairly hard.
+
+By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+
+Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
+
+Otherwise it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup. This is of course only possible if the SSL Pinning can be deactivated for example in smali and repackaging the app.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+To implement root detection within an Android app, libraries can be used like RootBeer<sup>[1]</sup>. The root detection should either trigger a warning to the user after start, to remind him that the device is rooted and that the user can only proceed on his own risk. Alternatively, the app can terminate itself in case a rooted environment is detected. This decision is depending on the business requirements and the risk appetite of the stakeholders.
 
 #### References
 
@@ -739,9 +779,7 @@ Check <sup>[1]</sup>
 - CWE-XXX - Title
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [1] RootBeet - https://github.com/scottyab/rootbeer
 
 ##### Tools
 

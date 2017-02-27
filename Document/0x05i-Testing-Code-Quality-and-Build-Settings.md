@@ -200,7 +200,25 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 - [link to relevant how-tos, papers, etc.]
 
-### Verifying that Java Bytecode Has Been Minifed
+### Testing for Memory Management Bugs
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
+#### White-box Testing
+
+#### Black-box Testing
+
+#### Remediation
+
+#### References
+
+##### OWASP MASVS
+
+- V7.7: "In unmanaged code, memory is allocated, freed and used securely."
+
+### Verifying that Java Bytecode Has Been Minified
 
 #### Overview
 

@@ -184,7 +184,7 @@ If the above command emit no output then the ACR protection isn't enabled.
 
 IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB gui and click the "Analyze Binary…" button.
 
-![alt tag](/Document/Images/Testcases/OMTG-CODE_iOS/idb.png)
+![alt tag](Images/Chapters/0x06i/idb.png)
 
 #### Remediation
 
@@ -215,6 +215,24 @@ Steps for enabling ACR protection within an iOS application :
 
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
+
+### Testing for Memory Management Bugs
+
+#### Overview
+
+(Give an overview about the functionality and it's potential weaknesses)
+
+#### White-box Testing
+
+#### Black-box Testing
+
+#### Remediation
+
+#### References
+
+##### OWASP MASVS
+
+- V7.7: "In unmanaged code, memory is allocated, freed and used securely."
 
 ### Verifying that Java Bytecode Has Been Minifed
 
