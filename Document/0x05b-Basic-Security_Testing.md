@@ -42,22 +42,9 @@ See also test case "Testing If the app is Debuggable" for further details.
 
 ##### Root detection
 
-To implement root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the app to verify if the device is rooted or not. The following checks are the most common ones for root detection:
-* Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
-* Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
-* Checking for installed Apps that allow or support rooting of a device, like verifying the presence of Superuser.apk.
-* Checking available commands, like is it possible to execute `su` and being root afterwards.
+To implement root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the app to verify if the device is rooted or not. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
-
-For a black box test in order to be able to start the tests, the root detection needs to be bypassed. By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
-
-Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation.
-
-If the root detection mechanisms cannot be defeated in a certain time window, it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup.
-
-See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
-
 
 ##### Tampering
 

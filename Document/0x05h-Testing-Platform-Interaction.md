@@ -65,7 +65,7 @@ Within the manifest file, requested permissions will be declared as "uses-permis
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package=“com.owasp.mstg.myapp" >
+    package="com.owasp.mstg.myapp" >
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     ...
 </manifest>
@@ -87,7 +87,7 @@ Dynamic analysis is not applicable and a solid statement and result for this tes
 
 #### Remediation
 
-Only permissions that are used within the app should be requested in the AndroidManifest. All other permissions should be removed. 
+Only permissions that are used within the app should be requested in the AndroidManifest. All other permissions should be removed.
 
 #### References
 
@@ -702,29 +702,67 @@ Check <sup>[1]</sup>
 
 * Tool - Link
 
+
 ### Testing Root Detection
 
 #### Overview
 
-[Provide a general description of the issue.]
+Checking the integrity of the environment where the app is running is getting more and more common on the Android platform. Due to the usage of rooted devices several fundamental security mechanisms of Android are deactivated or can easily be bypassed by any app. Apps that process sensitive information or have built in largely intellectual property (IP) like gaming apps might want to avoid to run on a rooted phone to protect data or their IP.
+
+Keep in mind that root detection is not protecting an app from attackers, but can slow down an attacker dramatically and higher the bar for successful local attacks. Root detection should be considered as part of a broad security-in-depth strategy, to be more resilient against attackers and make analysis harder.
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
 ##### With Source Code
+
+Root detection can either be implemented by leveraging existing root detection libraries, one for Android is called `Rootbeer`<sup>[1]</sup>, or by implementing the checks manually.
+
+Check the source code for the string "rootbeer" and also the gradle file, if a dependency is defined for Rootbeer:
+
+```java
+dependencies {
+    compile 'com.scottyab:rootbeer-lib:0.0.4'
+}
+```
+
+If this library is used, code like the following might be used for root detection.
+
+```java
+        RootBeer rootBeer = new RootBeer(context);
+        if(rootBeer.isRooted()){
+            //we found indication of root
+        }else{
+            //we didn't find indication of root
+        }
+```
+
+If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:
+* Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
+* Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
+* Checking for installed Apps that allow or support rooting of a device, like verifying the presence of Superuser.apk.
+* Checking available commands, like is it possible to execute `su` and being root afterwards.
+
 
 ##### Without Source Code
 
+**TODO**
+
+
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
+
+In case of a black box test an implemented root detection can be challenging, if for example the app is immediately terminated because of a rooted phone. Ideally a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection need to be defeated first in that case. To identify the implemented root detection logic without source code in a dynamic scan can be fairly hard.
+
+By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+
+Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
+
+Otherwise it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup. This is of course only possible if the SSL Pinning can be deactivated for example in smali and repackaging the app.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+To implement root detection within an Android app, libraries can be used like RootBeer<sup>[1]</sup>. The root detection should either trigger a warning to the user after start, to remind him that the device is rooted and that the user can only proceed on his own risk. Alternatively, the app can terminate itself in case a rooted environment is detected. This decision is depending on the business requirements and the risk appetite of the stakeholders.
 
 #### References
 
@@ -741,9 +779,7 @@ Check <sup>[1]</sup>
 - CWE-XXX - Title
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [1] RootBeet - https://github.com/scottyab/rootbeer
 
 ##### Tools
 
