@@ -174,7 +174,7 @@ Mobile software anti-reversing schemes are all made from the same building block
 
 First of all, there is no one-size-fits-all. Client-side protections are desirable in some cases, but are unnecessary, or even counter-productive, in others. In the worst case, software protections lead to a false sense of security and encourage bad programming practices, such as implementing security controls on the client that would better be located on the server. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper modeling of client-side threats is a necessary prerequisite before any form of software protections are implemented.
 
-Effective anti-reversing schemes combine a variety of tampering defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient.
+Effective anti-reversing schemes combine a variety of anti-tampering defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient.
 
 ### Resiliency Testing Approach
 
