@@ -71,11 +71,9 @@ The first step in rooting a mobile is to unlock its Boot Loader. The procedure d
 
 ##### Restrictions when using a non-rooted device
 
-When using a non-rooted Android device it is still possible to  execute several test cases to the app.
+For testing of an Android app a rooted device is the foundation for a tester to be able to execute all available test cases. In case a non-rooted device need to be used, it is still possible to execute several test cases to the app.
 
-Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed.  
-
-**(..TODO..)**
+Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
 
 
 #### Emulator
