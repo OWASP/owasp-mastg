@@ -15,12 +15,34 @@ Android permissions are classified in four different categories based on the pro
 
 Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS)
 
-Apps can define custom permissions, this is to share its resources and capabilities with other apps.
+Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. Custom permission can be easily defined in AndroidManifest.xml file, by creating a permission tag with two mandatory attributes - "android:name" and android:protectionLevel attributes. It is crucial to create custom permission that adhere to the Principle of Least Privilege, permission should be define explitly for its purpose with meaningful and accurate label and description. 
 
-**TODO** Explanation custom permission
 
-List of [Android Permissions](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS)
+Below is an example of a custom permission “START_MAIN_ACTIVITY” that required when launching the “TEST_ACTIVITY” Activity.
 
+The first code block defines the new permission which is self-explanatory. The label tag is a summary of the permission and description is a more detailed description of the summary. The protection level can be set based on the types of permission it is granting. 
+Once you have defined your permission, it can be enforced on the component by specifying it in the application’s manifest. In our example, the second block is the component that we are going to restrict with the permission we created. It can be easily enforced by adding the "android:permission" attributes. 
+
+```xml
+<permission android:name=“com.example.myapp.permission.START_MAIN_ACTIVITY”
+        android:label=“Start Activity in myapp"
+        android:description=“Allow the app to launch the activity of myapp app, any app you grant this permission will be able to launch main activity by myapp app."
+        android:protectionLevel=“normal" />
+
+<activity android:name=“TEST_ACTIVITY”
+    android:permission=“com.example.myapp.permission.START_MAIN_ACTIVITY”>
+    <intent-filter>
+        <action android:name=“android.intent.action.MAIN" />
+        <category android:name=“android.intent.category.LAUNCHER”/>
+     </intent-filter>
+</activity>
+```
+
+Now that the new permission “START_MAIN_ACTIVTY” is created, apps can request it using the “uses-permision” tag in the AndroidManifest.xml file. Any application can now launch the "TEST_ACTIVITY" if it is granted with the custom permisison "START_MAIN_ACTIVITY".
+
+```xml
+<uses-permission android:name=“com.example.myapp.permission.START_MAIN_ACTIVITY”/>
+```
 
 #### Static Analysis
 
@@ -33,12 +55,20 @@ Permissions should be checked if they are really need within the App. For exampl
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-
-During using the app while testing it, certain permissions might seem optional, but there might be valid reasons for them. Therefore, the identified permissions in the Manifest should be extracted and it should be verified with the developer(s) together if all permissions are needed.
+It is always recommended to run through the developer of the intention of every permission and removed those that are not needed.
 
 #####Custom Permissions
 
-**TODO** Test case to evaluate custom Permissions
+
+Apart from enforcing custom permissions via application manifest file, it can also be enforce programmatically. This is not recommended as this can lead to permission leaking and perform an unauthorized operation. This can be verified by inspecting whether if all defined custom permission were enforce in android manifest file.
+
+```java
+int canProcess = checkCallingOrSelfPermission(
+“com.example.perm.READ_INCOMING_MSG”);
+if (canProcess != PERMISSION_GRANTED)
+throw new SecurityException(); 
+
+``` 
 
 ##### Without Source Code
 

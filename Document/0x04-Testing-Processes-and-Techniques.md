@@ -305,10 +305,6 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ###### Obfuscation Requirements in the MASVS
 
-### References
-
-- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
-
 ## Additional Considerations
 
 ### Eliminating False Positives
@@ -335,6 +331,7 @@ Only if a user logs in by using the Android browser (instead of using the mobile
 
 ### References
 
+- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
 
 
 

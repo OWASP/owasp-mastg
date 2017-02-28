@@ -129,16 +129,16 @@ It’s also worth to know that files stored outside the application folder (inte
 
 ##### KeyChain and KeyStore
 
-Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
+Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information need to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
 
 * Identify keys and passwords in the App, e.g. entered by the users, sent by the endpoint, shipped within the App and how this sensitive data is processed locally.
 * Decide with the developers if this sensitive stored information locally is needed and if not, how it can be moved to the endpoint or completely deleted.
 
-The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
+The credo for saving data can be summarized quite easily: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
 
 This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The App might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information).
 
-This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify these information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from Apps that have a payment option in order to attack and abuse it.
+This vulnerability can have many consequences, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify this information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from Apps that have a payment option in order to attack and abuse it.
 
 
 #### Static Analysis
