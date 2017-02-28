@@ -297,7 +297,7 @@ Use the mobile app extensively so that all functionality is at least triggered o
 
 #### Remediation
 
-Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like **[ProGuard][45476f61]**, which is already included in Android Studio or **[DexGuard][7bd6e70d]** can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
+Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like **[ProGuard][45476f61]**, which is already included in Android Studio or **[DexGuard][7bd6e70d]** can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an Android application, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
 
 ```java
 -assumenosideeffects class android.util.Log
