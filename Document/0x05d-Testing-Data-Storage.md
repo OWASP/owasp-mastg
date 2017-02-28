@@ -134,7 +134,7 @@ Mobile operating systems offer different native functions to store sensitive inf
 * Identify keys and passwords in the App, e.g. entered by the users, sent by the endpoint, shipped within the App and how this sensitive data is processed locally.
 * Decide with the developers if this sensitive stored information locally is needed and if not, how it can be moved to the endpoint or completely deleted.
 
-The credo for saving data can be summarized quite easy: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
+The credo for saving data can be summarized quite easy: Public data should be available to everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
 
 This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The App might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information).
 
