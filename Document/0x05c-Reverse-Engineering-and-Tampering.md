@@ -266,15 +266,20 @@ TODO: DEX vs. OAT
 
 #### Debugging Android Apps
 
-Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer. 
+Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
 
 ##### Debugging Java Code
 
-JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries. 
+JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
 The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
-TOOD ... example & native debugging ...
+TOOD ... command line JDB & native debugging ...
+
+###### Debugging Using Decompiled Sources
+
+A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot.
+
 
 ##### Debugging Native Code
 
