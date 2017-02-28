@@ -129,7 +129,7 @@ It’s also worth to know that files stored outside the application folder (inte
 
 ##### KeyChain and KeyStore
 
-Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information needs to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve this information. The following tasks should be done when analysing an App:
+Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information need to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
 
 * Identify keys and passwords in the App, e.g. entered by the users, sent by the endpoint, shipped within the App and how this sensitive data is processed locally.
 * Decide with the developers if this sensitive stored information locally is needed and if not, how it can be moved to the endpoint or completely deleted.
