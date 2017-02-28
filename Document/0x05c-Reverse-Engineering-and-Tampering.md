@@ -228,6 +228,49 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
+##### Installing Frida
+
+To install Frida locally, simply use Pypi:
+
+~~~
+$ sudo pip install frida
+~~~
+
+Your Android device needs to be rooted to get Frida running. Download the frida-server binary from the Frida releases page []. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. Usually, Pypi will install the latest version of Frida, but if you are not sure, you can check with the Frida command line tool:
+
+~~~
+$ frida --version
+9.1.10
+$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
+~~~
+
+Copy frida-server to the device and run it:
+
+~~~
+$ adb push frida-server /data/local/tmp/
+$ adb shell "chmod 755 /data/local/tmp/frida-server"
+$ adb shell "su -c /data/local/tmp/frida-server &"
+~~~
+
+With frida-server running, you should now be able to get a list of running processes with the following command:
+
+~~~
+$ frida-ps -U
+  PID  Name
+-----  --------------------------------------------------------------
+  276  adbd
+  956  android.process.media
+  198  bridgemgrd
+ 1191  com.android.nfc
+ 1236  com.android.phone
+ 5353  com.android.settings
+  936  com.android.systemui
+ 7617  com.dbs.digi.reluat
+ 7645  com.dbs.id.dbsdigibank
+ 7600  com.dbs.sit1.dbsmbanking
+(...)
+~~~
+
 ##### Example: Bypassing Native Debugger Detection
 
 ```python
@@ -258,7 +301,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-One thing that's great about reversing Java byte
+For the most part, Java bytecode can be converted back into source code without issues. Many free Java decompilers are available for doing this.
 
 TODO: DEX vs. OAT
 
