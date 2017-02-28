@@ -137,6 +137,7 @@ Only permissions that are used within the app should be requested in the Android
 
 - [1] Android Permissions - https://developer.android.com/guide/topics/permissions/requesting.html
 - [2] Custom Permissions - https://developer.android.com/guide/topics/permissions/defining.html
+- [3] An In-Depth Introduction to the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf 
 
 
 ##### Tools
