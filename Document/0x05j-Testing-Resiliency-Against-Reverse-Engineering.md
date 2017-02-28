@@ -562,7 +562,8 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-[TODO]
+Application Obfuscation is the deliberate act of creating obfuscated code, by making source or machine code to be difficult for humans to understand. Obfuscated code will complicate reverse engineering and it is valuable for application that uses security-sensitive feature. Many Obfuscation does code shrinking to make APK as small as possible and the subject is well covered in other forums or Android Developer manual, hence we will only be focusing on code obfuscation. 
+
 
 ##### Simple Tricks
 
@@ -576,13 +577,13 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+Obfuscation can be identify easily by decompiling the code and examine if method and class names are gibberish. 
 
 ##### With Source Code
 
+
 ##### Without Source Code
+
 
 #### Dynamic Analysis
 
