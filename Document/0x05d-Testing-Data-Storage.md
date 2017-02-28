@@ -151,7 +151,7 @@ As already pointed out, there are several ways to store information within Andro
 * Check the source code for functions and API calls that are used for storing data:
   * Open the Java Files in an IDE or text editor of your choice or use grep on the command line to search for:
     * file permissions like:
-      * `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`. IPC files should not be created with permissions of `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE` unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory.
+      * `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`. IPC files should not be created with permissions of `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE` unless it is required as any app would be able to read or write the file even though it may be stored in the app private data directory.
     * Classes and functions like:
       * `SharedPreferences` Class (Storage of key-value pairs)
       * `FileOutPutStream` Class (Using Internal or External Storage)
