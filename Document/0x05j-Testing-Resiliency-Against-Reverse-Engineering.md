@@ -577,12 +577,65 @@ Application Obfuscation is the deliberate act of creating obfuscated code, by ma
 
 #### Static Analysis
 
-Obfuscation can be identify easily by decompiling the code and examine if method and class names are gibberish. 
+Obfuscation can be identify easily by decompiling the code and examine if method and class names are gibberish. It is also important to audit “guild.gradle” file and Proguard configuration to examine the obfuscation settings. 
 
 ##### With Source Code
 
+If source code is provided, build.gradle file can be check to see if obfuscation settings are set. From the example below, we can see that minifyEnabled and proguardFiles are set. It is common to see application exempts some class from obfuscation with "-keepclassmembers" and "-keep class", so it is important to audit proguard configuration file to see what class are exempted. The getDefaultProguardFile('proguard-android.txt') method gets the default ProGuard settings from the Android SDK tools/proguard/ folder and proguard-rules.pro is where you defined custom proguard rules. From our sample proguard-rules.pro file, we can see that many classes that extend common android classes are exempted, which should be done more granular on exempting specific classes or library.
+
+build.gradle
+```
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    ...
+}
+```
+
+proguard-rules.pro
+```
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+```
+
 
 ##### Without Source Code
+
+If source code is not provided, apk can be decompile to verify if codebase have been obfuscated. dex2jar can be used to convert dex code to jar file. Tools like JD-GUI can be used to check if class, method and variable name is human readable. 
+
+Sample obfuscated code block 
+```
+package com.a.a.a;
+
+import com.a.a.b.a;
+import java.util.List;
+
+class a$b
+  extends a
+{
+  public a$b(List paramList)
+  {
+    super(paramList);
+  }
+
+  public boolean areAllItemsEnabled()
+  {
+    return true;
+  }
+
+  public boolean isEnabled(int paramInt)
+  {
+    return true;
+  }
+}
+```
+
 
 
 #### Dynamic Analysis
