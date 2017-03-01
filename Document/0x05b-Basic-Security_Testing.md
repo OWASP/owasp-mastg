@@ -58,7 +58,14 @@ See also "Verifying the Variability of Tampering Responses" for further details.
 
 ##### Rooting your device
 
--- TODO : Maybe add a warning on rooting devices (brickification, additional security risks, warranty nullified, ...), disclaimer --
+###### Risks of rooting your device
+
+As a security tester, you may want to root your mobile device, all the more so as it can make performing some tests easier, when using a rooted device is not mandatory. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed: rooting
+* usually voids the device guarantee (always check the manufacturer policy before taking any action),
+* may "brick" the device, e.g. render it unoperable and unusable. 
+* brings additional security risks as built-in exploit mitigations are often removed. 
+
+** You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be help responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process. **
 
 ###### Which mobiles can be rooted?
 
