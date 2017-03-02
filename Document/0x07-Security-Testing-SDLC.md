@@ -48,10 +48,10 @@ Start by doing risk assessment
 
 --
 
-### Secure Software Testing
+### Security Testing in SDLC
 -- TODO :
 
-- Explain how it relates to and differs from Quality testing
+- Explain how it relates to and differs from Quality Assurance
 - Explain the different types of tests (unit, Verification, Validation, ....)
 
 --
