@@ -11,7 +11,7 @@
 
 - [Platform Overview](0x05a-Platform-Overview.md)
 - [Basic Security Testing on Android](0x05b-Basic-Security_Testing.md)
-- [Tampering and Reverse Engineering on Android](0x05b-Reverse-Engineering-and-Tampering.md)
+- [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)
 - [Testing Data Storage](0x05d-Testing-Data-Storage.md)
 - [Testing Cryptography](0x05e-Testing-Cryptography.md)
 - [Testing Authentication and Session Management](0x05f-Testing-Authentication.md)
