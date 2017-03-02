@@ -59,25 +59,6 @@ As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anyth
 
 Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [14] for more information.
 
-#### References
-
-(TODO)
-
-- [1] APKTool -
-- [2] JD -
-- [3] Eclipse
-- [4] IntelliJ IDEA -
-- [5] Smalidea -
-- [6] Radare2 -
-- [7] Angr -
-- [8] JEB -
-- [9] IDA Pro -
-- [10] DroidScope -
-- [11] DECAF - https://github.com/sycurelab/DECAF
-- [12] PANDA - https://github.com/moyix/panda/blob/master/docs/
-- [13] VxStripper -
-- [14] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
-
 ### Tampering and Instrumentation
 
 #### Patching and Re-Packaging
@@ -1020,22 +1001,22 @@ JQAE6ACMABNAAIIA
 
 ### References
 
-- [1] JD Project - http://jd.benow.ca/
-
-- [2] Eclipse - http://www.eclipse.org/
-
-- [3] IntelliJ IDEA - https://www.jetbrains.com/idea/
-
+- [1] APKTool -
+- [2] JD - http://jd.benow.ca/
+- [3] Eclipse
+- [4] IntelliJ IDEA - https://www.jetbrains.com/idea/
+- [5] Smalidea -
+- [6] Radare2 -
+- [7] Angr -
+- [8] JEB -
+- [9] IDA Pro -
+- [10] DroidScope -
+- [11] DECAF - https://github.com/sycurelab/DECAF
+- [12] PANDA - https://github.com/moyix/panda/blob/master/docs/
+- [13] VxStripper -
+- [14] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
 - [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
-
 - [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
-
 - [X] https://github.com/JesusFreke/smali
-
 - [X] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
-
-- [X] https://docs.angr.io/
-
-- [X] http://angr.io/api-doc/
-
 - [X] https://en.wikipedia.org/wiki/Concolic_testing
