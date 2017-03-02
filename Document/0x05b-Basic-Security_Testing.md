@@ -1,3 +1,4 @@
+Another security control available in mobile apps, is checking for so called tampering of the app. This means either checks are in place to prevent repackaging of the app, for example to deactivate SSL Pinning in a black box test or to dynamically patch the app while running with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
 ## Basic Security Testing on Android
 
 ### Setting Up Your Testing Environment
