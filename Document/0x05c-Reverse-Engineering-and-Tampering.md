@@ -10,46 +10,33 @@ You'll need a working knowledge about both the Java-based Android environment an
 
 ### Environment and Toolset
 
-At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also need a basic disassembler to translate Java bytecode into SMALI or Java code - APKTool [2] is the most popular free tool to do, plus you can use it to modify and re-assemble apps.
+At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also need a basic disassembler - APKTool [1] is the most popular free tool to do, plus you can use it to modify and re-assemble apps. It can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and applying changes to the Manifest.
 
-Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll discuss some of them below.
+Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
-(TODO)
+#### Building a Reverse Engineering Environment For Free
 
-- Androguard
-- ADB
-- DexDump
-- dex2jar
+With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD [2] is a free Java de-compiler that integrates with Eclipse [3] and IntelliJ IDEA [4]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
 
-#### Building a GUI-based Reverse Engineering Environment For Free
+If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device [5]. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
-With a little effort you can build a reasonable reverse engineering environment for free. JD [1] is a free Java de-compiler that integrates with Eclipse [2] and IntelliJ IDEA [3]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
-
-If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
-
-APKTool is a mandatory utility for dealing with APK archives. It can extract and disassemble resources directly from the APK archive, and can disassemble Java bytecode to SMALI. It also allows you to reassemble the APK package, which is useful for patching and making changes to the Manifest.
+More elaborate tasks such as program analysis and automated de-obfuscation can be achieved with open source reverse engineering frameworks such as Radare2 [6] and Angr[7]. You'll find examples usages for many of these free tools and frameworks throughout the guide.
 
 #### Commercial Tools
 
 ###### JEB
 
- JEB, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
+JEB [8], a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
 
 ###### IDA Pro
 
-IDA Pro understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
-
-##### Reverse Engineering Frameworks
-
-###### Radare2
-
-###### Angr
+IDA Pro [9] understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
 
 ##### Emulation/Introspection-Based
 
 ###### DroidScope
 
-DroidScope [3] - an extension to the DECAF dynamic analysis framework - is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
+DroidScope [10] - an extension to the DECAF dynamic analysis framework [11] - is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
 
 DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls or Java method calls.
 
@@ -57,27 +44,39 @@ All of this makes it possible to build tracers that are practically transparent 
 
 ###### PANDA
 
-PANDA is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
+PANDA [12] is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
 
-PANDA comes with some premade plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository14 and build PANDA as follows:MM
+PANDA comes with some pre-made plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository and build PANDA as follows:
 
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo [4].
+~~~
+$ cd qemu
+$ ./configure --target-list=arm-softmmu --enable-android $ make
+~~~
+
+As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo.
 
 ##### VxStripper
 
-Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [5] for more information.
+Another very useful tool built on QEMU is VxStripper by Sébastien Josse. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [14] for more information.
 
 #### References
 
 (TODO)
 
-- [1]
-- [2]
-- [3] https://github.com/sycurelab/DECAF
-- [4] https://github.com/moyix/panda/blob/master/docs/
-- [5] Malware Dynamic Recompilation - http://ieeexplore.ieee.org/document/6759227/
-- [5]
-- [6]
+- [1] APKTool -
+- [2] JD -
+- [3] Eclipse
+- [4] IntelliJ IDEA -
+- [5] Smalidea -
+- [6] Radare2 -
+- [7] Angr -
+- [8] JEB -
+- [9] IDA Pro -
+- [10] DroidScope -
+- [11] DECAF - https://github.com/sycurelab/DECAF
+- [12] PANDA - https://github.com/moyix/panda/blob/master/docs/
+- [13] VxStripper -
+- [14] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
 
 ### Tampering and Instrumentation
 
