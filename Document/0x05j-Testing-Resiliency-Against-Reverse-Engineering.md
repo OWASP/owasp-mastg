@@ -200,7 +200,7 @@ Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM,
 
 Check the original or decompiled source code for the presence of root detection mechanisms, and compare them against the following criteria:
 
-To qualify as "advanced", the scheme should not be easily bypassable using widely available tools such as RootCloak. Effective root detection should fulfill the following criteria:
+To qualify as *advanced*, the root detection scheme should be constructed in a way so that it cannot be bypassed with a simple patch or a commonly available too (e.g. RootCloak). Effective root detection should fulfill the following criteria:
 
 - Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
 - The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);

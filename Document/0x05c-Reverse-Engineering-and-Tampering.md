@@ -228,6 +228,49 @@ Here are some more APIs FRIDA offers on Android:
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
+##### Installing Frida
+
+To install Frida locally, simply use Pypi:
+
+~~~
+$ sudo pip install frida
+~~~
+
+Your Android device needs to be rooted to get Frida running. Download the frida-server binary from the Frida releases page []. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. Usually, Pypi will install the latest version of Frida, but if you are not sure, you can check with the Frida command line tool:
+
+~~~
+$ frida --version
+9.1.10
+$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
+~~~
+
+Copy frida-server to the device and run it:
+
+~~~
+$ adb push frida-server /data/local/tmp/
+$ adb shell "chmod 755 /data/local/tmp/frida-server"
+$ adb shell "su -c /data/local/tmp/frida-server &"
+~~~
+
+With frida-server running, you should now be able to get a list of running processes with the following command:
+
+~~~
+$ frida-ps -U
+  PID  Name
+-----  --------------------------------------------------------------
+  276  adbd
+  956  android.process.media
+  198  bridgemgrd
+ 1191  com.android.nfc
+ 1236  com.android.phone
+ 5353  com.android.settings
+  936  com.android.systemui
+ 7617  com.dbs.digi.reluat
+ 7645  com.dbs.id.dbsdigibank
+ 7600  com.dbs.sit1.dbsmbanking
+(...)
+~~~
+
 ##### Example: Bypassing Native Debugger Detection
 
 ```python
@@ -258,7 +301,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-One thing that's great about reversing Java byte
+For the most part, Java bytecode can be converted back into source code without issues. Many free Java decompilers are available for doing this.
 
 TODO: DEX vs. OAT
 
@@ -266,15 +309,20 @@ TODO: DEX vs. OAT
 
 #### Debugging Android Apps
 
-Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer. 
+Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
 
 ##### Debugging Java Code
 
-JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries. 
+JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
 The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
-TOOD ... example & native debugging ...
+TOOD ... command line JDB & native debugging ...
+
+###### Debugging Using Decompiled Sources
+
+A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot.
+
 
 ##### Debugging Native Code
 

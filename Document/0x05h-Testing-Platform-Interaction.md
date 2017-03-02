@@ -137,6 +137,7 @@ Only permissions that are used within the app should be requested in the Android
 
 - [1] Android Permissions - https://developer.android.com/guide/topics/permissions/requesting.html
 - [2] Custom Permissions - https://developer.android.com/guide/topics/permissions/defining.html
+- [3] An In-Depth Introduction to the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf 
 
 
 ##### Tools
@@ -688,22 +689,29 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 #### Overview
 
-Check <sup>[1]</sup>
-
+An object and it's data can be represented as a sequence of bytes, which is done in Java by using object serialization. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to sign and encrypt serialized data, but if the source code is available this is always reversible.  
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
 ##### With Source Code
+
+Search the source code for the following keywords:
+
+* import java.io.Serializable
+* implements Serializable
+
+Check if serialized data is stored temporarily or permanently within the app's data directory or external storage and if it contains sensitive data.
+
+**https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager**
+
 
 ##### Without Source Code
 
+**TODO**
+
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+**TODO**
 
 #### Remediation
 
@@ -784,7 +792,7 @@ A debug build with deactivated root detection should be provided in a white box 
 
 In case of a black box test an implemented root detection can be challenging, if for example the app is immediately terminated because of a rooted phone. Ideally a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection need to be defeated first in that case. To identify the implemented root detection logic without source code in a dynamic scan can be fairly hard.
 
-By using the Xposed module RootCloak<sup></sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+By using the Xposed module `RootCloak`<sup>[2]</sup> it is possible to run apps that detect root without disabling root. Nevertheless if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
 
 Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
 
@@ -809,8 +817,8 @@ To implement root detection within an Android app, libraries can be used like Ro
 - CWE-XXX - Title
 
 ##### Info
-- [1] RootBeet - https://github.com/scottyab/rootbeer
+- [1] RootBeer - https://github.com/scottyab/rootbeer
 
 ##### Tools
 
-* Tool - Link
+* [2] RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
