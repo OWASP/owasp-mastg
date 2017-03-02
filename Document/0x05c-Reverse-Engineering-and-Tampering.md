@@ -50,7 +50,7 @@ PANDA comes with some pre-made plugins, such as a stringsearch tool and a syscal
 
 ~~~
 $ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android $ make
+$ ./configure --target-list=arm-softmmu --enable-android $ makee
 ~~~
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo.
@@ -59,7 +59,11 @@ As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anyth
 
 Another very useful tool built on QEMU is VxStripper by Sébastien Josse [14]. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [15] for more information.
 
-### Tampering and Instrumentation
+### Tampering and Runtime Instrumentation
+
+First, we'll look at some ways of modifying and instrumenting mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior - usually in a way that's to our advantage. For example, it could be desirable to deactivate SSL pinning or deactivate binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term is used rather loosely to refer to all kinds runtime manipulation, including overriding methods to change behavior.
+
+Tampering and instrumentation techniques are useful for both security testing and reverse engineering.
 
 #### Patching and Re-Packaging
 
@@ -1001,7 +1005,7 @@ JQAE6ACMABNAAIIA
 
 ### References
 
-- [1] Android SDK - 
+- [1] Android SDK -
 - [2] APKTool -
 - [3] JD - http://jd.benow.ca/
 - [4] Eclipse
