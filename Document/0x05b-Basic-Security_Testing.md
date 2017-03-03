@@ -71,10 +71,9 @@ As a security tester, you may want to root your mobile device: while some tests 
 
 Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
 
-The first step in rooting a mobile is to unlock its Boot Loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the Boot Loader is unlocked and because Google provides many tools to support the root itself to work with rooted devices. Those mobiles belong to a commercial range now called Pixel (the prior name was Nexus).
+The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and because Google provides many tools to support the root itself to work with rooted devices. Those mobiles belong to a commercial range are now rebrand as Pixel (the prior name was Nexus). A curated list of guide on rooting devices from all major brands can be found xda forums<sup>[21]</sup>.
 
--- TODO : Boot Process Description --
--- TODO : Boot Loaders and ROMs--
+See also "Android Platform Overview" for further details.
 
 ##### Restrictions when using a non-rooted device
 
@@ -114,22 +113,22 @@ Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]<
 
 #### Software
 
-As for Web Application testing, there are several kinds of testing tools when referring to Mobile testing, these categories include:
-* **proxies:** Useful to intercept network traffic between a mobile and a backend server for testing Authorization, Session Management etc.
-* **decompilers and debuggers:** To retrieve code, execute the application and test its behaviour dynamically, to change its flow, manipulate the memory of the mobile, etc.
-* **vulnerability scanners:** To test for common errors in an automated way in the code of the application itself
+The context of mobile security testing is a conjunction of multiple different tier of components - Application container, communications and back-end Servers. These three high-level attack surface will be the main attack surface for a mobile security testing.   
 
+* **Application container:**  Insecure data storage, poor resiliency against reverse engineering and etc.
+* **Communication:** Usage of insecure or unencrypted communication channel, missing certification pinning and etc.
+* **Back-end Servers:** flawed authentication or security logic, vulnerable server side functions and etc.
 
-Examples of most common tools include:
-* Proxies: most intercepting proxies are free, eventually with a paid version. The most famous are Zed Attack Proxy (ZAP), Fiddler and Burp Suite (including a paid version, with more features than the free one).
-* Decompilers: common ones are Dex2jar, jad and apktool.
-* Debuggers: popular ones include binwalk and IDA.
-* A popular testing framework for Android that includes many tools to test different aspects of an application is Drozer.
+There are various tool that can be leverage to conduct an effective mobile security testing and like any tool of choice it all depends on the matter of preference and budget. Some basic usage of tools will be covered in the following section and an extensive list of tools can be found in "Testing Tools" page.
 
-Most of the tools tools can be found in an integrated environment often used for security testing, called Kali. For instance, Burp Suite (free version), Zed Attack proxy, Dex2jar, jad, apktool and binwalk come natively with Kali. As it runs on Linux, additional tools can be easily installed on Kali with its package manager. Also, Kali natively runs languages like Python; others like Ruby and Perl can be quickly installed.
+#####Proxy
+A proxy is the bread and butter to any form of security testing that involves a client-server application and that includes mobile application. It can be use to intercept network traffic between a mobile and a backend server for testing Authorization, Session Management etc. Some popular proxy tools for security testings are Burp Suite, OWASP ZAP and etc.
 
--- TODO: Link to testing tools section
+#####Reverse Engineering and Static Analysis
+There are many reason to reverse engineer an application, to understand application security logic, to identify application secret and etc. More detail coverage on reverse engineering Android application are covered in "Tampering and Reverse Engineering on Android" page. Some popular tools will be apktool, enjarify and etc.
 
+#####Dynamic and run time analysis
+To retrieve code, execute the application and test its behaviour dynamically, to change its flow, manipulate the memory of the mobile, etc. Partial information about dynamic and run time analysis will be covered in "Tampering and Reverse Engineering on Android". Some popular tools will be frida, Cydia Substrate, drozer and etc.
 
 ### Attack Methodology
 -- TODO : Cf testing methodologies from CEH, ... : map attack surface (Local and Remote) through Passive and Active Reconnaissance, Scanning, Gaining Access, Maintaining Access, Covering Tracks. As this is generic and common to iOS, may be part of the parent chapter --
@@ -225,3 +224,4 @@ It is also possible to simply create an AVD and use this for testing.
 - [18] QARK - https://github.com/linkedin/qark/
 - [19] Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
 - [20] JAADAS - https://github.com/flankerhqd/JAADAS
+- [21] Guide to root mobile devices - https://www.xda-developers.com/root/
