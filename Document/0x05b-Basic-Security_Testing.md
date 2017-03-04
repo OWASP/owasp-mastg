@@ -84,7 +84,7 @@ Nevertheless, this highly depends on the restrictions and settings made in the a
 
 #### Emulator
 
-##### Rooting an Android Virtual Device (AVD)
+##### Connecting to an Android Virtual Device (AVD) as Root
 
 An Android Virtual Device (AVD) can be created by using the AVD manager, which is available within Android Studio<sup>[5]</sup>. The AVD manager can also be started separately from the command line by using the `android` command in the tools directory of the Android SDK:
 
