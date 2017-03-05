@@ -58,7 +58,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 - N/A
 
-## [UnCrackable for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_01/)
+## [UnCrackable for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_02/)
 
 This app holds a secret inside - and this time it won't be tampered with!
 
