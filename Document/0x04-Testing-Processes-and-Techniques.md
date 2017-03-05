@@ -2,11 +2,6 @@
 
 ## Mobile Security Testing Methodology
 
-### References
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
 ## Analysis Techniques
 
 ### Static Analysis
@@ -38,11 +33,6 @@ Steps in fuzzing
 [OWASP Fuzzing guide](https://www.owasp.org/index.php/Fuzzing)
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
-
-### References
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ## Tampering and Reverse Engineering
 
@@ -160,10 +150,6 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### Domain-Specific De-Obfuscation Attacks
 
-### References
-
-- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
-
 ## Assessing the Effectiveness of Anti-Tampering and Obfuscation
 
 In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
@@ -180,7 +166,7 @@ Effective anti-reversing schemes combine a variety of anti-tampering defenses an
 
 In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing defenses against reverse engineering requires an extended skillset: The tester must be able to deal with advanced anti-reversing tricks and obfuscation techniques. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize in this. We also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
 
-The OWASP Mobile Application Verification Standard defines "Resiliency Against Reverse Engineering and Tampering" as follows [1]:
+The OWASP Mobile Application Verification Standard defines "Resiliency Against Reverse Engineering and Tampering" as follows [2]:
 
 "The app has state-of-the-art security, and is also resilient against specific, clearly defined client-side attacks, such as tampering, modding, or reverse engineering to extract sensitive code or data. Such an app either leverages hardware security features or sufficiently strong and verifiable software protection techniques. MASVS-R is applicable to apps that handle highly sensitive data and may serve as a means of protecting intellectual property or tamper-proofing an app."
 
@@ -191,7 +177,7 @@ Resiliency testing is the process of verifying that the above is true. It can be
 
 #### Assessing the Threat Model and Software Protection Architecture
 
-The software protection scheme must be designed to protect against clearly defined threats - otherwise it is no more than a random collection of anti-debugging tricks. The OWASP Reverse Engineering and Code Modification Prevention Project [1] lists the following potential threats associated with reverse engineering and tampering:
+The software protection scheme must be designed to protect against clearly defined threats - otherwise it is no more than a random collection of anti-debugging tricks. The OWASP Reverse Engineering and Code Modification Prevention Project [2] lists the following potential threats associated with reverse engineering and tampering:
 
 - Spoofing Identity - Attackers may attempt to modify the mobile application code on a victim’s device to force the application to transmit a user’s authentication credentials (username and password) to a third party malicious site. Hence, the attacker can masquerade as the user in future transactions;
 
@@ -319,7 +305,10 @@ Only if a user logs in by using the Android browser (instead of using the mobile
 
 ### References
 
-- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
+- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+- [2] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
+- Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- Another Informational Article - http://www.securityfans.com/informational_article.html
 
 
 
