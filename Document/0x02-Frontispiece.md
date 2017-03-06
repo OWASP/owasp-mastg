@@ -15,7 +15,7 @@ Copyright © 2017 The OWASP Foundation. This document is released under the Crea
 
 ## Acknowledgements
 
-Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [README](../README.md#user-content-authoring-credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
+Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
 
 | Project Leaders / Authors | Co-Authors | Top Contributors | Contributors | Reviewers |
 | --- | --- | --- | --- | --- |
