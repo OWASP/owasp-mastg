@@ -63,11 +63,18 @@ Another very useful tool built on QEMU is VxStripper by Sébastien Josse [14]. V
 
 First, we'll look at some ways of modifying and instrumenting mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior - usually in a way that's to our advantage. For example, it could be desirable to deactivate SSL pinning or deactivate binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term is used rather loosely to refer to all kinds runtime manipulation, including overriding methods to change behavior.
 
-Tampering and instrumentation techniques are useful for both security testing and reverse engineering.
-
 #### Patching and Re-Packaging
 
+Making small changes to the app Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular pop up regularly:
+
+1. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest;
+2. You cannot intercept HTTPS traffic with a proxy because the app empoys SSL pinning.
+
+In most cases, both issues can be fixed by making minor changes and re-packaging and re-signing the app (the exception are apps that run additional integrity checks beyond default Android code signing - in theses cases, you also have to patch out those additional checks as well).
+
 ##### Example 1: Repackaging an App for Debugging
+
+In our first example, we'll modify the android:debuggable flag to enable debugging of a release app. You can reproduce this with any app downloaded from the Play Store.
 
 1. Use apktool to restore AndroidManifest.xml:
 
@@ -285,7 +292,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-For the most part, Java bytecode can be converted back into source code without issues. Many free Java decompilers are available for doing this.
+Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [1] in the following examples, so download it if you haven't already.
 
 TODO: DEX vs. OAT
 
@@ -306,7 +313,6 @@ TOOD ... command line JDB & native debugging ...
 ###### Debugging Using Decompiled Sources
 
 A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot.
-
 
 ##### Debugging Native Code
 
@@ -1020,6 +1026,7 @@ JQAE6ACMABNAAIIA
 - [13] PANDA - https://github.com/moyix/panda/blob/master/docs/
 - [14] VxStripper -
 - [15] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
+- [16] UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
 - [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
 - [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 - [X] https://github.com/JesusFreke/smali
