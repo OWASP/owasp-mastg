@@ -1,6 +1,6 @@
 # Android
 
-## [UnCrackable for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level1/)
+## [UnCrackable for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01/)
 
 This app holds a secret inside. Can you find it?
 
@@ -11,7 +11,7 @@ This app holds a secret inside. Can you find it?
 
 - N/A
 
-## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level2/)
+## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
 A shiny new app with no keygen available.
 
