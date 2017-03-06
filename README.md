@@ -24,7 +24,7 @@ You can also suggest improvements by creating an [issue](https://github.com/OWAS
 
 ## Authoring Credit
 
-Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names sorted by the number of lines added. Authors are added as follows:
+Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names is sorted by the number of lines added. Authors are categorized as follows:
 
 - Project Leader / Author: Manage development of the guide continuosly and write a large amount of content.
 - Co-Author: Consistently contribute quality content, [at least 500 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
