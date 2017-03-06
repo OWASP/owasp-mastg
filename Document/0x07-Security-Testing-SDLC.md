@@ -40,13 +40,23 @@ Start by doing risk assessment
 
 ### SDLC Overview
 
--- TODO :
+#### General description of SDLC
 
-- SDLC complements classical software development lifecycles and can be integrated in all of them
-- SDLC diagram and description
-- Quick description of all phases
+Whatever the development methodology that is being used, a SDLC always follows the same process:
+* at the beginning of a project or a development cycle, at the same time when functional requirements are gathered, **Security Requirements** are listed and clarified. As use cases are built, **Abuse Cases** are added. Also, **Security Risks** are analysed, as other risks of the project (financial, marketing, industrial, ...). Teams (including development teams) may be trained on security if needed (Secure Coding, ...);
+* then, as architecture and design are ongoing, a foundational artefact must be performed: **Threat Modeling**. Based on it, **Security Architecture** is defined (both on the software and hardware sides). **Secure Coding rules** are established and the list of **Security tools** that will be used is created. Also, the strategy for **Security testing** is clarified;
+* the next step is to develop software, including **Code Reviews** (usually with peers), **Static Analysis** with automated tools and **Unit Tests** dedicated to security;
+* then comes the long-awaited moment to perform tests on released codes: **Penetration Testing** ("Pentests"), using both manual and automated techniques; 
+* and finally, after software has been **Accredited** by all stakeholders, it can be transitioned to Operation teams and safely put in Production. 
 
---
+The picture below shows all the phases with the different artefacts:
+-- TODO : Add a picture of a SDLC diagram that clarifies the description above --
+
+Based on the risks of the project, some artefacts may be simplified (or even skipped) while others may be added (formal intermediary approvals, documentation of certain points, ...). **Always keep in mind a SDLC is meant to bring risk reduction to software development and is a framework that helps put in place controls that will reduce those risks to an acceptable level. ** While this is a generic description of SDLC, always tailor this framework to the needs of your projects.
+
+#### Diving into phases and artefacts
+
+-- TODO :  Quick description of all phases (what? when? who? ...) --
 
 ### Security Testing in the SDLC
 -- TODO :
