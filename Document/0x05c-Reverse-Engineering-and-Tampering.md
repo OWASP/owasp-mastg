@@ -405,7 +405,7 @@ Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to prov
 
 Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
-##### Preparing a development environment
+##### Preparing a Development Environment
 
 To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
 
@@ -619,9 +619,12 @@ This is the only memory address we need for writing our kernel module - everythi
 
 In this howto, we're going to use a Kernel module to hide a file. Let's create a file on the device so we can hide it later:
 
+```bash
 $ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
 $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
+```bash
+
 Finally it's time to write the kernel module. For file hiding purposes, we'll need to hook one of the system calls used to open (or check for the existence of) files. Actually, there many of those - open, openat, access, accessat, facessat, stat, fstat, and more. For now, we'll only hook the openat system call - this is the syscall used by the "/bin/cat" program when accessing a file, so it should be servicable enough for a demonstration.
 
 You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
