@@ -1,6 +1,6 @@
 # Appendix
 
-## A brief history of software development and SDLC
+## Security Testing in the Software Development Lifecycle
 
 The history of software development is not that old after all, and it is easy to see that, rapidly, teams have stopped developing programs without any framework: we have all experienced the fact that, as the number of lines of code grow, a minimal set of rules are needed in order to keep work under control, meet deadlines, quality and budgets. 
 
@@ -12,8 +12,6 @@ Originally, security was not part of software development. It was seen as an aft
 
 The way to incorporate security during software development is to put in place a SDLC (Software Development Life Cycle). A SDLC does not depend on any methodology, and it is possible incorporate one in Waterfall or Agile: no excuse not to use one!
 This chapter will focus on Agile and SDLC, in particular on the DevOps world. The reader will find below details on state-of-the-art ways to develop and deliver secure software in a fast-paced and collaborative manner that promotes autonomy and automation.
-
-## Security Testing in the Software Development Lifecycle
 
 ### Agile and DevOps
 
