@@ -1,5 +1,18 @@
 # Appendix
 
+## A brief history of software development and SDLC
+
+The history of software development is not that old after all, and it is easy to see that, rapidly, teams have stopped developing programs without any framework: we have all experienced the fact that, as the number of lines of code grow, a minimal set of rules are needed in order to keep work under control, meet deadlines, quality and budgets. 
+
+In the past, the most widely adopted methodologies were from the "Waterfall" family: development was done from a starting point to a final one, going through several steps, each of them happening one after the other in a predefined sequence. In case something was wrong during a given phase and something had to be changed in a former phase, it was possible to go back only one step backward. This was a serious drawback of Waterfall methodologies. Even if they had strong positive points (bring structure, clarify where to put effort, clear and easy to understand, ...), they also had negative ones (creation of silos, slow, specialized teams, ...). 
+
+As time was passing and software development was maturing, also competition was getting stronger and stronger, and a need to react faster to market changes while creating software products with smaller budgets rose. The idea of having fewer structure with smaller teams collaborating together, breaking silos through the organization from marketing to production, became popular. The "Agile" concept was created (well known examples of Agile implementations are Scrum, XP and RAD), which was enabling more autonomous teams to work together in a faster manner.
+
+Originally, security was not part of software development. It was seen as an afterthought, and was performed by Operation teams at the network level: those teams had to find ways to compensate for poor security in software programs! However, while this was possible when software programs were located inside a perimeter, the concept became obsolete as new ways to consume software emerged with Web and Mobile technologies. Nowadays, security has to be baked **inside** software as it is often very hard in this new paradigm to compensate for existing vulnerabilities.
+
+The way to incorporate security during software development is to put in place a SDLC (Software Development Life Cycle). A SDLC does not depend on any methodology, and it is possible incorporate one in Waterfall or Agile: no excuse not to use one!
+This chapter will focus on Agile and SDLC, in particular on the DevOps world. The reader will find below details on state-of-the-art ways to develop and deliver secure software in a fast-paced and collaborative manner that promotes autonomy and automation.
+
 ## Security Testing in the Software Development Lifecycle
 
 ### Agile and DevOps
