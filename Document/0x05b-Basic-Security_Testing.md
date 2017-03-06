@@ -2,17 +2,17 @@
 
 ### Setting Up Your Testing Environment
 
-When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the app. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also root detection and other countermeasures implemented within an app can lead to significant extra work just to be able to finally test the app. Either way, the testing team responsible for the Android assessment need to work together with the app developer(s) and operation team in order to find a proper solution for a working testing environment.
+When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the app. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also, root detection and other countermeasures implemented within an app can lead to significant extra work just to be able to finally test the app. Either way, the testing team responsible for the Android assessment need to work together with the app developer(s) and operation team in order to find a proper solution for a working testing environment.
 
 This section will give an overview of different methods on how an Android app can be tested and will illustrate also its limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
 
 #### Preparation
 
-The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented, that will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
-During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed and the same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
+During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
-This approach need of course to align with the scope of the engagement and if it's a black box or white box test (Link to section in MSTG describing Black and White Box). For a white box test requesting for a production and debug build will help to be able to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
+This approach needs of course to align with the scope of the engagement and if it's a black box or white box test (**#TODO**: Link to section in MSTG describing Black and White Box). For a white box test, requesting for a production and debug build will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
 
 Either way, the following items should be discussed with the company developing the mobile app and it should be decided if the implemented security controls can be adjusted to get the best out of the testing exercise.  
 
@@ -20,15 +20,15 @@ Either way, the following items should be discussed with the company developing 
 
 SSL Pinning is already a strong mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
 
-For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning need to be done manually and can become time consuming.
+For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
 * Dynamical Patching while running the App, by using Frida<sup>[9] [13]</sup> or ADBI<sup>[10]</sup>
-* Disassembling the APK, identify the SSL Pinning logic in smali code and patch it and reassemble the APK<sup>[7] [8]</sup>
+* Disassembling the APK, identify the SSL Pinning logic in smali code, patch it and reassemble the APK<sup>[7] [22]</sup>
 
-Once successful the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
+Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
-See also test case "Testing Custom Certificate Stores and SSL Pinning" for further details.
+See also test case "Testing Custom Certificate Stores and SSL Pinning" **(#TODO_add_link)** for further details.
 
 ##### Debug build
 
@@ -36,23 +36,23 @@ A debug build has several benefits, when provided during a (white box) test that
 * Debugger can be attached to the running App
 * Debug log files of the App are available
 
-**(..TODO..)**
+**(..#TODO..)**
 
-See also test case "Testing If the app is Debuggable" for further details.
+See also test case "Testing If the app is Debuggable" **(#TODO_add_link)** for further details.
 
 ##### Root detection
 
-To implement root detection on Android, libraries can be used like RootBeer<sup>[14]</sup> or custom checks are added to the app to verify if the device is rooted or not. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
+To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" **(#TODO_add_link)** and "Testing Advanced Root Detection" for further details.
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
 
 ##### Tampering
 
-Another security control available in mobile apps, is checking for so called tampering of the app. This means either checks are in place to prevent repackaging of the app, for example to deactivate SSL Pinning in a black box test or to dynamically patch the app while running with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
+Another security control available in mobile apps, is checking if the app has been tampered. This means that checks are in place to prevent repackaging the app. For example: to deactivate SSL Pinning in a black box test or to dynamically patch the app while running with frameworks like Frida. Both ways of tampering can be detected and might forbid to run the app if tampering is detected.
 
 To be able to efficiently test during a white box test, a debug build with disabled tampering checks should be provided.
 
-See also "Verifying the Variability of Tampering Responses" for further details.
+See also "Verifying the Variability of Tampering Responses" **(#TODO_add_link)** for further details.
 
 #### Hardware
 
@@ -62,16 +62,16 @@ See also "Verifying the Variability of Tampering Responses" for further details.
 
 As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed: rooting
 * usually voids the device guarantee (always check the manufacturer policy before taking any action),
-* may "brick" the device, e.g. render it unoperable and unusable. 
-* brings additional security risks as built-in exploit mitigations are often removed. 
+* may "brick" the device, e.g. render it unoperable and unusable.
+* brings additional security risks as built-in exploit mitigations are often removed.
 
 ** You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be help responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process. **
 
 ###### Which mobiles can be rooted?
 
-Virtually, any Android mobile can be rooted: basically, commercial versions of Android are, at the kernel level, evolutions of Linux optimized for the mobile world, where some features are removed or disabled, like the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding for instance this feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
+Virtually, any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level, evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
 
-The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and because Google provides many tools to support the root itself to work with rooted devices. Those mobiles belong to a commercial range are now rebrand as Pixel (the prior name was Nexus). A curated list of guide on rooting devices from all major brands can be found xda forums<sup>[21]</sup>.
+The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found xda forums<sup>[21]</sup>.
 
 See also "Android Platform Overview" for further details.
 
@@ -211,7 +211,6 @@ It is also possible to simply create an AVD and use this for testing.
 - [6] GPS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#geo
 - [7] SMS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#sms
 - [8] Mobile Security Certificate Pinning -  http://blog.dewhurstsecurity.com/2015/11/10/mobile-security-certificate-pining.html
-- [8] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
 - [9] Frida - https://www.frida.re/docs/android/
 - [10] ADBI - https://github.com/crmulliner/adbi
 - [11] SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
@@ -225,3 +224,4 @@ It is also possible to simply create an AVD and use this for testing.
 - [19] Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
 - [20] JAADAS - https://github.com/flankerhqd/JAADAS
 - [21] Guide to root mobile devices - https://www.xda-developers.com/root/
+- [22] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
