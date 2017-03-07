@@ -2,15 +2,45 @@
 
 ### Setting Up Your Testing Environment
 
+### Requirements for iOS testing lab 
+Bare minimum is:
+- Laptop with admin rights, VirtualBox with Kali Linux
+- WiFi network with client to client traffic permitted (multiplexing through USB is also possible) 
+- Hopper Disassembler 
+- At least one jailbroken iOS device (with desired iOS version)
+- Burp 
+
+Recommended is:
+- Macbook with XCode and Developer's Profile
+- WiFi network as previously
+- Hopper Disassembler or IDA Pro with Hex Rays
+- At least two iOS devices, one jailbroken, second non-jailbroken
+- Burp
+
 #### Jailbreaking iOS
 
-In the iOS world, jailbreaking means disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
+In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
+There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is an actual tool that provides 
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037).
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037). A great book on iOS Security Internals has been written and published by  Jonathan Levin. This won't be very useful for iOS application security testing, but will definitely help dive into the world of iOS exploitation and jailbreak analysis [11]
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-(... TODO: Jailbreaking How-to ...)
+Jailbreaking methods vary across iOS versions. Best choice is to check if a [public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+
+**Important** caveat regarding jailbreaking iOS: contrary to Android, you **can't** downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
+The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
+
+### Typical iOS Application Test Workflow
+Typical workflow for iOS Application test is following:
+* Obtain IPA file
+* Bypass jailbreak detection (if present)
+* Bypass certificate pinning (if present)
+* Inspect HTTP(S) traffic - usual web app test
+* Abuse application logic by runtime manipulation
+* Check for local data storage (caches, binary cookies, plists, databases)
+* Check for client-specific bugs, e.g. SQLi, XSS
+* Other checks like: logging to ASL with NSLog, application compile options, application screenshots, no app backgrounding
 
 ### Static Analysis
 
@@ -50,33 +80,68 @@ If the app is available on itunes, you are able to recover the ipa on MacOS with
 
 #### Dumping Decrypted Executables
 
-On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Stefan Esser's dumpdecrypted tool [2].
-
-Download and compile dumpdecrypted as follows (requires XCode command line tools):
-
+On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
 ~~~
-$ git clone https://github.com/stefanesser/dumpdecrypted
-$ cd dumpdecrypted
-$ make
+# Clutch -i 
 ~~~
 
-This should create dumpdecrypted.dylib. Copy it to the /usr/lib directory on your device via SSH:
-
+** NOTE: ** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
 ~~~
-$ scp dumpdecrypted.dylib root@iphone:/usr/lib/
+# otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
+~~~
+If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
+
+#### Binary Security Features
+Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
+* **ARC** - Automatic Reference Counting - memory management feature
+  * adds retain and release messages when required
+* **Stack Canary** - helps preventing buffer overflow attacks
+* **PIE** - Position Independent Executable - enables full ASLR for binary
+
+Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
+* PIE:
+~~~
+$ unzip DamnVulnerableiOSApp.ipa
+$ cd Payload/DamnVulnerableIOSApp.app
+$ otool -hv DamnVulnerableIOSApp
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
+WEAK_DEFINES BINDS_TO_WEAK PIE
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
+WEAK_DEFINES BINDS_TO_WEAK PIE
 ~~~
 
-Then, connect to the device and run the main executable of the target app while setting the DYLD_INSERT_LIBRARIES environment variable.
-
+* Stack Canary:
 ~~~
-$ ssh root@iphone
-iPhone:~ root# cd /usr/lib
-iPhone:/usr/lib root#
-iPhone:/usr/lib root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib "/var/mobile/Containers/Bundle/Application/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE/Target.app/Target"
+$ otool -Iv DamnVulnerableIOSApp | grep stack
+0x0046040c 83177 ___stack_chk_fail
+0x0046100c 83521 _sigaltstack
+0x004fc010 83178 ___stack_chk_guard
+0x004fe5c8 83177 ___stack_chk_fail
+0x004fe8c8 83521 _sigaltstack
+0x00000001004b3fd8 83077 ___stack_chk_fail
+0x00000001004b4890 83414 _sigaltstack
+0x0000000100590cf0 83078 ___stack_chk_guard
+0x00000001005937f8 83077 ___stack_chk_fail
+0x0000000100593dc8 83414 _sigaltstack
+~~~ 
+
+* Automatic Reference Counting:
 ~~~
-
-The decrypted binary is saved in the current working directory.
-
+$ otool -Iv DamnVulnerableIOSApp | grep release
+0x0045b7dc 83156 ___cxa_guard_release
+0x0045fd5c 83414 _objc_autorelease
+0x0045fd6c 83415 _objc_autoreleasePoolPop
+0x0045fd7c 83416 _objc_autoreleasePoolPush
+0x0045fd8c 83417 _objc_autoreleaseReturnValue
+0x0045ff0c 83441 _objc_release
+[SNIP]
+~~~
 ### Dynamic Analysis
 
 #### On Jailbroken devices
@@ -233,7 +298,7 @@ If something goes wrong (which it usually does), mismatches between the provisio
 ### References
 
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
-* [2] Dumpdecrypted - https://github.com/stefanesser/dumpdecrypted
+* [2] Clutch - https://github.com/KJCracks/Clutch
 * [3] Optool - https://github.com/alexzielenski/optool
 * [4] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
 * [5] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
@@ -241,5 +306,7 @@ If something goes wrong (which it usually does), mismatches between the provisio
 * [7] Maintaining Certificates - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html
 * [8] Maintaining Provisioning Profiles - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html
 * [9] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
-* [10]iOS-deploy - https://github.com/phonegap/ios-deploy
+* [10] iOS-deploy - https://github.com/phonegap/ios-deploy
+* [11] MacOS and iOS Internals, Volume III: Security & Insecurity - Johnathan Levin
+
 
