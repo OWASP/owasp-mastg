@@ -302,12 +302,19 @@ The SSL pinning process should be implemented as described on the static analysi
 
 #### Overview
 
-For sensitive applications, like banking applciations, OWASP MASVS introduces "Defense in Depth" verification level [1]. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
+For sensitive applications, like banking apps, OWASP MASVS introduces "Defense in Depth" verification level [1]. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
 
 
 #### Static Analysis
 
-Static analysis is not applicable to this point.
+Review the code and identify those parts of a code which refers to critical operations. Verify if it uses additional channels to perform such operation. Examples of additional verification channels are following:
+
+* token (e.g. RSA token, yubikey)
+* push notification (e.g. Google Prompt)
+* SMS
+* email
+* data from another website you had to visit/scan 
+* data from a physical letter or physical entry point (e.g.: data you receive only after signing a document at the office of a bank)
 
 #### Dynamic Analysis
 
@@ -315,13 +322,13 @@ Identify all critical operations implemented in tested application (e.g. user en
 
 #### Remediation
 
-Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation.
+Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation. If you are going to implement additional factor to verify user's identity, you may consider usage of Infobip 2FA library [2], one-time passcodes via Google Authenticator [3].
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-This step is out of Mobile Top 10 Risks and should be applied only to sensitive applications.
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
@@ -334,5 +341,7 @@ This step is out of Mobile Top 10 Risks and should be applied only to sensitive 
 ##### Info
 
 - [1] The Mobile Application Security Verification Standard - https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md
+- [2] Infobip 2FA library - https://2-fa.github.io/libraries/android-library.html
+- [3] Google Authenticator for Android - https://github.com/google/google-authenticator-android
 
 
