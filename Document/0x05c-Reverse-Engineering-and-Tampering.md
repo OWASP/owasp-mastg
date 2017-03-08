@@ -290,9 +290,38 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already.
+Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator so find out what we're supposed to be doing.
 
-TODO: DEX vs. OAT
+```
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
+$ adb install UnCrackable-Level1.apk
+
+```
+
+Seems like we're expected to find some kind of secret code!
+
+![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
+![Wrong code](Images/Chapters/0x05c/crackme-2.jpg)
+
+Most likely, the secret is stored somewhere inside the app.
+
+On Android, the Dalvik Executable Format (DEX) is used to hold Java bytecode and data. Most Java decompiles expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a Jar file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR[19].
+
+
+```
+$ python apkx.py UnCrackable-Level1.apk 
+Extracting UnCrackable-Level1.apk to UnCrackable-Level1
+dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
+Processing UnCrackable-Level1/classes.jar (use silent to silence)
+Processing sg.vantagepoint.a.a
+Processing sg.vantagepoint.a.b
+Processing sg.vantagepoint.a.c
+Processing sg.vantagepoint.uncrackable1.MainActivity
+Processing sg.vantagepoint.uncrackable1.a
+Processing sg.vantagepoint.uncrackable1.b
+Processing sg.vantagepoint.uncrackable1.c
+```
+
 
 #### Statically Analyzing Native Code
 
@@ -1028,6 +1057,9 @@ JQAE6ACMABNAAIIA
 - [14] VxStripper -
 - [15] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
 - [16] UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
+- [17] JAD - http://www.javadecompilers.com/jad
+- [18] Proycon - http://proycon.com/en/
+- [19] CFR - http://www.benf.org/other/cfr/
 - [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
 - [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 - [X] https://github.com/JesusFreke/smali
