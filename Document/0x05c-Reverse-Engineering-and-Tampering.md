@@ -303,9 +303,28 @@ Seems like we're expected to find some kind of secret code!
 ![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
 ![Wrong code](Images/Chapters/0x05c/crackme-2.jpg)
 
-Most likely, the secret is stored somewhere inside the app.
+Most likely, the secret is stored somewhere inside the app, so the next logical step is to take a look inside. First, let's unzip the APK file and have a look at the content.
 
-On Android, the Dalvik Executable Format (DEX) is used to hold Java bytecode and data. Most Java decompiles expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a Jar file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR[19].
+```
+$ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
+Archive:  UnCrackable-Level1.apk
+  inflating: UnCrackable-Level1/AndroidManifest.xml  
+  inflating: UnCrackable-Level1/res/layout/activity_main.xml  
+  inflating: UnCrackable-Level1/res/menu/menu_main.xml  
+ extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/resources.arsc  
+  inflating: UnCrackable-Level1/classes.dex  
+  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF  
+  inflating: UnCrackable-Level1/META-INF/CERT.SF  
+  inflating: UnCrackable-Level1/META-INF/CERT.RSA  
+
+```
+
+Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a Jar file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR[19].
 
 
 ```
