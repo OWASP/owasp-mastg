@@ -20,7 +20,7 @@ Recommended is:
 #### Jailbreaking iOS
 
 In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
-There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is an actual tool that provides 
+There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and install Cydia. 
 
 Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037). A great book on iOS Security Internals has been written and published by  Jonathan Levin. This won't be very useful for iOS application security testing, but will definitely help dive into the world of iOS exploitation and jailbreak analysis [11]
 
@@ -91,57 +91,6 @@ On top of code signing, apps distributed via the app store are also protected us
 ~~~
 If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
 
-#### Binary Security Features
-Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
-* **ARC** - Automatic Reference Counting - memory management feature
-  * adds retain and release messages when required
-* **Stack Canary** - helps preventing buffer overflow attacks
-* **PIE** - Position Independent Executable - enables full ASLR for binary
-
-Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
-* PIE:
-~~~
-$ unzip DamnVulnerableiOSApp.ipa
-$ cd Payload/DamnVulnerableIOSApp.app
-$ otool -hv DamnVulnerableIOSApp
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
-~~~
-
-* Stack Canary:
-~~~
-$ otool -Iv DamnVulnerableIOSApp | grep stack
-0x0046040c 83177 ___stack_chk_fail
-0x0046100c 83521 _sigaltstack
-0x004fc010 83178 ___stack_chk_guard
-0x004fe5c8 83177 ___stack_chk_fail
-0x004fe8c8 83521 _sigaltstack
-0x00000001004b3fd8 83077 ___stack_chk_fail
-0x00000001004b4890 83414 _sigaltstack
-0x0000000100590cf0 83078 ___stack_chk_guard
-0x00000001005937f8 83077 ___stack_chk_fail
-0x0000000100593dc8 83414 _sigaltstack
-~~~ 
-
-* Automatic Reference Counting:
-~~~
-$ otool -Iv DamnVulnerableIOSApp | grep release
-0x0045b7dc 83156 ___cxa_guard_release
-0x0045fd5c 83414 _objc_autorelease
-0x0045fd6c 83415 _objc_autoreleasePoolPop
-0x0045fd7c 83416 _objc_autoreleasePoolPush
-0x0045fd8c 83417 _objc_autoreleaseReturnValue
-0x0045ff0c 83441 _objc_release
-[SNIP]
-~~~
 ### Dynamic Analysis
 
 #### On Jailbroken devices
