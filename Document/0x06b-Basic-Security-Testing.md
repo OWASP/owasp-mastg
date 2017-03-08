@@ -57,7 +57,7 @@ sqlite3
 adv-cmds 
 bigbosshackertools
 ```
-4. Your workstation should have SSH client, Hopper Disassembler, Burp and Frida installed. You can install Frida with pip, for instance:
+Your workstation should have SSH client, Hopper Disassembler, Burp and Frida installed. You can install Frida with pip, for instance:
 ```
 $ sudo pip install frida
 ```
@@ -116,7 +116,7 @@ On top of code signing, apps distributed via the app store are also protected us
 # Clutch -i 
 ~~~
 
-** NOTE: ** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
+**NOTE:** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
 ~~~
 # otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
 ~~~
@@ -210,7 +210,7 @@ cy# [a[0] isJailbroken]
 True
 ```
 Hence you now understand why it's important to have your application in a desired state. 
-Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application/
+Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
 ```
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
@@ -221,6 +221,7 @@ In this case we have bypassed Jailbreak detection of the application!
 Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
 
 **Frida** is a dynamic instrumentation framework, which allows you to use among other a JavaScript API to instrument the apps. One feature that we will use in bypassing jailbreak detection is to perform so-called early instrumentation, i.e. replace function implementation on startup.
+
 1. First, ensure that `frida-server` is running on your iDevice
 2. iDevice must be connected via USB cable
 3. Use `frida-trace` on your workstation:
@@ -251,8 +252,9 @@ Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
 Changing the return value to:0x0
  22475 ms  -[JailbreakDetectionVC isJailbroken]
  ```
- Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI. 
- Frida is very powerful and versatile tool. Refer to the documentation [17] to get more details.
+ Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI.
+ 
+ Frida is a very powerful and versatile tool. Refer to the documentation [17] to get more details.
 
 #### On Non-Jailbroken Devices
 
