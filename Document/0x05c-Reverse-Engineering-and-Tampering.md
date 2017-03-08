@@ -262,7 +262,8 @@ $ frida-ps -U
 ##### Example: Bypassing Native Debugger Detection
 
 ```python
-#v0.1
+
+\#v0.1
  
 import frida
 import sys
@@ -324,7 +325,11 @@ Archive:  UnCrackable-Level1.apk
 
 ```
 
-Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a Jar file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR[19].
+Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
+
+We'll pick CFR as our decompiler of choice. CFT is under active developmnet, and brand new releases are made available regularly on the author's website [19]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
+
+For convenience, we have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [21]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
 
 
 ```
@@ -340,7 +345,6 @@ Processing sg.vantagepoint.uncrackable1.a
 Processing sg.vantagepoint.uncrackable1.b
 Processing sg.vantagepoint.uncrackable1.c
 ```
-
 
 #### Statically Analyzing Native Code
 
@@ -1079,6 +1083,7 @@ JQAE6ACMABNAAIIA
 - [17] JAD - http://www.javadecompilers.com/jad
 - [18] Proycon - http://proycon.com/en/
 - [19] CFR - http://www.benf.org/other/cfr/
+- [20] APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
 - [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
 - [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 - [X] https://github.com/JesusFreke/smali
