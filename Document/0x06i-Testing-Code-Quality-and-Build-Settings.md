@@ -143,7 +143,11 @@ Review the source code to understand/identify who the application handle various
 - [link to relevant how-tos, papers, etc.]
 
 ### Testing Compiler Settings
-
+Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
+* **ARC** - Automatic Reference Counting - memory management feature
+  * adds retain and release messages when required
+* **Stack Canary** - helps preventing buffer overflow attacks
+* **PIE** - Position Independent Executable - enables full ASLR for binary
 #### Overview
 
 (Give an overview about the functionality and it's potential weaknesses)
@@ -155,30 +159,50 @@ Review the source code to understand/identify who the application handle various
 #### Black-box Testing
 
 ##### With otool :
+Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
+* PIE:
+~~~
+$ unzip DamnVulnerableiOSApp.ipa
+$ cd Payload/DamnVulnerableIOSApp.app
+$ otool -hv DamnVulnerableIOSApp
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
+WEAK_DEFINES BINDS_TO_WEAK PIE
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
+WEAK_DEFINES BINDS_TO_WEAK PIE
+~~~
 
-* Check if the stack smashing protection is enabled :
+* Stack Canary:
+~~~
+$ otool -Iv DamnVulnerableIOSApp | grep stack
+0x0046040c 83177 ___stack_chk_fail
+0x0046100c 83521 _sigaltstack
+0x004fc010 83178 ___stack_chk_guard
+0x004fe5c8 83177 ___stack_chk_fail
+0x004fe8c8 83521 _sigaltstack
+0x00000001004b3fd8 83077 ___stack_chk_fail
+0x00000001004b4890 83414 _sigaltstack
+0x0000000100590cf0 83078 ___stack_chk_guard
+0x00000001005937f8 83077 ___stack_chk_fail
+0x0000000100593dc8 83414 _sigaltstack
+~~~ 
 
-```
-$ otool -Iv <app name> | grep stack
-```
-
-If the application was compiled with the stack smashing protection two undefined symbols will be present: "___stack_chk_fail" and "___stack_chk_guard".
-
-* Check the PIE protection is enabled :
-
-```
-$ otool -Iv <app name> | grep PIE
-```
-
-If the above command emit no output then the PIE protection isn't enabled.
-
-* Check the ACR protection is enabled :
-
-```
-$ otool -Iv <app name> | grep _objc_release
-```
-
-If the above command emit no output then the ACR protection isn't enabled.
+* Automatic Reference Counting:
+~~~
+$ otool -Iv DamnVulnerableIOSApp | grep release
+0x0045b7dc 83156 ___cxa_guard_release
+0x0045fd5c 83414 _objc_autorelease
+0x0045fd6c 83415 _objc_autoreleasePoolPop
+0x0045fd7c 83416 _objc_autoreleasePoolPush
+0x0045fd8c 83417 _objc_autoreleaseReturnValue
+0x0045ff0c 83441 _objc_release
+[SNIP]
+~~~
 
 ##### With idb :
 
