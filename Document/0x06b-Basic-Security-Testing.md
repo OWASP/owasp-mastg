@@ -1,8 +1,11 @@
 ## Basic Security Testing on iOS
 
+### Foreword on Swift and Objective-C 
+Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods. 
+
 ### Setting Up Your Testing Environment
 
-### Requirements for iOS testing lab 
+**Requirements for iOS testing lab **
 Bare minimum is:
 - Laptop with admin rights, VirtualBox with Kali Linux
 - WiFi network with client to client traffic permitted (multiplexing through USB is also possible) 
@@ -30,6 +33,34 @@ Jailbreaking methods vary across iOS versions. Best choice is to check if a [pub
 
 **Important** caveat regarding jailbreaking iOS: contrary to Android, you **can't** downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
+
+### Preparing your first test environment
+Once you have your iOS device jailbroken and Cydia is installed, proceed as following:
+
+1. From Cydia install aptitude and openssh
+2. SSH to your iDevice
+  * Two users are `root` and `mobile`
+  * Default password is `alpine`
+2. Add the following repository to Cydia: `https://build.frida.re`
+2. Install Frida from Cydia 
+3. Install following packages with aptitude
+```
+inetutils 
+syslogd 
+less 
+com.autopear.installipa 
+class-dump 
+com.ericasadun.utilities 
+odcctools
+cycript 
+sqlite3 
+adv-cmds 
+bigbosshackertools
+```
+4. Your workstation should have SSH client, Hopper Disassembler, Burp and Frida installed. You can install Frida with pip, for instance:
+```
+$ sudo pip install frida
+```
 
 ### Typical iOS Application Test Workflow
 Typical workflow for iOS Application test is following:
@@ -91,9 +122,137 @@ On top of code signing, apps distributed via the app store are also protected us
 ~~~
 If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
 
+#### Getting Basic Information with Class-dump and Hopper Disassembler
+
+Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application [12]. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
+```
+$ unzip DamnVulnerableiOSApp.ipa
+
+$ cd Payload/DamnVulnerableIOSApp.app
+
+$ otool -hv DamnVulnerableIOSApp 
+
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+```
+Note architecture `armv7` which is 32 bit and `arm64`. This design permits to deploy the same application on all devices. 
+In order to analyze the application with class-dump we must create so-called thin binary, which contains only one architecture:
+
+```
+iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
+```
+And then we can proceed to performing class-dump:
+```
+iOS8-jailbreak:~ root# class-dump DVIA32 
+
+@interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
+{
+}
++ (BOOL)appIsCracked;
++ (BOOL)deviceIsJailbroken;
+```
+Note the plus sign, which means that this is a class method returning BOOL type. 
+A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
+
+Alternatively, you can easily decompile the application with Hopper Disassembler [13]. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
+
+Your main focus while performing static analysis would be:
+* Identifying and undestanding functions responsible for jailbreak detection and certificate pinning
+  * For jailbreak detection, look for methods or classess containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
+  * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
+* Understanding application logic and possible ways to bypass it 
+* Any hardcoded credentials, certificates
+* Any methods that are used for obfuscation and in consequence may reveal sensitive information
+
 ### Dynamic Analysis
 
-#### On Jailbroken devices
+#### On Jailbroken Devices
+Once you have performed static analysis with `otool` and Hopper Disassembler or your favourite disassembler/decompiler you are ready to start the application and bypass any protections that will prevent you from performing security testing, like jailbreak detection or certificate pinning.
+
+##### Bypassing Jailbreak Detection
+Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following
+1. The application closes immediately without any notification
+2. There is a popup window indicating that the application won't run on a jailbroken device
+
+In the first case, it's worth checking if the application is fully functional on non-jailbroken device. It might be that the application is in reality crashing or has a bug that causes exiting. This might happen when you're testing a preproduction version of the application.
+
+Let's look on how to bypass jailbreak detection using once again Damn Vulnerable iOS application as an example. 
+After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
+You might also want to decompile the functions to see what they are doing and especially what do they return.
+
+( TODO - Screenshots ) 
+
+As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
+Let's inject cycript into our process (look for your PID with `top`):
+```
+iOS8-jailbreak:~ root# cycript -p 12345
+cy# [SFAntiPiracy isTheDeviceJailbroken]
+true
+```
+As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class. 
+```
+cy# a=choose(JailbreakDetectionVC)
+[]
+```
+Ooops! The returned array is empty. It means that there are no instances of this class registed within the runtime. In fact, we haven't clicked second 'Jailbreak Test' button, which indeed initializes this class:
+```
+cy# a=choose(JailbreakDetectionVC)
+[#"<JailbreakDetectionVC: 0x14ee15620>"]
+cy# [a[0] isJailbroken]
+True
+```
+Hence you now understand why it's important to have your application in a desired state. 
+Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application/
+```
+cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
+cy# [a[0] isJailbroken]
+false
+```
+In this case we have bypassed Jailbreak detection of the application!
+
+Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
+
+**Frida** is a dynamic instrumentation framework, which allows you to use among other a JavaScript API to instrument the apps. One feature that we will use in bypassing jailbreak detection is to perform so-called early instrumentation, i.e. replace function implementation on startup.
+1. First, ensure that `frida-server` is running on your iDevice
+2. iDevice must be connected via USB cable
+3. Use `frida-trace` on your workstation:
+
+```
+$ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
+```
+This will actually start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJailbroken]` and create JS hook with `onEnter` and `onLeave` callback functions. Now it's trivial to replace return value with `value.replace()` as shown in the example below:
+```
+    onLeave: function (log, retval, state) {
+	console.log("Function [JailbreakDetectionVC isJailbroken] originally returned:"+ retval);
+	retval.replace(0);	
+      console.log("Changing the return value to:"+retval);
+    }
+```
+Running this will have the following result:
+```
+$ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
+
+Instrumenting functions...                                           `...
+-[JailbreakDetectionVC isJailbroken]: Loaded handler at "./__handlers__/__JailbreakDetectionVC_isJailbroken_.js"
+Started tracing 1 function. Press Ctrl+C to stop.                       
+Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
+Changing the return value to:0x0
+           /* TID 0x303 */
+  6890 ms  -[JailbreakDetectionVC isJailbroken]
+Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
+Changing the return value to:0x0
+ 22475 ms  -[JailbreakDetectionVC isJailbroken]
+ ```
+ Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI. 
+ Frida is very powerful and versatile tool. Refer to the documentation [17] to get more details.
 
 #### On Non-Jailbroken Devices
 
@@ -257,5 +416,10 @@ If something goes wrong (which it usually does), mismatches between the provisio
 * [9] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
 * [10] iOS-deploy - https://github.com/phonegap/ios-deploy
 * [11] MacOS and iOS Internals, Volume III: Security & Insecurity - Johnathan Levin
-
+* [12] Damn Vulnerable iOS Application - http://damnvulnerableiosapp.com/
+* [13] Hopper Disassembler - https://www.hopperapp.com/
+* [14] Introduction to iOS Application Security Testing - Slawomir Kosowski
+* [15] The Mobile Application Hacker's Handbook -  Dominic Chell, Tyrone Erasmus, Shaun Colley
+* [16] Cydia Substrate  - http://www.cydiasubstrate.com
+* [17] Frida - http://frida.re
 
