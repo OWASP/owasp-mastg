@@ -146,7 +146,7 @@ Xposed is a "framework for modules that can change the behavior of the system an
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
-##### Example: Bypassing Root Detection
+##### Example: Bypassing Root Detection with XPosed
 
 Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
@@ -256,9 +256,6 @@ $ frida-ps -U
  1236  com.android.phone
  5353  com.android.settings
   936  com.android.systemui
- 7617  com.dbs.digi.reluat
- 7645  com.dbs.id.dbsdigibank
- 7600  com.dbs.sit1.dbsmbanking
 (...)
 ~~~
 
@@ -287,6 +284,7 @@ script.on('message', on_message)
 script.load()
 sys.stdin.read()
 ```
+
 
 ### Program Comprehension
 
