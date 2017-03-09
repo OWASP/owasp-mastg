@@ -45,7 +45,7 @@ V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel 
 
 #### CWE
 
-CWE 319 - Cleartext Transmission of Sensitive Information - https://cwe.mitre.org/data/definitions/319.html
+- CWE-319 - Cleartext Transmission of Sensitive Information - https://cwe.mitre.org/data/definitions/319.html
 
 #### OWASP Mobile Top 10 2014
 
@@ -229,10 +229,9 @@ V5.3: "The app verifies the X.509 certificate of the remote endpoint when the se
 
 #### CWE
 
-CWE 295 - Improper Certificate Validation - https://cwe.mitre.org/data/definitions/295.html
-CWE 296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-CWE 297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-CWE 298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 #### OWASP Mobile Top 10 2014
 
@@ -255,7 +254,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 
 Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
 
-#### White-box Testing
+#### Static Analysis
 
 The process to implement the SSL pinning involves three main steps outlined below:
 
@@ -284,18 +283,32 @@ Create an SSLContext that uses the TrustManager
 sslContext.init(null, tmf.getTrustManagers(), null);
 ```
 
-#### Black-box Testing
+#### Dynamic Analysis
 
-Black-box Testing can be performed by launching a MITM attack using your prefered Web Proxy to intercept the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests/responses, the SSL pinning is correctly implemented.
+Black-box Testing can be performed by launching a MITM attack using your prefered Web Proxy to intercept [1] the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests/responses, the SSL pinning is correctly implemented.
 
 #### Remediation
 
-The SSL pinning process should be implemented as described on the static analysis section.
+The SSL pinning process should be implemented as described on the static analysis section. You may find helpful in implementing certificate pinning OWASP  guide [2].
 
 #### References
 
-- Setting Burp Suite as a proxy for Android Devices : https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
-- OWASP - Certificate Pinning for Android :  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
+##### OWASP Mobile Top 10 2014
+
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+- V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+
+##### CWE
+
+- CWE-295 - Improper Certificate Validation - https://cwe.mitre.org/data/definitions/295.html
+
+##### Info
+
+- [1] - Setting Burp Suite as a proxy for Android Devices: https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
+- [2] - OWASP Certificate Pinning for Android:  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
 
 
 ### Verifying that Critical Operations Use Secure Communication Channels
@@ -336,7 +349,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 
 ##### CWE
 
-- CWE-956 - Software Fault Patterns (SFPs) within the Channel Attack cluster
+- CWE-956 - Software Fault Patterns (SFPs) within the Channel Attack cluster - https://cwe.mitre.org/data/definitions/956.html
 
 ##### Info
 
