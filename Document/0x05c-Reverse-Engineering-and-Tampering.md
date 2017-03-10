@@ -350,17 +350,17 @@ You should now have the decompiled sources in the "Uncrackable-Level1/src" direc
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Pick "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. This is important if you want to attach to the debugger to the running app later on, as Intellij uses the package name to identify the correct process.
 
-In the next dialog, pick any APK - we don't actually want to compile the project, so it really doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
+In the next dialog, pick any APK - we don't want to actually compile the project, so it really doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
 Once the project is created, expand the "1: Project" view on the left and navigate to the app/src/main/java folder. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
 ![Delete the default Java package](Images/Chapters/0x05c/delete_package.jpg)
 
-
 Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the "sg" directory into the now empty "Java" folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
 ![Final project structure](Images/Chapters/0x05c/final_structure.jpg)
 
+You now have the
 
 #### Statically Analyzing Native Code
 
