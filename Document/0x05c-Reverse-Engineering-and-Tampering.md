@@ -286,7 +286,6 @@ script.load()
 sys.stdin.read()
 ```
 
-
 ### Program Comprehension
 
 #### Decompiling and Analyzing Java Code
@@ -360,7 +359,15 @@ Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the 
 
 ![Final project structure](Images/Chapters/0x05c/final_structure.jpg)
 
-You now have the
+IntelliJ will now index the code, so you can browse it just like any normal Java project. Note that many of the decompiled packages classes and methods have strange one-letter names... this is because the bytecode has been "minified" with ProGuard when the app was built. It's a basic type of obfuscation that makes things a little more difficult to read, but with a fairly simple app like this it won't cause us much of a headache - however, if you are analyzing a more complex app, it can get quite annoying. A good practice to follow when analyzing obfuscated code is to annotate names of classes, methods and other identifiers as you go along.
+
+Open the *MainActivity* class in the package *sg.vantagepoint.a*. The method *verify* is what's called when you tap on the "verify" button. This method passes the user input to another method called "a.a", which returns a boolean value. It seems very plausible that "a.a" verified whether the String entered by the user is correct or not, so we'll start refactoring the code to reflect this.
+
+![User Input Check](Images/Chapters/0x05c/check_input.jpg)
+
+Right-click the class name "a" and pickt Refactor->Rename from the drop-down menu (or press Shift-F6). 
+
+![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
 
 #### Statically Analyzing Native Code
 
