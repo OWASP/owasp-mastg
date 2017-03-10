@@ -8,7 +8,7 @@ Vast majority of this tutorial is relevant to applications written mainly in Obj
 **Requirements for iOS testing lab **
 Bare minimum is:
 - Laptop with admin rights, VirtualBox with Kali Linux
-- WiFi network with client to client traffic permitted (multiplexing through USB is also possible) 
+- WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
 - Hopper Disassembler 
 - At least one jailbroken iOS device (with desired iOS version)
 - Burp 
