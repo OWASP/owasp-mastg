@@ -290,7 +290,7 @@ sys.stdin.read()
 
 #### Decompiling and Analyzing Java Code
 
-Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator so find out what we're supposed to be doing.
+Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
@@ -298,12 +298,12 @@ $ adb install UnCrackable-Level1.apk
 
 ```
 
-Seems like we're expected to find some kind of secret code!
-
 ![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
 ![Wrong code](Images/Chapters/0x05c/crackme-2.jpg)
 
-Most likely, the secret is stored somewhere inside the app, so the next logical step is to take a look inside. First, let's unzip the APK file and have a look at the content.
+Seems like we're expected to find some kind of secret code!
+
+Most likely, we're looking for a secret string stored somewhere inside the app, so the next logical step is to take a look inside. First, unzip the APK file and have a look at the content.
 
 ```
 $ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
@@ -324,12 +324,11 @@ Archive:  UnCrackable-Level1.apk
 
 ```
 
-Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way offer packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
+In the standard case, all the Java bytecode and data related to the app is contained in a file named *classes.dex* in the app root directory. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
 
-We'll pick CFR as our decompiler of choice. CFT is under active developmnet, and brand new releases are made available regularly on the author's website [19]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
+For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website [19]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
 
-For convenience, we have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [21]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
-
+For convenience, I have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [21]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
 
 ```
 $ python apkx.py UnCrackable-Level1.apk 
@@ -345,9 +344,9 @@ Processing sg.vantagepoint.uncrackable1.b
 Processing sg.vantagepoint.uncrackable1.c
 ```
 
-You should now have the decompiled sources in the "Uncrackable-Level1/src" directory. In principle, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also gets us on-device debugging functionality as a bonus.
+You should now find the decompiled sources in the "Uncrackable-Level1/src" directory. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also gets us on-device debugging functionality as a bonus.
 
-Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Pick "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. This is important if you want to attach to the debugger to the running app later on, as Intellij uses the package name to identify the correct process.
+Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on, as Intellij uses the package name to identify the correct process.
 
 In the next dialog, pick any APK - we don't want to actually compile the project, so it really doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
@@ -371,6 +370,41 @@ Right-click the class name - the first "a" in "a.a" - and select Refactor->Renam
 
 Congratulations - you just learned the fundamental process of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
 
+Next, ctrl+click (or command+click on Mac) on the "check_input" method. The decompiled method should look as follows:
+
+
+```java
+    public static boolean check_input(String string) {
+        byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
+        byte[] arrby2 = new byte[]{};
+        try {
+            arrby = sg.vantagepoint.a.a.a(Validator.b("8d127684cbc37c17616d806cf50473cc"), arrby);
+            arrby2 = arrby;
+        }
+        catch (Exception exception) {
+            Log.d((String)"CodeCheck", (String)("AES error:" + exception.getMessage()));
+        }
+        if (string.equals(new String(arrby2))) {
+            return true;
+        }
+        return false;
+    }
+```
+
+So, we have a base64-encoded String that's passed to a function named "a" in the package "sg.vantagepoint.a.a" (again everything is called "a". Damn ProGuard!), along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this "a" do? Ctrl-click it to find out.
+
+```java
+public class a {
+    public static byte[] a(byte[] object, byte[] arrby) {
+        object = new SecretKeySpec((byte[])object, "AES/ECB/PKCS7Padding");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(2, (Key)object);
+        return cipher.doFinal(arrby);
+    }
+}
+```java
+
+It's simply standard AES-ECB! Now we are getting somewhere. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Decrypt the ciphertext and you get the secret value (we'll leave this as a bonus task).
 
 
 #### Statically Analyzing Native Code
