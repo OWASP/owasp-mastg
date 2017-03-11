@@ -324,7 +324,7 @@ Archive:  UnCrackable-Level1.apk
 
 ```
 
-Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
+Normally, you'll find a file names *classes.dex* in the app root directory holding all the Java bytecode and data. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way offer packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
 
 We'll pick CFR as our decompiler of choice. CFT is under active developmnet, and brand new releases are made available regularly on the author's website [19]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
 
@@ -359,17 +359,19 @@ Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the 
 
 ![Final project structure](Images/Chapters/0x05c/final_structure.jpg)
 
-IntelliJ will now index the code, so you can browse it just like any normal Java project. Note that many of the decompiled packages classes and methods have strange one-letter names... this is because the bytecode has been "minified" with ProGuard when the app was built. It's a basic type of obfuscation that makes things a little more difficult to read, but with a fairly simple app like this it won't cause us much of a headache - however, if you are analyzing a more complex app, it can get quite annoying. A good practice to follow when analyzing obfuscated code is to annotate names of classes, methods and other identifiers as you go along.
+As soon as IntelliJ is done indexing the code, you can browse it just like any normal Java project. Note that many of the decompiled packages, classes and methods have weird one-letter names... this is because the bytecode has been "minified" with ProGuard at build time. This is a a basic type of obfuscation that makes the bytecode a bit more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache - however, when analyzing a more complex app, it can get quite annoying. 
 
-Open the *MainActivity* class in the package *sg.vantagepoint.a*. The method *verify* is what's called when you tap on the "verify" button. This method passes the user input to another method called "a.a", which returns a boolean value. It seems very plausible that "a.a" verified whether the String entered by the user is correct or not, so we'll start refactoring the code to reflect this.
+A good practice to follow when analyzing obfuscated code is to annotate names of classes, methods and other identifiers as you go along. Open the *MainActivity* class in the package *sg.vantagepoint.a*. The method *verify* is what's called when you tap on the "verify" button. This method passes the user input to a static method called "a.a", which returns a boolean value. It seems plausible that "a.a" is responsible for verifying whether the text entered by the user is valid or not, so we'll start refactoring the code to reflect this.
 
 ![User Input Check](Images/Chapters/0x05c/check_input.jpg)
 
-Right-click the class name - the left "a" in "a.a" - and select Refactor->Rename from the drop-down menu (or press Shift-F6) and change it to something that makes more sense given what you know about it so far. For example, you could call it "Validator" - you can always revise the name later as you learn more about the class. "a.a" now becomes "Validator.a". Follow the same procedure to rename the static method "a" to "check_input". 
+Right-click the class name - the first "a" in "a.a" - and select Refactor->Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later as you learn more about the class). "a.a" now becomes "Validator.a". Follow the same procedure to rename the static method "a" to "check_input". 
 
 ![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
 
-Congratulations - you just learned the fundamentals of the binary analysis process! It is a loop of theorizing, annotating, and revising your theories about the program, until you comprehend it well enough to achieve whatever goal you have in mind.
+Congratulations - you just learned the fundamental process of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
+
+
 
 #### Statically Analyzing Native Code
 
