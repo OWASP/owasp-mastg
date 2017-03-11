@@ -365,9 +365,11 @@ Open the *MainActivity* class in the package *sg.vantagepoint.a*. The method *ve
 
 ![User Input Check](Images/Chapters/0x05c/check_input.jpg)
 
-Right-click the class name "a" and pickt Refactor->Rename from the drop-down menu (or press Shift-F6). 
+Right-click the class name - the left "a" in "a.a" - and select Refactor->Rename from the drop-down menu (or press Shift-F6) and change it to something that makes more sense given what you know about it so far. For example, you could call it "Validator" - you can always revise the name later as you learn more about the class. "a.a" now becomes "Validator.a". Follow the same procedure to rename the static method "a" to "check_input". 
 
 ![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
+
+Congratulations - you just learned the fundamentals of the binary analysis process! It is a loop of theorizing, annotating, and revising your theories about the program, until you comprehend it well enough to achieve whatever goal you have in mind.
 
 #### Statically Analyzing Native Code
 
