@@ -388,7 +388,7 @@ public class a {
         return cipher.doFinal(arrby);
     }
 }
-```java
+```
 
 It's simply standard AES-ECB! Now we are getting somewhere. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Bonus task: Decrypt the ciphertext and you get the secret value.
 
