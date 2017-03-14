@@ -360,7 +360,7 @@ The libraries loaded into the project should be reviewed in order to identify wi
 
 #### Dynamic Analysis
 
-All requests made to the external service should be analyzed if any sensitive information is embedded into them.
+All requests made to external services should be analyzed if any sensitive information is embedded into them.
 * Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service.
 * When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 
