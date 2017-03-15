@@ -343,7 +343,8 @@ public static int wtf(...);
 
 #### Overview
 
-Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
+Different 3rd party services are available that can be embedded into the App to implement different features. These features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
+
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
 
 3rd party services are mostly implemented in two ways:
@@ -451,7 +452,7 @@ Start the app and click into the input fields that ask for sensitive data. When 
 
 #### Remediation
 
-Many major versions of the Android operating system are still actively used and are outta there. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
+Many major versions of the Android operating system are still actively used. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
 

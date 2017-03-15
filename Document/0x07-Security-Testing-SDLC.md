@@ -70,10 +70,27 @@ Based on the risks of the project, some artefacts may be simplified (or even ski
 -- TODO :  Quick description of all phases (what? when? who? ...) --
 
 ### Security Testing in the SDLC
--- TODO :
 
-- Explain how it relates to and differs from quality assurance
-- Explain the different types of tests (unit, Verification, Validation, ....)
+A well-known statement in software development (and many other fields as well) is that the sooner tests take place, the easier and more cost-effective it is to fix a defect. The same applies to defects related to cyber security: identifying (and fixing) vulnerabilities early in the development lifecycle gives better results when it comes to produce secure software.
+
+Testing can be performed in many forms during the lifecycle: using automated tools for Static Analysis, writing Unit Tests as code is being created, running pentests (either manually or with the help of scanning tools) after software has been developed, ... However, an emphasis should always be put on planning and preparing these efforts early in the Secure SDLC: a Test Plan should be initiated and developed at the beginning of the project, listing and clarifying the kind of tests that will be executed, their scope, how and when they will take place and with what budget. Also, Abuse cases should be written early in the project (ideally at the same time when Use Cases are created) to provide guidance to test teams all along development. Finally, an artefact that should always be considered is Threat Modeling, which allow team to focus on the right components in the architecture with the proper tests and proper coverage that will check the efficiency of the controls put in place.
+
+The following diagram provides an overview of the way to perform test in the SDLC:
+
+-- TODO : add diagram to summarize the above paragraph and clarify the way test should be performed (planned, executed and reviewed)
+
+As stated before, several kinds of tests can be made along the SDLC. According to the risk profile of the targeted software, several kind of tests can be made :
+-- TODO : clarify in further details what the following are (definition, who, how, tools)
+- static analysis, to check that secure soding rules are applied + find common vulnerabilities
+- unit tests, to make sure controls implemented in the code are behaving as planned and cannot be circumvented
+- penetration testing, both manual and automated. Including vulnerability scanning, fuzzing, ...
+--
+
+A clear difference shall be made betweek quality testing and security testing: while quality testing is about making sure an explicitely planned feature has been implemented in the proper way, security testing is about making sure
+- existing features cannot be used in a malicious way 
+- no new feature has unvoluntarily been introduced that could endanger the system or its users.
+As a consequence, performing one type of tests is not enough to pretend having covered both types and that the produced software is both usable and secure. The same care should be given to both types of tests as they are of the same importance and that final users now put a strong emphasis both on quality (e.g. the fact features that are brought to them perform the way they expect them to) and security (e.g. that they can trust the software vendor that their money will not be stolen or their private life will remain private). 
+
 
 --
 ### Technical Management
