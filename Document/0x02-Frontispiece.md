@@ -15,11 +15,11 @@ Copyright © 2017 The OWASP Foundation. This document is released under the Crea
 
 ## Acknowledgements
 
-Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [README](../README.md#user-content-authoring-credit). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
+Note: This table is generated from based on the [contribution log](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more details, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
 
-| Project Leaders | Authors | Top Contributors | Contributors | Reviewers |
+| Project Leaders / Authors | Co-Authors | Top Contributors | Contributors | Reviewers |
 | --- | --- | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Bernhard Mueller, Sven Schleier | Francesco Stillavato, Pawel Rzepa, Abdessamad Temmar | Gerhard Wagner, Daniel Ramirez Martin, Jin Kung Ong, Alexander Antukh, Claudia André, Ryan Teoh, Prathan Phongthiproek, Jeroen Willemsen, Romuald Szkudlarek, Luander Ribeiro, Pishu Mahtani, Sebastian Banescu, Prabhant Singh, Stephen Corbiaux,  Ali Yazdani | Anant Shrivastava, Stephanie Vanroelen |
+| Bernhard Mueller, Sven Schleier | Francesco Stillavato, Pawel Rzepa, Abdessamad Temmar | Romuald Szkudlarek, Jin Kung Ong, Slawek Kosowski, Alexander Antukh, Gerhard Wagner, Ryan Teoh, Daniel Ramirez Martin, Prathan Phongthiproek, Luander Ribeiro| Pishu Mahtani, Ali Yazdani, Sebastian Banescu, Prabhant Singh, *Romantic668*, Stephen Corbiaux, *Demonbensa*, Jeroen Willemsen | Anant Shrivastava, Stephanie Vanroelen |
 
 ### Older Versions
 

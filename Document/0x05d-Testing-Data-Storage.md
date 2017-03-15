@@ -129,7 +129,7 @@ It’s also worth to know that files stored outside the application folder (inte
 
 ##### KeyChain and KeyStore
 
-Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information need to be stored, several best practices available on the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
+Mobile operating systems offer different native functions to store sensitive information like credentials and keys encrypted within the device. In case keys or other sensitive information need to be stored, several best practices available at the OS level should be applied to make it harder for attackers to retrieve these information. The following tasks should be done when analysing an App:
 
 * Identify keys and passwords in the App, e.g. entered by the users, sent by the endpoint, shipped within the App and how this sensitive data is processed locally.
 * Decide with the developers if this sensitive stored information locally is needed and if not, how it can be moved to the endpoint or completely deleted.
@@ -151,7 +151,7 @@ As already pointed out, there are several ways to store information within Andro
 * Check the source code for functions and API calls that are used for storing data:
   * Open the Java Files in an IDE or text editor of your choice or use grep on the command line to search for:
     * file permissions like:
-      * `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`. IPC files should not be created with permissions of `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE` unless it is required as any app would be able to read or write the file even though it may be stored in the app’s private data directory.
+      * `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`. IPC files should not be created with permissions of `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE` unless it is required as any app would be able to read or write the file even though it may be stored in the app private data directory.
     * Classes and functions like:
       * `SharedPreferences` Class (Storage of key-value pairs)
       * `FileOutPutStream` Class (Using Internal or External Storage)
@@ -200,7 +200,7 @@ If sensitive information (credentials, keys, PII, etc.) is needed locally on the
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitive data in general:
 
-* [Android KeyStore][19149717]: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStores is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The KeyStore is encrypted using the user’s own lockscreen pin/password, hence, when the device screen is locked the KeyStore is unavailable. More information can be found here: [how to use Android Keystore][0d4e8f69].
+* [Android KeyStore][19149717]: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStore is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The KeyStore is encrypted using the user’s own lockscreen pin/password, hence, when the device screen is locked the KeyStore is unavailable. More information can be found here: [how to use Android Keystore][0d4e8f69].
 * [Android KeyChain][707361af]: The KeyChain class is used to store and retrieve private keys and their corresponding certificate (chain). The user will be prompted to set a lock screen PIN or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
 * Encryption or decryption functions that were self implemented need to be avoided. Instead use Android implementations such as [Cipher][8705d59b], [SecureRandom][c941abfc] and [KeyGenerator][fcc82125].   
 * Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the [AccountManager][ff4a4029] class to invoke a cloud-based service and do not store passwords on the device.
@@ -297,7 +297,7 @@ Use the mobile app extensively so that all functionality is at least triggered o
 
 #### Remediation
 
-Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like **[ProGuard][45476f61]**, which is already included in Android Studio or **[DexGuard][7bd6e70d]** can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an android application, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
+Ensure logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like **[ProGuard][45476f61]**, which is already included in Android Studio or **[DexGuard][7bd6e70d]** can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls within an Android application, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
 
 ```java
 -assumenosideeffects class android.util.Log
