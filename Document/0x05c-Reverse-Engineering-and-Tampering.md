@@ -8,60 +8,24 @@ However, there's also a few challenges you'll encounter. For example, if you're 
 
 You'll need a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these components inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
 
-### Environment and Toolset
+### What You Need
 
-At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also something to make Jave bytecode readable. APKTool [2] is a popular free tools that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to SMALI. It also allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
 
-Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
+https://developer.android.com/develop/index.html
 
-#### Building a Reverse Engineering Environment For Free
+You’ll also need the Android NDK for compiling anything that creates native code. The NDK contains prebuilt toolchains for cross-compiling native code for different architectures. The NDK is available as a separate download:
+https://developer.android.com/ndk/downloads/index.html
 
-With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD [3] is a free Java de-compiler that integrates with Eclipse [4] and IntelliJ IDEA [5]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
+After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
 
-If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device [6]. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
-
-More elaborate tasks such as program analysis and automated de-obfuscation can be achieved with open source reverse engineering frameworks such as Radare2 [7] and Angr[8]. You'll find examples usages for many of these free tools and frameworks throughout the guide.
-
-#### Commercial Tools
-
-###### JEB
-
-JEB [9], a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
-
-###### IDA Pro
-
-IDA Pro [10] understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
-
-##### Emulation/Introspection-Based
-
-###### DroidScope
-
-DroidScope [11] - an extension to the DECAF dynamic analysis framework [12] - is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
-
-DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls or Java method calls.
-
-All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
-
-###### PANDA
-
-PANDA [13] is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
-
-PANDA comes with some pre-made plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository and build PANDA as follows:
-
-~~~
-$ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android $ makee
-~~~
-
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo.
-
-##### VxStripper
-
-Another very useful tool built on QEMU is VxStripper by Sébastien Josse [14]. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [15] for more information.
+```bash
+$ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+```
 
 ### Tampering and Runtime Instrumentation
 
-First, we'll look at some ways of modifying and instrumenting mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior - usually in a way that's to our advantage. For example, it could be desirable to deactivate SSL pinning or deactivate binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term is used rather loosely to refer to all kinds runtime manipulation, including overriding methods to change behavior.
+First, we'll look at some simple ways of modifying and instrumenting mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior - usually in a way that's to our advantage. For example, it could be desirable to deactivate SSL pinning or deactivate binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term is used rather loosely to refer to all kinds runtime manipulation, including overriding methods to change behavior.
 
 #### Patching and Re-Packaging
 
@@ -124,8 +88,8 @@ In this context, return-void means that no certificate checks are performed and 
 ```smali
 .method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
   .locals 3
-  .param p1, "chain"	# [Ljava/security/cert/X509Certificate;
-  .param p2, "authType"		# Ljava/lang/String;
+  .param p1, "chain"  # [Ljava/security/cert/X509Certificate;
+  .param p2, "authType"   # Ljava/lang/String;
 
   .prologue     
   return-void      # <-- OUR INSERTED OPCODE!
@@ -146,7 +110,7 @@ Xposed is a "framework for modules that can change the behavior of the system an
 
 To use Xposed, you first need to install the Xposed framework on a rooted device. Modifications are then deployed in the form of separate apps ("modules") that can be toggled on and off in the Xposed GUI.
 
-##### Example: Bypassing Root Detection
+##### Example: Bypassing Root Detection with XPosed
 
 Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
@@ -211,11 +175,11 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 Here are some more APIs FRIDA offers on Android:
 
--	Instantiate Java objects and call static and non-static class methods;
--	Replace Java method implementations;
--	Enumerate live instances of specific classes by scanning the Java heap (Dalvik only);
--	Scan process memory for occurrences of a string;
--	Intercept native function calls to run your own code at function entry and exit.
+- Instantiate Java objects and call static and non-static class methods;
+- Replace Java method implementations;
+- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only);
+- Scan process memory for occurrences of a string;
+- Intercept native function calls to run your own code at function entry and exit.
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
 
@@ -256,16 +220,14 @@ $ frida-ps -U
  1236  com.android.phone
  5353  com.android.settings
   936  com.android.systemui
- 7617  com.dbs.digi.reluat
- 7645  com.dbs.id.dbsdigibank
- 7600  com.dbs.sit1.dbsmbanking
 (...)
 ~~~
 
 ##### Example: Bypassing Native Debugger Detection
 
 ```python
-#v0.1
+
+\#v0.1
  
 import frida
 import sys
@@ -288,17 +250,153 @@ script.load()
 sys.stdin.read()
 ```
 
-### Program Comprehension
+### Reverse Engineering
 
-#### Decompiling and Analyzing Java Code
+At the very minimum, you'll need the Android SDK [1]. The SDK contains basic utilities for dealing with Android Apps and ELF binaries, the Android Debugging Bridge (ADB) client, and tools to help with tracing and debugging. In addition to the SDK, you'll also something to make Jave bytecode readable. APKTool [2] is a popular free tools that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to SMALI. It also allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
-Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already.
+Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
-TODO: DEX vs. OAT
+#### Building a Reverse Engineering Environment For Free
+
+With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD [3] is a free Java de-compiler that integrates with Eclipse [4] and IntelliJ IDEA [5]. Generally, IntelliJ is the more light-weight solution and works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Author's opinion).
+
+If you don’t mind looking at SMALI instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device [6]. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
+
+More elaborate tasks such as program analysis and automated de-obfuscation can be achieved with open source reverse engineering frameworks such as Radare2 [7] and Angr[8]. You'll find examples usages for many of these free tools and frameworks throughout the guide.
+
+#### Commercial Tools
+
+###### JEB
+
+JEB [9], a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - at $90 / month for the standard license, JEB isn’t exactly a steal.
+
+###### IDA Pro
+
+IDA Pro [10] understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the SMALI disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
+
+#### Statically Analyzing Java Code
+
+Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [16] in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+
+```
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
+$ adb install UnCrackable-Level1.apk
+
+```
+
+![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
+![Wrong code](Images/Chapters/0x05c/crackme-2.jpg)
+
+Seems like we're expected to find some kind of secret code!
+
+Most likely, we're looking for a secret string stored somewhere inside the app, so the next logical step is to take a look inside. First, unzip the APK file and have a look at the content.
+
+```
+$ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
+Archive:  UnCrackable-Level1.apk
+  inflating: UnCrackable-Level1/AndroidManifest.xml  
+  inflating: UnCrackable-Level1/res/layout/activity_main.xml  
+  inflating: UnCrackable-Level1/res/menu/menu_main.xml  
+ extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png  
+ extracting: UnCrackable-Level1/resources.arsc  
+  inflating: UnCrackable-Level1/classes.dex  
+  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF  
+  inflating: UnCrackable-Level1/META-INF/CERT.SF  
+  inflating: UnCrackable-Level1/META-INF/CERT.RSA  
+
+```
+
+In the standard case, all the Java bytecode and data related to the app is contained in a file named *classes.dex* in the app root directory. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [17], Proycon [18] and CFR [19].
+
+For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website [19]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
+
+For convenience, I have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [21]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
+
+```
+$ python apkx.py UnCrackable-Level1.apk 
+Extracting UnCrackable-Level1.apk to UnCrackable-Level1
+dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
+Processing UnCrackable-Level1/classes.jar (use silent to silence)
+Processing sg.vantagepoint.a.a
+Processing sg.vantagepoint.a.b
+Processing sg.vantagepoint.a.c
+Processing sg.vantagepoint.uncrackable1.MainActivity
+Processing sg.vantagepoint.uncrackable1.a
+Processing sg.vantagepoint.uncrackable1.b
+Processing sg.vantagepoint.uncrackable1.c
+```
+
+You should now find the decompiled sources in the "Uncrackable-Level1/src" directory. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also gets us on-device debugging functionality as a bonus.
+
+Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on, as Intellij uses the package name to identify the correct process.
+
+In the next dialog, pick any APK - we don't want to actually compile the project, so it really doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
+
+Once the project is created, expand the "1: Project" view on the left and navigate to the app/src/main/java folder. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
+
+![Delete the default Java package](Images/Chapters/0x05c/delete_package.jpg)
+
+Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the "sg" directory into the now empty "Java" folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
+
+![Final project structure](Images/Chapters/0x05c/final_structure.jpg)
+
+As soon as IntelliJ is done indexing the code, you can browse it just like any normal Java project. Note that many of the decompiled packages, classes and methods have weird one-letter names... this is because the bytecode has been "minified" with ProGuard at build time. This is a a basic type of obfuscation that makes the bytecode a bit more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache - however, when analyzing a more complex app, it can get quite annoying. 
+
+A good practice to follow when analyzing obfuscated code is to annotate names of classes, methods and other identifiers as you go along. Open the *MainActivity* class in the package *sg.vantagepoint.a*. The method *verify* is what's called when you tap on the "verify" button. This method passes the user input to a static method called "a.a", which returns a boolean value. It seems plausible that "a.a" is responsible for verifying whether the text entered by the user is valid or not, so we'll start refactoring the code to reflect this.
+
+![User Input Check](Images/Chapters/0x05c/check_input.jpg)
+
+Right-click the class name - the first "a" in "a.a" - and select Refactor->Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later as you learn more about the class). "a.a" now becomes "Validator.a". Follow the same procedure to rename the static method "a" to "check_input". 
+
+![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
+
+Congratulations - you just learned the fundamental process of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
+
+Next, ctrl+click (or command+click on Mac) on the "check_input" method. The decompiled method should look as follows:
+
+
+```java
+    public static boolean check_input(String string) {
+        byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
+        byte[] arrby2 = new byte[]{};
+        try {
+            arrby = sg.vantagepoint.a.a.a(Validator.b("8d127684cbc37c17616d806cf50473cc"), arrby);
+            arrby2 = arrby;
+        }
+        catch (Exception exception) {
+            Log.d((String)"CodeCheck", (String)("AES error:" + exception.getMessage()));
+        }
+        if (string.equals(new String(arrby2))) {
+            return true;
+        }
+        return false;
+    }
+```
+
+So, we have a base64-encoded String that's passed to a function named "a" in the package "sg.vantagepoint.a.a" (again everything is called "a". Damn ProGuard!), along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this "a" do? Ctrl-click it to find out.
+
+```java
+public class a {
+    public static byte[] a(byte[] object, byte[] arrby) {
+        object = new SecretKeySpec((byte[])object, "AES/ECB/PKCS7Padding");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(2, (Key)object);
+        return cipher.doFinal(arrby);
+    }
+}
+```
+
+It's simply standard AES-ECB! Now we are getting somewhere. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Bonus task: Decrypt the ciphertext and you get the secret value.
 
 #### Statically Analyzing Native Code
 
-#### Debugging Android Apps
+TODO
+
+#### Debugging and Tracing
 
 Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
 
@@ -316,8 +414,9 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 ##### Debugging Native Code
 
+TODO
 
-#### Execution Tracing
+##### Execution Tracing
 
 Besides being useful for debugging, the JDB command line tool also offers basic execution tracing functionality. To trace an app right from the start we can pause the app using the Android "Wait for Debugger" feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
 
@@ -352,7 +451,7 @@ To start recording tracing information, select the target process in the “Devi
 
 As an aside, DDMS also offers convenient heap dump button that will dump the Java heap of a process to a .hprof file. More information on Traceview can be found in the Android Studio user guide.
 
-#### Tracing System Calls
+###### Tracing System Calls
 
 Moving down a level in the OS hierarchy, we arrive at privileged functions that require the powers of the Linux kernel. These functions are available to normal processes via the system call interface. Instrumenting and intercepting calls into the kernel is an effective method to get a rough idea of what a user process is doing, and is often the most efficient way to deactivate low-level tampering defenses.
 
@@ -364,7 +463,7 @@ As a side note, if the Android “stop application at startup” feature is unav
 $ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e “!read” -ff -p "$pid"; break; fi; done
 ```
 
-##### Ftrace
+###### Ftrace
 
 Ftrace is a tracing utility built directly into the Linux kernel. On a rooted device, ftrace can be used to trace kernel system calls in a more transparent way than is possible with strace, which relies on the ptrace system call to attach to the target process.
 Conveniently, ftrace functionality is found in the stock Android kernel on both Lollipop and Marshmallow. It can be enabled with the following command:
@@ -379,7 +478,7 @@ The /sys/kernel/debug/tracing directory holds all control and output files and r
 - current_tracer: This file is used to set or display the current tracer.
 - tracing_on: Echo 1 into this file to allow/start update of the ring buffer. Echoing 0 will prevent further writes into the ring buffer.
 
-##### KProbes
+###### KProbes
 
 The KProbes interface provides us with an even more powerful way to instrument the kernel: It allows us to insert probes into (almost) arbitrary code addresses within kernel memory. Kprobes work by inserting a breakpoint instruction at the specified address. Once the breakpoint is hit, control passes to the Kprobes system, which then executes the handler function(s) defined by the user as well as the original instruction. Besides being great for function tracing, KProbes can be used to implement rootkit-like functionality such as file hiding.
 
@@ -387,7 +486,7 @@ Jprobes and Kretprobes are additional probe types based on Kprobes that allow ho
 
 Unfortunately, the stock Android kernel comes without loadable module support, which is a problem given that Kprobes are usually deployed as kernel modules. Another issue is that the Android kernel is compiled with strict memory protection which prevents patching some parts of Kernel memory. Using Elfmaster’s system call hooking method (5) results in a Kernel panic on default Lolllipop and Marshmallow due to sys_call_table being non-writable. We can however use Kprobes on a sandbox by compiling our own, more lenient Kernel (more on this later).
 
-#### Emulation-based Analysis
+##### Emulation-based Analysis
 
 Even in its standard form that ships with the Android SDK, the Android emulator – a.k.a. “emulator” - is a somewhat capable reverse engineering tool. It is based on QEMU, a generic and open source machine emulator. QEMU emulates a guest CPU by translating the guest instructions on-the-fly into instructions the host processor can understand. Each basic block of guest instructions is disassembled and translated into an intermediate representation called Tiny Code Generator (TCG). The TCG block is compiled into a block of host instructions, stored into a code cache, and executed. After execution of the basic block has completed, QEMU repeats the process for the next block of guest instructions (or loads the already translated block from the cache). The whole process is called dynamic binary translation.
 
@@ -401,407 +500,32 @@ Unfortunately, it is not possible to generate a complete guest instruction trace
 
 Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to provide more complete tracing functionality. PANDA/PANDROID is your best if you’re going for a CPU-trace based analysis, as it allows you to easily record and replay a full trace, and is relatively easy to set up if you follow the build instructions for Ubuntu.
 
-#### Customizing Android
+###### DroidScope
 
-Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
+DroidScope [11] - an extension to the DECAF dynamic analysis framework [12] - is a malware analysis engine based on QEMU. It adds instrumentation on several levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java level.
 
-##### Preparing a Development Environment
+DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls or Java method calls.
 
-To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
+All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
 
-https://developer.android.com/develop/index.html
+###### PANDA
 
-You’ll also need the Android NDK for compiling anything that creates native code. The NDK contains prebuilt toolchains for cross-compiling native code for different architectures. The NDK is available as a separate download:
-https://developer.android.com/ndk/downloads/index.html
+PANDA [13] is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
 
-After you downloaded the SDK, create a standalone toolchain for Android Lollipop (API 21):
+PANDA comes with some pre-made plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository and build PANDA as follows:
 
-```bash
-$ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
-```
+~~~
+$ cd qemu
+$ ./configure --target-list=arm-softmmu --enable-android $ makee
+~~~
 
-##### Customizing the RAMDisk
+As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo.
 
-The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
-For our purposes, the most important settings in default.prop are ro.debuggable and ro.secure.
+##### VxStripper
 
-```bash
-$ cat /default.prop                                         
-#
-# ADDITIONAL_DEFAULT_PROPERTIES
-#
-ro.secure=1
-ro.allow.mock.location=0
-ro.debuggable=1
-ro.zygote=zygote32
-persist.radio.snapshot_enabled=1
-persist.radio.snapshot_timer=2
-persist.radio.use_cc_names=true
-persist.sys.usb.config=mtp
-rild.libpath=/system/lib/libril-qc-qmi-1.so
-camera.disable_zsl_mode=1
-ro.adb.secure=1
-dalvik.vm.dex2oat-Xms=64m
-dalvik.vm.dex2oat-Xmx=512m
-dalvik.vm.image-dex2oat-Xms=64m
-dalvik.vm.image-dex2oat-Xmx=64m
-ro.dalvik.vm.native.bridge=0
-```
+Another very useful tool built on QEMU is VxStripper by Sébastien Josse [14]. VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation, and recompiles the simplified binary using LLVM. This is a very powerful way of normalizing obfuscated programs. See Sébastien's paper [15] for more information.
 
-Setting ro.debuggable to 1 causes all apps running on the system to be debuggable (i.e., the debugger thread runs in every process), independent of the android:debuggable attribute in the app’s Manifest. Setting ro.secure to 0 causes adbd to be run as root.
-To modify initrd on any Android device, back up the original boot image using TWRP, or simply dump it with a command like:
-
-```bash
-$ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
-$ adb pull /mnt/sdcard/boot.img /tmp/boot.img
-```
-
-Use the abootimg tool as described in Krzysztof Adamski’s how-to to extract the contents of the boot image:
-
-```bash
-$ mkdir boot
-$ cd boot
-$ ../abootimg -x /tmp/boot.img
-$ mkdir initrd
-$ cd initrd
-$ cat ../initrd.img | gunzip | cpio -vid
-```
-
-Take note of the boot parameters written to bootimg.cfg – you will need to these parameters later when booting your new kernel and ramdisk.
-
-```bash
-$ ~/Desktop/abootimg/boot$ cat bootimg.cfg
-bootsize = 0x1600000
-pagesize = 0x800
-kerneladdr = 0x8000
-ramdiskaddr = 0x2900000
-secondaddr = 0xf00000
-tagsaddr = 0x2700000
-name =
-cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1
-```
-
-Modify default.prop and package your new ramdisk:
-
-```bash
-$ cd initrd
-$ find . | cpio --create --format='newc' | gzip > ../myinitd.img
-```
-
-##### Customizing the Android Kernel
-
-The Android kernel is a powerful ally to the reverse engineer. While regular Android apps are hopelessly restricted and sandboxed, you - the reverser - can customize and alter the behavior of the operating system and kernel any way you wish. This gives you a really unfair advantage, because most integrity checks and anti-tampering features ultimately rely on services performed by the kernel. Deploying a kernel that abuses this trust, and unabashedly lies about itself and the environment, goes a long way in defeating most reversing defenses that malware authors (or normal developers) can throw at you.
-
-Android apps have several ways of interacting with the OS environment. The standard way is through the APIs of the Android Application Framework. On the lowest level however, many important functions, such as allocating memory and accessing files, are translated into perfectly old-school Linux system calls. In ARM Linux, system calls are invoked via the SVC instruction which triggers a software interrupt. This interrupt calls the vector_swi() kernel function, which then uses the system call number as an offset into a table of function pointers (a.k.a. sys_call_table on Android).
-
-The most straightforward way of intercepting system calls is injecting your own code into kernel memory, then overwriting the original function in the system call table to redirect execution. Unfortunately, current stock Android kernels enforce memory restrictions that prevent this from working. Specifically, stock Lollipop and Marshmallow kernel are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel memory regions marked as read-only, which means that any attempts to patch kernel code or the system call table result in a segmentation fault and reboot. A way to get around this is to build your own kernel: You can then deactivate this protection, and make many other useful customizations to make reverse engineering easier. If you're reversing Android apps on a regular basis, building your own reverse engineering sandbox is a no-brainer.
-
-For hacking purposes, I recommend using an AOSP-supported device. Google’s Nexus smartphones and tablets are the most logical candidates – kernels and system components built from the AOSP run on them without issues. Alternatively, Sony’s Xperia series is also known for its openness. To build the AOSP kernel you need a toolchain (set of programs to cross-compile the sources) as well as the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
-
-https://source.android.com/source/building-kernels.html#id-version
-
-For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the "msm" repo and check out one the "android-msm-hammerhead" branch (hammerhead is the codenam” of the Nexus 5, and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
-
-```bash
-$ git clone https://android.googlesource.com/kernel/msm.git
-$ cd msm
-$ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ make hammerhead_defconfig
-$ vim .config
-```
-
-I recommend using the following settings to enable the most important tracing facilities, add loadable module support, and open up kernel memory for patching.
-
-```
-CONFIG_MODULES=Y
-CONFIG_STRICT_MEMORY_RWX=N
-CONFIG_DEVMEM=Y
-CONFIG_DEVKMEM=Y
-CONFIG_KALLSYMS=Y
-CONFIG_KALLSYMS_ALL=Y
-CONFIG_HAVE_KPROBES=Y
-CONFIG_HAVE_KRETPROBES=Y
-CONFIG_HAVE_FUNCTION_TRACER=Y
-CONFIG_HAVE_FUNCTION_GRAPH_TRACER=Y
-CONFIG_TRACING=Y
-CONFIG_FTRACE=Y
-CONFIG KDB=Y
-```
-
-Once you are finished editing save the .config file and build the kernel.
-
-```bash
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
-$ make
-```
-
-Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android 5.1, run make-standalone-toolchain.sh from the Android NDK package as follows:
-
-```bash
-$ cd android-ndk-rXXX
-$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
-```
-
-Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
-the kernel.
-
-```bash
-$ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
-$ make
-```
-
-##### Booting the Custom Environment
-
-Before booting into the new Kernel, make a copy of the original boot image from your device. Look up the location of the boot partition as follows:
-
-```bash
-root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/         
-lrwxrwxrwx root     root              1970-08-30 22:31 DDR -> /dev/block/mmcblk0p24
-lrwxrwxrwx root     root              1970-08-30 22:31 aboot -> /dev/block/mmcblk0p6
-lrwxrwxrwx root     root              1970-08-30 22:31 abootb -> /dev/block/mmcblk0p11
-lrwxrwxrwx root     root              1970-08-30 22:31 boot -> /dev/block/mmcblk0p19
-(...)
-lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mmcblk0p28
-```
-
-Then, dump the whole thing into a file:
-
-```bash
-$ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
-$ adb pull /data/local/tmp/boot.img
-```
-
-Next, extract the ramdisk as well as some information about the structure of the boot image. There are various tools that can do this - I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
-
-```bash
-$ abootimg -x boot.img
-```
-
-This should create the files bootimg.cfg, initrd.img and zImage (your original kernel) in the local directory.
-
-You can now use fastboot to test the new kernel. The "fastboot boot" command allows you to run the kernel without actually flashing it (once you’re sure everything works, you can make the changes permanent with fastboot flash - but you don't have to). Restart the device in fastboot mode with the following command:
-
-```bash
-$ adb reboot bootloader
-```
-
-Then, use the "fastboot boot" command to boot Android with the new kernel. In addition to the newly built kernel and the original ramdisk, specify the kernel offset, ramdisk offset, tags offset and commandline (use the values listed in your previously extracted bootimg.cfg).
-
-```bash
-$ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
-```
-
-The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
-
-![Disassembly of function main.](Images/Chapters/0x05c/custom_kernel.jpg)
-
-##### System Call Hooking Using Kernel Modules
-
-System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
-
-![Disassembly of function main.](Images/Chapters/0x05c/syscall_hooking.jpg)
-
-The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
-
-```bash
-$ adb shell "su -c echo 0 > /proc/sys/kernel/kptr_restrict"
-$ adb shell cat /proc/kallsyms | grep sys_call_table
-c000f984 T sys_call_table
-```
-
-This is the only memory address we need for writing our kernel module - everything else can be calculated using offsets taken from the Kernel headers (hopefully you didn't delete them yet?).
-
-###### Example: File Hiding
-
-In this howto, we're going to use a Kernel module to hide a file. Let's create a file on the device so we can hide it later:
-
-```bash
-$ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
-$ adb shell cat /data/local/tmp/nowyouseeme
-ABCD
-```bash
-
-Finally it's time to write the kernel module. For file hiding purposes, we'll need to hook one of the system calls used to open (or check for the existence of) files. Actually, there many of those - open, openat, access, accessat, facessat, stat, fstat, and more. For now, we'll only hook the openat system call - this is the syscall used by the "/bin/cat" program when accessing a file, so it should be servicable enough for a demonstration.
-
-You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
-
-```c
-#include <linux/kernel.h>
-#include <linux/module.h>
-#include <linux/moduleparam.h>
-#include <linux/unistd.h>
-#include <linux/slab.h>
-#include <asm/uaccess.h>
-
-asmlinkage int (*real_openat)(int, const char __user*, int);
-
-void **sys_call_table;
-
-int new_openat(int dirfd, const char \__user* pathname, int flags)
-{
-  char *kbuf;
-  size_t len;
-
-  kbuf=(char*)kmalloc(256,GFP_KERNEL);
-  len = strncpy_from_user(kbuf,pathname,255);
-
-  if (strcmp(kbuf, "/data/local/tmp/nowyouseeme") == 0) {
-    printk("Hiding file!\n");
-    return -ENOENT;
-  }
-
-  kfree(kbuf);
-
-  return real_openat(dirfd, pathname, flags);
-}
-
-int init_module() {
-
-  sys_call_table = (void*)0xc000f984;
-  real_openat = (void*)(sys_call_table[__NR_openat]);
-
-return 0;
-
-}
-```
-
-To build the kernel module, you need the kernel sources and a working toolchain - since you already built a complete kernel before, you are all set. Create a Makefile with the following content:
-
-```make
-KERNEL=[YOUR KERNEL PATH]
-TOOLCHAIN=[YOUR TOOLCHAIN PATH]
-
-obj-m := kernel_hook.o
-
-all:
-        make ARCH=arm CROSS_COMPILE=$(TOOLCHAIN)/bin/arm-eabi- -C $(KERNEL) M=$(shell pwd) CFLAGS_MODULE=-fno-pic modules
-
-clean:
-        make -C $(KERNEL) M=$(shell pwd) clean
-```
-
-Run "make" to compile the code – this should create the file kernel_hook.ko. Copy the kernel_hook.ko file to the device and load it with the insmod command. Verify with the lsmod command that the module has been loaded successfully.
-
-```bash
-$ make
-(...)
-$ adb push kernel_hook.ko /data/local/tmp/
-[100%] /data/local/tmp/kernel_hook.ko
-$ adb shell su -c insmod /data/local/tmp/kernel_hook.ko
-$ adb shell lsmod
-kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
-```
-
-Now, we’ll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of our newly injected function (this could have been done directly in the kernel module as well, but using /dev/kmem gives us an easy way to toggle our hooks on and off). I have adapted the code from Dong-Hoon You’s Phrack article [1] for this purpose - however, I used the file interface instead of mmap(), as I found the latter to cause kernel panics for some reason. Create a file called kmem_util.c with the following code:
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <asm/unistd.h>
-#include <sys/mman.h>
-
-#define MAP_SIZE 4096UL
-#define MAP_MASK (MAP_SIZE - 1)
-
-int kmem;
-void read_kmem2(unsigned char *buf, off_t off, int sz)
-{
-  off_t offset; ssize_t bread;
-  offset = lseek(kmem, off, SEEK_SET);
-  bread = read(kmem, buf, sz);
-  return;
-}
-
-void write_kmem2(unsigned char *buf, off_t off, int sz) {
-  off_t offset; ssize_t written;
-  offset = lseek(kmem, off, SEEK_SET);
-  if (written = write(kmem, buf, sz) == -1) { perror("Write error");
-    exit(0);
-  }
-  return;
-}
-
-int main(int argc, char *argv[]) {
-
-  off_t sys_call_table;
-  unsigned int addr_ptr, sys_call_number;
-
-  if (argc < 3) {
-    return 0;
-  }
-
-  kmem=open("/dev/kmem",O_RDWR);
-
-  if(kmem<0){
-    perror("Error opening kmem"); return 0;
-  }
-
-  sscanf(argv[1], "%x", &sys_call_table); sscanf(argv[2], "%d", &sys_call_number);
-  sscanf(argv[3], "%x", &addr_ptr); char buf[256];
-  memset (buf, 0, 256); read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
-  printf("Original value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);       
-  write_kmem2((void*)&addr_ptr,sys_call_table+(sys_call_number*4),4);
-  read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
-  printf("New value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);
-  close(kmem);
-
-  return 0;
-}
-```
-
-Build kmem_util.c using the prebuilt toolchain and copy it to the device. Note that from Android Lollipop, all executables must be compiled with PIE support:
-
-```bash
-$ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
-$ adb push kmem_util /data/local/tmp/
-$ adb shell chmod 755 /data/local/tmp/kmem_util
-```
-
-Before we start messing with kernel memory we still need to know the correct offset into the system call table. The openat system call is defined in unistd.h which is found in the kernel sources:
-
-```bash
-$ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
-#define __NR_openat            (__NR_SYSCALL_BASE+322)
-```
-
-The final piece of the puzzle is the address of our replacement-openat. Again, we can get this address from /proc/kallsyms.
-
-```bash
-$ adb shell cat /proc/kallsyms | grep new_openat
-bf000000 t new_openat    [kernel_hook]
-```
-
-Now we have everything we need to overwrite the sys_call_table entry. The syntax for kmem_util is:
-
-```bash
-./kmem_util <syscall_table_base_address> <offset> <func_addr>
-```
-
-The following command patches the openat system call table to point to our new function.
-
-```bash
-$ adb shell su -c /data/local/tmp/kmem_util c000f984 322 bf000000
-Original value: c017a390
-New value: bf000000
-```
-
-Assuming that everything worked, /bin/cat should now be unable to "see" the file.
-
-```bash
-$ adb shell su -c cat /data/local/tmp/nowyouseeme
-tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
-```
-
-Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all usermode processes (note that there's a lot more you need to do to properly hide a file, including hooking stat(), access(), and other system calls, as well as hiding the file in directory listings).
-
-File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [x]
-
-### Automating Binary Analysis Tasks
+### Binary Analysis Frameworks
 
 Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
@@ -819,10 +543,10 @@ It is recommended to create a dedicated virtual environment with Virtualenv as s
 
 Quite comprehensive documentation for angr is available on Gitbooks, including an installation guide, tutorials and usage examples [5]. A complete API reference is also available [6].
 
-##### Using the Disassembler Backends
+#### Using the Disassembler Backends
 
 <a name="symbolicexec"></a>
-##### Symbolic Execution
+#### Symbolic Execution
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It does this by translating the program’s semantics into a logical formula, whereby some variables are represented as symbols with specific constraints. By resolving the constraints, you can find out the conditions necessary so that some branch of the program gets executed.
 
@@ -1012,6 +736,396 @@ WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-i
 JQAE6ACMABNAAIIA
 ```
 
+### Customizing Android for Reverse Engineering
+
+Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
+
+#### Preparing a Development Environment
+
+
+
+#### Customizing the RAMDisk
+
+The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
+For our purposes, the most important settings in default.prop are ro.debuggable and ro.secure.
+
+```bash
+$ cat /default.prop                                         
+#
+# ADDITIONAL_DEFAULT_PROPERTIES
+#
+ro.secure=1
+ro.allow.mock.location=0
+ro.debuggable=1
+ro.zygote=zygote32
+persist.radio.snapshot_enabled=1
+persist.radio.snapshot_timer=2
+persist.radio.use_cc_names=true
+persist.sys.usb.config=mtp
+rild.libpath=/system/lib/libril-qc-qmi-1.so
+camera.disable_zsl_mode=1
+ro.adb.secure=1
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+ro.dalvik.vm.native.bridge=0
+```
+
+Setting ro.debuggable to 1 causes all apps running on the system to be debuggable (i.e., the debugger thread runs in every process), independent of the android:debuggable attribute in the app’s Manifest. Setting ro.secure to 0 causes adbd to be run as root.
+To modify initrd on any Android device, back up the original boot image using TWRP, or simply dump it with a command like:
+
+```bash
+$ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
+$ adb pull /mnt/sdcard/boot.img /tmp/boot.img
+```
+
+Use the abootimg tool as described in Krzysztof Adamski’s how-to to extract the contents of the boot image:
+
+```bash
+$ mkdir boot
+$ cd boot
+$ ../abootimg -x /tmp/boot.img
+$ mkdir initrd
+$ cd initrd
+$ cat ../initrd.img | gunzip | cpio -vid
+```
+
+Take note of the boot parameters written to bootimg.cfg – you will need to these parameters later when booting your new kernel and ramdisk.
+
+```bash
+$ ~/Desktop/abootimg/boot$ cat bootimg.cfg
+bootsize = 0x1600000
+pagesize = 0x800
+kerneladdr = 0x8000
+ramdiskaddr = 0x2900000
+secondaddr = 0xf00000
+tagsaddr = 0x2700000
+name =
+cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1
+```
+
+Modify default.prop and package your new ramdisk:
+
+```bash
+$ cd initrd
+$ find . | cpio --create --format='newc' | gzip > ../myinitd.img
+```
+
+#### Customizing the Android Kernel
+
+The Android kernel is a powerful ally to the reverse engineer. While regular Android apps are hopelessly restricted and sandboxed, you - the reverser - can customize and alter the behavior of the operating system and kernel any way you wish. This gives you a really unfair advantage, because most integrity checks and anti-tampering features ultimately rely on services performed by the kernel. Deploying a kernel that abuses this trust, and unabashedly lies about itself and the environment, goes a long way in defeating most reversing defenses that malware authors (or normal developers) can throw at you.
+
+Android apps have several ways of interacting with the OS environment. The standard way is through the APIs of the Android Application Framework. On the lowest level however, many important functions, such as allocating memory and accessing files, are translated into perfectly old-school Linux system calls. In ARM Linux, system calls are invoked via the SVC instruction which triggers a software interrupt. This interrupt calls the vector_swi() kernel function, which then uses the system call number as an offset into a table of function pointers (a.k.a. sys_call_table on Android).
+
+The most straightforward way of intercepting system calls is injecting your own code into kernel memory, then overwriting the original function in the system call table to redirect execution. Unfortunately, current stock Android kernels enforce memory restrictions that prevent this from working. Specifically, stock Lollipop and Marshmallow kernel are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel memory regions marked as read-only, which means that any attempts to patch kernel code or the system call table result in a segmentation fault and reboot. A way to get around this is to build your own kernel: You can then deactivate this protection, and make many other useful customizations to make reverse engineering easier. If you're reversing Android apps on a regular basis, building your own reverse engineering sandbox is a no-brainer.
+
+For hacking purposes, I recommend using an AOSP-supported device. Google’s Nexus smartphones and tablets are the most logical candidates – kernels and system components built from the AOSP run on them without issues. Alternatively, Sony’s Xperia series is also known for its openness. To build the AOSP kernel you need a toolchain (set of programs to cross-compile the sources) as well as the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
+
+https://source.android.com/source/building-kernels.html#id-version
+
+For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the "msm" repo and check out one the "android-msm-hammerhead" branch (hammerhead is the codenam” of the Nexus 5, and yes, finding the right branch is a confusing process). Once the sources are downloaded, create the default kernel config with the command make hammerhead_defconfig (or whatever_defconfig, depending on your target device).
+
+```bash
+$ git clone https://android.googlesource.com/kernel/msm.git
+$ cd msm
+$ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
+$ export ARCH=arm
+$ export SUBARCH=arm
+$ make hammerhead_defconfig
+$ vim .config
+```
+
+I recommend using the following settings to enable the most important tracing facilities, add loadable module support, and open up kernel memory for patching.
+
+```
+CONFIG_MODULES=Y
+CONFIG_STRICT_MEMORY_RWX=N
+CONFIG_DEVMEM=Y
+CONFIG_DEVKMEM=Y
+CONFIG_KALLSYMS=Y
+CONFIG_KALLSYMS_ALL=Y
+CONFIG_HAVE_KPROBES=Y
+CONFIG_HAVE_KRETPROBES=Y
+CONFIG_HAVE_FUNCTION_TRACER=Y
+CONFIG_HAVE_FUNCTION_GRAPH_TRACER=Y
+CONFIG_TRACING=Y
+CONFIG_FTRACE=Y
+CONFIG KDB=Y
+```
+
+Once you are finished editing save the .config file and build the kernel.
+
+```bash
+$ export ARCH=arm
+$ export SUBARCH=arm
+$ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
+$ make
+```
+
+Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android 5.1, run make-standalone-toolchain.sh from the Android NDK package as follows:
+
+```bash
+$ cd android-ndk-rXXX
+$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+```
+
+Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
+the kernel.
+
+```bash
+$ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
+$ make
+```
+
+#### Booting the Custom Environment
+
+Before booting into the new Kernel, make a copy of the original boot image from your device. Look up the location of the boot partition as follows:
+
+```bash
+root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/         
+lrwxrwxrwx root     root              1970-08-30 22:31 DDR -> /dev/block/mmcblk0p24
+lrwxrwxrwx root     root              1970-08-30 22:31 aboot -> /dev/block/mmcblk0p6
+lrwxrwxrwx root     root              1970-08-30 22:31 abootb -> /dev/block/mmcblk0p11
+lrwxrwxrwx root     root              1970-08-30 22:31 boot -> /dev/block/mmcblk0p19
+(...)
+lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mmcblk0p28
+```
+
+Then, dump the whole thing into a file:
+
+```bash
+$ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
+$ adb pull /data/local/tmp/boot.img
+```
+
+Next, extract the ramdisk as well as some information about the structure of the boot image. There are various tools that can do this - I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
+
+```bash
+$ abootimg -x boot.img
+```
+
+This should create the files bootimg.cfg, initrd.img and zImage (your original kernel) in the local directory.
+
+You can now use fastboot to test the new kernel. The "fastboot boot" command allows you to run the kernel without actually flashing it (once you’re sure everything works, you can make the changes permanent with fastboot flash - but you don't have to). Restart the device in fastboot mode with the following command:
+
+```bash
+$ adb reboot bootloader
+```
+
+Then, use the "fastboot boot" command to boot Android with the new kernel. In addition to the newly built kernel and the original ramdisk, specify the kernel offset, ramdisk offset, tags offset and commandline (use the values listed in your previously extracted bootimg.cfg).
+
+```bash
+$ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
+```
+
+The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
+
+![Disassembly of function main.](Images/Chapters/0x05c/custom_kernel.jpg)
+
+#### System Call Hooking Using Kernel Modules
+
+System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
+
+![Disassembly of function main.](Images/Chapters/0x05c/syscall_hooking.jpg)
+
+The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
+
+```bash
+$ adb shell "su -c echo 0 > /proc/sys/kernel/kptr_restrict"
+$ adb shell cat /proc/kallsyms | grep sys_call_table
+c000f984 T sys_call_table
+```
+
+This is the only memory address we need for writing our kernel module - everything else can be calculated using offsets taken from the Kernel headers (hopefully you didn't delete them yet?).
+
+##### Example: File Hiding
+
+In this howto, we're going to use a Kernel module to hide a file. Let's create a file on the device so we can hide it later:
+
+```bash
+$ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
+$ adb shell cat /data/local/tmp/nowyouseeme
+ABCD
+```bash
+
+Finally it's time to write the kernel module. For file hiding purposes, we'll need to hook one of the system calls used to open (or check for the existence of) files. Actually, there many of those - open, openat, access, accessat, facessat, stat, fstat, and more. For now, we'll only hook the openat system call - this is the syscall used by the "/bin/cat" program when accessing a file, so it should be servicable enough for a demonstration.
+
+You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
+
+```c
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/moduleparam.h>
+#include <linux/unistd.h>
+#include <linux/slab.h>
+#include <asm/uaccess.h>
+
+asmlinkage int (*real_openat)(int, const char __user*, int);
+
+void **sys_call_table;
+
+int new_openat(int dirfd, const char \__user* pathname, int flags)
+{
+  char *kbuf;
+  size_t len;
+
+  kbuf=(char*)kmalloc(256,GFP_KERNEL);
+  len = strncpy_from_user(kbuf,pathname,255);
+
+  if (strcmp(kbuf, "/data/local/tmp/nowyouseeme") == 0) {
+    printk("Hiding file!\n");
+    return -ENOENT;
+  }
+
+  kfree(kbuf);
+
+  return real_openat(dirfd, pathname, flags);
+}
+
+int init_module() {
+
+  sys_call_table = (void*)0xc000f984;
+  real_openat = (void*)(sys_call_table[__NR_openat]);
+
+return 0;
+
+}
+```
+
+To build the kernel module, you need the kernel sources and a working toolchain - since you already built a complete kernel before, you are all set. Create a Makefile with the following content:
+
+```make
+KERNEL=[YOUR KERNEL PATH]
+TOOLCHAIN=[YOUR TOOLCHAIN PATH]
+
+obj-m := kernel_hook.o
+
+all:
+        make ARCH=arm CROSS_COMPILE=$(TOOLCHAIN)/bin/arm-eabi- -C $(KERNEL) M=$(shell pwd) CFLAGS_MODULE=-fno-pic modules
+
+clean:
+        make -C $(KERNEL) M=$(shell pwd) clean
+```
+
+Run "make" to compile the code – this should create the file kernel_hook.ko. Copy the kernel_hook.ko file to the device and load it with the insmod command. Verify with the lsmod command that the module has been loaded successfully.
+
+```bash
+$ make
+(...)
+$ adb push kernel_hook.ko /data/local/tmp/
+[100%] /data/local/tmp/kernel_hook.ko
+$ adb shell su -c insmod /data/local/tmp/kernel_hook.ko
+$ adb shell lsmod
+kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
+```
+
+Now, we’ll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of our newly injected function (this could have been done directly in the kernel module as well, but using /dev/kmem gives us an easy way to toggle our hooks on and off). I have adapted the code from Dong-Hoon You’s Phrack article [1] for this purpose - however, I used the file interface instead of mmap(), as I found the latter to cause kernel panics for some reason. Create a file called kmem_util.c with the following code:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <asm/unistd.h>
+#include <sys/mman.h>
+
+#define MAP_SIZE 4096UL
+#define MAP_MASK (MAP_SIZE - 1)
+
+int kmem;
+void read_kmem2(unsigned char *buf, off_t off, int sz)
+{
+  off_t offset; ssize_t bread;
+  offset = lseek(kmem, off, SEEK_SET);
+  bread = read(kmem, buf, sz);
+  return;
+}
+
+void write_kmem2(unsigned char *buf, off_t off, int sz) {
+  off_t offset; ssize_t written;
+  offset = lseek(kmem, off, SEEK_SET);
+  if (written = write(kmem, buf, sz) == -1) { perror("Write error");
+    exit(0);
+  }
+  return;
+}
+
+int main(int argc, char *argv[]) {
+
+  off_t sys_call_table;
+  unsigned int addr_ptr, sys_call_number;
+
+  if (argc < 3) {
+    return 0;
+  }
+
+  kmem=open("/dev/kmem",O_RDWR);
+
+  if(kmem<0){
+    perror("Error opening kmem"); return 0;
+  }
+
+  sscanf(argv[1], "%x", &sys_call_table); sscanf(argv[2], "%d", &sys_call_number);
+  sscanf(argv[3], "%x", &addr_ptr); char buf[256];
+  memset (buf, 0, 256); read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
+  printf("Original value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);       
+  write_kmem2((void*)&addr_ptr,sys_call_table+(sys_call_number*4),4);
+  read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
+  printf("New value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);
+  close(kmem);
+
+  return 0;
+}
+```
+
+Build kmem_util.c using the prebuilt toolchain and copy it to the device. Note that from Android Lollipop, all executables must be compiled with PIE support:
+
+```bash
+$ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
+$ adb push kmem_util /data/local/tmp/
+$ adb shell chmod 755 /data/local/tmp/kmem_util
+```
+
+Before we start messing with kernel memory we still need to know the correct offset into the system call table. The openat system call is defined in unistd.h which is found in the kernel sources:
+
+```bash
+$ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
+\#define __NR_openat            (__NR_SYSCALL_BASE+322)
+```
+
+The final piece of the puzzle is the address of our replacement-openat. Again, we can get this address from /proc/kallsyms.
+
+```bash
+$ adb shell cat /proc/kallsyms | grep new_openat
+bf000000 t new_openat    [kernel_hook]
+```
+
+Now we have everything we need to overwrite the sys_call_table entry. The syntax for kmem_util is:
+
+```bash
+./kmem_util <syscall_table_base_address> <offset> <func_addr>
+```
+
+The following command patches the openat system call table to point to our new function.
+
+```bash
+$ adb shell su -c /data/local/tmp/kmem_util c000f984 322 bf000000
+Original value: c017a390
+New value: bf000000
+```
+
+Assuming that everything worked, /bin/cat should now be unable to "see" the file.
+
+```bash
+$ adb shell su -c cat /data/local/tmp/nowyouseeme
+tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
+```
+
+Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all usermode processes (note that there's a lot more you need to do to properly hide a file, including hooking stat(), access(), and other system calls, as well as hiding the file in directory listings).
+
+File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [x]
+
+
 ### References
 
 - [1] Android SDK -
@@ -1030,6 +1144,10 @@ JQAE6ACMABNAAIIA
 - [14] VxStripper -
 - [15] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
 - [16] UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
+- [17] JAD - http://www.javadecompilers.com/jad
+- [18] Proycon - http://proycon.com/en/
+- [19] CFR - http://www.benf.org/other/cfr/
+- [20] APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
 - [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
 - [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 - [X] https://github.com/JesusFreke/smali

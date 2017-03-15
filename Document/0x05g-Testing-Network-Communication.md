@@ -225,7 +225,7 @@ Ensure, that the hostname and certificate is verified correctly. You can find a 
 
 #### OWASP MASVS
 
-V5.3: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
 #### CWE
 
@@ -302,44 +302,46 @@ The SSL pinning process should be implemented as described on the static analysi
 
 #### Overview
 
-[Provide a general description of the issue.]
+For sensitive applications, like banking apps, OWASP MASVS introduces "Defense in Depth" verification level [1]. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
+
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+Review the code and identify those parts of a code which refers to critical operations. Verify if it uses additional channels to perform such operation. Examples of additional verification channels are following:
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
+* token (e.g. RSA token, yubikey)
+* push notification (e.g. Google Prompt)
+* SMS
+* email
+* data from another website you had to visit/scan 
+* data from a physical letter or physical entry point (e.g.: data you receive only after signing a document at the office of a bank)
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+Identify all critical operations implemented in tested application (e.g. user enrollment, or account recovery, money transfer etc.). Ensure that each of critical operations, requires at least one additional channel (e.g. SMS, e-mail, token etc.). Verify if usage of such channel can be bypassed (e.g. turning off SMS confirmation without using any other channel).
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation. If you are going to implement additional factor to verify user's identity, you may consider usage of Infobip 2FA library [2], one-time passcodes via Google Authenticator [3].
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V5.5 "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-956 - Software Fault Patterns (SFPs) within the Channel Attack cluster
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] The Mobile Application Security Verification Standard - https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md
+- [2] Infobip 2FA library - https://2-fa.github.io/libraries/android-library.html
+- [3] Google Authenticator for Android - https://github.com/google/google-authenticator-android
+
 
