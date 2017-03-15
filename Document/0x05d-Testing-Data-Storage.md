@@ -452,7 +452,7 @@ Start the app and click into the input fields that ask for sensitive data. When 
 
 #### Remediation
 
-Many major versions of the Android operating system are still actively used. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
+Many major versions of the Android operating system are still actively used. On top of that several mobile phone manufacturers are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
 
