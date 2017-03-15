@@ -35,7 +35,9 @@ Jailbreaking methods vary across iOS versions. Best choice is to check if a [pub
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
 
 ### Preparing your first test environment
-Once you have your iOS device jailbroken and Cydia is installed, proceed as following:
+![Cydia Store](/Document/Images/Chapters/0x06b/cydia.png "Cydia Store")
+
+Once you have your iOS device jailbroken and Cydia is installed (as per screenshot), proceed as following:
 
 1. From Cydia install aptitude and openssh
 2. SSH to your iDevice
@@ -188,9 +190,11 @@ Let's look on how to bypass jailbreak detection using once again Damn Vulnerable
 After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
 You might also want to decompile the functions to see what they are doing and especially what do they return.
 
-( TODO - Screenshots ) 
+![Disassembling with Hopper](/Document/Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
+![Decompiling with Hopper](/Document/Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
 
 As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
+
 Let's inject cycript into our process (look for your PID with `top`):
 ```
 iOS8-jailbreak:~ root# cycript -p 12345
