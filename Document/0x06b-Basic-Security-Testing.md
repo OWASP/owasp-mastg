@@ -5,7 +5,7 @@ Vast majority of this tutorial is relevant to applications written mainly in Obj
 
 ### Setting Up Your Testing Environment
 
-**Requirements for iOS testing lab **
+**Requirements for iOS testing lab**
 Bare minimum is:
 - Laptop with admin rights, VirtualBox with Kali Linux
 - WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
@@ -179,8 +179,19 @@ Your main focus while performing static analysis would be:
 #### On Jailbroken Devices
 Once you have performed static analysis with `otool` and Hopper Disassembler or your favourite disassembler/decompiler you are ready to start the application and bypass any protections that will prevent you from performing security testing, like jailbreak detection or certificate pinning.
 
+##### Jailbreak Detection Methods
+Before jumping right into bypassing a jailbreak detection, let us first understand how developers try to detect if a given device is jailbroken [19].
+Most common detection methods can be divided into three main categories [14]:
+1. Checking for existence of common executables that are not present on non-JB device, e.g. `/bin/bash`
+2. Checking for system calls like:
+  - `fork()` - forbidden on non-JB devices
+  - `system(NULL)` - returns 0 on non-JB and 1 on JB devices
+3. Chceking if `cydia://` URL scheme is registered
+
+Note that sometimes developers will try to 'obfuscate' method or variable names used to detect the jailbreak. A very efficient method of bypassing jailbreak detection is to trace system call like `fopen` to understand what is going in low-level and then to find corresponding code in the source.  Refer to further sections on how to perform this.
+
 ##### Bypassing Jailbreak Detection
-Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following
+Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following:
 1. The application closes immediately without any notification
 2. There is a popup window indicating that the application won't run on a jailbroken device
 
@@ -416,7 +427,7 @@ PID  Name
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
 
 
-### Setting up Burp and Bypassing Certificate Pinning
+### Setting up Burp
 Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB. 
 
 The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface), as per screenshot.
@@ -425,6 +436,14 @@ The first step is to configure proxy of your burp to listen on all interfaces (a
 
 Then we can configure our iDevice to use our proxy in advanced wifi settings. 
 ![Setting up Proxy on iDevice](/Document/Images/Chapters/0x06b/setProxyiDevice.png "Setting up Burp Proxy")
+
+### Bypassing Certificate Pinning
+Certificate Pinning is a practice used to tighten security of TLS connection. 
+When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code. 
+This protects against two main attack scenarios:
+* Compromised CA issuing certificate for our domain to a third-party
+* Phishing attacks that would add a third-party root CA to device's trust store
 
 ### References
 
@@ -446,4 +465,5 @@ Then we can configure our iDevice to use our proxy in advanced wifi settings.
 * [16] Cydia Substrate  - http://www.cydiasubstrate.com
 * [17] Frida - http://frida.re
 * [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
+* [19] Jailbreak Detection Methods - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
 
