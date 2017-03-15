@@ -201,6 +201,7 @@ iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
 ```
+
 As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class. 
 ```
 cy# a=choose(JailbreakDetectionVC)
@@ -213,6 +214,8 @@ cy# a=choose(JailbreakDetectionVC)
 cy# [a[0] isJailbroken]
 True
 ```
+![The device is jailbroken](/Document/Images/Chapters/0x06b/deviceISjailbroken.png "The device is jailbroken")
+
 Hence you now understand why it's important to have your application in a desired state. 
 Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
 ```
@@ -220,6 +223,7 @@ cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
 ```
+![The device is NOT jailbroken](/Document/Images/Chapters/0x06b/deviceisNOTjailbroken.png "The device is NOT jailbroken")
 In this case we have bypassed Jailbreak detection of the application!
 
 Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
@@ -405,9 +409,22 @@ PID  Name
 499  Gadget
 ~~~
 
+![Frida on non-JB device](/Document/Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
+
 ##### Troubleshooting.
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
+
+
+### Setting up Burp and Bypassing Certificate Pinning
+Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB. 
+
+The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface), as per screenshot.
+
+![Setting up Burp Proxy](/Document/Images/Chapters/0x06b/setBurpProxy.png "Setting up Burp Proxy")
+
+Then we can configure our iDevice to use our proxy in advanced wifi settings. 
+![Setting up Proxy on iDevice](/Document/Images/Chapters/0x06b/setProxyiDevice.png "Setting up Burp Proxy")
 
 ### References
 
@@ -428,4 +445,5 @@ If something goes wrong (which it usually does), mismatches between the provisio
 * [15] The Mobile Application Hacker's Handbook -  Dominic Chell, Tyrone Erasmus, Shaun Colley
 * [16] Cydia Substrate  - http://www.cydiasubstrate.com
 * [17] Frida - http://frida.re
+* [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
 
