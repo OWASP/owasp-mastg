@@ -445,6 +445,17 @@ This protects against two main attack scenarios:
 * Compromised CA issuing certificate for our domain to a third-party
 * Phishing attacks that would add a third-party root CA to device's trust store
 
+If you think that you trust all root CAs, review the  [EFF's Observatory](https://www.eff.org/pl/observatory) and  [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf).
+
+The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. 
+There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
+- following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
+- during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
+- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
+- some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
+
+
+
 ### References
 
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
@@ -466,4 +477,4 @@ This protects against two main attack scenarios:
 * [17] Frida - http://frida.re
 * [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
 * [19] Jailbreak Detection Methods - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
-
+* [20] Bypassing OpenSSL Certificate Pinning -https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ 
