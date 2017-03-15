@@ -81,6 +81,21 @@ Typical workflow for iOS Application test is following:
 
 #### Without Source Code
 
+##### Folder structure
+System applications can be found in `/Applications`
+For all the rest you can use `installipa` to navigate to appropriate folders [14]:
+```
+iOS8-jailbreak:~ root# installipa -l
+me.scan.qrcodereader
+iOS8-jailbreak:~ root# installipa -i me.scan.qrcodereader
+Bundle: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C
+Application: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C/QR Reader.app
+Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB062C864E56
+```
+As you can see, there are three main directories: Bundle, Application and Data. The Application directory is just a subdir of Bundle.
+The static installer files are located in Application, whereas all user data resides in the Data directory.
+The random string in the URI is application's GUID, which will be different from installation to installation.
+
 ##### Recovering an IPA File From an Installed App
 
 ###### From Jailbroken devices
