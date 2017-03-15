@@ -453,7 +453,11 @@ There are some cases, though, where certificate pinning is more tricky to bypass
 - during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
 - sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
 - some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
+- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 
+Please refer to iOS Application Security by David Thiel for more detailed description of most-common techniques used to perform certificate pinning.
+
+To get more information on testing transport security, please refer to section 'Testing Network Communication' 
 
 
 ### References
