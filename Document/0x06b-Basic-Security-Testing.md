@@ -5,7 +5,7 @@ Vast majority of this tutorial is relevant to applications written mainly in Obj
 
 ### Setting Up Your Testing Environment
 
-**Requirements for iOS testing lab **
+**Requirements for iOS testing lab**
 Bare minimum is:
 - Laptop with admin rights, VirtualBox with Kali Linux
 - WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
@@ -35,7 +35,9 @@ Jailbreaking methods vary across iOS versions. Best choice is to check if a [pub
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
 
 ### Preparing your first test environment
-Once you have your iOS device jailbroken and Cydia is installed, proceed as following:
+![Cydia Store](/Document/Images/Chapters/0x06b/cydia.png "Cydia Store")
+
+Once you have your iOS device jailbroken and Cydia is installed (as per screenshot), proceed as following:
 
 1. From Cydia install aptitude and openssh
 2. SSH to your iDevice
@@ -78,6 +80,21 @@ Typical workflow for iOS Application test is following:
 #### With Source Code
 
 #### Without Source Code
+
+##### Folder structure
+System applications can be found in `/Applications`
+For all the rest you can use `installipa` to navigate to appropriate folders [14]:
+```
+iOS8-jailbreak:~ root# installipa -l
+me.scan.qrcodereader
+iOS8-jailbreak:~ root# installipa -i me.scan.qrcodereader
+Bundle: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C
+Application: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C/QR Reader.app
+Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB062C864E56
+```
+As you can see, there are three main directories: Bundle, Application and Data. The Application directory is just a subdir of Bundle.
+The static installer files are located in Application, whereas all user data resides in the Data directory.
+The random string in the URI is application's GUID, which will be different from installation to installation.
 
 ##### Recovering an IPA File From an Installed App
 
@@ -177,8 +194,19 @@ Your main focus while performing static analysis would be:
 #### On Jailbroken Devices
 Once you have performed static analysis with `otool` and Hopper Disassembler or your favourite disassembler/decompiler you are ready to start the application and bypass any protections that will prevent you from performing security testing, like jailbreak detection or certificate pinning.
 
+##### Jailbreak Detection Methods
+Before jumping right into bypassing a jailbreak detection, let us first understand how developers try to detect if a given device is jailbroken [19].
+Most common detection methods can be divided into three main categories [14]:
+1. Checking for existence of common executables that are not present on non-JB device, e.g. `/bin/bash`
+2. Checking for system calls like:
+  - `fork()` - forbidden on non-JB devices
+  - `system(NULL)` - returns 0 on non-JB and 1 on JB devices
+3. Chceking if `cydia://` URL scheme is registered
+
+Note that sometimes developers will try to 'obfuscate' method or variable names used to detect the jailbreak. A very efficient method of bypassing jailbreak detection is to trace system call like `fopen` to understand what is going in low-level and then to find corresponding code in the source.  Refer to further sections on how to perform this.
+
 ##### Bypassing Jailbreak Detection
-Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following
+Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following:
 1. The application closes immediately without any notification
 2. There is a popup window indicating that the application won't run on a jailbroken device
 
@@ -188,15 +216,18 @@ Let's look on how to bypass jailbreak detection using once again Damn Vulnerable
 After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
 You might also want to decompile the functions to see what they are doing and especially what do they return.
 
-( TODO - Screenshots ) 
+![Disassembling with Hopper](/Document/Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
+![Decompiling with Hopper](/Document/Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
 
 As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
+
 Let's inject cycript into our process (look for your PID with `top`):
 ```
 iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
 ```
+
 As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class. 
 ```
 cy# a=choose(JailbreakDetectionVC)
@@ -209,6 +240,8 @@ cy# a=choose(JailbreakDetectionVC)
 cy# [a[0] isJailbroken]
 True
 ```
+![The device is jailbroken](/Document/Images/Chapters/0x06b/deviceISjailbroken.png "The device is jailbroken")
+
 Hence you now understand why it's important to have your application in a desired state. 
 Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
 ```
@@ -216,6 +249,7 @@ cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
 ```
+![The device is NOT jailbroken](/Document/Images/Chapters/0x06b/deviceisNOTjailbroken.png "The device is NOT jailbroken")
 In this case we have bypassed Jailbreak detection of the application!
 
 Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
@@ -401,9 +435,43 @@ PID  Name
 499  Gadget
 ~~~
 
+![Frida on non-JB device](/Document/Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
+
 ##### Troubleshooting.
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
+
+
+### Setting up Burp
+Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB. 
+
+The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good tutorial on setting an iOS Device and Burp [22].
+
+
+### Bypassing Certificate Pinning
+Certificate Pinning is a practice used to tighten security of TLS connection. 
+When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code. 
+This protects against two main attack scenarios:
+* Compromised CA issuing certificate for our domain to a third-party
+* Phishing attacks that would add a third-party root CA to device's trust store
+
+The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. 
+There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
+- following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
+- during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
+- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
+- some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
+- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
+
+#### Recommendations
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. 
+[EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf). Use certificate pinning if you don't trust at least one of these CAs.
+
+If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [21]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
+
+To get more information on testing transport security, please refer to section 'Testing Network Communication' 
+
 
 ### References
 
@@ -424,4 +492,8 @@ If something goes wrong (which it usually does), mismatches between the provisio
 * [15] The Mobile Application Hacker's Handbook -  Dominic Chell, Tyrone Erasmus, Shaun Colley
 * [16] Cydia Substrate  - http://www.cydiasubstrate.com
 * [17] Frida - http://frida.re
-
+* [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
+* [19] Jailbreak Detection Methods - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
+* [20] Bypassing OpenSSL Certificate Pinning -https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ 
+* [21] iOS Application Security - David Thiel
+* [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
