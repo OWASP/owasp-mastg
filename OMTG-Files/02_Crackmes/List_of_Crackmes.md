@@ -4,7 +4,7 @@
 
 This app holds a secret inside. Can you find it?
 
-- Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. 
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
 ### Installation
@@ -21,7 +21,7 @@ $ adb install UnCrackable-Level1.apk
 
 This app holds a secret inside. Can you find it?
 
-- Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. 
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
 ### Installation
@@ -67,7 +67,7 @@ This app holds a secret inside. Can you find it?
 
 Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. The app will give you a hint when started.
 
-Bonus challenge: De-obfuscate the virtual machine!
+**Bonus challenge: De-obfuscate the virtual machine!**
 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
