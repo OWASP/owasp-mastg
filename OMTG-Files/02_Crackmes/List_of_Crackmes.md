@@ -11,7 +11,18 @@ This app holds a secret inside. Can you find it?
 
 - N/A
 
-## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
+## [UnCrackable for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
+
+This app holds a secret inside. Can you find it?
+
+- Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. 
+- Author: [Bernhard Mueller](https://github.com/b-mueller)
+
+### Solutions
+
+- N/A
+
+## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
 
 A shiny new app with no keygen available.
 
