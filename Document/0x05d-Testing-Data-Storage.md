@@ -967,7 +967,7 @@ Tools:
 
 #### Overview
 
-Apps that are processing or querying for sensitive information should ensure that they are running on a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
+Apps that are processing or querying sensitive information should ensure that they are running in a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
 
 * PIN or password set to unlock the device
 * Usage of a minimum Android OS version
@@ -978,7 +978,7 @@ Apps that are processing or querying for sensitive information should ensure tha
 
 #### Static Analysis
 
-In oder to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy need to be provided. The policy should define what checks are available and how they are enforced. For example one check could enforce that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
+In order to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy needs to be provided. The policy should define what checks are available and how they are enforced. For example one check could require that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
 
 The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
 
@@ -988,7 +988,7 @@ The dynamic analysis depends on the checks that are enforced by App and their ex
 
 #### Remediation
 
-Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanism to create security aware applications, that are able to enforce password policies or encryption of the device.
+Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
 
 
 #### References
