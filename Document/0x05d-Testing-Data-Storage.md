@@ -343,7 +343,8 @@ public static int wtf(...);
 
 #### Overview
 
-Different 3rd party services are available that can be embedded into the App to implement different features. This features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on it’s own and to reinvent the wheel.
+Different 3rd party services are available that can be embedded into the App to implement different features. These features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
+
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
 
 3rd party services are mostly implemented in two ways:
@@ -352,7 +353,7 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 #### Static Analysis
 
-Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the `AnroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also **OMTG-ENV-XXX**. When talking to developers it should be shared to them that it’s actually necessary to have a look at the diff on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
+Some 3rd party libraries can be automatically integrated into the App through a wizard within the IDE. The permissions set in the `AnroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also **OMTG-ENV-XXX**. When talking to developers it should be shared to them that it’s actually necessary to have a look at the differences on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
 
 The same thing applies when adding a library or SDK manually. The source code should be checked for API calls or functions provided by the 3rd party library or SDK. The applied code changes should be reviewed and it should be checked if available security best practices of the library and SDK are applied and used.
 
@@ -360,8 +361,8 @@ The libraries loaded into the project should be reviewed in order to identify wi
 
 #### Dynamic Analysis
 
-All requests made to the external service should be analyzed if any sensitive information is embedded into them.
-* Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII in a tracker or ad service.
+All requests made to external services should be analyzed if any sensitive information is embedded into them.
+* Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
 * When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 
 #### Remediation
@@ -392,7 +393,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 #### Overview
 
-When keying in data into input fields, the software keyboard automatically suggests what data the user might want to key in. This feature can be very useful in messaging Apps to write text messages more efficient. For input fields that are asking for sensitive information like passwords or credit card data the keyboard cache might disclose sensitive information already when the input field is selected. This feature should therefore be disabled for input fields that are asking for sensitive information.
+When keying in data into input fields, the software keyboard automatically suggests what data the user might want to key in. This feature can be very useful in messaging Apps to write text messages more efficiently. For input fields that are asking for sensitive information like passwords or credit card data the keyboard cache might disclose sensitive information already when the input field is selected. This feature should therefore be disabled for input fields that are asking for sensitive information.
 
 #### Static Analysis
 
@@ -447,11 +448,11 @@ Input fields that are asking for sensitive information need to be identified and
 
 #### Dynamic Analysis
 
-Start the app and click into the input fields that ask for sensitive data. When it's possible to get the menu to copy/paste data the functionality is not disabled for this input field.
+Start the app and click into the input fields that ask for sensitive data. When it is possible to get the menu to copy/paste data the functionality is not disabled for this input field.
 
 #### Remediation
 
-Many major versions of the Android operating system are still actively used and are outta there. On top of that several mobile phone manufactures are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
+Many major versions of the Android operating system are still actively used. On top of that several mobile phone manufacturers are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
 
