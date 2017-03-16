@@ -653,7 +653,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 #### Overview
 
-Sensitive data could be exposed if a user deliberately takes a screenshot of the application (containing sensitive data), or in the case of malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a bank application running on the device may reveal information about the user account, his credit, transactions and so on.
+Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a banking application running on the device may reveal information about the user account, his credit, transactions and so on.
 
 Masking of sensitive data when presented within an activity of an App should also be enforced to prevent disclosure and mitigate for example shoulder surfing.
 
@@ -689,7 +689,7 @@ Text fields should mask the input if sensitive information need to be keyed in.
 
 #### Remediation
 
-In order to prevent user or malicious applications to capture the screen of a specific activity, add the following code in the `my_app.java` activity file that you want to protect, and then call `setContentView`:
+In order to prevent a user or malicious applications to capture the screen of a specific activity, add the following code in the `my_app.java` activity file that you want to protect, and then call `setContentView`:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
