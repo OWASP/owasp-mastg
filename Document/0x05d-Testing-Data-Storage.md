@@ -720,17 +720,17 @@ Note that this would automatically prevent the user from taking a manual screens
 
 #### Overview
 
-When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifier, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
+When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifiers, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
 
 Besides a local backup, Android provides two ways for Apps to backup their data to the cloud:
-* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
+* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the user's Google Drive account.
 * Key/Value Backup (Backup API or Android Backup Service), which uploads the data to the Android Backup Service.
 
 #### Static Analysis
 
 ##### Local
 
-In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+In order to backup all your application data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -740,31 +740,31 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory after using it extensively.
+If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App data directory after using it extensively.
 
 
-Regardless of using either key/value or auto backup, it need to be identified:
+Regardless of using either key/value or auto backup, it needs to be identified:
 * what files are sent to the cloud (e.g. SharedPreferences),
 * if the files contain sensitive information,
 * if sensitive information is protected through encryption before sending it to the cloud.
 
 ##### Auto Backup
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Other Android version will be using key/value backup instead.
+When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
 
 ```xml
 android:fullBackupOnly
 ```
 
-Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
+Auto backup includes almost all of the App files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
 
 ##### Key/Value Backup
-To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
 ```
 
-To implement the key/value backup, either one of the following classes need to be extended:
+To implement the key/value backup, either one of the following classes needs to be extended:
 * BackupAgent
 * BackupAgentHelper
 
@@ -800,14 +800,14 @@ $ tar xvf mybackup.tar
 
 #### Remediation
 
-To prevent backing up the app's data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
+To prevent backing up the app data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
 
 Sensitive information should not be sent in clear text to the cloud. It should either be:
 
 * avoided to store the information in the first place or
-* encrypt the information in rest, before sending it to the cloud.
+* encrypt the information at rest, before sending it to the cloud.
 
-Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
+Files can also be excluded from Auto Backup, in case they should not be shared with Google Cloud, see [including files][e894a591].
 
 
 #### References
