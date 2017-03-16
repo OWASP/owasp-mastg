@@ -445,12 +445,8 @@ If something goes wrong (which it usually does), mismatches between the provisio
 ### Setting up Burp
 Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB. 
 
-The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface), as per screenshot.
+The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good tutorial on setting an iOS Device and Burp [22].
 
-![Setting up Burp Proxy](/Document/Images/Chapters/0x06b/setBurpProxy.png "Setting up Burp Proxy")
-
-Then we can configure our iDevice to use our proxy in advanced wifi settings. 
-![Setting up Proxy on iDevice](/Document/Images/Chapters/0x06b/setProxyiDevice.png "Setting up Burp Proxy")
 
 ### Bypassing Certificate Pinning
 Certificate Pinning is a practice used to tighten security of TLS connection. 
@@ -460,8 +456,6 @@ This protects against two main attack scenarios:
 * Compromised CA issuing certificate for our domain to a third-party
 * Phishing attacks that would add a third-party root CA to device's trust store
 
-If you think that you trust all root CAs, review the  [EFF's Observatory](https://www.eff.org/pl/observatory) and  [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf).
-
 The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. 
 There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
 - following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
@@ -470,7 +464,11 @@ There are some cases, though, where certificate pinning is more tricky to bypass
 - some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
 - sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 
-Please refer to iOS Application Security by David Thiel for more detailed description of most-common techniques used to perform certificate pinning.
+#### Recommendations
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. 
+[EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf). Use certificate pinning if you don't trust at least one of these CAs.
+
+If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [21]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
 To get more information on testing transport security, please refer to section 'Testing Network Communication' 
 
@@ -497,3 +495,5 @@ To get more information on testing transport security, please refer to section '
 * [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
 * [19] Jailbreak Detection Methods - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
 * [20] Bypassing OpenSSL Certificate Pinning -https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ 
+* [21] iOS Application Security - David Thiel
+* [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
