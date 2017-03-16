@@ -7,6 +7,12 @@ This app holds a secret inside. Can you find it?
 - Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
+### Installation
+
+```
+$ adb install UnCrackable-Level1.apk
+```
+
 ### Solutions
 
 - N/A
@@ -17,6 +23,12 @@ This app holds a secret inside. Can you find it?
 
 - Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+
+### Installation
+
+```
+$ adb install Uncrackable-Level2.apk
+```
 
 ### Solutions
 
