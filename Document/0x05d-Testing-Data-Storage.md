@@ -836,7 +836,7 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 
 #### Overview
 
-Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, from which it may be recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
 
 #### Static Analysis
 
@@ -860,7 +860,7 @@ During black-box testing, open any screen within the App that contains sensitive
 
 #### Remediation
 
-To prevent users or malicious applications access information from backgrounded applications use the `SECURE_FLAG` as shown below:
+To prevent users or malicious applications from accessing information from backgrounded applications use the `SECURE_FLAG` as shown below:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
