@@ -788,6 +788,31 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
 
+Some stuff - dumping process memory (TODO)
+
+```python
+\#! /usr/bin/env python
+import re
+import sys
+
+pid = sys.argv[1]
+startaddr = sys.argv[2]
+endaddr = sys.argv[3]
+
+mem_file = open("/proc/" + pid + "/mem", 'r', 0)
+out_file = open("./" + pid + "_" + startaddr + "-" + endaddr + ".dump", 'w')
+
+start = int(startaddr, 16)
+end = int(endaddr, 16)
+mem_file.seek(start)
+chunk = mem_file.read(end - start)
+
+out_file.write(chunk)
+
+mem_file.close()
+out_file.close()
+```
+
 #### Remediation
 
 [Describe the best practices that developers should follow to prevent this issue.]
