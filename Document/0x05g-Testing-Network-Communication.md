@@ -86,7 +86,12 @@ Static analysis is not applicable for this point.
 
 After identifying all servers communicating with your application (e.g. using Tcpdump, or Burp Suite) you should verify if a server/-s allow for using weak cipher/protocol/key. It can be done, using different tools:
 
-* Qualys SSL Labs: put server's URL in the following online scanner https://www.ssllabs.com/ssltest/ and click submit.
+* testssl.sh: via following command:
+
+```
+testssl.sh www.example.com:443
+```
+
 * sslyze: via following command:
 
 ```
@@ -118,7 +123,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 
 ##### Tools
 
-* Qualys SSL Labs - https://www.ssllabs.com/ssltest/
+* testssl.sh- https://testssl.sh
 * sslyze - https://github.com/nabla-c0d3/sslyze
 
 ### Testing Endpoint Identify Verification
