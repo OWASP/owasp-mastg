@@ -8,6 +8,8 @@ However, there's also a few challenges you'll encounter. For example, if you're 
 
 You'll need a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these components inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
 
+Note that in the following sections we'll use the OWASP Mobile Testing Guide Crackmes [] as examples for demonstrating various reverse engineering techniques, so expect partial spoilers. We encourage you to have a crack at the challenges first before reading on!
+
 ### What You Need
 
 To get the development environment ready, simply download Google’s Android Studio. It comes with a SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Android Studio can be downloaded from the Android download page:
@@ -390,11 +392,16 @@ public class a {
 }
 ```
 
-It's simply standard AES-ECB! Now we are getting somewhere. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Bonus task: Decrypt the ciphertext and you get the secret value.
+Now we are getting somewhere: It's simply standard AES-ECB. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Bonus task: Decrypt the ciphertext and you get the secret value.
+
+That was almost too easy! Let's move on to the second challenge.
 
 #### Statically Analyzing Native Code
 
-TODO
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in  "UnCrackable for Android Level 2".
+
+
+
 
 #### Debugging and Tracing
 
