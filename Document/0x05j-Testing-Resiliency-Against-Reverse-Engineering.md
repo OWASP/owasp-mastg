@@ -791,7 +791,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 Some stuff - dumping process memory (TODO)
 
 ```python
-\#! /usr/bin/env python
+#! /usr/bin/env python
 import re
 import sys
 
