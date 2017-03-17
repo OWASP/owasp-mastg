@@ -1016,7 +1016,7 @@ Different checks on the Android device can be implemented by querying different 
 Educating users is a crucial part in the usage of mobile Apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
 
 The following list shows potential warnings or advises for a user when opening the App the first time and using it:
-* App shows after starting it is the first time a list of data is storing locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
+* App shows a list of data stored locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
 * If a new user account is created within the App it should show the user if the password provided is considered as secure and applies to best practice password policies.
 * If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
