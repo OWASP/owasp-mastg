@@ -15,7 +15,7 @@ $ adb install UnCrackable-Level1.apk
 
 ### Solutions
 
-- N/A
+- [Static Analysis in the Android Reverse Engineering Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-statically-analyzing-java-code)
 
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
