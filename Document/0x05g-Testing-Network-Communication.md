@@ -97,10 +97,20 @@ testssl.sh www.example.com:443
 ```
 sslyze --regular www.example.com:443
 ```
+* O-Saft (OWASP SSL Advanced Forensic Tool): can be run in GUI mode via command:
+
+```
+o-saft.tcl
+```
+or via command. There are multiple options, which can be specified here [2], but the most general one, verifying certificate, ciphers and SSL connection is the following:
+
+```
+perl o-saft.pl +check www.example.com:443
+```
 
 #### Remediation
 
-To properly configure transport layer protection for network communication, please follow the OWASP Transport Layer Protection cheat sheet [2].
+To properly configure transport layer protection for network communication, please follow the OWASP Transport Layer Protection cheat sheet [3].
 
 #### References
 
@@ -119,12 +129,14 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 ##### Info
 
 - [1] Testing for Weak SSL/TLS Ciphers - https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001)
-- [2] Transport Layer Protection Cheat Sheet - https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
+- [2] O-Saft various tests - https://www.owasp.org/index.php/O-Saft/Documentation#COMMANDS
+- [3] Transport Layer Protection Cheat Sheet - https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
 
 ##### Tools
 
 * testssl.sh- https://testssl.sh
 * sslyze - https://github.com/nabla-c0d3/sslyze
+* O-Saft - https://www.owasp.org/index.php/O-Saft
 
 ### Testing Endpoint Identify Verification
 
@@ -294,7 +306,7 @@ Black-box Testing can be performed by launching a MITM attack using your prefere
 
 #### Remediation
 
-The SSL pinning process should be implemented as described on the static analysis section. You may find helpful in implementing certificate pinning OWASP  guide [2].
+The SSL pinning process should be implemented as described on the static analysis section. For further information please check the OWASP certificate pinning guide [2].
 
 #### References
 
