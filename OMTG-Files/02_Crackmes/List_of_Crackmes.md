@@ -1,6 +1,6 @@
 # Android
 
-## [UnCrackable for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01/)
+## [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01/)
 
 This app holds a secret inside. Can you find it?
 
@@ -17,7 +17,7 @@ $ adb install UnCrackable-Level1.apk
 
 - N/A
 
-## [UnCrackable for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
+## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
 This app holds a secret inside. Can you find it?
 
@@ -61,7 +61,7 @@ Incorrect serial (wrong format).
 
 # iOS
 
-## [UnCrackable for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_01/)
+## [UnCrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_01/)
 
 This app holds a secret inside. Can you find it?
 
@@ -81,7 +81,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 - N/A
 
-## [UnCrackable for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_02/)
+## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_02/)
 
 This app holds a secret inside - and this time it won't be tampered with!
 
