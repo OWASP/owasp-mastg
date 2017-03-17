@@ -20,7 +20,7 @@ $ adb install UnCrackable-Level1.apk
 
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
-This app holds a secret inside. Can you find it?
+This app holds a secret inside. May include traces of native code.
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
@@ -37,7 +37,7 @@ $ adb install Uncrackable-Level2.apk
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
 
-A shiny new app with no keygen available.
+A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available! 
 
 - Objective: Generate a valid serial key that is accepted by this app.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
