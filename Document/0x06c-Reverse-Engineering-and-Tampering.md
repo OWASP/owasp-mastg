@@ -2,7 +2,11 @@
 
 ### Environment and Toolset
 
+-- TODO [Environment Overview] --
+
 #### XCode and iOS SDK
+
+-- TODO [Where to get XCode] --
 
 #### Utilities
 
@@ -20,7 +24,7 @@ Developing a jailbreak for any given version of iOS is not an easy endeavor. As 
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
--- TODO [A basic jailbreaking howto] --
+-- TODO [Jailbreaking howto] --
 
 #### Jailbreak Detection
 
@@ -28,13 +32,15 @@ Some apps attempt to detect whether the iOS device they're installed on is jailb
 
 The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. Also, MASVS L2 requires displaying a warning to the user, or terminate the app, when a jailbreak has been detected - the idea here is to inform users opting to jailbreak their device about the potential security implications (and not so much hindering determined reverse engineers).
 
-We'll revisit this topic in more detail in the chapter "Testing Resiliency Against Reverse Engineering".
+We'll revisit this topic in the chapter "Testing Resiliency Against Reverse Engineering".
 
 ### Reverse Engineering iOS Apps
 
+-- TODO [Overview] --
 
 #### Static Analysis
 
+-- TODO [Basic static analysis ] --
 
 #### Debugging
 
@@ -113,8 +119,6 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 }
 ~~~
 
-
-
 #### Cycript and Cynject
 
 Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
@@ -138,100 +142,8 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 (---TODO---)
 
-##### Example: Bypassing Jailbreak Detection
 
 
-~~~~
-import frida
-import sys
-
-try:
-	session = frida.get_usb_device().attach("Target Process")
-except frida.ProcessNotFoundError:
-	print "Failed to attach to the target process. Did you launch the app?"
-	sys.exit(0);
-
-script = session.create_script("""
-
-	// Handle fork() based check
-
-  var fork = Module.findExportByName("libsystem_c.dylib", "fork");
-
-	Interceptor.replace(fork, new NativeCallback(function () {
-		send("Intercepted call to fork().");
-	    return -1;
-	}, 'int', []));
-
-  var system = Module.findExportByName("libsystem_c.dylib", "system");
-
-	Interceptor.replace(system, new NativeCallback(function () {
-		send("Intercepted call to system().");
-	    return 0;
-	}, 'int', []));
-
-	// Intercept checks for Cydia URL handler
-
-	var canOpenURL = ObjC.classes.UIApplication["- canOpenURL:"];
-
-	Interceptor.attach(canOpenURL.implementation, {
-		onEnter: function(args) {
-		  var url = ObjC.Object(args[2]);
-		  send("[UIApplication canOpenURL:] " + path.toString());
-		  },
-		onLeave: function(retval) {
-			send ("canOpenURL returned: " + retval);
-	  	}
-
-	});		
-
-	// Intercept file existence checks via [NSFileManager fileExistsAtPath:]
-
-	var fileExistsAtPath = ObjC.classes.NSFileManager["- fileExistsAtPath:"];
-	var hideFile = 0;
-
-	Interceptor.attach(fileExistsAtPath.implementation, {
-		onEnter: function(args) {
-		  var path = ObjC.Object(args[2]);
-		  // send("[NSFileManager fileExistsAtPath:] " + path.toString());
-
-		  if (path.toString() == "/Applications/Cydia.app" || path.toString() == "/bin/bash") {
-		  	hideFile = 1;
-		  }
-		},
-		onLeave: function(retval) {
-			if (hideFile) {
-		  		send("Hiding jailbreak file...");MM
-				retval.replace(0);
-				hideFile = 0;
-			}
-
-			// send("fileExistsAtPath returned: " + retval);
-	  }
-	});
-
-
-	/* If the above doesn't work, you might want to hook low level file APIs as well
-
-		var openat = Module.findExportByName("libsystem_c.dylib", "openat");
-		var stat = Module.findExportByName("libsystem_c.dylib", "stat");
-		var fopen = Module.findExportByName("libsystem_c.dylib", "fopen");
-		var open = Module.findExportByName("libsystem_c.dylib", "open");
-		var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
-
-	*/
-
-""")
-
-def on_message(message, data):
-	if 'payload' in message:
-	  		print(message['payload'])
-
-script.on('message', on_message)
-script.load()
-sys.stdin.read()
-~~~~
-
-#### Patching and Repackaging iOS Apps
 
 
 

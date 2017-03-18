@@ -43,6 +43,101 @@ Attempt to open a Cydia URL:
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ~~~
 
+#### Bypassing Jailbreak Detection
+
+-- TODO [Bypass Methods] --
+
+
+~~~~python
+import frida
+import sys
+
+try:
+	session = frida.get_usb_device().attach("Target Process")
+except frida.ProcessNotFoundError:
+	print "Failed to attach to the target process. Did you launch the app?"
+	sys.exit(0);
+
+script = session.create_script("""
+
+	// Handle fork() based check
+
+  var fork = Module.findExportByName("libsystem_c.dylib", "fork");
+
+	Interceptor.replace(fork, new NativeCallback(function () {
+		send("Intercepted call to fork().");
+	    return -1;
+	}, 'int', []));
+
+  var system = Module.findExportByName("libsystem_c.dylib", "system");
+
+	Interceptor.replace(system, new NativeCallback(function () {
+		send("Intercepted call to system().");
+	    return 0;
+	}, 'int', []));
+
+	// Intercept checks for Cydia URL handler
+
+	var canOpenURL = ObjC.classes.UIApplication["- canOpenURL:"];
+
+	Interceptor.attach(canOpenURL.implementation, {
+		onEnter: function(args) {
+		  var url = ObjC.Object(args[2]);
+		  send("[UIApplication canOpenURL:] " + path.toString());
+		  },
+		onLeave: function(retval) {
+			send ("canOpenURL returned: " + retval);
+	  	}
+
+	});		
+
+	// Intercept file existence checks via [NSFileManager fileExistsAtPath:]
+
+	var fileExistsAtPath = ObjC.classes.NSFileManager["- fileExistsAtPath:"];
+	var hideFile = 0;
+
+	Interceptor.attach(fileExistsAtPath.implementation, {
+		onEnter: function(args) {
+		  var path = ObjC.Object(args[2]);
+		  // send("[NSFileManager fileExistsAtPath:] " + path.toString());
+
+		  if (path.toString() == "/Applications/Cydia.app" || path.toString() == "/bin/bash") {
+		  	hideFile = 1;
+		  }
+		},
+		onLeave: function(retval) {
+			if (hideFile) {
+		  		send("Hiding jailbreak file...");MM
+				retval.replace(0);
+				hideFile = 0;
+			}
+
+			// send("fileExistsAtPath returned: " + retval);
+	  }
+	});
+
+
+	/* If the above doesn't work, you might want to hook low level file APIs as well
+
+		var openat = Module.findExportByName("libsystem_c.dylib", "openat");
+		var stat = Module.findExportByName("libsystem_c.dylib", "stat");
+		var fopen = Module.findExportByName("libsystem_c.dylib", "fopen");
+		var open = Module.findExportByName("libsystem_c.dylib", "open");
+		var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
+
+	*/
+
+""")
+
+def on_message(message, data):
+	if 'payload' in message:
+	  		print(message['payload'])
+
+script.on('message', on_message)
+script.load()
+sys.stdin.read()
+~~~~
+
 #### Static Analysis
 
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
@@ -93,9 +188,33 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more.
 
-(...TODO...)
+-- TODO [Typical debugging defenses] --
 
 The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
+
+#### Bypassing Debugging Defenses
+
+-- TODO [Bypass techniques] --
+
+~~~c
+#import <substrate.h>
+
+#define PT_DENY_ATTACH 31
+
+static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
+
+
+static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
+	if (request == PT_DENY_ATTACH) {
+		request = -1;
+	}
+	return _ptraceHook(request,pid,addr,data);
+}
+
+%ctor {
+	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
+}
+~~~
 
 #### White-box Testing
 
@@ -103,13 +222,9 @@ The app should either actively prevent debuggers from attaching, or terminate wh
 
 #### Black-box Testing
 
-(... TODO ... testing in basic form vs. advanced defenses)
+-- TODO [Needs more detail] --
 
 Attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
-
-(TODO example)
-
-(TODO JDWP)
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 

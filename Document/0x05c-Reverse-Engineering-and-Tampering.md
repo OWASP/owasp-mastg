@@ -174,6 +174,7 @@ That was almost too easy! Let's move on to the second challenge.
 
 When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in  "UnCrackable for Android Level 2".
 
+-- TODO [Native Code] --
 
 ```
 package sg.vantagepoint.uncrackable2;
@@ -202,15 +203,17 @@ JDWP debugging is used to debug Java code executed by the Android Runtime (ART).
 
 The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
-TOOD ... command line JDB & native debugging ...
+-- TODO [Command line JDB intro] --
 
 ###### Debugging Using Decompiled Sources
 
 A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot.
 
+-- TODO [Debugging with IntelliJ] --
+
 ##### Debugging Native Code
 
-TODO
+-- TODO [Write introduction to debugging native code (UnCrackable 2)] --
 
 ##### Execution Tracing
 
@@ -410,6 +413,8 @@ To use Xposed, you first need to install the Xposed framework on a rooted device
 
 ##### Example: Bypassing Root Detection with XPosed
 
+-- TODO [Detailed Xposed tutorial] --
+
 Let's assume you're testing an app that is stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
 ```java
@@ -471,6 +476,8 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 #### Dynamic Instrumentation with FRIDA
 
+-- TODO [Detailed Frida tutorial] --
+
 Here are some more APIs FRIDA offers on Android:
 
 - Instantiate Java objects and call static and non-static class methods;
@@ -520,35 +527,6 @@ $ frida-ps -U
   936  com.android.systemui
 (...)
 ~~~
-
-##### Example: Bypassing Native Debugger Detection
-
-```python
-
-\#v0.1
- 
-import frida
-import sys
- 
-session = frida.get_remote_device().attach("com.example.targetapp")
- 
-script = session.create_script("""
- 
-var funcPtr = Module.findExportByName("libdvm.so", "_Z25dvmDbgIsDebuggerConnectedv");
-Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
-    return 0;
-}, 'int', []));
-""") 
-
-def on_message(message, data):
-    print(message)
- 
-script.on('message', on_message)
-script.load()
-sys.stdin.read()
-```
-
-
 
 ### Binary Analysis Frameworks
 
@@ -767,7 +745,7 @@ Working on real device has advantages especially for interactive, debugger-suppo
 
 #### Preparing a Development Environment
 
-
+-- TODO [Downloading SDK etc. (duplicate?)] --
 
 #### Customizing the RAMDisk
 
@@ -1153,7 +1131,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 
 ### References
 
-TODO: Sync with text
+-- TODO [Sync with text] --
 
 - [X] Android SDK -
 - [X] OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md

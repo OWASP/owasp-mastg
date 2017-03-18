@@ -170,22 +170,48 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Common Anti-JDWP-Debugging Methods
 
+-- TODO [Anti-JDWP] --
+
 **isDebuggerActive**
 
 **Messing with memory structures**
 
-
 ##### Common Anti-Native-Debugging Methods
-
 
 **Calling ptrace**
 
-
 **Fork/ptrace**
-
 
 **Breakpoint detection**
 
+##### Bypassing Debugger Detection
+
+-- TODO [Bypassing Debugger Detection] --
+
+```python
+
+\#v0.1
+ 
+import frida
+import sys
+ 
+session = frida.get_remote_device().attach("com.example.targetapp")
+ 
+script = session.create_script("""
+ 
+var funcPtr = Module.findExportByName("libdvm.so", "_Z25dvmDbgIsDebuggerConnectedv");
+Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
+    return 0;
+}, 'int', []));
+""") 
+
+def on_message(message, data):
+    print(message)
+ 
+script.on('message', on_message)
+script.load()
+sys.stdin.read()
+```
 
 #### White-box Testing
 
@@ -690,7 +716,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
 
-Some stuff - dumping process memory (TODO)
+-- TODO [Dumping process memory] --
 
 ```python
 #! /usr/bin/env python
