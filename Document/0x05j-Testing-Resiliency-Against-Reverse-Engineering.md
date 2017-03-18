@@ -1,105 +1,5 @@
 ## Testing Resiliency Against Reverse Engineering
 
-### Testing the Custom Keyboard
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
-
-##### OWASP MASVS
-
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
-
-##### CWE
-
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
-
-### Test Custom UI Elements
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
-
-##### OWASP MASVS
-
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
-
-##### CWE
-
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
-
 ### Testing Advanced Root Detection
 
 #### Overview
@@ -196,6 +96,16 @@ for (int i = 1; ; i = 0)
 
 Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM, as on stock Android builds, OTA updates use Google's public certificates [3].
 
+##### Bypassing Root-Detection
+
+You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
+
+1. Renaming binaries. For example, in some cases simply renaming the "su" binary to something else is enough to defeat root detection (try not to break your enviroment though!).
+2. Unmounting /proc to prevent reading of process lists etc.
+2. Using Frida or Xposed to hook APIs on the Java and native layers. By doing this, you can hide files and processes, hide the actual content of files, or return all kinds of bogus values the app requests;
+3. Hooking low-level APIs using Kernel modules.
+4. Patching the app to remove the checks.
+
 #### Static Analysis
 
 Check the original or decompiled source code for the presence of root detection mechanisms, and compare them against the following criteria:
@@ -212,14 +122,6 @@ To qualify as *advanced*, the root detection scheme should be constructed in a w
 Attempt to identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling all root detection mechanisms is your first step.
 
 Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one.
-
-You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
-
-1. Renaming binaries. For example, in some cases simply renaming the "su" binary to something else is enough to defeat root detection (try not to break your enviroment though!).
-2. Unmounting /proc to prevent reading of process lists etc.
-2. Using Frida or Xposed to hook APIs on the Java and native layers. By doing this, you can hide files and processes, hide the actual content of files, or return all kinds of bogus values the app requests;
-3. Hooking low-level APIs using Kernel modules.
-4. Patching the app to remove the checks.
 
 #### Remediation
 

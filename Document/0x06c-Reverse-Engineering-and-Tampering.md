@@ -20,52 +20,72 @@ Developing a jailbreak for any given version of iOS is not an easy endeavor. As 
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-(... TODO: Jailbreaking How-to ...)
+-- TODO [A basic jailbreaking howto] --
 
 #### Jailbreak Detection
 
-Many apps nowadays attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
+Some apps attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
 
 The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. Also, MASVS L2 requires displaying a warning to the user, or terminate the app, when a jailbreak has been detected - the idea here is to inform users opting to jailbreak their device about the potential security implications (and not so much hindering determined reverse engineers).
 
-Some typical Jailbreak detection techniques:
+We'll revisit this topic in more detail in the chapter "Testing Resiliency Against Reverse Engineering".
+
+### Reverse Engineering iOS Apps
 
 
-Check for the existence of files, such as:
-
-~~~
-/Library/MobileSubstrate/MobileSubstrate.dylib
-/Applications/Cydia.app
-/Library/MobileSubstrate/MobileSubstrate.dylib
-/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist
-~~~
+#### Static Analysis
 
 
-Write a file to the /private/ directory:
+#### Debugging
 
-~~~
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
 
-NSError *error;
-NSString *stringToBeWritten = @"This is a test.";
-[stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
-         encoding:NSUTF8StringEncoding error:&error];
-if(error==nil){
-   //Device is jailbroken
-   return YES;
- } else {
-   //Device is not jailbroken
-   [[NSFileManager defaultManager] removeItemAtPath:@"/private/jailbreak.txt" error:nil];
- }
+To obtain the executable mount the following DMG image:
 
 ~~~
-
-Attempt to open a Cydia URL:
-
-~~~
-if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
 ~~~
 
+You’ll find the debugserver executable in the /usr/bin/ directory on the mounted volume - copy it to a temporary directory. Then, create a file called entitlements.plist with the following content:
 
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.springboard.debugapplications</key>
+	<true/>
+	<key>run-unsigned-code</key>
+	<true/>
+	<key>get-task-allow</key>
+	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
+</dict>
+</plist>
+~~~
+
+And apply the entitlement with codesign:
+
+~~~
+codesign -s - --entitlements entitlements.plist -f debugserver
+~~~
+
+Copy the modified binary to any directory on the test device (note: The following examples use usbmuxd to forward a local port through USB).
+
+~~~
+$ ./tcprelay.py -t 22:2222
+$ scp -P2222 debugserver root@localhost:/tmp/
+~~~
+
+You can now attach debugserver to any process running on the device.
+
+~~~
+VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
+debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
+ for armv7.
+Attaching to process 2670...
+~~~
 
 ### Tampering and Instrumentation
 
@@ -214,62 +234,7 @@ sys.stdin.read()
 #### Patching and Repackaging iOS Apps
 
 
-### Program Comprehension
 
-
-#### Statically Analyzing iOS Apps
-
-
-#### Debugging iOS Apps
-
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
-
-To obtain the executable mount the following DMG image:
-
-~~~
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
-~~~
-
-You’ll find the debugserver executable in the /usr/bin/ directory on the mounted volume - copy it to a temporary directory. Then, create a file called entitlements.plist with the following content:
-
-~~~
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>com.apple.springboard.debugapplications</key>
-	<true/>
-	<key>run-unsigned-code</key>
-	<true/>
-	<key>get-task-allow</key>
-	<true/>
-	<key>task_for_pid-allow</key>
-	<true/>
-</dict>
-</plist>
-~~~
-
-And apply the entitlement with codesign:
-
-~~~
-codesign -s - --entitlements entitlements.plist -f debugserver
-~~~
-
-Copy the modified binary to any directory on the test device (note: The following examples use usbmuxd to forward a local port through USB).
-
-~~~
-$ ./tcprelay.py -t 22:2222
-$ scp -P2222 debugserver root@localhost:/tmp/
-~~~
-
-You can now attach debugserver to any process running on the device.
-
-~~~
-VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
-debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
- for armv7.
-Attaching to process 2670...
-~~~
 
 ### References
 
