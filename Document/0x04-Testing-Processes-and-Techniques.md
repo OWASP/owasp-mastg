@@ -2,27 +2,27 @@
 
 ## Mobile Security Testing Methodology
 
--- TODO Describe Mobile Security Testing methodology --
+-- TODO [Describe Mobile Security Testing methodology] --
 
 ## Analysis Techniques
 
 ### Static Analysis
 
--- TODO Describe Static Analysis techniques in Mobile Testing in a general manner --
+-- TODO [Describe Static Analysis techniques in Mobile Testing in a general manner] --
 
 #### Automatic Code Analysis
 
--- TODO Describe Automatic code analysis : goal, how it works, pros / cons, role in pentests --
+-- TODO [Describe Automatic code analysis : goal, how it works, pros / cons, role in pentests] --
 
 #### Manual Code Review
 
--- TODO Describe Manual Code Review : goal, how it adds to automatic code analysis, how it works, pros / cons, kind of issues that can be found only manually --
+-- TODO [Describe Manual Code Review : goal, how it adds to automatic code analysis, how it works, pros / cons, kind of issues that can be found only manually] --
 
 ### Dynamic Analysis
 
 #### Runtime Analysis
 
--- TODO Describe Runtime Analysis : goal, how it works, kind of issues that can be found --
+-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] --
 
 #### Traffic Analysis
 
@@ -113,7 +113,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 *FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
-(todo... add some Frida console examples and links)
+-- TODO [Add some Frida console examples and links] --
 
 ### Static and Dynamic Binary Analysis
 
@@ -125,17 +125,17 @@ Disassemblers and decompilers allow you to translate an app binary code or byte-
 
 A wide range of tools and frameworks is available: From expensive, but convenient GUI tools, to open source disassembling engines and reverse engineering frameworks. Advanced usage instructions for any of these tools often easily fill a book on their own. We'll introduce some of the most widely used disassemblers in the following section. The best way to get started is simply pick the tool that fits your needs and budget and buy a well-reviewed user guide along with it (some recommendations are listed below).
 
--- TODO: introduce a few standard tools, IDA Pro, Hopper, Radare2, JEB (?) --
+-- TODO [Introduce a few standard tools, IDA Pro, Hopper, Radare2, JEB (?)] --
 
--- TODO: Talk about IDA Scripting and the many plugins developed by the community --
+-- TODO [Talk about IDA Scripting and the many plugins developed by the community] --
 
 #### Debugging
 
--- TODO : Describe Debugging : how it works, when you can / have to use it, examples of tools --
+-- TODO [Describe Debugging : how it works, when you can / have to use it, examples of tools] --
 
 #### Execution Tracing
 
--- TODO : Describe Execution Tracing : how it works, when you can / have to use it, examples of tools --
+-- TODO [Describe Execution Tracing : how it works, when you can / have to use it, examples of tools] --
 
 ### Advanced Techniques
 
@@ -143,7 +143,7 @@ For more complicated tasks, such as de-obfuscating heavily obfuscated binaries, 
 
 Like always in hacking, the anything-goes-rule applies: Simply use whatever brings you closer to your goal most efficiently. Every binary is different, and every reverse engineer has their own style. Often, the best way to get to the goal is to combine different approaches, such as emulator-based tracing and symbolic execution, to fit the task at hand. To get started, pick a good disassembler and/or reverse engineering framework and start using them to get comfortable with their particular features and extension APIs. Ultimately, the best way to get better is getting hands-on experience.
 
--- TODO : Develop on Advanced Techniques --
+-- TODO [Develop on Advanced Techniques] --
 
 #### Dynamic Binary Instrumentation
 
@@ -153,11 +153,11 @@ Another useful method for dealing with native binaries is dynamic binary instrum
 
 Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice.
 
--- TODO : Develop on Emulation-based Dynamic Analysis --
+-- TODO [Develop on Emulation-based Dynamic Analysis] --
 
 #### Program Analysis Using Symbolic / Concolic Execution
 
--- TODO: Introduce RE frameworks --
+-- TODO [Introduce RE frameworks] --
 
 In the late 2000s, symbolic-execution based testing has gained popularity as a means of identifying security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic, whereby variables are represented by symbolic values, which are actually entire ranges of values. Satisfiability Modulo Theories (SMT) solvers are used to check satisfiability of those formulas and provide a solution, including concrete values for the variables needed to reach a certain point of execution on the path corresponding to the solved formula.
 
@@ -228,7 +228,7 @@ For real-world apps, automated static/dynamic analysis is insufficient to prove 
 
 ##### Anti-Tampering Requirements in the MASVS
 
--- TODO : Describe Anti-Tampering Requirements in the MASVS --
+-- TODO [Describe Anti-Tampering Requirements in the MASVS] --
 
 #### Testing Obfuscation Effectiveness
 
@@ -297,7 +297,7 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ###### Obfuscation Requirements in the MASVS
 
--- TODO : Describe Obfuscation Requirements in the MASVS --
+-- TODO [Describe Obfuscation Requirements in the MASVS] --
 
 ## Additional Considerations
 
