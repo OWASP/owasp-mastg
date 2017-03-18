@@ -14,11 +14,11 @@ From the view of a mobile app, this means that extra care has to be taken when s
 
 Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
 
-(...TODO... what is the OWASP Mobile Top 10)
+-- TODO [What is the OWASP Mobile Top 10] --
 
 ## Organization of the Testing Guide
 
-(... TODO ...)
+-- TODO [Describe the organization of the current guide] --
 
 ## Using the OWASP Mobile Security Testing Guide
 
@@ -32,4 +32,4 @@ This guide belongs to a set of three mobile appsec-related documents produced by
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
-(... TODO ...)
+-- TODO [Develop the way the 3 guides can be used to provide added value to a project] --
