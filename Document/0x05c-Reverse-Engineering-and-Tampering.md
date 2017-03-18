@@ -166,17 +166,17 @@ public class a {
 }
 ```
 
-Now we are getting somewhere: It's simply standard AES-ECB. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. Bonus task: Decrypt the ciphertext and you get the secret value.
+Now we are getting somewhere: It's simply standard AES-ECB. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. As a bonus task, try to decrypt the extracted ciphertext and get the secret value!
 
-That was almost too easy! Let's move on to the second challenge.
+An alternative (and faster) way of getting the decrypted string is by adding a bit of dynamic analysis into the mix - we'll revisit UnCrackable Level 1 later to show how to do this.
 
 #### Statically Analyzing Native Code
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in  "UnCrackable for Android Level 2".
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in level 2 of the "UnCrackable App'.
 
--- TODO [Native Code] --
+Download the APK from the OWASP MSTG repositorty and decompile it. At first glance, the code looks similar to the prior challenge. A class called "CodeCheck" is responsible for verifying the code entered by the user. The actual check appears to happen in the method "bar()", which is declared as a *native* method.
 
-```
+```java
 package sg.vantagepoint.uncrackable2;
 
 public class CodeCheck {
@@ -192,6 +192,15 @@ public class CodeCheck {
     }
 }
 ```
+
+
+```
+    static {
+        System.loadLibrary("foo");
+    }
+```
+
+-- TODO [Native Code Analysis] --
 
 #### Debugging and Tracing
 
