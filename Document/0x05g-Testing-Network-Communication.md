@@ -1,4 +1,4 @@
-## Testing Network Communcation
+## Testing Network Communication
 
 ### Testing for Unencrypted Sensitive Data on the Network
 
