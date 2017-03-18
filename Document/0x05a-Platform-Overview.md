@@ -1,6 +1,6 @@
 ## Android Platform Overview
 
-(... TODO ...)
+This chapter is going to introduce Android on the architecture point of view and will provide the reader with detailed information on security mechanisms. Then, it will describe the structure of an Android application and will emphasize on the Inter Process Communication mechanism. Last, the way Android applications are published is explained to the reader.
 
 ### Android Architecture and Security Mechanisms
 
@@ -239,7 +239,7 @@ The Android Framework is creating an abstraction layer for all the layers below,
 
 Android apps are made of several high-level components that make up their architectures. The main components are activities, fragments, intents, broadcast receivers, content providers and services. All these elements are provided by the Android operating system in the form of predefined classes available through APIs. 
 
-##### Application :ifecycle
+##### Application Lifecycle
 
 Android apps have their own lifecycles, that is under the control of the operating system. Therefore, apps need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but not in use since a significant time). 
 
@@ -491,7 +491,7 @@ A BroadcastReceiver handles asynchronous requests initiated by an Intent.
 Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
 
 
-(... TODO ... briefly on security implications)
+-- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
 
 Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
 
