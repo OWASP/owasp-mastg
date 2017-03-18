@@ -136,5 +136,5 @@ These are only suggestions, and other metrics may be even more relevant in your 
 
 ### References
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- Official (ISC)2 Guide to the CSSLP (ISC2 Press), Mano Paul - https://www.amazon.com/Official-Guide-CSSLP-Second-Press/dp/1466571276/
+
