@@ -491,7 +491,7 @@ A BroadcastReceiver handles asynchronous requests initiated by an Intent.
 Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
 
 
--- TODO : Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets --
+-- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
 
 Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
 
