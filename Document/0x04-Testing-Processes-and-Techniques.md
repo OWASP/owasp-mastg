@@ -232,6 +232,41 @@ For a protection scheme to be considered effective, it must incorporate defenses
 
 -- TODO [What does it mean for programmatic defenses to be effective?] --
 
+##### Quality Criteria
+
+"More is better" is not always a great motto in real life but it does apply to software protections. Employing multiple defenses at the same time makes it difficult for the adversary to get a foothold for starting the analysis. They may find that the binary code is encrypted and doesn’t load in their favorite disassembler. Multiple layers of debugging defenses prevent her from easily dumping the decrypted code. Patching the binary code is difficult due to its encrypted nature, and because it triggers additional integrity checks.
+
+###### Response Type
+
+Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
+
+- Feedback: When the anti-tampering response is triggered, an error message is displayed to the user or written to a log file. The adversary can immediately discern the nature of the defensive feature as well as the time at which the mechanism was triggered.
+- Indiscernible: The defense mechanism terminates the app without providing any error details and without logging the reason for the termination. The adversary does not learn information about the nature of the defensive feature, but can discern the approximate time at which the feature was triggered.
+- Stealth: The anti-tampering feature either does not visibly respond at all to the detected tampering, or the response happens with a significant delay. For example, the mechanism could corrupt a pointer which leads to a malfunction at a much later point in time.
+
+###### API Layer
+
+Lower-level calls are more difficult to defeat than higher level calls. 
+
+- System Library: The feature relies on public library functions or methods.
+- Kernel: The anti-reversing feature calls directly into the kernel. 
+- Self-contained: The feature does not require any library or system calls to work.
+
+###### Uniqueness
+
+The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
+
+- Standard API: The feature relies on APIs that are specifically meant to prevent reverse engineering. It can be bypassed easily using generic tools.
+- Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
+- Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer. 
+
+###### Parallelism
+
+Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.
+
+- Single thread 
+- Multiple threads or processes
+
 ##### Anti-Tampering Requirements in the MASVS
 
 -- TODO [Describe Anti-Tampering Requirements in the MASVS] --
