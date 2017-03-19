@@ -168,15 +168,74 @@ As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal
 
 Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, one should combine multiple defenses that rely on different methods of prevention and detection, operate on multiple different API layers, and are distributed throughout the app. 
 
-##### Common Anti-JDWP-Debugging Methods
+##### Sample Anti-JDWP-Debugging Methods
 
 -- TODO [Anti-JDWP] --
 
-**isDebuggerActive**
 
-**Messing with memory structures**
 
-##### Common Anti-Native-Debugging Methods
+
+###### Checking For Debuggable Flag
+
+
+```java
+    public static boolean isDebuggable(Context context){
+
+        return ((context.getApplicationContext().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
+
+    }
+```
+
+
+###### Using isDebuggerConnected`
+
+
+
+###### Messing With JDWP Data Structures
+
+
+
+##### Sample Anti-Native-Debugging Methods
+
+```
+    public static boolean detectDebugger() {
+
+        return Debug.isDebuggerConnected();
+    }
+```
+
+###### Checking for TracerPid
+
+Code Sample from [1]
+
+```
+    public static boolean hasTracerPid() throws IOException {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("/proc/self/status")), 1000);
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.length() > tracerpid.length()) {
+                    if (line.substring(0, tracerpid.length()).equalsIgnoreCase(tracerpid)) {
+                        if (Integer.decode(line.substring(tracerpid.length() + 1).trim()) > 0) {
+                            return true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            reader.close();
+        }
+        return false;
+    }
+```
+
+
 
 **Calling ptrace**
 
@@ -235,7 +294,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+- [1] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
 
 ### Testing File Integrity Checks
 
