@@ -185,6 +185,12 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ###### Calling isDebuggerConnected 
 
+```
+    public static boolean detectDebugger() {
+        return Debug.isDebuggerConnected();
+    }
+```
+
 ###### Messing With JDWP Data Structures
 
 
@@ -196,15 +202,7 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
-
 ##### Sample Anti-Native-Debugging Methods
-
-```
-    public static boolean detectDebugger() {
-
-        return Debug.isDebuggerConnected();
-    }
-```
 
 ###### Checking for TracerPid
 
@@ -236,8 +234,6 @@ Code Sample from [1]
         return false;
     }
 ```
-
-
 
 **Calling ptrace**
 
