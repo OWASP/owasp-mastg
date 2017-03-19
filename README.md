@@ -14,7 +14,7 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 ## Contributions and Feedback
 
-We need more authors! The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [Project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks including authoring, review and technical editing. To sign up for any of those tasks, simply comment on the respective [issue](https://github.com/OWASP/owasp-mstg/labels/help%20wanted) and/or contact us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can create a Slack account here:
+We need more authors! The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks including authoring, review and technical editing. To sign up for any of those tasks, simply comment on the respective [issue](https://github.com/OWASP/owasp-mstg/labels/help%20wanted) and/or contact us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can create a Slack account here:
 
 http://owasp.herokuapp.com/
 
