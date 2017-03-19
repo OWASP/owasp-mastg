@@ -229,7 +229,7 @@ sys.stdin.read()
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### Testing Debugging Defenses
+### Testing Anti-Debugging
 
 #### Overview
 
