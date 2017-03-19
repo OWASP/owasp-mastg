@@ -34,7 +34,7 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
 }
 ~~~
 
-###### Self-made Checks
+###### Detection Techniques
 
 **File checks**
 

@@ -77,6 +77,15 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 -- TODO [Fork-based check] --
 
+Executing privileged actions. Calling the system() function with a NULL argument on a non jailbroken device will return ”0”; doing the same on a jailbroken device will return ”1”. This is since the function will check whether /bin/sh can be accessed, and this is only the case on jailbroken devices. Another possibility would be trying to write into a location outside the application’s sandbox. This can be done by having the application attempt to create a file in, for example, the /private directory. If the file is successfully created, it means the device is jailbroken.'
+
+##### Using the Dynamic Loader
+
+-- TODO [dyld-based check] --
+
+##### SSH Loopback Connection
+
+-- TODO [Connect to localhost:22] --
 
 #### Bypassing Jailbreak Detection
 
@@ -196,8 +205,6 @@ sys.stdin.read()
 
 #### References
 
-- Jailbreak Detection Methods on the Trustware Spiderlabs Blog - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
-
 ##### OWASP Mobile Top 10 2014
 
 * MX - Title - Link
@@ -214,8 +221,8 @@ sys.stdin.read()
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] - Jailbreak Detection Methods on the Trustware Spiderlabs Blog - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
+- [2] - Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android- http://delaat.net/rp/2015-2016/p51/report.pdf
 
 ##### Tools
 
