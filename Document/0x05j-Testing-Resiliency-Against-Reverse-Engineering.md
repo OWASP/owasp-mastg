@@ -186,10 +186,7 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
     }
 ```
 
-
-###### Using isDebuggerConnected`
-
-
+###### Calling isDebuggerConnected 
 
 ###### Messing With JDWP Data Structures
 

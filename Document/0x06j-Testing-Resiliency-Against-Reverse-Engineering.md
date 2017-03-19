@@ -237,6 +237,32 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 
 -- TODO [Typical debugging defenses] --
 
+~~~c
+typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
+
+#define PT_DENY_ATTACH 31
+
+void disable_gdb() {
+    void* handle = dlopen(0, RTLD_GLOBAL | RTLD_NOW);
+    ptrace_ptr_t ptrace_ptr = dlsym(handle, "ptrace");
+    ptrace_ptr(PT_DENY_ATTACH, 0, 0, 0);
+    dlclose(handle);
+}
+~~~
+
+~~~c
+void disable_gdb() {
+
+	asm(
+		"mov	r0, #31\n\t"	// PT_DENY_ATTACH
+		"mov	r1, #0\n\t"
+		"mov	r2, #0\n\t"
+		"mov 	ip, #26\n\t"	// syscall no.
+		"svc    0\n"
+	);
+}
+~~~
+
 The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
 
 #### Bypassing Debugging Defenses
