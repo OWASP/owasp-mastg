@@ -395,7 +395,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Tool - Link
 * Enjarify - https://github.com/google/enjarify
 
-### Testing Simple Emulator Detection
+### Testing Emulator Detection
 
 #### Overview
 
