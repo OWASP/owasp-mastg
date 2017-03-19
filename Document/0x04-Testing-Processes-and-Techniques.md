@@ -1,10 +1,16 @@
 # Testing Processes and Techniques
 
-## Mobile Security Testing Methodology
+## Mobile App Security Testing Methodology
 
 -- TODO [Describe Mobile Security Testing methodology] --
 
-## Analysis Techniques
+### Testing Process
+
+### Risk Assessment
+
+### Reporting
+
+## Vulnerability Analysis Techniques
 
 ### Static Analysis
 
@@ -167,7 +173,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### Domain-Specific De-Obfuscation Attacks
 
-## Assessing the Effectiveness of Anti-Tampering and Obfuscation
+## Testing Anti-Reverse-Engineering Defenses
 
 In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
 
@@ -179,7 +185,7 @@ First of all, there is no one-size-fits-all. Client-side protections are desirab
 
 Effective anti-reversing schemes combine a variety of anti-tampering defenses and obfuscating transformations. Note that in the majority of cases, applying basic measures such as symbol stripping and root detection is sufficient.
 
-### Resiliency Testing Approach
+### Assessing Software Protection Schemes
 
 In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we wanted to avoid the lack of anti-reversing controls being reported as a *vulnerability*. Also, testing defenses against reverse engineering requires an extended skillset: The tester must be able to deal with advanced anti-reversing tricks and obfuscation techniques. Traditionally, this is the kind of skill associated with malware reseachers - many penetration testers don't specialize in this. We also introduce a separate process called *resiliency testing* to cover the testing of anti-reversing schemes.
 
@@ -208,29 +214,29 @@ The software protection scheme must be designed to protect against clearly defin
 
 - Elevation of Privilege - Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
-#### Types of Defenses
-
 We classify reverse engineering defenses into two categories: Anti-tampering and obfuscation. Both types of defenses are used in tandem to achieve resiliency. 
 
-#### Testing Anti-Tampering
+#### Testing Anti-Tampering Defenses
 
-*Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator. They can be further categorized into two modi operandi:
+*Anti-Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator. They can be further categorized into two modi operandi:
 
 1. Preventive: Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may use an operating system API to prevent debuggers from attaching to the process.
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way if a debugger is detected.
 
-Tampering defenses aim to hinder various processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
+Anti-tampering defenses aim to hinder various processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
 
 ![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
 For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
 
+-- TODO [What does it mean for anti-tampering defenses to be effective?] --
+
 ##### Anti-Tampering Requirements in the MASVS
 
 -- TODO [Describe Anti-Tampering Requirements in the MASVS] --
 
-#### Testing Obfuscation Effectiveness
+#### Testing Obfuscation Schemes
 
 Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. Think about translating an English sentence into an French one that says the same thing (or pick a different language if you speak French - you get the point).
 
@@ -285,7 +291,7 @@ Some types of obfuscation that fall into this category are:
 - Virtualization
 - White-box cryptography
 
-##### Assessing Obfuscation
+##### Obfuscation Effectiveness
 
 An obfuscation scheme is effective if:
 
