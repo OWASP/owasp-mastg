@@ -172,9 +172,6 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 -- TODO [Anti-JDWP] --
 
-
-
-
 ###### Checking For Debuggable Flag
 
 
@@ -190,6 +187,14 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ###### Messing With JDWP Data Structures
 
+
+Crashing Debugger Thread on Init <sup>[2]</sup>:
+
+```c
+JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
+  gDvm.methDalvikDdmcServer_dispatch = NULL;
+}
+```
 
 
 ##### Sample Anti-Native-Debugging Methods
@@ -292,6 +297,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 #### References
 
 - [1] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
+- [2] Bluebox Security - 
 
 ### Testing File Integrity Checks
 
