@@ -4,22 +4,50 @@
 
 #### Overview
 
-In the context of reverse engineering defense, jailbreak detection mechansism are added to make it a bit more difficult to run the app on a jailbroken device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, jailbreak detection is not a very effective on its own, but having some checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
+In the context of reverse engineering defense, jailbreak detection mechansism are added to make it a bit more difficult to run the app on a jailbroken device, which in turn impedes some tools and techniques reverse engineers like to use. As is the case with most other defenses, jailbreak detection is not a very effective defense on its own, but having some checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme. Typical jailbreak detection techniques on iOS include:
 
-Some typical Jailbreak detection techniques:
+##### File-based Checks
 
-
-Check for the existence of files, such as:
+Checking for the existence of files and directories typically associated with jailbreaks, such as:
 
 ~~~
-/Library/MobileSubstrate/MobileSubstrate.dylib
 /Applications/Cydia.app
+/Applications/FakeCarrier.app
+/Applications/Icy.app
+/Applications/IntelliScreen.app
+/Applications/MxTube.app
+/Applications/RockApp.app
+/Applications/SBSettings.app
+/Applications/WinterBoard.app
+/Applications/blackra1n.app
+/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist
+/Library/MobileSubstrate/DynamicLibraries/Veency.plist
 /Library/MobileSubstrate/MobileSubstrate.dylib
+/System/Library/LaunchDaemons/com.ikey.bbot.plist
 /System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist
+/bin/bash
+/bin/sh
+/etc/apt
+/etc/ssh/sshd_config
+/private/var/lib/apt
+/private/var/lib/cydia
+/private/var/mobile/Library/SBSettings/Themes
+/private/var/stash
+/private/var/tmp/cydia.log
+/usr/bin/sshd
+/usr/libexec/sftp-server
+/usr/libexec/ssh-keysign
+/usr/sbin/sshd
+/var/cache/apt
+/var/lib/apt
+/var/lib/cydia
+/var/log/syslog
+/var/tmp/cydia.log
 ~~~
 
+##### Checking File Permissions
 
-Write a file to the /private/ directory:
+Attempting to write a file to the /private/ directory. This should only be successful on jailbroken devices.
 
 ~~~
 
@@ -37,16 +65,26 @@ if(error==nil){
 
 ~~~
 
-Attempt to open a Cydia URL:
+##### Checking Protocol Handlers
+
+Attempting to open a Cydia URL. The Cydia app store, which is installed by default by practically every jailbreaking tool, installs the cydia:// protocol handler. 
 
 ~~~
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ~~~
 
+##### Calling System APIs 
+
+-- TODO [Fork-based check] --
+
+
 #### Bypassing Jailbreak Detection
 
--- TODO [Bypass Methods] --
+-- TODO [Jailbreak detection general description] --
 
+-- TODO [Frida-based bypass] --
+
+Hooking Objective-C methods and native functions:
 
 ~~~~python
 import frida
@@ -157,6 +195,8 @@ sys.stdin.read()
 [Describe the best practices that developers should follow to prevent this issue.]
 
 #### References
+
+- Jailbreak Detection Methods on the Trustware Spiderlabs Blog - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
 
 ##### OWASP Mobile Top 10 2014
 
