@@ -216,21 +216,21 @@ The software protection scheme must be designed to protect against clearly defin
 
 We classify reverse engineering defenses into two categories: Anti-tampering and obfuscation. Both types of defenses are used in tandem to achieve resiliency. 
 
-#### Testing Anti-Tampering Defenses
+#### Testing Programmatic Defenses
 
-*Anti-Tampering Defenses* are programmatic functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator. They can be further categorized into two modi operandi:
+Software protection schemes incorporate a variety of functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run on a rooted device or on an emulator. These *programmatic defenses* can be further categorized into two modi operandi:
 
-1. Preventive: Functions that aim to prevent likely actions of the reverse engineer. As an example, an app may use an operating system API to prevent debuggers from attaching to the process.
+1. Preventive: Functions that aim to *prevent* anticipated actions of the reverse engineer. As an example, an app may use an operating system API to prevent debuggers from attaching.
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way if a debugger is detected.
 
-Anti-tampering defenses aim to hinder various processes used by reverse engineers, which we have grouped into 5 categories (Figure 2).
+Programmatic defenses aim to hinder various processes used by reverse engineers, which we have grouped into five categories.
 
 ![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
-For real-world apps, automated static/dynamic analysis is insufficient to prove security of a program. Manual verification by an experienced tester is still the only reliable way to achieve security.
+For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
 
--- TODO [What does it mean for anti-tampering defenses to be effective?] --
+-- TODO [What does it mean for programmatic defenses to be effective?] --
 
 ##### Anti-Tampering Requirements in the MASVS
 
