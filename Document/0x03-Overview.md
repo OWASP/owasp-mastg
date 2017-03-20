@@ -62,10 +62,9 @@ The status column can have three different values that need to be filled out:
 * **Fail:** Requirement is applicable to mobile App but not fulfilled.
 * **N/A:** Requirement is not applicable to mobile App.
 
+### Reverse Engineering Resiliency Testing
 
-### Reverse Engineering Resiliency Controls
-
-Anti-reverse-engineering measures (MASVS-R) are listed in a separate tab. You don't have to bother with those unless the app has a particular need to prevent tampering and reverse engineering. Please have a look at the MASVS pre-release for further details.
+*Resiliency Testing* is a new concept introduced in the OWASP MSTG. This kind of testing is used if the app implements defenses against client-side threats, such as tampering and extracting sensitive information. As we  know, such protection is never 100% effective. The goal in resiliency testing is to verify that no glaring weaknesses exist in the protection scheme, and that the expectations as to its effectiveness are met (e.g., a skilled reverse engineer should be forced to invest significant effort to do reach a particular goal).
 
 ### The Management Summary
 
