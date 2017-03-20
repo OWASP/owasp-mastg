@@ -137,4 +137,6 @@ These are only suggestions, and other metrics may be even more relevant in your 
 ### References
 
 - Official (ISC)2 Guide to the CSSLP (ISC2 Press), Mano Paul - https://www.amazon.com/Official-Guide-CSSLP-Second-Press/dp/1466571276/
+- Software Security: Building Security In (Addison-Wesley Professional), Gary McGraw - https://www.amazon.com/Software-Security-Building-Gary-McGraw/dp/0321356705/
+
 
