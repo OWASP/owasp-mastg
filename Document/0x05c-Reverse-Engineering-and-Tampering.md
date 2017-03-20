@@ -208,7 +208,11 @@ Android apps support two different types of debugging: Java-runtime-level debugg
 
 ##### Debugging Java Code
 
-JDWP debugging is used to debug Java code executed by the Android Runtime (ART). Consequently, it allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
+Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
+
+Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol packets from the debugger. If the system property ro.secure is set to "1", this thread is started for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
+
+Using a JDWP debugger allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things.  You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
 The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 

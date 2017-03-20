@@ -170,7 +170,11 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Sample Anti-JDWP-Debugging Methods
 
--- TODO [Anti-JDWP] --
+Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JSWP is supported by many popular development environments, including JDB and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
+
+Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol packets from the debugger. If the system property ro.secure is set to "1", this thread is started for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
+
+
 
 ###### Checking For Debuggable Flag
 
