@@ -19,7 +19,7 @@ This chapter will focus on Agile and Secure SDLC, in particular in the DevOps wo
 
 DevOps refers to practices that focus on a close collaboration between all stakeholders involved in delivering software. DevOps is the logical evolution of Agile in that it enables software to be released to users as rapidly as possible. Besides the collaboration aspect, to a large extent, this is facilitated through heavy automation of the build, test and release process of software and infrastructure changes. This automation is embodied in the deployment pipeline.
 
-##### Todo: Add deployment pipeline overview and description specific for mobile apps.
+##### -- Todo [Add deployment pipeline overview and description specific for mobile apps.] --
 
 The term DevOps might be mistaken for only expressing collaboration between development and operations teams, however, as Gene Kim, a DevOps thought leader, puts it: “At first blush, it seems as though the problems are just between dev and ops," he says, "but test is in there, and you have information security objectives, and the need to protect systems and data. These are top-level concerns of management, and they have become part of the DevOps picture."
 
@@ -61,7 +61,7 @@ Whatever the development methodology that is being used, a SDLC always follows t
 * and finally, after software has been **Accredited** by all stakeholders, it can be transitioned to Operation teams and safely put in Production. 
 
 The picture below shows all the phases with the different artefacts:
--- TODO : Add a picture of a SDLC diagram that clarifies the description above --
+-- TODO [Add a picture of a SDLC diagram that clarifies the description above] --
 
 Based on the risks of the project, some artefacts may be simplified (or even skipped) while others may be added (formal intermediary approvals, documentation of certain points, ...). **Always keep in mind a SDLC is meant to bring risk reduction to software development and is a framework that helps put in place controls that will reduce those risks to an acceptable level. ** While this is a generic description of SDLC, always tailor this framework to the needs of your projects.
 
@@ -86,7 +86,7 @@ Testing can be performed in many forms during the lifecycle: using automated too
 
 The following diagram provides an overview of the way to perform test in the SDLC:
 
--- TODO : add diagram to summarize the above paragraph and clarify the way test should be performed (planned, executed and reviewed)
+-- TODO [Add diagram to summarize the above paragraph and clarify the way test should be performed (planned, executed and reviewed)] --
 
 #### Detailed Description
 
@@ -105,7 +105,7 @@ As a consequence, performing one type of tests is not enough to pretend having c
 
 The purpose of a test strategy is to define which tests will be performed all along the SDLC and how often. Its goal is twofold: make sure security objectives are met by the final software product, which are generally expressed by customers / legal / marketing / Corporate teams, while bringing cost-effectiveness. The test strategy is generally created at the beginning of a project, after risks have been clarified (Initiation phase) but before code production (Coding phase) starts. It generally takes place during the Architecture and Design phase. It takes inputs from activities such as Risk Management, Threat Modeling, Security Engineering, ...
 
--- TODO : add diagram (in the form of a workflow) showing inputs of a Test Strategy, and outputs (test cases, ...) --
+-- TODO [Add diagram (in the form of a workflow) showing inputs of a Test Strategy, and outputs (test cases, ...)] --
 
 A Test Strategy does not always need to be formally written: it may be described through Stories (in Agile projects), quickly written in the form of checklists, Test Cases could be written in a given tool, ... ; however, it definitely needs to be shared, as it may be defined by the Architecture team, but will have to be implemented by other teams such as Development, Testing, Quality, ... Moreover, it needs to be agreed upon by all technical teams as it should not place unacceptable burdens on any of them. 
 
@@ -129,7 +129,8 @@ These are only suggestions, and other metrics may be even more relevant in your 
 #### Grey box
 #### Black box
 ### Team management
--- TODO :
+
+-- TODO [Develop content on Team Management in SDLC] --
 
 - explain the importance of Separation of Duties (developers VS testers, ...)
 - internal VS sub-contracted pentests
