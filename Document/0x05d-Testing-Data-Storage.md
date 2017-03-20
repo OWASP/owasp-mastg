@@ -192,7 +192,7 @@ Install and use the App as it is intended and execute all functions at least onc
 
 ##### KeyChain and KeyStore
 
-When targeting Android applications, the best way to proceed is to first decompile them in order to obtain something close to the source code (_**see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
+When targeting Android applications, the best way to proceed is to first decompile them in order to obtain something close to the source code (_**see Decompiling Android App Guide - -- TODO [Create a general guide that can be referenced anywhere in the OMSTF] --**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
 
 #### Remediation
 
@@ -313,6 +313,8 @@ public static int wtf(...);
 ```
 
 #### References
+
+-- TODO [Add references] --
 
 ##### Info
 * [Overview of Class Log][de2ec1fd]
@@ -439,8 +441,7 @@ android:inputType="textNoSuggestions"
 
 #### Overview
 
-(... TODO ...)
-
+-- TODO [Overview on Testing for Sensitive Data in the Clipboard] --
 
 #### Static Analysis
 
@@ -530,7 +531,7 @@ Once you identify a list of IPC mechanisms, review the source code in order to d
 
 * Vulnerable ContentProvider
 
-An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere any input validation test in the project**)
+An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer to any input validation test in the project] --**)
 
 * `AndroidManifest.xml`
 
@@ -668,7 +669,7 @@ LayoutParams.FLAG_SECURE
 ```
 If not, the application is probably vulnerable to screen capturing.
 
-**(..TODO..) - Masking of sensitive data in input fields, how can it be implemented in Android**
+-- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
 
 #### Dynamic Analysis
 
@@ -906,7 +907,7 @@ It needs to be identified within the code when sensitive information is stored w
 #### Dynamic Analysis
 
 To analyse the memory of an App, the app must be **debuggable**.
-See the instructions in XXX (**#TODO-Link to repackage and sign**) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
+See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
 For rudimentary analysis Android Studio built-in tools can be used. Android studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
 
@@ -1006,7 +1007,7 @@ Different checks on the Android device can be implemented by querying different 
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - (.. TODO ..)
+- CWE: -- TODO [Link to CWE issue] --
 
 
 ### Verifying User Education Controls
@@ -1021,25 +1022,25 @@ The following list shows potential warnings or advises for a user when opening t
 * If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
-**(..TODO..) - What else can be a warning on Android?**
+-- TODO [What else can be a warning on Android?] --
 
 #### Static Analysis
 
-**...TODO...**
+-- TODO [Create content on Static Analysis for Verifying User Education Controls] --
 
 #### Dynamic Analysis
 
 After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose.
-**...TODO...**
+-- TODO [Develop content on Dynamic Analysis on Verifying User Education Controls] --
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
-**...TODO...**
+-- TODO [Develop remediations on Verifying User Education Controls] --
 
 #### References
 
-**...TODO...**
+-- TODO [Add references on Verifying User Education Controls] --
 
 ##### OWASP MASVS
 
@@ -1049,13 +1050,7 @@ Warnings should be implemented that address the key points listed in the overvie
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - **.. TODO ...**
-
-
-
-
-
-
+- CWE: -- TODO [Link to CWE issue] --
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->
