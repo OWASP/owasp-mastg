@@ -184,6 +184,8 @@ In the chapter "Reverse Engineering and Tampering", we introduced JDWP, the prot
 
 ###### Calling isDebuggerConnected 
 
+The Android Debug system class offers a static method for checking whether a debugger is currently connected. The method simply returns a boolean value.
+
 ```
     public static boolean detectDebugger() {
         return Debug.isDebuggerConnected();
@@ -201,6 +203,9 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 ```
 
 ##### Sample Anti-Native-Debugging Methods
+
+Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch "classical", ptrace-based debuggers, so separate defenses are needed to defend against this type of debugging. 
+
 
 ###### Checking for TracerPid
 
