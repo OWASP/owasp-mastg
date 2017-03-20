@@ -78,7 +78,7 @@ com.ramdroid.appquarantine
 
 **Checking for writable partitions and system directories**
 
-Unusual permissions on system directories can indicate a customized or rooted device. While under normal circumstances, the system and data directories are always mounted as readonly, you'll sometimes find them mounted as read-write when the device is rooted. This can be tested for by checking whether these filesystems have been mounted with the "rw" flag, or attempting to create a file in these directories
+Unusual permissions on system directories can indicate a customized or rooted device. While under normal circumstances, the system and data directories are always mounted as read-only, you'll sometimes find them mounted as read-write when the device is rooted. This can be tested for by checking whether these filesystems have been mounted with the "rw" flag, or attempting to create a file in these directories
 
 **Checking for custom Android builds**
 
@@ -110,11 +110,11 @@ You can use a number of techniques to bypass these checks, most of which were in
 
 Check the original or decompiled source code for the presence of root detection mechanisms, and compare them against the following criteria:
 
-To qualify as *advanced*, the root detection scheme should be constructed in a way so that it cannot be bypassed with a simple patch or a commonly available too (e.g. RootCloak). Effective root detection should fulfill the following criteria:
+To qualify as *advanced*, the root detection scheme should be constructed in a way so that it cannot be bypassed with a simple patch or a commonly available too (e.g. RootCloak). Effective root detection should fulfill the following criteria
 
-- Multiple detection methods are scattered throughout the app (as opposed to using only a single check);
-- The root detection mechanisms operate on multiple API layers (Java API, native functions, system calls);
-- The mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
+- Multiple detection methods are scattered throughout the app (as opposed to putting everything into a single method);
+- The root detection mechanisms operate on multiple API layers (Java API, native library functions, Assembler / system calls);
+- Some of the mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
 - The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
 
 #### Dynamic Analysis
@@ -170,14 +170,9 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Sample Anti-JDWP-Debugging Methods
 
-Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JSWP is supported by many popular development environments, including JDB and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
-
-Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol packets from the debugger. If the system property ro.secure is set to "1", this thread is started for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
-
-
+In the chapter "Reverse Engineering and Tampering", we introduced JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
 ###### Checking For Debuggable Flag
-
 
 ```java
     public static boolean isDebuggable(Context context){
@@ -196,7 +191,6 @@ Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol
 ```
 
 ###### Messing With JDWP Data Structures
-
 
 Crashing Debugger Thread on Init <sup>[2]</sup>:
 
