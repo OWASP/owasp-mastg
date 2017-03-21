@@ -352,13 +352,75 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 -- TODO [Implementation from UnCrackable2] --
 
+```c
+int xyz(char *dst) {
+    const struct mach_header * header;
+    Dl_info dlinfo;
+
+    if (dladdr(xyz, &dlinfo) == 0 || dlinfo.dli_fbase == NULL) {
+        NSLog(@" Error: Could not resolve symbol xyz");
+        [NSThread exit];
+    }
+
+    while(1) {
+    
+        header = dlinfo.dli_fbase;  // Pointer on the Mach-O header
+        struct load_command * cmd = (struct load_command *)(header + 1); // First load command
+        // Now iterate through load command
+        //to find __text section of __TEXT segment
+        for (uint32_t i = 0; cmd != NULL && i < header->ncmds; i++) {
+            if (cmd->cmd == LC_SEGMENT) {
+                // __TEXT load command is a LC_SEGMENT load command
+                struct segment_command * segment = (struct segment_command *)cmd;
+                if (!strcmp(segment->segname, "__TEXT")) {
+                    // Stop on __TEXT segment load command and go through sections
+                    // to find __text section
+                    struct section * section = (struct section *)(segment + 1);
+                    for (uint32_t j = 0; section != NULL && j < segment->nsects; j++) {
+                        if (!strcmp(section->sectname, "__text"))
+                            break; //Stop on __text section load command
+                        section = (struct section *)(section + 1);
+                    }
+                    // Get here the __text section address, the __text section size
+                    // and the virtual memory address so we can calculate
+                    // a pointer on the __text section
+                    uint32_t * textSectionAddr = (uint32_t *)section->addr;
+                    uint32_t textSectionSize = section->size;
+                    uint32_t * vmaddr = segment->vmaddr;
+                    char * textSectionPtr = (char *)((int)header + (int)textSectionAddr - (int)vmaddr);
+                    // Calculate the signature of the data,
+                    // store the result in a string
+                    // and compare to the original one
+                    unsigned char digest[CC_MD5_DIGEST_LENGTH];
+                    CC_MD5(textSectionPtr, textSectionSize, digest);     // calculate the signature
+                    for (int i = 0; i < sizeof(digest); i++)             // fill signature
+                        sprintf(dst + (2 * i), "%02x", digest[i]);
+                
+                    // return strcmp(originalSignature, signature) == 0;    // verify signatures match
+                    
+                    return 0;
+                }
+            }
+            cmd = (struct load_command *)((uint8_t *)cmd + cmd->cmdsize);
+        }
+    }
+    
+}
+```
+
 #### Bypassing File Integrity Checks
+
+
+##### Overview
+
+
 
 #### Static Analysis
 
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+
 
 ##### With Source Code
 
@@ -399,56 +461,6 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Detection of Reverse Engineering Tools
-
-#### Overview
-
-[Provide a general description of the issue.]
-
-#### Static Analysis
-
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
-
-#### Dynamic Analysis
-
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-
-#### Remediation
-
-[Describe the best practices that developers should follow to prevent this issue.]
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
-
-##### OWASP MASVS
-
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
-
-##### CWE
-
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
-* Tool - Link
-* Enjarify - https://github.com/google/enjarify
-
-### Testing Emulator Detection
 
 #### Overview
 
