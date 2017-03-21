@@ -4,17 +4,21 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue.] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Verifying that Users Are Properly Authenticated with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Verifying that Users Are Properly Authenticated without source code] --
 
 #### Dynamic Analysis
 
@@ -22,7 +26,7 @@
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue.] --
 
 #### References
 
@@ -54,25 +58,29 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Session Management".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing Session Management with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing Session Management without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Session Management" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Session Management".] --
 
 #### References
 
@@ -104,25 +112,29 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing the Password Policy".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing the Password Policy with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing the Password Policy without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing the Password Policy" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing the Password Policy".] --
 
 #### References
 
@@ -151,6 +163,7 @@
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing the Logout Functionality
+
 #### Overview
 Session termination is an important part of the session lifecycle. Reducing the lifetime of the session tokens to a minimum decreases the likelihood of a successful session hijacking attack.
  
@@ -197,25 +210,29 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Excessive Login Attempts".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing Excessive Login Attempts with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing Excessive Login Attempts without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Excessive Login Attempts" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Excessive Login Attempts".] --
 
 #### References
 
@@ -247,25 +264,29 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Biometric Authentication".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing Biometric Authentication with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing Biometric Authentication without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Biometric Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Biometric Authentication".] --
 
 #### References
 
@@ -294,6 +315,7 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing the Session Timeout
+
 #### Overview
 Compared to web applications most mobile applications don’t have a session timeout mechanism that terminates the session after some period of inactivity and force the user to login again. For most mobile applications users need to enter the credentials once. After authenticating on server side an access token is stored on the device which is used to authenticate. If the token is about to expire the token will be renewed without entering the credentials again. Applications that handle sensitive data like patient data or critical functions like financial transactions should implement a session timeout as a security-in-depth measure that forces users to re-login after a defined period.
  
@@ -356,25 +378,29 @@ End<br>
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing 2-Factor Authentication".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing 2-Factor Authentication with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing 2-Factor Authentication without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing 2-Factor Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing 2-Factor Authentication".] --
 
 #### References
 
@@ -406,25 +432,29 @@ End<br>
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Step-up Authentication".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
 
 ##### With Source Code
 
+-- TODO [Develop content on Testing Step-up Authentication with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content on Testing Step-up Authentication without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Step-up Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Step-up Authentication".] --
 
 #### References
 
@@ -456,25 +486,29 @@ End<br>
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing User Device Management".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+--TODO [Develop content on Testing User Device Management with source code] --
+
 ##### Without Source Code
+
+--TODO [Develop content on Testing User Device Management without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing User Device Management" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing User Device Management".] --
 
 #### References
 
