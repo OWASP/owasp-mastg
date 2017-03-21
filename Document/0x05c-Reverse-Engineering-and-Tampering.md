@@ -489,7 +489,17 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 #### Dynamic Instrumentation with FRIDA
 
--- TODO [Detailed Frida tutorial] --
+-- TODO [Better Frida description] --
+
+Code injection can be achieved in different ways. For example, Xposed makes some permanent modifications to the Android app loader that provide hooks to run your own code every time a new process is started. In contrast, Frida achieves code injection by writing code directly into process memory. The process is outlined in a bit more detail below.
+
+When you "attach" Frida to a running app, it uses ptrace to hijack a thread in a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server running on the device, and loads a dynamically generated library file containing the Frida agent and instrumentation code. The original, hijacked thread is restored to its original state and resumed, and execution of the process continues as usual.
+
+Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a wealth of useful functionality, including calling and hooking of native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime, such as interacting with objects inside the VM.
+
+![Frida](Images/Chapters/0x04/frida.png)
+
+*FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -500,6 +510,8 @@ Here are some more APIs FRIDA offers on Android:
 - Intercept native function calls to run your own code at function entry and exit.
 
 Some features unfortunately don’t work yet on current Android devices platforms. Most notably, the FRIDA Stalker - a code tracing engine based on dynamic recompilation - does not support ARM at the time of this writing (version 7.2.0). Also, support for ART has been included only recently, so the Dalvik runtime is still better supported.
+
+-- TODO [Detailed Frida tutorial] --
 
 ##### Installing Frida
 
