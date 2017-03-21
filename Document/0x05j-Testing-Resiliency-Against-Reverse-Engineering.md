@@ -4,22 +4,24 @@
 
 #### Overview
 
-The goal of root detection (in the context of reverse engineering defense) is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not a very effective on its own, but having some root checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
+In the context of anti-reversing, the goal of root detection is to make it a bit more difficult to run the app on a rooted device, which in turn impedes some tools and techniques reverse engineers like to use. As with most other defenses, root detection is not highly effective on its own, but having some root checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
-On Android, we define the term "root detection" a bit more broadly to include detection of custom ROMs, i.e. verifying whether the device is a stock Android build or not.
+On Android, we define the term "root detection" a bit more broadly to include detection of custom ROMs, i.e. verifying whether the device is a stock Android build or a custom build.
 
 ##### Common Root Detection Methods
 
 ###### SafetyNet
 
-SafetyNet is an Android API that creates a profile of the device using software and hardware information. This profile is then compared against a list of white-listed device models that have passed Android compatibility testing. In part, this is meant to asses to be used to assess the integrity and safety of the device. Google recommends using the feature as "an additional in-depth defense signal as part of an anti-abuse system" [1].
+SafetyNet is an Android API that creates a profile of the device using software and hardware information. This profile is then compared against a list of white-listed device models that have passed Android compatibility testing. Google recommends using the feature as "an additional in-depth defense signal as part of an anti-abuse system" [1].
 
-What exactly SafetyNet does under the hood is not well documented, and may change at any time: When you call this API, the service actually downloads a binary package containing the device vaidation code from Google, which is then dynamically executed using reflection. Some analysis shows that the checks performed by SafetyNet also attempt to detect whether the device is rooted, although it is unclear how extacly this is determined [2].
+What exactly SafetyNet does under the hood is not well documented, and may change at any time: When you call this API, the service downloads a binary package containing the device vaidation code from Google, which is then dynamically executed using reflection. An analysis by John Kozyrakis showed that the checks performed by SafetyNet also attempt to detect whether the device is rooted, although it is unclear how extacly this is determined [2].
 
 To use the API, an app may the SafetyNetApi.attest() method with returns a JWS message with the *Attestation Result*, and then check the following fields:
 
 - ctsProfileMatch: Of "true", the device profile matches one of Google's listed devices that have passed  Android compatibility testing.
 - basicIntegrity: The device running the app likely wasn't tampered with.
+
+The attestation result looks as follows.
 
 ~~~
 {
@@ -34,17 +36,20 @@ To use the API, an app may the SafetyNetApi.attest() method with returns a JWS m
 }
 ~~~
 
-###### Detection Techniques
+###### Programmatic Detection
 
 **File checks**
 
-Checking for the existance of files typically found on rooted devices is a very common method. This includes app packages of common rooting tools such as Superuser:
+Perhaps the most widely used method is checking for files typically found on rooted devices, such as app packages of common rooting tools and associated files:
 
 ~~~
 /system/app/Superuser.apk
+/system/xbin/daemonsu
+/system/etc/init.d/99SuperSUDaemon
+/dev/com.koushikdutta.superuser.daemon/
 ~~~
 
-One could also attempt to detect binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations. Su is usually found in the following locations:
+Binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations:
 
 ~~~
 /sbin/su
@@ -55,9 +60,22 @@ One could also attempt to detect binaries that are usually installed once a devi
 /data/local/xbin/su
 ~~~ 
 
+Alternatively, checking whether *su* is in PATH also works:
+
+~~~java
+    public static boolean checkRoot(){
+        for(String pathDir : System.getenv("PATH").split(":")){
+            if(new File(pathDir, "su").exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+~~~
+
 **Executing su and other commands**
 
-Another way of determining whether su exists is attempting to execute it through Runtime.getRuntime.exec(). This will throw an IOException if su is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
+Another way of determining whether su exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if su is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
@@ -162,7 +180,7 @@ N/A
 
 Debugging is a highly effective way of analyzing the runtime behaviour of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect the state of variables, read and modify memory, and a lot more.
 
-As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to have defenses against both debugger types.
+As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to implement defenses against both debugger types.
 
 Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, one should combine multiple defenses that rely on different methods of prevention and detection, operate on multiple different API layers, and are distributed throughout the app. 
 
@@ -171,6 +189,8 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 In the chapter "Reverse Engineering and Tampering", we introduced JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
 ###### Checking For Debuggable Flag
+
+We have encountered the <code>android:debuggable</code> attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
 
 ```java
     public static boolean isDebuggable(Context context){
@@ -190,7 +210,42 @@ The Android Debug system class offers a static method for checking whether a deb
     }
 ```
 
+Native check:
+
+```
+JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv * env, jobject obj) {
+    if (gDvm.debuggerConnect || gDvm.debuggerAlive)
+        return JNI_TRUE;
+    return JNI_FALSE;
+}
+```
+
 ###### Messing With JDWP Data Structures
+
+
+```c
+struct DvmGlobals {
+    /*
+     * Some options that could be worth tampering with :)
+     */
+
+    bool        jdwpAllowed;        // debugging allowed for this process?
+    bool        jdwpConfigured;     // has debugging info been provided?
+    JdwpTransportType jdwpTransport;
+    bool        jdwpServer;
+    char*       jdwpHost;
+    int         jdwpPort;
+    bool        jdwpSuspend;
+ 
+    Thread*     threadList;
+ 
+    bool        nativeDebuggerActive;
+    bool        debuggerConnected;      /* debugger or DDMS is connected */
+    bool        debuggerActive;         /* debugger is making requests */
+    JdwpState*  jdwpState;
+ 
+};
+```
 
 Crashing Debugger Thread on Init <sup>[2]</sup>:
 
