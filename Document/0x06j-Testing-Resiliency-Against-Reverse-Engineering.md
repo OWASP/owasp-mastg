@@ -263,9 +263,46 @@ void disable_gdb() {
 }
 ~~~
 
+
+~~~c
+- (void)protectAgainstDebugger {
+    int                 junk;
+    int                 mib[4];
+    struct kinfo_proc   info;
+    size_t              size;
+    
+    info.kp_proc.p_flag = 0;
+    
+    // Initialize mib, which tells sysctl the info we want, in this case
+    // we're looking for information about a specific process ID.
+    
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PID;
+    mib[3] = getpid();
+    
+
+    while(1) {
+     
+        size = sizeof(info);
+        junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
+        assert(junk == 0);
+
+        // We're being debugged if the P_TRACED flag is set.
+        
+        if ((info.kp_proc.p_flag & P_TRACED) != 0) {
+            exit(0);
+        }
+        
+        sleep(1);
+        
+    }
+}
+~~~
+
 The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
 
-#### Bypassing Debugging Defenses
+#### Bypassing Anti-Debugging Defenses
 
 -- TODO [Bypass techniques] --
 
@@ -313,7 +350,9 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Implementation from UnCrackable2] --
+
+#### Bypassing File Integrity Checks
 
 #### Static Analysis
 
@@ -351,7 +390,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] Android Cracking Blog - http://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools

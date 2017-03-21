@@ -256,7 +256,7 @@ As usual, there is no generic way of bypassing anti-debugging: It depends on the
 
 ```python
 
-\#v0.1
+#v0.1
  
 import frida
 import sys
@@ -285,13 +285,7 @@ sys.stdin.read()
 
 #### Black-box Testing
 
-(... TODO ... testing in basic form vs. advanced defenses)
-
-Attach a debugger to the running process. This should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
-
-(TODO example)
-
-(TODO JDWP)
+-- TODO [Black-box testing of anti-debugging] --
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
@@ -308,7 +302,33 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-[Provide a general description of the issue.]
+In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A comprehensive protection scheme should include CRC checks on the app bytecode and native libraries as well as important data files. It is recommended to implement these checks both on the Java and native layer.
+
+##### Sample Implementation
+
+From the Android Cracking Blog <sup>[1]</sup>:
+
+```java
+private void crcTest() throws IOException {
+ boolean modified = false;
+ 
+ // required dex crc value stored as a text string.
+ // it could be any invisible layout element
+ long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
+ 
+ ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
+ ZipEntry ze = zf.getEntry("classes.dex");
+ 
+ if ( ze.getCrc() != dexCrc ) {
+  // dex has been modified
+  modified = true;
+ }
+ else {
+  // dex not tampered with
+  modified = false;
+ }
+}
+```
 
 #### Static Analysis
 
