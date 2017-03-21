@@ -240,9 +240,15 @@ Code Sample from [1]
 
 **Calling ptrace**
 
+-- TODO [ptrace-based check] --
+
 **Fork/ptrace**
 
+-- TODO [multi-process/watchdog] --
+
 **Breakpoint detection**
+
+-- TODO [breakpoint detection] --
 
 ##### Bypassing Debugger Detection
 
