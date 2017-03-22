@@ -489,7 +489,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 #### Dynamic Instrumentation with FRIDA
 
--- TODO [Better Frida description] --
+Frida “lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX.” While it was first based on Google’s V8 Javascript runtime, since version 9 Frida now uses Duktape internally.
 
 Code injection can be achieved in different ways. For example, Xposed makes some permanent modifications to the Android app loader that provide hooks to run your own code every time a new process is started. In contrast, Frida achieves code injection by writing code directly into process memory. The process is outlined in a bit more detail below.
 
@@ -521,7 +521,7 @@ To install Frida locally, simply use Pypi:
 $ sudo pip install frida
 ~~~
 
-Your Android device needs to be rooted to get Frida running. Download the frida-server binary from the Frida releases page []. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. Usually, Pypi will install the latest version of Frida, but if you are not sure, you can check with the Frida command line tool:
+Your Android device needs to be rooted to get Frida running. Download the frida-server binary from the Frida releases page [https://github.com/frida/frida/releases]. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. Usually, Pypi will install the latest version of Frida, but if you are not sure, you can check with the Frida command line tool:
 
 ~~~
 $ frida --version
@@ -552,6 +552,61 @@ $ frida-ps -U
   936  com.android.systemui
 (...)
 ~~~
+
+The `-U` option lets Frida search for USB devices or emulators.
+
+To trace specific low level library calls, you can use the `frida-trace` command line tool:
+
+~~~
+frida-trace -i "open" -U com.android.chrome 
+~~~
+
+This generates a little javascript in `__handlers__/libc.so/open.js` that Frida injects into the process. You can modify that script according to your needs, making use of Fridas (Javascript API)[https://www.frida.re/docs/javascript-api/]
+
+To work with frida interactivley, you can use `frida-cli` which hooks into a process and gives you a command line interface to Frida's API.
+
+~~~
+frida -U com.android.chrome
+~~~
+
+You can use frida-cli to load scripts via the `-l` option, e.g to load `myscript.js` you would do:
+
+~~~
+frida -U -l myscript.js com.android.chrome
+~~~
+
+Frida also provides a Java API which is especially helpful for dealing with Android apps and which lets you work with Java objects directly. This is a script to overwrite the "onResume" function of a process:
+
+~~~
+Java.perform(function () {
+    var Activity = Java.use("android.app.Activity");
+    Activity.onResume.implementation = function () {
+        console.log("[*] onResume() got called!");
+        this.onResume();
+    };
+});
+~~~
+
+Frida also let's you search for instantiated objects on the heap and work with them. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
+
+~~~
+setImmediate(function() {
+    console.log("[*] Starting script");
+    Java.perform(function () {
+        Java.choose("android.view.View", { 
+             "onMatch":function(instance){
+                  console.log("[*] Instance found: " + instance.toString());
+             },
+             "onComplete":function() {
+                  console.log("[*] Finished heap search")
+             }
+        });
+    });
+});
+~~~
+
+Besides loading scripts via `frida-cli`, Frida also provides Python, C and NodeJS bindings.
+
 
 ### Binary Analysis Frameworks
 
