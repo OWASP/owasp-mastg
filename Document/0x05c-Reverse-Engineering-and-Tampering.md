@@ -563,13 +563,13 @@ frida-trace -i "open" -U com.android.chrome
 
 This generates a little javascript in `__handlers__/libc.so/open.js` that Frida injects into the process. You can modify that script according to your needs, making use of Fridas (Javascript API)[https://www.frida.re/docs/javascript-api/]
 
-To work with frida interactivley, you can use `frida-cli` which hooks into a process and gives you a command line interface to Frida's API.
+To work with frida interactivley, you can use `frida CLI` which hooks into a process and gives you a command line interface to Frida's API.
 
 ~~~
 frida -U com.android.chrome
 ~~~
 
-You can use frida-cli to load scripts via the `-l` option, e.g to load `myscript.js` you would do:
+You can use frida CLI to load scripts via the `-l` option, e.g to load `myscript.js`:
 
 ~~~
 frida -U -l myscript.js com.android.chrome
@@ -587,7 +587,9 @@ Java.perform(function () {
 });
 ~~~
 
-Frida also let's you search for instantiated objects on the heap and work with them. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
+The script above calls Java.perform since most of Frida's code to work with Java needs to be wrapped in this function. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function outputs a notice to the console and calls the original `onResume` method by calling `this.onResume`.
+
+Frida also lets you search for instantiated objects on the heap and work with them. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
 ~~~
 setImmediate(function() {
@@ -605,7 +607,18 @@ setImmediate(function() {
 });
 ~~~
 
-Besides loading scripts via `frida-cli`, Frida also provides Python, C and NodeJS bindings.
+The output would look like this:
+
+~~~
+[*] Starting script
+[*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
+[*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
+[*] Instance found: android.view.View{be471b6 G.ED..... ......I. 0,0-0,0 #7f0c01f5 app:id/location_bar_verbose_status_separator}
+[*] Instance found: android.view.View{3ae0eb7 V.ED..... ........ 0,0-1080,63 #102002f android:id/statusBarBackground}
+[*] Finished heap search
+~~~
+
+Besides loading scripts via `frida CLI`, Frida also provides Python, C, NodeJS, Swift and various other bindings.
 
 
 ### Binary Analysis Frameworks
