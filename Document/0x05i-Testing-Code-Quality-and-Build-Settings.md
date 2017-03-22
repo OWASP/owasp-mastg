@@ -25,11 +25,11 @@ The test fails, if the application:
 
 #### Black-box Testing
 
-TBD
+-- TODO [Add content for black-box testing of "Verifying That the App is Properly Signed"] --
 
 #### Remediation
 
-TBD
+-- TODO [Add content for remediation of "Verifying That the App is Properly Signed"] --
 
 #### References
 
@@ -45,7 +45,7 @@ TBD
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -88,9 +88,9 @@ Will return the following if android:debuggable parameter is set to true :
 
 Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
 
-(TODO example)
+-- TODO [Add an example of black-box testing of "Testing If the App is Debuggable"] --
 
-(TODO JDWP)
+-- TODO [Add elements on Java Debug Wire Protocol (JDWP)] --
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
@@ -108,9 +108,11 @@ For production releases, the attribute android:debuggable must be set to false w
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of Testing for Debugging Symbols] --
 
 #### Black-box Testing
 
@@ -128,35 +130,39 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add link to relevant how-tos, papers, etc.] --
 
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content on white-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
+
 #### Black-box Testing
+
+-- TODO [Add content on black-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add link to relevant how-tos, papers, etc.] --
 
 ### Testing Exception Handling
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -168,15 +174,15 @@ Review the source code to understand/identify who the application handle various
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add links to relevant how-tos, papers, etc.] --
 
 ### Verifying Compiler Settings
 
@@ -186,31 +192,37 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+-- TODO [Describe how to assess this with access to the source code and build configuration] --
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue " Verifying Compiler Settings"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add link to relevant how-tos, papers, etc.] --
 
 ### Testing for Memory Management Bugs
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content for white-box testing "Testing for Memory Management Bugs"] --
+
 #### Black-box Testing
 
+-- TODO [Add content for black-box testing "Testing for Memory Management Bugs"] --
+
 #### Remediation
+
+-- TODO [Add remediations for "Testing for Memory Management Bugs"] --
 
 #### References
 
@@ -299,4 +311,4 @@ android {
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add links to relevant how-tos, papers, etc.] --
