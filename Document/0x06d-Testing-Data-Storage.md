@@ -1,10 +1,10 @@
 ## Testing Data Storage
 
-### Testing Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
+### Testing Local Data Storage -- TODO [Merge with OWASP-DATAST-001-2] --
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Create content for "Testing Local Data Storage" on iOS] --
 
 #### Black-box Testing
 
@@ -25,9 +25,11 @@ Steps :
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.
 
 #### White-box Testing
+
 When going through the source code it should be analyzed if native mechanisms that are offered by iOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain.
 
 #### Remediation
+
 If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
@@ -57,7 +59,7 @@ Storing data is essential for many mobile applications, for example in order to 
 
 Install and use the App as it is intended. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. Afterwards check the following items:
 
-(... TODO ...)
+-- TODO [Further develop section on black-box testing of "Testing for Sensitive Data Disclosure in Local Storage"] --
 
 
 #### White-box Testing
@@ -83,7 +85,7 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 #### Remediation
 
-(... TODO ...)
+-- TODO [Add content on remediation on "Testing for Sensitive Data Disclosure in Local Storage"]
 
 #### References
 
@@ -147,27 +149,35 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-(... TODO ...)
+-- TODO [Add references for section "Testing for Sensitive Data in Logs"] --
 
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content to overview of "Testing Whether Sensitive Data Is Sent to Third Parties" ] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
 
 #### Remediation
 
+-- TODO [Add content on remediation of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+
 #### References
+
+-- TODO [Add references for "Testing Whether Sensitive Data Is Sent to Third Parties"] --
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing for Sensitive Data in the Keyboard Cache"] --
 
 #### Black-box Testing
 
@@ -185,6 +195,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
 Search through the source code provided to look the following similar implementation.
+
 ```
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -200,14 +211,14 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+-- TODO [Add link to relevant how-tos, papers, etc.] --
 
 
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing for Sensitive Data in the Clipboard"] --
 
 #### Black-box Testing
 
@@ -262,51 +273,78 @@ Possible remediation method:
 
 @end
 ```
+
 http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
 
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data in the Clipboard"] --
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 #### Remediation
 
+-- TODO [Add remediation on "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
+
 #### References
+
+-- TODO [Add references for "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 ### Testing for Sensitive Data Disclosure Through the User Interface
 
 ##### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 #### Remediation
 
+-- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing for Sensitive Data in Backups"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing for Sensitive Data in Backups"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing for Sensitive Data in Backups"] --
 
 #### Remediation
 
+-- TODO [Add content on remediation of "Testing for Sensitive Data in Backups"] --
+
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data in Backups"] --
 
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
@@ -343,16 +381,27 @@ Possible remediation method that will set a default screenshot:
 ```
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
 
+#### References
+
+-- TODO [Add references for "Testing For Sensitive Information in Auto-Generated Screenshots" ] --
+
 ### Testing the Device-Access-Security Policy
 
 #### Overview
 
+-- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] --
 
 #### Static Analysis
 
+-- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] --
+
 #### Dynamic Analysis
 
+-- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] --
+
 #### Remediation
+
+-- TODO [Add remediation of "Testing the Device-Access-Security Policy"] --
 
 #### References
 
@@ -361,10 +410,12 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
+
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - (.. TODO ..)
+
+- CWE: -- TODO [Add link to CWE issue] --
 
 
 ### Verifying User Education Controls
@@ -379,32 +430,35 @@ The following list shows potential warnings or advises for a user when opening t
 * If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
-**(..TODO..) - What else can be a warning on Android?**
+-- TODO [What else can be a warning on Android?] --
 
 #### Static Analysis
 
-**...TODO...**
+-- TODO [Add content for static analysis of "Verifying User Education Controls"] --
 
 #### Dynamic Analysis
 
 After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
-**...TODO...**
+
+-- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] --
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
-**...TODO...**
+
+-- TODO [Further develop remediation of "Verifying User Education Controls"] --
 
 #### References
 
-**...TODO...**
+-- TODO [Add references for "Verifying User Education Controls"] --
 
 ##### OWASP MASVS
 
 - V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
 
 ##### OWASP Mobile Top 10
+
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - **.. TODO ...**
+- CWE: -- TODO [Add link to CWE issue for "Verifying User Education Controls"] --
