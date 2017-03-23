@@ -343,9 +343,9 @@ sys.stdin.read()
 
 -- TODO [Describe how to assess this with access to the source code and build configuration] --
 
-#### Black-box Testing
+#### Dynamic Analysis
 
--- TODO [Black-box testing of anti-debugging] --
+-- TODO [Dynamic Analysis of anti-debugging] --
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
@@ -362,11 +362,18 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A comprehensive protection scheme should include CRC checks on the app bytecode and native libraries as well as important data files. It is recommended to implement these checks both on the Java and native layer.
+In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A comprehensive protection scheme should include CRC checks on the app bytecode and native libraries as well as important data files. These checks can be impelemented both on the Java and native layer.
 
 ##### Sample Implementation
 
-From the Android Cracking Blog <sup>[1]</sup>:
+Integrity checks usually calculate a checksum or hash over selected files. Files that are commonly protected include: 
+
+- AndroidManifest.xml
+- classes.dex
+- Native libraries (*.so)
+
+As well as any other files containing Java bytecode. The following sample implementation from the Android Cracking Blog <sup>[1]</sup> calculates a CRC over classes.dex and compares is with the expected value.
+
 
 ```java
 private void crcTest() throws IOException {
@@ -421,8 +428,7 @@ private void crcTest() throws IOException {
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
 
 ##### Tools
 
