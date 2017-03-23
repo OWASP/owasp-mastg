@@ -249,7 +249,6 @@ struct DvmGlobals {
 
 
 ```
-
 Crashing Debugger Thread on Init <sup>[2]</sup>:
 
 ```c
@@ -438,6 +437,16 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ##### Detection Methods
 
+-- TODO [Add list of tools and associated files, processes, libs, etc. etc. Cover the most important tools..."] --
+
+- Substrate for Android
+- Xposed
+- Frida
+- Introspy-Android
+- Drozer
+- RootCloak
+- Android SSL Trust Killer
+
 ###### File Checks
 
 ###### Checking Running Processes
@@ -451,14 +460,6 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
 -- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
-##### With Source Code
-
--- TODO [Add content on "Testing Detection of Reverse Engineering Tools" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content on "Testing Detection of Reverse Engineering Tools" without source code] --
 
 #### Dynamic Analysis
 
