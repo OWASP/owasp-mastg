@@ -566,6 +566,8 @@ Keep in mind that a hooking framework such as Xposed or Frida could hook this AP
 -- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Emulator Detection".] --
 
 #### References
+- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
+
 
 ##### OWASP Mobile Top 10 2014
 
