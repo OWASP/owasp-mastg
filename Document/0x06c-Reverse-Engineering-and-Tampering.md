@@ -125,7 +125,7 @@ Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for 
 
 Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
 
-*(Todo - use cases and example for Cycript)
+-- TODO [Add use cases and example for Cycript] --
 
 - Obtain references to existing objects
 - Instantiate objects from classes
@@ -140,12 +140,7 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 #### Frida
 
-(---TODO---)
-
-
-
-
-
+-- TODO [Develop section on Frida] --
 
 
 ### References
