@@ -1,4 +1,4 @@
-# Testing Anti-Reverse Engineering Schemes
+# Assessing Anti-Reverse Engineering Schemes
 
 In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
 
