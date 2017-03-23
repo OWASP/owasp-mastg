@@ -496,9 +496,33 @@ private void crcTest() throws IOException {
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Emulator Detection".] --
+In the context of anti-reversing, the goal of emualtor detection is to make it a bit more difficult to run the app on a emulated device, which in turn impedes some tools and techniques reverse engineers like to use. This forces the reverse engineer to defeat the emulator checks or utilize the physical device. This provides a barrier to entry for large scale device analysis.
 
 #### Static Analysis
+
+There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense. 
+
+The first set of indicaters stem from the build.prop file
+
+```
+API Method          Value           Meaning
+Build.ABI           armeabi         possibly emulator
+BUILD.ABI2          unknown         possibly emulator
+Build.BOARD         unknown         emulator
+Build.Brand         generic         emulator
+Build.DEVICE        generic         emulator
+Build.FINGERPRINT   generic         emulator
+Build.Hardware      goldfish        emulator
+Build.Host          android-test    possibly emulator
+Build.ID            FRF91           emulator
+Build.MANUFACTURER  unknown         emulator
+Build.MODEL         sdk             emulator
+Build.PRODUCT       sdk             emulator
+Build.RADIO         unknown         possibly emulator
+Build.SERIAL        null            emulator
+Build.TAGS          test-keys       emulator
+Build.USER          android-build   emulator
+```
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
