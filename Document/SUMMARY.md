@@ -36,4 +36,5 @@
 ### Appendix
 
 * [Security Testing in the Application Development Lifecycle](0x07-Security-Testing-SDLC.md)
+* [Assessing Anti-Reverse Engineering Schemes](0x07b-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](0x08-Testing-Tools.md)

@@ -84,6 +84,7 @@ Main Contacts: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernha
 ### Appendix
 
 * [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md) -- [Romuald Szkudlarek](https://github.com/romualdszkudlarek) - *romualds*, [Stefan Streichsbier](https://github.com/streichsbaer)- *stefan*
+* [Assessing Anti-Reverse Engineering Schemes](Document/0x07b-Assessing-Anti-Reverse-Engineering-Schemes.md) -- [Bernhard Mueller](https://github.com/bernhardm) - *bernhardm*
 * [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/) - *tan_prathan*
 * [Suggested Reading](Document/0x09-Suggested-Reading.md) - N/A
 
