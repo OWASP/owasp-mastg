@@ -19,7 +19,7 @@ Note: This table is generated from based on the [contribution log](https://githu
 
 | Project Leaders / Authors | Co-Authors | Top Contributors | Contributors | Reviewers |
 | --- | --- | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Francesco Stillavato, Pawel Rzepa, Romuald Szkudlarek, Abdessamad Temmar | Jin Kung Ong, Slawomir Kosowski, Alexander Antukh, Gerhard Wagner, Ryan Teoh, Daniel Ramirez Martin, Claudio André, Prathan Phongthiproek, Luander Ribeiro| Pishu Mahtani, Ali Yazdani, Sebastian Banescu, Prabhant Singh, *Romantic668*, Stephen Corbiaux, *Demonbensa*, Jeroen Willemsen | Anant Shrivastava, Stephanie Vanroelen |
+| Bernhard Mueller, Sven Schleier | Francesco Stillavato, Pawel Rzepa, Romuald Szkudlarek, Abdessamad Temmar | Jin Kung Ong, Slawomir Kosowski, Alexander Antukh, Gerhard Wagner, Ryan Teoh, Daniel Ramirez Martin, Claudio André, Prathan Phongthiproek, Luander Ribeiro| Pishu Mahtani, Ben Actis, Ali Yazdani, Sebastian Banescu, Prabhant Singh, *Romantic668*, Stephen Corbiaux, *Demonbensa*, Jeroen Willemsen | Anant Shrivastava, Stephanie Vanroelen |
 
 ### Older Versions
 
