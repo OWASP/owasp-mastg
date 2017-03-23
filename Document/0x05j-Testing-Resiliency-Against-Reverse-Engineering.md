@@ -151,9 +151,9 @@ If the root detection mechanisms are found to be insufficient, propose additiona
 [4] InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
 [4] Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* M10 - Lack of Binary Protections - https://www.owasp.org/index.php/Mobile_Top_10_2014-M10
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -338,7 +338,7 @@ script.load()
 sys.stdin.read()
 ```
 
-#### White-box Testing
+#### Static Analysis
 
 (Describe how to assess this with access to the source code and build configuration)
 
@@ -409,10 +409,9 @@ private void crcTest() throws IOException {
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -436,7 +435,8 @@ private void crcTest() throws IOException {
 
 #### Overview
 
-[Provide a general description of the issue.]
+Reverse engineers use a lot of tools, frameworks and apps to aid the reversing process, many of which you have encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is either attempting to reverse engineer the app, or is at least putting themselves as increased risk by installing such tools.
+
 
 #### Static Analysis
 
@@ -458,10 +458,9 @@ private void crcTest() throws IOException {
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -493,10 +492,6 @@ private void crcTest() throws IOException {
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
 
 #### Dynamic Analysis
 
@@ -544,10 +539,6 @@ private void crcTest() throws IOException {
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
-
-##### Without Source Code
-
 #### Dynamic Analysis
 
 [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
@@ -558,10 +549,9 @@ private void crcTest() throws IOException {
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -594,9 +584,7 @@ private void crcTest() throws IOException {
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
 
-##### Without Source Code
 
 #### Dynamic Analysis
 
@@ -608,10 +596,9 @@ private void crcTest() throws IOException {
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -654,9 +641,6 @@ private void crcTest() throws IOException {
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
-
-##### Without Source Code
 
 #### Dynamic Analysis
 
@@ -693,10 +677,9 @@ out_file.close()
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
