@@ -48,7 +48,7 @@ Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it
 
 ##### With Source Code
 
-#####Android Permissions
+###### Android Permissions
 
 Permissions should be checked if they are really need within the App. For example in order for an Activity to load a web page into a WebView the `INTERNET` permission in the Android Manifest file is needed.
 
@@ -57,8 +57,7 @@ Permissions should be checked if they are really need within the App. For exampl
 ```
 It is always recommended to run through the developer of the intention of every permission and removed those that are not needed.
 
-#####Custom Permissions
-
+###### Custom Permissions
 
 Apart from enforcing custom permissions via application manifest file, it can also be enforce programmatically. This is not recommended as this can lead to permission leaking and perform an unauthorized operation. This can be verified by inspecting whether if all defined custom permission were enforce in android manifest file.
 
@@ -123,7 +122,7 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to OWASP Mobile Top 10 2014 concerning this section] --
 
 ##### OWASP MASVS
 
@@ -131,7 +130,7 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add reference to relevant CVE(s) : titles, links, ...] --
 
 ##### Info
 
@@ -142,47 +141,51 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### Tools
 
-* Tool - Link
-
+-- TODO [Add link to relevant tools] --
 
 ### Testing Input Validation and Sanitization
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue.] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Clarify the purpose of "[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]" ] --
 
 ##### With Source Code
 
+-- TODO [Develop content for "Testing Input Validation and Sanitization" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content for "Testing Input Validation and Sanitization" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue.] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to MX OWASP Mobile Top 10 2014] --
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
+-- TODO [Update below "X.Y" reference to MASVS] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add links and titles to relevant CWE] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -192,7 +195,7 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to relevant tools] --
 * Enjarify - https://github.com/google/enjarify
 
 
@@ -200,31 +203,35 @@ Only permissions that are used within the app should be requested in the Android
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue.] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Clarify the purpose of "[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]" ] --
 
 ##### With Source Code
 
+-- TODO [Develop content for "Testing Custom URL Schemes" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Develop content for "Testing Custom URL Schemes" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue.] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing Custom URL Schemes" topic] --
 
 ##### OWASP MASVS
 
@@ -232,7 +239,7 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add link to relevant CWE for "Testing Custom URL Schemes"]
 
 ##### Info
 
@@ -241,38 +248,42 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add link to tools for "Testing Custom URL Schemes"] --
 
 
 ### Testing For Sensitive Functionality Exposure Through IPC
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue.] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Clarify purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for "Testing For Sensitive Functionality Exposure Through IPC" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for "Testing For Sensitive Functionality Exposure Through IPC" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue.] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ##### OWASP MASVS
 
@@ -280,18 +291,15 @@ Only permissions that are used within the app should be requested in the Android
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add links and titles for CWE related to the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ##### Info
 
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
-
 ##### Tools
 
-* Tool - Link
-
-
+-- TODO [Add links to relevant tools for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ### Testing JavaScript Execution in WebViews
 
@@ -322,7 +330,7 @@ This allows the WebView to interpret JavaScript and execute it's command.
 
 ##### Without Source Code
 
-**...TODO...**
+-- TODO [Add content on "Testing JavaScript Execution in WebViews" without source code] --
 
 #### Dynamic Analysis
 
@@ -372,7 +380,7 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add link to tools for "Testing JavaScript Execution in WebViews"] --
 
 
 ### Testing WebView Protocol Handlers
@@ -387,7 +395,8 @@ Several schemas are available by default in an URI on Android and can be trigger
 * geo:
 
 When using them in a link the App can be triggered for example to access a local file when using `file:///storage/emulated/0/private.xml`. This can be exploited by an attacker if he is able to inject JavaScript into the Webview to access local resources via the file schema.
-**..TODO..**
+
+-- TODO [Further develop content on "Testing WebView Protocol Handlers"] --
 
 #### Static Analysis
 
@@ -404,12 +413,13 @@ If one or all of the methods above can be identified and they are activated it s
 
 ##### Without Source Code
 
-**..TODO..**
+-- TODO [Create content on "Testing WebView Protocol Handlers" with source code] --
 
 #### Dynamic Analysis
 
 While using the App look for ways to trigger phone calls or accessing files from the file system to identify usage of protocol handlers.
-**..TODO..**
+
+-- TODO [Further develop content on dynamic analysis for "Testing WebView Protocol Handlers" ] --
 
 #### Remediation
 
@@ -428,7 +438,7 @@ webView.getSettings().setAllowContentAccess(false);
 
 Access to files in the file system can be enabled and disabled for a WebView with `setAllowFileAccess()`. File access is enabled by default and should be deactivated if not needed. Note that this enables or disables file system access only. Assets and resources are still accessible using `file:///android_asset` and `file:///android_res`<sup>[1]</sup>.
 
-**..TODO.. How to disable tel and geo schema?**
+-- TODO [How to disable tel and geo schema?] --
 
 #### References
 
@@ -442,7 +452,7 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add links and titles to relevant CWE for "Testing WebView Protocol Handlers"] --
 
 ##### Info
 
@@ -454,16 +464,15 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 ##### Tools
 
-* Tool - Link
-
-
+-- TODO [Add links to relevant tools for "Testing WebView Protocol Handlers"] --
 
 ### Testing for Local File Inclusion in WebViews
 
 #### Overview
 
 WebViews can load content remotely, but can also load it locally from the App data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
-**..TODO..**
+
+-- TODO [Further develop content on the overview for "Testing for Local File Inclusion in WebViews"] --
 
 #### Static Analysis
 
@@ -489,12 +498,11 @@ The URL specified in `loadURL()` should be checked, if any dynamic parameters ar
 
 ##### Without Source Code
 
-**..TODO..**
+-- TODO [Develop content for "Testing for Local File Inclusion in WebViews" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-**..TODO..**
+-- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
@@ -506,7 +514,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add reference to OWASP Mobile Top 10 2014 for "Testing for Local File Inclusion in WebViews"] --
 
 ##### OWASP MASVS
 
@@ -514,7 +522,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add reference to relevant CWE for "Testing for Local File Inclusion in WebViews"] --
 
 ##### Info
 
@@ -523,7 +531,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to tools for "Testing for Local File Inclusion in WebViews"] --
 
 
 ### Testing Whether Java Objects Are Exposed Through WebViews
@@ -637,12 +645,11 @@ If an attacker has access to the JavaScript code, for example through stored XSS
 
 ##### Without Source Code
 
-**..TODO..**
+-- TODO [Add content on "Testing Whether Java Objects Are Exposed Through WebViews" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
-**..TODO..**
+-- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
@@ -663,7 +670,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing Whether Java Objects Are Exposed Through WebViews" issue] --
 
 ##### OWASP MASVS
 
@@ -671,7 +678,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add links and titles to relevant CWE for "Testing Whether Java Objects Are Exposed Through WebViews"] --
 
 ##### Info
 
@@ -682,7 +689,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to tools for "Testing Whether Java Objects Are Exposed Through WebViews"] --
 
 
 ### Testing Object (De-)Serialization
@@ -707,21 +714,21 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 ##### Without Source Code
 
-**TODO**
+-- TODO [Create content for "Testing Object (De-)Serialization" without source code] --
 
 #### Dynamic Analysis
 
-**TODO**
+-- TODO [Create content for dynamic analysis of "Testing Object (De-)Serialization" ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Object (De-)Serialization".] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add reference to OWASP Mobile Top 10 2014 for "Testing Object (De-)Serialization"] --
 
 ##### OWASP MASVS
 
@@ -729,7 +736,7 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add link and title to CWE for "Testing Object (De-)Serialization"] --
 
 ##### Info
 
@@ -738,7 +745,7 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add link to relevant tools for "Testing Object (De-)Serialization"] --
 
 
 ### Testing Root Detection
@@ -783,8 +790,7 @@ If the root detection is implemented from scratch, the following should be check
 
 ##### Without Source Code
 
-**TODO**
-
+-- TODO [Create content for "Testing Root Detection" without source code] --
 
 #### Dynamic Analysis
 
@@ -806,7 +812,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
+-- TODO [Add link to OWASP Mobile Top 10 2414 for "Testing Root Detection"] --
 
 ##### OWASP MASVS
 
@@ -814,7 +820,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add link to relevant CWE for "Testing Root Detection"] --
 
 ##### Info
 - [1] RootBeer - https://github.com/scottyab/rootbeer
