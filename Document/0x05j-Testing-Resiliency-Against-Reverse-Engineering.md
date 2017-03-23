@@ -174,7 +174,7 @@ N/A
 
 ##### Tools
 
--- TODO [Add links to tools for "Testing Root Detection"] --
+- rootbeer - https://github.com/scottyab/rootbeer
 
 ### Testing Anti-Debugging
 
@@ -201,7 +201,6 @@ We have encountered the <code>android:debuggable</code> attribute a few times al
 
     }
 ```
-
 ###### Calling isDebuggerConnected 
 
 The Android Debug system class offers a static method for checking whether a debugger is currently connected. The method simply returns a boolean value.
@@ -221,7 +220,6 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
     return JNI_FALSE;
 }
 ```
-
 ###### Messing With JDWP Data Structures
 
 
@@ -247,6 +245,9 @@ struct DvmGlobals {
     JdwpState*  jdwpState;
  
 };
+
+
+
 ```
 
 Crashing Debugger Thread on Init <sup>[2]</sup>:
@@ -260,7 +261,6 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 ##### Sample Anti-Native-Debugging Methods
 
 Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch "classical", ptrace-based debuggers, so separate defenses are needed to defend against this type of debugging. 
-
 
 ###### Checking for TracerPid
 
@@ -397,14 +397,6 @@ private void crcTest() throws IOException {
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
-
--- TODO [Add content on "Testing File Integrity Checks" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content on "Testing File Integrity Checks" without source code] --
-
 #### Dynamic Analysis
 
 -- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
@@ -443,6 +435,16 @@ private void crcTest() throws IOException {
 #### Overview
 
 Reverse engineers use a lot of tools, frameworks and apps to aid the reversing process, many of which you have encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is either attempting to reverse engineer the app, or is at least putting themselves as increased risk by installing such tools.
+
+##### Detection Methods
+
+###### File Checks
+
+###### Checking Running Processes
+
+###### Checking Loaded Libraries
+
+##### Bypassing Detection
 
 #### Static Analysis
 
