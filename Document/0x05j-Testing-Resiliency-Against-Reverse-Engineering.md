@@ -498,9 +498,54 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Emulator Detection".] --
+In the context of anti-reversing, the goal of emualtor detection is to make it a bit more difficult to run the app on a emulated device, which in turn impedes some tools and techniques reverse engineers like to use. This forces the reverse engineer to defeat the emulator checks or utilize the physical device. This provides a barrier to entry for large scale device analysis.
 
 #### Static Analysis
+
+There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense. 
+
+The first set of indicaters stem from the build.prop file
+
+```
+API Method          Value           Meaning
+Build.ABI           armeabi         possibly emulator
+BUILD.ABI2          unknown         possibly emulator
+Build.BOARD         unknown         emulator
+Build.Brand         generic         emulator
+Build.DEVICE        generic         emulator
+Build.FINGERPRINT   generic         emulator
+Build.Hardware      goldfish        emulator
+Build.Host          android-test    possibly emulator
+Build.ID            FRF91           emulator
+Build.MANUFACTURER  unknown         emulator
+Build.MODEL         sdk             emulator
+Build.PRODUCT       sdk             emulator
+Build.RADIO         unknown         possibly emulator
+Build.SERIAL        null            emulator
+Build.TAGS          test-keys       emulator
+Build.USER          android-build   emulator
+```
+
+It should be noted that the build.prop file can be edited on a rooted android device, or modified when compiling AOSP from source.  Either of these techniques would bypass the static string checks above.
+
+The next set of static indicators utilize the Telephony manager. All android emulators have fixed values that this API can query.
+
+```
+API                                                     Value                   Meaning
+TelephonyManager.getDeviceId()                          0's                     emulator
+TelephonyManager.getLine1 Number()                      155552155               emulator
+TelephonyManager.getNetworkCountryIso()                 us                      possibly emulator
+TelephonyManager.getNetworkType()                       3                       possibly emulator
+TelephonyManager.getNetworkOperator().substring(0,3)    310                     possibly emulator
+TelephonyManager.getNetworkOperator().substring(3)      260                     possibly emulator
+TelephonyManager.getPhoneType()                         1                       possibly emulator
+TelephonyManager.getSimCountryIso()                     us                      possibly emulator 
+TelephonyManager.getSimSerial Number()                  89014103211118510720    emulator
+TelephonyManager.getSubscriberId()                      310260000000000         emulator
+TelephonyManager.getVoiceMailNumber()                   15552175049             emulator
+```
+
+Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data. 
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
@@ -515,6 +560,8 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 -- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Emulator Detection".] --
 
 #### References
+- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
+
 
 ##### OWASP Mobile Top 10 2014
 
