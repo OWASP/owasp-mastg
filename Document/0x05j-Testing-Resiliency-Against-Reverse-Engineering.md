@@ -524,6 +524,27 @@ Build.TAGS          test-keys       emulator
 Build.USER          android-build   emulator
 ```
 
+It should be noted that the build.prop file can be edited on a rooted android device, or modified when compiling AOSP from source.  Either of these techniques would bypass the static string checks above.
+
+The next set of static indicators utilize the Telephony manager. All android emulators have fixed values that this API can query.
+
+```
+API                                                     Value                   Meaning
+TelephonyManager.getDeviceId()                          0's                     emulator
+TelephonyManager.getLine1 Number()                      155552155               emulator
+TelephonyManager.getNetworkCountryIso()                 us                      possibly emulator
+TelephonyManager.getNetworkType()                       3                       possibly emulator
+TelephonyManager.getNetworkOperator().substring(0,3)    310                     possibly emulator
+TelephonyManager.getNetworkOperator().substring(3)      260                     possibly emulator
+TelephonyManager.getPhoneType()                         1                       possibly emulator
+TelephonyManager.getSimCountryIso()                     us                      possibly emulator 
+TelephonyManager.getSimSerial Number()                  89014103211118510720    emulator
+TelephonyManager.getSubscriberId()                      310260000000000         emulator
+TelephonyManager.getVoiceMailNumber()                   15552175049             emulator
+```
+
+Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data. 
+
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
 -- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
