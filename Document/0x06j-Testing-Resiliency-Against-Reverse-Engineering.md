@@ -89,9 +89,104 @@ Executing privileged actions. Calling the system() function with a NULL argument
 
 #### Bypassing Jailbreak Detection
 
--- TODO [Jailbreak detection general description] --
+Once you start the application, which has jailbreak detection enabled on a jailbroken device, you will notice one of the following:
 
--- TODO [Frida-based bypass] --
+1. The application closes immediately without any notification
+2. There is a popup window indicating that the application won't run on a jailbroken device
+
+In the first case, it's worth checking if the application is fully functional on non-jailbroken device. It might be that the application is in reality crashing or has a bug that causes exiting. This might happen when you're testing a preproduction version of the application.
+
+Let's look on how to bypass jailbreak detection using once again Damn Vulnerable iOS application as an example. 
+After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
+You might also want to decompile the functions to see what they are doing and especially what do they return.
+
+![Disassembling with Hopper](/Document/Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
+![Decompiling with Hopper](/Document/Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
+
+As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
+
+Let's inject cycript into our process (look for your PID with `top`):
+
+```
+iOS8-jailbreak:~ root# cycript -p 12345
+cy# [SFAntiPiracy isTheDeviceJailbroken]
+true
+```
+
+As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class. 
+
+```
+cy# a=choose(JailbreakDetectionVC)
+[]
+```
+
+Ooops! The returned array is empty. It means that there are no instances of this class registed within the runtime. In fact, we haven't clicked second 'Jailbreak Test' button, which indeed initializes this class:
+
+```
+cy# a=choose(JailbreakDetectionVC)
+[#"<JailbreakDetectionVC: 0x14ee15620>"]
+cy# [a[0] isJailbroken]
+True
+```
+
+![The device is jailbroken](/Document/Images/Chapters/0x06b/deviceISjailbroken.png "The device is jailbroken")
+
+Hence you now understand why it's important to have your application in a desired state. 
+Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
+
+```
+cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
+cy# [a[0] isJailbroken]
+false
+```
+
+![The device is NOT jailbroken](/Document/Images/Chapters/0x06b/deviceisNOTjailbroken.png "The device is NOT jailbroken")
+In this case we have bypassed Jailbreak detection of the application!
+
+Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
+
+**Frida** is a dynamic instrumentation framework, which allows you to use among other a JavaScript API to instrument the apps. One feature that we will use in bypassing jailbreak detection is to perform so-called early instrumentation, i.e. replace function implementation on startup.
+
+1. First, ensure that `frida-server` is running on your iDevice
+2. iDevice must be connected via USB cable
+3. Use `frida-trace` on your workstation:
+
+```
+$ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
+```
+
+This will actually start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJailbroken]` and create JS hook with `onEnter` and `onLeave` callback functions. Now it's trivial to replace return value with `value.replace()` as shown in the example below:
+
+```
+    onLeave: function (log, retval, state) {
+    console.log("Function [JailbreakDetectionVC isJailbroken] originally returned:"+ retval);
+    retval.replace(0);  
+      console.log("Changing the return value to:"+retval);
+    }
+```
+
+Running this will have the following result:
+
+```
+$ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
+
+Instrumenting functions...                                           `...
+-[JailbreakDetectionVC isJailbroken]: Loaded handler at "./__handlers__/__JailbreakDetectionVC_isJailbroken_.js"
+Started tracing 1 function. Press Ctrl+C to stop.                       
+Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
+Changing the return value to:0x0
+           /* TID 0x303 */
+  6890 ms  -[JailbreakDetectionVC isJailbroken]
+Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
+Changing the return value to:0x0
+ 22475 ms  -[JailbreakDetectionVC isJailbroken]
+ ```
+ 
+Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI.
+ 
+Frida is a very powerful and versatile tool. Refer to the documentation [17] to get more details.
+
+-- TODO [a generic Frida script that catches many JB detection methods] --
 
 Hooking Objective-C methods and native functions:
 
@@ -184,6 +279,7 @@ script.on('message', on_message)
 script.load()
 sys.stdin.read()
 ~~~~
+
 
 #### Static Analysis
 
