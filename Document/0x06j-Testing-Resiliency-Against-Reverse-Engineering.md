@@ -100,8 +100,8 @@ Let's look on how to bypass jailbreak detection using once again Damn Vulnerable
 After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
 You might also want to decompile the functions to see what they are doing and especially what do they return.
 
-![Disassembling with Hopper](/Document/Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
-![Decompiling with Hopper](/Document/Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
+![Disassembling with Hopper](Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
+![Decompiling with Hopper](Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
 
 As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
 
@@ -129,7 +129,7 @@ cy# [a[0] isJailbroken]
 True
 ```
 
-![The device is jailbroken](/Document/Images/Chapters/0x06b/deviceISjailbroken.png "The device is jailbroken")
+![The device is jailbroken](Images/Chapters/0x06j/deviceISjailbroken.png "The device is jailbroken")
 
 Hence you now understand why it's important to have your application in a desired state. 
 Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
@@ -140,7 +140,7 @@ cy# [a[0] isJailbroken]
 false
 ```
 
-![The device is NOT jailbroken](/Document/Images/Chapters/0x06b/deviceisNOTjailbroken.png "The device is NOT jailbroken")
+![The device is NOT jailbroken](Images/Chapters/0x06j/deviceisNOTjailbroken.png "The device is NOT jailbroken")
 In this case we have bypassed Jailbreak detection of the application!
 
 Now, imagine that the application is closing immediately upon detecting that the device is jailbroken. In this case you have no chance (time) to launch cycript and replace function implementation. Instead, you would have to use CydiaSubstrate, use proper hooking function, like `MSHookMessageEx` and compile the tweak. There are good sources on how to perform this [15-16], however, we will provide possibly faster and more flexible approach.
@@ -184,7 +184,7 @@ Changing the return value to:0x0
  
 Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI.
  
-Frida is a very powerful and versatile tool. Refer to the documentation [17] to get more details.
+Frida is a very powerful and versatile tool. Refer to the documentation [3] to get more details.
 
 -- TODO [a generic Frida script that catches many JB detection methods] --
 
@@ -318,6 +318,7 @@ sys.stdin.read()
 
 - [1] - Jailbreak Detection Methods on the Trustware Spiderlabs Blog - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
 - [2] - Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - http://delaat.net/rp/2015-2016/p51/report.pdf
+- [3] - http://frida.re/
 
 ##### Tools
 

@@ -38,7 +38,7 @@ The iOS upgrade process is performed online and is based on challenge-response p
 
 ### Preparing your first test environment
 
-![Cydia Store](/Document/Images/Chapters/0x06b/cydia.png "Cydia Store")
+![Cydia Store](Images/Chapters/0x06b/cydia.png "Cydia Store")
 
 Once you have your iOS device jailbroken and Cydia is installed (as per screenshot), proceed as following:
 
@@ -360,7 +360,7 @@ PID  Name
 499  Gadget
 ~~~
 
-![Frida on non-JB device](/Document/Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
+![Frida on non-JB device](Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
 
 ##### Troubleshooting.
 
