@@ -441,7 +441,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Dynamic Analysis
 
-Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing". The app should
+Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing".
 
 #### Remediation
 
