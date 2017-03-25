@@ -4,40 +4,44 @@
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Verifying Cryptographic Key Management"] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Create content of ""Verifying Cryptographic Key Management" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Create content of "Verifying Cryptographic Key Management" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Verifying Cryptographic Key Management" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying Cryptographic Key Management".] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
+-- TODO [Update below reference "VX.Y" for "Verifying Cryptographic Key Management"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Verifying Cryptographic Key Management"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -47,7 +51,7 @@
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add link to relevant tools for "Verifying Cryptographic Key Management"] --
 * Enjarify - https://github.com/google/enjarify
 
 
@@ -71,52 +75,59 @@ When there is a need to store or transmit sensitive data, use strong, up-to-date
 Do not develop custom or private cryptographic algorithms. They will likely be exposed to attacks that are well-understood by cryptographers. Reverse engineering techniques are mature. If the algorithm can be compromised if attackers find out how it works, then it is especially weak.
 
 ##### OWASP MASVS
+
 - V3.2: "The app uses proven implementations of cryptographic primitives"
 
 ##### OWASP Mobile Top 10
+
 * M6 - Broken Cryptography
 
 ##### CWE
+
 * CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
 
 ##### With Source Code
 
+-- TODO [Create content for "Verifying the Configuration of Cryptographic Standard Algorithms" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Create content for "Verifying the Configuration of Cryptographic Standard Algorithms" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Verifying the Configuration of Cryptographic Standard Algorithms" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying the Configuration of Cryptographic Standard Algorithms".] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -126,47 +137,51 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing for Insecure and/or Deprecated Cryptographic Primitives
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing for Insecure and/or Deprecated Cryptographic Primitives"] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
 
 ##### With Source Code
 
+-- TODO [Add content on "Testing for Insecure and/or Deprecated Cryptographic Primitives"  with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content on "Testing for Insecure and/or Deprecated Cryptographic Primitives"  without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing for Insecure and/or Deprecated Cryptographic Primitives" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Insecure and/or Deprecated Cryptographic Primitives".] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
+-- TODO [Update below reference "VX.Y" for "Testing for Insecure and/or Deprecated Cryptographic Primitives"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing for Insecure and/or Deprecated Cryptographic Primitives"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -176,47 +191,51 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to relevant tools for "Testing for Insecure and/or Deprecated Cryptographic Primitives"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Random Number Generation
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Random Number Generation".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for "Testing Random Number Generation" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for "Testing Random Number Generation" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Random Number Generation" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Random Number Generation".] --
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" for "Testing Random Number Generation"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Random Number Generation"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -226,5 +245,5 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add links to relavant tools for "Testing Random Number Generation"] --
 * Enjarify - https://github.com/google/enjarify
