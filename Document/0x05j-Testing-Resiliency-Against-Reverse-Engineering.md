@@ -10,11 +10,13 @@ On Android, we define the term "root detection" a bit more broadly to include de
 
 ##### Common Root Detection Methods
 
+In the following section, we list some of the root detection methods you'll commonly encounter. You'll find some of those checks implemented in the Crackme examples that accompany the OWASP Mobile Testing Guide [1].
+
 ###### SafetyNet
 
-SafetyNet is an Android API that creates a profile of the device using software and hardware information. This profile is then compared against a list of white-listed device models that have passed Android compatibility testing. Google recommends using the feature as "an additional in-depth defense signal as part of an anti-abuse system" [1].
+SafetyNet is an Android API that creates a profile of the device using software and hardware information. This profile is then compared against a list of white-listed device models that have passed Android compatibility testing. Google recommends using the feature as "an additional in-depth defense signal as part of an anti-abuse system" [2].
 
-What exactly SafetyNet does under the hood is not well documented, and may change at any time: When you call this API, the service downloads a binary package containing the device vaidation code from Google, which is then dynamically executed using reflection. An analysis by John Kozyrakis showed that the checks performed by SafetyNet also attempt to detect whether the device is rooted, although it is unclear how extacly this is determined [2].
+What exactly SafetyNet does under the hood is not well documented, and may change at any time: When you call this API, the service downloads a binary package containing the device vaidation code from Google, which is then dynamically executed using reflection. An analysis by John Kozyrakis showed that the checks performed by SafetyNet also attempt to detect whether the device is rooted, although it is unclear how extacly this is determined [3].
 
 To use the API, an app may the SafetyNetApi.attest() method with returns a JWS message with the *Attestation Result*, and then check the following fields:
 
@@ -112,30 +114,30 @@ for (int i = 1; ; i = 0)
 }
 ~~~
 
-Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM, as on stock Android builds, OTA updates use Google's public certificates [3].
+Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM, as on stock Android builds, OTA updates use Google's public certificates [4].
 
 ##### Bypassing Root-Detection
 
 You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
 1. Renaming binaries. For example, in some cases simply renaming the "su" binary to something else is enough to defeat root detection (try not to break your enviroment though!).
-2. Unmounting /proc to prevent reading of process lists etc.
+2. Unmounting /proc to prevent reading of process lists etc. Sometimes, proc being unavailable is enough to bypass such checks.
 2. Using Frida or Xposed to hook APIs on the Java and native layers. By doing this, you can hide files and processes, hide the actual content of files, or return all kinds of bogus values the app requests;
 3. Hooking low-level APIs using Kernel modules.
 4. Patching the app to remove the checks.
 
 #### Static Analysis
 
-Check the original or decompiled source code for the presence of root detection mechanisms, and compare them against the following criteria:
+Check the original or decompiled source code for the presence of root detection mechanisms and apply the following criteria:
 
 - Multiple detection methods are scattered throughout the app (as opposed to putting everything into a single method);
 - The root detection mechanisms operate on multiple API layers (Java API, native library functions, Assembler / system calls);
-- Some of the mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
+- The mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
 - The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
 
 #### Dynamic Analysis
 
-Attempt to identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling all root detection mechanisms is your first step.
+Identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling the root detection mechanisms is your first step.
 
 Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one.
 
@@ -145,11 +147,12 @@ If the root detection mechanisms are found to be insufficient, propose additiona
 
 #### References
 
-[1] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
-[2] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
-[3] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
-[4] InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
-[4] Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
+[1] OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
+[2] SafetyNet Documentation - https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet
+[3] SafetyNet: Google's tamper detection for Android - https://koz.io/inside-safetynet/
+[4] NetSPI Blog - Android Root Detection Techniques - https://blog.netspi.com/android-root-detection-techniques/
+[5] InfoSec Institute - http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/
+[6] Android – Detect Root Access from inside an app - https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/
 
 ##### OWASP Mobile Top 10 2016
 
@@ -220,7 +223,31 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
     return JNI_FALSE;
 }
 ```
-###### Messing With JDWP Data Structures
+
+
+###### Timer Checks
+
+Code Sample from [3]
+
+```
+static boolean detect_threadCpuTimeNanos(){ 
+  long start = Debug.threadCpuTimeNanos();
+
+  for(int i=0; i<1000000; ++i) 
+    continue;
+
+  long stop = Debug.threadCpuTimeNanos();
+
+  if(stop - start < 10000000) {
+    return false;
+  }
+  else {
+    return true;
+  }
+```
+
+###### Messing With JDWP-related Data Structures
+
 
 
 ```c
@@ -256,6 +283,8 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
   gDvm.methDalvikDdmcServer_dispatch = NULL;
 }
 ```
+
+
 
 ##### Sample Anti-Native-Debugging Methods
 
@@ -357,6 +386,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 - [1] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
 - [2] Bluebox Security - 
+- [3] Matenaar et al. - Patent Application - MOBILE DEVICES WITH INHIBITED APPLICATION DEBUGGING AND METHODS OF OPERATION - https://www.google.com/patents/US8925077
 
 ### Testing File Integrity Checks
 
