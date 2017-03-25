@@ -283,21 +283,25 @@ sys.stdin.read()
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for static analysis of "Testing Jailbreak Detection" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for static analysis of "Testing Jailbreak Detection" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Jailbreak Detection" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Jailbreak Detection".] --
 
 #### References
 
@@ -307,11 +311,12 @@ sys.stdin.read()
 
 ##### OWASP MASVS
 
+-- TODO [Update reference to "VX.Y" below for "Testing Jailbreak Detection"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Jailbreak Detection"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -322,7 +327,7 @@ sys.stdin.read()
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing Jailbreak Detection"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Anti-Debugging
@@ -424,7 +429,7 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+-- TODO [Describe how to assess this with access to the source code and build configuration] --
 
 #### Black-box Testing
 
@@ -436,11 +441,31 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Anti-Debugging"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing Anti-Debugging"] --
+
+##### OWASP MASVS
+
+- V...: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing Anti-Debugging"] --
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+
+
+##### Tools
+
+-- TODO [Add tools for "Testing Anti-Debugging"] --
+
 
 ### Testing File Integrity Checks
 
@@ -508,21 +533,25 @@ int xyz(char *dst) {
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for "Testing File Integrity Checks" with source-code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for "Testing File Integrity Checks" without source-code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing File Integrity Checks" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing File Integrity Checks".] --
 
 #### References
 
@@ -532,11 +561,12 @@ int xyz(char *dst) {
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" for "Testing File Integrity Checks"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing File Integrity Checks"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -546,32 +576,36 @@ int xyz(char *dst) {
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing File Integrity Checks"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Detection of Reverse Engineering Tools
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Detection of Reverse Engineering Tools".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content of static analysis of "Testing Detection of Reverse Engineering Tools" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content of static analysis of "Testing Detection of Reverse Engineering Tools" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Detection of Reverse Engineering Tools" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Detection of Reverse Engineering Tools".] --
 
 #### References
 
@@ -581,11 +615,12 @@ int xyz(char *dst) {
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" for "Testing Detection of Reverse Engineering Tools"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Detection of Reverse Engineering Tools"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -595,32 +630,36 @@ int xyz(char *dst) {
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing Detection of Reverse Engineering Tools"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Memory Integrity Checks
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Memory Integrity Checks".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for static analysis of "Testing Memory Integrity Checks" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for static analysis of "Testing Memory Integrity Checks" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Memory Integrity Checks" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Memory Integrity Checks".] --
 
 #### References
 
@@ -630,11 +669,12 @@ int xyz(char *dst) {
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" for "Testing Memory Integrity Checks"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Memory Integrity Checks"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -644,32 +684,36 @@ int xyz(char *dst) {
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing Memory Integrity Checks"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Device Binding
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Device Binding".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for static analysis of "Testing Device Binding" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for static analysis of "Testing Device Binding" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Device Binding" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Device Binding".] --
 
 #### References
 
@@ -679,11 +723,12 @@ int xyz(char *dst) {
 
 ##### OWASP MASVS
 
+-- TODO [Update reference "VX.Y" below for "Testing Device Binding"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Device Binding"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -693,32 +738,36 @@ int xyz(char *dst) {
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing Device Binding"] --
 * Enjarify - https://github.com/google/enjarify
 
 ### Testing Obfuscation
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Testing Obfuscation".] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Add content for static analysis of "Testing Obfuscation" with source code] --
+
 ##### Without Source Code
+
+-- TODO [Add content for static analysis of "Testing Obfuscation" without source code] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Testing Obfuscation" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Obfuscation".] --
 
 #### References
 
@@ -728,11 +777,12 @@ int xyz(char *dst) {
 
 ##### OWASP MASVS
 
+-- TODO [Update reference "VX.Y" below for "Testing Obfuscation"] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Testing Obfuscation"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -742,7 +792,7 @@ int xyz(char *dst) {
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Testing Obfuscation"] --
 * Enjarify - https://github.com/google/enjarify
 
 
