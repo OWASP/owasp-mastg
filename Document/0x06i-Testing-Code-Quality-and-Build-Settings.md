@@ -4,25 +4,47 @@
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content on white-box testing of "Verifying that the App is Properly Signed"] --
+
 #### Black-box Testing
+
+-- TODO [Add content on black-box testing of "Verifying that the App is Properly Signed"] --
 
 #### Remediation
 
+-- TODO [Add remediation for "Verifying that the App is Properly Signed"] --
+
 #### References
+
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Verifying that the App is Properly Signed"] --
 
 ##### OWASP MASVS
 
 - V7.1: "The app is signed and provisioned with valid certificate."
 
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying that the App is Properly Signed"] --
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+
+##### Tools
+
+-- TODO [Add tools for "Verifying that the App is Properly Signed"] --
+
 ### Testing Whether the App is Debuggable
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality "Testing Whether the App is Debuggable" and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -34,13 +56,34 @@
 
 This test case should be performed during White-box testing.
 
+-- TODO [Develop content on black-box testing of "Testing Whether the App is Debuggable"] --
+
 #### Remediation
 
 Once you have deployed an iOS application, either through the App Store or as an Ad Hoc or Enterprise build, you won't be able to attach Xcode's debugger to it. To debug problems, you need to analyze Crash Logs and Console output from the device itself. Remove any NSLog calls to prevent debug leakage through the Console.
 
 #### References
 
-(TODO)
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing Whether the App is Debuggable"] --
+
+##### OWASP MASVS
+
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing Whether the App is Debuggable"] --
+
+##### Info
+
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+
+##### Tools
+
+-- TODO [Add tools for "Testing Whether the App is Debuggable"] --
+
 
 ### Verifying that Debugging Symbols Have Been Removed
 
@@ -72,35 +115,78 @@ Not applicable.
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying that Debugging Symbols Have Been Removed"] --
 
 #### References
 
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Verifying that Debugging Symbols Have Been Removed"] --
+
+##### OWASP MASVS
+
+-- TODO [Add reference to OWASP MASVS for "Verifying that Debugging Symbols Have Been Removed"] --
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying that Debugging Symbols Have Been Removed"] --
+
+##### Info
+
 - [1] https://www.gnu.org/s/binutils/
+
+##### Tools
+
+-- TODO [Add tools for "Verifying that Debugging Symbols Have Been Removed"] --
+
 
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality "Testing for Debugging Code and Verbose Error Logging" and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content for white-box testing of "Testing for Debugging Code and Verbose Error Logging"] --
+
 #### Black-box Testing
+
+-- TODO [Add content for black-box testing of "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing for Debugging Code and Verbose Error Logging"] --
+
+##### OWASP MASVS
+
+-- TODO [Add reference to OWASP MASVS for "Testing for Debugging Code and Verbose Error Logging"] --
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
+
+##### Info
+
+- [1] https://www.gnu.org/s/binutils/
+
+##### Tools
+
+-- TODO [Add tools for "Testing for Debugging Code and Verbose Error Logging"] --
 
 ### Testing Exception Handling
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality "Testing Exception Handling" and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -112,53 +198,99 @@ Review the source code to understand/identify who the application handle various
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue "Testing Exception Handling" using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing Exception Handling"] --
+
+##### OWASP MASVS
+
+-- TODO [Add reference to OWASP MASVS for "Testing Exception Handling"] --
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing Exception Handling"] --
+
+##### Info
+
+- [1] https://www.gnu.org/s/binutils/
+
+##### Tools
+
+-- TODO [Add tools for "Testing Exception Handling"] --
+
 
 ### Verifying that the App Fails Securely
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content on white-box testing for "Verifying that the App Fails Securely"] --
+
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue "Verifying that the App Fails Securely" using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying that the App Fails Securely"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Verifying that the App Fails Securely"] --
+
+##### OWASP MASVS
+
+-- TODO [Add reference to OWASP MASVS for "Verifying that the App Fails Securely"] --
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying that the App Fails Securely"] --
+
+##### Info
+
+- [1] https://www.gnu.org/s/binutils/
+
+##### Tools
+
+-- TODO [Add tools for "Verifying that the App Fails Securely"] --
 
 ### Testing Compiler Settings
+
 Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
 * **ARC** - Automatic Reference Counting - memory management feature
   * adds retain and release messages when required
 * **Stack Canary** - helps preventing buffer overflow attacks
 * **PIE** - Position Independent Executable - enables full ASLR for binary
+
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality "Testing Compiler Settings" and it's potential weaknesses] --
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+-- TODO [Describe how to assess this with access to the source code and build configuration] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing for "Testing Compiler Settings"] --
+
 ##### With otool :
+
 Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
 * PIE:
 ~~~
@@ -237,26 +369,66 @@ Steps for enabling ACR protection within an iOS application :
 
 #### References
 
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing Compiler Settings"] --
+
+##### OWASP MASVS
+
+-- TODO [Add reference to OWASP MASVS for "Testing Compiler Settings"] --
+- V7.1: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing Compiler Settings"] --
+
+##### Info
+
 * Technical Q&A QA1788 Building a Position Independent Executable : https://developer.apple.com/library/mac/qa/qa1788/_index.html
 * idb : https://github.com/dmayer/idb
+
+##### Tools
+
+-- TODO [Add tools for "Testing Compiler Settings"] --
+
 
 ### Testing for Memory Management Bugs
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality "Testing for Memory Management Bugs" and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content for white-box testing of "Testing for Memory Management Bugs"] --
+
 #### Black-box Testing
+
+-- TODO [Add content for black-box testing of "Testing for Memory Management Bugs"] --
 
 #### Remediation
 
 #### References
 
+##### OWASP Mobile Top 10 2014
+
+-- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing for Memory Management Bugs"] --
+
 ##### OWASP MASVS
 
 - V7.7: "In unmanaged code, memory is allocated, freed and used securely."
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
+
+##### Info
+
+-- TODO [Add info sor "Testing for Memory Management Bugs"] --
+
+##### Tools
+
+-- TODO [Add tools for "Testing for Memory Management Bugs"] --
 
 ### Verifying that Java Bytecode Has Been Minifed
 
