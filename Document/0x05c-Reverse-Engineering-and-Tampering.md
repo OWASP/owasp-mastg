@@ -1238,29 +1238,29 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 
 -- TODO [Sync with text] --
 
-- [X] Android SDK -
-- [X] OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
-- [X] APKTool -
-- [X] JD - http://jd.benow.ca/
-- [X] Eclipse
-- [X] IntelliJ IDEA - https://www.jetbrains.com/idea/
-- [X] Smalidea -
-- [X] Radare2 -
-- [X] Angr -
-- [X] JEB -
-- [X] IDA Pro -
-- [X] DroidScope -
-- [X] DECAF - https://github.com/sycurelab/DECAF
-- [X] PANDA - https://github.com/moyix/panda/blob/master/docs/
-- [X] VxStripper -
-- [X] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
-- [X] UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
-- [X] JAD - http://www.javadecompilers.com/jad
-- [X] Proycon - http://proycon.com/en/
-- [X] CFR - http://www.benf.org/other/cfr/
-- [X] APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
-- [X] http://repo.xposed.info/module/de.robv.android.xposed.installer
-- [X] https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
-- [X] https://github.com/JesusFreke/smali
-- [X] https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
-- [X] https://en.wikipedia.org/wiki/Concolic_testing
++ Android SDK -
++ OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
++ APKTool -
++ JD - http://jd.benow.ca/
++ Eclipse
++ IntelliJ IDEA - https://www.jetbrains.com/idea/
++ Smalidea -
++ Radare2 -
++ Angr -
++ JEB -
++ IDA Pro -
++ DroidScope -
++ DECAF - https://github.com/sycurelab/DECAF
++ PANDA - https://github.com/moyix/panda/blob/master/docs/
++ VxStripper -
++ Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
++ UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
++ JAD - http://www.javadecompilers.com/jad
++ Proycon - http://proycon.com/en/
++ CFR - http://www.benf.org/other/cfr/
++ APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
++ http://repo.xposed.info/module/de.robv.android.xposed.installer
++ https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
++ https://github.com/JesusFreke/smali
++ https://dl.packetstormsecurity.net/papers/general/HITB_Hacking_Soft_Tokens_v1.2.pdf
++ https://en.wikipedia.org/wiki/Concolic_testing
