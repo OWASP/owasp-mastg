@@ -187,13 +187,13 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 
 As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to implement defenses against both debugger types.
 
-Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, one should combine multiple defenses that rely on different methods of prevention and detection, operate on multiple different API layers, and are distributed throughout the app. 
+Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app. 
 
 ##### Sample Anti-JDWP-Debugging Methods
 
-In the chapter "Reverse Engineering and Tampering", we introduced JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
+In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
-###### Checking For Debuggable Flag
+###### Checking Debuggable Flag in ApplicationInfo
 
 We have encountered the <code>android:debuggable</code> attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
 
@@ -204,7 +204,7 @@ We have encountered the <code>android:debuggable</code> attribute a few times al
 
     }
 ```
-###### Calling isDebuggerConnected 
+###### isDebuggerConnected 
 
 The Android Debug system class offers a static method for checking whether a debugger is currently connected. The method simply returns a boolean value.
 
@@ -224,10 +224,9 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 }
 ```
 
-
 ###### Timer Checks
 
-Code Sample from [3]
+Code Sample from [1]
 
 ```
 static boolean detect_threadCpuTimeNanos(){ 
@@ -248,7 +247,7 @@ static boolean detect_threadCpuTimeNanos(){
 
 ###### Messing With JDWP-related Data Structures
 
-
+In Dalvik, the global virtual machine state is accessible through the DvmGlobals structure. The global variable gDvm holds a pointer to this structure. DvmGlobals contains various variables and pointers important for JDWP debugging that can be tampered with.
 
 ```c
 struct DvmGlobals {
@@ -272,11 +271,9 @@ struct DvmGlobals {
     JdwpState*  jdwpState;
  
 };
-
-
-
 ```
-Crashing Debugger Thread on Init <sup>[2]</sup>:
+
+For example, setting the gDvm.methDalvikDdmcServer_dispatch function pointer to NULL crashed the JDWP thread<sup>[2]</sup>:
 
 ```c
 JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
@@ -284,7 +281,71 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
+Debugging can be disabled using similar techniques in ART, even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes include JdwpSocketState and JdwpAdbState - these two handle JDWP connections via network sockets and ADB, respectively. The behaviour of the debugging runtime can be manipulatedB ny overwriting the method pointers in those vtables. 
 
+One possible way of doing this is overwriting the address of "jdwpAdbState::ProcessIncoming()" with the address of "JdwpAdbState::Shutdown()". This will cause the debugger to disconnect immediately [3].
+
+```c
+#include <jni.h>
+#include <string>
+#include <android/log.h>
+#include <dlfcn.h>
+#include <sys/mman.h>
+#include <jdwp/jdwp.h>
+
+#define log(FMT, ...) __android_log_print(ANDROID_LOG_VERBOSE, "JDWPFun", FMT, ##__VA_ARGS__)
+
+// Vtable structure. Just to make messing around with it more intuitive
+
+struct VT_JdwpAdbState {
+    unsigned long x;
+    unsigned long y;
+    void * JdwpSocketState_destructor;
+    void * _JdwpSocketState_destructor;
+    void * Accept;
+    void * showmanyc;
+    void * ShutDown;
+    void * ProcessIncoming;
+};
+
+extern "C"
+
+JNIEXPORT void JNICALL Java_sg_vantagepoint_jdwptest_MainActivity_JDWPfun(
+        JNIEnv *env,
+        jobject /* this */) {
+
+    void* lib = dlopen("libart.so", RTLD_NOW);
+
+    if (lib == NULL) {
+        log("Error loading libart.so");
+        dlerror();
+    }else{
+
+        struct VT_JdwpAdbState *vtable = ( struct VT_JdwpAdbState *)dlsym(lib, "_ZTVN3art4JDWP12JdwpAdbStateE");
+
+        if (vtable == 0) {
+            log("Couldn't resolve symbol '_ZTVN3art4JDWP12JdwpAdbStateE'.\n");
+        }else {
+
+            log("Vtable for JdwpAdbState at: %08x\n", vtable);
+
+            // Let the fun begin!
+
+            unsigned long pagesize = sysconf(_SC_PAGE_SIZE);
+            unsigned long page = (unsigned long)vtable & ~(pagesize-1);
+
+            mprotect((void *)page, pagesize, PROT_READ | PROT_WRITE);
+
+            vtable->ProcessIncoming = vtable->ShutDown;
+
+            // Reset permissions & flush cache
+
+            mprotect((void *)page, pagesize, PROT_READ);
+
+        }
+    }
+}
+```
 
 ##### Sample Anti-Native-Debugging Methods
 
@@ -292,7 +353,9 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch "classical
 
 ###### Checking for TracerPid
 
-Code Sample from [1]
+When the ptrace API is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace shenanigans.
+
+Code Sample from [3]
 
 ```
     public static boolean hasTracerPid() throws IOException {
@@ -378,15 +441,12 @@ sys.stdin.read()
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue] --
-
 #### References
 
-- [1] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
-- [2] Bluebox Security - 
-- [3] Matenaar et al. - Patent Application - MOBILE DEVICES WITH INHIBITED APPLICATION DEBUGGING AND METHODS OF OPERATION - https://www.google.com/patents/US8925077
+- [1] Matenaar et al. - Patent Application - MOBILE DEVICES WITH INHIBITED APPLICATION DEBUGGING AND METHODS OF OPERATION - https://www.google.com/patents/US8925077
+- [2] Bluebox Security - Android Reverse Engineering & Defenses - https://slides.night-labs.de/AndroidREnDefenses201305.pdf
+- [3] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
+- [4] Anti-Debugging Fun with Android ART - https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art
 
 ### Testing File Integrity Checks
 
@@ -408,7 +468,6 @@ As well as any other files containing Java bytecode. The following sample implem
 ```java
 private void crcTest() throws IOException {
  boolean modified = false;
- 
  // required dex crc value stored as a text string.
  // it could be any invisible layout element
  long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
