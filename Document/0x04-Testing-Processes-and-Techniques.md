@@ -6,9 +6,51 @@
 
 ### Testing Process
 
-### Risk Assessment
+The following section will show how to use the OWASP mobile application security checklist and testing guide during a security test.
 
-### Reporting
+#### Preparation - Defining the baseline
+
+First of all, you need to decide what security level of the MASVS to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we're not living in an ideal world. At the very least, it is a good idea to walk through the checklist, ideally with an IT security representative of the enterprise and the app stakeholders of the project and make a reasonable selection of Level 2 (L2) controls to cover during the test.
+
+The controls in MASVS Level 1 (L1) are appropriate for all mobile apps - the rest depends on the threat model and risk assessment for the particular app. Discuss with the app stakeholders what requirements are applicable and which ones are out of scope for testing, perhaps due to business decisions or company policies. Also consider whether some L2 requirements may be needed due to industry regulations or local laws - for example, 2-factor-authentation (2FA) may be obligatory for a financial app.
+
+If security requirements were already defined during the SDLC, even better! Ask for this information and document it on the front page of the Excel sheet ("dashboard"). More guidance on the verification levels and guidance on the certification can be found in the [MASVS](https://github.com/OWASP/owasp-masvs).
+
+![Preparation](Images/Chapters/0x03/mstg-preparation.png)
+
+All involved parties need to agree on the decisions made and on the scope in the checklist, as this will present the baseline for all security testing, regardless if done manually or automatically.
+
+#### Mobile App Security Testing
+
+During a manual test you can simply walk through the applicable requirements one-by-one - for a detailed testing how-to simply click on the link in the "Test procedures" column. These links lead to the respective chapter in the OWASP Mobile Security Testing Guide. Note however that work on the guide is still ongoing so some test cases have not been written yet or might be in a draft status (ideally, if you discover missing content, you could contribute it yourself).
+
+![The checklist. Requiremenets marked with "L1" should alwasy be verified. Choose either "Pass" or "Fail" in the "Status" column. The links in the "Testing Procedure" column lead to the OWASP Mobile Secuiryt Testing Guide.](Images/Chapters/0x03/mstg-test-cases.png)
+
+The status column can have one of the following three different values, that need to be filled out:
+
+* **Pass:** Requirement is applicable to mobile app and implemented according to best practices.
+* **Fail:** Requirement is applicable to mobile app but not fulfilled.
+* **N/A:** Requirement is not applicable to mobile app.
+
+#### Reverse Engineering Resiliency Testing
+
+*Resiliency Testing* is a new concept introduced in the OWASP MSTG. This kind of testing is used if the app implements defenses against client-side threats, such as tampering and extracting sensitive information. As we  know, such protection is never 100% effective. The goal in resiliency testing is to verify that no glaring weaknesses exist in the protection scheme, and that the expectations as to its effectiveness are met (e.g., a skilled reverse engineer should be forced to invest significant effort to do reach a particular goal).
+
+#### The Management Summary
+
+A spider chart is generated on the fly according to the results of the requirements for both supported platforms (Android and iOS) in the "Management Summary" tab. You can use this in your report to point out areas that need improvement, and visualize progress over time.
+
+![Management Summary - Spider Chart](Images/Chapters/0x03/mstg-spiderchart.png)
+
+The spider chart visualizes the ratio of passed and failed requirements in each domain. As can be seen above all requirements in "V3: Cryptography Verification Requirements" were set to "pass", resulting in a value of 1.00. Requirements that are set to N/A are not included in this chart.
+
+A more detailed overview can also be found in the "Management Summary" tab. This table gives an overview according to the eight domains and breaks down the requirements according to it's status (Passed, Failed or N/A). The percentage column is the ratio from passed to failed requirements and is the input for the spider chart described above.
+
+![Management Summary - Detailed Overview](Images/Chapters/0x03/mstg-detailed-summary.png)
+
+#### Risk Assessment
+
+#### Reporting
 
 ## Vulnerability Analysis Techniques
 
