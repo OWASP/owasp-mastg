@@ -497,7 +497,8 @@ android:longClickable="false"
 * M2 - Insecure Data Storage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+
+-- TODO [Add link to relevant CWE for "Testing for Sensitive Data in the Clipboard"] --
 
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
