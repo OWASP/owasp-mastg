@@ -57,7 +57,6 @@ Unless some mean anti-decompilation tricks have been applied, Java bytecode can 
 ```
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
 $ adb install UnCrackable-Level1.apk
-
 ```
 
 ![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
@@ -187,6 +186,12 @@ $ ./apkx.py HelloWorld-JNI.apk
 #### Debugging and Tracing
 
 Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
+
+##### Activating Developer Options
+
+Since Android 4.2, the "Developer options" submenu is hidden by default in the Settings app. To activate it, you need to tap the "Build number" section of the "About phone" view 7 times. Note that the location of the build number field can vary slightly on different devices - for example, on LG Phones, it is found under "About phone > Software information" instead. Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, debugging can be enabled with the "USB debugging" switch.
+
+The Developer options also contain the useful "Wait for Debugger" setting that allows you to suspend an app during startup. We'll revisit this option in a bit.
 
 ##### Debugging Java Code
 
