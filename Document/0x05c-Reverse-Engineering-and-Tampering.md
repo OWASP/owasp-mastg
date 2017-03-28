@@ -94,8 +94,9 @@ For convenience, we have packaged the dex2jar and CFR libraries along with a Pyt
 
 ```
 $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx.tgz
-$ tar xzvf apkx.tgz 
-$ python apkx.py UnCrackable-Level1.apk 
+$ tar xzf apkx.tgz 
+$ chmod +x apkx.py
+$ ./apkx.py UnCrackable-Level1.apk 
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
 dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
 Processing UnCrackable-Level1/classes.jar (use silent to silence)
@@ -176,6 +177,13 @@ An alternative (and faster) way of getting the decrypted string is by adding a b
 
 -- TODO [Native Code Analysis - HelloWorld-JNI] --
 
+Download HelloWorld-JNI.apk from the OWASP MSTG repository and decompile it with apkx.py.
+
+```bash
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
+$ ./apkx.py HelloWorld-JNI.apk
+```
+
 #### Debugging and Tracing
 
 Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
@@ -202,10 +210,9 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, as well as sometimes Intel or MIPS).
 
-To try it out, let's download and install the HelloWord-JNI example from the OWASP MSTG repository.
+To try it out, let's install HelloWorld-JNI.apk.
 
 ```bash
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
 $ adb install HelloWorld-JNI.apk
 ```
 
