@@ -207,7 +207,7 @@ The Android Debug system class offers a static method for checking whether a deb
     }
 ```
 
-Native check:
+The same API can be called from native code by accessing the DvmGlobals global structure.
 
 ```
 JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv * env, jobject obj) {
@@ -219,7 +219,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 
 ###### Timer Checks
 
-Code Sample from [1]
+The <code>Debug.threadCpuTimeNanos</code> indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, The difference in execution time can be used to make an educated guess on whether a debugger is attached [2].
 
 ```
 static boolean detect_threadCpuTimeNanos(){ 
@@ -342,13 +342,13 @@ JNIEXPORT void JNICALL Java_sg_vantagepoint_jdwptest_MainActivity_JDWPfun(
 
 ##### Sample Anti-Native-Debugging Methods
 
-Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch "classical", ptrace-based debuggers, so separate defenses are needed to defend against this type of debugging. 
+Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical, ptrace-based debuggers, so separate defenses are needed to defend against this type of debugging. Many "traditional" Linux anti-debugging tricks are employed here.
 
-###### Checking for TracerPid
+###### Checking TracerPid
 
-When the ptrace API is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace shenanigans.
+When the ptrace API is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
-Code Sample from [3]
+The following implementation is taken from Tim Strazzere's Anti-Emulator project [3].
 
 ```
     public static boolean hasTracerPid() throws IOException {

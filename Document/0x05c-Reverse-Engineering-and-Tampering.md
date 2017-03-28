@@ -226,6 +226,14 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 ##### Debugging Native Code
 
+Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, as well as sometimes Intel or MIPS).
+
+The Android NDK ships with prebuilt versions of gdbserver for various architectures. 
+
+```bash
+$ adb push prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
+```
+
 -- TODO [Write introduction to debugging native code (UnCrackable 2)] --
 
 ##### Execution Tracing
