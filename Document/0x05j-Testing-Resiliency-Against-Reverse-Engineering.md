@@ -397,7 +397,34 @@ As usual, there is no generic way of bypassing anti-debugging: It depends on the
 2. Using Frida or Xposed to hook APIs on the Java and native layers. Manipulate the return values of functions such as isDebuggable and isDebuggerConnected to hide the debugger.
 3. Change the environment. Android is an open enviroment. If nothing else works, you can modify the operating system to subvert the assumptions the developers made when designing the anti-debugging tricks.
 
--- TODO [Bypassing Debugger Detection] --
+###### Example: UnCrackable App for Android Level 2
+
+-- TODO [Bypassing Debugger Detection - Solve UnCrackable Level 2] --
+
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in level 2 of the "UnCrackable App'.
+
+At first glance, the code looks similar to the prior challenge. A class called "CodeCheck" is responsible for verifying the code entered by the user. The actual check appears to happen in the method "bar()", which is declared as a *native* method.
+
+```java
+package sg.vantagepoint.uncrackable2;
+
+public class CodeCheck {
+    public CodeCheck() {
+        super();
+    }
+
+    public boolean a(String arg2) {
+        return this.bar(arg2.getBytes());
+    }
+
+    private native boolean bar(byte[] arg1) {
+    }
+}
+
+    static {
+        System.loadLibrary("foo");
+    }
+```
 
 ```python
 

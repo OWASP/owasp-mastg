@@ -172,35 +172,7 @@ An alternative (and faster) way of getting the decrypted string is by adding a b
 
 #### Statically Analyzing Native Code
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in level 2 of the "UnCrackable App'.
-
-Download the APK from the OWASP MSTG repositorty and decompile it. At first glance, the code looks similar to the prior challenge. A class called "CodeCheck" is responsible for verifying the code entered by the user. The actual check appears to happen in the method "bar()", which is declared as a *native* method.
-
-```java
-package sg.vantagepoint.uncrackable2;
-
-public class CodeCheck {
-    public CodeCheck() {
-        super();
-    }
-
-    public boolean a(String arg2) {
-        return this.bar(arg2.getBytes());
-    }
-
-    private native boolean bar(byte[] arg1) {
-    }
-}
-```
-
-
-```
-    static {
-        System.loadLibrary("foo");
-    }
-```
-
--- TODO [Native Code Analysis] --
+-- TODO [Native Code Analysis - HelloWorld-JNI] --
 
 #### Debugging and Tracing
 
@@ -228,13 +200,20 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, as well as sometimes Intel or MIPS).
 
-The Android NDK ships with prebuilt versions of gdbserver for various architectures. 
+To try it out, let's download and install the HelloWord-JNI example from the OWASP MSTG repository.
+
+```bash
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
+$ adb install HelloWorld-JNI.apk
+```
+
+If you followed the instructions at the start of this chapter, you should already have the Android NDK. The NDK ships with prebuilt versions of gdbserver for various architectures. Copy gdbserver to your device:
 
 ```bash
 $ adb push prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
 
--- TODO [Write introduction to debugging native code (UnCrackable 2)] --
+-- TODO [Write introduction to debugging native code (HelloWorld-JNI)] --
 
 ##### Execution Tracing
 
@@ -639,7 +618,6 @@ Java.perform(function () {
 ~~~
 
 Besides loading scripts via `frida CLI`, Frida also provides Python, C, NodeJS, Swift and various other bindings.
-
 
 ### Binary Analysis Frameworks
 
