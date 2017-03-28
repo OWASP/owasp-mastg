@@ -90,9 +90,11 @@ In the standard case, all the Java bytecode and data related to the app is conta
 
 For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website [13]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
 
-For convenience, I have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [14]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
+For convenience, we have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [14]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
 
 ```
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx.tgz
+$ tar xzvf apkx.tgz 
 $ python apkx.py UnCrackable-Level1.apk 
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
 dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
