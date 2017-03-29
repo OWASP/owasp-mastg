@@ -28,7 +28,7 @@ BuildConfig.java	MainActivity.java	R.java
 
 ## About
 
-This script accompanies the [OWASP Mobile Security Testing Guide](https://github.com/OWASP/owasp-mstg). See the [Android Tampering and Reverse Engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md) for further examples.
+This script accompanies the [OWASP Mobile Security Testing Guide](https://github.com/OWASP/owasp-mstg). For further instructions and usage examples, see [Android Tampering and Reverse Engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md).
 
 ## References
 
