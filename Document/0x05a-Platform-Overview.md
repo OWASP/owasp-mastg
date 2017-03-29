@@ -1,6 +1,6 @@
 ## Android Platform Overview
 
-(... TODO ...)
+This chapter is going to introduce Android on the architecture point of view and will provide the reader with detailed information on security mechanisms. Then, it will describe the structure of an Android application and will emphasize on the Inter Process Communication mechanism. Last, the way Android applications are published is explained to the reader.
 
 ### Android Architecture and Security Mechanisms
 
@@ -14,7 +14,7 @@ It also offers an applicative environment that supports not only pre-installed a
 
 The software stack of Android comprises of different layers, where each layer is defining certain behavior and offering specific services to the layer above.
 
-![Android Software Stack](https://source.android.com/security/images/android_software_stack.png)
+![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
 On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM.
 In the next image we can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
@@ -239,7 +239,7 @@ The Android Framework is creating an abstraction layer for all the layers below,
 
 Android apps are made of several high-level components that make up their architectures. The main components are activities, fragments, intents, broadcast receivers, content providers and services. All these elements are provided by the Android operating system in the form of predefined classes available through APIs. 
 
-##### Application :ifecycle
+##### Application Lifecycle
 
 Android apps have their own lifecycles, that is under the control of the operating system. Therefore, apps need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but not in use since a significant time). 
 
@@ -491,7 +491,7 @@ A BroadcastReceiver handles asynchronous requests initiated by an Intent.
 Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
 
 
-(... TODO ... briefly on security implications)
+-- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
 
 Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
 

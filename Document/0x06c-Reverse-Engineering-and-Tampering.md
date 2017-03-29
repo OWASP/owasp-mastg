@@ -2,7 +2,11 @@
 
 ### Environment and Toolset
 
+-- TODO [Environment Overview] --
+
 #### XCode and iOS SDK
+
+-- TODO [Where to get XCode] --
 
 #### Utilities
 
@@ -20,207 +24,25 @@ Developing a jailbreak for any given version of iOS is not an easy endeavor. As 
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-(... TODO: Jailbreaking How-to ...)
+-- TODO [Jailbreaking howto] --
 
 #### Jailbreak Detection
 
-Many apps nowadays attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
+Some apps attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
 
 The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. Also, MASVS L2 requires displaying a warning to the user, or terminate the app, when a jailbreak has been detected - the idea here is to inform users opting to jailbreak their device about the potential security implications (and not so much hindering determined reverse engineers).
 
-Some typical Jailbreak detection techniques:
+We'll revisit this topic in the chapter "Testing Resiliency Against Reverse Engineering".
 
+### Reverse Engineering iOS Apps
 
-Check for the existence of files, such as:
+-- TODO [Overview] --
 
-~~~
-/Library/MobileSubstrate/MobileSubstrate.dylib
-/Applications/Cydia.app
-/Library/MobileSubstrate/MobileSubstrate.dylib
-/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist
-~~~
+#### Static Analysis
 
+-- TODO [Basic static analysis ] --
 
-Write a file to the /private/ directory:
-
-~~~
-
-NSError *error;
-NSString *stringToBeWritten = @"This is a test.";
-[stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
-         encoding:NSUTF8StringEncoding error:&error];
-if(error==nil){
-   //Device is jailbroken
-   return YES;
- } else {
-   //Device is not jailbroken
-   [[NSFileManager defaultManager] removeItemAtPath:@"/private/jailbreak.txt" error:nil];
- }
-
-~~~
-
-Attempt to open a Cydia URL:
-
-~~~
-if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
-~~~
-
-
-
-### Tampering and Instrumentation
-
-#### Hooking with MobileSubstrate
-
-##### Example: Deactivating Anti-Debugging
-
-~~~
-#import <substrate.h>
-
-#define PT_DENY_ATTACH 31
-
-static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
-
-
-static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
-	if (request == PT_DENY_ATTACH) {
-		request = -1;
-	}
-	return _ptraceHook(request,pid,addr,data);
-}
-
-%ctor {
-	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
-}
-~~~
-
-
-
-#### Cycript and Cynject
-
-Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
-
-Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
-
-*(Todo - use cases and example for Cycript)
-
-- Obtain references to existing objects
-- Instantiate objects from classes
-- Hooking native functions
-- Hooking objective-C methods
-- etc.*
-http://www.cycript.org/manual/
-
-Cycript tricks:
-
-http://iphonedevwiki.net/index.php/Cycript_Tricks
-
-#### Frida
-
-(---TODO---)
-
-##### Example: Bypassing Jailbreak Detection
-
-
-~~~~
-import frida
-import sys
-
-try:
-	session = frida.get_usb_device().attach("Target Process")
-except frida.ProcessNotFoundError:
-	print "Failed to attach to the target process. Did you launch the app?"
-	sys.exit(0);
-
-script = session.create_script("""
-
-	// Handle fork() based check
-
-  var fork = Module.findExportByName("libsystem_c.dylib", "fork");
-
-	Interceptor.replace(fork, new NativeCallback(function () {
-		send("Intercepted call to fork().");
-	    return -1;
-	}, 'int', []));
-
-  var system = Module.findExportByName("libsystem_c.dylib", "system");
-
-	Interceptor.replace(system, new NativeCallback(function () {
-		send("Intercepted call to system().");
-	    return 0;
-	}, 'int', []));
-
-	// Intercept checks for Cydia URL handler
-
-	var canOpenURL = ObjC.classes.UIApplication["- canOpenURL:"];
-
-	Interceptor.attach(canOpenURL.implementation, {
-		onEnter: function(args) {
-		  var url = ObjC.Object(args[2]);
-		  send("[UIApplication canOpenURL:] " + path.toString());
-		  },
-		onLeave: function(retval) {
-			send ("canOpenURL returned: " + retval);
-	  	}
-
-	});		
-
-	// Intercept file existence checks via [NSFileManager fileExistsAtPath:]
-
-	var fileExistsAtPath = ObjC.classes.NSFileManager["- fileExistsAtPath:"];
-	var hideFile = 0;
-
-	Interceptor.attach(fileExistsAtPath.implementation, {
-		onEnter: function(args) {
-		  var path = ObjC.Object(args[2]);
-		  // send("[NSFileManager fileExistsAtPath:] " + path.toString());
-
-		  if (path.toString() == "/Applications/Cydia.app" || path.toString() == "/bin/bash") {
-		  	hideFile = 1;
-		  }
-		},
-		onLeave: function(retval) {
-			if (hideFile) {
-		  		send("Hiding jailbreak file...");MM
-				retval.replace(0);
-				hideFile = 0;
-			}
-
-			// send("fileExistsAtPath returned: " + retval);
-	  }
-	});
-
-
-	/* If the above doesn't work, you might want to hook low level file APIs as well
-
-		var openat = Module.findExportByName("libsystem_c.dylib", "openat");
-		var stat = Module.findExportByName("libsystem_c.dylib", "stat");
-		var fopen = Module.findExportByName("libsystem_c.dylib", "fopen");
-		var open = Module.findExportByName("libsystem_c.dylib", "open");
-		var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
-
-	*/
-
-""")
-
-def on_message(message, data):
-	if 'payload' in message:
-	  		print(message['payload'])
-
-script.on('message', on_message)
-script.load()
-sys.stdin.read()
-~~~~
-
-#### Patching and Repackaging iOS Apps
-
-
-### Program Comprehension
-
-
-#### Statically Analyzing iOS Apps
-
-
-#### Debugging iOS Apps
+#### Debugging
 
 iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
 
@@ -270,6 +92,56 @@ debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
  for armv7.
 Attaching to process 2670...
 ~~~
+
+### Tampering and Instrumentation
+
+#### Hooking with MobileSubstrate
+
+##### Example: Deactivating Anti-Debugging
+
+~~~
+#import <substrate.h>
+
+#define PT_DENY_ATTACH 31
+
+static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
+
+
+static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
+	if (request == PT_DENY_ATTACH) {
+		request = -1;
+	}
+	return _ptraceHook(request,pid,addr,data);
+}
+
+%ctor {
+	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
+}
+~~~
+
+#### Cycript and Cynject
+
+Cydia Substrate (formerly called MobileSubstrate) is the de-facto framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. By injecting a JavaScriptCore VM into a running process on iOS, users can interface with C code, with support for primitive types, pointers, structs and C Strings, as well as Objective-C objects and data structures. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
+
+Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using JavaScript with some syntax extensions through the Cycript Console.
+
+-- TODO [Add use cases and example for Cycript] --
+
+- Obtain references to existing objects
+- Instantiate objects from classes
+- Hooking native functions
+- Hooking objective-C methods
+- etc.*
+http://www.cycript.org/manual/
+
+Cycript tricks:
+
+http://iphonedevwiki.net/index.php/Cycript_Tricks
+
+#### Frida
+
+-- TODO [Develop section on Frida] --
+
 
 ### References
 

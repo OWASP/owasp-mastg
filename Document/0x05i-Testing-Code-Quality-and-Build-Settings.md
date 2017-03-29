@@ -25,27 +25,44 @@ The test fails, if the application:
 
 #### Black-box Testing
 
-TBD
+-- TODO [Add content for black-box testing of "Verifying That the App is Properly Signed"] --
 
 #### Remediation
 
-TBD
+-- TODO [Add content for remediation of "Verifying That the App is Properly Signed"] --
 
 #### References
 
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
-* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
 - V7.1: "The app is signed and provisioned with valid certificate."
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying That the App is Properly Signed"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Verifying That the App is Properly Signed"] --
+* Enjarify - https://github.com/google/enjarify
 
 
 ### Testing If the App is Debuggable
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -88,9 +105,9 @@ Will return the following if android:debuggable parameter is set to true :
 
 Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
 
-(TODO example)
+-- TODO [Add an example of black-box testing of "Testing If the App is Debuggable"] --
 
-(TODO JDWP)
+-- TODO [Add elements on Java Debug Wire Protocol (JDWP)] --
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
@@ -100,17 +117,41 @@ For production releases, the attribute android:debuggable must be set to false w
 
 #### References
 
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference "VX.Y" below for "Testing If the App is Debuggable"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing If the App is Debuggable"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Testing If the App is Debuggable"] --
+* Enjarify - https://github.com/google/enjarify
 
 
 ### Testing for Debugging Symbols
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing for Debugging Symbols"] --
 
 #### Black-box Testing
 
@@ -128,35 +169,87 @@ Alternatively, open the file in your favorite disassembler and look for debuggin
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Symbols"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference "VX.Y" below for "Testing for Debugging Symbols"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing for Debugging Symbols"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Testing for Debugging Symbols"] --
+* Enjarify - https://github.com/google/enjarify
+
 
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content on white-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
+
 #### Black-box Testing
+
+-- TODO [Add content on black-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference "VX.Y" below for "Testing for Debugging Code and Verbose Error Logging"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Testing for Debugging Code and Verbose Error Logging"] --
+* Enjarify - https://github.com/google/enjarify
+
 
 ### Testing Exception Handling
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
@@ -168,15 +261,39 @@ Review the source code to understand/identify who the application handle various
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference "VX.Y" below for "Testing Exception Handling"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing Exception Handling"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Testing Exception Handling"] --
+* Enjarify - https://github.com/google/enjarify
+
 
 ### Verifying Compiler Settings
 
@@ -186,37 +303,88 @@ Since most Android applications are Java based, they are [immunue](https://www.o
 
 #### White-box Testing
 
-(Describe how to assess this with access to the source code and build configuration)
+-- TODO [Describe how to assess this with access to the source code and build configuration] --
 
 #### Black-box Testing
 
-[Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ]
+-- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying Compiler Settings"] --
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference "VX.Y" below for "Verifying Compiler Settings"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying Compiler Settings"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Verifying Compiler Settings"] --
+* Enjarify - https://github.com/google/enjarify
+
 
 ### Testing for Memory Management Bugs
 
 #### Overview
 
-(Give an overview about the functionality and it's potential weaknesses)
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### White-box Testing
 
+-- TODO [Add content for white-box testing "Testing for Memory Management Bugs"] --
+
 #### Black-box Testing
+
+-- TODO [Add content for black-box testing "Testing for Memory Management Bugs"] --
 
 #### Remediation
 
+-- TODO [Add remediations for "Testing for Memory Management Bugs"] --
+
 #### References
+
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
 - V7.7: "In unmanaged code, memory is allocated, freed and used securely."
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for "Testing for Memory Management Bugs"] --
+* Enjarify - https://github.com/google/enjarify
+
 
 ### Verifying that Java Bytecode Has Been Minified
 
@@ -299,4 +467,29 @@ android {
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+##### OWASP Mobile Top 10 2014
+
+* MX - Title - Link
+* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+-- TODO [Update reference below "VX.Y" for "Verifying that Java Bytecode Has Been Minified"] --
+- VX.Y: ""
+
+##### CWE
+
+-- TODO [Add relevant CWE for Verifying that Java Bytecode Has Been Minified] --
+- CWE-312 - Cleartext Storage of Sensitive Information
+
+##### Info
+
+* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+
+##### Tools
+
+-- TODO [Add relevant tools for Verifying that Java Bytecode Has Been Minified] --
+* Enjarify - https://github.com/google/enjarify
+
+

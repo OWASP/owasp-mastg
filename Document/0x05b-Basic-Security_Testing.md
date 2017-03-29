@@ -12,7 +12,7 @@ The goal of a test is to verify if the app and the endpoint(s) it's communicatin
 
 During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
-This approach needs of course to align with the scope of the engagement and if it's a black box or white box test (**#TODO**: Link to section in MSTG describing Black and White Box). For a white box test, requesting for a production and debug build will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
+This approach needs of course to align with the scope of the engagement and if it's a black box or white box test (-- TODO [Link to section in MSTG describing Black and White Box] --). For a white box test, requesting for a production and debug build will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
 
 Either way, the following items should be discussed with the company developing the mobile app and it should be decided if the implemented security controls can be adjusted to get the best out of the testing exercise.  
 
@@ -28,24 +28,24 @@ To manually deactivate SSL Pinning there are two ways:
 
 Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
-See also test case "Testing Custom Certificate Stores and SSL Pinning" **(#TODO_add_link)** for further details.
+See also test case "Testing Custom Certificate Stores and SSL Pinning" **(-- TODO [add_link] --)** for further details.
 
-##### Debug build
+##### Debug Build
 
 A debug build has several benefits, when provided during a (white box) test that allows a more comprehensive analysis:
 * Debugger can be attached to the running App
 * Debug log files of the App are available
 
-**(..#TODO..)**
+-- TODO [Elaborate on Debug Build] --
 
-See also test case "Testing If the app is Debuggable" **(#TODO_add_link)** for further details.
+See also test case "Testing If the app is Debuggable" **(-- TODO [add_link] --)** for further details.
 
 ##### OS versions
 Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of the Android OS installed on both the machine and the device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS. 
 
 ##### Root detection
 
-To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" **(#TODO_add_link)** and "Testing Advanced Root Detection" for further details.
+To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" **(-- TODO [add_link] --)** and "Testing Advanced Root Detection" for further details.
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
 
@@ -55,7 +55,7 @@ Another security control available in mobile apps, is checking if the app has be
 
 To be able to efficiently test during a white box test, a debug build with disabled tampering checks should be provided.
 
-See also "Verifying the Variability of Tampering Responses" **(#TODO_add_link)** for further details.
+See also "Verifying the Variability of Tampering Responses" **(-- TODO [add_link] --)** for further details.
 
 #### Hardware
 
@@ -122,20 +122,16 @@ The context of mobile security testing is a conjunction of multiple different ti
 * **Communication:** usage of insecure or unencrypted communication channel, missing certification pinning and etc.
 * **Back-end Servers:** flawed authentication or security logic, vulnerable server side functions and etc.
 
-There are various tool that can be leverage to conduct an effective mobile security testing and like any tool of choice it all depends on the matter of preference and budget. Some basic usage of tools will be covered in the following section and an extensive list of tools can be found in "Testing Tools" **(#TODO_add_link)** page.
+There are various tool that can be leverage to conduct an effective mobile security testing and like any tool of choice it all depends on the matter of preference and budget. Some basic usage of tools will be covered in the following section and an extensive list of tools can be found in "Testing Tools" **(-- TODO [add_link] --)** page.
 
 #####Network Analysis
 A proxy is the bread and butter to any form of security testing that involves a client-server application and that includes mobile application. It can be used to intercept network traffic between a mobile and a back-end server for testing Authorization, Session Management and so on. Some popular proxy tools for security testings are Burp Suite, OWASP ZAP and Charles.
 
-#####Reverse Engineering and Static Analysis
-There are many reason to reverse engineer an application: to understand application security logic, to identify application secret and so on. More detail coverage on reverse engineering Android application are covered in "Tampering and Reverse Engineering on Android" **(#TODO_add_link)** page. Some popular tools that will be used are apktool, enjarify and more.
+##### Reverse Engineering and Static Analysis
+There are many reason to reverse engineer an application: to understand application security logic, to identify application secret and so on. More detail coverage on reverse engineering Android application are covered in "Tampering and Reverse Engineering on Android" **(-- TODO [add_link] --)** page. Some popular tools that will be used are apktool, enjarify and more.
 
-#####Dynamic and run time analysis
-The goals here are to retrieve code, execute the application and test its behavior dynamically, to change its flow, manipulate the memory of the mobile and so on. Partial information about dynamic and run time analysis will be covered in "Tampering and Reverse Engineering on Android" **(#TODO_add_link)**. Some popular tools will be frida, Cydia Substrate, drozer.
-
-
-### Attack Methodology
--- TODO : Cf testing methodologies from CEH, ... : map attack surface (Local and Remote) through Passive and Active Reconnaissance, Scanning, Gaining Access, Maintaining Access, Covering Tracks. As this is generic and common to iOS, may be part of the parent chapter --
+##### Dynamic and run time analysis
+The goals here are to retrieve code, execute the application and test its behavior dynamically, to change its flow, manipulate the memory of the mobile and so on. Partial information about dynamic and run time analysis will be covered in "Tampering and Reverse Engineering on Android" **(-- TODO [add_link] --)**. Some popular tools will be frida, Cydia Substrate, drozer.
 
 ### Static Analysis
 
@@ -203,7 +199,7 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 
 It is also possible to simply create an AVD and use this for testing.
 
-**(..TODO..)**
+-- TODO [Develop section Using an Emulator : what can be done with it, difference with using a real Android mobile, availability, how to start and configure one] --
 
 ### References
 

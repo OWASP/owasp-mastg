@@ -6,6 +6,8 @@
 
 The use of a hard-coded or world-readable cryptographic key significantly increases the possibility that encrypted data may be recovered.
 
+-- TODO [Develop overview on Verifying Key Management]
+
 #### White-box Testing
 
 Consider the following scenario: an application is reading and writing to the encrypted database but the decryption is done based on hardcoded key:
@@ -128,25 +130,29 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 #### Overview
 
-[Provide a general description of the issue.]
+-- TODO [Provide a general description of the issue "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe Static Analysis on Verifying the Configuration of Cryptographic Standard Algorithms : how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Clarify the purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop Static Analysis with source code of "Verifying the Configuration of Cryptographic Standard Algorithms"] --
+
 ##### Without Source Code
+
+-- TODO [Develop Static Analysis without source code of "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Verifying the Configuration of Cryptographic Standard Algorithms" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying the Configuration of Cryptographic Standard Algorithms".] --
 
 #### References
 
@@ -157,11 +163,12 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### OWASP MASVS
 
+-- TODO [Update reference below "VX.Y" to OWASP MASVS] --
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
 
-- CWE-XXX - Title
+-- TODO [Add relevant CWE for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
@@ -171,7 +178,7 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 * Enjarify - https://github.com/google/enjarify
 
 
@@ -192,7 +199,9 @@ Cipher cipher = Cipher.getInstance("DES");
 
 #### Black-box Testing
 
-Decompile the APK and inspect the code to see if known weak crypto algorithms are in place (see "White-box Testing")
+Decompile the APK and inspect the code to see if known weak crypto algorithms are in place (see "White-box Testing").
+
+-- TODO [Give examples of black-box testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
 
 #### Remediation
 
@@ -227,8 +236,6 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
-
-
 
 
 ### Testing Random Number Generation
@@ -288,13 +295,17 @@ public static void main (String args[]) {
 * [3]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
 
 ##### OWASP MASVS
+
 - V3.6: "All random values are generated using a sufficiently secure random number generator"
 
 ##### OWASP Mobile Top 10
+
 * M6 - Broken Cryptography
 
 ##### CWE
+
 * CWE-330: Use of Insufficiently Random Values
 
 ##### Tools
+
 * [QARK](https://github.com/linkedin/qark)

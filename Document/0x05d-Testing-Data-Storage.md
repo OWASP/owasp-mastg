@@ -192,7 +192,7 @@ Install and use the App as it is intended and execute all functions at least onc
 
 ##### KeyChain and KeyStore
 
-When targeting Android applications, the best way to proceed is to first decompile them in order to obtain something close to the source code (_**see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the OMSTF**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
+When targeting Android applications, the best way to proceed is to first decompile them in order to obtain something close to the source code (_**see Decompiling Android App Guide - -- TODO [Create a general guide that can be referenced anywhere in the OMSTF] --**_). With the code in your hands you should then be able to inspect and verify if system credentials storage facilities are in place.
 
 #### Remediation
 
@@ -313,6 +313,8 @@ public static int wtf(...);
 ```
 
 #### References
+
+-- TODO [Add references] --
 
 ##### Info
 * [Overview of Class Log][de2ec1fd]
@@ -439,8 +441,7 @@ android:inputType="textNoSuggestions"
 
 #### Overview
 
-(... TODO ...)
-
+-- TODO [Overview on Testing for Sensitive Data in the Clipboard] --
 
 #### Static Analysis
 
@@ -496,14 +497,15 @@ android:longClickable="false"
 * M2 - Insecure Data Storage
 
 ##### CWE
-- CWE: [Link to CWE issue]
+
+-- TODO [Add link to relevant CWE for "Testing for Sensitive Data in the Clipboard"] --
 
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
-During development of mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
+During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 * [Binders][0c656fa2]
@@ -522,7 +524,7 @@ The first step is to look into the `AndroidManifest.xml` in order to detect and 
 * `<provider>`: more [here][466ff32c]
 * `<receiver>`: more [here][988bd8a2]
 
-Except for the `<intent-filter>` element, check if the the previous elements contain the following attributes:
+Except for the `<intent-filter>` element, check if the previous elements contain the following attributes:
 * `android:exported`
 * `android:permission`
 
@@ -530,7 +532,7 @@ Once you identify a list of IPC mechanisms, review the source code in order to d
 
 * Vulnerable ContentProvider
 
-An example of vulnerable _ContentProvider_ (and SQL injection **#TODO: refere any input validation test in the project**)
+An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer to any input validation test in the project] --**)
 
 * `AndroidManifest.xml`
 
@@ -587,7 +589,7 @@ private void vulnerableBroadcastFunction() {
 
 #### Dynamic Analysis
 
-Similar to the White-box testing, you should decompile the application (if possible) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+Similar to White-box testing, you should decompile the application (if possible) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml file. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
 
 * Vulnerable ContentProvider
 
@@ -615,10 +617,10 @@ To sniff intents install and run the application on a device (actual device or e
 
 For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
 
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml`, as otherwise this allows all other Apps on Android to communicate and invoke it.
+If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file, as otherwise this allows all other Apps on Android to communicate and invoke it.
 
 If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
-BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to have to read the broadcast. See also [sendBroadcast][2e0ef82d].
+BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast. See also [sendBroadcast][2e0ef82d].
 You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
 
 If your IPC is intended to be accessible to other applications, you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission` in a service declaration, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service.
@@ -653,7 +655,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 #### Overview
 
-Sensitive data could be exposed if a user deliberately takes a screenshot of the application (containing sensitive data), or in the case of malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a bank application running on the device may reveal information about the user account, his credit, transactions and so on.
+Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a banking application running on the device may reveal information about the user account, his credit, transactions and so on.
 
 Masking of sensitive data when presented within an activity of an App should also be enforced to prevent disclosure and mitigate for example shoulder surfing.
 
@@ -668,7 +670,7 @@ LayoutParams.FLAG_SECURE
 ```
 If not, the application is probably vulnerable to screen capturing.
 
-**(..TODO..) - Masking of sensitive data in input fields, how can it be implemented in Android**
+-- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
 
 #### Dynamic Analysis
 
@@ -689,7 +691,7 @@ Text fields should mask the input if sensitive information need to be keyed in.
 
 #### Remediation
 
-In order to prevent user or malicious applications to capture the screen of a specific activity, add the following code in the `my_app.java` activity file that you want to protect, and then call `setContentView`:
+In order to prevent a user or malicious applications to capture the screen of a specific activity, add the following code in the `my_app.java` activity file that you want to protect, and then call `setContentView`:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -720,17 +722,17 @@ Note that this would automatically prevent the user from taking a manual screens
 
 #### Overview
 
-When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifier, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
+When backup options are available, it is important to consider that user data may be stored within the App data directory. The backup feature could potentially leak sensitive information such as session identifiers, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the App.
 
 Besides a local backup, Android provides two ways for Apps to backup their data to the cloud:
-* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the users Google Drive account.
+* Auto Backup for Apps in Android 6.0 (available >= API level 23), which uploads the data to the user's Google Drive account.
 * Key/Value Backup (Backup API or Android Backup Service), which uploads the data to the Android Backup Service.
 
 #### Static Analysis
 
 ##### Local
 
-In order to backup all your application’s data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+In order to backup all your application data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -740,31 +742,31 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App's data directory after using it extensively.
+If the value is set to **true**, investigate whether the App saves any kind of sensitive data, either by reading the source code, or inspecting the files in the App data directory after using it extensively.
 
 
-Regardless of using either key/value or auto backup, it need to be identified:
+Regardless of using either key/value or auto backup, it needs to be identified:
 * what files are sent to the cloud (e.g. SharedPreferences),
 * if the files contain sensitive information,
 * if sensitive information is protected through encryption before sending it to the cloud.
 
 ##### Auto Backup
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available for Android 6.0 onwards. Other Android version will be using key/value backup instead.
+When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
 
 ```xml
 android:fullBackupOnly
 ```
 
-Auto backup includes almost all of the App's files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
+Auto backup includes almost all of the App files and stores them in the Google Drive account of the user, limited to 25MB per App. Only the most recent backup is stored, the previous backup is deleted.
 
 ##### Key/Value Backup
-To enable key/value backup the backup agent need to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
 ```
 
-To implement the key/value backup, either one of the following classes need to be extended:
+To implement the key/value backup, either one of the following classes needs to be extended:
 * BackupAgent
 * BackupAgentHelper
 
@@ -800,14 +802,14 @@ $ tar xvf mybackup.tar
 
 #### Remediation
 
-To prevent backing up the app's data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
+To prevent backing up the app data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
 
 Sensitive information should not be sent in clear text to the cloud. It should either be:
 
 * avoided to store the information in the first place or
-* encrypt the information in rest, before sending it to the cloud.
+* encrypt the information at rest, before sending it to the cloud.
 
-Files can also be excluded from Auto Backup, in case they should not be shared with the Google Cloud, see [including files][e894a591].
+Files can also be excluded from Auto Backup, in case they should not be shared with Google Cloud, see [including files][e894a591].
 
 
 #### References
@@ -836,7 +838,7 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 
 #### Overview
 
-Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, where it is recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, from which it may be recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
 
 #### Static Analysis
 
@@ -860,7 +862,7 @@ During black-box testing, open any screen within the App that contains sensitive
 
 #### Remediation
 
-To prevent users or malicious applications access information from backgrounded applications use the `SECURE_FLAG` as shown below:
+To prevent users or malicious applications from accessing information from backgrounded applications use the `SECURE_FLAG` as shown below:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -906,9 +908,9 @@ It needs to be identified within the code when sensitive information is stored w
 #### Dynamic Analysis
 
 To analyse the memory of an App, the app must be **debuggable**.
-See the instructions in XXX (**#TODO-Link to repackage and sign**) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
+See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android App to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
-For rudimentary analysis Android Studio built in tools can be used. Android studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
+For rudimentary analysis Android Studio built-in tools can be used. Android studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
 
@@ -967,7 +969,7 @@ Tools:
 
 #### Overview
 
-Apps that are processing or querying for sensitive information should ensure that they are running on a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
+Apps that are processing or querying sensitive information should ensure that they are running in a trusted and secure environment. In order to be able to achieve this, the App can enforce the following local checks on the device:
 
 * PIN or password set to unlock the device
 * Usage of a minimum Android OS version
@@ -978,7 +980,7 @@ Apps that are processing or querying for sensitive information should ensure tha
 
 #### Static Analysis
 
-In oder to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy need to be provided. The policy should define what checks are available and how they are enforced. For example one check could enforce that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
+In order to be able to test the device-access-security policy that is enforced by the App, a written copy of the policy needs to be provided. The policy should define what checks are available and how they are enforced. For example one check could require that the App only runs on Android Marshmallow (Android 6.0) or higher and the App is closing itself if the App is running on an Android version < 6.0.
 
 The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
 
@@ -988,7 +990,7 @@ The dynamic analysis depends on the checks that are enforced by App and their ex
 
 #### Remediation
 
-Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanism to create security aware applications, that are able to enforce password policies or encryption of the device.
+Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
 
 
 #### References
@@ -1006,7 +1008,7 @@ Different checks on the Android device can be implemented by querying different 
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - (.. TODO ..)
+- CWE: -- TODO [Link to CWE issue] --
 
 
 ### Verifying User Education Controls
@@ -1016,30 +1018,30 @@ Different checks on the Android device can be implemented by querying different 
 Educating users is a crucial part in the usage of mobile Apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
 
 The following list shows potential warnings or advises for a user when opening the App the first time and using it:
-* App shows after starting it the first time a list of data it is storing locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
+* App shows a list of data stored locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
 * If a new user account is created within the App it should show the user if the password provided is considered as secure and applies to best practice password policies.
-* If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
+* If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
-**(..TODO..) - What else can be a warning on Android?**
+-- TODO [What else can be a warning on Android?] --
 
 #### Static Analysis
 
-**...TODO...**
+-- TODO [Create content on Static Analysis for Verifying User Education Controls] --
 
 #### Dynamic Analysis
 
-After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
-**...TODO...**
+After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose.
+-- TODO [Develop content on Dynamic Analysis on Verifying User Education Controls] --
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
-**...TODO...**
+-- TODO [Develop remediations on Verifying User Education Controls] --
 
 #### References
 
-**...TODO...**
+-- TODO [Add references on Verifying User Education Controls] --
 
 ##### OWASP MASVS
 
@@ -1049,13 +1051,7 @@ Warnings should be implemented that address the key points listed in the overvie
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - **.. TODO ...**
-
-
-
-
-
-
+- CWE: -- TODO [Link to CWE issue] --
 
 <!-- References links
 If a link is outdated, you can change it here and it will be updated everywhere -->

@@ -8,28 +8,26 @@ Every new technology introduces new security risks, and mobile computing is no d
 
 ## Mobile Application Threats
 
-Security concerns in the mobile app space differ from traditional Desktop software in some important ways. Firstly, while not many people opt to carry a Desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored.
+Security concerns in the mobile app space differ from traditional desktop software in some important ways. Firstly, while not many people opt to carry a desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored. Also leaving a device unattended, which allows adversaries temporary physical access (Evil-Maid attack) can already lead to full compromise of the device or steal data without the owner noticing it.
 
-From the view of a mobile app, this means that extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user? 
+From the view of a mobile app, this means that extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user?
 
 Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
 
-(...TODO... what is the OWASP Mobile Top 10)
+-- TODO [What is the OWASP Mobile Top 10] --
 
-## Organization of the Testing Guide
+## The OWASP Mobile AppSec Verification Standard, Checklist and Testing Guide
 
-(... TODO ...)
+This guide belongs to a set of three closely related mobile application security closely related. All three documents map to the same basic set of security requirements. Depending on the context, they can be used stand-alone or in combination to achieve different objectives:
 
-## Using the OWASP Mobile Security Testing Guide
-
-This guide belongs to a set of three mobile appsec-related documents produced by OWASP. Those three documents are closely related: They all map to the same basic set of requirements. Depending on the context, they can be used stand-alone or in combination to achieve different objectives:
-
-- The **Mobile Application Security Verification Standard (MASVS)** contains generic security requirements along with mappings to verification levels that can be chosen depending on the overall need for security [1].
-
-- The **Mobile Security Testing Guide (MSTG)** (this document) provides verification instructions for each requirement in the MASVS, as well as security best practices for apps on each supported mobile operating system (currently Android and iOS). It is also useful as a standalone learning resource and reference guide for mobile application security testers.
-
-- The **Mobile App Security Checklist** can be used to apply the MASVS requirements during practical assessments. It also conveniently links to the MSTG test case for each requirement, making mobile penetration testing a breeze.
+* The **Mobile Application Security Verification Standard (MASVS):** A standard that defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define what a secure mobile application is.
+* The **Mobile Security Testing Guide (MSTG):** A manual for testing the security of mobile apps. It provides verification instructions for the requirements defined in the MASVS along with operating-system-specific best practices (currently for Android and iOS). The MSTG helps ensure completeness and consistency of mobile app security testing. It is also useful as a standalone learning resource and reference guide for mobile application security testers.
+* The **Mobile App Security Checklist:** A checklist for tracking compliance against the MASVS during practical assessments. The list conveniently links to the MSTG test case for each requirement, making mobile penetration app testing a breeze.
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
-(... TODO ...)
+For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during of after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
+
+## Organization of the Testing Guide
+
+-- TODO [Describe the organization of the current guide] --
