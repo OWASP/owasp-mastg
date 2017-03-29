@@ -16,17 +16,21 @@ The core features of the iOS security architecture:
 - Encryption and Data Protection
 - General Exploit Mitigations
 
+A very good and detailed analysis of iOS security architecture has been done by [Johnatan Levin in MacOS and iOS Internals Vol. 3](http://www.newosxbook.com/2ndUpdate.html) [4]
+
 #### Secure Boot
 
-When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. During this booting process, the "Secure Boot Chain" ensures that it is running on validated Apple devices. The process will only proceed if the next step is secure and verification is successful. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. 
+When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating root of trust. In the next step, the Boot ROM code checks if signature of iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of next boot stage, which is iOS kernel. If any of these step failed, the boot process is immediately terminated and the devices enters recovery mode and displays "Connect to iTunes" screen. If, however, the Boot ROM fails to load, the device enters special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to original state. There will be no sign of activity of the device, i.e. the screen will not display anything. 
 
--- TODO [Further develop section on iOS Secure Boot] --
+The entire process is called "Secure Boot Chain" and ensures that it is running only on Apple-manufactured devices. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. 
+All new devices that have Secure Enclave coprocessor, i.e. starting from iPhone 5s also use secure boot process to ensure that the firmware within Secure Enclave is trusted. 
 
 #### Sandbox
 
-The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised. All apps which is distributed via the iOS AppStore must adopt the sandbox for this purpose. 
+The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
 
--- TODO [Further develop section on iOS Sandbox] --
+The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
+[iPhone Dev Wiki](http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
 
 #### Code Signing
 
@@ -140,7 +144,7 @@ In line with the "crystal prison" theme, sandboxing has been is a core security 
 - [1] Apple's Crystal Prison and the Future of Open Platforms - https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms
 - [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
 - [3] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
-
+- [4] Johnatan Levin, MacOS and iOS Internals, Volume III: Security & Insecurity
 + [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
 + [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 + [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)
