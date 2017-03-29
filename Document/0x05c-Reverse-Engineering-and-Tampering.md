@@ -189,7 +189,7 @@ $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_E
 $ ./apkx.py HelloWorld-JNI.apk
 ```
 
-The MainActivity is found in the file <code>MainActivity.java</code>.
+The MainActivity is found in the file <code>MainActivity.java</code>. The "Hello World" text view is populated in the <code>onCreate()</code> method.
 
 ```java
 public class MainActivity
@@ -209,6 +209,13 @@ extends AppCompatActivity {
 }
 
 }
+```
+
+Note the declaration of <code>public native String stringFromJNI</code> at the bottom. The <code>native</code> keyword informs the Java compiler that the implementation for this method is provided in a native language. The corresponding function is resolved during runtime. Of course, this only works if a native library is loaded that exports a global symbol with the expected signature. This signature is composed of the package name, class name and method name. In our case for example, this means that the programmer must have implemented the following C or C++ function:
+
+```c
+JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject) 
+
 ```
 
 
