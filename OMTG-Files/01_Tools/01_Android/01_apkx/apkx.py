@@ -1,7 +1,9 @@
 #!/usr/bin/python
 #
-# apkx -- A python wrapper to dex2jar and CFR. Use to extract and decompile Java code from Android APK.
+# apkx -- A Python wrapper for dex2jar and CFR. Use to extract and decompile Java code from Android APK.
+# Because nobody likes messing with Java classpaths & command lines.
 #
+# Author: Bernhard Mueller
 # This file is part of the OWASP Mobile Testing Guide (https://github.com/OWASP/owasp-mstg)
 #
 # See also:
@@ -56,7 +58,7 @@ except Exception as e:
 '''
 
 try:
-	subprocess.call(['java','-Xms512m', '-Xmx1024m', '-cp', './apkx-libs.jar', 'org.benf.cfr.reader.Main', ext_path + '/classes.jar', '--outputdir', ext_path, '--caseinsensitivefs', 'true'])
+	subprocess.call(['java','-Xms512m', '-Xmx1024m', '-cp', './apkx-libs.jar', 'org.benf.cfr.reader.Main', ext_path + '/classes.jar', '--outputdir', ext_path + '/src', '--caseinsensitivefs', 'true', '--silent', 'true'])
 except Exception as e:
 	print('Error decompiling:' + str(e))
 
