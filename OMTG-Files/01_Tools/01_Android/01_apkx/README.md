@@ -15,7 +15,7 @@ $ sudo ./install.sh
 
 ## Usage
 
-Simply pass the APK filename on the command line:
+Pass the APK filename on the command line:
 
 ```bash
 $ apkx HelloWorld.apk 
