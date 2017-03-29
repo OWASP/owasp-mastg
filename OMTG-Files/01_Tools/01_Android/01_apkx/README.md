@@ -1,6 +1,6 @@
 # apkx - Extract Java Sources from APK Archives
 
-A simple Python wrapper to dex2jar [1] and CFR [2]. Unzips the APK and decompiles Java bytecode contained in classes.dex.
+A simple Python wrapper to dex2jar [1] and CFR [2] that unzips an APK and decompiles Java bytecode contained in classes.dex.
 
 ## Installation
 
