@@ -174,20 +174,22 @@ An alternative (and faster) way of getting the decrypted string is by adding a b
 
 #### Statically Analyzing Native Code
 
--- TODO [Native Code Analysis - HelloWorld-JNI] --
-
 Dalvik and ART both support the Java Native Interface (JNI), which defines defines a way for Java code to interact with native code written in C/C++. Just like on other Linux-based operating systes, native code is packaged into ELF dynamic libraries ("*.so"), which are then loaded by the Android app during runtime using the <code>System.load</code> method.
 
 Disassemblers with support for ELF/ARM binaries (i.e. all disassemblers in existence) can deal with Android native libraries without issues. We'll use IDA Pro in this example - you can try it out yourself with IDA's evaluation version.
 
-Download HelloWorld-JNI.apk from the OWASP MSTG repository and decompile it with apkx.py.
+Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device. The app is not excatly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
+
+![Delete the default Java package](Images/Chapters/0x05c/helloworld.jpg)
+
+Decompile the APK with apkx.py. This should extract the source into the <code>HelloWorld/src</code> directory. 
 
 ```bash
 $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
 $ ./apkx.py HelloWorld-JNI.apk
 ```
 
-
+The MainActivity is found in the file <code>MainActivity.java</code>.
 
 ```java
 public class MainActivity
@@ -204,6 +206,8 @@ extends AppCompatActivity {
     }
 
     public native String stringFromJNI();
+}
+
 }
 ```
 
