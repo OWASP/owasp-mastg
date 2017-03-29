@@ -1,6 +1,6 @@
 # apkx - Extract Java Sources from APK Archives
 
-A simple Python wrapper to dex2jar [1] and CFR [2] that unzips an APK and decompiles Java bytecode contained in classes.dex.
+A simple Python wrapper to [dex2jar](https://github.com/pxb1988/dex2jar) and [CFR](http://www.benf.org/other/cfr/) that unzips an APK and decompiles Java bytecode contained in classes.dex.
 
 ## Installation
 
@@ -30,7 +30,3 @@ BuildConfig.java	MainActivity.java	R.java
 
 This script accompanies the [OWASP Mobile Security Testing Guide](https://github.com/OWASP/owasp-mstg). For further instructions and usage examples, see [Android Tampering and Reverse Engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md).
 
-## References
-
-- [1] dex2jar - https://github.com/pxb1988/dex2jar
-- [2] CFR - http://www.benf.org/other/cfr/
