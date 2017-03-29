@@ -6,27 +6,29 @@ A simple Python wrapper to dex2jar [1] and CFR [2]. Unzips the APK and decompile
 
 To download and install use:
 
+```bash
 $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx-0.9.tgz
 $ tar xzf apkx-0.9.tgz
 $ cd apkx-0.9
 $ sudo ./install.sh
+```
 
 ## Usage
 
 Simply pass the APK filename on the command line:
 
-~~~
+```bash
 $ apkx HelloWorld.apk 
 Extracting HelloWorld.apk to HelloWorld
 dex2jar HelloWorld/classes.dex -> HelloWorld/classes.jar
 Decompiling to HelloWorld/src
 $ ls HelloWorld/src/com/example/helloworld/
 BuildConfig.java	MainActivity.java	R.java
-~~~
+```
 
 ## About
 
-This file is part of the [OWASP Mobile Security Testing Guide](https://github.com/OWASP/owasp-mstg). See the chapter [Android Tampering and Reverse Engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md) for further examples.
+This script accompanies the [OWASP Mobile Security Testing Guide](https://github.com/OWASP/owasp-mstg). See the [Android Tampering and Reverse Engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md) for further examples.
 
 ## References
 
