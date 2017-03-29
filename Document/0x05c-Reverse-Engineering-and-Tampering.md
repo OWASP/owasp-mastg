@@ -178,12 +178,33 @@ An alternative (and faster) way of getting the decrypted string is by adding a b
 
 Dalvik and ART both support the Java Native Interface (JNI), which defines defines a way for Java code to interact with native code written in C/C++. Just like on other Linux-based operating systes, native code is packaged into ELF dynamic libraries ("*.so"), which are then loaded by the Android app during runtime using the <code>System.load</code> method.
 
-Disassemblers with support for ELF/ARM binaries (i.e. all disassemblers in existence) can deal with Android native libraries without issues. 
+Disassemblers with support for ELF/ARM binaries (i.e. all disassemblers in existence) can deal with Android native libraries without issues. We'll use IDA Pro in this example - you can try it out yourself with IDA's evaluation version.
 
-Download HelloWorld-JNI.apk from the OWASP MSTG repository and decompile it with apkx.py
+Download HelloWorld-JNI.apk from the OWASP MSTG repository and decompile it with apkx.py.
+
 ```bash
 $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
 $ ./apkx.py HelloWorld-JNI.apk
+```
+
+
+
+```java
+public class MainActivity
+extends AppCompatActivity {
+    static {
+        System.loadLibrary("native-lib");
+    }
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.setContentView(2130968603);
+        ((TextView)this.findViewById(2131427422)).setText((CharSequence)this.stringFromJNI());
+    }
+
+    public native String stringFromJNI();
+}
 ```
 
 
