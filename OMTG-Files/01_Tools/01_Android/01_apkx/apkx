@@ -37,8 +37,6 @@ src_path = ext_path + "/src"
 
 jar_path = os.path.dirname(os.path.realpath(__file__)) + "/apkx-libs.jar"
 
-print(jar_path + "\n")
-
 print("Extracting " + apkfilename + " to " + ext_path)
 
 try:
