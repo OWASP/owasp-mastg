@@ -94,9 +94,8 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
+Apple provides libraries with implementations of most commonly used cryptographic algorithms. A good point of reference is [Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html). It containts broad documentation on how to use standard library to initialize and use cryptographic primitives, which is also useful when performing source code analysis. 
+For black-box testing, more useful is native C API, for instance CommonCryptor, that is most frequently used when performing cryptographic operations. Source code is partially available at [opensource.apple.com](https://opensource.apple.com).
 
 ##### With Source Code
 
@@ -104,7 +103,21 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 ##### Without Source Code
 
--- TODO [Create content for "Verifying the Configuration of Cryptographic Standard Algorithms" without source code] --
+If the appliaction is using standard cryptographic implementations provided by Apple, the easiest way is to decompile the application and check for calls to functions from `CommonCryptor`, such as `CCCrypt`, `CCCryptorCreate`, etc. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h) contains signatures of all functions. 
+For instance, `CCCryptorCreate` has following signature:
+```
+CCCryptorStatus CCCryptorCreate(
+	CCOperation op,             /* kCCEncrypt, etc. */
+	CCAlgorithm alg,            /* kCCAlgorithmDES, etc. */
+	CCOptions options,          /* kCCOptionPKCS7Padding, etc. */
+	const void *key,            /* raw key material */
+	size_t keyLength,	
+	const void *iv,             /* optional initialization vector */
+	CCCryptorRef *cryptorRef);  /* RETURNED */
+```
+
+You can then compare all the `enum` types to understand which algorithm, padding and key material is being used. Pay attention to the keying material, if it's coming directly from a password (which is bad), or if it's comming from Key Generation Function (e.g. PBKDF2). 
+Obviously, there are other non-standard libraries that your application might be using (for instance `openssl`), so you should check for these too. 
 
 #### Dynamic Analysis
 
