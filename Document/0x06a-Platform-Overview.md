@@ -31,14 +31,19 @@ The sandbox is an access control technology that was provided for iOS and it is 
 
 The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
 [iPhone Dev Wiki](http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox.
 
 #### Code Signing
 
-Before any iOS application can be installed, it's origins needs to be authenticated. If an iOS app was downloaded from a random website, there is a significant risk that it could be classified as a malware. The risk can be greatly reduced and if the software’s origin can be verified, it can also be further assured that it has not been modified in transit.
+Application code signing is different than in Android. In the latter you can sign with self-signed key and main purpose would be to establish root of trust for future application updates. In other words, to make sure that only the original developer of a given application would be able to update it. In Android, applications can be distributed freely as APK files or from Google Play. 
+On the contrary, Apple allows app distribution only via App Store.
 
-Thus, code signing provides this mechanism to provide this assurance. Through the use of X.509v3 certificates, which is the case of developers signing their public key with the private key of the issuer, this allows developers to authenicate their identity by virtue of signing their applications. 
+There exist at least two scenarios where you can install an application without App Store:
+1. via Enterprise Mobile Device Management. This requires the company to have company-wise certificate signed by Apple
+2. via sideloading - i.e. by signing the app with developer's certificate and installing it on one device. There is an upper limit of number of devices that can be used with the same certificate
 
--- TODO [Further develop section on iOS Code Signing] --
+Developer Profile and Apple-signed certificate is required in order to deploy and run an application. 
+Developers need to register with Apple and join the Apple Developer Program and pay subscription fee[https://developer.apple.com/support/compare-memberships/] to get full range of development and deployment possibilites. Free account still allows you to compile and deploy an application via sideload.  
 
 #### Encryption and Data Protection
 
