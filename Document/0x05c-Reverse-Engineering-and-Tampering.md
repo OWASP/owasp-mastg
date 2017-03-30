@@ -221,14 +221,16 @@ So where is the native implementation of this function? If you look into the <co
 
 ![Supported architectures](Images/Chapters/0x05c/archs.jpg)
 
-The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build. We'll be using the <code>armeabi-v7a</code> version in the following examples.
+The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build. We'll be using the <code>armeabi-v7a</code> version in the following examples, located in <code>lib/armeabi-v7a/libnative-lib.so</code>.
+
+According to the naming convention, we can expect an the library to export a symbol named <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code>. On Linux systems, you can list the symbols from the library using <code>readelf</code> (included in GNU binutils) or <code>nm</code>. On Mac OS, the same can be achieved with the <code>greadelf</code> tool, which you can get by installing binutils using Macports or Homebrew.
 
 ```
 $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
 
-
+So this native function is actually executed 
 
 
 #### Debugging and Tracing
