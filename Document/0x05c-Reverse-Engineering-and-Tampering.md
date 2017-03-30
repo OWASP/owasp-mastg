@@ -221,7 +221,14 @@ So where is the native implementation of this function? If you look into the <co
 
 ![Supported architectures](Images/Chapters/0x05c/archs.jpg)
 
-The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build.
+The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build. We'll be using the <code>armeabi-v7a</code> version in the following examples.
+
+```
+$ greadelf -W -s libnative-lib.so | grep Java
+     3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
+```
+
+
 
 
 #### Debugging and Tracing
