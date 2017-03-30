@@ -62,7 +62,7 @@ Detection code also often looks for binaries that are usually installed once a d
 /system/xbin/su
 /data/local/su
 /data/local/xbin/su
-~~~ 
+~~~
 
 Alternatively, checking whether *su* is in PATH also works:
 
@@ -183,16 +183,16 @@ Check for the presence of root detection mechanisms and apply the following crit
 Develop bypass methods for the root detection mechanisms and answer the following questions:
 
 - Is it possible to easily bypass the mechanisms using standard tools such as RootCloak?
-- Is some amount of static/dynamic analysis necessary to handle the root detection? 
+- Is some amount of static/dynamic analysis necessary to handle the root detection?
 - Did you need to write custom code?
 - How long did it take you to successfully bypass it?
-- What is your subjective assessment of difficulty? 
+- What is your subjective assessment of difficulty?
 
 Also note how well the root detection mechanisms are integrated within the overall protection scheme. For example, the detection functions should obfuscated and protected from tampering.
 
 #### Remediation
 
-If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses. 
+If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
 
 #### References
 
@@ -231,7 +231,7 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 
 As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to implement defenses against both debugger types.
 
-Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app. 
+Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app.
 
 ##### Sample Anti-JDWP-Debugging Methods
 
@@ -248,7 +248,7 @@ We have encountered the <code>android:debuggable</code> attribute a few times al
 
     }
 ```
-###### isDebuggerConnected 
+###### isDebuggerConnected
 
 The Android Debug system class offers a static method for checking whether a debugger is currently connected. The method simply returns a boolean value.
 
@@ -273,10 +273,10 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 The <code>Debug.threadCpuTimeNanos</code> indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, The difference in execution time can be used to make an educated guess on whether a debugger is attached [2].
 
 ```
-static boolean detect_threadCpuTimeNanos(){ 
+static boolean detect_threadCpuTimeNanos(){
   long start = Debug.threadCpuTimeNanos();
 
-  for(int i=0; i<1000000; ++i) 
+  for(int i=0; i<1000000; ++i)
     continue;
 
   long stop = Debug.threadCpuTimeNanos();
@@ -306,14 +306,14 @@ struct DvmGlobals {
     char*       jdwpHost;
     int         jdwpPort;
     bool        jdwpSuspend;
- 
+
     Thread*     threadList;
- 
+
     bool        nativeDebuggerActive;
     bool        debuggerConnected;      /* debugger or DDMS is connected */
     bool        debuggerActive;         /* debugger is making requests */
     JdwpState*  jdwpState;
- 
+
 };
 ```
 
@@ -325,7 +325,7 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
-Debugging can be disabled using similar techniques in ART, even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes include JdwpSocketState and JdwpAdbState - these two handle JDWP connections via network sockets and ADB, respectively. The behaviour of the debugging runtime can be manipulatedB ny overwriting the method pointers in those vtables. 
+Debugging can be disabled using similar techniques in ART, even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes include JdwpSocketState and JdwpAdbState - these two handle JDWP connections via network sockets and ADB, respectively. The behaviour of the debugging runtime can be manipulatedB ny overwriting the method pointers in those vtables.
 
 One possible way of doing this is overwriting the address of "jdwpAdbState::ProcessIncoming()" with the address of "JdwpAdbState::Shutdown()". This will cause the debugger to disconnect immediately [3].
 
@@ -432,7 +432,7 @@ The following implementation is taken from Tim Strazzere's Anti-Emulator project
 
 On Linux, the <code>ptrace()</code> system call is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers [5]. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
 
-As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines: 
+As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines:
 
 ```
 void fork_and_attach()
@@ -650,7 +650,7 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
 - How difficult is it to identify the anti-debugging code using static and dynamic analysis?
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
-- What is your subjective assessment of difficulty? 
+- What is your subjective assessment of difficulty?
 
 Consider how the anti-debugging mechansims fit into the overall protection scheme. For example, anti-debugging defenses should obfuscated and protected from tampering.
 
@@ -658,7 +658,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Remediation
 
-If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses. 
+If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
 
 #### References
 
@@ -691,10 +691,10 @@ private void crcTest() throws IOException {
  // required dex crc value stored as a text string.
  // it could be any invisible layout element
  long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
- 
+
  ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
  ZipEntry ze = zf.getEntry("classes.dex");
- 
+
  if ( ze.getCrc() != dexCrc ) {
   // dex has been modified
   modified = true;
@@ -708,7 +708,7 @@ private void crcTest() throws IOException {
 
 ##### Bypassing File Integrity Checks
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions. 
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -765,7 +765,7 @@ Popular tools, if installed in their original form, can be detected by looking f
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions. 
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -808,7 +808,7 @@ In the context of anti-reversing, the goal of emulator detection is to make it a
 
 #### Detection Techniques
 
-There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense. 
+There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
 
 The first set of indicaters stem from the build.prop file
 
@@ -845,13 +845,13 @@ TelephonyManager.getNetworkType()                       3                       
 TelephonyManager.getNetworkOperator().substring(0,3)    310                     possibly emulator
 TelephonyManager.getNetworkOperator().substring(3)      260                     possibly emulator
 TelephonyManager.getPhoneType()                         1                       possibly emulator
-TelephonyManager.getSimCountryIso()                     us                      possibly emulator 
+TelephonyManager.getSimCountryIso()                     us                      possibly emulator
 TelephonyManager.getSimSerial Number()                  89014103211118510720    emulator
 TelephonyManager.getSubscriberId()                      310260000000000         emulator
 TelephonyManager.getVoiceMailNumber()                   15552175049             emulator
 ```
 
-Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data. 
+Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data.
 
 -- TODO [Dynamic Detection Techniques] --
 
@@ -936,6 +936,10 @@ N/A
 ### Testing Device Binding
 
 #### Overview
+The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+
+Device binding has changed on Android //HVG!
+
 
 -- TODO [Provide a general description of the issue "Testing Device Binding".] --
 
@@ -1059,4 +1063,3 @@ out_file.close()
 
 -- TODO [Add links to relevant tools for "Testing Obfuscation"] --
 * Enjarify - https://github.com/google/enjarify
-
