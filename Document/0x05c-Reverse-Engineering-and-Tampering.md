@@ -215,8 +215,13 @@ Note the declaration of <code>public native String stringFromJNI</code> at the b
 
 ```c
 JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject) 
-
 ```
+
+So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of this directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
+
+![Supported architectures](Images/Chapters/0x05c/archs.jpg)
+
+The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build.
 
 
 #### Debugging and Tracing
