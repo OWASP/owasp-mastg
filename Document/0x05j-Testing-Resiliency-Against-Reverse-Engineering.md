@@ -346,7 +346,7 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical,
 
 ###### Checking TracerPid
 
-When the ptrace API is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
+When the <code>ptrace</code> system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
 The following implementation is taken from Tim Strazzere's Anti-Emulator project [3].
 
@@ -377,13 +377,35 @@ The following implementation is taken from Tim Strazzere's Anti-Emulator project
     }
 ```
 
-**Calling ptrace**
+**Ptrace variations***
 
--- TODO [ptrace-based check] --
+On Linux, the <code>ptrace()</code> system call is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers [5]. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time
 
-**Fork/ptrace**
+As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines: 
 
--- TODO [multi-process/watchdog] --
+```
+void fork_and_attach()
+{
+  int pid = fork();
+  int status;
+  int res;
+
+  if (pid == 0)
+    {
+      int ppid = getppid();
+
+      if (ptrace(PTRACE_ATTACH, ppid, NULL, NULL) == 0)
+        {
+          waitpid(ppid, NULL, 0);
+
+          /* Continue the parent process */
+          ptrace(PTRACE_CONT, NULL, NULL);
+        }
+    }
+}
+```
+
+With the child attached, any further attempts to attach to the parent would fail. This is however easily bypassed by  killing the child and "freeing" the parent, or intercepting / preventing the calls to <code>fork</code> or <code>ptrace</code>. In practice, you'll therefore usually find more elaborate schemes that combine various 
 
 **Breakpoint detection**
 
@@ -467,6 +489,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 - [2] Bluebox Security - Android Reverse Engineering & Defenses - https://slides.night-labs.de/AndroidREnDefenses201305.pdf
 - [3] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
 - [4] Anti-Debugging Fun with Android ART - https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art
+- [5] ptrace man page - http://man7.org/linux/man-pages/man2/ptrace.2.html
 
 ### Testing File Integrity Checks
 
