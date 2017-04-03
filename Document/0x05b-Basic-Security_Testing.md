@@ -164,8 +164,6 @@ uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdca
 
 Rooting of an emulator is therefore not needed as root access can be granted through `adb`.
 
-##### Setting up a Web Proxy
-
 ##### Restrictions When Testing on an Emulator
 
 There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
