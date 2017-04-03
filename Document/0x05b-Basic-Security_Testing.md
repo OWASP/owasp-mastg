@@ -140,7 +140,7 @@ $ adb reverse tcp:8080 tcp:8080
 - Enter "127.0.0.1" in the "Proxy" field and your proxy port in the "Port" field (e.g. "8080")
 - Open the top-right menu and tap "save"
 
-![Proxy setup on the emulator](Images/Chapters/0x05b/emulator-proxy.jpg)
+<img width=300px src="Images/Chapters/0x05b/emulator-proxy.jpg"/>
 
 HTTP and HTTPS requests should now be routed over the proxy on the host machine (try toggling airplane mode off and on if it doesn't work).
 
