@@ -144,6 +144,22 @@ $ adb reverse tcp:8080 tcp:8080
 
 HTTP and HTTPS requests should now be routed over the proxy on the host machine (try toggling airplane mode off and on if it doesn't work).
 
+##### Installing a CA Certificate on the Virtual Device
+
+An easy way to install a CA certificate is pushing the cert to the device and adding it to the certificate stora via Security Settings. For example, you can install the BURP (PortSwigger) CA certificate as follows.
+
+1. Navigate to http://burp/ using a web browser on the host, and download file cacert.der by clicking the "CA Certificate" button.
+2. Change the file extension from .der to .cer
+3. Push the file to the emulator:
+
+```bash
+$ adb push cacert.cer /sdcard/
+```
+
+4. Navigate to "Settings" -> "Security" -> "Install from SD Card"
+5. Scroll down and tap on "cacert.cer"
+
+You should now be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
