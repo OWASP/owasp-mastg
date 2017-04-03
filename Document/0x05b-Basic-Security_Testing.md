@@ -122,6 +122,29 @@ It is also possible to simply create an AVD and use this for testing.
 
 -- TODO [Develop section Using an Emulator : what can be done with it, difference with using a real Android mobile, availability, how to start and configure one] --
 
+##### Setting Up a Web Proxy on Virtual Device
+
+To set up a HTTP proxy on the emulator, follow the following procedure (this works on the Android emulator shipping with Android Studio 2.x).
+
+1. Set up your proxy to listen on localhost. Reverse-forward the proxy port from the emulator to the host, e.g.:
+
+```bash
+$ adb reverse tcp:8080 tcp:8080
+```
+
+2. Configure the HTTP proxy in the access point settings of the device:
+- Open the Settings Menu
+- Tap on "Wireless & Networks" -> "Cellular Networks" or "Mobile Networks"
+- Open "Access Point Names"
+- Open the existing APN (e.g. "T-Mobile US")
+- Enter "127.0.0.1" in the "Proxy" field and your proxy port in the "Port" field (e.g. "8080")
+- Open the top-right menu and tap "save"
+
+![Proxy setup on the emulator](Images/Chapters/0x05b/emulator-proxy.jpg)
+
+HTTP and HTTPS requests should now be routed over the proxy on the host machine (try toggling airplane mode off and on if it doesn't work).
+
+
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
 An Android Virtual Device (AVD) can be created by using the AVD manager, which is available within Android Studio<sup>[5]</sup>. The AVD manager can also be started separately from the command line by using the `android` command in the tools directory of the Android SDK:
@@ -144,7 +167,6 @@ Rooting of an emulator is therefore not needed as root access can be granted thr
 ##### Setting up a Web Proxy
 
 ##### Restrictions When Testing on an Emulator
->>>>>>> b8e4f49149a5cfe61fd6861197c6df83f9425764
 
 There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
 
