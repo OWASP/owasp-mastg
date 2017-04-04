@@ -1,10 +1,12 @@
+<img width=200px align="right" style="float: right;" src="Document/Images/titlepage-small.jpg">
+
 # OWASP Mobile Security Testing Guide
 
 This is the official Github Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for testing the security of mobile apps. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). The MSTG provides a baseline set of test cases for black-box and white-box security tests, ensuring completeness and consistency of the tests.
 
 ## Reading the Mobile Security Testing Guide
 
-The MSTG hasn't been officially released yet. There are, however, several options for converting it into an easily readable format:
+The MSTG hasn't been officially released yet. There are several options for converting it into an easily readable format:
 
 1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use Gitbook to generate PDF, epub, and other e-book formats.
 
@@ -18,15 +20,15 @@ $ ./generate_document.sh
 
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
 
-## Contributions and Feedback
+## Contributions, Feature Requests and Feedback
 
-We need more authors! The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks including authoring, review and technical editing. To sign up for any of those tasks, simply comment on the respective [issue](https://github.com/OWASP/owasp-mstg/labels/help%20wanted) and/or contact us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can create a Slack account here:
+We are still searching for additional authors, reviewers and editors. The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks. To sign up for any of those tasks, simply comment on the respective [issue](https://github.com/OWASP/owasp-mstg/labels/help%20wanted) and/or contact us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can create a Slack account here:
 
 http://owasp.herokuapp.com/
 
-Before you start contributing, please also read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
+Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
 
-You can also suggest improvements by creating an [issue](https://github.com/OWASP/owasp-mstg/issues) on GitHub or a pull request (actually, pull requests are the preferred choice).
+If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 
 ## Authoring Credit
 

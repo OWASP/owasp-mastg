@@ -94,7 +94,7 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 
 #### Static Analysis
 
-Apple provides libraries with implementations of most commonly used cryptographic algorithms. A good point of reference is [Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html). It containts broad documentation on how to use standard library to initialize and use cryptographic primitives, which is also useful when performing source code analysis. 
+Apple provides libraries with implementations of most commonly used cryptographic algorithms. A good point of reference is [Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html). It contains broad documentation on how to use standard libraries to initialize and use cryptographic primitives, which is also useful when performing source code analysis. 
 For black-box testing, more useful is native C API, for instance CommonCryptor, that is most frequently used when performing cryptographic operations. Source code is partially available at [opensource.apple.com](https://opensource.apple.com).
 
 ##### With Source Code
@@ -103,7 +103,7 @@ For black-box testing, more useful is native C API, for instance CommonCryptor, 
 
 ##### Without Source Code
 
-If the appliaction is using standard cryptographic implementations provided by Apple, the easiest way is to decompile the application and check for calls to functions from `CommonCryptor`, such as `CCCrypt`, `CCCryptorCreate`, etc. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h) contains signatures of all functions. 
+If the app is using standard cryptographic implementations provided by Apple, the easiest way is to decompile the application and check for calls to functions from `CommonCryptor`, such as `CCCrypt`, `CCCryptorCreate`, etc. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h) contains signatures of all functions. 
 For instance, `CCCryptorCreate` has following signature:
 ```
 CCCryptorStatus CCCryptorCreate(

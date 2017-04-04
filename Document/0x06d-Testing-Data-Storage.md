@@ -177,32 +177,39 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### Overview
 
--- TODO [Add content on overview of "Testing for Sensitive Data in the Keyboard Cache"] --
+In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in /private/var/mobile/Library/Keyboard/dynamic-text.dat
+
+This behavior is achieved by means of UITextInputTraits protocol, which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
+
+* `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
+* `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default. 
 
 #### Black-box Testing
 
-1.) Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
+1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
-2.) Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
+2. Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
-3.) Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
+3. Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
 /private/var/mobile/Library/Keyboard/
 
-4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
+4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
 #### White-box Testing
 
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
-Search through the source code provided to look the following similar implementation.
+* Search through the source code provided to look the following similar implementations.
 
-```
-textField.autocorrectionType = UITextAutocorrectionTypeNo;
-```
+  ```
+  textObject.autocorrectionType = UITextAutocorrectionTypeNo;
+  textObject.secureTextEntry = YES;
+  ```
+* Open xib and storyboard files in Interface Builder and verify states of Secure Text Entry and Correction in Attributes Inspector for appropriate objects.
 
 #### Remediation
 
-The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textField.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews and UISearchBars. For data that should be masked such as PIN and passwords, set the `textObject.secureTextEntry` to `YES`.
 
 ```#ObjC
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -211,7 +218,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 #### References
 
--- TODO [Add link to relevant how-tos, papers, etc.] --
+* [UIText​Input​Traits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits)
 
 
 ### Testing for Sensitive Data in the Clipboard

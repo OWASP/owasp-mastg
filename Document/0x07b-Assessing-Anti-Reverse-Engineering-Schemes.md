@@ -33,11 +33,11 @@ The software protection scheme must be designed to protect against clearly defin
 
 - Elevation of Privilege - Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
-## Anti-Tampering Requirements in the MASVS
+## Anti-Reversing Controls in the MASVS
 
-Defining software protection standards is a self-defeating endeavor. Effective software protection schemes depend on a certain amount of originality and secrecy. The more everyone follows the same exact standards, the more ineffectice they become in deterring reverse engineers: Soon enough, there'll be a generic tool available to bypass the particular standard defenses.
+The effectiveness of software protection schemes depends on a certain amount of originality and secrecy. Therefore, standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, there'll be a generic tool available for bypassing the scheme. 
 
-Instead of specifying implementation details, the category "Resiliency Against Reverse Engineering" of the MASVS (MASVS-R) focuses on the following questions:
+The controls in "Resiliency Against Reverse Engineering" of the MASVS (MASVS-R) therefore don't specify anti-reversing mechansims in great technical detail. Rather
 
 **Does the app defend comprehensively against processes and tools used by reverse engineers?**
 
