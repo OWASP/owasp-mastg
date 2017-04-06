@@ -1,49 +1,6 @@
 ## Testing Data Storage
 
-### Testing Local Data Storage -- TODO [Merge with OWASP-DATAST-001-2] --
-
-#### Overview
-
--- TODO [Create content for "Testing Local Data Storage" on iOS] --
-
-#### Black-box Testing
-
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. Some of the possible options for the application to store it's data locally includes:
-
-* CoreData/SQLite Databases
-* NSUserDefaults
-* Property List (Plist) files
-* Plain files
-
-Steps :
-
-1. Proceed to trigger functionality that stores potential sensitive data.
-2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
-3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
-4. If the sensitive data is being stored in plaintext, it fails this test.
-
-Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.
-
-#### White-box Testing
-
-When going through the source code it should be analyzed if native mechanisms that are offered by iOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain.
-
-#### Remediation
-
-If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
-
-The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
-* For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
-* Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
-* Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
-
-
-#### References
-
-* [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
-* [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
-
-### Testing for Sensitive Data Disclosure in Local Storage
+### Testing Local Data Storage 
 
 #### Overview
 
@@ -55,14 +12,28 @@ Storing data is essential for many mobile applications, for example in order to 
 * Plain files
 
 
-#### Black-box Testing
+#### Dynamic Testing
 
-Install and use the App as it is intended. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. Afterwards check the following items:
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. 
 
--- TODO [Further develop section on black-box testing of "Testing for Sensitive Data Disclosure in Local Storage"] --
+Steps :
+
+1. Proceed to trigger functionality that stores potential sensitive data.
+2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
+3. Perform a grep command of the data that you have stored, such as: `grep -irn "USERID"`.
+4. If the sensitive data is being stored in plaintext, it fails this test.
+
+Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.
+
+-- TODO [Add content on Dynamic Testing of "Testing Local Data Storage "] --
 
 
-#### White-box Testing
+#### Static Testing
+
+Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain. 
+
+During the static analysis it should be checked if sensitive data is stored permanently on the device. The following frameworks and functions should be checked when handling sensitive data. 
+
 
 ##### CoreData/SQLite Databases
 
@@ -85,10 +56,18 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 #### Remediation
 
--- TODO [Add content on remediation on "Testing for Sensitive Data Disclosure in Local Storage"]
+If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
+
+The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
+* For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
+* Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
+* Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
+
 
 #### References
 
+* [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
+* [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 * [File System Basics](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 * [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
