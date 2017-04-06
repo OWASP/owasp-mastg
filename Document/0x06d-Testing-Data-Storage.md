@@ -183,11 +183,10 @@ All requests made to external services should be analyzed if any sensitive infor
 #### Remediation
 
 All data that is sent to 3rd Party services should be anonymized, so no PII data is available. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
-`AndroidManifest.xml` should only contain the permissions that are absolutely needed to work properly and as intended.
 
 #### References
 
-[05773baa]: Fix ME
+[05773baa]: http://FIXME
 
 -- TODO [Add content on References of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
 
