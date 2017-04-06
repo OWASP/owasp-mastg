@@ -97,11 +97,11 @@ N/A
 
 #### Overview
 
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+The <code>android:debuggable</code> attiribute in the <code>Application</code> tag in the Manifest determines whether or not the app can be debugged when running on a user mode build of Android. In a release build, this attribute should always be set to "false" (the default value).
 
-#### White-box Testing
+#### Static Analysis
 
-Check the AndroidManifest.xml for the value of "android:debuggable" attribute within the application element:
+Check in <code>AndroidManifest.xml</code> whether the <code>android:debuggable</code> attribute is set:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
@@ -115,40 +115,13 @@ Check the AndroidManifest.xml for the value of "android:debuggable" attribute wi
 </manifest>
 ```
 
-This setting specifies whether or not the application can be debugged, even when running on a device in user mode. A value of "true" defines that debugging is activated and "false" means debugging is deactivated. The default value is "false".
+#### Dynamic Analysis
 
-Although the `android:debuggable=""` flag can be bypassed by repacking the application, before shipping it, it is important to set the option `android:debuggable="false"` in the _AndroidManifest.xml_.
-
-A comprehensive guide to debug an Android application can be found within the official documentation by Android (see references).
-
-#### Black-box Testing
-
-When targeting a compiled Android application, the most reliable method is to first decompile it in order to obtain the AndroidManifest.xml file (see Decompiling Android App Guide - #TODO-Create a general guide that can bee referenced anywhere in the MSTG) and check the value of "android:debuggable" attribute.
-
-Otherwise, use the Android Asset Packaging Tool (aapt) to check the debuggable flag :
-
-```
-$ aapt l -a /path/to/apk/file.apk | grep debuggable
-```
-
-Will return the following if android:debuggable parameter is set to true :
-
-```
-      A: android:debuggable(0x0101000f)=(type 0x12)0xffffffff
-```
-
-
-Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
-
--- TODO [Add an example of black-box testing of "Testing If the App is Debuggable"] --
-
--- TODO [Add elements on Java Debug Wire Protocol (JDWP)] --
-
-Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
+Attempt to the running process with jdb. If debugging is disallowed, this should fail with the following error:
 
 #### Remediation
 
-For production releases, the attribute android:debuggable must be set to false within the application element. This ensures that a debugger cannot attach to the process of the application.
+Set the <code>android:debuggable</code> to false, or simply leave omit it from the <code>Application</code> tag.
 
 #### References
 
@@ -169,13 +142,7 @@ For production releases, the attribute android:debuggable must be set to false w
 
 ##### Info
 
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
-* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing If the App is Debuggable"] --
-* Enjarify - https://github.com/google/enjarify
+* [1] Application element - https://developer.android.com/guide/topics/manifest/application-element.html
 
 
 ### Testing for Debugging Symbols
