@@ -12,7 +12,7 @@ Storing data is essential for many mobile applications, for example in order to 
 * Plain files
 
 
-#### Dynamic Testing
+#### Dynamic Analysis
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. 
 
@@ -28,7 +28,7 @@ Manual dynamic analysis such as debugging can also be leveraged to verify how sp
 -- TODO [Add content on Dynamic Testing of "Testing Local Data Storage "] --
 
 
-#### Static Testing
+#### Static Analysis
 
 Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain. 
 
@@ -73,6 +73,20 @@ The following is a list of best practice used for secure storage of certificates
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
 
+##### OWASP MASVS
+
+- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+* CWE-311 - Missing Encryption of Sensitive Data
+* CWE-312 - Cleartext Storage of Sensitive Information
+* CWE-522 - Insufficiently Protected Credentials
+* CWE-922 - Insecure Storage of Sensitive Information
+
 ### Testing for Sensitive Data in Logs
 
 #### Overview
@@ -87,7 +101,7 @@ Log files can be created in various ways on each of the different operating syst
 
 Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Proceed to a page on the iOS application that contains input fields which prompt users for their sensitive information. Two different methods are applicable to check for sensitive data in log files:
 
@@ -101,7 +115,7 @@ tail -f /var/log/syslog
 Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
 
 
-#### White-box Testing
+#### Static Analysis
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
 * For predefined and built-in functions:
@@ -130,27 +144,64 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 -- TODO [Add references for section "Testing for Sensitive Data in Logs"] --
 
+##### OWASP MASVS
+
+- V2.2: "No sensitive data is written to application logs."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+* CWE-117: Improper Output Neutralization for Logs
+* CWE-532: Information Exposure Through Log Files
+* CWE-534: Information Exposure Through Debug Log Files
+
+
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
 #### Overview
 
--- TODO [Add content to overview of "Testing Whether Sensitive Data Is Sent to Third Parties" ] --
+Different 3rd party services are available that can be embedded into the App to implement different features. These features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
 
-#### Black-box Testing
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
+
+3rd party services are mostly implemented in two ways:
+* By using a standalone library.
+* By using a full SDK.
+
+#### Static Analysis
 
 -- TODO [Add content on black-box testing of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
 
-#### White-box Testing
+#### Dynamic Analysis
 
--- TODO [Add content on white-box testing of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+All requests made to external services should be analyzed if any sensitive information is embedded into them.
+* Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
+* When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 
 #### Remediation
 
--- TODO [Add content on remediation of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+All data that is sent to 3rd Party services should be anonymized, so no PII data is available. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
+`AndroidManifest.xml` should only contain the permissions that are absolutely needed to work properly and as intended.
 
 #### References
 
--- TODO [Add references for "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+[05773baa]: Fix ME
+
+-- TODO [Add content on References of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+
+##### OWASP MASVS
+
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
+
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
