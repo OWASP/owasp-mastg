@@ -41,6 +41,7 @@ sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
 Signed with release certificate:
 
+```
 $ jarsigner -verify -verbose -certs example-release.apk 
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
