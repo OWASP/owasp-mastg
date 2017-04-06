@@ -4,23 +4,13 @@
 
 #### Overview
 
-App Signing is the process of attaching a public-key certificate to the APK in order to identifiy/verify its owner who hold the corresponding private-key.
+Android requires that all APKs be digitally signed with a certificate before they can be installed. The digital signature is required by the Android system before installing/running an application, and it's also used to verify the identity of the owner for future updates of the application. This process can prevents an app from being tampered with, or modified to include malicious code.
 
-The digital signature is required by the Android system before installing/running an application, and it's also used to verify the identity of the owner for future updates of the application. This process can prevent an app from being trojanized with malicious code.
+When an is signed APK, a public-key certificate is attached to the APK. This certificate uniquely associates the APK to the developer and their corresponding private key. When building an app in debug mode, the Android SDK signs the app with a debug key specifically created for debugging purposes. An app signed with a debug key is not be meant for distribution and won't be accepted in most app stores, including the Google Play Store. To prepare the app for final release, the app must be signed with a release key belonging to the developer.
 
-This test case aims to verify that the app uses a strong passwords for the keystore and private key, and the configuration files doesn't leack the signing information.
+When testing the final release build of an app, you should verify that the APK has been signed with a valid certificate. Note that Android expects any updates to the app to be signed with the same certificate, so a validity period of 25 years or more is recommended. Apps published on Google Play must be signed with a certificate that is valid at least until October 22th, 2033.
 
 #### White-box Testing
-
-Analyze the source code in order review the signing information using the following keywords:
-* storePassword
-* keyPassword
-* keyAlias
-* storeFile
-
-The test fails, if the application:
-* leaks the keystore/key password or
-* uses a weak password for the keystore or private key.
 
 
 #### Black-box Testing
