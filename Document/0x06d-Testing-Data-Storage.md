@@ -213,7 +213,7 @@ This behavior is achieved by means of UITextInputTraits protocol, which is adopt
 * `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
 * `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default. 
 
-#### Black-box Testing
+#### Dynamic Analysis 
 
 1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
@@ -224,7 +224,7 @@ This behavior is achieved by means of UITextInputTraits protocol, which is adopt
 
 4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
-#### White-box Testing
+####  Static Analysis
 
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
@@ -249,6 +249,16 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 * [UIText​Input​Traits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits)
 
+##### OWASP MASVS
+
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE-524: Information Exposure Through Caching
 
 ### Testing for Sensitive Data in the Clipboard
 
