@@ -3,7 +3,7 @@
 ### Testing Local Data Storage 
 
 #### Overview
-lol
+
 Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways. The following table shows mechanisms that are available on the iOS platform, that should usually be not considered to store sentive data.
 
 * CoreData/SQLite Databases
