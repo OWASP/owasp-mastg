@@ -151,45 +151,31 @@ Set the <code>android:debuggable</code> to false, or simply leave omit it from t
 
 -- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
-#### White-box Testing
+For native binaries, use a standard tool like nm or objdump to inspect the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unneeded dynamic symbols is also recommended.
 
--- TODO [Add content on white-box testing of "Testing for Debugging Symbols"] --
+#### Static Analysis
 
-#### Black-box Testing
+Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. 
 
-Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
+To display debug symbols:
 
-~~~~bash
-$ readelf.py  -p .dynstr libfoo.so
+```bash
+export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
+```
 
-String dump of section '.dynstr':
-  [     1]  strncmp
-  [     9]  LIBC
-  [     e]  libc.so
-  [    16]  libfoo.so
-  [    20]  __cxa_finalize
-  [    2f]  __cxa_atexit
-  [    3c]  _Z11monitor_pidPv
-  [    4e]  waitpid
-  [    56]  _exit
-  [    5c]  __aeabi_unwind_cpp_pr1
-  [    73]  _Z10anti_debugv
-  [    83]  fork
-  [    88]  pthread_create
-  [    97]  getppid
-  [    9f]  ptrace
-  [    a6]  __stack_chk_fail
-  [    b7]  __stack_chk_guard
-  [    c9]  __aeabi_unwind_cpp_pr0
-  [    e0]  _Z7sub_0_0v
-  [    ec]  _Z7sub_0_1v
-  [    f8]  _Z7sub_0_2v
-  [   104]  _Z7sub_0_3v
-  [   110]  _Z7sub_0_4v
-  [   11c]  _Z7sub_1_0v
-~~~~
+```bash
+$ $NM -a libfoo.so 
+/tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
+```
+To display dynamic symbols:
 
-Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
+```bash
+$ $NM -D libfoo.so 
+```
+
+Alternatively, open the file in your favorite disassembler and check the symbol tables manually. 
+
+#### Dynamic Analysis
 
 #### Remediation
 
