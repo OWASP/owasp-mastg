@@ -387,8 +387,6 @@ As a simple example, one could prevent debugging of a process by forking a child
 void fork_and_attach()
 {
   int pid = fork();
-  int status;
-  int res;
 
   if (pid == 0)
     {
@@ -405,7 +403,77 @@ void fork_and_attach()
 }
 ```
 
-With the child attached, any further attempts to attach to the parent would fail. This is however easily bypassed by  killing the child and "freeing" the parent, or intercepting / preventing the calls to <code>fork</code> or <code>ptrace</code>. In practice, you'll therefore usually find more elaborate schemes that combine various 
+With the child attached, any further attempts to attach to the parent would fail. This is however easily bypassed by killing the child and "freeing" the parent from being traced. In practice, you'll therefore usually find more elaborate schemes that involve multiple processes and threads, as well as some form of monitoring to impede tampering. 
+
+-- TODO [A slighly better version] --
+
+```c
+#include <jni.h>
+#include <string>
+#include <unistd.h>
+#include <sys/ptrace.h>
+#include <sys/wait.h>
+
+static int child_pid;
+
+void *monitor_pid(void *) {
+
+    int status;
+
+    waitpid(child_pid, &status, 0);
+
+    /* Child status should never change. */
+
+    _exit(0); // Commit seppuku
+
+}
+
+void anti_debug() {
+
+    child_pid = fork();
+
+    if (child_pid == 0)
+    {
+        int ppid = getppid();
+        int status;
+
+        if (ptrace(PTRACE_ATTACH, ppid, NULL, NULL) == 0)
+        {
+            waitpid(ppid, &status, 0);
+
+            ptrace(PTRACE_CONT, ppid, NULL, NULL);
+
+            while (waitpid(ppid, &status, 0)) {
+
+                if (WIFSTOPPED(status)) {
+                    ptrace(PTRACE_CONT, ppid, NULL, NULL);
+                } else {
+                    // Process has exited
+                    _exit(0);
+                }
+            }
+        }
+
+    } else {
+        pthread_t t;
+
+        /* Start the monitoring thread */
+
+        pthread_create(&t, NULL, monitor_pid, (void *)NULL);
+    }
+}
+
+
+extern "C"
+
+JNIEXPORT void JNICALL
+Java_sg_vantagepoint_antidebug_MainActivity_antidebug(
+        JNIEnv *env,
+        jobject /* this */) {
+
+        anti_debug();
+}
+```
 
 **Breakpoint detection**
 
