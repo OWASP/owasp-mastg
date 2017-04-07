@@ -28,7 +28,7 @@ This app holds a secret inside. May include traces of native code.
 ### Installation
 
 ```
-$ adb install Uncrackable-Level2.apk
+$ adb install UnCrackable-Level2.apk
 ```
 
 ### Solutions
