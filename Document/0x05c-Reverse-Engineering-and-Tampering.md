@@ -274,7 +274,21 @@ $ adb install HelloWorld-JNI.apk
 If you followed the instructions at the start of this chapter, you should already have the Android NDK. The NDK ships with prebuilt versions of gdbserver for various architectures. Copy gdbserver to your device:
 
 ```bash
-$ adb push prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
+$ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
+```
+
+```bash
+$ adb shell
+$ su
+# ps | grep HelloWorld
+# ./gdbserver --attach localhost:1234 26806
+```
+
+```bash
+$ $NDK/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-gdb
+(gdb) target remote :1235
+Remote debugging using :1235
+0xb6e0f124 in ?? ()
 ```
 
 -- TODO [Write introduction to debugging native code (HelloWorld-JNI)] --
