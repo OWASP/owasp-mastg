@@ -159,19 +159,51 @@ Set the <code>android:debuggable</code> to false, or simply leave omit it from t
 
 Symbols  are usually stripped during the build process, so you need the compiled bytecode and libraries to verify whether the any unnecessary metadata has been discarded. For native binaries, use a standard tool like nm or objdump to inspect the symbol table. For example:
 
-~~~~
-berndt@osboxes:~/ $ objdump -t my_library.so
-my_library.so:     file format elf32-little
+~~~~bash
+$ readelf.py  -p .dynstr libfoo.so
 
-SYMBOL TABLE:
-no symbols
+String dump of section '.dynstr':
+  [     1]  strncmp
+  [     9]  LIBC
+  [     e]  libc.so
+  [    16]  libfoo.so
+  [    20]  __cxa_finalize
+  [    2f]  __cxa_atexit
+  [    3c]  _Z11monitor_pidPv
+  [    4e]  waitpid
+  [    56]  _exit
+  [    5c]  __aeabi_unwind_cpp_pr1
+  [    73]  _Z10anti_debugv
+  [    83]  fork
+  [    88]  pthread_create
+  [    97]  getppid
+  [    9f]  ptrace
+  [    a6]  __stack_chk_fail
+  [    b7]  __stack_chk_guard
+  [    c9]  __aeabi_unwind_cpp_pr0
+  [    e0]  _Z7sub_0_0v
+  [    ec]  _Z7sub_0_1v
+  [    f8]  _Z7sub_0_2v
+  [   104]  _Z7sub_0_3v
+  [   110]  _Z7sub_0_4v
+  [   11c]  _Z7sub_1_0v
 ~~~~
 
 Alternatively, open the file in your favorite disassembler and look for debugging symbols. For native libraries, it should be checked that the names of exports don’t give away the location of sensitive functions.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Symbols"] --
+Dynamic symbols can be stripped using the <code>visibility</code> compiler flag. Adding this flag causes gcc to discard the function names while still preserving the names of functions declared as <code>JNIEXPORT</code>.
+
+Add the following to build.gradle:
+
+```
+        externalNativeBuild {
+            cmake {
+                cppFlags "-fvisibility=hidden"
+            }
+        }
+```
 
 #### References
 
