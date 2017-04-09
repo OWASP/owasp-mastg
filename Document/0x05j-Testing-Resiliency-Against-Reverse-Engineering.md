@@ -379,7 +379,7 @@ The following implementation is taken from Tim Strazzere's Anti-Emulator project
 
 **Ptrace variations***
 
-On Linux, the <code>ptrace()</code> system call is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers [5]. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time
+On Linux, the <code>ptrace()</code> system call is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers [5]. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
 
 As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines: 
 
@@ -403,9 +403,35 @@ void fork_and_attach()
 }
 ```
 
-With the child attached, any further attempts to attach to the parent would fail. This is however easily bypassed by killing the child and "freeing" the parent from being traced. In practice, you'll therefore usually find more elaborate schemes that involve multiple processes and threads, as well as some form of monitoring to impede tampering. 
+With the child attached, any further attempts to attach to the parent would fail. We can verify this by compiling the code into a JNI function and packing it into an app we run on the device.
 
--- TODO [A slighly better version] --
+```bash
+root@android:/ # ps | grep -i anti
+u0_a151   18190 201   1535844 54908 ffffffff b6e0f124 S sg.vantagepoint.antidebug
+u0_a151   18224 18190 1495180 35824 c019a3ac b6e0ee5c S sg.vantagepoint.antidebug
+```
+
+Attempting to attach to the parent process with gdbserver now fails with an error.
+
+```bash
+root@android:/ # ./gdbserver --attach localhost:12345 18190
+warning: process 18190 is already traced by process 18224
+Cannot attach to lwp 18190: Operation not permitted (1)
+Exiting
+```
+
+This is however easily bypassed by killing the child and "freeing" the parent from being traced. In practice, you'll therefore usually find more elaborate schemes that involve multiple processes and threads, as well as some form of monitoring to impede tampering. Common methods include:
+
+- Forking multiple processes that trace one another;
+- Keeping track of running processes to make sure the children stay alive;
+- Monitoring values in the /proc filesystem, such as TracerPID in /proc/pid/status.
+
+Let's look at a simple improvement we can make to the above method. After the initial <code>fork()</code>, we launch an extra thread in the parent that continually monitors the status of the child. Depending on whether the app has been built in debug or release mode (according to the <code>android:debuggable</code> flag in the Manifest), the child process is expected to behave in one of the following ways:
+
+1. In release mode, the call to ptrace fails and the child crashes immediately with a segmentation fault (exit code 11).
+2. In debug mode, the call to ptrace works and the child is expected to run indefinitely. As a consequence, a call to waitpid(child_pid) should never return - if it does, something is fishy and we kill the whole process group.
+
+The complete code implementing this as a JNI function is below:
 
 ```c
 #include <jni.h>
@@ -462,8 +488,6 @@ void anti_debug() {
         pthread_create(&t, NULL, monitor_pid, (void *)NULL);
     }
 }
-
-
 extern "C"
 
 JNIEXPORT void JNICALL
@@ -474,6 +498,27 @@ Java_sg_vantagepoint_antidebug_MainActivity_antidebug(
         anti_debug();
 }
 ```
+
+Again, we pack this into an Android app to see if it works. Just as before, two processes show up when running the debug build of the app.
+
+```bash
+root@android:/ # ps | grep -i anti-debug
+u0_a152   20267 201   1552508 56796 ffffffff b6e0f124 S sg.vantagepoint.anti-debug
+u0_a152   20301 20267 1495192 33980 c019a3ac b6e0ee5c S sg.vantagepoint.anti-debug
+```
+
+However, if we now terminate the child process, the parent exits as well:
+
+```bash
+root@android:/ # kill -9 20301
+130|root@hammerhead:/ # cd /data/local/tmp                                     
+root@android:/ # ./gdbserver --attach localhost:12345 20267   
+gdbserver: unable to open /proc file '/proc/20267/status'
+Cannot attach to lwp 20267: No such file or directory (2)
+Exiting
+```
+
+To bypass this, it's necessary to modify the behavior of the app slightly (the easiest is to patch the call to _exit with NOPs, or hooking the function _exit in libc.so). At this point, we have entered the proverbial "arms race": It is always possible to implement more inticate forms of this defense, and there's always some ways to bypass it.
 
 **Breakpoint detection**
 
