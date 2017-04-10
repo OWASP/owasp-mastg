@@ -701,7 +701,11 @@ Besides loading scripts via `frida CLI`, Frida also provides Python, C, NodeJS, 
 
 Frida gives you the possibility to solve the OWASP UnCrackable Crackme Level 1 easily. We have already seen that we can hook method calls with Frida easily.
 
-When you start the App on an emulator or an rooted device, you will notice that the app presents a dialog box and exits as soon as you press "Ok" because it detected root. Let us see how we can prevent this.
+When you start the App on an emulator or an rooted device, you will notice that the app presents a dialog box and exits as soon as you press "Ok" because it detected root. 
+
+![Crackme Root Detected Dialog](Images/Chapters/0x05c/crackme-frida-1.jpg)
+
+Let us see how we can prevent this.
 The decompiled main method (using CFR decompiler) looks like this:
 ```
 package sg.vantagepoint.uncrackable1;
@@ -756,10 +760,9 @@ extends Activity {
 ```
 
 Notice the `Root detetected` message in the `onCreate` method and the various methods called in the the if-statement before which perform the actual checks if the app is running in a rooted environment. 
-Also note the `This is unacceptable...` message from the first method of the class `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback that gets set in the `setButton` method call in the `a` method.
-Using Frida, we can either hook the function that perform the root check and make them return "false" to prevent the app from detecting root. Or we just prevent the app from exiting by hooking the callback that gets set for the button of the alert dialogue.
+Also note the `This is unacceptable...` message from the first method of the class `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback set in the `setButton` method call which is responsible for closing the dialog after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
 
-The onClickListener implementation doesn't to much:
+The onClickListener implementation for the dialog button doesn't to much:
 
 ```
 package sg.vantagepoint.uncrackable1;
@@ -780,7 +783,7 @@ class b implements android.content.DialogInterface$OnClickListener {
 }
 ```
 
-Using Frida we can hook the callback and prevent the app from exiting when pressing "OK":
+It just exits the app. We use Frida to prevent the app from exiting after root detection:
 
 ```
 setImmediate(function() { //prevent timeout
@@ -798,7 +801,7 @@ setImmediate(function() { //prevent timeout
 })
 ```
 
-We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Then the actual magic follows: We retreive a wrapper for the class the implements the OnClickListener interface and overwrite its onClick method. In our version, this function just writes some console output. Unlike the original, it does not exit the app. Since the original onClickHandler is replaced by our Frida injected function and never gets called, the app should not exit anymore when we click the OK button of the dialog.
+We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Afterwards we retreive a wrapper for the class that implements the OnClickListener interface and overwrite its onClick method. Unlike the original, our new version of this method just writes some console output and does not exit the app. If we inject our version of this method via Frida, the app should not exit anymore when we click the OK button of the dialog.
 
 Save the above script as `uncrackable1.js` and do:
 
@@ -806,7 +809,7 @@ Save the above script as `uncrackable1.js` and do:
 frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 ```
 
-After you see the `onClickHandler modified` message, you can safely press the OK button in the app. The app should not exit anymore and we can now try to input a "secret string".
+After you see the `onClickHandler modified` message, you can safely press the OK button in the app. The app does not exit anymore. We can now try to input a "secret string". But where do we get it?
 
 Looking at the class `sg.vantagepoint.uncrackable1.a` you can see the encrypted string to which our input gets compared:
 
@@ -843,9 +846,9 @@ public class a {
 }
 ```
 
-Notice the string.equals comparison at the end of the a method and the creation of the string arrby2 in the try block above. arrby2 is the return value of the function sg.vantagepoint.a.a.a. The string.equals comparison compares our input to arrby2. So what we are after is the return value of sg.vantagepoint.a.a.a.
+Notice the string.equals comparison at the end of the a method and the creation of the string `arrby2` in the `try` block above. `arrby2` is the return value of the function `sg.vantagepoint.a.a.a`. The `string.equals` comparison compares our input to `arrby2`. So what we are after is the return value of `sg.vantagepoint.a.a.a.`
 
-Instead of reversing the decryption-routines to figure out the secret key, we can simply keep all the logic in the app and hook the sg.vantagepoint.a.a.a function to catch its return value.
+Instead of reversing the decryption routines to reconstruct the secret key, we can simply ignore all the decryption logic in the app and hook the `sg.vantagepoint.a.a.a` function to catch its return value.
 Here is the complete script that prevents the exiting on root and intercepts the decryption of the secret string:
 
 ```
@@ -880,7 +883,7 @@ setImmediate(function() {
 });
 ```
 
-Running it in Frida and entering a secret string in the app, we get:
+After running the script in Frida and seeing the `[*] sg.vantagepoint.a.a.a modified` message in the console, enter a random value for "secret string" and press verify:
 
 ```
 michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
@@ -900,8 +903,7 @@ michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepo
 [*] onClick called.
 [*] Decrypted: I want to believe
 ```
-
-So without having to dive too deep into the application code, we were able to extract the secret string.
+The hooked function outputted our decrypted string. Without having to dive too deep into the application code and its decryption routines, we were able to extract the secret string easily.
 
 
 ### Binary Analysis Frameworks
