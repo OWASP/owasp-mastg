@@ -703,7 +703,7 @@ Frida gives you the possibility to solve the OWASP UnCrackable Crackme Level 1 e
 
 When you start the App on an emulator or an rooted device, you will notice that the app presents a dialog box and exits as soon as you press "Ok" because it detected root. 
 
-![Crackme Root Detected Dialog](Images/Chapters/0x05c/crackme-frida-1.jpg)
+![Crackme Root Detected Dialog](Images/Chapters/0x05c/crackme-frida-1.png)
 
 Let us see how we can prevent this.
 The decompiled main method (using CFR decompiler) looks like this:
