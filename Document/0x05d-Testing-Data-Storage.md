@@ -532,7 +532,7 @@ Once you identify a list of IPC mechanisms, review the source code in order to d
 
 * Vulnerable ContentProvider
 
-An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer to any input validation test in the project] --**)
+An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer to any input validation test in the project] --
 
 * `AndroidManifest.xml`
 
@@ -542,6 +542,7 @@ An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer 
           android:exported="true">
 </provider>
 ```
+
 The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information will be leaked:
 
 ```java
@@ -655,60 +656,33 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 #### Overview
 
-Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. For example, capturing a screenshot of a banking application running on the device may reveal information about the user account, his credit, transactions and so on.
+In many apps users need to key in different kind of data to for example register or execute payment and data is also shown to the user. Sensitive data could be exposed if the app is not masking it properly.
 
-Masking of sensitive data when presented within an activity of an App should also be enforced to prevent disclosure and mitigate for example shoulder surfing.
+Masking of sensitive data within an activity of an app should be enforced to prevent disclosure and mitigate for example shoulder surfing.
 
 #### Static Analysis
 
-To verify if the application may expose sensitive information via the user interface or screenshot, detect if the `[FLAG_SECURE][ee87d351]` options is set in the activity that needs to be protected.
-
-You should be able to find something similar to the following line.
-
-```Java
-LayoutParams.FLAG_SECURE
-```
-If not, the application is probably vulnerable to screen capturing.
+To verify if the application is masking sensitive information, check for the following:
 
 -- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
 
 #### Dynamic Analysis
 
-To analyse if the application leaks any sensitive information, run the application on a device and try to acquire a screenshot of the activity or activities you want to test.
+To analyze if the application leaks any sensitive information to the user interface, run the application and identify parts of the app that either shows information or asks for information to be keyed in.
 
-Steps to reproduce:
-* Install the application on an actual device or emulator
- * `adb shell install <apk_name>`
-* Run the application
-* Take a screenshot and save in the current folder
- * `adb shell screencap -p /sdcard/screencap.png && adb pull /sdcard/screencap.png`
-
-If you can see the application screenshot, the application is vulnerable; otherwise you will obtain a file of 0 bytes.
-
-![OMTG_DATAST_008_FLAG_SECURE](Images/Chapters/0x05d/3.png)
-
-Text fields should mask the input if sensitive information need to be keyed in.
+If the information is masked, e.g. by replacing characters in the text field through asterisks the app is not leaking data to the user interface.
 
 #### Remediation
 
-In order to prevent a user or malicious applications to capture the screen of a specific activity, add the following code in the `my_app.java` activity file that you want to protect, and then call `setContentView`:
+In order to prevent leaking of data, sensitive information should be masked in the user interface. Either if they are shown to the user or if the user needs to enter them.
 
-```Java
-getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
-
-setContentView(R.layout.activity_main);
-```
-
-Note that this would automatically prevent the user from taking a manual screenshot. But even if the activity is tagged with `FLAG_SECURE`, this does not apply to any pop-up windows such as Dialogs, Toasts, etc.
+-- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
 
 #### References
 
-- [FLAG_SECURE](ee87d351)
-
 ##### OWASP MASVS
 
-- V2.7: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface or leaks to screenshots."
+- V2.7: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface."
 
 ##### OWASP Mobile Top 10
 * M4 - Unintended Data Leakage
@@ -838,7 +812,10 @@ Files can also be excluded from Auto Backup, in case they should not be shared w
 
 #### Overview
 
-Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application, as the screenshot containing sensitive information (e.g. a screenshot of an email or corporate documents) is written to local storage, from which it may be recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application. Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. This information is written to local storage, from which it may be recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+
+For example, capturing a screenshot of a banking application running on the device may reveal information about the user account, his credit, transactions and so on.
+
 
 #### Static Analysis
 
@@ -849,7 +826,8 @@ To verify if the application may expose sensitive information via task switcher,
 ```Java
 LayoutParams.FLAG_SECURE
 ```
-If not, the application is probably vulnerable to screen capturing.
+
+If not, the application is vulnerable to screen capturing.
 
 #### Dynamic Analysis
 
