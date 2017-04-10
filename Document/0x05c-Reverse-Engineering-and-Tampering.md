@@ -699,14 +699,15 @@ Besides loading scripts via `frida CLI`, Frida also provides Python, C, NodeJS, 
 
 ##### Solving the OWASP Uncrackable Crackme Level1 with Frida
 
-Frida gives you the possibility to solve the OWASP UnCrackable Crackme Level 1 easily. We have already seen that we can hook method calls with Frida easily.
+Frida gives you the possibility to solve the OWASP UnCrackable Crackme Level 1 easily. We have already seen that we can hook method calls with Frida above.
 
-When you start the App on an emulator or an rooted device, you will notice that the app presents a dialog box and exits as soon as you press "Ok" because it detected root. 
+When you start the App on an emulator or a rooted device, you find that the app presents a dialog box and exits as soon as you press "Ok" because it detected root: 
 
 ![Crackme Root Detected Dialog](Images/Chapters/0x05c/crackme-frida-1.png)
 
 Let us see how we can prevent this.
 The decompiled main method (using CFR decompiler) looks like this:
+
 ```
 package sg.vantagepoint.uncrackable1;
 
@@ -759,8 +760,7 @@ extends Activity {
 }
 ```
 
-Notice the `Root detetected` message in the `onCreate` method and the various methods called in the the if-statement before which perform the actual checks if the app is running in a rooted environment. 
-Also note the `This is unacceptable...` message from the first method of the class `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback set in the `setButton` method call which is responsible for closing the dialog after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
+Notice the `Root detetected` message in the `onCreate` method and the various methods called in the the `if`-statement before which perform the actual root checks. Also note the `This is unacceptable...` message from the first method of the class, `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback set in the `setButton` method call which is responsible for closing the application via `System.exit(0)` after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
 
 The onClickListener implementation for the dialog button doesn't to much:
 
@@ -783,7 +783,7 @@ class b implements android.content.DialogInterface$OnClickListener {
 }
 ```
 
-It just exits the app. We use Frida to prevent the app from exiting after root detection:
+It just exits the app. Now we intercept it using Frida to prevent the app from exiting after root detection:
 
 ```
 setImmediate(function() { //prevent timeout
@@ -801,15 +801,17 @@ setImmediate(function() { //prevent timeout
 })
 ```
 
-We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Afterwards we retreive a wrapper for the class that implements the OnClickListener interface and overwrite its onClick method. Unlike the original, our new version of this method just writes some console output and does not exit the app. If we inject our version of this method via Frida, the app should not exit anymore when we click the OK button of the dialog.
+We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Afterwards we retreive a wrapper for the class that implements the `OnClickListener` interface and overwrite its `onClick` method. Unlike the original, our new version of `onClick` just writes some console output and *does not exit the app*. If we inject our version of this method via Frida, the app should not exit anymore when we click the `OK` button of the dialog.
 
-Save the above script as `uncrackable1.js` and do:
+Save the above script as `uncrackable1.js` and load it:
 
 ```
 frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 ```
 
-After you see the `onClickHandler modified` message, you can safely press the OK button in the app. The app does not exit anymore. We can now try to input a "secret string". But where do we get it?
+After you see the `onClickHandler modified` message, you can safely press the OK button in the app. The app does not exit anymore. 
+
+We can now try to input a "secret string". But where do we get it?
 
 Looking at the class `sg.vantagepoint.uncrackable1.a` you can see the encrypted string to which our input gets compared:
 
@@ -883,7 +885,7 @@ setImmediate(function() {
 });
 ```
 
-After running the script in Frida and seeing the `[*] sg.vantagepoint.a.a.a modified` message in the console, enter a random value for "secret string" and press verify:
+After running the script in Frida and seeing the `[*] sg.vantagepoint.a.a.a modified` message in the console, enter a random value for "secret string" and press verify. You should get an output similar to this:
 
 ```
 michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
@@ -903,7 +905,7 @@ michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepo
 [*] onClick called.
 [*] Decrypted: I want to believe
 ```
-The hooked function outputted our decrypted string. Without having to dive too deep into the application code and its decryption routines, we were able to extract the secret string easily.
+The hooked function outputted our decrypted string. Without having to dive too deep into the application code and its decryption routines, we were able to extract the secret string successfully.
 
 
 ### Binary Analysis Frameworks
