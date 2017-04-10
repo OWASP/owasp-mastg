@@ -760,7 +760,7 @@ extends Activity {
 }
 ```
 
-Notice the `Root detetected` message in the `onCreate` method and the various methods called in the the `if`-statement before which perform the actual root checks. Also note the `This is unacceptable...` message from the first method of the class, `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback set in the `setButton` method call which is responsible for closing the application via `System.exit(0)` after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
+Notice the `Root detected` message in the `onCreate` method and the various methods called in the the `if`-statement before which perform the actual root checks. Also note the `This is unacceptable...` message from the first method of the class, `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener` callback set in the `setButton` method call which is responsible for closing the application via `System.exit(0)` after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
 
 The onClickListener implementation for the dialog button doesn't to much:
 
@@ -1515,13 +1515,14 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 
 + Android SDK -
 + OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
-+ APKTool -
++ APKTool - https://ibotpeaches.github.io/Apktool/
 + JD - http://jd.benow.ca/
-+ Eclipse
++ Eclipse - https://eclipse.org/ide/
 + IntelliJ IDEA - https://www.jetbrains.com/idea/
-+ Smalidea -
-+ Radare2 -
-+ Angr -
++ Smalidea - https://github.com/JesusFreke/smali/wiki/smalidea
++ Radare2 - https://www.radare.org
++ Frida - https://www.frida.re
++ Angr - http://angr.io/
 + JEB -
 + IDA Pro -
 + DroidScope -
