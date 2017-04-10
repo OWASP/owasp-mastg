@@ -697,6 +697,213 @@ Java.perform(function () {
 
 Besides loading scripts via `frida CLI`, Frida also provides Python, C, NodeJS, Swift and various other bindings.
 
+##### Solving the OWASP Uncrackable Crackme Level1 with Frida
+
+Frida gives you the possibility to solve the OWASP UnCrackable Crackme Level 1 easily. We have already seen that we can hook method calls with Frida easily.
+
+When you start the App on an emulator or an rooted device, you will notice that the app presents a dialog box and exits as soon as you press "Ok" because it detected root. Let us see how we can prevent this.
+The decompiled main method (using CFR decompiler) looks like this:
+```
+package sg.vantagepoint.uncrackable1;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
+import android.widget.EditText;
+import sg.vantagepoint.uncrackable1.a;
+import sg.vantagepoint.uncrackable1.b;
+import sg.vantagepoint.uncrackable1.c;
+
+public class MainActivity
+extends Activity {
+    private void a(String string) {
+        AlertDialog alertDialog = new AlertDialog.Builder((Context)this).create();
+        alertDialog.setTitle((CharSequence)string);
+        alertDialog.setMessage((CharSequence)"This in unacceptable. The app is now going to exit.");
+        alertDialog.setButton(-3, (CharSequence)"OK", (DialogInterface.OnClickListener)new b(this));
+        alertDialog.show();
+    }
+
+    protected void onCreate(Bundle bundle) {
+        if (sg.vantagepoint.a.c.a() || sg.vantagepoint.a.c.b() || sg.vantagepoint.a.c.c()) {
+            this.a("Root detected!"); //This is the message we are looking for
+        }
+        if (sg.vantagepoint.a.b.a((Context)this.getApplicationContext())) {
+            this.a("App is debuggable!");
+        }
+        super.onCreate(bundle);
+        this.setContentView(2130903040);
+    }
+
+    public void verify(View object) {
+        object = ((EditText)this.findViewById(2131230720)).getText().toString();
+        AlertDialog alertDialog = new AlertDialog.Builder((Context)this).create();
+        if (a.a((String)object)) {
+            alertDialog.setTitle((CharSequence)"Success!");
+            alertDialog.setMessage((CharSequence)"This is the correct secret.");
+        } else {
+            alertDialog.setTitle((CharSequence)"Nope...");
+            alertDialog.setMessage((CharSequence)"That's not it. Try again.");
+        }
+        alertDialog.setButton(-3, (CharSequence)"OK", (DialogInterface.OnClickListener)new c(this));
+        alertDialog.show();
+    }
+}
+```
+
+Notice the `Root detetected` message in the `onCreate` method and the various methods called in the the if-statement before which perform the actual checks if the app is running in a rooted environment. 
+Also note the `This is unacceptable...` message from the first method of the class `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener`callback that gets set in the `setButton` method call in the `a` method.
+Using Frida, we can either hook the function that perform the root check and make them return "false" to prevent the app from detecting root. Or we just prevent the app from exiting by hooking the callback that gets set for the button of the alert dialogue.
+
+The onClickListener implementation doesn't to much:
+
+```
+package sg.vantagepoint.uncrackable1;
+
+class b implements android.content.DialogInterface$OnClickListener {
+    final sg.vantagepoint.uncrackable1.MainActivity a;
+    
+    b(sg.vantagepoint.uncrackable1.MainActivity a0)
+    {
+        this.a = a0;
+        super();
+    }
+    
+    public void onClick(android.content.DialogInterface a0, int i)
+    {
+        System.exit(0);
+    }
+}
+```
+
+Using Frida we can hook the callback and prevent the app from exiting when pressing "OK":
+
+```
+setImmediate(function() { //prevent timeout
+    console.log("[*] Starting script");
+
+    Java.perform(function() {
+
+      bClass = Java.use("sg.vantagepoint.uncrackable1.b");
+      bClass.onClick.implementation = function(v) {
+         console.log("[*] onClick called");
+      }
+      console.log("[*] onClick handler modified")
+
+    })
+})
+```
+
+We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Then the actual magic follows: We retreive a wrapper for the class the implements the OnClickListener interface and overwrite its onClick method. In our version, this function just writes some console output. Unlike the original, it does not exit the app. Since the original onClickHandler is replaced by our Frida injected function and never gets called, the app should not exit anymore when we click the OK button of the dialog.
+
+Save the above script as `uncrackable1.js` and do:
+
+```
+frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+```
+
+After you see the `onClickHandler modified` message, you can safely press the OK button in the app. The app should not exit anymore and we can now try to input a "secret string".
+
+Looking at the class `sg.vantagepoint.uncrackable1.a` you can see the encrypted string to which our input gets compared:
+
+```
+package sg.vantagepoint.uncrackable1;
+
+import android.util.Base64;
+import android.util.Log;
+
+public class a {
+    public static boolean a(String string) {
+        byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
+        byte[] arrby2 = new byte[]{};
+        try {
+            arrby2 = arrby = sg.vantagepoint.a.a.a((byte[])a.b((String)"8d127684cbc37c17616d806cf50473cc"), (byte[])arrby);
+        }
+        catch (Exception var2_2) {
+            Log.d((String)"CodeCheck", (String)("AES error:" + var2_2.getMessage()));
+        }
+        if (!string.equals(new String(arrby2))) return false;
+        return true;
+    }
+
+    public static byte[] b(String string) {
+        int n = string.length();
+        byte[] arrby = new byte[n / 2];
+        int n2 = 0;
+        while (n2 < n) {
+            arrby[n2 / 2] = (byte)((Character.digit(string.charAt(n2), 16) << 4) + Character.digit(string.charAt(n2 + 1), 16));
+            n2 += 2;
+        }
+        return arrby;
+    }
+}
+```
+
+Notice the string.equals comparison at the end of the a method and the creation of the string arrby2 in the try block above. arrby2 is the return value of the function sg.vantagepoint.a.a.a. The string.equals comparison compares our input to arrby2. So what we are after is the return value of sg.vantagepoint.a.a.a.
+
+Instead of reversing the decryption-routines to figure out the secret key, we can simply keep all the logic in the app and hook the sg.vantagepoint.a.a.a function to catch its return value.
+Here is the complete script that prevents the exiting on root and intercepts the decryption of the secret string:
+
+```
+setImmediate(function() {
+    console.log("[*] Starting script");
+
+    Java.perform(function() {
+        
+        bClass = Java.use("sg.vantagepoint.uncrackable1.b");
+        bClass.onClick.implementation = function(v) {
+         console.log("[*] onClick called.");
+        }
+        console.log("[*] onClick handler modified")
+
+
+        aaClass = Java.use("sg.vantagepoint.a.a");
+        aaClass.a.implementation = function(arg1, arg2) {
+            retval = this.a(arg1, arg2);
+            password = ''
+            for(i = 0; i < retval.length; i++) {
+               password += String.fromCharCode(retval[i]);
+            }
+
+            console.log("[*] Decrypted: " + password);
+            return retval;
+        }
+        console.log("[*] sg.vantagepoint.a.a.a modified");
+
+
+    });
+
+});
+```
+
+Running it in Frida and entering a secret string in the app, we get:
+
+```
+michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+     ____
+    / _  |   Frida 9.1.16 - A world-class dynamic instrumentation framework
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at http://www.frida.re/docs/home/
+                                                                                
+[*] Starting script
+[USB::Android Emulator 5554::sg.vantagepoint.uncrackable1]-> [*] onClick handler modified
+[*] sg.vantagepoint.a.a.a modified
+[*] onClick called.
+[*] Decrypted: I want to believe
+```
+
+So without having to dive too deep into the application code, we were able to extract the secret string.
+
+
 ### Binary Analysis Frameworks
 
 Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
