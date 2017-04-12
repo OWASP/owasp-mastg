@@ -211,6 +211,7 @@ Your main focus while performing static analysis would be:
 
 ### Dynamic Analysis
 
+-- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
 
 #### Monitoring Console Logs
 
@@ -228,17 +229,9 @@ To save the console output to a text file, click the circle with a downward-poin
 
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
 
-#### On Jailbroken Devices
+#### Dynamic Analysis On Jailbroken Devices
 
--- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
-
-
-
-
-
-
-
-
+Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
 
 ##### Copying Data Files
 
@@ -254,7 +247,7 @@ To save the console output to a text file, click the circle with a downward-poin
 
 
 
-#### On Non-Jailbroken Devices
+#### Dynamic Analysis on Non-Jailbroken Devices
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
 
