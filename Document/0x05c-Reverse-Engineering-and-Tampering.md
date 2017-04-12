@@ -92,8 +92,8 @@ For this example, let's pick CFR as our decompiler of choice. CFR is under activ
 For convenience, we have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [14]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
 
 ```
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx.tgz
-$ tar xzf apkx.tgz 
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx-0.9.tgz
+$ tar xzf apkx-0.9.tgz 
 $ chmod +x apkx.py
 $ ./apkx.py UnCrackable-Level1.apk 
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
