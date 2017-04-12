@@ -59,8 +59,9 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_
 $ adb install UnCrackable-Level1.apk
 ```
 
-![Crackme Main Screen](Images/Chapters/0x05c/crackme-1.jpg)
-![Wrong code](Images/Chapters/0x05c/crackme-2.jpg)
+<!-- <img src="Images/Chapters/0x05c/crackme-1.jpg" align="left" width="45%"/> -->
+<img src="Images/Chapters/0x05c/crackme-2.jpg" width="350px"/>
+
 
 Seems like we're expected to find some kind of secret code!
 
@@ -116,11 +117,11 @@ In the next dialog, pick any APK - we don't want to actually compile the project
 
 Once the project is created, expand the "1: Project" view on the left and navigate to the app/src/main/java folder. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-![Delete the default Java package](Images/Chapters/0x05c/delete_package.jpg)
+<img src="Images/Chapters/0x05c/delete_package.jpg" width="400px"/>
 
 Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the "sg" directory into the now empty "Java" folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-![Final project structure](Images/Chapters/0x05c/final_structure.jpg)
+<img src="Images/Chapters/0x05c/final_structure.jpg" width="400px"/>
 
 As soon as IntelliJ is done indexing the code, you can browse it just like any normal Java project. Note that many of the decompiled packages, classes and methods have weird one-letter names... this is because the bytecode has been "minified" with ProGuard at build time. This is a a basic type of obfuscation that makes the bytecode a bit more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache - however, when analyzing a more complex app, it can get quite annoying. 
 
@@ -180,7 +181,7 @@ Disassemblers with support for ELF/ARM binaries (i.e. all disassemblers in exist
 
 Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device. The app is not excatly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
 
-![Delete the default Java package](Images/Chapters/0x05c/helloworld.jpg)
+<img src="Images/Chapters/0x05c/helloworld.jpg" width="350px" />
 
 Decompile the APK with apkx.py. This should extract the source into the <code>HelloWorld/src</code> directory. 
 
@@ -219,7 +220,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of this directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
 
-![Supported architectures](Images/Chapters/0x05c/archs.jpg)
+<img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
 The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build. We'll be using the <code>armeabi-v7a</code> version in the following examples, located in <code>lib/armeabi-v7a/libnative-lib.so</code>.
 
@@ -1304,7 +1305,7 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the “kernel version” field.
 
-![Disassembly of function main.](Images/Chapters/0x05c/custom_kernel.jpg)
+<img src="Images/Chapters/0x05c/custom_kernel.jpg" width="350px" />
 
 #### System Call Hooking Using Kernel Modules
 
