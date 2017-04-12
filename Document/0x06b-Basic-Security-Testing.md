@@ -211,9 +211,48 @@ Your main focus while performing static analysis would be:
 
 ### Dynamic Analysis
 
+
+#### Monitoring Console Logs
+
+Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the XCode "Devices" window as follows:
+
+1. Launch Xcode
+2. Connect your device to your host computer
+3. Choose Devices from the Window menu
+4. Click on your connected iOS device in the left section of the Devices window
+5. Reproduce the problem
+6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
+window to expose the console log contents
+
+To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
+
+![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
+
 #### On Jailbroken Devices
 
 -- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+
+
+
+
+
+
+
+
+
+##### Copying Data Files
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### On Non-Jailbroken Devices
 
