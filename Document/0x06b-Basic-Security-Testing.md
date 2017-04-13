@@ -36,7 +36,7 @@ Jailbreaking methods vary across iOS versions. Best choice is to check if a [pub
 **Important** caveat regarding jailbreaking iOS: contrary to Android, you **can't** downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
 
-### Preparing your first test environment
+### Preparing your test environment
 
 ![Cydia Store](Images/Chapters/0x06b/cydia.png "Cydia Store")
 
@@ -68,6 +68,16 @@ Your workstation should have SSH client, Hopper Disassembler, Burp and Frida ins
 
 ```
 $ sudo pip install frida
+```
+
+#### SSH Connection via USB
+
+-- TODO [Add content on usbmuxd/tcprelay] --
+
+```bash
+$ ./tcprelay.py -t 22:2222
+$ ssh -p 2222 root@localhost
+iPhone:~ root# 
 ```
 
 ### Typical iOS Application Test Workflow
@@ -209,6 +219,34 @@ Your main focus while performing static analysis would be:
 * Any hardcoded credentials, certificates
 * Any methods that are used for obfuscation and in consequence may reveal sensitive information
 
+#### Copying App Data Files
+
+Files belonging to an app are stored app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
+
+```bash
+iPhone:~ root# ipainstaller -l 
+sg.vp.UnCrackable-2
+sg.vp.UnCrackable1
+
+iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1
+Identifier: sg.vp.UnCrackable1
+Version: 1
+Short Version: 1.0
+Name: UnCrackable1
+Display Name: UnCrackable Level 1
+Bundle: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1
+Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1/UnCrackable Level 1.app
+Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
+```
+
+You can now simply archive the data directory and pull it from the device using scp.
+
+```bash
+iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
+iPhone:~ root# exit
+$ scp -P 2222 root@localhost:/tmp/data.tgz .
+```
+
 ### Dynamic Analysis
 
 -- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
@@ -232,20 +270,6 @@ To save the console output to a text file, click the circle with a downward-poin
 #### Dynamic Analysis On Jailbroken Devices
 
 Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
-
-##### Copying Data Files
-
-
-
-
-
-
-
-
-
-
-
-
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
