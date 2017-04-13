@@ -247,6 +247,40 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
+#### Dumping KeyChain Data
+
+Keychain-Dumper [23] lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
+
+``` bash
+$ git clone https://github.com/ptoomey3/Keychain-Dumper
+$ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
+$ ssh -p 2222 root@localhost
+iPhone:~ root# chmod +x /tmp/keychain_dumper
+iPhone:~ root# /tmp/keychain_dumper 
+
+(...)
+
+Generic Password
+----------------
+Service: myApp
+Account: key3
+Entitlement Group: RUD9L355Y.sg.vantagepoint.example
+Label: (null)
+Generic Field: (null)
+Keychain Data: SmJSWxEs
+
+Generic Password
+----------------
+Service: myApp
+Account: key7
+Entitlement Group: RUD9L355Y.sg.vantagepoint.example
+Label: (null)
+Generic Field: (null)
+Keychain Data: WOg1DfuH
+```
+
+Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the Github repository.
+
 ### Dynamic Analysis
 
 -- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
@@ -478,3 +512,4 @@ To get more information on testing transport security, please refer to section '
 * [20] Bypassing OpenSSL Certificate Pinning -https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ 
 * [21] iOS Application Security - David Thiel
 * [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
+* [23] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
