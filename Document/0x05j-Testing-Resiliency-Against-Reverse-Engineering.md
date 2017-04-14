@@ -40,24 +40,26 @@ The attestation result looks as follows.
 
 ###### Programmatic Detection
 
-**File checks**
+**File existence checks**
 
-Perhaps the most widely used method is checking for files typically found on rooted devices, such as app packages of common rooting tools and associated files:
+Perhaps the most widely used method is checking for files typically found on rooted devices, such as package files of common rooting apps and associated files and directories, such as:
 
 ~~~
 /system/app/Superuser.apk
-/system/xbin/daemonsu
 /system/etc/init.d/99SuperSUDaemon
 /dev/com.koushikdutta.superuser.daemon/
-~~~
-
-Binaries that are usually installed once a device is rooted. Examples include checking for the *su* binary at different locations:
+/system/xbin/daemonsu
 
 ~~~
+
+Detection code also often looks for binaries that are usually installed once a device is rooted. Examples include checking for the presence of busybox or attempting to open the *su* binary at different locations:
+
+~~~
+/system/xbin/busybox
+
 /sbin/su
 /system/bin/su
 /system/xbin/su
-/system/xbin/busybox
 /data/local/su
 /data/local/xbin/su
 ~~~ 
@@ -75,7 +77,7 @@ Alternatively, checking whether *su* is in PATH also works:
     }
 ~~~
 
-Checks for file existence can be easily implemented in both Java and native code. The following JNI example uses the <code>stat</code> system call to retrieve information about files (example code adapted from rootinspector <sup>[9]</sup>).
+File checks can be easily implemented in both Java and native code. The following JNI example uses the <code>stat</code> system call to retrieve information about a file (example code adapted from rootinspector <sup>[9]</sup>), and returns <code>1</code> if the file exists.
 
 ```c
 jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath) {
@@ -97,11 +99,11 @@ jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath)
 
 **Executing su and other commands**
 
-Another way of determining whether su exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if su is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
+Another way of determining whether <code>su</code> exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if <code>su</code> is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
-Su on Android depends on a background process called *daemonsu*, so the presence of process is another sign of a rooted device. Running processes can be enumerated through ActivityManager.getRunningAppProcesses() API, the *ps* command, or walking through the */proc* directory. As an example, this is implemented the following way in rootinspector <sup>[9]</sup>.
+Supersu - by far the most popular rooting tool - runs an authentication daemon named <code>daemonsu</code>, so the presence of this process is another sign of a rooted device. Running processes can be enumerated through <code>ActivityManager.getRunningAppProcesses()</code> and <code>manager.getRunningServices()</code> APIs, the <code>ps</code> command, or walking through the <code>/proc</code> directory. As an example, this is implemented the following way in rootinspector <sup>[9]</sup>:
 
 ```java
     public boolean checkRunningProcesses() {
@@ -127,7 +129,7 @@ Su on Android depends on a background process called *daemonsu*, so the presence
 
 **Checking installed app packages**
 
-The Android package manager can be used to obtain a list of installed packages.
+The Android package manager can be used to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
 ~~~
 com.thirdparty.superuser
