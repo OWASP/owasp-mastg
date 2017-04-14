@@ -116,7 +116,9 @@ for (int i = 1; ; i = 0)
 
 Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM, as on stock Android builds, OTA updates use Google's public certificates <sup>[4]</sup>.
 
-##### Bypassing Root-Detection
+##### Bypassing Root Detection
+
+Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one. If you're performing a black-box resiliency assessment, disabling the root detection mechanisms is your first step.
 
 You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
@@ -126,24 +128,27 @@ You can use a number of techniques to bypass these checks, most of which were in
 3. Hooking low-level APIs using Kernel modules.
 4. Patching the app to remove the checks.
 
-#### Static Analysis
+#### Effectiveness Assessment
 
-Check the original or decompiled source code for the presence of root detection mechanisms and apply the following criteria:
+Check for the presence of root detection mechanisms and apply the following criteria:
 
 - Multiple detection methods are scattered throughout the app (as opposed to putting everything into a single method);
-- The root detection mechanisms operate on multiple API layers (Java API, native library functions, Assembler / system calls);
-- The mechanisms show some level of originality (no copy/paste from StackOverflow or other sources);
-- The mechanisms are well-integrated with other defenses (e.g. root detection functions are obfuscated and protected from tampering).
+- The root detection mechanisms operate on multiple API layers (Java APIs, native library functions, Assembler / system calls);
+- The mechanisms show some level of originality (vs. copy/paste from StackOverflow or other sources);
 
-#### Dynamic Analysis
+Work on bypassing the root detection mechanisms and answer the following questions:
 
-Identify and bypass the root detection mechanisms implemented. You'll most likely find that a combination of the methods above, or variations of those methods, are used. If you're performing a black-box resiliency assessment, disabling the root detection mechanisms is your first step.
+- Is it possible to easily bypass the mechanisms using standard tools such as RootCloak?
+- Is some amount of static/dynamic analysis necessary to handle the root detection? 
+- Did you need to write custom code?
+- How long did it take you to successfully bypass it?
+- What is your subjective assessment of difficulty? 
 
-Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one.
+Give some thought to how the root detection functions in the context of the overall protection scheme. For example, root detection functions should obfuscated and protected from tampering.
 
 #### Remediation
 
-If the root detection mechanisms are found to be insufficient, propose additional checks so the protection scheme fulfills the criteria listed above.
+If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses. 
 
 #### References
 
@@ -171,6 +176,7 @@ N/A
 ##### Tools
 
 - rootbeer - https://github.com/scottyab/rootbeer
+- RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
 
 ### Testing Anti-Debugging
 
@@ -609,7 +615,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Overview
 
-In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A comprehensive protection scheme should include CRC checks on the app bytecode and native libraries as well as important data files. These checks can be impelemented both on the Java and native layer.
+In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A protection scheme can be augmented with  CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer.
 
 ##### Sample Implementation
 
@@ -657,7 +663,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Dynamic Analysis
 
-Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing".
+Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification an cease to function.
 
 #### Remediation
 
