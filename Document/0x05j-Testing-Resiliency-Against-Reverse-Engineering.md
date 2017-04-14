@@ -75,13 +75,55 @@ Alternatively, checking whether *su* is in PATH also works:
     }
 ~~~
 
+Checks for file existence can be easily implemented in both Java and native code. The following JNI example uses the <code>stat</code> system call to retrieve information about files (example code adapted from rootinspector <sup>[9]</sup>).
+
+```c
+jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath) {
+  jboolean fileExists = 0;
+  jboolean isCopy;
+  const char * path = (*env)->GetStringUTFChars(env, filepath, &isCopy);
+  struct stat fileattrib;
+  if (stat(path, &fileattrib) < 0) {
+    __android_log_print(ANDROID_LOG_DEBUG, DEBUG_TAG, "NATIVE: stat error: [%s]", strerror(errno));
+  } else
+  {
+    __android_log_print(ANDROID_LOG_DEBUG, DEBUG_TAG, "NATIVE: stat success, access perms: [%d]", fileattrib.st_mode);
+    return 1;
+  }
+
+  return 0;
+}
+```
+
 **Executing su and other commands**
 
 Another way of determining whether su exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if su is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
-Su on Android depends on a background process called *daemonsu*, so the presence of process is another sign of a rooted device. Running processes can be enumerated through ActivityManager.getRunningAppProcesses() API, the *ps* command, or walking through the */proc* directory.
+Su on Android depends on a background process called *daemonsu*, so the presence of process is another sign of a rooted device. Running processes can be enumerated through ActivityManager.getRunningAppProcesses() API, the *ps* command, or walking through the */proc* directory. As an example, this is implemented the following way in rootinspector <sup>[9]</sup>.
+
+```java
+    public boolean checkRunningProcesses() {
+
+      boolean returnValue = false;
+
+      // Get currently running application processes
+      List<RunningServiceInfo> list = manager.getRunningServices(300);
+
+      if(list != null){
+        String tempName;
+        for(int i=0;i<list.size();++i){
+          tempName = list.get(i).process;
+
+          if(tempName.contains("supersu") || tempName.contains("superuser")){
+            returnValue = true;
+          }
+        }
+      }
+      return returnValue;
+    }
+```
 
 **Checking installed app packages**
 
@@ -136,7 +178,7 @@ Check for the presence of root detection mechanisms and apply the following crit
 - The root detection mechanisms operate on multiple API layers (Java APIs, native library functions, Assembler / system calls);
 - The mechanisms show some level of originality (vs. copy/paste from StackOverflow or other sources);
 
-Work on bypassing the root detection mechanisms and answer the following questions:
+Develop bypass methods for the root detection mechanisms and answer the following questions:
 
 - Is it possible to easily bypass the mechanisms using standard tools such as RootCloak?
 - Is some amount of static/dynamic analysis necessary to handle the root detection? 
@@ -144,7 +186,7 @@ Work on bypassing the root detection mechanisms and answer the following questio
 - How long did it take you to successfully bypass it?
 - What is your subjective assessment of difficulty? 
 
-Give some thought to how the root detection functions in the context of the overall protection scheme. For example, root detection functions should obfuscated and protected from tampering.
+Also note how well the root detection mechanisms are integrated within the overall protection scheme. For example, the detection functions should obfuscated and protected from tampering.
 
 #### Remediation
 
@@ -175,8 +217,9 @@ N/A
 
 ##### Tools
 
-- rootbeer - https://github.com/scottyab/rootbeer
-- RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
+- [7] rootbeer - https://github.com/scottyab/rootbeer
+- [8] RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
+- [9] rootinspector - https://github.com/devadvance/rootinspector/
 
 ### Testing Anti-Debugging
 
