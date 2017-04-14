@@ -520,10 +520,6 @@ Exiting
 
 To bypass this, it's necessary to modify the behavior of the app slightly (the easiest is to patch the call to _exit with NOPs, or hooking the function _exit in libc.so). At this point, we have entered the proverbial "arms race": It is always possible to implement more inticate forms of this defense, and there's always some ways to bypass it.
 
-**Breakpoint detection**
-
--- TODO [breakpoint detection] --
-
 ##### Bypassing Debugger Detection
 
 As usual, there is no generic way of bypassing anti-debugging: It depends on the particular mechanism(s) used to prevent or detect debugging, as well as other defenses in the overall protection scheme. For example, if there are no integrity checks, or you have already deactivated them, patching the app might be the easiest way. In other cases, using a hooking framework or kernel modules might be preferable.
@@ -561,8 +557,11 @@ public class CodeCheck {
     }
 ```
 
-```python
 
+-- TODO [Add a generic bypass script using Frida (?)] --
+
+
+```python
 #v0.1
  
 import frida
@@ -594,7 +593,7 @@ sys.stdin.read()
 
 -- TODO [Dynamic Analysis of anti-debugging] --
 
-Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
+Attempt to attach a debugger to the running process. This  should either fail, or the app should terminate or misbehave when the debugger has been detected.
 
 Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
 
