@@ -6,13 +6,13 @@
 
 ### Testing Process
 
-The following section will show how to use the OWASP mobile application security checklist and testing guide during a security test.
+The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test.
 
 #### Preparation - Defining the baseline
 
-First of all, you need to decide what security level of the MASVS to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we're not living in an ideal world. At the very least, it is a good idea to walk through the checklist, ideally with an IT security representative of the enterprise and the app stakeholders of the project and make a reasonable selection of Level 2 (L2) controls to cover during the test.
+First of all, you need to decide what security level of the MASVS to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we are not living in an ideal world. At the very least, it is a good idea to walk through the checklist, ideally with an IT security representative of the enterprise, the app stakeholders of the project and make a reasonable selection of Level 2 (L2) controls to cover during the test.
 
-The controls in MASVS Level 1 (L1) are appropriate for all mobile apps - the rest depends on the threat model and risk assessment for the particular app. Discuss with the app stakeholders what requirements are applicable and which ones are out of scope for testing, perhaps due to business decisions or company policies. Also consider whether some L2 requirements may be needed due to industry regulations or local laws - for example, 2-factor-authentation (2FA) may be obligatory for a financial app.
+The controls in MASVS Level 1 (L1) are appropriate for all mobile apps - the rest depends on the threat model and risk assessment for the particular app. Discuss with the app stakeholders to understand what are the requirements that are applicable and which are the ones that should be deemed out of scope for the scope of testing, perhaps due to business decisions or company policies. Also consider whether some L2 requirements may be needed due to industry regulations or local laws - for example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
 If security requirements were already defined during the SDLC, even better! Ask for this information and document it on the front page of the Excel sheet ("dashboard"). More guidance on the verification levels and guidance on the certification can be found in the [MASVS](https://github.com/OWASP/owasp-masvs).
 
@@ -22,9 +22,11 @@ All involved parties need to agree on the decisions made and on the scope in the
 
 #### Mobile App Security Testing
 
-During a manual test you can simply walk through the applicable requirements one-by-one - for a detailed testing how-to simply click on the link in the "Testing Procedure" column. These links lead to the respective chapter in the OWASP Mobile Security Testing Guide (MSTG). Note however that work on the guide is still ongoing so some test cases have not been written yet or might be in a draft status (ideally, if you discover missing content, you could contribute it yourself).
+During a manual test, one can simply walk-through the applicable requirements down the checklist, one-by-one. For a detailed testing procedures, simply click on the link provided in the "Testing Procedure" column. These links will bring you to the respective chapter in the OWASP Mobile Security Testing Guide (MSTG), where detailed steps and examples are listed for reference and guidance purposes. 
 
-![The checklist. Requiremenets marked with "L1" should alwasy be verified. Choose either "Pass" or "Fail" in the "Status" column. The links in the "Testing Procedure" column lead to the OWASP Mobile Secuiryt Testing Guide.](Images/Chapters/0x03/mstg-test-cases.png)
+Also important is to note that the OWASP Mobile Security Testing Guide (MSTG) is still "Work In Progress" and being updated even as you are reading this paragraph, therefore, some test cases may not have been written yet or may be in a draft status. (Ideally, if you discover any missing content, you could contribute it yourself).
+
+![The checklist. Requiremenets marked with "L1" should always be verified. Choose either "Pass" or "Fail" in the "Status" column. The links in the "Testing Procedure" column lead to the OWASP Mobile Secuiryt Testing Guide.](Images/Chapters/0x03/mstg-test-cases.png)
 
 The status column can have one of the following three different values, that need to be filled out:
 
@@ -56,17 +58,72 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 
 ### Static Analysis
 
--- TODO [Describe Static Analysis techniques in Mobile Testing in a general manner] --
+In a Static Analysis approach, the developers must provide the source code or compiled IPA/APK files of the mobile application for programmatic analysis. The source code will be analyzed to ensure that there is sufficient and correct implementation of security controls, specifically on crucial components such as the authentication, authorization, session management and data storage mechanisms. 
+
+##### Pros of Static Analysis
+* Great scalability, able to run on lots of mobile applications and can be easily repeated
+* Great at identifying standard security vulnerabilities such as SQL injection flaws and etc.  
+
+##### Cons of Static Analysis
+* Require access to the source code 
+* High number of false positives
+* Unable to identify issues related to operational deployment environments
 
 #### Automatic Code Analysis
 
--- TODO [Describe Automatic code analysis : goal, how it works, pros / cons, role in pentests] --
+In automatic code analysis, the tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
+
+The automatic code analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings, identified through comparing the source code content with its own predefined set of rules or industry's best practices, and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
+
+Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications. 
+
+In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.  
+
+##### Open Source Static Analysis Tools (non-exhaustive list)
+* [FindBugs](http://findbugs.sourceforge.net/) (Java)
+* [PMD](https://pmd.github.io/) (Java)
+* [VisualCodeGrepper](https://sourceforge.net/projects/visualcodegrepp/) (C/C++, C#, VB, PHP, Java and PL/SQL)
+* [Agnitio](https://sourceforge.net/projects/agnitiotool/) (Objective-C, C#, Java & Android)
+
+##### Commercial 
+* [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) (Java, Objective-C, Swift, etc.)
+* [CheckMarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) (Java, Objective-C, Swift, etc.)
 
 #### Manual Code Review
 
--- TODO [Describe Manual Code Review : goal, how it adds to automatic code analysis, how it works, pros / cons, kind of issues that can be found only manually] --
+In manual code review, a human code reviewer will be looking through the source code of the mobile application, to identify security vulnerabilities through various techniques such as performing grep command on key words within the source code repository to identify usages of potentially vulnerable code, such as the likes of strcpy() function or equivalent vulnerable code.
+
+The main difference between a manual code review and the use of any automatic code analysis tools is that in manual code review, it is better at identifying vulnerabilities in the business logic, standards violations and design flaws, especially in the situations where the code is technically secure but logically flawed. In such scenarios, the code snippet will not be detected by any automatic code analysis tool as an issue.
+
+##### Crawling Code
+
+Crawling code is the practice of scanning a code base of the review target in question. It is to look for key pointers wherein a possible security vulnerability might reside. In crawling code, it will look for certain APIs that are related to interfacing to the external functions which are key areas for an attacker to focus on. 
+
+For example, HTTP Request Strings like request.url or request.files, HTML Output like innerHtml or HtmlUtility, or even Database related codes like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code. 
+
+##### Pros of Manual Code Review
+* Proficient in deep diving into the various code paths to check for logical errors and flaws in the mobile application's design and architecture where automated analysis tools are not able to identify
+* Great at detecting security issues like authorization, authentication and data validation as compared to automated code analysis tools
+
+##### Cons of Manual Code Review
+* Difficult for human code reviewers to identify subtle mistakes such as buffer overflows
+* Requires expert human code reviewer who are proficient in both the language and the frameworks used in the mobile application, as it is essential to have a deep understanding of the security implmentation of the technologies used in the mobile application's source code
+* Time consuming, slow and tedious; especially when mobile application source code nowadays usually has so many functionalities that it has a large number of lines of code (e.g. over 10K, or sometimes even over 100K)
 
 ### Dynamic Analysis
+
+In a Dynamic Analysis approach, the focus is on the testing and evaluation of a program by executing data in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed. 
+
+Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent data validation attacks (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors or version issues. 
+
+Pros of Dynamic Analysis
+* Does not require to have access to the source code
+* Does not need to understand how the mobile application is supposed to behave
+* Able to identify infrastructure, configuration and patch issues that Static Analysis approach tools will miss
+
+Cons of Dynamic Analysis
+* Limited scope of coverage because the mobile application must be footprinted to identify the specific test area
+* No access to the actual instructions being executed, as the tool is exercising the mobile application and conducting pattern matching on the requests and responses
 
 #### Runtime Analysis
 
@@ -229,6 +286,8 @@ Only if a user logs in by using the Android browser (instead of using the mobile
 
 - [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
 - [2] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
+- [3] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
+- [4] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
 - Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - Another Informational Article - http://www.securityfans.com/informational_article.html
 
