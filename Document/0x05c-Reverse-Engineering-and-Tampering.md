@@ -231,8 +231,9 @@ $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
 
-So this native function is actually executed 
+Following to the naming convention, this is the native function that gets actually executed when the <code>stringFromJNI</code> native method is called.
 
+-- TODO [Complete native static analysis section] --
 
 #### Debugging and Tracing
 
@@ -254,7 +255,7 @@ Using a JDWP debugger allows you to step through Java code, set breakpoints on J
 
 The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
--- TODO [Command line JDB intro] --
+-- TODO [Command line JDB intro - work in progress] --
 
 ```bash
 $ apktool d --no-src UnCrackable-Level1.apk
@@ -272,6 +273,17 @@ $ cd ..
 $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 $ adb install UnCrackable-Repackaged.apk
 ```
+
+```bash
+$ adb shell ps | grep uncrackable
+u0_a157   7328  201   1564936 50656 ffffffff 00000000 S sg.vantagepoint.uncrackable1
+$ adb forward tcp:7777 jdwp:7328
+$ jdb attach localhost:7777
+Initializing jdb ...
+> 
+```
+
+<img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
 
 ###### Debugging Using Decompiled Sources
 
