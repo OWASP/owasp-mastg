@@ -235,6 +235,8 @@ Following to the naming convention, this is the native function that gets actual
 
 -- TODO [Complete native static analysis section] --
 
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni" width="350px" />
+
 #### Debugging and Tracing
 
 Android apps support two different types of debugging: Java-runtime-level debugging using Java Debug Wire Protocol (JDWP) and Linux ptrace-style debugging on the native layer.
@@ -320,6 +322,9 @@ $ $NDK/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/arm-linux
 Remote debugging using :1235
 0xb6e0f124 in ?? ()
 ```
+
+
+
 
 -- TODO [Write introduction to debugging native code (HelloWorld-JNI)] --
 
