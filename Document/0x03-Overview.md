@@ -14,7 +14,26 @@ From the view of a mobile app, this means that extra care has to be taken when s
 
 Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
 
--- TODO [What is the OWASP Mobile Top 10] --
+## OWASP Mobile Top 10 2016
+The OWASP Mobile Top 10 is the equivalent counterpart of the OWASP Top Ten Project, but is specifically designed to focus on the mobile application security. Most of the time, folks in the information security industry discuss about the "OWASP Top Ten" project but in fact, they are only referring to the web application security. 
+
+In this guide, we bring to your attention about its equivalent counterpart, the OWASP Mobile Top 10 2016, which is essentially an awareness document for mobile application security. 
+
+The OWASP Mobile Top 10 represents a broad consensus about what are the most critical mobile application security flaws identified in the actual mobile applications, derived as per the raw data obtained from various different vendors and consultants in the information security industry. 
+
+The following are the OWASP Mobile Top 10:
+* [M1 - Improper Platform Usage](https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage)
+* [M2 - Insecure Data Storage](https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage)
+* [M3 - Insecure Communication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication)
+* [M4 - Insecure Authentication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication)
+* [M5 - Insufficient Cryptography](https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography)
+* [M6 - Insecure Authorisation](https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization)
+* [M7 - Client Code Quality](https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality)
+* [M8 - Code Tampering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering)
+* [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering)
+* [M10 - Extraneous Functionality](https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality)
+
+To read more about the category of vulnerabilities and procedures to prevent them from compromising your mobile application, please refer to the [OWASP Mobile Top 2016 Project Page](https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10).
 
 ## The OWASP Mobile AppSec Verification Standard, Checklist and Testing Guide
 
