@@ -9,6 +9,7 @@ Vast majority of this tutorial is relevant to applications written mainly in Obj
 **Requirements for iOS testing lab**
 
 Bare minimum is:
+
 - Laptop with admin rights, VirtualBox with Kali Linux
 - WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
 - Hopper Disassembler 
@@ -456,23 +457,24 @@ PID  Name
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
 
-
 ### Setting up Burp
+
 Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB. 
 
 The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good tutorial on setting an iOS Device and Burp [22].
 
-
 ### Bypassing Certificate Pinning
-Certificate Pinning is a practice used to tighten security of TLS connection. 
-When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+
+Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+
 Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code. 
 This protects against two main attack scenarios:
+
 * Compromised CA issuing certificate for our domain to a third-party
 * Phishing attacks that would add a third-party root CA to device's trust store
 
-The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. 
-There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
+The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
+
 - following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
 - during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
 - sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
@@ -480,13 +482,13 @@ There are some cases, though, where certificate pinning is more tricky to bypass
 - sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 
 #### Recommendations
+
 Certificate pinning is a good security practice and should be used for all applications handling sensitive information. 
 [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf). Use certificate pinning if you don't trust at least one of these CAs.
 
 If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [21]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
 To get more information on testing transport security, please refer to section 'Testing Network Communication' 
-
 
 ### References
 
