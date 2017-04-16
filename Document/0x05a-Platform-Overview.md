@@ -486,7 +486,8 @@ In the original version of app signing, the signed APK is actually a standard si
 In the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, v2 scheme treats performs signature checking across the entire file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" width="500px"/>
-*APK signature verification process <sup>[9]</sup>*
+
+*APK signature verification process* <sup>[9]</sup>
 
 ##### Creating Your Certificate
 
