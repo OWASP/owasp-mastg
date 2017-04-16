@@ -12,7 +12,7 @@ The final release build of an app must be signed with a valid release key. Note 
 
 #### Static Analysis
 
-APK signatures can be verified using the <code>jarsigner</code> tool. For a properly signed APK, <code>jarsigner</code> should print the attributes of the signing certificate used. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
+APK signatures can be verified using the <code>apksigner</code> tool. For a properly signed APK, <code>apksigner</code> should print the attributes of the signing certificate used. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
 
 The output for an APK signed with a Debug certificate looks as follows:
 

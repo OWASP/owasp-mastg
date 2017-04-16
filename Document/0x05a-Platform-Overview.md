@@ -296,10 +296,12 @@ A lot more useful options can be added to manifest files. The reader is invited 
 Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app: for instance, apps that have 3 different screens implement 3 different activities, where the user can interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
 
 Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
+
 ```
-<activity android:name=".ActivityName>
+<activity android:name="ActivityName">
 </activity>
 ```
+
 When activities are not declared in manifests, they cannot be displayed and would raise an exception.
 
 In the same way as apps do, activities also have their own lifecycles and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating systems. Accordingly, activities can implement the following event managers:
@@ -397,11 +399,13 @@ Content Providers are implemented through a URI addressing scheme: they all use 
 Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...), without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active apps have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main app thread. They are great candidates to run asynchronous tasks. 
 
 ##### Permissions
+
 Because Android apps are installed in a sandbox and initially it does not have access to neither user information nor access to system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the app can request.
 As an example, if you want your app to use the camera on the phone you have to request the camera permission. 
 On Android versions before Marshmallow (API 23) all permissions requested by an app were granted at installation time. From Android Marshmallow onwards the user have to approve some permissions during app execution.
 
 ###### Protection Levels
+
 Android permissions are classified in four different categories based on the protection level it offers.
 - *Normal*: Is the lower level of protection, it gives apps access to isolated application-level feature, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value.
 Example: `android.permission.INTERNET`
@@ -413,6 +417,7 @@ Example: `android.permission.ACCESS_MOCK_LOCATION`
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 ###### Requesting Permissions
+
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
 The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
 ```
@@ -426,6 +431,7 @@ The example below shows an AndroidManifes.xml sample requesting permission to re
 This will enable the app to read SMS messages at install time (before Android Marshmallow - 23) or will enable the app to ask the user to allow the permission at runtime (Android M onwards).
 
 ###### Declaring Permissions
+
 Any app is able to expose its features or content to other apps installed on the system. It can expose the information openly or restrict it some apps by declaring a permission.
 The example below shows an app declaring a permission of protection level *signature*.
 ```
@@ -441,6 +447,7 @@ The example below shows an app declaring a permission of protection level *signa
 Only apps signed with the same developer certificate can use this permission.
 
 ###### Enforcing Permissions on Android Components
+
 It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers all can use the permission mechanism to protect its interfaces.
 *Activities*, *Services* and *Broadcast Receivers* can enforce a permission by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
 ```
@@ -456,56 +463,30 @@ It is possible to protect Android components using permissions. Activities, Serv
 - `android:permission`: General permission that will control read and write to the Content Provider.
 - `android:grantUriPermissions`: True if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
 
-### Android IPC
-
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
-
-In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
-
-![Binder Overview](Images/Chapters/0x05a/binder.jpg)
-*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
-
-#### High-Level Abstractions
-
-*Intent messaging* is a framework for asynchronous communication built on top of binder. This framework enables both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate communication between components in several ways, there are three fundamental use cases:
-
-- Starting an activity
-	- An Activity represents a single screen in an app. You can start a new instance of an Activity by passing an Intent to startActivity(). The Intent describes the activity to start and carries any necessary data.
-- Starting a Service
-	- A Service is a component that performs operations in the background without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler. 
-- Delivering a broadcast
-	- A broadcast is a message that any app can receive. The system delivers various broadcasts for system events, such as when the system boots up or the device starts charging. You can deliver a broadcast to other apps by passing an Intent to sendBroadcast() or sendOrderedBroadcast().
-
-There are two types of Intents:
-
-- Explicit intents specify the component to start by name (the fully-qualified class name).
-
-- Implicit intents do not name a specific component, but instead declare a general action to perform, which allows a component from another app to handle it. When you create an implicit intent, the Android system finds the appropriate component to start by comparing the contents of the intent to the intent filters declared in the manifest file of other apps on the device.
-
-An *intent filter* is an expression in an app's manifest file that specifies the type of intents that the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, if you do not declare any intent filters for an activity, then it can be started only with an explicit intent.
-
-For activities and broadcast receivers, intents are the preferred mechanism for asynchronous IPC in Android. Depending on your app requirements, you might use sendBroadcast(), sendOrderedBroadcast(), or an explicit intent to a specific app component.
-
-A BroadcastReceiver handles asynchronous requests initiated by an Intent.
-
-Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
-
-
--- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
-
-Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
-
-A reference to the Messenger can be sent via an Intent using the previously mentioned IPC mechanism
-
-Messages sent by the remote process via the messenger are delivered to the local handler. Great for efficient call-backs from the service to the client
-
-### Signing and Publishing process
+### Signing and Publishing Process
 
 Once an app has been successfully developed, the next step is to publish it to share it with others. However, apps cannot simply be put on a store and shared: for several reasons, they need to be signed. This is a convenient way to ensure that apps are genuine and authenticate them to their authors: for instance, an upgrade to an app will only be possible if the update is signed with the same certificate as the original app. Also, this is a way to allow sharing between apps that are signed with the same certificate when signature-based permissions are used.
 
 #### Signing Process
 
-During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debug only. Most stores do not accept this kind of certificates when trying to publish, therefore another certificate, with more secure features, has to be created and used.
+During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debugging only. Most stores do not accept this kind of certificates when trying to publish, therefore another certificate, with more secure features, has to be created and used.
+
+When an application  is installed onto an Android device, the Package Manager verifies that it has been signed with the certificate included in that APK. If the public key in the certificate matches the key used to sign any other APK on the device, the new APK has the option to share a UID with that APK. This facilitates interaction between multiple applications from the same vendor. Alternatively, it as also possible to specify security permissions the Signature protection level, restricting access to applications signed with the same key. 
+
+#### APK Signing Schemes
+
+As of Android 7.0, Android supports two application signing schemes: In Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. Older platforms ignore v2 signatures and only verify v1 signatures <sup>[9]</sup>.
+
+##### JAR Signing (v1 scheme): 
+
+In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in <code>META-INF/MANIFEST.MF</code>. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
+
+##### APK Signature Scheme v2 (v2 scheme)
+
+In the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, v2 scheme treats performs signature checking across the entire file. This form of APK verification is faster and offers more comprehensive protection against modification.
+
+<img src="Images/Chapters/0x05a/apk-validation-process.png" width="500px"/>
+*APK signature verification process <sup>[9]</sup>*
 
 ##### Creating Your Certificate
 
@@ -542,7 +523,51 @@ Whereas other vendors may review and approve apps before they are actually publi
 Publishing an app is quite straightforward, as the main operation is to make the signed .apk file itself downloadable. On Google Play, it starts with creating an account, and then delivering the app through a dedicated interface. Details are available on Android official documentation at https://developer.android.com/distribute/googleplay/start.html. 
 
 
+### How Apps Communicate - Android IPC
+
+As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
+
+In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+
+![Binder Overview](Images/Chapters/0x05a/binder.jpg)
+*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+
+#### High-Level Abstractions
+
+*Intent messaging* is a framework for asynchronous communication built on top of binder. This framework enables both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate communication between components in several ways, there are three fundamental use cases:
+
+- Starting an activity
+	- An Activity represents a single screen in an app. You can start a new instance of an Activity by passing an Intent to startActivity(). The Intent describes the activity to start and carries any necessary data.
+- Starting a Service
+	- A Service is a component that performs operations in the background without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler. 
+- Delivering a broadcast
+	- A broadcast is a message that any app can receive. The system delivers various broadcasts for system events, such as when the system boots up or the device starts charging. You can deliver a broadcast to other apps by passing an Intent to sendBroadcast() or sendOrderedBroadcast().
+
+There are two types of Intents:
+
+- Explicit intents specify the component to start by name (the fully-qualified class name).
+
+- Implicit intents do not name a specific component, but instead declare a general action to perform, which allows a component from another app to handle it. When you create an implicit intent, the Android system finds the appropriate component to start by comparing the contents of the intent to the intent filters declared in the manifest file of other apps on the device.
+
+An *intent filter* is an expression in an app's manifest file that specifies the type of intents that the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, if you do not declare any intent filters for an activity, then it can be started only with an explicit intent.
+
+For activities and broadcast receivers, intents are the preferred mechanism for asynchronous IPC in Android. Depending on your app requirements, you might use sendBroadcast(), sendOrderedBroadcast(), or an explicit intent to a specific app component.
+
+A BroadcastReceiver handles asynchronous requests initiated by an Intent.
+
+Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
+
+-- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
+
+Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
+
+A reference to the Messenger can be sent via an Intent using the previously mentioned IPC mechanism
+
+Messages sent by the remote process via the messenger are delivered to the local handler. Great for efficient call-backs from the service to the client
+
 ### References
+
+-- TODO [Numbering and cleanup of references] -
 
 + [Android Security](https://source.android.com/security/)
 + [Android Developer: App Components](https://developer.android.com/guide/components/index.html)
@@ -552,3 +577,4 @@ Publishing an app is quite straightforward, as the main operation is to make the
 + [keesj Android internals](https://github.com/keesj/gomo)
 + [Android Versions] (https://en.wikipedia.org/wiki/Android_version_history)
 + "Professional Android 4 Application Development" by Reto MEIER
+- [9] APK Signing - https://source.android.com/security/apksigning/
