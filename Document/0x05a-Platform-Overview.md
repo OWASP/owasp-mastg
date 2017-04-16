@@ -481,11 +481,11 @@ As of Android 7.0, Android supports two application signing schemes: In Android 
 
 In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in <code>META-INF/MANIFEST.MF</code>. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
 
-##### APK Signature Scheme v2 (v2 scheme)
+##### APK Signature Scheme (v2 scheme)
 
 In the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, v2 scheme treats performs signature checking across the entire file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
-<img src="Images/Chapters/0x05a/apk-validation-process.png" width="500px"/>
+<img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
 
 *APK signature verification process* <sup>[9]</sup>
 
