@@ -235,7 +235,7 @@ Following to the naming convention, this is the native function that gets actual
 
 -- TODO [Complete native static analysis section] --
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" />
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
 
 #### Debugging and Tracing
 
@@ -245,9 +245,9 @@ Android apps support two different types of debugging: Java-runtime-level debugg
 
 Since Android 4.2, the "Developer options" submenu is hidden by default in the Settings app. To activate it, you need to tap the "Build number" section of the "About phone" view 7 times. Note that the location of the build number field can vary slightly on different devices - for example, on LG Phones, it is found under "About phone > Software information" instead. Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, debugging can be enabled with the "USB debugging" switch.
 
-The Developer options also contain the useful "Wait for Debugger" setting that allows you to suspend an app during startup. We'll revisit this option in a bit.
+##### Debugging Release Apps
 
-##### Debugging Java Code
+-- TODO [Complete debugging howto - still some work to do] --
 
 Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
 
@@ -255,17 +255,13 @@ Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol
 
 Using a JDWP debugger allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things.  You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
-The *adb* command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
+When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged however - after all, that's what *debug builds* are for. By default, Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations and bugs, such as a lack of line breakpoints, method breakpoints being set at the wrong locations, and others. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
 
--- TODO [Command line JDB intro - work in progress] --
 
 ```bash
 $ apktool d --no-src UnCrackable-Level1.apk
 ```
-
-```
-<application android:allowBackup="true" android:debuggable="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
-```
+Set android:allowBackup="true" as described above.
 
 ```bash
 $ cd UnCrackable-Level1
@@ -276,6 +272,13 @@ $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCracka
 $ adb install UnCrackable-Repackaged.apk
 ```
 
+
+The <code>adb</code> command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
+
+An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+
+
+
 ```bash
 $ adb shell ps | grep uncrackable
 u0_a157   7328  201   1564936 50656 ffffffff 00000000 S sg.vantagepoint.uncrackable1
@@ -285,13 +288,80 @@ Initializing jdb ...
 > 
 ```
 
+```
+> classes
+(...)
+sg.vantagepoint.a.a
+sg.vantagepoint.a.b
+sg.vantagepoint.a.c
+sg.vantagepoint.uncrackable1.MainActivity
+sg.vantagepoint.uncrackable1.a
+sg.vantagepoint.uncrackable1.b
+sg.vantagepoint.uncrackable1.c
+short[]
+short[][]
+sun.misc.Unsafe
+> methods
+sg.vantagepoint.uncrackable1.a a(java.lang.String)
+sg.vantagepoint.uncrackable1.a b(java.lang.String)
+(...)
+```
+
+```
+> stop in java.lang.String.equals
+Set breakpoint java.lang.String.equals
+>    
+Breakpoint hit: "thread=main", java.lang.String.equals(), line=639 bci=2
+
+main[1] locals
+Method arguments:
+Local variables:
+other = "radiusGravity"
+main[1] cont
+```
+
+```
+Breakpoint hit: "thread=main", java.lang.String.equals(), line=639 bci=2
+
+main[1] locals
+Method arguments:
+Local variables:
+other = "I want to believe"
+main[1] cont     
+```
+
+
+##### The 'Wait For Debugger' Feature
+
+The Developer options also contain the useful "Wait for Debugger" setting that allows you to suspend an app during startup. We'll revisit this option in a bit.
+
 <img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
+
+Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>, the app won't show up in the "debug app" list unless the <code>android:debuggable</code> flag is set to <code>true</code> in the Manifest.
 
 ###### Debugging Using Decompiled Sources
 
-A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot.
+A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method was described in the NetSPI blog []
 
 -- TODO [Debugging with IntelliJ] --
+
+
+
+File -> New -> Project...
+
+
+Choose "Android"
+
+
+
+Name the project
+
+
+
+Choose "Add no Activity"
+
+
+
 
 ##### Debugging Native Code
 
@@ -1576,6 +1646,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 + Proycon - http://proycon.com/en/
 + CFR - http://www.benf.org/other/cfr/
 + APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
++ NetSPI Blog - Attacking Android Applications with Debuggers - https://blog.netspi.com/attacking-android-applications-with-debuggers/
 + http://repo.xposed.info/module/de.robv.android.xposed.installer
 + https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
 + https://github.com/JesusFreke/smali
