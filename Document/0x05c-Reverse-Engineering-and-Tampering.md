@@ -235,7 +235,7 @@ Following to the naming convention, this is the native function that gets actual
 
 -- TODO [Complete native static analysis section] --
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="500px" />
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
 
 #### Debugging and Tracing
 
