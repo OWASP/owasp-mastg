@@ -434,7 +434,8 @@ android:inputType="textNoSuggestions"
 
 #### Overview
 
--- TODO [Overview on Testing for Sensitive Data in the Clipboard] --
+When keying in data into input fields, the clipboard<sup>[1]</sup> can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data.
+
 
 #### Static Analysis
 
@@ -445,8 +446,6 @@ Input fields that are asking for sensitive information need to be identified and
 Start the app and click into the input fields that ask for sensitive data. When it is possible to get the menu to copy/paste data the functionality is not disabled for this input field.
 
 #### Remediation
-
-Many major versions of the Android operating system are still actively used. On top of that several mobile phone manufacturers are implementing their own user interface extensions and functions to their Android fork. Because of this it might be difficult to deactivate the clipboard completely on every single Android device.
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
 
@@ -471,7 +470,7 @@ etxt.setCustomSelectionActionModeCallback(new Callback() {
         });
 ```
 
-Also `longclickable` should be deactivated for this input field.
+Also `longclickable` should be deactivated for the input field.
 
 ```xml
 android:longClickable="false"
@@ -479,43 +478,43 @@ android:longClickable="false"
 
 #### References
 
-- https://developer.android.com/guide/topics/text/copy-paste.html
-
-##### OWASP MASVS
-
-- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
-
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
-##### CWE
+##### OWASP MASVS
+- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
 
--- TODO [Add link to relevant CWE for "Testing for Sensitive Data in the Clipboard"] --
+##### CWE
+* CWE-200 - Information Exposure
+
+##### Info
+[1] Copy and Paste in Android - https://developer.android.com/guide/topics/text/copy-paste.html
+
 
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
-During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
+During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC, these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
-* [Binders][0c656fa2]
-* [Services][d97f5ea9]
-  * [Bound Services][5a7bc786]
-  * [AIDL][8c349a63]
-* [Intents][a28d43d1]
-* [ContentProviders][6a30e426]
+* Binders<sup>[1]</sup>
+* Services<sup>[2]</sup>
+  * Bound Services<sup>[9]</sup>
+  * AIDL<sup>[10]</sup>
+* Intents<sup>[3]</sup>
+* Content Providers<sup>[4]</sup>
 
 #### Static Analysis
 
 The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the app. You will want to identify elements such as:
 
-* `<intent-filter>`: more [here][aa2cf4d9]
-* `<service>`: more [here][56866a0a]
-* `<provider>`: more [here][466ff32c]
-* `<receiver>`: more [here][988bd8a2]
+* `<intent-filter>`<sup>[5]</sup>
+* `<service>`<sup>[6]</sup>
+* `<provider>`<sup>[7]</sup>
+* `<receiver>`<sup>[8]</sup>
 
 Except for the `<intent-filter>` element, check if the previous elements contain the following attributes:
 * `android:exported`
@@ -523,11 +522,10 @@ Except for the `<intent-filter>` element, check if the previous elements contain
 
 Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can be probed to see if they return data. Also BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
 
-* Vulnerable ContentProvider
+**Vulnerable ContentProvider**
 
-An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer to any input validation test in the project] --
-
-* `AndroidManifest.xml`
+An example of a vulnerable _ContentProvider_:
+(and SQL injection **-- TODO [Refer to any input validation test in the project] --**
 
 ```xml
 <provider android:name=".CredentialProvider"
@@ -536,7 +534,7 @@ An example of vulnerable _ContentProvider_ (and SQL injection ** -- TODO [Refer 
 </provider>
 ```
 
-The application exposes the content provider. In the `CredentialProvider.java` file we have to inspect the `query` function to detect if any sensitive information will be leaked:
+As can be seen in the `AndroidManifest.xml` above, the application exports the content provider. In the `CredentialProvider.java` file the `query` function need to be inspected to detect if any sensitive information is leaked:
 
 ```java
 public Cursor query(Uri uri, String[] projection, String selection,
@@ -564,6 +562,10 @@ public Cursor query(Uri uri, String[] projection, String selection,
 	      return cursor;
 	}
 ```
+
+The query statement would return all credentials when accessing `content://com.owaspomtg.vulnapp.provider.CredentialProvider/CREDENTIALS`.
+
+
 * Vulnerable Broadcast
 Search in the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, `sendStickyBroadcast` and verify that the application doesn't send any sensitive data.
 
@@ -604,7 +606,7 @@ Row: 1 id=2, username=test, password=test
 ```
 * Vulnerable Broadcast
 
-To sniff intents install and run the application on a device (actual device or emulated device) and use tools like [drozer][f3b542e2] or [Intent Sniffer][033fefeb] to capture intents and broadcast messages.
+To sniff intents install and run the application on a device (actual device or emulated device) and use tools like Drozer or Intent Sniffer to capture intents and broadcast messages.
 
 
 #### Remediation
@@ -614,50 +616,39 @@ For an _activity_, _broadcast_ and _service_ the permission of the caller can be
 If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file, as otherwise this allows all other apps on Android to communicate and invoke it.
 
 If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
-BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast. See also [sendBroadcast][2e0ef82d].
+BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast<sup>[11]</sup>.
 You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
 
 If your IPC is intended to be accessible to other applications, you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission` in a service declaration, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service.
 
 #### References
 
-* [Binders][0c656fa2]
-* [Services][d97f5ea9]
-* [Bound Services][5a7bc786]
-* [AIDL][8c349a63]
-* [Intents][a28d43d1]
-* [ContentProviders][6a30e426]
-* [Intent-filter][aa2cf4d9]
-* [Service][56866a0a]
-* [Provider][466ff32c]
-* [Receiver][988bd8a2]
-* [SendBroadcast][2e0ef82d]
-
-[0c656fa2]: https://developer.android.com/reference/android/os/Binder.html "IPCBinder"
-[d97f5ea9]: https://developer.android.com/guide/components/services.html "IPCServices"
-[a28d43d1]: https://developer.android.com/reference/android/content/Intent.html "IPCIntent"
-[6a30e426]: https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders"
-[aa2cf4d9]: https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement"
-[56866a0a]: https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement"
-[466ff32c]: https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement"
-[988bd8a2]: https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement"
-[5a7bc786]: https://developer.android.com/guide/components/bound-services.html "BoundServices"
-[8c349a63]: https://developer.android.com/guide/components/aidl.html "AIDL"
-[2e0ef82d]: https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent) "SendBroadcast"
-[033fefeb]: https://www.nccgroup.trust/us/about-us/resources/intent-sniffer/ "IntentSniffer"
-[f3b542e2]: https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer"
-
-
-##### OWASP MASVS
-
-- V2.6: "No sensitive data is exposed via IPC mechanisms."
-
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
+##### OWASP MASVS
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
+
 ##### CWE
-- [CWE-634: Weaknesses that Affect System Processes](https://cwe.mitre.org/data/definitions/634.html)
+- CWE-634 - Weaknesses that Affect System Processes
+
+##### Info
+[1] IPCBinder - https://developer.android.com/reference/android/os/Binder.html
+[2] IPCServices - https://developer.android.com/guide/components/services.html
+[3] IPCIntent - https://developer.android.com/reference/android/content/Intent.html
+[4] IPCContentProviders - https://developer.android.com/reference/android/content/ContentProvider.html
+[5] IntentFilterElement - https://developer.android.com/guide/topics/manifest/intent-filter-element.html
+[6] ServiceElement - https://developer.android.com/guide/topics/manifest/service-element.html
+[7] ProviderElement - https://developer.android.com/guide/topics/manifest/provider-element.html
+[8] ReceiverElement - https://developer.android.com/guide/topics/manifest/receiver-element.html
+[9] BoundServices - https://developer.android.com/guide/components/bound-services.html
+[10] AIDL - https://developer.android.com/guide/components/aidl.html
+[11] SendBroadcast - https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent)
+
+##### Tools
+* Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
+* IntentSniffer - https://www.nccgroup.trust/us/about-us/resources/intent-sniffer/
 
 
 ### Testing for Sensitive Data Disclosure Through the User Interface
