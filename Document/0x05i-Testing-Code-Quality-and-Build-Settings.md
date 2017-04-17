@@ -10,35 +10,51 @@ When an APK is signed, a public-key certificate is attached to the APK. This cer
 
 The final release build of an app must be signed with a valid release key. Note that Android expects any updates to the app to be signed with the same certificate, so a validity period of 25 years or more is recommended. Apps published on Google Play must be signed with a certificate that is valid at least until October 22th, 2033.
 
+Two APK signing schemes are available: JAR signing (v1 scheme) APK Signature Scheme v2 (v2 scheme). The v2 signature, which is supported by Android 7.0 and higher, offers improved security and performance. Release builds should always be signed using *both* schemes.
+
 #### Static Analysis
 
-APK signatures can be verified using the <code>apksigner</code> tool. For a properly signed APK, <code>apksigner</code> should print the attributes of the signing certificate used. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
+Verify that the release build is signed with both v1 and v2 scheme, and that the code signing certificate contained in the APK is belongs to the developer.
+
+APK signatures can be verified using the <code>apksigner</code> tool. 
+
+```bash
+$ apksigner verify --verbose Desktop/example.apk 
+Verifies
+Verified using v1 scheme (JAR signing): true
+Verified using v2 scheme (APK Signature Scheme v2): true
+Number of signers: 1
+```
+
+The contents of the signing certificate can be examined using <code>jarsigner</code>. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
 
 The output for an APK signed with a Debug certificate looks as follows:
 
 ```
-$ jarsigner -verify -verbose -certs example-debug.apk 
+$ jarsigner -verify -verbose -certs example.apk 
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
       X.509, CN=Android Debug, O=Android, C=US
       [certificate is valid from 3/24/16 9:18 AM to 8/10/43 9:18 AM]
       [CertPath not validated: Path does not chain with any of the trust anchors]
-
+(...)
 ```
 
 The output for an APK signed with a Release certificate looks as follows:
 
 ```
-$ jarsigner -verify -verbose -certs example-release.apk 
+$ jarsigner -verify -verbose -certs example.apk 
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
       X.509, CN=Awesome Corporation, OU=Awesome, O=Awesome Mobile, L=Palo Alto, ST=CA, C=US
       [certificate is valid from 9/1/09 4:52 AM to 9/26/50 4:52 AM]
       [CertPath not validated: Path does not chain with any of the trust anchors]
-
+(...)
 ```
+
+Ignore the "CertPath not validated" error -  this error appears with Java SDK 7 and greater. Instead, you can rely on the <code>apksigner</code> to verify the certificate chain.
 
 #### Dynamic Analysis
 
@@ -56,7 +72,13 @@ $ adb pull /data/app/com.awesomeproject-1/base.apk
 
 #### Remediation
 
-Developers need to make sure that release builds are signed with the appropriate certificate from the release keystore. In Android Studio, this can be done manually or by configuring creating a signing configuration and assigning it to the release build type [2].
+Developers need to make sure that release builds are signed with the appropriate certificate from the release keystore. In Android Studio, this can be done manually or by configuring creating a signing configuration and assigning it to the release build type <sup>[2]</sup>.
+The signing configuration can be managed through the Android Studio GUI or the <code>signingConfigs {}</code> block in <code>build.gradle</code>. The following values need to be set to activate both v1 and v2 scheme:
+
+```
+v1SigningEnabled true
+v2SigningEnabled true
+```
 
 #### References
 
