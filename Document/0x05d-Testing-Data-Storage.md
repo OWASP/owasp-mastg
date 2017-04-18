@@ -1001,7 +1001,7 @@ The following list shows potential warnings or advises for a user when opening t
 
 #### Static Analysis
 
-A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices. 
+A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices.  
 -- TODO [Create content on Static Analysis for Verifying User Education Controls] --
 
 #### Dynamic Analysis
