@@ -704,7 +704,7 @@ Besides a local backup, Android provides two ways for apps to backup their data 
 
 ##### Local
 
-In order to backup all your application data Android provides an attribute called `allowBackup`. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+In order to backup all your application data Android provides an attribute called `allowBackup`<sup>[1]</sup>. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -714,16 +714,16 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the app saves any kind of sensitive data, either by reading the source code, or inspecting the files in the app data directory after using it extensively.
+If the value is set to **true**, investigate whether the app saves any kind of sensitive data, check "".
 
-
+##### Cloud
 Regardless of using either key/value or auto backup, it needs to be identified:
 * what files are sent to the cloud (e.g. SharedPreferences),
 * if the files contain sensitive information,
 * if sensitive information is protected through encryption before sending it to the cloud.
 
-##### Auto Backup
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only  available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
+**Auto Backup**
+When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
 
 ```xml
 android:fullBackupOnly
@@ -731,7 +731,7 @@ android:fullBackupOnly
 
 Auto backup includes almost all of the app files and stores them in the Google Drive account of the user, limited to 25MB per app. Only the most recent backup is stored, the previous backup is deleted.
 
-##### Key/Value Backup
+**Key/Value Backup**
 To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
@@ -747,20 +747,20 @@ Look for these classes within the source code to check for implementations of Ke
 
 #### Dynamic Analysis
 
-Attempt to make a backup using `adb` and, if successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
+After executing all available functions when using the app, attempt to make a backup using `adb`. If successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
 ```bash
 $ adb backup -apk -nosystem packageNameOfTheDesiredAPK
 ```
 
-Approve the backup from your device by selecting the "_Back up my data_" option. After the backup process is finished, you will have a _.ab_ file in your current working directory.
+Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, you will have a _.ab_ file in your current working directory.
 Run the following command to convert the .ab file into a .tar file.
 
 ```bash
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
-Alternatively, use the [Android Backup Extractor](https://sourceforge.net/projects/adbextractor/) for this task. To install, download the [binary distribution](https://sourceforge.net/projects/adbextractor/files/latest/download). For the tool to work, you also have to download the [Oracle JCE Unlimited Strength Jurisdiction Policy Files for JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html), and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+Alternatively, use the _Android Backup Extractor_ for this task. For the tool to work, you also have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for JRE7<sup>[6]</sup> or JRE8<sup>[7]</sup>, and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
 java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
@@ -774,45 +774,42 @@ $ tar xvf mybackup.tar
 
 #### Remediation
 
-To prevent backing up the app data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly disabled in order to deactivate it.
+To prevent backing up the app data, set the `android:allowBackup` attribute to **false** in `AndroidManifest.xml`. If this attribute is not available the allowBackup setting is enabled by default. Therefore it need to be explicitly set in order to deactivate it.
 
 Sensitive information should not be sent in clear text to the cloud. It should either be:
-
 * avoided to store the information in the first place or
 * encrypt the information at rest, before sending it to the cloud.
 
-Files can also be excluded from Auto Backup, in case they should not be shared with Google Cloud, see [including files][e894a591].
+Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should not be shared with Google Cloud.
 
 
 #### References
 
-- Documentation for the application tag: https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
-* [Backing up app Data to the Cloud][fd7bd757]
-* [Key/Value Backup][1aee61a9]
-* [BackupAgentHelper][48d8d464]
-* [BackupAgent][03c7b547]
-* [Auto Backup][bf8bd4ca]
-
-[e894a591]: https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles "IncludingFiles"
-[fd7bd757]: https://developer.android.com/guide/topics/data/backup.html "BackingUpAppDataToCloud"
-[1aee61a9]: https://developer.android.com/guide/topics/data/keyvaluebackup.html "KeyValueBackup"
-[48d8d464]: https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper"
-[03c7b547]: https://developer.android.com/reference/android/app/backup/BackupAgent.html "BackupAgent"
-[bf8bd4ca]: https://developer.android.com/guide/topics/data/autobackup.html "AutoBackup"
-
-
-
-
-##### OWASP MASVS
-
-- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
 
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
+##### OWASP MASVS
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
+
 ##### CWE
-* [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
+* CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
+
+##### Info
+[1] Documentation for the application tag - https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
+[2] IncludingFiles - https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles
+[3] Backing up App Data to the cloud - https://developer.android.com/guide/topics/data/backup.html
+[4] KeyValueBackup - https://developer.android.com/guide/topics/data/keyvaluebackup.html
+[5] BackupAgentHelper - https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html
+[6] BackupAgent - https://developer.android.com/reference/android/app/backup/BackupAgent.html
+[7] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7 - http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
+[8] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8 - http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+[9] AutoBackup - https://developer.android.com/guide/topics/data/autobackup.html
+
+
+##### Tools
+* Android Backup Extractor - https://sourceforge.net/projects/adbextractor/
 
 
 ### Testing for Sensitive Information in Auto-Generated Screenshots
