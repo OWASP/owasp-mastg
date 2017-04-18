@@ -330,7 +330,6 @@ other = "I want to believe"
 main[1] cont     
 ```
 
-
 ##### The 'Wait For Debugger' Feature
 
 The Developer options also contain the useful "Wait for Debugger" setting that allows you to suspend an app during startup. We'll revisit this option in a bit.
@@ -343,24 +342,28 @@ Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>
 
 A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method was described in the NetSPI blog []
 
--- TODO [Debugging with IntelliJ] --
 
+-- TODO [Debugging with IntelliJ] --
 
 
 File -> New -> Project...
 
-
 Choose "Android"
-
-
 
 Name the project
 
+
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px" />
 
 
 Choose "Add no Activity"
 
 
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="500px" />
+
+<img src="Images/Chapters/0x05c/final_structure.jpg" width="400px" />
+
+<img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="400px" />
 
 
 ##### Debugging Native Code
