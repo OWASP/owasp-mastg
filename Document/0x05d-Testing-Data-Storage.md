@@ -456,7 +456,7 @@ etxt.setCustomSelectionActionModeCallback(new Callback() {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 return false;
             }
-
+0
             public void onDestroyActionMode(ActionMode mode) {                  
             }
 
@@ -655,15 +655,17 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 #### Overview
 
-In many apps users need to key in different kind of data to for example register or execute payment and data is also shown to the user. Sensitive data could be exposed if the app is not masking it properly.
+In many apps users need to key in different kind of data to for example register an account or execute payment. Sensitive data could be exposed if the app is not masking it properly and showing data in clear text.
 
 Masking of sensitive data within an activity of an app should be enforced to prevent disclosure and mitigate for example shoulder surfing.
 
 #### Static Analysis
 
-To verify if the application is masking sensitive information, check for the following:
+To verify if the application is masking sensitive information that is keyed in by the user, check for the following attribute in the definition of EditText:
 
--- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
+```
+android:inputType="textPassword"
+```
 
 #### Dynamic Analysis
 
@@ -673,21 +675,18 @@ If the information is masked, e.g. by replacing characters in the text field thr
 
 #### Remediation
 
-In order to prevent leaking of data, sensitive information should be masked in the user interface. Either if they are shown to the user or if the user needs to enter them.
-
--- TODO [Masking of sensitive data in input fields, how can it be implemented in Android]
+In order to prevent leaking of passwords or pins, sensitive information should be masked in the user interface. The attribute `android:inputType="textPassword"` should therefore be used for EditText fields.
 
 #### References
-
-##### OWASP MASVS
-
-- V2.7: "No sensitive data, such as passwords and credit card numbers, is exposed through the user interface."
 
 ##### OWASP Mobile Top 10 2016
 * M4 - Unintended Data Leakage
 
+##### OWASP MASVS
+- V2.7: "No sensitive data, such as passwords and pins, is exposed through the user interface."
+
 ##### CWE
-- [CWE-200: Information Exposure](https://cwe.mitre.org/data/definitions/200.html)
+- CWE-200 - Information Exposure
 
 
 
