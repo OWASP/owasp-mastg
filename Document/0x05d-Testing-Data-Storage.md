@@ -954,7 +954,6 @@ Apps that are processing or querying sensitive information should ensure that th
 * Detection of encrypted device
 * Detection of rooted device (see also "Testing Root Detection")
 
-
 #### Static Analysis
 
 In order to be able to test the device-access-security policy that is enforced by the app, a written copy of the policy needs to be provided. The policy should define what checks are available and how they are enforced. For example one check could require that the app only runs on Android Marshmallow (Android 6.0) or higher and the app is closing itself if the app is running on an Android version < 6.0.
