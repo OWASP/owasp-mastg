@@ -714,7 +714,7 @@ Check the `AndroidManifest.xml` file for the following flag:
 android:allowBackup="true"
 ```
 
-If the value is set to **true**, investigate whether the app saves any kind of sensitive data, check "".
+If the value is set to **true**, investigate whether the app saves any kind of sensitive data, check the test case "Testing for Sensitive Data in Local Storage".
 
 ##### Cloud
 Regardless of using either key/value or auto backup, it needs to be identified:
@@ -785,7 +785,6 @@ Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should n
 
 #### References
 
-
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
@@ -812,20 +811,20 @@ Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should n
 * Android Backup Extractor - https://sourceforge.net/projects/adbextractor/
 
 
+
 ### Testing for Sensitive Information in Auto-Generated Screenshots
 
 #### Overview
 
-Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application. Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. This information is written to local storage, from which it may be recovered either by a rogue application on a jailbroken device, or by someone who steals the device.
+Manufacturers want to provide device users an aesthetically pleasing effect when an application is entered or exited, hence they introduced the concept of saving a screenshot when the application goes into the background. This feature could potentially pose a security risk for an application. Sensitive data could be exposed if a user deliberately takes a screenshot of the application while sensitive data is displayed, or in the case of a malicious application running on the device, that is able to continuously capture the screen. This information is written to local storage, from which it may be recovered either by a rogue application on a rooted device, or by someone who steals the device.
 
 For example, capturing a screenshot of a banking application running on the device may reveal information about the user account, his credit, transactions and so on.
-
 
 #### Static Analysis
 
 In Android, when the app goes into background a screenshot of the current activity is taken and is used to give a pleasing effect when the app is next entered. However, this would leak sensitive information that is present within the app.
 
-To verify if the application may expose sensitive information via task switcher, detect if the `[FLAG_SECURE][ee87d351]` options is set. You should be able to find something similar to the following line.
+To verify if the application may expose sensitive information via task switcher, detect if the `FLAG_SECURE`<sup>[1]</sup> option is set. You should be able to find something similar to the following code snippet.
 
 ```Java
 LayoutParams.FLAG_SECURE
@@ -835,16 +834,16 @@ If not, the application is vulnerable to screen capturing.
 
 #### Dynamic Analysis
 
-During black-box testing, open any screen within the app that contains sensitive information and click on Home button so that the app goes into background. Now press the task-switcher button, to see the snapshot. As showed below, if `SECURE_FLAG` is set (image on the left), the snapshot is entirely black, while if the `SECURE_FLAG` is not set (image on the right), information within the activity are shown:
+During black-box testing, open any screen within the app that contains sensitive information and click on the home button so that the app goes into background. Now press the task-switcher button, to see the snapshot. As showed below, if `FLAG_SECURE` is set (image on the left), the snapshot is entirely black, while if the `FLAG_SECURE` is not set (image on the right), information within the activity are shown:
 
-| `SECURE_FLAG` not set  | `SECURE_FLAG` set  |
+| `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
 | ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
 
 
 #### Remediation
 
-To prevent users or malicious applications from accessing information from backgrounded applications use the `SECURE_FLAG` as shown below:
+To prevent users or malicious applications from accessing information from backgrounded applications use the `FLAG_SECURE` as shown below:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -859,21 +858,18 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
-
-[ee87d351]: https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE "FLAG_SECURE"
-
-
-##### OWASP MASVS
-
-- V2.9: "The app removes sensitive data from views when backgrounded."
-
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
+##### OWASP MASVS
+- V2.9: "The app removes sensitive data from views when backgrounded."
+
 ##### CWE
-* [CWE-530](https://cwe.mitre.org/data/definitions/530.html)
+* CWE-200 - Information Exposure
+
+##### Info
+[1] FLAG_SECURE - https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE
 
 
 ### Testing for Sensitive Data in Memory
@@ -882,8 +878,8 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 
 Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
 
-To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the decompiled code before making any memory analysis.
-Once sensitive functions are identified (like decryption of data) the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
+To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
+Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
 
 #### Static Analysis
 
@@ -894,7 +890,7 @@ It needs to be identified within the code when sensitive information is stored w
 To analyse the memory of an app, the app must be **debuggable**.
 See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android app to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
-For rudimentary analysis Android Studio built-in tools can be used. Android studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
+For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
 
@@ -921,42 +917,29 @@ To quickly discover potential sensitive data in the _.hprof_ file, it is also us
 
 #### Remediation
 
-If sensitive information is used within the application memory it should be nulled immediately after usage to reduce the attack surface.
+In Java memory cannot be directly overwritten, instead the garbage collector will collect the object once no references are available anymore. To achieve this the object should be _nulled_ immediately after usage to reduce the attack surface.
 
 #### References
-
-* [Securely stores sensitive data in RAM][6227fc2d]
-
-Tools:
-* [Android Studio’s Memory Monitor][c96db86c]
-* [Eclipse’s MAT (Memory Analyzer Tool) standalone][681372d4]
-* [Memory Analyzer which is part of Eclipse][6ff3fc11]
-* [Fridump][ebd40e26]
-* [Fridump Repo][faab1495]
-* [LiME][6204d45e] (formerly DMD)
-
-[c96db86c]: http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap "MemoryMonitor"
-[681372d4]: https://eclipse.org/mat/downloads.php "EclipseMATStandalone"
-[6ff3fc11]: https://www.eclipse.org/downloads/ "MemoryAnalyzerWhichIsPartOfEclipse"
-[ebd40e26]: http://pentestcorner.com/introduction-to-fridump "Fridump"
-[faab1495]: https://github.com/Nightbringer21/fridump "FridumpRepo"
-[6204d45e]: https://github.com/504ensicsLabs/LiME "LiME"
-[6227fc2d]: https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "SecurelyStoreDataInRAM"
-
-
-
-##### References
-
-* OWASP MASVS
-
-- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
 
+##### OWASP MASVS
+* V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+
 ##### CWE
 * CWE-316 - Cleartext Storage of Sensitive Information in Memory
+
+##### Info
+* Securely stores sensitive data in RAM - https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/
+
+##### Tools
+* Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
+* Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
+* Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
+* Fridump - https://github.com/Nightbringer21/fridump
+* LiME - https://github.com/504ensicsLabs/LiME
 
 
 ### Testing the Device-Access-Security Policy
@@ -969,7 +952,7 @@ Apps that are processing or querying sensitive information should ensure that th
 * Usage of a minimum Android OS version
 * Detection of activated USB Debugging
 * Detection of encrypted device
-* Detection of rooted device (see also OMTG-ENV-006)
+* Detection of rooted device (see also "Testing Root Detection")
 
 
 #### Static Analysis
@@ -984,25 +967,24 @@ The dynamic analysis depends on the checks that are enforced by app and their ex
 
 #### Remediation
 
-Different checks on the Android device can be implemented by querying different system preferences from Settings.Secure <sup>[1]</sup>. The Device Administration API <sup>[2]</sup> offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
+Different checks on the Android device can be implemented by querying different system preferences from _Settings.Secure_<sup>[1]</sup>. The _Device Administration API_<sup>[2]</sup> offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
 
 
 #### References
-
-- [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
-- [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
-
-#### References
-
-##### OWASP MASVS
-
-- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
 
+##### OWASP MASVS
+* V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+
 ##### CWE
-- CWE: -- TODO [Link to CWE issue] --
+* CWE -- TODO [Link to CWE issue] --
+
+##### Info
+* [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
+* [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
+
 
 
 ### Verifying User Education Controls
@@ -1012,15 +994,14 @@ Different checks on the Android device can be implemented by querying different 
 Educating users is a crucial part in the usage of mobile apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
 
 The following list shows potential warnings or advises for a user when opening the app the first time and using it:
-* app shows a list of data stored locally and remotely. This can also be a link to an external ressource as the information might be quite extensive.
-* If a new user account is created within the app it should show the user if the password provided is considered as secure and applies to best practice password policies.
-* If the user is installing the app on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
-* If a user installed the app on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
-
--- TODO [What else can be a warning on Android?] --
+* Showing a list of what kind of data is stored locally and remotely. This can also be a link to an external resource as the information might be quite extensive.
+* If a new user account is created within the app it should show the user if the password provided is considered secure and applies to the  password policy.
+* If the user is installing the app on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to malware. See also "Testing Root Detection" for more details.
+* If a user installed the app on an outdated Android version a warning should be shown. See also "Testing the Device-Access-Security Policy" for more details.
 
 #### Static Analysis
 
+A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices. 
 -- TODO [Create content on Static Analysis for Verifying User Education Controls] --
 
 #### Dynamic Analysis
@@ -1035,14 +1016,11 @@ Warnings should be implemented that address the key points listed in the overvie
 
 #### References
 
--- TODO [Add references on Verifying User Education Controls] --
-
-##### OWASP MASVS
-
-- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
-
 ##### OWASP Mobile Top 10 2016
 * M1 - Improper Platform Usage
+
+##### OWASP MASVS
+- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
 
 ##### CWE
 - CWE: -- TODO [Link to CWE issue] --
