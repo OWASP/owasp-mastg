@@ -222,7 +222,7 @@ So where is the native implementation of this function? If you look into the <co
 
 <img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
-The functionality is of course exactly the same in each version, so if you're just looking to do pure static analysis, you can pick the architecture you're most familiar with. However, if you're planning to debug the same binary on a live device, it's usually wise to pick an arm build. We'll be using the <code>armeabi-v7a</code> version in the following examples, located in <code>lib/armeabi-v7a/libnative-lib.so</code>.
+
 
 According to the naming convention, we can expect an the library to export a symbol named <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code>. On Linux systems, you can list the symbols from the library using <code>readelf</code> (included in GNU binutils) or <code>nm</code>. On Mac OS, the same can be achieved with the <code>greadelf</code> tool, which you can get by installing binutils using Macports or Homebrew.
 
@@ -233,7 +233,7 @@ $ greadelf -W -s libnative-lib.so | grep Java
 
 Following to the naming convention, this is the native function that gets actually executed when the <code>stringFromJNI</code> native method is called.
 
-To read the assembly code, you can load <code>libnative-lib.so</code> on any disassembler that understands ELF binaries (i.e. every disassembler in existence). If the app ships with binaries for different architectures, you can pick the architecture you're most common with, as long as the disassembler knows how to deal with it. Note however that you'll often only find that only builds for ARM (32 and 64bit) are included, as the vast majority of smartphones and tablets runs on ARM chipsets.
+To read the assembly code, you can load <code>libnative-lib.so</code> on any disassembler that understands ELF binaries (i.e. every disassembler in existence). If the app ships with binaries for different architectures, you can pick the architecture you're most familiar with, as long as the disassembler knows how to deal with it. Each version is compiled from the same source and has exactly the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an arm build. 
 
 To support both older and newer ARM processors, Android apps may ship with libraries compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported: 
 
@@ -241,7 +241,7 @@ To support both older and newer ARM processors, Android apps may ship with libra
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers will be able to deal with any of those architectures.
+Most disassemblers will be able to deal with any of those architectures. We'll be using the <code>armeabi-v7a</code> version in the following examples, located in <code>lib/armeabi-v7a/libnative-lib.so</code>.
 
 -- TODO [Complete native static analysis] --
 
