@@ -233,7 +233,17 @@ $ greadelf -W -s libnative-lib.so | grep Java
 
 Following to the naming convention, this is the native function that gets actually executed when the <code>stringFromJNI</code> native method is called.
 
--- TODO [Complete native static analysis section] --
+To read the assembly code, you can load <code>libnative-lib.so</code> on any disassembler that understands ELF binaries (i.e. every disassembler in existence). If the app ships with binaries for different architectures, you can pick the architecture you're most common with, as long as the disassembler knows how to deal with it. Note however that you'll often only find that only builds for ARM (32 and 64bit) are included, as the vast majority of smartphones and tablets runs on ARM chipsets.
+
+To support both older and newer ARM processors, Android apps may ship with libraries compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported: 
+
+- armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set. 
+- armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
+- arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
+
+Most disassemblers will be able to deal with any of those architectures.
+
+-- TODO [Complete native static analysis] --
 
 <img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
 
@@ -353,17 +363,17 @@ Choose "Android"
 Name the project
 
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px" />
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="550px" />
 
 
 Choose "Add no Activity"
 
 
-<img src="Images/Chapters/0x05c/drag_code.jpg" width="500px" />
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="650px" />
 
-<img src="Images/Chapters/0x05c/final_structure.jpg" width="400px" />
+<img src="Images/Chapters/0x05c/final_structure.jpg" width="350px" />
 
-<img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="400px" />
+<img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="650px" />
 
 
 ##### Debugging Native Code
