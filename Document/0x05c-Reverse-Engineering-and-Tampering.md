@@ -222,9 +222,7 @@ So where is the native implementation of this function? If you look into the <co
 
 <img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
-
-
-According to the naming convention, we can expect an the library to export a symbol named <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code>. On Linux systems, you can list the symbols from the library using <code>readelf</code> (included in GNU binutils) or <code>nm</code>. On Mac OS, the same can be achieved with the <code>greadelf</code> tool, which you can get by installing binutils using Macports or Homebrew.
+Following the naming convention, we can expect an the library to export a symbol named <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code>. On Linux systems, you can list the symbols from the library using <code>readelf</code> (included in GNU binutils) or <code>nm</code>. On Mac OS, the same can be achieved with the <code>greadelf</code> tool, which you can get by installing binutils using Macports or Homebrew.
 
 ```
 $ greadelf -W -s libnative-lib.so | grep Java
@@ -241,11 +239,34 @@ To support both older and newer ARM processors, Android apps may ship with libra
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers will be able to deal with any of those architectures. We'll be using the <code>armeabi-v7a</code> version in the following examples, located in <code>lib/armeabi-v7a/libnative-lib.so</code>.
+Most disassemblers will be able to deal with any of those architectures. We'll be using IDA Pro to disassmeble the <code>armeabi-v7a</code> version in the following examples. It is located in <code>lib/armeabi-v7a/libnative-lib.so</code>. If you don't own an IDA Pro license, you can do the same thing with demo or evaluation version available on the Hex-Rays website <sup>[x]</sup>.
 
--- TODO [Complete native static analysis] --
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
+Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+
+<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="700px" />
+
+Once the file is open, click into the "Functions" window on the left and press <code>Alt+t</code> to open the search dialog. Enter "java" and hit enter. This should highlight the <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code> function. Double-click it to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
+
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="800px" />
+
+Not a lot of code there, but let's analyze it.
+
+
+
+
+
+
+```c
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_sg_vantagepoint_myapplication_MainActivity_stringFromJNI(
+        JNIEnv *env,
+        jobject /* this */) {
+
+    return env->NewStringUTF("Hello from C++");
+}
+```
 
 #### Debugging and Tracing
 
@@ -1648,7 +1669,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 + Frida - https://www.frida.re
 + Angr - http://angr.io/
 + JEB -
-+ IDA Pro -
++ IDA Pro - https://www.hex-rays.com/products/ida/
 + DroidScope -
 + DECAF - https://github.com/sycurelab/DECAF
 + PANDA - https://github.com/moyix/panda/blob/master/docs/
