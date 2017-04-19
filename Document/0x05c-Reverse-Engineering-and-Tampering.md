@@ -255,23 +255,35 @@ Not a lot of code there, but let's analyze it. The first thing we need to know i
 With that in mind, let's have a look at each line of assembly code.
 
 ```
-LDR  R2, [R0]     ; Load the JNI function table pointer into R2.
+LDR  R2, [R0]
+```
+
+Remember - the first argument (located in R0) is a pointer to the JNI function table pointer. The <code>LDR</code> instruction loads this function table pointer into R2.
+
+```
+LDR  R1, =aHelloFromC    
+```
+
+This instruction loads the address of the static string "Hello from C++" into R1.
+
+```
+LDR.W  R2, [R2, #0x29C]
+```
+
+This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look this up its definition in jni.h, which is included in the Android NDK. In our case a function pointer is 4 byte long, so offset 0x29C should point to the 167th entry in <code>struct JNINativeInterface</code>. The function prototype looks as follows:
+
+```
+jstring     (*NewStringUTF)(JNIEnv*, const char*);
 ```
 
 
-
-
-
-```c
-extern "C"
-JNIEXPORT jstring JNICALL
-Java_sg_vantagepoint_myapplication_MainActivity_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-
-    return env->NewStringUTF("Hello from C++");
-}
 ```
+ADD  R1, PC
+BX   R2
+```
+
+When this function returns, R0 contains a pointer to the newly constructed UTF string. This is already the final return value, so R0 is simply left unchanged and the function ends.
+
 
 #### Debugging and Tracing
 
@@ -308,12 +320,9 @@ $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCracka
 $ adb install UnCrackable-Repackaged.apk
 ```
 
-
 The <code>adb</code> command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug on a device connected via USB, but remote debugging over the network is also possible.
 
 An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
-
-
 
 ```bash
 $ adb shell ps | grep uncrackable
@@ -374,7 +383,7 @@ The Developer options also contain the useful "Wait for Debugger" setting that a
 
 Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>, the app won't show up in the "debug app" list unless the <code>android:debuggable</code> flag is set to <code>true</code> in the Manifest.
 
-###### Debugging Using Decompiled Sources
+###### Debugging Using an IDE
 
 A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method was described in the NetSPI blog []
 
@@ -420,15 +429,25 @@ $ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 
 ```bash
 $ adb shell
+$ ps | grep helloworld
+u0_a164   12690 201   1533400 51692 ffffffff 00000000 S sg.vantagepoint.helloworldjni
 $ su
-# ps | grep HelloWorld
-# ./gdbserver --attach localhost:1234 26806
+# /data/local/tmp/gdbserver --attach localhost:1234 12690
+Attached; pid = 12690
+Listening on port 1234
 ```
 
+
+
 ```bash
-$ $NDK/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-gdb
-(gdb) target remote :1235
-Remote debugging using :1235
+$ adb forward tcp:1234 tcp:1234
+$ export TOOLCHAIN=[YOUR-NDK-PATH]/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/
+$ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
+GNU gdb (GDB) 7.7
+(...)
+Reading symbols from libnative-lib.so...(no debugging symbols found)...done.
+(gdb) target remote :1234
+Remote debugging using :1234
 0xb6e0f124 in ?? ()
 ```
 
