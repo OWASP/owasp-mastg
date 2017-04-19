@@ -181,7 +181,7 @@ Disassemblers with support for ELF/ARM binaries (i.e. all disassemblers in exist
 
 Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device. The app is not excatly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
 
-<img src="Images/Chapters/0x05c/helloworld.jpg" width="350px" />
+<img src="Images/Chapters/0x05c/helloworld.jpg" width="300px" />
 
 Decompile the APK with apkx.py. This should extract the source into the <code>HelloWorld/src</code> directory. 
 
@@ -248,9 +248,15 @@ Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Sh
 
 Once the file is open, click into the "Functions" window on the left and press <code>Alt+t</code> to open the search dialog. Enter "java" and hit enter. This should highlight the <code>Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI</code> function. Double-click it to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="800px" />
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
 
-Not a lot of code there, but let's analyze it.
+Not a lot of code there, but let's analyze it. The first thing we need to know is that the first argument passed to every JNI is a JNIEnv pointer which points to a structure storing all JNI function pointers. This function table is iniitalized by the Java VM.
+
+<img src="Images/Chapters/0x05c/jni_interface.jpg" width="700px" />
+
+LDR  R2, [R0]
+
+Load the address pointed to by R2 into R0.
 
 
 
@@ -384,17 +390,17 @@ Choose "Android"
 Name the project
 
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="550px" />
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="65px" />
 
 
 Choose "Add no Activity"
 
 
-<img src="Images/Chapters/0x05c/drag_code.jpg" width="650px" />
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="700px" />
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" width="350px" />
 
-<img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="650px" />
+<img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="700px" />
 
 
 ##### Debugging Native Code
@@ -1455,7 +1461,7 @@ The system should now boot normally. To quickly verify that the correct kernel i
 
 System call hooking allows us to attack any anti-reversing defenses that depend on functionality provided by the kernel. With our custom kernel in place, we can now use a LKM to load additional code into the kernel. We also have access to the /dev/kmem interface, which we can use to patch kernel memory on-the-fly. This is a classical Linux rootkit technique and has been described for Android by Dong-Hoon You [1].
 
-![Disassembly of function main.](Images/Chapters/0x05c/syscall_hooking.jpg)
+<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="700px"/>
 
 The first piece of information we need is the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers are not so lucky). We can look up the address in the /proc/kallsyms file:
 
