@@ -252,7 +252,7 @@ Once the file is open, click into the "Functions" window on the left and press <
 
 Not a lot of code there, but let's analyze it. The first thing we need to know is that the first argument passed to every JNI is a JNIEnv pointer which points to a structure storing all JNI function pointers. This function table is iniitalized by the Java VM.
 
-<img src="Images/Chapters/0x05c/JNI_interface.jpg" width="700px" />
+<img src="Images/Chapters/0x05c/JNI_interface.png" width="700px" />
 
 LDR  R2, [R0]
 
