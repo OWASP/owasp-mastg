@@ -177,6 +177,8 @@ An alternative (and faster) way of getting the decrypted string is by adding a b
 
 Dalvik and ART both support the Java Native Interface (JNI), which defines defines a way for Java code to interact with native code written in C/C++. Just like on other Linux-based operating systes, native code is packaged into ELF dynamic libraries ("*.so"), which are then loaded by the Android app during runtime using the <code>System.load</code> method.
 
+Android JNI functions consist of native code compiled into Linux ELF libraries. It's pretty much standard Linux fare. However, instead of relying on widely used C libraries such as glibc, Android binaries are built against a custom libc named Bionic [x]. Bionic adds support for important Android-specific services such as system properties and logging, and is not fully POSIX-compatible.
+
 Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device. The app is not excatly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
 
 <img src="Images/Chapters/0x05c/helloworld.jpg" width="300px" />
@@ -263,7 +265,7 @@ Remember - the first argument (located in R0) is a pointer to the JNI function t
 LDR  R1, =aHelloFromC 
 ```
 
-This instruction loads the pc-relative offset of the string "Hello from C++" into R1. Note that this string is located directly after the end of the function block at offset 0xe84.
+This instruction loads the pc-relative offset of the string "Hello from C++" into R1. Note that this string is located directly after the end of the function block at offset 0xe84. The addressing relative to the program counter allows the code to run independent of its position in memory.
 
 ```
 LDR.W  R2, [R2, #0x29C]
@@ -275,15 +277,21 @@ This instruction loads the function pointer from offset 0x29C into the JNI funct
 jstring     (*NewStringUTF)(JNIEnv*, const char*);
 ```
 
+The function expects two arguments: The JNIEnv pointer (already in R0) and a String pointer. Next, the current value of PC is added to R1, resulting in the absolute address of the static string "Hello from C++" (PC + offset).
+
 ```
 ADD  R1, PC
 ```
+
+Finally, the program executes a branch instruction to the NewStringUTF function pointer loaded into R2:
 
 ```
 BX   R2
 ```
 
-When this function returns, R0 contains a pointer to the newly constructed UTF string. This is already the final return value, so R0 is simply left unchanged and the function ends.
+When this function returns, R0 contains a pointer to the newly constructed UTF string. This is the final return value, so R0 is left unchanged and the function ends.
+
+We've now covered the basics of static analysis on Android. Of course, the only way to *really* learn it is hands-on experience: Start by building your own projects in Android Studio and observing how your code gets translated to bytecode and native code, and have a shot at our cracking challenges. In the real world - especially when reversing more complex apps or malware - you'll find that pure static analysis is very difficult. Observing and manipulating an app during runtime makes it much, much easier to decipher its behaviour. Next, we'll have a look at dynamic analysis methods that help you do just that.
 
 #### Debugging and Tracing
 
@@ -1792,6 +1800,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 + Frida - https://www.frida.re
 + Angr - http://angr.io/
 + JEB -
++ Bionic - https://github.com/android/platform_bionic
 + IDA Pro - https://www.hex-rays.com/products/ida/
 + DroidScope -
 + DECAF - https://github.com/sycurelab/DECAF
