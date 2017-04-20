@@ -239,7 +239,6 @@ To support both older and newer ARM processors, Android apps ship with multple A
 
 Most disassemblers will be able to deal with any of those architectures. Below, we'll be viewing the <code>armeabi-v7a</code> version IDA Pro. It is located in <code>lib/armeabi-v7a/libnative-lib.so</code>. If you don't own an IDA Pro license, you can do the same thing with demo or evaluation version available on the Hex-Rays website <sup>[x]</sup>.
 
-
 Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 <img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="700px" />
@@ -261,29 +260,30 @@ LDR  R2, [R0]
 Remember - the first argument (located in R0) is a pointer to the JNI function table pointer. The <code>LDR</code> instruction loads this function table pointer into R2.
 
 ```
-LDR  R1, =aHelloFromC    
+LDR  R1, =aHelloFromC 
 ```
 
-This instruction loads the address of the static string "Hello from C++" into R1.
+This instruction loads the pc-relative offset of the string "Hello from C++" into R1. Note that this string is located directly after the end of the function block at offset 0xe84.
 
 ```
 LDR.W  R2, [R2, #0x29C]
 ```
 
-This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look this up its definition in jni.h, which is included in the Android NDK. In our case a function pointer is 4 byte long, so offset 0x29C should point to the 167th entry in <code>struct JNINativeInterface</code>. The function prototype looks as follows:
+This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks as follows:
 
 ```
 jstring     (*NewStringUTF)(JNIEnv*, const char*);
 ```
 
-
 ```
 ADD  R1, PC
+```
+
+```
 BX   R2
 ```
 
 When this function returns, R0 contains a pointer to the newly constructed UTF string. This is already the final return value, so R0 is simply left unchanged and the function ends.
-
 
 #### Debugging and Tracing
 
@@ -433,10 +433,9 @@ $ ps | grep helloworld
 u0_a164   12690 201   1533400 51692 ffffffff 00000000 S sg.vantagepoint.helloworldjni
 $ su
 # /data/local/tmp/gdbserver --attach localhost:1234 12690
-Attached; pid = 12690
+Attached; pid = 14342
 Listening on port 1234
 ```
-
 
 
 ```bash
@@ -451,10 +450,110 @@ Remote debugging using :1234
 0xb6e0f124 in ?? ()
 ```
 
+The problem: At this point it's already too late! The function has already run...
 
 
 
--- TODO [Write introduction to debugging native code (HelloWorld-JNI)] --
+```bash
+$ adb shell
+android $ su
+android # /data/local/tmp/gdbserver --attach localhost:1234 14342 
+
+
+Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI.  Activate the "Wait for debugger" switch.
+
+
+Launch the app
+
+```bash
+$ adb jdwp
+14342
+$ adb forward tcp:7777 jdwp:14342
+$ { echo "suspend"; cat; } | jdb -attach localhost:7777
+> stop in java.lang.System.loadLibrary
+> resume
+All threads resumed.
+Breakpoint hit: "thread=main", java.lang.System.loadLibrary(), line=988 bci=0
+> step up
+main[1] step up
+> 
+Step completed: "thread=main", sg.vantagepoint.helloworldjni.MainActivity.<clinit>(), line=12 bci=5
+
+main[1] 
+```
+
+At this point, the library has been loaded.
+
+
+```bash
+$ adb shell
+android $ su
+android # /data/local/tmp/gdbserver --attach localhost:1234 14342 
+```
+
+
+```bash
+$ adb forward tcp:1234 tcp:1234
+$ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
+GNU gdb (GDB) 7.7
+Copyright (C) 2014 Free Software Foundation, Inc.
+(...)
+(gdb) target remote :1234
+Remote debugging using :1234
+0xb6de83b8 in ?? ()
+(gdb) info sharedlibrary
+(...)
+0xa3522e3c  0xa3523c90  Yes (*)     libnative-lib.so
+(gdb) info functions
+All defined functions:
+
+Non-debugging symbols:
+0x00000e78  Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
+(...)
+0xa3522e78  Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
+(...)
+```
+
+
+Set a breakpoint:
+
+```
+(gdb) b *0xa3522e78
+Breakpoint 1 at 0xa3522e78
+(gdb) cont
+
+```
+
+In jdb:
+
+```
+main[1] resume
+All threads resumed.
+```
+
+In gdb:
+
+```
+Breakpoint 1, 0xa3522e78 in Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI () from libnative-lib.so
+(gdb) disass $pc
+Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI:
+=> 0xa3522e78 <+0>: ldr r2, [r0, #0]
+   0xa3522e7a <+2>: ldr r1, [pc, #8]  ; (0xa3522e84 <Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI+12>)
+   0xa3522e7c <+4>: ldr.w r2, [r2, #668]  ; 0x29c
+   0xa3522e80 <+8>: add r1, pc
+   0xa3522e82 <+10>:  bx  r2
+   0xa3522e84 <+12>:  lsrs  r4, r7, #28
+   0xa3522e86 <+14>:  movs  r0, r0
+End of assembler dump.
+```
+
+
+```
+
+
+```
+
+
 
 ##### Execution Tracing
 
