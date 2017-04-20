@@ -2,7 +2,7 @@
 #
 # apkx -- A Python wrapper for dex2jar and CFR. Use to extract and decompile Java code from Android APK.
 # Because nobody likes messing with Java classpaths & command lines.
-# v0.9
+# v0.9.1
 #
 # Author: Bernhard Mueller
 # This file is part of the OWASP Mobile Testing Guide (https://github.com/OWASP/owasp-mstg)
@@ -51,21 +51,28 @@ except IOError as e:
 	Convert classes.dex to classes.jar using dex2jar
 '''
 
-try:
-	subprocess.call(['java', '-Xms512m', '-Xmx1024m', '-cp', jar_path, 'com.googlecode.dex2jar.tools.Dex2jarCmd', ext_path + '/classes.dex', '-o', ext_path + '/classes.jar', '-f'])
-except Exception as e:
-	print('Error converting dex to jar:'+ str(e))
-	sys.exit(0)
+for root, dirs, files in os.walk(ext_path):
+	for file in files:
+		if file.endswith((".dex")):
+			jar_filename = os.path.splitext(file)[0] + ".jar"
 
-'''
-	Decompile using CFR
-'''
+			print('Converting: ' + file + ' -> ' + jar_filename)
 
-print("Decompiling to " + src_path)
+			try:
+				subprocess.call(['java', '-Xms512m', '-Xmx1024m', '-cp', jar_path, 'com.googlecode.dex2jar.tools.Dex2jarCmd', ext_path + '/' + file, '-o', ext_path + '/' + jar_filename, '-f'])
+			except Exception as e:
+				print('Error converting dex to jar:'+ str(e))
+				next
 
-try:
-	subprocess.call(['java','-Xms512m', '-Xmx1024m', '-cp', jar_path, 'org.benf.cfr.reader.Main', ext_path + '/classes.jar', '--outputdir', src_path, '--caseinsensitivefs', 'true', '--silent', 'true'])
-except Exception as e:
-	print('Error decompiling:' + str(e))
+			'''
+				Decompile using CFR
+			'''
+
+			print("Decompiling to " + src_path)
+
+			try:
+				subprocess.call(['java','-Xms512m', '-Xmx1024m', '-cp', jar_path, 'org.benf.cfr.reader.Main', ext_path + '/' + jar_filename, '--outputdir', src_path, '--caseinsensitivefs', 'true', '--silent', 'true'])
+			except Exception as e:
+				print('Error decompiling:' + str(e))
 
 
