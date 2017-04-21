@@ -65,7 +65,7 @@ In a Static Analysis approach, the developers must provide the source code or co
 * Great at identifying standard security vulnerabilities such as SQL injection flaws and etc.  
 
 ##### Cons of Static Analysis
-* Require access to the source code 
+* May require access to the source code 
 * High number of false positives
 * Unable to identify issues related to operational deployment environments
 
