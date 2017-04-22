@@ -204,13 +204,13 @@ In this guide, we'll cover basic tampering techniques such as patching and hooki
 
 ### Before You Start
 
-Before you dive into the world of mobile app reversing, we have some good news and some bad news for you. Let's start with the good news:
+Before you dive into the world of mobile app reversing, we have some good news and some bad news to share. Let's start with the good news:
 
 **Ultimately, the reverse engineer always wins.**
 
 This is even more true in the mobile world, where the reverse engineer has a natural advantage: The way mobile apps are deployed and sandboxed is more restrictive by design, so it is simply not feasible to include the rootkit-like functionality often found in Windows software (e.g. DRM systems). At least on Android, you have a much higher degree of control over the mobile OS, giving you easy wins in many situations (assuming you know how to use that power). On iOS, you get less control - but defensive options are even more limited.
 
-On the other hand, dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted.  By nature, the best software protection schemes are highly proprietary, and while many tasks can be automated, the way to successful reversing is plastered with good amounts of thinking, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
+The bad news is that dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features and highly complex control flow transformations is not for the faint-hearted. The most effective software protection schemes are highly proprietary and won't be beaten using standard tweaks and tricks. Defeating them requires tedious manual analysis, coding, frustration, and - depending on your personality - sleepless nights and strained relationships.
 
 It's easy to get overwhelmed by the sheer scope of it in the beginning. The best way to get started is to set up some basic tools (see the respective sections in the Android and iOS reversing chapters) and starting doing simple reversing tasks and crackmes. As you go, you'll need to learn about the assembler/bytecode language, the operating system in question, obfuscations you encounter, and so on. Start with simple tasks and gradually level up to more difficult ones.
 
@@ -242,9 +242,11 @@ Disassemblers and decompilers allow you to translate an app binary code or byte-
 
 A wide range of tools and frameworks is available: from expensive but convenient GUI tools, to open source disassembling engines and reverse engineering frameworks. Advanced usage instructions for any of these tools often easily fill a book on their own. The best way to get started though is simply picking a tool that fits your needs and budget and buying a well-reviewed user guide along with it. We'll list some of the most popular tools in the OS-specific "Reverse Engineering and Yampering" chapters.
 
-#### Tracing and Debugging
+#### Debugging and Tracing
 
--- TODO [Describe Debugging : how it works, when you can / have to use it, examples of tools] --
+In the traditional sense, debugging is the process of identifying and isolating problems in a program as part of the software development lifecycle. The very same tools used for debugging are of great value to reverse engineers even when identifying bugs is not the primary goal. Debuggers enable suspending a program at any point during runtime, inspect the internal state of the process, and even modify the content of registers and memory. These abilities make it *much* easier to figure out what a program is actually doing.
+
+When talking about debugging, we usually mean interactive debugging sessions in which a debugger is attached to the running process. In contrast, *tracing* refers to passive logging of information about the app's execution, such as API calls. This can be done in a number of ways, including debugging APIs, function hooks, or Kernel tracing facilities. Again, we'll cover many of these techniques in the OS-specific "Reverse Engineering and Yampering" chapters.
 
 ### Advanced Techniques
 
@@ -262,9 +264,9 @@ Running an app in the emulator gives you powerful ways to monitor and manipulate
 
 #### Reverse Engineering Frameworks
 
-Program Analysis Using Symbolic / Concolic Execution
+-- TODO [What are reversing frameworks and when to use them] --
 
-Even though most GUI-based disassemblers support scripting and extension, it can be 
+Even though most GUI-based disassemblers support scripting and extension, it can be (TODO)
 
 ##### Program Analysis using Symbolic / Concolic Execution
 
