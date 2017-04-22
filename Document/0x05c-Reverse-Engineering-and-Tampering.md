@@ -24,7 +24,7 @@ Other than that, it's really a matter of preference and budget. A ton of free an
 
 ### Building a Reverse Engineering Environment For Free
 
-With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD<code>[4]</code> is a free Java de-compiler that integrates with Eclipse<code>[5]</code> and IntelliJ IDEA <code>[6]</code>. Generally, we recommend using IntelliJ, as it is the more light-weight solution, works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Advice is based on the author's opinion and personal bias).
+With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD<sup>[4]</sup> is a free Java de-compiler that integrates with Eclipse<sup>[5]</sup> and IntelliJ IDEA <sup>[6]</sup>. Generally, we recommend using IntelliJ, as it is the more light-weight solution, works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Advice is based on the author's opinion and personal bias).
 
 If you don’t mind looking at Smali instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device <sup>[7]</sup>. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
@@ -34,11 +34,11 @@ More elaborate tasks such as program analysis and automated de-obfuscation can b
 
 ##### JEB
 
-JEB <code>[10]</code>, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - and since version 2.0 JEB has changed to a subscription model, so you'll need to pay a hefty monthly fee to use it.
+JEB <sup>[10]</sup>, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - and since version 2.0 JEB has changed to a subscription model, so you'll need to pay a hefty monthly fee to use it.
 
 ##### IDA Pro
 
-IDA Pro <code>[11]</code> understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the Smali disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
+IDA Pro <sup>[11]</sup> understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the Smali disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
 
 ### Reverse Engineering
 
