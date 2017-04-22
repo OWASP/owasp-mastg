@@ -14,7 +14,49 @@ From the view of a mobile app, this means that extra care has to be taken when s
 
 Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
 
--- TODO [What is the OWASP Mobile Top 10] --
+## OWASP Mobile Top 10 2016
+The OWASP Mobile Top 10 is the equivalent counterpart of the OWASP Top Ten Project, but is specifically designed to focus on the mobile application security. Most of the time, folks in the information security industry discuss about the "OWASP Top Ten" project but in fact, they are only referring to the web application security. 
+
+In this guide, we bring to your attention about its equivalent counterpart, the OWASP Mobile Top 10 2016, which is essentially an awareness document for mobile application security. 
+
+The OWASP Mobile Top 10 represents a broad consensus about what are the most critical mobile application security flaws identified in the actual mobile applications, derived as per the raw data obtained from various different vendors and consultants in the information security industry. 
+
+The following are the OWASP Mobile Top 10:
+
+* M1 - Improper Platform Usage<sup>[1]</sup>
+  * Misuse of a mobile platform feature or failure to use platform security controls adequately 
+  * Scope of coverage includes Android intents, platform permissions, misuse of TouchID, the Keychain, or some other security control that is part of the mobile operating system
+  * Some examples includes the violation of published guidelines, violation of convention or common practice, and any unintentional misuse
+* M2 - Insecure Data Storage<sup>[2]</sup>
+  * Insufficient protection mechanisms towards user or app data stored locally in the mobile devices 
+  * Scope of coverage includes an adversary that has attained a lost or stolen mobile device, malware or a repackaged app acting on the adversary's behalf that executes on the mobile device
+  * Data insecurely stored includes files such as SQLite databases, log files, XML files and cookies
+* M3 - Insecure Communication<sup>[3]</sup>
+  * Insufficient protection mechanisms towards user or app data transmitted over the mobile device's carrier network or the internet
+  * Scope of coverage includes an adversary that shares the same Local Area Network (LAN), network devices or malware; and whether defensive mechanisms such as Certificate Pinning has been implemented in the mobile app   
+* M4 - Insecure Authentication<sup>[4]</sup>
+  * Lack of proper authentication methods and controls
+  * Scope of coverage includes the exploitation of authentication vulnerabilities like weak password policy
+* M5 - Insufficient Cryptography<sup>[5]</sup>
+  * Usage of inadequately strong cryptographic standards, or poor crytography implementation and usages 
+  * Scope of coverage includes the cracking of improperly encrypted data through physical access or mobile malware acting on an adversary's behalf	
+* M6 - Insecure Authorisation<sup>[6]</sup>
+  * Lack of proper roles and permissions validation and access rights controls
+  * Scope of coverage includes the exploitation of the authorization vulnerabilities like insecure direct object references
+* M7 - Poor Code Quality<sup>[7]</sup>
+  * Insufficient consistency in coding patterns and lack of proper user data input validations and method calls
+  * Scope of coverage includes any plausible endpoints that can pass untrusted inputs to method calls made within the mobile app's code, resulting in potential exploitation via malware or phishing scams
+* M8 - Code Tampering<sup>[8]</sup>
+  * Lack of runtime checks function that perform app code integrity checks  
+  * Scope of coverage includes exploitation through code modification via malicious forms of the apps hosted in third-party app stores. Malicious attacker may also trick the user into installing the app via phishing attacks
+* M9 - Reverse Engineering<sup>[9]</sup>
+  * Missing obfuscation methods 
+  * Scope of coverage includes downloading the mobile app from an app store and analyze it within their own local environment using a suite of different tools to identify potential attack vectors	
+* M10 - Extraneous Functionality<sup>[10]</sup>
+  * Lack of logs and endpoints verification prior to publishing the production builds 
+  * Scope of coverage includes the identification of hidden or extraneous functionality in the backend system or the mobile app itself, and then exploit it directly from their own systems without any involvement by end-users	
+  
+To read more about the category of vulnerabilities and procedures to prevent them from compromising your mobile application, please refer to the OWASP Mobile Top 2016 Project Page<sup>11</sup>.
 
 ## The OWASP Mobile AppSec Verification Standard, Checklist and Testing Guide
 
@@ -31,3 +73,27 @@ For example, the MASVS requirements could be used in the planning and architectu
 ## Organization of the Testing Guide
 
 -- TODO [Describe the organization of the current guide] --
+
+## References
+
+* [1] M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+
+* [2] M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
+
+* [3] M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
+* [4] M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+* [5] M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+
+* [6] M6 - Insecure Authorisation - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
+
+* [7] M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+* [8] M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
+
+* [9] M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+
+* [10] M10 - Extraneous Functionality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality
+
+* [11] OWASP Mobile Top 2016 Project Page - https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10
