@@ -4,21 +4,23 @@ Its openness makes Android a favorable environment for reverse engineers. Howeve
 
 In comparison to iOS, Android offers some big advantages to reverse engineers. First of all transparency: You can study the source code of the Android Open Source Project (AOSP), build your ROMs, and so on. The OS is also much more friendly to developers and tinkerers in other way: From the developer options available by default, to the way debugging is set up and the tools shipping with the SDK, there's lot of niceties to make your life easier compared to "some other vendors".
 
-However, there's also a few challenges you'll encounter. For example, if you're used to analyzing native code, you'll need to SMALI to your repertoire. As it is easy for developers to call into native code via the Java Native Interface (JNI), you'll often need to work with Java and native code at the same time. JNI is sometimes used on purpose to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to impede reverse engineering deliberately split functionality between Java bytecode and native code, structuring their apps such that execution frequently jumps between the two layers.
+However, there's also a few challenges you'll encounter. For example, if you're used to analyzing native code, you'll need to Smali to your repertoire. Smali/Baksmali is an assembler/disassembler for the Dex format - it's also icelandic for "Assembler/Disassembler". 
+
+Moreover, because it is easy for developers to call into native code via the Java Native Interface (JNI), you'll often need to work with Java and native code at simultaneously JNI is sometimes used on purpose to confuse reverse engineers (to be fair, there might also be legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers seeking to impede reverse engineering deliberately split functionality between Java bytecode and native code, structuring their apps such that execution frequently jumps between the two layers.
 
 You'll need a working knowledge about both the Java-based Android environment and the Linux OS and Kernel that forms the basis of Android (better yet, they’d know all these components inside out). Plus, they need the right toolset to deal with both native code and bytecode running inside the Java virtual machine.
 
-Note that in the following sections we'll use the OWASP Mobile Testing Guide Crackmes <sup>[1]</sup> as examples for demonstrating various reverse engineering techniques, so expect partial spoilers. We encourage you to have a crack at the challenges first before reading on!
+Note that in the following sections we'll use the OWASP Mobile Testing Guide Crackmes <sup>[1]</sup> as examples for demonstrating various reverse engineering techniques, so expect partial and full spoilers. We encourage you to have a crack at the challenges yourself before reading on!
 
 ### What You Need
 
-At the very least, you'll need Android Studio <sup>[2]</sup>, which comes with the Android SDK, platform tools and emulator, as well as a manager app for managing the various SDK versions and framework components.  Wit Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the following is installed on your system:
+At the very least, you'll need Android Studio <sup>[2]</sup>, which comes with the Android SDK, platform tools and emulator, as well as a manager app for managing the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the following is installed on your system:
 
 - The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client as well as other tools that interface with the Android platform. In general, these tools are backward-compatible, so you need only one version of those installed.
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
 
-In addition to the SDK and NDK, you'll also something to make Java bytecode more human-friendly. APKTool <sup>[3]</sup> is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+In addition to the SDK and NDK, you'll also something to make Java bytecode more human-friendly. APKTool <sup>[3]</sup> is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format. APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
 Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
@@ -44,7 +46,7 @@ IDA Pro <code>[11]</code> understands ARM, MIPS and of course Intel ELF binaries
 
 #### Statically Analyzing Java Code
 
-Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 [8] in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
@@ -78,7 +80,7 @@ Archive:  UnCrackable-Level1.apk
 
 ```
 
-In the standard case, all the Java bytecode and data related to the app is contained in a file named *classes.dex* in the app root directory. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD [3], Jad [10], Proycon [11] and CFR [12].
+In the standard case, all the Java bytecode and data related to the app is contained in a file named *classes.dex* in the app root directory. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD <sup>[4]</sup>, Jad <sup>[10]</sup>, Proycon <sup>[11]</sup> and CFR <sup>[12]</sup>.
 
 For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website [13]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
 
@@ -1807,21 +1809,21 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [7] Smalidea - https://github.com/JesusFreke/smali/wiki/smalidea
 - [8] Radare2 - https://www.radare.org
 - [9] Angr - http://angr.io/
-- [10] Frida - https://www.frida.re
+- [10] JEB - 
 - [11] IDA Pro - https://www.hex-rays.com/products/ida/
-+ JEB -
+- [12] JAD - http://www.javadecompilers.com/jad
+- [13] Proycon - http://proycon.com/en/
+- [14] CFR - http://www.benf.org/other/cfr/
+- [15] APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
++ Frida - https://www.frida.re
 + Bionic - https://github.com/android/platform_bionic
-+ 
 + DroidScope -
 + DECAF - https://github.com/sycurelab/DECAF
 + PANDA - https://github.com/moyix/panda/blob/master/docs/
 + VxStripper -
 + Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
 + UnCrackable Android App Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01
-+ JAD - http://www.javadecompilers.com/jad
-+ Proycon - http://proycon.com/en/
-+ CFR - http://www.benf.org/other/cfr/
-+ APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
+
 + NetSPI Blog - Attacking Android Applications with Debuggers - https://blog.netspi.com/attacking-android-applications-with-debuggers/
 + http://repo.xposed.info/module/de.robv.android.xposed.installer
 + https://github.com/rovo89/XposedBridge/wiki/Development-tutorial
