@@ -8,7 +8,7 @@
 
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test.
 
-#### Preparation - Defining the baseline
+#### Preparation - Defining The Baseline
 
 First of all, you need to decide what security level of the MASVS to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we are not living in an ideal world. At the very least, it is a good idea to walk through the checklist, ideally with an IT security representative of the enterprise, the app stakeholders of the project and make a reasonable selection of Level 2 (L2) controls to cover during the test.
 
@@ -61,10 +61,12 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 In a Static Analysis approach, the developers must provide the source code or compiled IPA/APK files of the mobile application for programmatic analysis. The source code will be analyzed to ensure that there is sufficient and correct implementation of security controls, specifically on crucial components such as the authentication, authorization, session management and data storage mechanisms. 
 
 ##### Pros of Static Analysis
+
 * Great scalability, able to run on lots of mobile applications and can be easily repeated
 * Great at identifying standard security vulnerabilities such as SQL injection flaws and etc.  
 
 ##### Cons of Static Analysis
+
 * May require access to the source code 
 * High number of false positives
 * Unable to identify issues related to operational deployment environments
@@ -102,10 +104,12 @@ Crawling code is the practice of scanning a code base of the review target in qu
 For example, HTTP Request Strings like request.url or request.files, HTML Output like innerHtml or HtmlUtility, or even Database related codes like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code. 
 
 ##### Pros of Manual Code Review
+
 * Proficient in deep diving into the various code paths to check for logical errors and flaws in the mobile application's design and architecture where automated analysis tools are not able to identify
 * Great at detecting security issues like authorization, authentication and data validation as compared to automated code analysis tools
 
 ##### Cons of Manual Code Review
+
 * Difficult for human code reviewers to identify subtle mistakes such as buffer overflows
 * Requires expert human code reviewer who are proficient in both the language and the frameworks used in the mobile application, as it is essential to have a deep understanding of the security implmentation of the technologies used in the mobile application's source code
 * Time consuming, slow and tedious; especially when mobile application source code nowadays usually has so many functionalities that it has a large number of lines of code (e.g. over 10K, or sometimes even over 100K)
@@ -116,12 +120,14 @@ In a Dynamic Analysis approach, the focus is on the testing and evaluation of a 
 
 Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent data validation attacks (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors or version issues. 
 
-Pros of Dynamic Analysis
+#### Pros of Dynamic Analysis
+
 * Does not require to have access to the source code
 * Does not need to understand how the mobile application is supposed to behave
 * Able to identify infrastructure, configuration and patch issues that Static Analysis approach tools will miss
 
-Cons of Dynamic Analysis
+#### Cons of Dynamic Analysis
+
 * Limited scope of coverage because the mobile application must be footprinted to identify the specific test area
 * No access to the actual instructions being executed, as the tool is exercising the mobile application and conducting pattern matching on the requests and responses
 
@@ -141,6 +147,9 @@ In case another (proprietary) protocol is used in a mobile App that is not HTTP,
 * [Wireshark](https://www.wireshark.org/)
 
 #### Input Fuzzing
+
+-- TODO [Write a better description, or remove this] --
+
 Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input.
 Steps in fuzzing
 * Identifying a target
@@ -262,17 +271,15 @@ Another useful method for dealing with native binaries is dynamic binary instrum
 
 Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, as no emulator for iOS exists (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.
 
-#### Reverse Engineering Frameworks
+#### Custom Tooling using Reverse Engineering Frameworks
 
--- TODO [What are reversing frameworks and when to use them] --
+Even though most professional GUI-based disassemblers feature scripting facilities and extensibility, they sometimes simply not well-suited to solving a particular problem. Reverse engineering frameworks allow you perform and automate any kind of reversing task without the dependence for heavy-weight GUI, while also allowing for increased flexibility. Notably, most reversing frameworks are open source and/or available for free. Popular frameworks with support for mobile architectures include Radare2 <sup>[4]</sup> and Angr <sup>[5]</sup>.
 
-Even though most GUI-based disassemblers support scripting and extension, it can be (TODO)
-
-##### Program Analysis using Symbolic / Concolic Execution
+##### Example: Program Analysis using Symbolic / Concolic Execution
 
 In the late 2000s, symbolic-execution based testing has gained popularity as a means of identifying security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic, whereby variables are represented by symbolic values, which are actually entire ranges of values. Satisfiability Modulo Theories (SMT) solvers are used to check satisfiability of those formulas and provide a solution, including concrete values for the variables needed to reach a certain point of execution on the path corresponding to the solved formula.
 
-Typically, this approach is used in combination with other techniques such as dynamic execution (hence the name concolic stems from *conc*rete and symb*olic*), in order to tone down the path explosion problem specific to classical symbolic execution. This together with improved SMT solvers and current hardware speeds, allow concolic execution to explore paths in medium size software modules (i.e. in the order of 10s KLOC). However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution) [1].
+Typically, this approach is used in combination with other techniques such as dynamic execution (hence the name concolic stems from *conc*rete and symb*olic*), in order to tone down the path explosion problem specific to classical symbolic execution. This together with improved SMT solvers and current hardware speeds, allow concolic execution to explore paths in medium size software modules (i.e. in the order of 10s KLOC). However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution (i.e., using a mix of actual execution traces, simulation and symbolic execution) <sup>[6]</sup>.
 
 In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
@@ -282,12 +289,14 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ### References
 
-- [1] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
-- [2] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
-- [3] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
-- [4] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
-- Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
+- [2] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
+- [3] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
+- [4] Radare2 - https://github.com/radare/radare2
+- [5] Angr - http://angr.io
+- [6] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+
+
 
 
 
