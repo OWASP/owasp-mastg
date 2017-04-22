@@ -81,7 +81,7 @@ Main Contacts: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernha
 - [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Help Wanted](https://github.com/OWASP/owasp-mstg/issues/217)
 - [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
 - [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
-- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *bernhardm*
+- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *gerhard*
 - [Testing Cryptography](Document/0x06e-Testing-Cryptography.md) --  [Alexander Anthuk](https://github.com/c0rdis) - *alex*, [Gerhard Wagner](https://github.com/thec00n) - *gerhard*
 - [Testing Authentication and Session Management](Document/0x06f-Testing-Authentication-and-Session-Management.md) --  [Daniel Ramirez](https://github.com/ram7rez) - *ramirez*
 - [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch)
