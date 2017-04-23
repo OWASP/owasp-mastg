@@ -82,25 +82,23 @@ Archive:  UnCrackable-Level1.apk
 
 In the standard case, all the Java bytecode and data related to the app is contained in a file named *classes.dex* in the app root directory. This file adheres to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers expect plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. Once you have a JAR file, you can use any number of free decompilers to produce Java code - some popular decompilers are JD <sup>[4]</sup>, Jad <sup>[10]</sup>, Proycon <sup>[11]</sup> and CFR <sup>[12]</sup>.
 
-For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website [13]. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
+For this example, let's pick CFR as our decompiler of choice. CFR is under active development, and brand-new releases are made available regularly on the author's website <sup>[13]</sup>. Conveniently, CFR has been released under a MIT license, which means that it can be used freely for any purposes, even though its source code is not currently available.
 
-For convenience, we have packaged the dex2jar and CFR libraries along with a Python script that can be downloaded from the OWASP MSTG GitHub repo [14]. Download apkx.py and apkx-libs.jar from the repository and you are ready to go. Run apkx.py to extract and decompile that Java classes from the APK:
+The easiest way to run CFR is by using <code>apkx</code>, which also packages <code>dex2jar</code> as well as other decompiler backends. Install it as follows:
 
 ```
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/Download/apkx-0.9.tgz
-$ tar xzf apkx-0.9.tgz 
-$ chmod +x apkx.py
-$ ./apkx.py UnCrackable-Level1.apk 
+$ git clone https://github.com/b-mueller/apkx
+$ cd apkx
+$ sudo ./install.sh
+```
+
+This should copy <code>apkx</code> to <code>/usr/local/bin</code>. Run it on <code>UnCrackable-Level1.apk</code>:
+
+$ apkx UnCrackable-Level1.apk 
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
+Converting: classes.dex -> classes.jar (dex2jar)
 dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
-Processing UnCrackable-Level1/classes.jar (use silent to silence)
-Processing sg.vantagepoint.a.a
-Processing sg.vantagepoint.a.b
-Processing sg.vantagepoint.a.c
-Processing sg.vantagepoint.uncrackable1.MainActivity
-Processing sg.vantagepoint.uncrackable1.a
-Processing sg.vantagepoint.uncrackable1.b
-Processing sg.vantagepoint.uncrackable1.c
+Decompiling to UnCrackable-Level1/src (cfr)
 ```
 
 You should now find the decompiled sources in the "Uncrackable-Level1/src" directory. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also gets us on-device debugging functionality as a bonus.
