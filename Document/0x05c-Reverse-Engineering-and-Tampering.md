@@ -176,14 +176,17 @@ Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, inst
 
 <img src="Images/Chapters/0x05c/helloworld.jpg" width="300px" />
 
-Decompile the APK with apkx.py. This should extract the source into the <code>HelloWorld/src</code> directory. 
+Decompile the APK with <code>apkx</code>. This extract the source code into the <code>HelloWorld/src</code> directory. 
 
 ```bash
 $ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
-$ ./apkx.py HelloWorld-JNI.apk
+$ apkx HelloWord-JNI.apk 
+Extracting HelloWord-JNI.apk to HelloWord-JNI
+Converting: classes.dex -> classes.jar (dex2jar)
+dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
 ```
 
-The MainActivity is found in the file <code>MainActivity.java</code>. The "Hello World" text view is populated in the <code>onCreate()</code> method.
+The MainActivity is found in the file <code>MainActivity.java</code>. The "Hello World" text view is populated in the <code>onCreate()</code> method:
 
 ```java
 public class MainActivity
