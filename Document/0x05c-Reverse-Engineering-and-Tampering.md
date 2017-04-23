@@ -24,7 +24,9 @@ Other than that, it's really a matter of preference and budget. A ton of free an
 
 ### Building a Reverse Engineering Environment For Free
 
-With a little effort you can build a reasonable GUI-based reverse engineering environment for free. JD<sup>[4]</sup> is a free Java de-compiler that integrates with Eclipse<sup>[5]</sup> and IntelliJ IDEA <sup>[6]</sup>. Generally, we recommend using IntelliJ, as it is the more light-weight solution, works great for browsing the source code and also allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: Advice is based on the author's opinion and personal bias).
+With a little effort you can build a reasonable reverse engineering environment for free. Many free Java decompilers are available that generally deal well with Android bytecode. Popular decompilers include JD <sup>[4]</sup>, Jad <sup>[10]</sup>, Proycon <sup>[11]</sup> and CFR <sup>[12]</sup>. For convenience, we have packed some of these decompilers into our <code>apkx</code> wrapper script <sup>[15]</sup>. This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the examples below).
+
+For navigating the decompiled sources we recommend using IntelliJ, a relatively light-weight IDE that works great for browsing code and allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: This piece of advice is based on the author's opinion and personal bias).
 
 If you don’t mind looking at Smali instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device <sup>[7]</sup>. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
@@ -1812,7 +1814,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [12] JAD - http://www.javadecompilers.com/jad
 - [13] Proycon - http://proycon.com/en/
 - [14] CFR - http://www.benf.org/other/cfr/
-- [15] APKX - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/01_Tools/01_Android/01_apkx
+- [15] APKX - https://github.com/b-mueller/apkx
 + Frida - https://www.frida.re
 + Bionic - https://github.com/android/platform_bionic
 + DroidScope -
