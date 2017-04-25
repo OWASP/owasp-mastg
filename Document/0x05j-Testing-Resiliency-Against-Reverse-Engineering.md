@@ -672,17 +672,17 @@ If anti-debugging is missing or too easily bypassed, make suggestions in line wi
 
 #### Overview
 
-In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK signature check and showed how to re-package and re-sign apps for reverse engineering purposes. Adding additional integrity checks to the app itself makes this process a bit more involved. A protection scheme can be augmented with  CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer.
+In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
 
 ##### Sample Implementation
 
-Integrity checks usually calculate a checksum or hash over selected files. Files that are commonly protected include: 
+Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include: 
 
 - AndroidManifest.xml
-- classes.dex
+- Class files *.dex
 - Native libraries (*.so)
 
-As well as any other files containing Java bytecode. The following sample implementation from the Android Cracking Blog <sup>[1]</sup> calculates a CRC over classes.dex and compares is with the expected value.
+The following sample implementation from the Android Cracking Blog <sup>[1]</sup> calculates a CRC over classes.dex and compares is with the expected value.
 
 
 ```java
@@ -716,11 +716,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Effectiveness Assessment
 
-Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification an cease to function.
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue.] --
+Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification an cease to function. Note that some anti-tampering implementations respond in a stealthy way so that changes in behaviour are not immediately apparent.
 
 #### References
 
@@ -730,8 +726,7 @@ Run the app on the device in an unmodified state and make sure that everything w
 
 ##### OWASP MASVS
 
--- TODO [Update "VX.Y" and description below] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+-- V8.3: "The app detects, and responds to, tampering with executable files and critical data".
 
 ##### CWE
 
@@ -740,11 +735,6 @@ Run the app on the device in an unmodified state and make sure that everything w
 ##### Info
 
 - [1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
-
-##### Tools
-
--- TODO [Add link to relevant tool for "Testing File Integrity Checks"] --
-* Enjarify - https://github.com/google/enjarify
 
 ### Testing Detection of Reverse Engineering Tools
 
