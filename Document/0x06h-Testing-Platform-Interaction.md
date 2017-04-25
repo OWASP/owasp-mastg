@@ -484,16 +484,21 @@ The risk of malicious code running as root is higher on jailbroken devices, as m
 ##### With Source Code
 
 Look for a function with a name like isJailBroken in the code. If none of these are available, look for code checking for the following:
-1. Existence of files (such as anything with cydia or substrate in the name (such as /private/var/lib/cydia or /Library/MobileSubstrate/MobileSubstrate.dylib), /var/lib/apt, /bin/bash, /usr/sbin/sshd, sftp, etc). In swift this is done with the `FileManager.default.fileExists(atPath: filePath)` function and objective-c uses `[NSFileManager defaultManager] fileExistsAtPath:filePath`, so grepping for fileExists should show you a good list.
-2. Changes of directory permissions (ie being able to write to a file outside the the apps own directory - common examples are /, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc). /private and / seem to be the most commonly used for testing.
+1. Existence of files (such as anything with cydia or substrate in the name (such as `/private/var/lib/cydia or /Library/MobileSubstrate/MobileSubstrate.dylib`), `/var/lib/apt, /bin/bash, /usr/sbin/sshd, sftp`, etc). In swift this is done with the `FileManager.default.fileExists(atPath: filePath)` function and objective-c uses `[NSFileManager defaultManager] fileExistsAtPath:filePath`, so grepping for fileExists should show you a good list.
+2. Changes of directory permissions (ie being able to write to a file outside the the apps own directory - common examples are `/, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc`). /private and / seem to be the most commonly used for testing.
 	2.1 Check actual permissions themselves: Swift uses `NSFilePosixPermissions` and objective-c uses `directoryAttributes`, so grep for these. 
-	2.2 Check if you can write a file: Swift and objective-c both use the key words write and create for file and directory writing and creation. So grep for this and pipe to a grep for /private (or others) to get a reference.
-3. Checking size of /etc/fstab - a lot of tools modify this file, but this method is uncommon as an update from apple may break this check.
+	2.2 Check if you can write a file: Swift and objective-c both use the key words `write` and `create` for file and directory writing and creation. So grep for this and pipe to a grep for `/private` (or others) to get a reference.
+3. Checking size of `/etc/fstab` - a lot of tools modify this file, but this method is uncommon as an update from apple may break this check.
 4. Creation of symlinks due to the jailbreak taking up space on the system partition. Look for references to `/Library/Ringtones,/Library/Wallpaper,/usr/arm-apple-darwin9,/usr/include,/usr/libexec,/usr/share,/Applications` in the code.
 
 ##### Without Source Code
 
-Use Cycript<sup>[3]</sup> to examine the methods for any obvious anti-Jailbreaky type name (eg `isJailBroken`). Note this requires a jailbroken iOS device with cycript installed and shell access (via ssh). Note: at time of writing, Cycript cannot manipulate native switft code (but can still look at any objective-c libraries that are called).
+Use Cycript<sup>[3]</sup> to examine the methods for any obvious anti-Jailbreaky type name (eg `isJailBroken`). Note this requires a jailbroken iOS device with cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native switft code (but can still look at any objective-c libraries that are called). To tell if the app is written in swift, then used the nm<sub>[4]</sub> tool:
+```
+nm <appname> | grep swift
+```
+For an Objective-C only app there will be no output. However, it is still possible the app is mixed swift and objective-c.
+
 ```
 cycript -p <AppName>
 cy#[ObjectiveC.classes allKeys]
@@ -520,6 +525,7 @@ For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) c
 ##### OWASP Mobile Top 10 2016
 
 [1] - 2016-M8-Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
+
 [2] - 2016-M9-Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
@@ -532,6 +538,7 @@ Not covered.
 
 ##### Info
 
+[4] - nm tool (part of XCode) - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html
 
 ##### Tools
 
