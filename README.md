@@ -22,7 +22,9 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 ## Contributions, Feature Requests and Feedback
 
-**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks. To sign up for any of those tasks, simply comment on the respective [issue](https://github.com/OWASP/owasp-mstg/labels/help%20wanted) and/or contact us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can create a Slack account here:
+**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks.
+
+Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 
 http://owasp.herokuapp.com/
 
@@ -46,7 +48,7 @@ If you are willing to write a large portion of the guide and help consistently d
 
 ## High-Level Structure
 
-The following lists contain the individual sections of the MSTG, along with the main contacts responsible for each section. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
+The following lists contain the individual sections of the MST. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
 
 ### Introductionary
 
@@ -54,46 +56,42 @@ The following lists contain the individual sections of the MSTG, along with the 
 - [Foreword](Document/Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 
-Main Contact: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
-
 ### Overview
 
 * [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 * [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
 
-Main Contacts: [Bernhard Mueller](https://github.com/b-mueller) - Slack: *bernhardm*
-
 ### Android Testing Guide
 
-- [Platform Overview](Document/0x05a-Platform-Overview.md) -- [Romuald Szkudlarek](https://github.com/romualdszkudlarek) - *romualds*
-- [Basic Security Testing on Android](Document/0x05b-Basic-Security_Testing.md) -- [Luander Ribeiro](https://github.com/luander) - *luander*, [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
-- [Tampering and Reverse Engineering on Android](Document/0x05c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
-- [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md) -- [Francesco Stillavato](https://github.com/litsnarf) - *litsnarf*, [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
-- [Testing Cryptography](Document/0x05e-Testing-Cryptography.md) --  [Alexander Antukh](https://github.com/c0rdis) - *alex*
-- [Testing Authentication and Session Management](Document/0x05f-Testing-Authentication.md) -- [Daniel Ramirez](https://github.com/ram7rez) - *ramirez*
-- [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch) - *xep624*
-- [Testing Platform Interaction](Document/0x05h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
-- [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR) - *temmar*
-- [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
+- [Platform Overview](Document/0x05a-Platform-Overview.md)
+- [Basic Security Testing on Android](Document/0x05b-Basic-Security_Testing.md)
+- [Tampering and Reverse Engineering on Android](Document/0x05c-Reverse-Engineering-and-Tampering.md)
+- [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md)
+- [Testing Cryptography](Document/0x05e-Testing-Cryptography.md)
+- [Testing Authentication and Session Management](Document/0x05f-Testing-Authentication.md)
+- [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md)
+- [Testing Platform Interaction](Document/0x05h-Testing-Platform-Interaction.md)
+- [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md)
+- [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ### iOS Testing Guide
 
-- [Platform Overview](Document/0x06a-Platform-Overview.md) -- [Help Wanted](https://github.com/OWASP/owasp-mstg/issues/217)
-- [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
-- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
-- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md) -- [Gerhard Wagner](https://github.com/thec00n) - *gerhard*
-- [Testing Cryptography](Document/0x06e-Testing-Cryptography.md) --  [Alexander Anthuk](https://github.com/c0rdis) - *alex*, [Gerhard Wagner](https://github.com/thec00n) - *gerhard*
-- [Testing Authentication and Session Management](Document/0x06f-Testing-Authentication-and-Session-Management.md) --  [Daniel Ramirez](https://github.com/ram7rez) - *ramirez*
-- [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md) -- [Pawel Rzepa](https://github.com/th3g1itch)
-- [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md) -- [Sven Schleier](https://github.com/sushi2k) - *sushi2k*
-- [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md) -- [Abdessamad Temmar](https://github.com/TmmmmmR) - *temmar*
-- [Testing Resiliency Against Reverse Engineering](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md) -- [Bernhard Mueller](https://github.com/b-mueller) - *bernhardm*
+- [Platform Overview](Document/0x06a-Platform-Overview.md)
+- [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md)
+- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)
+- [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md)
+- [Testing Cryptography](Document/0x06e-Testing-Cryptography.md)
+- [Testing Authentication and Session Management](Document/0x06f-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md)
+- [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md)
+- [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md)
+- [Testing Resiliency Against Reverse Engineering](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ### Appendix
 
-* [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md) -- [Romuald Szkudlarek](https://github.com/romualdszkudlarek) - *romualds*, [Stefan Streichsbier](https://github.com/streichsbaer)- *stefan*
-* [Assessing Anti-Reverse Engineering Schemes](Document/0x07b-Assessing-Anti-Reverse-Engineering-Schemes.md) -- [Bernhard Mueller](https://github.com/bernhardm) - *bernhardm*
-* [Testing Tools](Document/0x08-Testing-Tools.md) -- [Prathan Phongthiproek](https://github.com/tanprathan/) - *tan_prathan*
-* [Suggested Reading](Document/0x09-Suggested-Reading.md) - N/A
+* [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md)
+* [Assessing Anti-Reverse Engineering Schemes](Document/0x07b-Assessing-Anti-Reverse-Engineering-Schemes.md)
+* [Testing Tools](Document/0x08-Testing-Tools.md)
+* [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
 
