@@ -92,6 +92,6 @@ The following lists contain the individual sections of the MST. For a detailed l
 * [Security Testing in the Application Development Lifecycle](Document/0x07-Security-Testing-SDLC.md)
 * [Assessing Anti-Reverse Engineering Schemes](Document/0x07b-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](Document/0x08-Testing-Tools.md)
-* [Suggested Reading](Document/0x09-Suggested-Reading.md) - N/A
+* [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
 
