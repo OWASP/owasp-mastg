@@ -338,12 +338,47 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 
 -- TODO [Typical debugging defenses] --
 
+
+Detecting Mach Exception Ports <sup>[1]</sup>
+
+~~~c
+#include <mach/task.h>
+#include <mach/mach_init.h>
+#include <stdbool.h>
+
+static bool amIAnInferior(void)
+{
+	mach_msg_type_number_t count = 0;
+	exception_mask_t masks[EXC_TYPES_COUNT];
+	mach_port_t ports[EXC_TYPES_COUNT];
+	exception_behavior_t behaviors[EXC_TYPES_COUNT];
+	thread_state_flavor_t flavors[EXC_TYPES_COUNT];
+	exception_mask_t mask = EXC_MASK_ALL & ~(EXC_MASK_RESOURCE | EXC_MASK_GUARD);
+
+	kern_return_t result = task_get_exception_ports(mach_task_self(), mask, masks, &count, ports, behaviors, flavors);
+	if (result == KERN_SUCCESS)
+	{
+		for (mach_msg_type_number_t portIndex = 0; portIndex < count; portIndex++)
+		{
+			if (MACH_PORT_VALID(ports[portIndex]))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+~~~
+
+
+Disabling <code>ptrace()</code>.
+
 ~~~c
 typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
 
 #define PT_DENY_ATTACH 31
 
-void disable_gdb() {
+void disable_ptrace() {
     void* handle = dlopen(0, RTLD_GLOBAL | RTLD_NOW);
     ptrace_ptr_t ptrace_ptr = dlsym(handle, "ptrace");
     ptrace_ptr(PT_DENY_ATTACH, 0, 0, 0);
@@ -352,7 +387,7 @@ void disable_gdb() {
 ~~~
 
 ~~~c
-void disable_gdb() {
+void disable_ptrace() {
 
 	asm(
 		"mov	r0, #31\n\t"	// PT_DENY_ATTACH
@@ -366,7 +401,7 @@ void disable_gdb() {
 
 
 ~~~c
-- (void)protectAgainstDebugger {
+- (void)protectAgainstPtrace {
     int                 junk;
     int                 mib[4];
     struct kinfo_proc   info;
@@ -459,7 +494,8 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] Detecting the Debugger on OS X - https://zgcoder.net/ramblings/osx-debugger-detection
+
 
 
 ##### Tools

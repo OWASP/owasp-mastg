@@ -44,6 +44,16 @@ We'll revisit this topic in the chapter "Testing Resiliency Against Reverse Engi
 
 #### Debugging
 
+-- TODO [iOS Debugging Overview] --
+
+Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the <code>task_for_pid()</code> function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
+
+Even though the <code>ptrace</code> system call is available as well, some of its functionality has been removed, including the capability to read and write register states and memory contents. Still, <code>ptrace()<code> is used in limited ways by standard debuggers such as <code>lldb</code> and <code>gdb</code>. Some debuggers, including Radare2's iOS debugger, don't invoke <code>ptrace</code> at all.
+
+##### Using lldb
+
+-- TODO [Complete lldb tutorial] --
+
 iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode [5].
 
 To obtain the executable mount the following DMG image:
@@ -93,31 +103,13 @@ debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
 Attaching to process 2670...
 ~~~
 
+##### Using Radare2
+
+-- TODO [Write Radare2 tutorial] --
+
 ### Tampering and Instrumentation
 
 #### Hooking with MobileSubstrate
-
-##### Example: Deactivating Anti-Debugging
-
-~~~
-#import <substrate.h>
-
-#define PT_DENY_ATTACH 31
-
-static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
-
-
-static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
-	if (request == PT_DENY_ATTACH) {
-		request = -1;
-	}
-	return _ptraceHook(request,pid,addr,data);
-}
-
-%ctor {
-	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
-}
-~~~
 
 #### Cycript and Cynject
 
@@ -151,3 +143,4 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 - [3] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
 - [4] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
 - [5] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
+- [6] Uninformed - Replacing ptrace() - http://uninformed.org/index.cgi?v=4&a=3&p=14
