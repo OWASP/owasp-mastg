@@ -339,7 +339,7 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 -- TODO [Typical debugging defenses] --
 
 
-Detecting Mach Exception Ports <sup>[1]</sup>
+Detecting Mach Exception Ports <sup>[1]</sup>:
 
 ~~~c
 #include <mach/task.h>
@@ -495,8 +495,6 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 ##### Info
 
 - [1] Detecting the Debugger on OS X - https://zgcoder.net/ramblings/osx-debugger-detection
-
-
 
 ##### Tools
 
