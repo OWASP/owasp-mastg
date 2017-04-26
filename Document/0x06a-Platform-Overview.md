@@ -1,7 +1,5 @@
 ## iOS Platform Overview
 
-(...TODO...)
-
 As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
 
 Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
@@ -9,8 +7,6 @@ Objective-C is an object-oriented programming language that adds Smalltalk-style
 Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
 
 ### The iOS Security Architecture
-
-(...TODO...)
 
 The core features of the iOS security architecture:
 
@@ -20,22 +16,34 @@ The core features of the iOS security architecture:
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-Secure Boot
+A very good and detailed analysis of iOS security architecture has been done by [Johnatan Levin in MacOS and iOS Internals Vol. 3](http://www.newosxbook.com/2ndUpdate.html) [4]
 
-When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. During this booting process, the "Secure Boot Chain" ensures that it is running on validated Apple devices. The process will only proceed if the next step is secure and verification is successful. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. (...TODO...)
+#### Secure Boot
 
+When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating root of trust. In the next step, the Boot ROM code checks if signature of iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of next boot stage, which is iOS kernel. If any of these step failed, the boot process is immediately terminated and the devices enters recovery mode and displays "Connect to iTunes" screen. If, however, the Boot ROM fails to load, the device enters special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to original state. There will be no sign of activity of the device, i.e. the screen will not display anything. 
 
-Code Signing
+The entire process is called "Secure Boot Chain" and ensures that it is running only on Apple-manufactured devices. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. 
+All new devices that have Secure Enclave coprocessor, i.e. starting from iPhone 5s also use secure boot process to ensure that the firmware within Secure Enclave is trusted. 
 
-Before any iOS application can be installed, it's origins needs to be authenticated. If an iOS app was downloaded from a random website, there is a significant risk that it could be classified as a malware. The risk can be greatly reduced and if the software’s origin can be verified, it can also be further assured that it has not been modified in transit.
+#### Sandbox
 
-Thus, code signing provides this mechanism to provide this assurance. Through the use of X.509v3 certificates, which is the case of developers signing their public key with the private key of the issuer, this allows developers to authenicate their identity by virtue of signing their applications. (...TODO...) 
+The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
 
+The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
+[iPhone Dev Wiki](http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox.
 
-Sandbox
+#### Code Signing
 
-The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised. All apps which is distributed via the iOS AppStore must adopt the sandbox for this purpose. (...TODO...)
+Application code signing is different than in Android. In the latter you can sign with self-signed key and main purpose would be to establish root of trust for future application updates. In other words, to make sure that only the original developer of a given application would be able to update it. In Android, applications can be distributed freely as APK files or from Google Play. 
+On the contrary, Apple allows app distribution only via App Store.
 
+There exist at least two scenarios where you can install an application without App Store:
+1. via Enterprise Mobile Device Management. This requires the company to have company-wise certificate signed by Apple
+2. via sideloading - i.e. by signing the app with developer's certificate and installing it on one device. There is an upper limit of number of devices that can be used with the same certificate
+
+Developer Profile and Apple-signed certificate is required in order to deploy and run an application. 
+Developers need to register with Apple and join the Apple Developer Program and pay subscription fee[https://developer.apple.com/support/compare-memberships/] to get full range of development and deployment possibilites. Free account still allows you to compile and deploy an application via sideload.  
 
 #### Encryption and Data Protection
 
@@ -49,19 +57,15 @@ Data protection is implemented at the software level and works with the hardware
 
 When data protection is enabled, each data file is associated with a specific class that supports a different level of accessibility and protects data based on when it needs to be accessed. The encryption and decryption operations associated with each class are based on multiple key mechanisms that utilizes the device's UID and passcode, plus a class key, file system key and per-file key. The per-file key is used to encrypt the file content. The class key is wrapped around the per file key and stored in the file's metadata. The file system key is used to encrypt the metadata. The UID and passcode protect the class key. This operation is invisible to users and for a device to utilize data protection, a passcode must be used when accessing that device. The passcode not only unlocks the device, but also combined with the UID to create iOS encryption keys that are more resistant to hacking efforts and brute-force attacks. It is with this that users need to enable passcodes on their devices to enable data protection.
 
-(...TODO...)
-
-
-#### Exploit Mitigations
+#### General Exploit Mitigations
 
 iOS currently implements two specific security mechanisms, namely address space layout randomization (ASLR) and eXecute Never (XN) bit, to prevent code execution attacks.
 
 ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked.
 
-Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions. (...TODO...)
+Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions. 
 
-
-
+-- TODO [Further develop section on iOS General Exploit Mitigation] --
 
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
@@ -127,9 +131,9 @@ $ ipainstaller App_in_scope.ipa
 
 Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison [1].
 
-(... TODO ... Code signing)
+-- TODO [Develop section on iOS Code Signing and Encryption] --
 
-In addition to code signing, *FairPlay Code Encryption* is applied to apps downloaded from the App Store. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account. The private key is stored securely on your device. This means that Fairplay-encrypted code can be decrypted only on devices associated with your account (TODO... this needs to be more specific). The usual way to obtain reverse FairPlay encryption is to run the app on the device and then dump the decrypted code from memory (see also "Basic Security Testing on iOS").
+In addition to code signing, *FairPlay Code Encryption* is applied to apps downloaded from the App Store. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account. The private key is stored securely on your device. This means that Fairplay-encrypted code can be decrypted only on devices associated with your account -- TODO [Be more specific] --. The usual way to obtain reverse FairPlay encryption is to run the app on the device and then dump the decrypted code from memory (see also "Basic Security Testing on iOS").
 
 #### The App Sandbox
 
@@ -145,7 +149,7 @@ In line with the "crystal prison" theme, sandboxing has been is a core security 
 - [1] Apple's Crystal Prison and the Future of Open Platforms - https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms
 - [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
 - [3] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
-
+- [4] Johnatan Levin, MacOS and iOS Internals, Volume III: Security & Insecurity
 + [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
 + [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 + [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)

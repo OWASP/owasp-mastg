@@ -4,7 +4,8 @@
 
 #### Overview
 
-The use of a hard-coded or world-readable cryptographic key significantly increases the possibility that encrypted data may be recovered.
+-- REVIEW --
+The use of a hard-coded or world-readable cryptographic key significantly increases the possibility that encrypted data may be recovered. Once it is obtained by attacker, the task to decrypt the sensitive data becomes trivial, and the initial idea to protect confidentiality fails.
 
 #### White-box Testing
 
@@ -76,7 +77,6 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 ##### OWASP MASVS
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption"
 - V3.5: "The app doesn't re-use the same cryptographic key for multiple purposes"
-- V3.7: "All cryptographic keys are changeable, and are generated or replaced at installation time"
 
 ##### OWASP Mobile Top 10
 * M6 - Broken Cryptography
@@ -127,51 +127,60 @@ Do not develop custom or private cryptographic algorithms. They will likely be e
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
 #### Overview
-
-[Provide a general description of the issue.]
+ 
+-- REVIEW --
+Choosing good cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected if misconfigured. Many previously strong algorithms and their configurations are now considered vulnerable or non-compliant with best practices. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+-- TODO [Describe Static Analysis on Verifying the Configuration of Cryptographic Standard Algorithms : how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
+-- TODO [Clarify the purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 ##### With Source Code
 
+-- TODO [Develop Static Analysis with source code of "Verifying the Configuration of Cryptographic Standard Algorithms"] --
+
 ##### Without Source Code
+
+-- TODO [Develop Static Analysis without source code of "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+-- TODO [Describe how to test for this issue "Verifying the Configuration of Cryptographic Standard Algorithms" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+-- REVIEW --
+Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations.
+
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+-- REVIEW --
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+-- REVIEW --
+* CWE-326: Inadequate Encryption Strength
+
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+-- REVIEW --
+- [1] NIST recommendations (2016) - https://www.keylength.com/en/4/
+- [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
 
 ##### Tools
 
-* Tool - Link
+-- TODO [Add relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 * Enjarify - https://github.com/google/enjarify
 
 
@@ -192,7 +201,9 @@ Cipher cipher = Cipher.getInstance("DES");
 
 #### Black-box Testing
 
-Decompile the APK and inspect the code to see if known weak crypto algorithms are in place (see "White-box Testing")
+Decompile the APK and inspect the code to see if known weak crypto algorithms are in place (see "White-box Testing").
+
+-- TODO [Give examples of black-box testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
 
 #### Remediation
 
@@ -210,8 +221,8 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * [2]: [NIST Special Publication 800-57](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf)
 
 ##### OWASP MASVS
-- V3.3: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated"
-- V3.4: "Cryptographic modules use parameters that adhere to current industry best practices. This includes key length and modes of operation"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
 ##### OWASP Mobile Top 10
 * M6 - Broken Cryptography
@@ -227,8 +238,6 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
-
-
 
 
 ### Testing Random Number Generation
@@ -288,13 +297,17 @@ public static void main (String args[]) {
 * [3]: [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded)
 
 ##### OWASP MASVS
+
 - V3.6: "All random values are generated using a sufficiently secure random number generator"
 
 ##### OWASP Mobile Top 10
+
 * M6 - Broken Cryptography
 
 ##### CWE
+
 * CWE-330: Use of Insufficiently Random Values
 
 ##### Tools
+
 * [QARK](https://github.com/linkedin/qark)

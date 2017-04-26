@@ -1,19 +1,20 @@
 ## Testing Data Storage
 
-### Testing Local Data Storage (TODO: Merge with OWASP-DATAST-001-2)
+### Testing Local Data Storage 
 
 #### Overview
 
-(... TODO ...)
-
-#### Black-box Testing
-
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. Some of the possible options for the application to store it's data locally includes:
+Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways. The following table shows mechanisms that are available on the iOS platform, that should usually be not considered to store sentive data.
 
 * CoreData/SQLite Databases
 * NSUserDefaults
 * Property List (Plist) files
 * Plain files
+
+
+#### Dynamic Analysis
+
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. 
 
 Steps :
 
@@ -24,43 +25,15 @@ Steps :
 
 Manual dynamic analysis such as debugging can also be leveraged to verify how specific system credentials are stored and processed on the device. As this approach is more time consuming and is likely conducted manually, it might be only feasible for specific use cases.
 
-#### White-box Testing
-When going through the source code it should be analyzed if native mechanisms that are offered by iOS are applied to the identified sensitive information. Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS device by using for example the Keychain.
-
-#### Remediation
-If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
-
-The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
-* For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
-* Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
-* Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
+-- TODO [Add content on Dynamic Testing of "Testing Local Data Storage "] --
 
 
-#### References
+#### Static Analysis
 
-* [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
-* [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
+Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain. 
 
-### Testing for Sensitive Data Disclosure in Local Storage
+During the static analysis it should be checked if sensitive data is stored permanently on the device. The following frameworks and functions should be checked when handling sensitive data. 
 
-#### Overview
-
-Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways on each of the different operating systems. The following table shows those mechanisms that are available on the iOS platform:
-
-* CoreData/SQLite Databases
-* NSUserDefaults
-* Property List (Plist) files
-* Plain files
-
-
-#### Black-box Testing
-
-Install and use the App as it is intended. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. Afterwards check the following items:
-
-(... TODO ...)
-
-
-#### White-box Testing
 
 ##### CoreData/SQLite Databases
 
@@ -83,14 +56,36 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 
 #### Remediation
 
-(... TODO ...)
+If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
+
+The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
+* For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
+* Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
+* Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
+
 
 #### References
 
+* [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
+* [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 * [File System Basics](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 * [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
 * [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
 * [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
+
+##### OWASP MASVS
+
+- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+* CWE-311 - Missing Encryption of Sensitive Data
+* CWE-312 - Cleartext Storage of Sensitive Information
+* CWE-522 - Insufficiently Protected Credentials
+* CWE-922 - Insecure Storage of Sensitive Information
 
 ### Testing for Sensitive Data in Logs
 
@@ -106,7 +101,7 @@ Log files can be created in various ways on each of the different operating syst
 
 Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to it and to be aware of what sensitive information actually is in the context of the App.
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 Proceed to a page on the iOS application that contains input fields which prompt users for their sensitive information. Two different methods are applicable to check for sensitive data in log files:
 
@@ -120,7 +115,7 @@ tail -f /var/log/syslog
 Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
 
 
-#### White-box Testing
+#### Static Analysis
 
 Check the source code for usage of predefined/custom Logging statements using the following keywords :
 * For predefined and built-in functions:
@@ -147,51 +142,103 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### References
 
-(... TODO ...)
+-- TODO [Add references for section "Testing for Sensitive Data in Logs"] --
+
+##### OWASP MASVS
+
+- V2.2: "No sensitive data is written to application logs."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+* CWE-117: Improper Output Neutralization for Logs
+* CWE-532: Information Exposure Through Log Files
+* CWE-534: Information Exposure Through Debug Log Files
+
 
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
 #### Overview
 
-(... TODO ...)
+Different 3rd party services are available that can be embedded into the App to implement different features. These features can vary from tracker services to monitor the user behaviour within the App, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
 
-#### Black-box Testing
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
 
-#### White-box Testing
+3rd party services are mostly implemented in two ways:
+* By using a standalone library.
+* By using a full SDK.
+
+#### Static Analysis
+
+-- TODO [Add content on black-box testing of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+
+#### Dynamic Analysis
+
+All requests made to external services should be analyzed if any sensitive information is embedded into them.
+* Dynamic analysis can be performed by launching a Man-in-the-middle (MITM) attack using _Burp Proxy_ or OWASP ZAP, to intercept the traffic exchanged between client and server. A complete guide can be found [here][05773baa]. Once we are able to route the traffic to the interception proxy, we can try to sniff the traffic from the App. When using the App all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
+* When decompiling the App, API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 
 #### Remediation
 
+All data that is sent to 3rd Party services should be anonymized, so no PII data is available. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
+
 #### References
+
+[05773baa]: http://FIXME
+
+-- TODO [Add content on References of "Testing Whether Sensitive Data Is Sent to Third Parties"] --
+
+##### OWASP MASVS
+
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
+
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
 #### Overview
 
-(... TODO ...)
+In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in /private/var/mobile/Library/Keyboard/dynamic-text.dat
 
-#### Black-box Testing
+This behavior is achieved by means of UITextInputTraits protocol, which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
 
-1.) Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
+* `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
+* `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default. 
 
-2.) Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
+#### Dynamic Analysis 
 
-3.) Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
+1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
+
+2. Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
+
+3. Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
 /private/var/mobile/Library/Keyboard/
 
-4.) Look for sensitive data such as username, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
+4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
-#### White-box Testing
+####  Static Analysis
 
 Check with the developers directly if there is any implementation to disable keyboard cache.
 
-Search through the source code provided to look the following similar implementation.
-```
-textField.autocorrectionType = UITextAutocorrectionTypeNo;
-```
+* Search through the source code provided to look the following similar implementations.
+
+  ```
+  textObject.autocorrectionType = UITextAutocorrectionTypeNo;
+  textObject.secureTextEntry = YES;
+  ```
+* Open xib and storyboard files in Interface Builder and verify states of Secure Text Entry and Correction in Attributes Inspector for appropriate objects.
 
 #### Remediation
 
-The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textField.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields. For data that should be masked such as PIN and passwords, set the textField.secureTextEntry to YES.
+The application must ensure that data typed into text fields which contains sensitive information must not be cached. This can be achieved by disabling the feature programmatically by using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews and UISearchBars. For data that should be masked such as PIN and passwords, set the `textObject.secureTextEntry` to `YES`.
 
 ```#ObjC
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -200,14 +247,24 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 #### References
 
-- [link to relevant how-tos, papers, etc.]
+* [UIText​Input​Traits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits)
 
+##### OWASP MASVS
+
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
+
+##### OWASP Mobile Top 10
+* M1 - Improper Platform Usage
+* M2 - Insecure Data Storage
+
+##### CWE
+- CWE-524: Information Exposure Through Caching
 
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing for Sensitive Data in the Clipboard"] --
 
 #### Black-box Testing
 
@@ -262,51 +319,78 @@ Possible remediation method:
 
 @end
 ```
+
 http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
 
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data in the Clipboard"] --
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 #### Remediation
 
+-- TODO [Add remediation on "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
+
 #### References
+
+-- TODO [Add references for "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"] --
 
 ### Testing for Sensitive Data Disclosure Through the User Interface
 
 ##### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 #### Remediation
 
+-- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data Disclosure Through the User Interface"] --
 
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-(... TODO ...)
+-- TODO [Add content on overview of "Testing for Sensitive Data in Backups"] --
 
 #### Black-box Testing
 
+-- TODO [Add content on black-box testing of "Testing for Sensitive Data in Backups"] --
+
 #### White-box Testing
+
+-- TODO [Add content on white-box testing of "Testing for Sensitive Data in Backups"] --
 
 #### Remediation
 
+-- TODO [Add content on remediation of "Testing for Sensitive Data in Backups"] --
+
 #### References
+
+-- TODO [Add references for "Testing for Sensitive Data in Backups"] --
 
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
@@ -343,16 +427,27 @@ Possible remediation method that will set a default screenshot:
 ```
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
 
+#### References
+
+-- TODO [Add references for "Testing For Sensitive Information in Auto-Generated Screenshots" ] --
+
 ### Testing the Device-Access-Security Policy
 
 #### Overview
 
+-- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] --
 
 #### Static Analysis
 
+-- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] --
+
 #### Dynamic Analysis
 
+-- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] --
+
 #### Remediation
+
+-- TODO [Add remediation of "Testing the Device-Access-Security Policy"] --
 
 #### References
 
@@ -361,10 +456,12 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 ##### OWASP Mobile Top 10
+
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - (.. TODO ..)
+
+- CWE: -- TODO [Add link to CWE issue] --
 
 
 ### Verifying User Education Controls
@@ -379,32 +476,35 @@ The following list shows potential warnings or advises for a user when opening t
 * If the user is installing the App on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the App on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
-**(..TODO..) - What else can be a warning on Android?**
+-- TODO [What else can be a warning on Android?] --
 
 #### Static Analysis
 
-**...TODO...**
+-- TODO [Add content for static analysis of "Verifying User Education Controls"] --
 
 #### Dynamic Analysis
 
 After installing the App and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
-**...TODO...**
+
+-- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] --
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
-**...TODO...**
+
+-- TODO [Further develop remediation of "Verifying User Education Controls"] --
 
 #### References
 
-**...TODO...**
+-- TODO [Add references for "Verifying User Education Controls"] --
 
 ##### OWASP MASVS
 
 - V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
 
 ##### OWASP Mobile Top 10
+
 * M1 - Improper Platform Usage
 
 ##### CWE
-- CWE: [Link to CWE issue] - **.. TODO ...**
+- CWE: -- TODO [Add link to CWE issue for "Verifying User Education Controls"] --

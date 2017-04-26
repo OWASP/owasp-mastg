@@ -1,4 +1,4 @@
-## Testing Network Communcation
+## Testing Network Communication
 
 ### Testing for Unencrypted Sensitive Data on the Network
 
@@ -45,7 +45,7 @@ V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel 
 
 #### CWE
 
-CWE 319 - Cleartext Transmission of Sensitive Information - https://cwe.mitre.org/data/definitions/319.html
+- CWE-319 - Cleartext Transmission of Sensitive Information - https://cwe.mitre.org/data/definitions/319.html
 
 #### OWASP Mobile Top 10 2014
 
@@ -86,16 +86,31 @@ Static analysis is not applicable for this point.
 
 After identifying all servers communicating with your application (e.g. using Tcpdump, or Burp Suite) you should verify if a server/-s allow for using weak cipher/protocol/key. It can be done, using different tools:
 
-* Qualys SSL Labs: put server's URL in the following online scanner https://www.ssllabs.com/ssltest/ and click submit.
+* testssl.sh: via following command:
+
+```
+testssl.sh www.example.com:443
+```
+
 * sslyze: via following command:
 
 ```
 sslyze --regular www.example.com:443
 ```
+* O-Saft (OWASP SSL Advanced Forensic Tool): can be run in GUI mode via command:
+
+```
+o-saft.tcl
+```
+or via command. There are multiple options, which can be specified here [2], but the most general one, verifying certificate, ciphers and SSL connection is the following:
+
+```
+perl o-saft.pl +check www.example.com:443
+```
 
 #### Remediation
 
-To properly configure transport layer protection for network communication, please follow the OWASP Transport Layer Protection cheat sheet [2].
+To properly configure transport layer protection for network communication, please follow the OWASP Transport Layer Protection cheat sheet [3].
 
 #### References
 
@@ -114,12 +129,14 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 ##### Info
 
 - [1] Testing for Weak SSL/TLS Ciphers - https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001)
-- [2] Transport Layer Protection Cheat Sheet - https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
+- [2] O-Saft various tests - https://www.owasp.org/index.php/O-Saft/Documentation#COMMANDS
+- [3] Transport Layer Protection Cheat Sheet - https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
 
 ##### Tools
 
-* Qualys SSL Labs - https://www.ssllabs.com/ssltest/
+* testssl.sh- https://testssl.sh
 * sslyze - https://github.com/nabla-c0d3/sslyze
+* O-Saft - https://www.owasp.org/index.php/O-Saft
 
 ### Testing Endpoint Identify Verification
 
@@ -225,14 +242,13 @@ Ensure, that the hostname and certificate is verified correctly. You can find a 
 
 #### OWASP MASVS
 
-V5.3: "	The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
 #### CWE
 
-CWE 295 - Improper Certificate Validation - https://cwe.mitre.org/data/definitions/295.html
-CWE 296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-CWE 297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-CWE 298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 #### OWASP Mobile Top 10 2014
 
@@ -255,7 +271,7 @@ M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/M
 
 Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
 
-#### White-box Testing
+#### Static Analysis
 
 The process to implement the SSL pinning involves three main steps outlined below:
 
@@ -284,62 +300,78 @@ Create an SSLContext that uses the TrustManager
 sslContext.init(null, tmf.getTrustManagers(), null);
 ```
 
-#### Black-box Testing
+#### Dynamic Analysis
 
-Black-box Testing can be performed by launching a MITM attack using your prefered Web Proxy to intercept the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests/responses, the SSL pinning is correctly implemented.
+Black-box Testing can be performed by launching a MITM attack using your prefered Web Proxy to intercept [1] the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests/responses, the SSL pinning is correctly implemented.
 
 #### Remediation
 
-The SSL pinning process should be implemented as described on the static analysis section.
+The SSL pinning process should be implemented as described on the static analysis section. For further information please check the OWASP certificate pinning guide [2].
 
 #### References
 
-- Setting Burp Suite as a proxy for Android Devices : https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
-- OWASP - Certificate Pinning for Android :  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
+##### OWASP Mobile Top 10 2014
+
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+##### OWASP MASVS
+
+- V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+
+##### CWE
+
+- CWE-295 - Improper Certificate Validation - https://cwe.mitre.org/data/definitions/295.html
+
+##### Info
+
+- [1] - Setting Burp Suite as a proxy for Android Devices: https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
+- [2] - OWASP Certificate Pinning for Android:  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
 
 
 ### Verifying that Critical Operations Use Secure Communication Channels
 
 #### Overview
 
-[Provide a general description of the issue.]
+For sensitive applications, like banking apps, OWASP MASVS introduces "Defense in Depth" verification level [1]. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
+
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+Review the code and identify those parts of a code which refers to critical operations. Verify if it uses additional channels to perform such operation. Examples of additional verification channels are following:
 
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
+* token (e.g. RSA token, yubikey)
+* push notification (e.g. Google Prompt)
+* SMS
+* email
+* data from another website you had to visit/scan 
+* data from a physical letter or physical entry point (e.g.: data you receive only after signing a document at the office of a bank)
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+Identify all critical operations implemented in tested application (e.g. user enrollment, or account recovery, money transfer etc.). Ensure that each of critical operations, requires at least one additional channel (e.g. SMS, e-mail, token etc.). Verify if usage of such channel can be bypassed (e.g. turning off SMS confirmation without using any other channel).
 
 #### Remediation
 
-[Describe the best practices that developers should follow to prevent this issue.]
+Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation. If you are going to implement additional factor to verify user's identity, you may consider usage of Infobip 2FA library [2], one-time passcodes via Google Authenticator [3].
 
 #### References
 
 ##### OWASP Mobile Top 10 2014
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V5.5 "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
 ##### CWE
 
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-956 - Software Fault Patterns (SFPs) within the Channel Attack cluster - https://cwe.mitre.org/data/definitions/956.html
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] The Mobile Application Security Verification Standard - https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md
+- [2] Infobip 2FA library - https://2-fa.github.io/libraries/android-library.html
+- [3] Google Authenticator for Android - https://github.com/google/google-authenticator-android
+
 
