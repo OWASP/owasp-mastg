@@ -132,7 +132,6 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 -- TODO [Develop section on Frida] --
 
-
 ### References
 
 - [1] Class-dump - http://stevenygard.com/projects/class-dump/
