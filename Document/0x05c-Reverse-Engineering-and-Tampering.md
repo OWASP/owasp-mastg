@@ -299,8 +299,6 @@ Since Android 4.2, the "Developer options" submenu is hidden by default in the S
 
 ##### Debugging Release Apps
 
--- TODO [Complete debugging howto - still some work to do] --
-
 Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
 
 Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol packets from the debugger. If the system property ro.debuggable set to "1", this thread is started for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
@@ -373,7 +371,7 @@ Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>
 
 ##### The Android Debug Bridge
 
-The <code>adb</code> command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug apps on the emulator or on a device connected via USB. Use the adb devices command to list the currently connected devices.
+The <code>adb</code> command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug apps on the emulator or on a device connected via USB. Use the <code>adb devices</code> command to list the currently connected devices.
 
 ```bash
 $ adb devices
@@ -381,23 +379,24 @@ List of devices attached
 090c285c0b97f748  device
 ```
 
-The <code>abd jdwp</code> command lists the process ids of all debuggable processes running on the device (i.e., processes hosting a JDWP transport). With the adb forward command, you can open a listening socket on your host machine and forward TCP connections to this socket to the JDWP transport of a chosen process. 
-
-
-
-
-
-
-An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+The <code>abd jdwp</code> command lists the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the <code>adb forward</code> command, you can open a listening socket on your host machine and forward TCP connections to this socket to the JDWP transport of a chosen process. 
 
 ```bash
-$ adb shell ps | grep uncrackable
-u0_a157   7328  201   1564936 50656 ffffffff 00000000 S sg.vantagepoint.uncrackable1
-$ adb forward tcp:7777 jdwp:7328
-$ jdb attach localhost:7777
-Initializing jdb ...
-> 
+$ adb jdwp
+12167
+$ adb forward tcp:7777 jdwp:12167
 ```
+
+We're now ready to attach <code>jdb</code>. Attaching the debugger will however cause the app to resume immediately, which is something we don't want. Rather, we'd like to keep it suspended so we can do some exploration and set breakpoints first. To prevent the process from resuming, we send a <code>suspend</code> command which will be executed immediately.
+
+```bash
+$ { echo "suspend"; cat; } | jdb -attach localhost:7777
+
+Initializing jdb ...
+>
+```
+
+
 
 ```
 > classes
@@ -417,6 +416,18 @@ sg.vantagepoint.uncrackable1.a a(java.lang.String)
 sg.vantagepoint.uncrackable1.a b(java.lang.String)
 (...)
 ```
+
+
+
+
+
+-- TODO [Complete debugging howto - still some work to do] --
+
+An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+
+
+
+
 
 ```
 > stop in java.lang.String.equals
@@ -440,7 +451,6 @@ Local variables:
 other = "I want to believe"
 main[1] cont     
 ```
-
 
 
 ###### Debugging Using an IDE
@@ -1821,7 +1831,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [12] JAD - http://www.javadecompilers.com/jad
 - [13] Proycon - http://proycon.com/en/
 - [14] CFR - http://www.benf.org/other/cfr/
-- [15] APKX - https://github.com/b-mueller/apkx
+- [15] apkx - APK Decompilation for the Lazy - https://github.com/b-mueller/apkx
 + Frida - https://www.frida.re
 + Bionic - https://github.com/android/platform_bionic
 + DroidScope -
