@@ -106,6 +106,11 @@ You should now find the decompiled sources in the "Uncrackable-Level1/src" direc
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on, as Intellij uses the package name to identify the correct process.
 
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="650px" />
+
+
+Choose "Add no Activity"
+
 In the next dialog, pick any APK - we don't want to actually compile the project, so it really doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
 Once the project is created, expand the "1: Project" view on the left and navigate to the app/src/main/java folder. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
@@ -113,6 +118,10 @@ Once the project is created, expand the "1: Project" view on the left and naviga
 <img src="Images/Chapters/0x05c/delete_package.jpg" width="400px"/>
 
 Now, open the "Uncrackable-Level1/src" directory in a file browser and drag the "sg" directory into the now empty "Java" folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
+
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="700px" />
+
+You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" width="400px"/>
 
@@ -122,13 +131,13 @@ A good practice to follow when analyzing obfuscated code is to annotate names of
 
 ![User Input Check](Images/Chapters/0x05c/check_input.jpg)
 
-Right-click the class name - the first "a" in "a.a" - and select Refactor->Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later as you learn more about the class). "a.a" now becomes "Validator.a". Follow the same procedure to rename the static method "a" to "check_input". 
+Right-click the class name - the first <code>a</code> in <code>a.a</code> - and select Refactor->Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later as you learn more about the class). <code>a.a</code> now becomes <code>Validator.a</code>. Follow the same procedure to rename the static method <code>a</code> to <code>check_input</code>. 
 
 ![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
 
-Congratulations - you just learned the fundamental process of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
+Congratulations - you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
 
-Next, ctrl+click (or command+click on Mac) on the "check_input" method. The decompiled method should look as follows:
+Next, <code>ctrl+click</code> (or command+click on Mac) on the <code>check_input</code> method. The decompiled method should look as follows:
 
 
 ```java
@@ -149,7 +158,7 @@ Next, ctrl+click (or command+click on Mac) on the "check_input" method. The deco
     }
 ```
 
-So, we have a base64-encoded String that's passed to a function named "a" in the package "sg.vantagepoint.a.a" (again everything is called "a". Damn ProGuard!), along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this "a" do? Ctrl-click it to find out.
+So, we have a base64-encoded String that's passed to a function named <code>a</code> in the package <code>sg.vantagepoint.a.a</code> (again everything is called <code>a</code>) along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this particular <code>a</code> do? <code>Ctrl-click</code> it to find out.
 
 ```java
 public class a {
@@ -162,7 +171,7 @@ public class a {
 }
 ```
 
-Now we are getting somewhere: It's simply standard AES-ECB. Looks like the base64 stored in "arrby1" in check_input is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. As a bonus task, try to decrypt the extracted ciphertext and get the secret value!
+Now we are getting somewhere: It's simply standard AES-ECB. Looks like the base64 stored in <code>arrby1</code> in <code>check_input</code> is a ciphertext, which is decrypted using 128bit AES, and then compared to the user input. As a bonus task, try to decrypt the extracted ciphertext and get the secret value!
 
 An alternative (and faster) way of getting the decrypted string is by adding a bit of dynamic analysis into the mix - we'll revisit UnCrackable Level 1 later to show how to do this.
 
@@ -455,7 +464,7 @@ main[1] cont
 
 ###### Debugging Using an IDE
 
-A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - its not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method was described in the NetSPI blog []
+A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - it's not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method whas been described in the NetSPI blog [].
 
 
 -- TODO [Debugging with IntelliJ] --
@@ -465,18 +474,10 @@ File -> New -> Project...
 
 Choose "Android"
 
-Name the project
+Name the project using the 
 
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="650px" />
 
-
-Choose "Add no Activity"
-
-
-<img src="Images/Chapters/0x05c/drag_code.jpg" width="700px" />
-
-<img src="Images/Chapters/0x05c/final_structure.jpg" width="350px" />
 
 <img src="Images/Chapters/0x05c/method_breakpoint.jpg" width="700px" />
 
