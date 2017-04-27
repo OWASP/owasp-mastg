@@ -1,22 +1,47 @@
 ## Testing Data Storage
 
-### Testing Local Data Storage 
+### Testing Local Data Storage
 
 #### Overview
 
-Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways. The following table shows mechanisms that are available on the iOS platform, that should usually be not considered to store sentive data.
+Storing data is essential for many mobile applications, for example in order to keep track of user settings or data a user might has keyed in that needs to stored locally or offline. Data can be stored persistently by a mobile application in various ways. The following table shows mechanisms that are available on the iOS platform, that should usually not be considered to store sensitive data.
 
 * CoreData/SQLite Databases
 * NSUserDefaults
 * Property List (Plist) files
 * Plain files
 
+#### Static Analysis
+
+Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain.
+
+During the static analysis it should be checked if sensitive data is stored permanently on the device. The following frameworks and functions should be checked when handling sensitive data.
+
+##### CoreData/SQLite Databases
+
+* `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level.
+
+* `sqlite3`: The `libsqlite3.dylib` library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands.
+
+
+##### NSUserDefaults
+
+The `NSUserDefaults` class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
+
+##### Plain files / Plist files
+
+* `NSData`: Creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
+  * Options for methods used to write NSData objects: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
+  * Store Data as part of the NSData class with: `writeToFile`
+* Managing File Paths: `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
+* The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
+
 
 #### Dynamic Analysis
 
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possbile before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specifc data. Identify how the application stores data locally on the iOS device. 
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possible before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
 
-Steps :
+The following steps can be used to identify how the application stores data locally on the iOS device.
 
 1. Proceed to trigger functionality that stores potential sensitive data.
 2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
@@ -27,65 +52,41 @@ Manual dynamic analysis such as debugging can also be leveraged to verify how sp
 
 -- TODO [Add content on Dynamic Testing of "Testing Local Data Storage "] --
 
-
-#### Static Analysis
-
-Ideally sensitive information should not be stored on the device at all. If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain. 
-
-During the static analysis it should be checked if sensitive data is stored permanently on the device. The following frameworks and functions should be checked when handling sensitive data. 
-
-
-##### CoreData/SQLite Databases
-
-- `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level.
-
-- `sqlite3`: The ‘libsqlite3.dylib’ library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands.
-
-
-##### NSUserDefaults
-
-The `NSUserDefaults` class provides a programmatic interface for interacting with the defaults system. The defaults system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
-
-##### Plain files / Plist files
-
-* `NSData`: Creates static data objects, and NSMutableData creates dynamic data objects. NSData and NSMutableData are typically used for data storage and are also useful in Distributed Objects applications, where data contained in data objects can be copied or moved between applications.
-  * Options for methods used to write NSData objects: `NSDataWritingWithoutOverwriting, NSDataWritingFileProtectionNone, NSDataWritingFileProtectionComplete, NSDataWritingFileProtectionCompleteUnlessOpen, NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication`
-  * Store Data as part of the NSData class with: `writeToFile`
-* Managing File Paths:  `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
-* The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
-
 #### Remediation
 
 If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
-The following is a list of best practice used for secure storage of certificates and keys and sensitve data in general:
-* For small amounts of sensitive data such as credentials or keys use the [Keychain Services](https://developer.apple.com/reference/security/1658642-keychain_services?language=objc) to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes [Keychain Item Accessibility](https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons).
+The following is a list of best practices used for secure storage of certificates and keys and sensitive data in general:
+* For small amounts of sensitive data such as credentials or keys use the Keychain Services<sup>[1]</sup> to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes Keychain Item Accessibility<sup>[8]</sup>.
 * Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
-* Avoid insecure storage functions for sensitive information such as credentials and keys as illustrated in chapter OMTG-DATAST-001-2.   
-
+  
 
 #### References
-
-* [Keychain Services Programming Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html)
-* [IOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
-* [File System Basics](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
-* [Foundation Functions](https://developer.apple.com/reference/foundation/1613024-foundation_functions)
-* [NSFileManager](https://developer.apple.com/reference/foundation/nsfilemanager)
-* [NSUserDefaults](https://developer.apple.com/reference/foundation/userdefaults)
-
-##### OWASP MASVS
-
-- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 
 ##### OWASP Mobile Top 10
 * M1 - Improper Platform Usage
 * M2 - Insecure Data Storage
+
+##### OWASP MASVS
+- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
 
 ##### CWE
 * CWE-311 - Missing Encryption of Sensitive Data
 * CWE-312 - Cleartext Storage of Sensitive Information
 * CWE-522 - Insufficiently Protected Credentials
 * CWE-922 - Insecure Storage of Sensitive Information
+
+##### Info
+
+[1] KeyChain Services - https://developer.apple.com/reference/security/1658642-keychain_services?language=objc
+[2] Keychain Services Programming Guide - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html
+[3] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+[4] File System Basics - https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+[5] Foundation Functions - https://developer.apple.com/reference/foundation/1613024-foundation_functions
+[6] NSFileManager - https://developer.apple.com/reference/foundation/nsfilemanager
+[7] NSUserDefaults - https://developer.apple.com/reference/foundation/userdefaults
+[8] Keychain Item Accessibility -  https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons
+
 
 ### Testing for Sensitive Data in Logs
 
@@ -211,9 +212,9 @@ In order to simplify keyboard input by providing autocorrection, predicative inp
 This behavior is achieved by means of UITextInputTraits protocol, which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
 
 * `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
-* `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default. 
+* `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default.
 
-#### Dynamic Analysis 
+#### Dynamic Analysis
 
 1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
