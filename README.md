@@ -48,7 +48,7 @@ If you are willing to write a large portion of the guide and help consistently d
 
 ## High-Level Structure
 
-The following lists contain the individual sections of the MST. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
+The following lists contain the individual sections of the MSTG. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
 
 ### Introductionary
 
