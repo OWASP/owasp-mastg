@@ -8,37 +8,42 @@ Android assigns every installed app with a distinct system identity (Linux user 
 
 Android permissions are classified in four different categories based on the protection level it offers.
 
-- **Normal**: This permission gives apps access to isolated application-level features, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: `android.permission.INTERNET`
-- **Dangerous**: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not. Example: `android.permission.RECORD_AUDIO`
-- **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted. Example: `android.permission.ACCESS_MOCK_LOCATION`
-- **SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificated as the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
+* **Normal**: This permission gives apps access to isolated application-level features, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: `android.permission.INTERNET`
+* **Dangerous**: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not. Example: `android.permission.RECORD_AUDIO`
+* **Signature**: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted. Example: `android.permission.ACCESS_MOCK_LOCATION`
+* **SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificate as the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-Full list of Android Permissions [here](https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS).
+A full list of all Android Permissions can be found in the developer documentation<sup>[1]</sup>.
 
-Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. Custom permission can be easily defined in `AndroidManifest.xml` file, by creating a permission tag with two mandatory attributes: `android:name` and `android:protectionLevel`. It is crucial to create custom permission that adhere to the _Principle of Least Privilege_: permission should be define explicitly for its purpose with meaningful and accurate label and description.
+**Custom Permissions**
 
+Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. Custom permission can be defined in `AndroidManifest.xml`, by creating a permission tag with two mandatory attributes:
+* `android:name` and
+* `android:protectionLevel`.
 
-Below is an example of a custom permission `START_MAIN_ACTIVITY` that required when launching the `TEST_ACTIVITY` Activity.
+It is crucial to create custom permission that adhere to the _Principle of Least Privilege_: permission should be defined explicitly for its purpose with meaningful and accurate label and description.
+
+Below is an example of a custom permission called `START_MAIN_ACTIVITY` that is required when launching the `TEST_ACTIVITY` Activity.
 
 The first code block defines the new permission which is self-explanatory. The label tag is a summary of the permission and description is a more detailed description of the summary. The protection level can be set based on the types of permission it is granting.
-Once you have defined your permission, it can be enforced on the component by specifying it in the application’s manifest. In our example, the second block is the component that we are going to restrict with the permission we created. It can be easily enforced by adding the `android:permission` attributes.
+Once you have defined your permission, it can be enforced on the component by specifying it in the application’s manifest. In our example, the second block is the component that we are going to restrict with the permission we created. It can be enforced by adding the `android:permission` attributes.
 
 ```xml
-<permission android:name=“com.example.myapp.permission.START_MAIN_ACTIVITY”
-        android:label=“Start Activity in myapp"
-        android:description=“Allow the app to launch the activity of myapp app, any app you grant this permission will be able to launch main activity by myapp app."
-        android:protectionLevel=“normal" />
+<permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"
+        android:label="Start Activity in myapp"
+        android:description="Allow the app to launch the activity of myapp app, any app you grant this permission will be able to launch main activity by myapp app."
+        android:protectionLevel="normal" />
 
-<activity android:name=“TEST_ACTIVITY”
-    android:permission=“com.example.myapp.permission.START_MAIN_ACTIVITY”>
+<activity android:name="TEST_ACTIVITY"
+    android:permission="com.example.myapp.permission.START_MAIN_ACTIVITY">
     <intent-filter>
-        <action android:name=“android.intent.action.MAIN" />
-        <category android:name=“android.intent.category.LAUNCHER”/>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER"/>
      </intent-filter>
 </activity>
 ```
 
-Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it using the `uses-permision` tag in the `AndroidManifest.xml` file. Any application can now launch the `TEST_ACTIVITY` if it is granted with the custom permission `START_MAIN_ACTIVITY`.
+Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it using the `uses-permission` tag in the `AndroidManifest.xml` file. Any application can now launch the `TEST_ACTIVITY` if it is granted with the custom permission `START_MAIN_ACTIVITY`.
 
 ```xml
 <uses-permission android:name=“com.example.myapp.permission.START_MAIN_ACTIVITY”/>
@@ -46,59 +51,15 @@ Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it
 
 #### Static Analysis
 
-##### With Source Code
+**Android Permissions**
 
-###### Android Permissions
-
-Permissions should be checked if they are really need within the App. For example in order for an Activity to load a web page into a WebView the `INTERNET` permission in the Android Manifest file is needed.
+Permissions should be checked if they are really needed within the App. For example in order for an Activity to load a web page into a WebView the `INTERNET` permission in the Android Manifest file is needed.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-It is always recommended to run through the developer of the intention of every permission and removed those that are not needed.
 
-###### Custom Permissions
-
-Apart from enforcing custom permissions via application manifest file, it can also be enforce programmatically. This is not recommended as this can lead to permission leaking and perform an unauthorized operation. This can be verified by inspecting whether if all defined custom permission were enforce in android manifest file.
-
-```java
-int canProcess = checkCallingOrSelfPermission(
-“com.example.perm.READ_INCOMING_MSG”);
-if (canProcess != PERMISSION_GRANTED)
-throw new SecurityException();
-
-```
-
-##### Without Source Code
-
-To review application permissions via Android Manifest file, the APK file will need to be unpacked with apktool. It will then generate a folder that contains the Android Manifest file.
-
-```bash
-$apktool d test.apk
-
-I: Using Apktool 2.2.1 on test.apk
-I: Loading resource table...
-I: Decoding AndroidManifest.xml with resources...
-I: Loading resource table from file: /Users/tnayr/Library/apktool/framework/1.apk
-I: Regular manifest package...
-I: Decoding file-resources...
-I: Decoding values */* XMLs...
-I: Baksmaling classes.dex...
-I: Baksmaling classes2.dex...
-I: Copying assets and libs...
-I: Copying unknown files…
-I: Copying original files...
-```
-
-Within the manifest file, requested permissions will be declared as `uses-permissions` tag.
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.owasp.mstg.myapp" >
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    ...
-</manifest>
-```
+It is always recommended to run through the permissions with the developer together to identify the intention of every permission set and remove those that are not needed.
 
 Alternatively, Android Asset Packaging tool can be used to examine permissions.
 
@@ -110,38 +71,44 @@ uses-permission: android.permission.SYSTEM_ALERT_WINDOW
 uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ```
 
-#### Dynamic Analysis
+**Custom Permissions**
 
+Apart from enforcing custom permissions via application manifest file, it can also be enforced programmatically. This is not recommended as this can lead to permission leaking and perform an unauthorized operation. This can be verified by inspecting whether if all defined custom permissions were enforced in the android manifest file.
+
+```java
+int canProcess = checkCallingOrSelfPermission(“com.example.perm.READ_INCOMING_MSG”);
+if (canProcess != PERMISSION_GRANTED)
+throw new SecurityException();
+```
+
+#### Dynamic Analysis
 Dynamic analysis is not applicable and a solid statement and result for this test case can only be done after reviewing the Android Manifest. See "Static Analysis" for details.
 
 #### Remediation
+Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed.
 
-Only permissions that are used within the app should be requested in the Android Manifest. All other permissions should be removed.
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add link to OWASP Mobile Top 10 2014 concerning this section] --
+##### OWASP Mobile Top 10 2016
+* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 
 ##### OWASP MASVS
-
-- V6.1: "The app only requires the minimum set of permissions necessary."
+* V6.1: "The app only requires the minimum set of permissions necessary."
 
 ##### CWE
-
--- TODO [Add reference to relevant CVE(s) : titles, links, ...] --
+* CWE-250 - Execution with Unnecessary Privileges
 
 ##### Info
-
-- [1] Android Permissions - https://developer.android.com/guide/topics/permissions/requesting.html
-- [2] Custom Permissions - https://developer.android.com/guide/topics/permissions/defining.html
-- [3] An In-Depth Introduction to the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
-
+* [1] Android Permissions - https://developer.android.com/guide/topics/permissions/requesting.html
+* [2] Custom Permissions - https://developer.android.com/guide/topics/permissions/defining.html
+* [3] An In-Depth Introduction to the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
+* [4] Android Permissions - https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_LOCATION_EXTRA_COMMANDS
 
 ##### Tools
+* AAPT - http://elinux.org/Android_aapt
 
--- TODO [Add link to relevant tools] --
+
 
 ### Testing Input Validation and Sanitization
 
@@ -155,13 +122,7 @@ Only permissions that are used within the app should be requested in the Android
 
 -- TODO [Clarify the purpose of "[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]" ] --
 
-##### With Source Code
-
 -- TODO [Develop content for "Testing Input Validation and Sanitization" with source code] --
-
-##### Without Source Code
-
--- TODO [Develop content for "Testing Input Validation and Sanitization" without source code] --
 
 #### Dynamic Analysis
 
@@ -173,29 +134,19 @@ Only permissions that are used within the app should be requested in the Android
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add link to MX OWASP Mobile Top 10 2014] --
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+##### OWASP Mobile Top 10 2016
+* M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
--- TODO [Update below "X.Y" reference to MASVS] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+* V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 
 ##### CWE
-
--- TODO [Add links and titles to relevant CWE] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+* CWE-20 - Improper Input Validation
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+* [1] xyz
 
 ##### Tools
-
--- TODO [Add links to relevant tools] --
 * Enjarify - https://github.com/google/enjarify
 
 
@@ -211,19 +162,15 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Inside of an intent-filter a custom URL scheme can be defined<sup>[1]</sup>.
 
--- TODO [Clarify the purpose of "[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]" ] --
-
-##### With Source Code
-
--- TODO [Develop content for "Testing Custom URL Schemes" with source code] --
-
-##### Without Source Code
-
--- TODO [Develop content for "Testing Custom URL Schemes" without source code] --
+```xml
+<data android:scheme="myapp" android:host="path" />
+```
 
 #### Dynamic Analysis
+
+Open the app in scope for testing and log into the app, if needed. Afterwards start the browser and go to myapp://
 
 -- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
@@ -233,26 +180,21 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing Custom URL Schemes" topic] --
+##### OWASP Mobile Top 10 2016
+* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 
 ##### OWASP MASVS
-
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+* V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 
 ##### CWE
-
 -- TODO [Add link to relevant CWE for "Testing Custom URL Schemes"]
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
 
 ##### Tools
-
 -- TODO [Add link to tools for "Testing Custom URL Schemes"] --
+
 
 
 ### Testing For Sensitive Functionality Exposure Through IPC
@@ -267,13 +209,7 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 -- TODO [Clarify purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
-##### With Source Code
-
 -- TODO [Add content for "Testing For Sensitive Functionality Exposure Through IPC" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content for "Testing For Sensitive Functionality Exposure Through IPC" without source code] --
 
 #### Dynamic Analysis
 
@@ -285,7 +221,7 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
 -- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
@@ -305,6 +241,7 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 -- TODO [Add links to relevant tools for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
+
 ### Testing JavaScript Execution in WebViews
 
 #### Overview
@@ -312,8 +249,6 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 In Web applications, JavaScript can be injected in many ways by leveraging reflected, stored or DOM based Cross-Site Scripting (XSS). Mobile Apps are executed in a sandboxed environment and when implemented natively do not possess this attack vector. Nevertheless, WebViews can be part of a native App to allow viewing of web pages. Every App has it's own cache for WebViews and doesn't share it with the native Browser or other Apps. WebViews in Android are using the WebKit rendering engine to display web pages but are stripped down to a minimum of functions, as for example no address bar is available. If the WebView is implemented too lax and allows the usage of JavaScript it can be used to to attack the App and gain access to it's data.
 
 #### Static Analysis
-
-##### With Source Code
 
 To create and use a WebView, an instance of the class WebView need to be created.
 
@@ -331,10 +266,6 @@ webview.getSettings().setJavaScriptEnabled(true);
 
 This allows the WebView to interpret JavaScript and execute it's command.
 
-
-##### Without Source Code
-
--- TODO [Add content on "Testing JavaScript Execution in WebViews" without source code] --
 
 #### Dynamic Analysis
 
@@ -363,27 +294,22 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M7 - Client Side Injection
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 
 ##### CWE
-
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 
 ##### Info
-
 - [1] setJavaScriptEnabled in WebViews  - https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled(boolean)
 - [2] clearCache() in WebViews - https://developer.android.com/reference/android/webkit/WebView.html#clearCache(boolean)
 - [3] WebView Best Practices - https://developer.android.com/training/articles/security-tips.html#WebView
 - [4] Stored Cross-Site Scripting - https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)
 
 ##### Tools
-
 -- TODO [Add link to tools for "Testing JavaScript Execution in WebViews"] --
 
 
@@ -404,8 +330,6 @@ When using them in a link the App can be triggered for example to access a local
 
 #### Static Analysis
 
-##### With Source Code
-
 The following methods are available for WebViews to control access to different resources<sup>[4]</sup>:
 
 * `setAllowContentAccess()`: Content URL access allows WebView to load content from a content provider installed in the system. The default is enabled.
@@ -414,10 +338,6 @@ The following methods are available for WebViews to control access to different 
 * `setAllowUniversalAccessFromFileURLs()`: Sets whether JavaScript running in the context of a file scheme URL should be allowed to access content from any origin. The default value is true for API level ICE_CREAM_SANDWICH_MR1 and below, and false for API level JELLY_BEAN and above.
 
 If one or all of the methods above can be identified and they are activated it should be verified if it is really needed for the App to work properly.
-
-##### Without Source Code
-
--- TODO [Create content on "Testing WebView Protocol Handlers" with source code] --
 
 #### Dynamic Analysis
 
@@ -446,29 +366,24 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M7 - Client Side Injection
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 
 ##### CWE
-
 -- TODO [Add links and titles to relevant CWE for "Testing WebView Protocol Handlers"] --
 
 ##### Info
-
 - [1] File Access in WebView - https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29
 - [2] WebView best practices - https://github.com/nowsecure/secure-mobile-development/blob/master/en/android/webview-best-practices.md#remediation
 - [3] Intent List - https://developer.android.com/guide/appendix/g-app-intents.html
 - [4] WebView Settings - https://developer.android.com/reference/android/webkit/WebSettings.html
 
-
 ##### Tools
-
 -- TODO [Add links to relevant tools for "Testing WebView Protocol Handlers"] --
+
 
 ### Testing for Local File Inclusion in WebViews
 
@@ -479,8 +394,6 @@ WebViews can load content remotely, but can also load it locally from the App da
 -- TODO [Further develop content on the overview for "Testing for Local File Inclusion in WebViews"] --
 
 #### Static Analysis
-
-##### With Source Code
 
 Check the source code for the usage of WebViews. If a WebView instance can be identified check if local files are loaded through the method `loadURL()`<sup>[1]</sup>.
 
@@ -499,11 +412,6 @@ Environment.getExternalStorageDirectory().getPath() +
 
 The URL specified in `loadURL()` should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
 
-
-##### Without Source Code
-
--- TODO [Develop content for "Testing for Local File Inclusion in WebViews" without source code] --
-
 #### Dynamic Analysis
 
 -- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
@@ -516,25 +424,19 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add reference to OWASP Mobile Top 10 2014 for "Testing for Local File Inclusion in WebViews"] --
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
 - V6.7: "The app does not load user-supplied local resources into WebViews."
 
 ##### CWE
-
 -- TODO [Add reference to relevant CWE for "Testing for Local File Inclusion in WebViews"] --
 
 ##### Info
-
 - [1] loadURL() in WebView - https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String)
 
-
 ##### Tools
-
 -- TODO [Add links to tools for "Testing for Local File Inclusion in WebViews"] --
 
 
@@ -569,8 +471,6 @@ An App that is targeting an Android version before Android 4.2 is still vulnerab
 
 #### Static Analysis
 
-##### With Source Code
-
 **shouldOverrideUrlLoading**
 
 It needs to be verified if and how the method `shouldOverrideUrlLoading()` is used and if it's possible for an attacker to inject malicious JavaScript.
@@ -591,7 +491,6 @@ If an attacker has access to the JavaScript code, for example through stored XSS
 ```javascript
 window.location = http://example.com/method?parameter=value
 ```
-
 
 **addJavascriptInterface**
 
@@ -647,10 +546,6 @@ var result = window.Android.returnString();
 
 If an attacker has access to the JavaScript code, for example through stored XSS or MITM, he can directly call the exposed Java methods in order to exploit them.
 
-##### Without Source Code
-
--- TODO [Add content on "Testing Whether Java Objects Are Exposed Through WebViews" without source code] --
-
 #### Dynamic Analysis
 
 -- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
@@ -672,27 +567,21 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing Whether Java Objects Are Exposed Through WebViews" issue] --
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
 - V6.8: "If Java objects are exposed in a WebView, verify that the WebView only renders JavaScript contained within the app package."
-
 ##### CWE
-
 -- TODO [Add links and titles to relevant CWE for "Testing Whether Java Objects Are Exposed Through WebViews"] --
 
 ##### Info
-
 - [1] DRD13 addJavascriptInterface()  - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614
 - [2] WebView addJavascriptInterface Remote Code Execution - https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/
 - [3] Method shouldOverrideUrlLoading() - https://developer.android.com/reference/android/webkit/WebViewClient.html#shouldOverrideUrlLoading(android.webkit.WebView,%20java.lang.String)
 - [4] Method addJavascriptInterface() - https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
 
 ##### Tools
-
 -- TODO [Add links to tools for "Testing Whether Java Objects Are Exposed Through WebViews"] --
 
 
@@ -704,8 +593,6 @@ An object and it's data can be represented as a sequence of bytes. In Java, this
 
 #### Static Analysis
 
-##### With Source Code
-
 Search the source code for the following keywords:
 
 * `import java.io.Serializable`
@@ -715,10 +602,6 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 **https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager**
 
-
-##### Without Source Code
-
--- TODO [Create content for "Testing Object (De-)Serialization" without source code] --
 
 #### Dynamic Analysis
 
@@ -730,13 +613,11 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add reference to OWASP Mobile Top 10 2014 for "Testing Object (De-)Serialization"] --
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
-- V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+* V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
 
@@ -744,11 +625,10 @@ Check if serialized data is stored temporarily or permanently within the app's d
 
 ##### Info
 
-- [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
+* [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
 
 
 ##### Tools
-
 -- TODO [Add link to relevant tools for "Testing Object (De-)Serialization"] --
 
 
@@ -761,8 +641,6 @@ Checking the integrity of the environment where the app is running is getting mo
 Keep in mind that root detection is not protecting an app from attackers, but can slow down an attacker dramatically and higher the bar for successful local attacks. Root detection should be considered as part of a broad security-in-depth strategy, to be more resilient against attackers and make analysis harder.
 
 #### Static Analysis
-
-##### With Source Code
 
 Root detection can either be implemented by leveraging existing root detection libraries, such as `Rootbeer`<sup>[1]</sup>, or by implementing manually checks.
 
@@ -792,17 +670,13 @@ If the root detection is implemented from scratch, the following should be check
 * Checking available commands, like is it possible to execute `su` and being root afterwards.
 
 
-##### Without Source Code
-
--- TODO [Create content for "Testing Root Detection" without source code] --
-
 #### Dynamic Analysis
 
 A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
 
 In case of a black box test, an implemented root detection can be challenging if for example the app is immediately terminated because of a rooted phone. Ideally, a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection needs to be defeated first in that case. Identifying the implemented root detection logic without source code in a dynamic scan can be fairly hard.
 
-By using the Xposed module `RootCloak`<sup>[2]</sup> it is possible to run apps that detect root without disabling root. Nevertheless, if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
+By using the Xposed module `RootCloak` it is possible to run apps that detect root without disabling root. Nevertheless, if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
 
 Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
 
@@ -814,7 +688,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
 -- TODO [Add link to OWASP Mobile Top 10 2414 for "Testing Root Detection"] --
 
@@ -831,4 +705,4 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### Tools
 
-* [2] RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
+* RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
