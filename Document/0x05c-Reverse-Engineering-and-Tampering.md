@@ -323,15 +323,15 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipaling</code> and <code>apksigner</code> tools are found in this directory.
 
-UnCrackable App Level 1 is the perfect subject for practicing our new debugging powers, so let's start by repackaging UnCrackable-Level1.apk.
+UnCrackable App Level 1 is the perfect subject for practicing the newfound debugging powers, so let's start by repackaging UnCrackable-Level1.apk.
 
-1. Use apktool to restore AndroidManifest.xml:
+1. Use apktool to unpack the app and decode AndroidManifest.xml:
 
 ```bash
-$ apktool d --no-src target_app.apk
+$ apktool d --no-src UnCrackable-Level1.apk
 ```
 
-2. Add android:debuggable = “true” to the manifest:
+2. Add android:debuggable = “true” to the manifest using a text editor:
 
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
@@ -340,36 +340,30 @@ $ apktool d --no-src target_app.apk
 3. Repackage and sign the APK. 
 
 ```bash
-$ apktool b
-$ zipalign -v 4 target_app.recompiled.apk  target_app.recompiled.aligned.apk
-$ jarsigner -verbose -keystore ~/.android/debug.keystore  target_app.recompiled.aligned.apk signkey
-```
-
-4. Reinstall the app:
-
-```bash
-$ adb install target_app.recompiled.aligned.apk
-```
-
-
-```bash
-$ apktool d --no-src UnCrackable-Level1.apk
-```
-
-Set android:allowBackup="true" as described above.
-
-```bash
 $ cd UnCrackable-Level1
 $ apktool b
 $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 $ cd ..
 $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
+```
+
+4. Reinstall the app:
+
+```bash
 $ adb install UnCrackable-Repackaged.apk
 ```
 
+##### The 'Wait For Debugger' Feature
+
+If you start UnCrackable App Level 1 on a rooted device, root detection is triggered almost immediately. A modal dialog is shown and the app terminates once the user taps the OK button. Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the root detection mechanism runs, and use it to trae, debug and deactivate that mechanism, as well as any other anti-tampering features (including anti-debugging). It's really an unfair advantage, but on the other hand, we don't really have a reason to play fair.
+
+<img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
+
+Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>, the app won't show up in the "debug app" list unless the <code>android:debuggable</code> flag is set to <code>true</code> in the Manifest.
+
 The <code>adb</code> command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. Commonly you'll debug apps on the emulator or on a device connected via USB.
 
-The <code>abd jdwp</code> command lists 
+The <code>abd jdwp</code> command lists the process ids of all debuggable processes running on the device (i.e., processes hosting a JDWP transport). With the adb forward command, you can open a listening socket on your host machine and forward TCP connections to this socket to the JDWP transport of a chosen process. 
 
 An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
 
@@ -424,13 +418,7 @@ other = "I want to believe"
 main[1] cont     
 ```
 
-##### The 'Wait For Debugger' Feature
 
-The Developer options also contain the useful "Wait for Debugger" setting that allows you to suspend an app during startup. We'll revisit this option in a bit.
-
-<img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
-
-Note: Even with <code>ro.debuggable</code> set to 1 in <code>default.prop</code>, the app won't show up in the "debug app" list unless the <code>android:debuggable</code> flag is set to <code>true</code> in the Manifest.
 
 ###### Debugging Using an IDE
 
@@ -594,12 +582,6 @@ Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActiv
    0xa3522e84 <+12>:  lsrs  r4, r7, #28
    0xa3522e86 <+14>:  movs  r0, r0
 End of assembler dump.
-```
-
-
-```
-
-
 ```
 
 
