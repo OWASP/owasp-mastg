@@ -468,7 +468,7 @@ Choose "Android"
 Name the project
 
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="65px" />
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="650px" />
 
 
 Choose "Add no Activity"
