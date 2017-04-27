@@ -363,7 +363,7 @@ $ adb install UnCrackable-Repackaged.apk
 
 Once you start UnCrackable App Level 1 on a rooted device, the app detects that is has been run in debuggable mode. A modal dialog is shown and the app terminates once the user taps the OK button. Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, we don't really have a reason to play fair.
 
-<img src="Images/Chapters/0x05c/anti_debugging.jpg" width="350px" />
+<img src="Images/Chapters/0x05c/debugger_detection.jpg" width="350px" />
 
 Pick <code>Uncrackable1</code> as the debugging application and activate the "Wait for Debugger" switch.
 
