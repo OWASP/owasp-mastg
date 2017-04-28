@@ -19,23 +19,6 @@ $ adb install UnCrackable-Level1.apk
 - [Solution by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/)
 - [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/)
 
-## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
-
-This is a tough one! Don't even try!!
-
-- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
-- Author: [Bernhard Mueller](https://github.com/b-mueller)
-
-### Installation
-
-```
-$ adb install UnCrackable-Level3.apk
-```
-
-### Solutions
-
-N/A
-
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
 This app holds a secret inside. May include traces of native code.
@@ -52,6 +35,23 @@ $ adb install UnCrackable-Level2.apk
 ### Solutions
 
 - [Using frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
+
+## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
+
+This is a tough one. Don't even bother.
+
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
+- Author: [Bernhard Mueller](https://github.com/b-mueller)
+
+### Installation
+
+```
+$ adb install UnCrackable-Level3.apk
+```
+
+### Solutions
+
+N/A
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/License_01/)
 
