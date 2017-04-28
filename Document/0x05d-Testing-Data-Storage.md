@@ -1,10 +1,10 @@
 ## Testing Data Storage
 
+For all test cases it need to be known what sensitive information is, in context of the app. Please have a look at "Classification of data" for further details. 
+
 ### Testing for Sensitive Data in Local Storage
 
 #### Overview
-
--- TODO: What is sensitive information? Need to be described, ideally defined by the customer (data classification policy).
 
 This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information, PII).
 

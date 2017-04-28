@@ -114,7 +114,7 @@ Carefully inspect all the cryptographic methods used within the source code, esp
 
 #### Dynamic Analysis
 
-Although fuzzing of the custom algorithm might work in case of very weak crypto, the recommended approach would be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "White-box Testing")
+Although fuzzing of the custom algorithm might work in case of very weak crypto, the recommended approach would be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
 
 #### Remediation
 
