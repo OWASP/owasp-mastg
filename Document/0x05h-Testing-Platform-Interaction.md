@@ -222,23 +222,18 @@ Open the app in scope for testing and log into the app, if needed. Afterwards st
 #### References
 
 ##### OWASP Mobile Top 10 2016
-
--- TODO [Add link to OWASP Mobile Top 10 2014 for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
+* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 
 ##### OWASP MASVS
-
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 
 ##### CWE
-
 -- TODO [Add links and titles for CWE related to the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ##### Info
-
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
-
 -- TODO [Add links to relevant tools for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 
@@ -689,16 +684,15 @@ To implement root detection within an Android app, libraries can be used like `R
 #### References
 
 ##### OWASP Mobile Top 10 2016
-
--- TODO [Add link to OWASP Mobile Top 10 2414 for "Testing Root Detection"] --
+* M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
 - V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
-
--- TODO [Add link to relevant CWE for "Testing Root Detection"] --
+Not covered.
 
 ##### Info
 - [1] RootBeer - https://github.com/scottyab/rootbeer
