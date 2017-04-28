@@ -38,7 +38,7 @@ $ adb install UnCrackable-Level2.apk
 
 ## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
 
-This is a tough one. Don't even bother.
+The crackme from hell!
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
