@@ -4,6 +4,7 @@
 
 -- TODO [Describe Mobile Security Testing methodology] --
 
+
 ### Testing Process
 
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test.
@@ -22,7 +23,7 @@ All involved parties need to agree on the decisions made and on the scope in the
 
 #### Mobile App Security Testing
 
-During a manual test, one can simply walk-through the applicable requirements down the checklist, one-by-one. For a detailed testing procedures, simply click on the link provided in the "Testing Procedure" column. These links will bring you to the respective chapter in the OWASP Mobile Security Testing Guide (MSTG), where detailed steps and examples are listed for reference and guidance purposes. 
+During a manual test, one can simply walk-through the applicable requirements down the checklist, one-by-one. For a detailed testing procedures, simply click on the link provided in the "Testing Procedure" column. These links will bring you to the respective chapter in the OWASP Mobile Security Testing Guide (MSTG), where detailed steps and examples are listed for reference and guidance purposes.
 
 Also important is to note that the OWASP Mobile Security Testing Guide (MSTG) is still "Work In Progress" and being updated even as you are reading this paragraph, therefore, some test cases may not have been written yet or may be in a draft status. (Ideally, if you discover any missing content, you could contribute it yourself).
 
@@ -58,7 +59,7 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 
 ### Static Analysis
 
-In a Static Analysis approach, the developers must provide the source code or compiled IPA/APK files of the mobile application for programmatic analysis. The source code will be analyzed to ensure that there is sufficient and correct implementation of security controls, specifically on crucial components such as the authentication, authorization, session management and data storage mechanisms. 
+In a Static Analysis approach, the developers must provide the source code or compiled IPA/APK files of the mobile application for programmatic analysis. The source code will be analyzed to ensure that there is sufficient and correct implementation of security controls, specifically on crucial components such as the authentication, authorization, session management and data storage mechanisms.
 
 ##### Pros of Static Analysis
 
@@ -67,7 +68,7 @@ In a Static Analysis approach, the developers must provide the source code or co
 
 ##### Cons of Static Analysis
 
-* May require access to the source code 
+* May require access to the source code
 * High number of false positives
 * Unable to identify issues related to operational deployment environments
 
@@ -77,7 +78,7 @@ In automatic code analysis, the tool will check the source code for compliance w
 
 The automatic code analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings, identified through comparing the source code content with its own predefined set of rules or industry's best practices, and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
 
-Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications. 
+Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
 
 In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.  
 
@@ -87,7 +88,7 @@ In the role of a penetration testing engagement, the use of automatic code analy
 * [VisualCodeGrepper](https://sourceforge.net/projects/visualcodegrepp/) (C/C++, C#, VB, PHP, Java and PL/SQL)
 * [Agnitio](https://sourceforge.net/projects/agnitiotool/) (Objective-C, C#, Java & Android)
 
-##### Commercial 
+##### Commercial
 * [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) (Java, Objective-C, Swift, etc.)
 * [CheckMarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) (Java, Objective-C, Swift, etc.)
 
@@ -99,9 +100,9 @@ The main difference between a manual code review and the use of any automatic co
 
 ##### Crawling Code
 
-Crawling code is the practice of scanning a code base of the review target in question. It is to look for key pointers wherein a possible security vulnerability might reside. In crawling code, it will look for certain APIs that are related to interfacing to the external functions which are key areas for an attacker to focus on. 
+Crawling code is the practice of scanning a code base of the review target in question. It is to look for key pointers wherein a possible security vulnerability might reside. In crawling code, it will look for certain APIs that are related to interfacing to the external functions which are key areas for an attacker to focus on.
 
-For example, HTTP Request Strings like request.url or request.files, HTML Output like innerHtml or HtmlUtility, or even Database related codes like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code. 
+For example, HTTP Request Strings like request.url or request.files, HTML Output like innerHtml or HtmlUtility, or even Database related codes like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code.
 
 ##### Pros of Manual Code Review
 
@@ -116,9 +117,9 @@ For example, HTTP Request Strings like request.url or request.files, HTML Output
 
 ### Dynamic Analysis
 
-In a Dynamic Analysis approach, the focus is on the testing and evaluation of a program by executing data in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed. 
+In a Dynamic Analysis approach, the focus is on the testing and evaluation of a program by executing data in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed.
 
-Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent data validation attacks (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors or version issues. 
+Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent data validation attacks (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors or version issues.
 
 #### Pros of Dynamic Analysis
 
@@ -184,6 +185,26 @@ The same problem described with reflected XSS also applied to CSRF attacks. A ty
 The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every App has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile App is by design not possible as the session cookies are not shared with the Android browser.
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
+
+## Classification of data
+
+Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to the app to be aware of what sensitive information actually is in the context of the app.
+
+Ideally the customer can share a data classification policy that is already considering all different requirements and clearly defines sensitive information, which can be used as baseline during testing. The data classification should be applicable to:
+* data in transit and
+* data at rest.
+
+For example regulations in Singapore for financial institutions require to encrypt passwords and PINs explicitly, even though they are already transmitted via HTTPS. Even though this might not be a vulnerability from a testers point of view, it need to be raised as compliance issue.
+
+If no data classification policy is available, the general rule should be that no
+* Personal Identifiable Information (PII),
+* Keys or
+* Secrets
+are stored locally on the device itself. If they are needed, the KeyStore on Android or KeyChain on iOS should be used, to secure them accordingly by best practices offered by the OS. 
+
+Defining sensitive information before the test is important for almost all data storage test cases in Android and iOS, as otherwise the tester has no clear basis for decision.
+
+
 
 ## Tampering and Reverse Engineering
 
@@ -295,8 +316,3 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 - [4] Radare2 - https://github.com/radare/radare2
 - [5] Angr - http://angr.io
 - [6] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
-
-
-
-
-
