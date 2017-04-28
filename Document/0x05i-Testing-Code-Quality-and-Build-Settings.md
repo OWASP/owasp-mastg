@@ -204,7 +204,6 @@ Add the following to build.gradle:
 * M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-
 * V7.3: "Debugging symbols have been removed from native binaries."
 
 ##### CWE
@@ -251,7 +250,6 @@ Add the following to build.gradle:
 * V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 
 ##### CWE
-
 -- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
@@ -276,7 +274,6 @@ Review the source code to understand and identify how the application handles va
 
 * Verify that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
 * Verify that the application doesn't expose sensitive information while handling exceptions, but are still verbose enough to explain the issue to the user.
-* C3
 
 #### Dynamic Analysis
 
@@ -293,6 +290,7 @@ Review the source code to understand and identify how the application handles va
 
 ##### OWASP MASVS
 * V7.5: "The app catches and handles possible exceptions."
+* V7.6: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing Exception Handling"] --
@@ -309,46 +307,8 @@ Review the source code to understand and identify how the application handles va
 
 
 
-### Verifying Compiler Settings
 
-#### Overview
-
-Since most Android applications are Java based, they are immunue<sup>[1]</sup> to buffer overflow vulnerabilities.
-
-#### Static Analysis
-
--- TODO [Describe how to assess this with access to the source code and build configuration] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying Compiler Settings"] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-* V7.6: "Error handling logic in security controls denies access by default."
-
-##### CWE
--- TODO [Add relevant CWE for "Verifying Compiler Settings"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-[1] Java Buffer Overflows - https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java
-
-##### Tools
-
--- TODO [Add relevant tools for "Verifying Compiler Settings"] --
-* Enjarify - https://github.com/google/enjarify
-
-
-### Testing for Memory Management Bugs
+### Testing for Memory Bugs in Unmanaged Code
 
 #### Overview
 
@@ -375,30 +335,31 @@ Since most Android applications are Java based, they are immunue<sup>[1]</sup> t
 * V7.7: "In unmanaged code, memory is allocated, freed and used securely."
 
 ##### CWE
-
 -- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
-
 * Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
 * Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 ##### Tools
-
 -- TODO [Add relevant tools for "Testing for Memory Management Bugs"] --
 * Enjarify - https://github.com/google/enjarify
 
 
-### Verifying that Java Bytecode Has Been Minified
+
+### Verify That Free Security Features Are Activated
 
 #### Overview
 
 As Java classes are trivial to decompile, applying some basic obfuscation to the release bytecode is recommended. For Java apps on Android, ProGuard offers an easy way to shrink and obfuscate code. It replaces identifiers such as class names, method names and variable names with meaningless character combinations. This is a form of layout obfuscation, which is “free” in that it doesn't impact the performance of the program.
 
+Since most Android applications are Java based, they are immune<sup>[1]</sup> to buffer overflow vulnerabilities.
+
+
 #### Static Analysis
 
-If source code is provided, build.gradle file can be check to see if obfuscation settings are set. From the example below, we can see that minifyEnabled and proguardFiles are set. It is common to see application exempts some class from obfuscation with "-keepclassmembers" and "-keep class", so it is important to audit proguard configuration file to see what class are exempted. The getDefaultProguardFile('proguard-android.txt') method gets the default ProGuard settings from the Android SDK tools/proguard/ folder and proguard-rules.pro is where you defined custom proguard rules. From our sample proguard-rules.pro file, we can see that many classes that extend common android classes are exempted, which should be done more granular on exempting specific classes or library.
+If source code is provided, the build.gradle file can be checked to see if obfuscation settings are applied. From the example below, you can see that `minifyEnabled` and `proguardFiles` are set. It is common to create exceptions for some classes from obfuscation with "-keepclassmembers" and "-keep class". Therefore it is important to audit the ProGuard configuration file to see what classes are exempted. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder. The file `proguard-rules.pro` is where you define custom ProGuard rules. From our sample `proguard-rules.pro` file, you can see that many classes that extend common android classes are exempted, which should be done more granular on specific classes or libraries.
 
 build.gradle
 ```
@@ -454,7 +415,7 @@ class a$b
 
 #### Remediation
 
-ProGuard should be used to strip unneeded debugging information from the Java bytecode. By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It is shipped with Android’s SDK tools. To activate shrinking for the release build, add the following to build.gradle:
+ProGuard should be used to strip unneeded debugging information from the Java bytecode. By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator and pre-verifier. It is shipped with Android’s SDK tools. To activate shrinking for the release build, add the following to build.gradle:
 
 ```
 android {
@@ -478,16 +439,14 @@ android {
 * V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
-
 -- TODO [Add relevant CWE for Verifying that Java Bytecode Has Been Minified] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
-
-* Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
-* Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+[1] Java Buffer Overflows - https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java
+[2] Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+[3] Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 ##### Tools
-
 -- TODO [Add relevant tools for Verifying that Java Bytecode Has Been Minified] --
 * Enjarify - https://github.com/google/enjarify

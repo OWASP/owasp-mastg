@@ -2,52 +2,14 @@
 
 ### Testing for Unencrypted Sensitive Data on the Network
 
-#### Overview
+It is important to clarify that this control is at the server side, so the testing will be the same for iOS and Android applications. Please look at "Verifying the TLS Settings" in Android for a detailed explanation of this test case.
 
--- TODO [Add content on "Testing for Unencrypted Sensitive Data on the Network"] --
-Starting from iOS 9 applications must use exclusively HTTPS and TLS 1.2 with Forward Secrecy enabled. Using HTTP requires a developer to define an exception in `Info.plist` file, which specifies the domains that will be using insecure communications.
-
-#### Static Analysis
-
--- TODO [Develop content on static analysis of "Testing for Unencrypted Sensitive Data on the Network"] --
-Check `Info.plist` file in the application bundle to check if there are any endpoints allowed to communicate over HTTP.
-
-#### Dynamic Analysis
-
--- TODO [Add content on static analysis of "Testing for Unencrypted Sensitive Data on the Network"] --
-
-#### Remediation
-
--- TODO [Add remediations for "Testing for Unencrypted Sensitive Data on the Network"] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-
-##### OWASP MASVS
-* V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
-
-##### CWE
--- TODO [Add relevant CWE for "Testing for Unencrypted Sensitive Data on the Network"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
--- TODO [Add tools for "Testing for Unencrypted Sensitive Data on the Network"] --
-* Enjarify - https://github.com/google/enjarify
-
-
+Nevertheless, there is one implementation detail that should be noted for iOS. Starting from iOS 9 applications must use exclusively HTTPS and TLS 1.2 with Forward Secrecy enabled. Using HTTP requires a developer to define an exception in `Info.plist` file, which specifies the domains that will be using insecure communications. Therefore check `Info.plist` file in the application bundle to verify if there are any endpoints allowed to communicate over HTTP.
 
 
 ### Verifying the TLS Settings
 
 It is important to clarify that this control is at the server side, so the testing will be the same for iOS and Android applications. Please look at "Verifying the TLS Settings" in Android for a detailed explanation of this test case.
-
 
 
 ### Testing Endpoint Identity Verification
