@@ -184,7 +184,7 @@ Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, inst
 Decompile the APK with <code>apkx</code>. This extract the source code into the <code>HelloWorld/src</code> directory. 
 
 ```bash
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
+$ wget https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 $ apkx HelloWord-JNI.apk 
 Extracting HelloWord-JNI.apk to HelloWord-JNI
 Converting: classes.dex -> classes.jar (dex2jar)
@@ -240,7 +240,7 @@ To support both older and newer ARM processors, Android apps ship with multple A
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers will be able to deal with any of those architectures. Below, we'll be viewing the <code>armeabi-v7a</code> version IDA Pro. It is located in <code>lib/armeabi-v7a/libnative-lib.so</code>. If you don't own an IDA Pro license, you can do the same thing with demo or evaluation version available on the Hex-Rays website <sup>[x]</sup>.
+Most disassemblers will be able to deal with any of those architectures. Below, we'll be viewing the <code>armeabi-v7a</code> version IDA Pro. It is located in <code>lib/armeabi-v7a/libnative-lib.so</code>. If you don't own an IDA Pro license, you can do the same thing with demo or evaluation version available on the Hex-Rays website <sup>[13]</sup>.
 
 Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
