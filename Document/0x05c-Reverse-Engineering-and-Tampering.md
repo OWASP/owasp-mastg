@@ -184,7 +184,7 @@ Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, inst
 Decompile the APK with <code>apkx</code>. This extract the source code into the <code>HelloWorld/src</code> directory. 
 
 ```bash
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWorld-JNI.apk
+$ wget https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 $ apkx HelloWord-JNI.apk 
 Extracting HelloWord-JNI.apk to HelloWord-JNI
 Converting: classes.dex -> classes.jar (dex2jar)
