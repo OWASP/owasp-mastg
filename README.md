@@ -10,7 +10,7 @@ The MSTG hasn't been officially released yet. There are several options for conv
 
 1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use Gitbook to generate PDF, epub, and other e-book formats.
 
-2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git-lfs extension](https://git-lfs.github.com) is needed to download larger files such as images.
+2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git LFS extension](https://git-lfs.github.com) is needed to download larger files such as images.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
