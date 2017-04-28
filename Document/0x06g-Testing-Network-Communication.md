@@ -1,14 +1,11 @@
 ## Testing Network Communication
 
-### General Overview
-
-Starting from iOS 9 applications must use exclusively HTTPS and TLS 1.2 with Forward Secrecy enabled. Using HTTP requires a developer to define an exception in `Info.plist` file, which specifies the domains that will be using insecure communications. 
-
 ### Testing for Unencrypted Sensitive Data on the Network
 
 #### Overview
 
 -- TODO [Add content on "Testing for Unencrypted Sensitive Data on the Network"] --
+Starting from iOS 9 applications must use exclusively HTTPS and TLS 1.2 with Forward Secrecy enabled. Using HTTP requires a developer to define an exception in `Info.plist` file, which specifies the domains that will be using insecure communications.
 
 #### Static Analysis
 
@@ -25,22 +22,17 @@ Check `Info.plist` file in the application bundle to check if there are any endp
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+##### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-
--- TODO [Update reference to "VX.Y" below for "Testing for Unencrypted Sensitive Data on the Network"] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+* V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 
 ##### CWE
-
 -- TODO [Add relevant CWE for "Testing for Unencrypted Sensitive Data on the Network"] --
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
-
 - [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
@@ -49,74 +41,14 @@ Check `Info.plist` file in the application bundle to check if there are any endp
 -- TODO [Add tools for "Testing for Unencrypted Sensitive Data on the Network"] --
 * Enjarify - https://github.com/google/enjarify
 
+
+
+
 ### Verifying the TLS Settings
 
-#### Overview
+It is important to clarify that this control is at the server side, so the testing will be the same for iOS and Android applications. Please look at "Verifying the TLS Settings" in Android for a detailed explanation of this test case.
 
--- TODO [Provide a general description of the issue "Verifying the TLS Settings".]
 
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
-##### With Source Code
-
--- TODO [Add content for "Verifying the TLS Settings" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content for "Verifying the TLS Settings" without source code] --
-
-#### Dynamic Analysis
-
-A good way of checking server-side security it to use a script like [testssl](https://testssl.sh/).
-You can also download a compiled openssl version that supports **all ciphersuites and protocols including SSLv2**. 
-After downloading the script itself and proper openssl version you can use it in following way:
-
-```
-$ OPENSSL=./bin/openssl.Linux.x86_64 bash ./testssl.sh yoursite.com
-```
-
-The tool will also help identifying potential misconfiguration or vulnerabilities by highlighting them in red. 
-If you want to store the report preserving color and format use `aha`:
-
-```
-$ OPENSSL=./bin/openssl.Linux.x86_64 bash ./testssl.sh yoursite.com | aha > output.html
-```
-
-This will give you a HTML document that will match CLI output.
-
-#### Remediation
-
-Any vulnerability or misconfiguration should be solved either by patching or reconfiguring the server. Although iOS userbase is coherent compared to Android, beware of supported SSL/TLS versions on older systems. 
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
-
-##### OWASP MASVS
-
--- TODO [Update reference "VX.Y" below for "Verifying the TLS Settings"] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Verifying the TLS Settings"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
--- TODO [Add tools on "Verifying the TLS Settings"] --
-* Enjarify - https://github.com/google/enjarify
 
 ### Testing Endpoint Identity Verification
 
@@ -130,13 +62,7 @@ Any vulnerability or misconfiguration should be solved either by patching or rec
 
 -- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
-##### With Source Code
-
 -- TODO [Add content on "Testing Endpoint Identity Verification" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content on "Testing Endpoint Identity Verification" without source code] --
 
 #### Dynamic Analysis
 
@@ -148,19 +74,16 @@ Any vulnerability or misconfiguration should be solved either by patching or rec
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+#### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-
--- TODO [Update reference "VX.Y" below for "Testing Endpoint Identity Verification"] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+* V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
 ##### CWE
-
--- TODO [Add relevant CWE for "Testing Endpoint Identity Verification"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+* CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+* CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+* CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 ##### Info
 
@@ -172,13 +95,16 @@ Any vulnerability or misconfiguration should be solved either by patching or rec
 -- TODO [Add relevant tools for "Testing Endpoint Identity Verification"] --
 * Enjarify - https://github.com/google/enjarify
 
+
+
+
 ### Testing Custom Certificate Stores and SSL Pinning
 
 #### Overview
 
-Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implements certificate pinning only have to connect to a limited numbers of server, so a small list of trusted CA can be hard-coded in the application.
+Certificate pinning allows to hard-code in the client the certificate that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate take the CA out of games. Mobile applications that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
 
-#### White-box Testing
+#### Static Analysis
 
 The code presented below shows how it is possible to check if the certificate provided by the server reflects the certificate hard-coded  in the application. The method below implements the connection authentication tells the delegate that the connection will send a request for an authentication challenge.
 
@@ -202,12 +128,12 @@ else {
 }
 ```
 
-#### Black-box Testing
+#### Dynamic Analysis
 
 ##### Server certificate validation
 
-We start our analysis by testing the application's behaviour while establishing secure connection. 
-Our test approach is to gradually relax security of SSL handshake negotiation and check which security mechanisms are enabled. 
+We start our analysis by testing the application's behaviour while establishing secure connection.
+Our test approach is to gradually relax security of SSL handshake negotiation and check which security mechanisms are enabled.
 
 1. Having burp set up as a proxy in wifi settings, make sure that there is no certificate added to trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tabl. If you can see the traffic, it means that there is no certificate validation performed at all! This effectively means that an active attacker can silently do MiTM against your application. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
 2. Now, install Burp certificate, as explained in [Basic Security Testing section](./0x06b-Basic-Security-Testing.md). If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed. The risk is less significant than in previous scenario, as two main attack scenarios at this point are misbehaving CAs and phishing attacks, as discussed in [Basic Security Testing section](./0x06b-Basic-Security-Testing.md).
@@ -215,7 +141,7 @@ Our test approach is to gradually relax security of SSL handshake negotiation an
 
 ##### Client certificate validation
 
-Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection. 
+Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
 
 There is a couple of things worth noting:
 1. client certificate contains private key that will be used in key exchange
@@ -226,43 +152,35 @@ Most common and improper way of doing two-way handshake is to store client certi
 
 Second way of storing the certificate (and possibly password) is to use the keychain. Upon first login, the application should download personal certificate and store it securely in the keychain.
 
-Sometimes application have one certificate that is hardcoded and used for first login and then personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server. 
+Sometimes application have one certificate that is hardcoded and used for first login and then personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server.
 
-Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic. 
+Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
 #### Remediation
 
 As a best practice, the certificate should be pinned. This can be done in several ways, where most common include:
 1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
 2. Limiting certificate issuer to e.g. one entity and bundling the root CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
-3. Owning and managing your own PKI. The application would contain the root CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed. 
+3. Owning and managing your own PKI. The application would contain the root CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+##### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-
--- TODO [Update reference "VX.Y" below for Testing Custom Certificate Stores and SSL Pinning] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+* V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
 ##### CWE
-
--- TODO [Add relevant CWE for Testing Custom Certificate Stores and SSL Pinning] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+* CWE-295 - Improper Certificate Validation
 
 ##### Info
 
-- Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-References
-- OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
+* [1] Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
+* [2] OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
 
-##### Tools
 
--- TODO [Add relevant tools for Testing Custom Certificate Stores and SSL Pinning] --
-* Enjarify - https://github.com/google/enjarify
+
 
 ### Verifying that Critical Operations Use Secure Communication Channels
 
@@ -276,13 +194,8 @@ References
 
 -- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
-##### With Source Code
-
 -- TODO [Add content on "Verifying that Critical Operations Use Secure Communication Channels" with source code] --
 
-##### Without Source Code
-
--- TODO [Add content on "Verifying that Critical Operations Use Secure Communication Channels" without source code] --
 
 #### Dynamic Analysis
 
@@ -294,14 +207,11 @@ References
 
 #### References
 
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+##### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-
--- TODO [Update reference below "VX.Y" for "Verifying that Critical Operations Use Secure Communication Channels"] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+* V5.5 "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
 ##### CWE
 
