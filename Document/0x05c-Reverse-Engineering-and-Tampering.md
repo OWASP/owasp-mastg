@@ -366,7 +366,7 @@ $ adb install UnCrackable-Repackaged.apk
 
 UnCrackable App is not stupid, and it'll notice that it has been run in debuggable mode. A modal dialog is shown immediately and the crackme terminates once you tap the OK button. 
 
-Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, reverse engineers never play fair.
+Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, reverse engineers never play fair!
 
 <img src="Images/Chapters/0x05c/debugger_detection.jpg" width="350px" />
 
@@ -394,7 +394,7 @@ $ adb jdwp
 $ adb forward tcp:7777 jdwp:12167
 ```
 
-We're now ready to attach <code>jdb</code>. Attaching the debugger will however cause the app to resume immediately, which is something we don't want. Rather, we'd like to keep it suspended so we can do some exploration and set breakpoints first. To prevent the process from resuming, we send a <code>suspend</code> command which will be executed immediately.
+We're now ready to attach <code>jdb</code>. Attaching the debugger will however cause the app to resume, which is something we don't want. Rather, we'd like to keep it suspended so we can do some exploration and set breakpoints first. To prevent the process from resuming, we send a <code>suspend</code> command which will be executed immediately.
 
 ```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
@@ -404,7 +404,21 @@ Initializing jdb ...
 > 
 ```
 
-You are now attached to the target process and ready to go ahead with jdb commands. Enter <code>?</code> to get the full list of commands.
+You are now attached to the suspended target process and ready to go ahead with jdb commands. Enter <code>?</code> to get the full list of commands. Some useful and supported ones are:
+
+- classes: List all loaded classes
+- class / method / fields <class id>: Print details about a class and list its method and fields
+- locals: print local variables in current stack frame
+- print / dump <expr>: print information about an object
+- stop in <method>: set a method breakpoint
+- clear <method>: remove a method breakpoint
+- set <lvalue> = <expr>:  assign new value to field/variable/array element
+
+Unfortunately, the Android VM doesn't support all available debugging commands. For example, the <code>redefine</code> command, which is supposed to let us redefine the code for a class, is not supported. Another important restriction is that line breakpoints won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+
+Let's revisit the decompiled source code of UnCrackable App Level 1 and start thinking about possible solutions. A good solution would be to suspend the app at a state where the secret string is held in memory so we can retrieve it. Unfortunately, we won't get that far unless we deal with the root / tampering detection first. 
+
+From the code, we know that the method <code>sg.vantagepoint.uncrackable1.MainActivity.a</code> is responsible for displaying the "This in unacceptable..." message. This method also sets up the "OK" button and hooks it to a class that implements the <code>OnClickListener</code> interface. The <code>onClick</code> event handler on the OK button is what actually terminates the app. To prevent the user from simply cancelling the dialog, the <code>setCancelable</code> method is called.
 
 
 ```java
@@ -418,24 +432,37 @@ You are now attached to the target process and ready to go ahead with jdb comman
     }
 ```
 
-An important restriction is that line breakpoints won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+We can bypass this by making a small change during runtime. With the app still suspended, set a method breakpoint on <code>android.app.Dialog.setCancelable</code> and resume the app so the breakpoint is hit.
 
+```
 > stop in android.app.Dialog.setCancelable                        
 Set breakpoint android.app.Dialog.setCancelable
 > resume
 All threads resumed.
 > 
 Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
+main[1]
+```
+
+The app is now suspended at the first instruction of <code>setCancelable</code>. You can print the method arguments using the <code>locals</code> command (note that the arguments are incorrectly shown under "local variables").
+
+```
 main[1] locals
 Method arguments:
 Local variables:
 flag = true
-(...)
+```
+
+In this case, <code>setCancelable(true)</code> was called, so this can't be the call we're looking for. Resume the process using the <code>resume</code> command.
+
+```
+main[1] resume
 Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
 main[1] locals
 flag = false
 ```
 
+We've now hit a call to <code>setCancelable</code> with the argument <code>false</code>. Set the variable to <code>true</code> with the <code>set</code> command and resume.
 
 ```
 main[1] set flag = true
@@ -443,24 +470,7 @@ main[1] set flag = true
 main[1] resume
 ```
 
-
-```
-> clear android.app.Dialog.setCancelable
-> stop in java.lang.String.<init>(byte[])
-Set breakpoint java.lang.String.<init>(byte[])
-All threads resumed.
-> 
-Breakpoint hit: "thread=main", java.lang.String.<init>(), line=119 bci=0
-
-main[1] locals
-Method arguments:
-Local variables:
-data = instance of byte[17] (id=3703)
-main[1] dump data
- data = {
-73, 32, 119, 97, 110, 116, 32, 116, 111, 32, 98, 101, 108, 105, 101, 118, 101
-}
-```
+Repeat this process, setting <code>flag</code> to <code>true</code> each time the breakpoint is hit, until the alert box is finally displayed (the breakpoint will be hit 5 or 6 times). The alert box should now be cancelable: Tap anywhere next to the box and it will close without terminating the app.
 
 
 
