@@ -384,7 +384,7 @@ List of devices attached
 090c285c0b97f748  device
 ```
 
-The <code>abd jdwp</code> command lists the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the <code>adb forward</code> command, you can open a listening socket on your host machine and forward TCP connections to this socket to the JDWP transport of a chosen process. 
+The <code>adb jdwp</code> command lists the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the <code>adb forward</code> command, you can open a listening socket on your host machine and forward TCP connections to this socket to the JDWP transport of a chosen process. 
 
 ```bash
 $ adb jdwp
