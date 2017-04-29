@@ -304,19 +304,19 @@ Since Android 4.2, the "Developer options" submenu is hidden by default in the S
 
 ##### Debugging Release Apps
 
-Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JDWP is a standard debugging protocol that is supported by all command line tools and IDEs, including JDB, JEB, IntelliJ and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
+Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for communication between the debugger and the Java virtual machine (VM) which it debugs. JDWP is a standard debugging protocol that is supported by all command line tools and Java IDEs, including JDB, JEB, IntelliJ and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS). 
 
-Every debugger-enabled Java VM starts an extra JDWP thread for handling protocol packets from the debugger. If the system property ro.debuggable set to "1", this thread is started for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
+Using a JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll be using a JDWP debugger most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
-Using a JDWP debugger allows you to step through Java code, set breakpoints on Java methods, inspect instance variables of live objects, and many other useful things.  You'll be using JDWP most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets.  this thread is started only for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
 
-When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged however - after all, that's what *debug builds* are for. By default, Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations and bugs, such as a lack of line breakpoints, method breakpoints being set at the wrong locations, and others. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
+When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged - after all, that's what *debug builds* are for. If the system property ro.debuggable set to "0", Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
 
 ###### Repackaging
 
 To "convert" a release build release into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the the altered APK archive.
 
-To do this, you first need a code signing certificate . If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in <code>$HOME/.android/debug.keystore</code>. The default password for this keystore is "android" and the key is named "androiddebugkey".
+To do this, you first need a code signing certificate. If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in <code>$HOME/.android/debug.keystore</code>. The default password for this keystore is "android" and the key is named "androiddebugkey".
 
 The Java standard distibution includes <code>keytool</code> for managing keystores and certificates. You can create your own signing certificate and key and add it to the debug keystore as follows:
 
@@ -326,7 +326,7 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory.
 
-UnCrackable App Level 1 is the perfect subject for practicing the newfound debugging powers, so let's start by repackaging UnCrackable-Level1.apk.
+UnCrackable App Level 1 is the perfect subject for practicing the newfound debugging powers, so let's start by repackaging it.
 
 1. Use apktool to unpack the app and decode AndroidManifest.xml:
 
@@ -350,7 +350,7 @@ $ cd ..
 $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 ```
 
-Note: If you experience compatibility issues with <code>apksigner</code> and your JRE, you can use <code>jarsigner</code> instead:
+Note: If you experience JRE compatibility issues with <code>apksigner</code>, you can use <code>jarsigner</code> instead:
 
 ```bash
 $ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.apk signkey
@@ -364,7 +364,9 @@ $ adb install UnCrackable-Repackaged.apk
 
 ##### The 'Wait For Debugger' Feature
 
-Once you start UnCrackable App Level 1 on a rooted device, the app detects that is has been run in debuggable mode. A modal dialog is shown and the app terminates once the user taps the OK button. Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, we don't really have a reason to play fair.
+UnCrackable App is not stupid, and it'll notice that it has been run in debuggable mode. A modal dialog is shown immediately and the crackme terminates once you tap the OK button. 
+
+Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, reverse engineers never play fair.
 
 <img src="Images/Chapters/0x05c/debugger_detection.jpg" width="350px" />
 
@@ -406,34 +408,84 @@ You are now attached to the target process and ready to go ahead with jdb comman
 
 
 ```java
-package sg.vantagepoint.a;
-
-import android.content.Context;
-
-public class b
-{
-    public static boolean a(final Context context) {
-        return (context.getApplicationContext().getApplicationInfo().flags & 0x2) != 0x0;
+  private void a(final String title) {
+        final AlertDialog create = new AlertDialog$Builder((Context)this).create();
+        create.setTitle((CharSequence)title);
+        create.setMessage((CharSequence)"This in unacceptable. The app is now going to exit.");
+        create.setButton(-3, (CharSequence)"OK", (DialogInterface$OnClickListener)new b(this));
+        create.setCancelable(false);
+        create.show();
     }
+```
+
+An important restriction is that line breakpoints won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+
+> stop in android.app.Dialog.setCancelable                        
+Set breakpoint android.app.Dialog.setCancelable
+> resume
+All threads resumed.
+> 
+Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
+main[1] locals
+Method arguments:
+Local variables:
+flag = true
+(...)
+Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
+main[1] locals
+flag = false
+```
+
+
+```
+main[1] set flag = true
+ flag = true = true
+main[1] resume
+```
+
+
+```
+> clear android.app.Dialog.setCancelable
+> stop in java.lang.String.<init>(byte[])
+Set breakpoint java.lang.String.<init>(byte[])
+All threads resumed.
+> 
+Breakpoint hit: "thread=main", java.lang.String.<init>(), line=119 bci=0
+
+main[1] locals
+Method arguments:
+Local variables:
+data = instance of byte[17] (id=3703)
+main[1] dump data
+ data = {
+73, 32, 119, 97, 110, 116, 32, 116, 111, 32, 98, 101, 108, 105, 101, 118, 101
 }
 ```
 
 
+
+sg.vantagepoint.uncrackable1.a:
+
+```java
+    public static boolean a(final String s) {
+        final byte[] decode = Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", 0);
+        byte[] a = new byte[0];
+        while (true) {
+            try {
+                a = sg.vantagepoint.a.a.a(b("8d127684cbc37c17616d806cf50473cc"), decode);
+                if (s.equals(new String(a))) {
+                    return true;
+                }
+            }
+            catch (Exception ex) {
+                Log.d("CodeCheck", "AES error:" + ex.getMessage());
+                continue;
+            }
+            break;
+        }
+        return false;
+    }
 ```
-> stop in sg.vantagepoint.uncrackable1.MainActivity.onCreate
-Set breakpoint sg.vantagepoint.uncrackable1.MainActivity.onCreate
-> resume
-All threads resumed.
-> Set deferred breakpoint sg.vantagepoint.uncrackable1.MainActivity.onCreate
-main[1] stop in sg.vantagepoint.uncrackable1.MainActivity.onCreate
-Set breakpoint sg.vantagepoint.uncrackable1.MainActivity.onCreate
-```
-
-
--- TODO [Complete debugging howto - still some work to do] --
-
-An important restriction is that line breakpoints usually won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
-
 
 
 ```
@@ -632,11 +684,12 @@ Method entered: All threads resumed.
 
 The Dalvik Debug Monitor Server (DDMS) a GUI tool included with Android Studio. At first glance it might not look like much, but make no mistake: Its Java method tracer is one of the most awesome tools you can have in your arsenal, and is indispensable for analyzing obfuscated bytecode.
 
-Using DDMS is a bit confusing however: It can be launched in several ways, and different trace viewers will be launched depending on how the trace was obtained. There’s a standalone tool called “Traceview” as well as a built-in viewer in Android Studio, both of which offer different ways of navigating the trace. You’ll usually want to use the viewer built into Android studio (which I didn’t know about for several weeks until I discovered it by accident) which gives you a nice, zoom-able hierarchical timeline of all method calls. The standalone tool however is also useful, as it has a profile panel that shows the time spent in each method, as well as the parents and children of each method.
+Using DDMS is a bit confusing however: It can be launched in several ways, and different trace viewers will be launched depending on how the trace was obtained. There’s a standalone tool called “Traceview” as well as a built-in viewer in Android Studio, both of which offer different ways of navigating the trace. You’ll usually want to use the viewer built into Android studio which gives you a nice, zoom-able hierarchical timeline of all method calls. The standalone tool however is also useful, as it has a profile panel that shows the time spent in each method, as well as the parents and children of each method.
 
 To record an execution trace in Android studio, open the "Android" tab at the bottom of the GUI. Select the target process in the list and the click the little “stop watch” button on the left. This starts the recording. Once you are done, click the same button to stop the recording. The integrated trace view will open showing the recorded trace. You can scroll and zoom the timeline view using the mouse or trackpad.
 
 Alternatively, execution traces can also be recorded in the standalone Android Device Monitor. The Device Monitor can be started from within Android Studo (Tools -> Android -> Android Device Monitor) or from the shell with the ddms command.
+
 To start recording tracing information, select the target process in the “Devices” tab and click the “Start Method Profiling” button. Click the stop button to stop recording, after which the Traceview tool will open showing the recorded trace. An interesting feature of the standalone tool is the “profile” panel on the bottom, which shows an overview of the time spent in each method, as well as each method’s parents and children. Clicking any of the methods in the profile panel highlights the selected method in the timeline panel.
 
 As an aside, DDMS also offers convenient heap dump button that will dump the Java heap of a process to a .hprof file. More information on Traceview can be found in the Android Studio user guide.
@@ -1691,7 +1744,7 @@ $ adb shell lsmod
 kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
 ```
 
-Now, we’ll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of our newly injected function (this could have been done directly in the kernel module as well, but using /dev/kmem gives us an easy way to toggle our hooks on and off). I have adapted the code from Dong-Hoon You’s Phrack article [1] for this purpose - however, I used the file interface instead of mmap(), as I found the latter to cause kernel panics for some reason. Create a file called kmem_util.c with the following code:
+Now, we’ll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of our newly injected function (this could have been done directly in the kernel module as well, but using /dev/kmem gives us an easy way to toggle our hooks on and off). I have adapted the code from Dong-Hoon You’s Phrack article [X] for this purpose - however, I used the file interface instead of mmap(), as I found the latter to cause kernel panics for some reason. Create a file called kmem_util.c with the following code:
 
 ```c
 #include <stdio.h>
@@ -1817,9 +1870,11 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [12] JEB Decompiler - https://www.pnfsoftware.com
 - [13] IDA Pro - https://www.hex-rays.com/products/ida/
 - [14] Bionic libc - https://github.com/android/platform_bionic
-- [+] NetSPI Blog - Attacking Android Applications with Debuggers - https://blog.netspi.com/attacking-android-applications-with-debuggers/
-- [15] DECAF - https://github.com/sycurelab/DECAF
-- [16] PANDA - https://github.com/moyix/panda/blob/master/docs/
+- [15] NetSPI Blog - Attacking Android Applications with Debuggers - https://blog.netspi.com/attacking-android-applications-with-debuggers/
+- [16] DECAF - https://github.com/sycurelab/DECAF
+- [17] PANDA - https://github.com/moyix/panda/blob/master/docs/
 - [17] VxStripper - http://vxstripper.pagesperso-orange.fr
-- [18] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
-- [19] Frida - https://www.frida.re
+- [19] Dynamic Malware Recompliation - http://ieeexplore.ieee.org/document/6759227/
+- [20] Frida - https://www.frida.re
+- [X] Hacking Soft Tokens
+- [X] Phrack - 
