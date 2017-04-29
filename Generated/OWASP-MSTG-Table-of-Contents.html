@@ -62,6 +62,7 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#static-analysis">Static Analysis</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#dynamic-analysis">Dynamic Analysis</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#vulnerability-analysis-considerations">Vulnerability Analysis Considerations</a></p>
+<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#classification-of-data"><h2>Classification of data</h2></a>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#tampering-and-reverse-engineering"><h2>Tampering and Reverse Engineering</h2></a>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#why-you-need-it">Why You Need It</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-Testing-Processes-and-Techniques.md#before-you-start">Before You Start</a></p>
@@ -108,7 +109,7 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05e-Testing-Cryptography.md#testing-for-insecure-andor-deprecated-cryptographic-algorithms">Testing for Insecure and/or Deprecated Cryptographic Algorithms</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05e-Testing-Cryptography.md#testing-random-number-generation">Testing Random Number Generation</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#testing-authentication"><h2>Testing Authentication</h2></a>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#verifying-that-users-are-properly-authenticated">Verifying that Users Are Properly Authenticated</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#verify-that-users-are-properly-authenticated">Verify that Users Are Properly Authenticated</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#testing-session-management">Testing Session Management</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#testing-the-logout-functionality">Testing the Logout Functionality</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05f-Testing-Authentication.md#testing-the-password-policy">Testing the Password Policy</a></p>
@@ -141,9 +142,8 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#testing-for-debugging-symbols">Testing for Debugging Symbols</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#testing-for-debugging-code-and-verbose-error-logging">Testing for Debugging Code and Verbose Error Logging</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#testing-exception-handling">Testing Exception Handling</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#verifying-compiler-settings">Verifying Compiler Settings</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#testing-for-memory-management-bugs">Testing for Memory Management Bugs</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#verifying-that-java-bytecode-has-been-minified">Verifying that Java Bytecode Has Been Minified</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#testing-for-memory-bugs-in-unmanaged-code">Testing for Memory Bugs in Unmanaged Code</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#verify-that-free-security-features-are-activated">Verify That Free Security Features Are Activated</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-resiliency-against-reverse-engineering"><h2>Testing Resiliency Against Reverse Engineering</h2></a>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-root-detection">Testing Root Detection</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-anti-debugging">Testing Anti-Debugging</a></p>
@@ -185,6 +185,7 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#testing-for-sensitive-data-disclosure-through-the-user-interface">Testing for Sensitive Data Disclosure Through the User Interface</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#testing-for-sensitive-data-in-backups">Testing for Sensitive Data in Backups</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#testing-for-sensitive-information-in-auto-generated-screenshots">Testing For Sensitive Information in Auto-Generated Screenshots</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#testing-for-sensitive-data-in-memory">Testing for Sensitive Data in Memory</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#testing-the-device-access-security-policy">Testing the Device-Access-Security Policy</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#verifying-user-education-controls">Verifying User Education Controls</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06e-Testing-Cryptography.md#testing-cryptography"><h2>Testing Cryptography</h2></a>
@@ -193,7 +194,7 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06e-Testing-Cryptography.md#verifying-the-configuration-of-cryptographic-standard-algorithms">Verifying the Configuration of Cryptographic Standard Algorithms</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06e-Testing-Cryptography.md#testing-random-number-generation">Testing Random Number Generation</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-authentication"><h2>Testing Authentication</h2></a>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#verifying-that-users-are-authenticated-properly">Verifying that Users Are Authenticated Properly</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#verify-that-users-are-properly-authenticated">Verify that Users Are Properly Authenticated</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-session-management">Testing Session Management</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-the-logout-functionality">Testing the Logout Functionality</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-the-password-policy">Testing the Password Policy</a></p>
@@ -204,7 +205,6 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-step-up-authentication">Testing Step-up Authentication</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06f-Testing-Authentication-and-Session-Management.md#testing-user-device-management">Testing User Device Management</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#testing-network-communication"><h2>Testing Network Communication</h2></a>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#general-overview">General Overview</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#testing-for-unencrypted-sensitive-data-on-the-network">Testing for Unencrypted Sensitive Data on the Network</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#verifying-the-tls-settings">Verifying the TLS Settings</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#testing-endpoint-identity-verification">Testing Endpoint Identity Verification</a></p>
@@ -219,18 +219,16 @@ p{
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers">Testing WebView Protocol Handlers</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-for-local-file-inclusion-in-webviews">Testing for Local File Inclusion in WebViews</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-whether-java-objects-are-exposed-through-webviews">Testing Whether Java Objects Are Exposed Through WebViews</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-object-serialization">Testing Object Serialization</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-object-de-serialization">Testing Object (De-)Serialization</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-jailbreak-detection">Testing Jailbreak Detection</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-code-quality-and-build-settings"><h2>Testing Code Quality and Build Settings</h2></a>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#verifying-that-the-app-is-properly-signed">Verifying that the App is Properly Signed</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-whether-the-app-is-debuggable">Testing Whether the App is Debuggable</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#verifying-that-debugging-symbols-have-been-removed">Verifying that Debugging Symbols Have Been Removed</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-if-the-app-is-debuggable">Testing If the App is Debuggable</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-for-debugging-symbols">Testing for Debugging Symbols</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-for-debugging-code-and-verbose-error-logging">Testing for Debugging Code and Verbose Error Logging</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-exception-handling">Testing Exception Handling</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#verifying-that-the-app-fails-securely">Verifying that the App Fails Securely</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-compiler-settings">Testing Compiler Settings</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-for-memory-management-bugs">Testing for Memory Management Bugs</a></p>
-<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#verifying-that-java-bytecode-has-been-minifed">Verifying that Java Bytecode Has Been Minifed</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#testing-for-memory-bugs-in-unmanaged-code">Testing for Memory Bugs in Unmanaged Code</a></p>
+<p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06i-Testing-Code-Quality-and-Build-Settings.md#verify-that-free-security-features-are-activated">Verify That Free Security Features Are Activated</a></p>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-resiliency-against-reverse-engineering"><h2>Testing Resiliency Against Reverse Engineering</h2></a>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-jailbreak-detection">Testing Jailbreak Detection</a></p>
 <p><a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-anti-debugging">Testing Anti-Debugging</a></p>

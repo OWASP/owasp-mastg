@@ -35,7 +35,6 @@
 ##### Tools
 -- TODO [Add tools for "Verifying that the App is Properly Signed"] --
 
-
 ### Testing If the App is Debuggable
 
 #### Overview
@@ -242,6 +241,7 @@ Review the source code to understand/identify who the application handle various
 #### Overview
 
 Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
+
 * **ARC** - Automatic Reference Counting - memory management feature
   * adds retain and release messages when required
 * **Stack Canary** - helps preventing buffer overflow attacks
