@@ -106,7 +106,6 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 This app holds a secret inside - and this time it won't be tampered with!
 
-- Difficulty: Medium
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
 Objective: Find the secret code - it is related to alcoholic beverages.
