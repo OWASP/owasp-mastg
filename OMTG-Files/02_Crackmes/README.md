@@ -1,6 +1,6 @@
 # UnCrackable Mobile Apps
 
-Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the Mobile Security Testing Guide. Of course, you can also do them for fun. If you do solve any of the challenges, please take a moment to do our brief [survey](https://www.surveymonkey.com/r/2TS2MZJ) for each of them.
+Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the Mobile Security Testing Guide. Of course, you can also do them for fun. If you do solve any of the challenges, please take a moment to do our brief post-cracking [survey](https://www.surveymonkey.com/r/2TS2MZJ).
 
 # Android
 
