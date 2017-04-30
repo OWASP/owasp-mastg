@@ -19,9 +19,10 @@ $ adb install UnCrackable-Level1.apk
 
 ### Solutions
 
-- [Static Analysis in the Android Reverse Engineering Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-statically-analyzing-java-code)
-- [Solution by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/)
+- [Solution using frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/)
 - [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/)
+- [Solution using static analysis only](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-statically-analyzing-java-code)
+- [Solution using jdb only](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-debugging-release-apps)
 
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_02/)
 
