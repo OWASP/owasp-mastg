@@ -49,7 +49,7 @@ IDA Pro <sup>[13]</sup> understands ARM, MIPS and of course Intel ELF binaries, 
 Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 $ adb install UnCrackable-Level1.apk
 ```
 
@@ -1836,7 +1836,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 
 -- TODO [Sync with text] --
 
-- [1] OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
+- [1] UnCrackable Mobile Apps - https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/
 - [2] Android Studio - https://developer.android.com/studio/index.html
 - [3] APKTool - https://ibotpeaches.github.io/Apktool/
 - [4] JD - http://jd.benow.ca/
