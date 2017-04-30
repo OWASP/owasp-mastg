@@ -49,7 +49,7 @@ IDA Pro <sup>[13]</sup> understands ARM, MIPS and of course Intel ELF binaries, 
 Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/OMTG-Files/02_Crackmes/01_Android/Level_01/UnCrackable-Level1.apk
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 $ adb install UnCrackable-Level1.apk
 ```
 
@@ -308,11 +308,13 @@ Dalvik and ART support the Java Debug Wire Protocol (JDWP), a protocol used for 
 
 Using a JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll be using a JDWP debugger most of the time when debugging "normal" Android apps that don't do a lot of calls into native libraries.
 
+In the following section, we'll show how to solve UnCrackable App for Android Level 1 using JDB only. Note that this is not an *efficient* way to solve this crackme - you can do it much faster using Frida and other methods, which we'll introduce later in the guide. It serves however well an an introdcution to the capabilites of the Java debugger.
+
+###### Repackaging
+
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets.  this thread is started only for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
 
 When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged - after all, that's what *debug builds* are for. If the system property ro.debuggable set to "0", Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
-
-###### Repackaging
 
 To "convert" a release build release into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the the altered APK archive.
 
@@ -324,9 +326,7 @@ The Java standard distibution includes <code>keytool</code> for managing keystor
 $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 ```
 
-With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory.
-
-UnCrackable App Level 1 is the perfect subject for practicing the newfound debugging powers, so let's start by repackaging it.
+With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory. Repackage UnCrackable-Level1.apk as follows:
 
 1. Use apktool to unpack the app and decode AndroidManifest.xml:
 
@@ -364,13 +364,13 @@ $ adb install UnCrackable-Repackaged.apk
 
 ##### The 'Wait For Debugger' Feature
 
-UnCrackable App is not stupid, and it'll notice that it has been run in debuggable mode. A modal dialog is shown immediately and the crackme terminates once you tap the OK button. 
+UnCrackable App is not stupid: It notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately and the crackme terminates once you tap the OK button. 
 
-Fortunately, Android's Developer options contain the useful "Wait for Debugger" settings, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, reverse engineers never play fair!
+Fortunately, Android's Developer options contain the useful "Wait for Debugger" feature, which allows you to automatically suspend a selected app doing startup until a JDWP debugger connects. By using this feature, you can connect the debugger before the detection mechanism runs, and trace, debug and deactivate that mechanism. It's really an unfair advantage, but on the other hand, reverse engineers never play fair!
 
 <img src="Images/Chapters/0x05c/debugger_detection.jpg" width="350px" />
 
-Pick <code>Uncrackable1</code> as the debugging application and activate the "Wait for Debugger" switch.
+In the Developer Settings, pick <code>Uncrackable1</code> as the debugging application and activate the "Wait for Debugger" switch.
 
 <img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
 
@@ -394,7 +394,7 @@ $ adb jdwp
 $ adb forward tcp:7777 jdwp:12167
 ```
 
-We're now ready to attach <code>jdb</code>. Attaching the debugger will however cause the app to resume, which is something we don't want. Rather, we'd like to keep it suspended so we can do some exploration and set breakpoints first. To prevent the process from resuming, we send a <code>suspend</code> command which will be executed immediately.
+We're now ready to attach JDB. Attaching the debugger however causes the app to resume, which is something we don't want. Rather, we'd like to keep it suspended so we can do some exploration first. To prevent the process from resuming, we pipe the <code>suspend</code> command into jdb:
 
 ```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
@@ -404,7 +404,7 @@ Initializing jdb ...
 > 
 ```
 
-You are now attached to the suspended target process and ready to go ahead with jdb commands. Enter <code>?</code> to get the full list of commands. Some useful and supported ones are:
+We are now attached to the suspended process and ready to go ahead with jdb commands. Entering <code>?</code> prints the complete list of. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the <code>redefine</code> command, which would let us redefine the code for a class - a potentially very useful feature - is not supported. Another important restriction is that line breakpoints won't work, because the release bytecode doesn't contain line information. Method breakpoints do work however. Useful commands that work include:
 
 - classes: List all loaded classes
 - class / method / fields <class id>: Print details about a class and list its method and fields
@@ -414,12 +414,9 @@ You are now attached to the suspended target process and ready to go ahead with 
 - clear <method>: remove a method breakpoint
 - set <lvalue> = <expr>:  assign new value to field/variable/array element
 
-Unfortunately, the Android VM doesn't support all available debugging commands. For example, the <code>redefine</code> command, which is supposed to let us redefine the code for a class, is not supported. Another important restriction is that line breakpoints won't work, as the release bytecode doesn't contain line information. Method breakpoints do work however.
+Let's revisit the decompiled code of UnCrackable App Level 1 and think about possible solutions. A good approach would be to suspend the app at a state where the secret string is stored in a variable in plain text so we can retrieve it. Unfortunately, we won't get that far unless we deal with the root / tampering detection first. 
 
-Let's revisit the decompiled source code of UnCrackable App Level 1 and start thinking about possible solutions. A good solution would be to suspend the app at a state where the secret string is held in memory so we can retrieve it. Unfortunately, we won't get that far unless we deal with the root / tampering detection first. 
-
-From the code, we know that the method <code>sg.vantagepoint.uncrackable1.MainActivity.a</code> is responsible for displaying the "This in unacceptable..." message. This method also sets up the "OK" button and hooks it to a class that implements the <code>OnClickListener</code> interface. The <code>onClick</code> event handler on the OK button is what actually terminates the app. To prevent the user from simply cancelling the dialog, the <code>setCancelable</code> method is called.
-
+By reviewing the code, we can gather that the method <code>sg.vantagepoint.uncrackable1.MainActivity.a</code> is responsible for displaying the "This in unacceptable..." message box. This method hooks the "OK" button to a class that implements the <code>OnClickListener</code> interface. The <code>onClick</code> event handler on the "OK" button is what actually terminates the app. To prevent the user from simply cancelling the dialog, the <code>setCancelable</code> method is called.
 
 ```java
   private void a(final String title) {
@@ -432,7 +429,7 @@ From the code, we know that the method <code>sg.vantagepoint.uncrackable1.MainAc
     }
 ```
 
-We can bypass this by making a small change during runtime. With the app still suspended, set a method breakpoint on <code>android.app.Dialog.setCancelable</code> and resume the app so the breakpoint is hit.
+We can bypass this with a little runtime tampering. With the app still suspended, set a method breakpoint on <code>android.app.Dialog.setCancelable</code> and resume the app.
 
 ```
 > stop in android.app.Dialog.setCancelable                        
@@ -444,7 +441,7 @@ Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bc
 main[1]
 ```
 
-The app is now suspended at the first instruction of <code>setCancelable</code>. You can print the method arguments using the <code>locals</code> command (note that the arguments are incorrectly shown under "local variables").
+The app is now suspended at the first instruction of the <code>setCancelable</code> method. You can print the arguments passed to <code>setCancelable</code> using the <code>locals</code> command (note that the arguments are incorrectly shown under "local variables").
 
 ```
 main[1] locals
@@ -470,33 +467,9 @@ main[1] set flag = true
 main[1] resume
 ```
 
-Repeat this process, setting <code>flag</code> to <code>true</code> each time the breakpoint is hit, until the alert box is finally displayed (the breakpoint will be hit 5 or 6 times). The alert box should now be cancelable: Tap anywhere next to the box and it will close without terminating the app.
+Repeat this process, setting <code>flag</code> to <code>true</code> each time the breakpoint is hit, until the alert box is finally displayed (the breakpoint will hit 5 or 6 times). The alert box should now be cancelable! Tap anywhere next to the box and it will close without terminating the app.
 
-
-
-sg.vantagepoint.uncrackable1.a:
-
-```java
-    public static boolean a(final String s) {
-        final byte[] decode = Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", 0);
-        byte[] a = new byte[0];
-        while (true) {
-            try {
-                a = sg.vantagepoint.a.a.a(b("8d127684cbc37c17616d806cf50473cc"), decode);
-                if (s.equals(new String(a))) {
-                    return true;
-                }
-            }
-            catch (Exception ex) {
-                Log.d("CodeCheck", "AES error:" + ex.getMessage());
-                continue;
-            }
-            break;
-        }
-        return false;
-    }
-```
-
+Now that the anti-tampering is out of the way we're ready to extract the secret string! In the "static analysis" section, we saw that the string is decrypted using AES, and then compared with the string entered into the messagebox. The method <code>equals</code> of the <code>java.lang.String</code> class is used to compare the input string with the secret. Set a method breakpoint on <code>java.lang.String.equals</code>, enter any text into the edit field, and tap the "verify" button. Once the breakpoint hits, you can read the method argument with the using the <code>locals</code> command.
 
 ```
 > stop in java.lang.String.equals
@@ -509,9 +482,7 @@ Method arguments:
 Local variables:
 other = "radiusGravity"
 main[1] cont
-```
 
-```
 Breakpoint hit: "thread=main", java.lang.String.equals(), line=639 bci=2
 
 main[1] locals
@@ -521,14 +492,13 @@ other = "I want to believe"
 main[1] cont     
 ```
 
+This is the plaintext string we are looking for!
 
 ###### Debugging Using an IDE
 
-A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - it's not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method whas been described in the NetSPI blog [].
-
+A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - it's not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method whas been described in the NetSPI blog [x].
 
 -- TODO [Debugging with IntelliJ] --
-
 
 ##### Debugging Native Code
 
@@ -796,6 +766,7 @@ In most cases, both issues can be fixed by making minor changes and re-packaging
 -- TODO [Clean this up] --
 
 As seen in the previous Chapter, certificate pinning might hinder an analyst when analyzing the traffic. To help with this problem, the binary can be patched to allow other certificates. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
+
 Disassembling the APK using apktool
 
 ```bash
@@ -803,6 +774,7 @@ $ apktool d target_apk.apk
 ```
 
 Modify the Certificate Pinning logic:
+
 We need to locate where within the smali source code the certificate pinning checks are done. Searching the smali code for keywords such as “X509TrustManager” should point you in the right direction.
 In this case a search for “X509TrustManager” returned one class which implements an own Trustmanager. This file contains methods named “checkClientTrusted”, “checkServerTrusted” and “getAcceptedIssuers”.
 The “return-void” opcode was added to the first line of each of these methods. The “return-void” statement is a Dalvik opcode to return ‘void’ or null. For more Dalvik opcodes refer to http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html.
@@ -1864,7 +1836,7 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 
 -- TODO [Sync with text] --
 
-- [1] OWASP Mobile Crackmes - https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md
+- [1] UnCrackable Mobile Apps - https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/
 - [2] Android Studio - https://developer.android.com/studio/index.html
 - [3] APKTool - https://ibotpeaches.github.io/Apktool/
 - [4] JD - http://jd.benow.ca/
