@@ -4,7 +4,7 @@ Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reve
 
 # Android
 
-## [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_01/)
+## [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_01/)
 
 This app holds a secret inside. Can you find it?
 
@@ -41,7 +41,7 @@ $ adb install UnCrackable-Level2.apk
 
 - [Using frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
 
-## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/Level_03/)
+## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_03/)
 
 The crackme from hell!
 
@@ -58,7 +58,7 @@ $ adb install UnCrackable-Level3.apk
 
 N/A
 
-## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/License_01/)
+## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/)
 
 A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available! 
 
@@ -85,7 +85,7 @@ Incorrect serial (wrong format).
 
 # iOS
 
-## [UnCrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_01/)
+## [UnCrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01/)
 
 This app holds a secret inside. Can you find it?
 
@@ -103,7 +103,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html)
 
-## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/Level_02/)
+## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/)
 
 This app holds a secret inside - and this time it won't be tampered with!
 
