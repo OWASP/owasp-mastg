@@ -30,7 +30,7 @@ This app holds a secret inside. May include traces of native code.
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
-- Special thanks to Michael Helwig for finding & fixing an oversight in anti-tampering 
+- Special thanks to Michael Helwig for finding and fixing an oversight in anti-tampering 
 
 ### Installation
 
