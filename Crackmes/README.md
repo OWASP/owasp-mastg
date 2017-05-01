@@ -30,6 +30,7 @@ This app holds a secret inside. May include traces of native code.
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+- Special thanks to Michael Helwig for finding & fixing an oversight in anti-tampering 
 
 ### Installation
 
@@ -47,6 +48,7 @@ The crackme from hell!
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+- Special thanks to Eduardo Novella for testing, feedback and pointing out flaws in the initial build(s)
 
 ### Installation
 
