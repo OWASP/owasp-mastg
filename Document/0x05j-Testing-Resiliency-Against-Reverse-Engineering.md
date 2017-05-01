@@ -744,11 +744,14 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ##### Detection Methods
 
--- TODO [Add list of tools and associated files, processes, libs, etc. etc. Cover the most important tools..."] --
+Popular tools, if installed in their original form, can be detected by looking for associated application packages, files, processes, or other tool-specific modifications and artefacts.
+
+-- TODO [Add list of tools and associated files, processes, libs, etc. etc. Cover the tools below] --
 
 - Substrate for Android
 - Xposed
 - Frida
+- Radare2
 - Introspy-Android
 - Drozer
 - RootCloak
@@ -760,21 +763,19 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ###### Checking Loaded Libraries
 
-##### Bypassing Detection
+##### Bypassing Detection of Reverse Engineering Tools
 
-#### Static Analysis
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions. 
+2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
+3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
+
+Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
+
+#### Effectiveness Assessment
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
 -- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Detection of Reverse Engineering Tools".] --
 
 #### References
 
@@ -784,13 +785,11 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" and description below] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.4: "The app detects the presence of widely used reverse engineering tools, such as code injection tools, hooking frameworks and debugging servers."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Detection of Reverse Engineering Tools"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+N/A
 
 ##### Info
 
@@ -854,42 +853,30 @@ TelephonyManager.getVoiceMailNumber()                   15552175049             
 
 Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data. 
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+-- TODO [Dynamic Detection Techniques] --
 
--- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 #### Bypassing Emulator Detection
 
 
-#### Static Analysis
+#### Effectiveness Assessment
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Emulator Detection".] --
 
 #### References
+
 - [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
 
+##### OWASP Mobile Top 10 2016
 
-##### OWASP Mobile Top 10 2014
-
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
--- TODO [Update reference below "VX.Y" and description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.5: "The app detects, and response to, being run in an emulator using any method."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Emulator Detection"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+N/A
 
 ##### Info
 
