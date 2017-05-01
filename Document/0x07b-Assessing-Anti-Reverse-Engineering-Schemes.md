@@ -2,20 +2,18 @@
 
 In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
 
-A sizable percentage of security experts will immediately interject: "But anti-reversing defenses can be bypassed! They don't add anything but security-by-obscurity!". And they're right: Ultimately, software-based defenses can always be defeated, and they should **never** be used in place of solid security controls. The point of this kind of defenses is indeed to add certain amount of obscurity - enough to deter and delay particular groups of adversaries from achieving certain goals. *Resiliency testing* is the process of verifying that the defenses implemented have the desired effect.
+A sizable percentage of security experts will interject: "But anti-reversing defenses can be bypassed! They don't add anything but security-by-obscurity!". And they're right: Ultimately, software-based defenses can always be defeated, and they should **never** be used in place of solid security controls. The point of this kind of defenses is indeed to add certain amount of obscurity - enough to deter and delay particular groups of adversaries from achieving certain goals. *Resiliency testing* is the process of verifying that the defenses implemented have the desired effect.
 
-Mobile app anti-reversing schemes are all made from similar building blocks. On the one hand, apps implement defenses against debuggers, tamper proofing of application files and memory, and verifying the integrity of the environment. On the other hand obfuscation is employed to make code and data incomprehensible. How can you verify that a given set of defenses (as a whole) is "good enough" to provide an appropriate level of protection? As it turns out, this is not an easy question to answer.
+Client-side protections are desirable in some cases, but unnecessary or even counter-productive in others. In the worst case, software protections cause a false sense of security and encourage bad programming practices. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper attack modeling is a necessary prerequisite before implementing any form of software protections.
 
-Firstly, there is no one-size-fits-all. Client-side protections are desirable in some cases, but unnecessary or even counter-productive in others. In the worst case, software protections cause a false sense of security and encourage bad programming practices, such as implementing security controls on the client that would better be located on the server. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper modeling of client-side threats is a necessary prerequisite before any form of software protections are implemented.
+In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are, for the most part, treated separately from security controls. This has several reasons: For one, we don't think that a *lack of anti-reversing controls* should ever be reported as a *vulnerability*. Also, assessing anti-reversing defenses requires an extended skillset: The tester must be able to handle advanced anti-reversing tricks and obfuscation techniques. Traditionally, this skillset is associated with malware reseachers - penetration testers often don't have this kind of know-how.  
 
-In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are (for the most part) treated separately from security controls. This has several reasons: For one, we don't think that a *lack of anti-reversing controls* should ever be reported as a *vulnerability*. Also, assessing anti-reversing defenses requires an extended skillset: The tester must be able to handle advanced anti-reversing tricks and obfuscation techniques. Traditionally, this skillset is associated with malware reseachers - penetration testers often don't have this kind of know-how.  
+The goal of resiliency testing is to evaluate the robustness of the a software protection scheme against particular threats. Typically, this kind of testing is performed using a black-box approach, with the objective of circumventing the software protection scheme and reaching a pre-defined goal, such as extracting sensitive assets.
 
 Resiliency testing can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process consists of the following high-level steps:
 
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
-2. Assess the effectiveness of the defenses in countering the identified threats using hybrid static/dynamic analysis*.
-
-* In other words, play the role of the reverse engineer, and break the defenses.
+2. Assess the effectiveness of the defenses in countering the identified threats using hybrid static/dynamic analysis. In other words, play the role of the adversary, and crack the defenses!
 
 ## Assessing the Threat Model and Software Protection Architecture
 
@@ -35,9 +33,11 @@ The software protection scheme must be designed to protect against clearly defin
 
 ## Anti-Reversing Controls in the MASVS
 
-The effectiveness of software protection schemes depends on a certain amount of originality and secrecy. Therefore, standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, there'll be a generic tool available for bypassing the scheme. 
+The effectiveness of software protection schemes depends to some extent on originality and secrecy. Standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, there'll be a generic tool available for bypassing it.
 
-The controls in "Resiliency Against Reverse Engineering" of the MASVS (MASVS-R) therefore don't specify anti-reversing mechansims in great technical detail. Rather
+The controls in "Resiliency Against Reverse Engineering" of the MASVS (MASVS-R) therefore don't include detailed technical specifications anti-reversing mechansims.
+
+-- TODO [Anti-Reversing-Controls Overview] --
 
 **Does the app defend comprehensively against processes and tools used by reverse engineers?**
 

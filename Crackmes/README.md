@@ -1,6 +1,8 @@
 # UnCrackable Mobile Apps
 
-Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the Mobile Security Testing Guide. Of course, you can also do them for fun. If you do solve any of the challenges, please take a moment to do our brief post-cracking [survey](https://www.surveymonkey.com/r/2TS2MZJ).
+<img align="left" width="100px" src="../Document/Images/Other/uncrackable-logo.png">
+
+Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the Mobile Security Testing Guide. Of course, you can also solve them for fun. If you do solve any of the challenges, please take a moment to do our brief post-cracking [survey](https://www.surveymonkey.com/r/2TS2MZJ).
 
 # Android
 
@@ -30,6 +32,7 @@ This app holds a secret inside. May include traces of native code.
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+- Special thanks to Michael Helwig for finding and fixing an oversight in anti-tampering 
 
 ### Installation
 
@@ -47,6 +50,7 @@ The crackme from hell!
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
+- Special thanks to Eduardo Novella for testing, feedback and pointing out flaws in the initial build(s)
 
 ### Installation
 
