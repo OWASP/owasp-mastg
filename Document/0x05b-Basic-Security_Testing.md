@@ -15,7 +15,7 @@ One important thing to note is to configure the static analyzer properly in orde
 
 Static Analysis can be divided into two categories, **White box** and **Black box**. The first is when the source code is available and the other is when we only have the compiled application or library. We will now go into more details on each category.
 
-##### With Source Code ("White-Box")
+##### Static Analysis with Source Code ("White-Box")
 
 **White box testing** an app is the act of testing an app with the source code available. To accomplish the source code testing, you will want to have a setup similar to the developer. You will need a testing environment on your machine with the Android SDK and an IDE installed. It is also recommended to have access either to a physical device or an emulator, so you can debug the app.
 
@@ -26,11 +26,11 @@ Proceed on to testing the libraries the application has embedded: some libraries
 
 Since you have the source code in hand, you can check for cryptographic mistakes in the implementation. Look for hard coded keys and implementation errors related to cryptography functions. Devknox<sup>[16]</sup> can help checking most common cryptographic mistakes since it is embedded to the IDE.
 
-##### Without Source Code ("Black-Box")
+##### Static Analysis without Source Code ("Black-Box")
 
 During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in Android .apk format<sup>[17]</sup>), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
 
-An easy way on the CLI to retrieve the source code is through <code>apkx</code>, which also packages <code>dex2jar</code> and automates the extracting, conversion and decompilation steps. Install it as follows:
+An easy way on the CLI to retrieve the source code of an APK is through <code>apkx</code>, which also packages <code>dex2jar</code> and CFR and automates the extracting, conversion and decompilation steps. Install it as follows:
 
 ```
 $ git clone https://github.com/b-mueller/apkx
@@ -64,30 +64,30 @@ Compared to static analysis, dynamic analysis is applied while executing the mob
 
 When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
 
-
 #### Reverse Engineering
 
-There are many reason to reverse engineer an application: to understand application security logic, to identify application secret and so on. More detail coverage on reverse engineering Android application are covered in "Tampering and Reverse Engineering on Android" **(-- TODO [add_link] --)** page. Some popular tools that will be used are apktool, enjarify and more.
+There are many reason to reverse engineer an application: to understand application security logic, to identify application secrets and so on. More details on reverse engineering Android applications are covered in [Tampering and Reverse Engineering on Android](0x05b-Reverse-Engineering-and-Tampering.md).
+
 
 ### Setting Up Your Testing Environment
 
-When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the app. Rooted phones might also not be allowed within the enterprise network due to companies policies. Also, root detection and other countermeasures implemented within an app can lead to significant extra work just to be able to finally test the app. Either way, the testing team responsible for the Android assessment need to work together with the app developer(s) and operation team in order to find a proper solution for a working testing environment.
+When setting up the testing environment, this can become a challenging task. For example when testing on-site at client premises there might be restrictions when using an enterprise Access Point due to limitations in the connections that can be made (e.g. ports are blocked), making it more difficult to start a dynamic analysis of the app. Rooted phones might also not be allowed within the enterprise network due to company policies. Also, root detection and other countermeasures implemented within an app can lead to significant extra work just to be able to finally test the app. Either way, the testing team responsible for the Android assessment need to work together with the app developer(s) and operation team in order to find a proper solution for a working testing environment.
 
 This section will give an overview of different methods on how an Android app can be tested and will illustrate also its limitations. Due to the reasons stated above you should be aware of all possible testing methods to select the right one for your testing environment, but also to articulate restrictions so that everybody in the project is on the same page.
 
 #### Preparation
 
-The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These will slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These can slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
 During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
-This approach needs of course to align with the scope of the engagement and if it's a black box or white box test (-- TODO [Link to section in MSTG describing Black and White Box] --). For a white box test, requesting for a production and debug build will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
+This approach needs of course to align with the scope of the engagement and if it's a black box or white box test, see section "Static Analysis" above for further information. For a white box test, requesting for a production and debug build will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test it might be already the intention of the client to see what can be done in a certain amount of time with the production app and how effective the implemented security controls are.
 
 Either way, the following items should be discussed with the company developing the mobile app and it should be decided if the implemented security controls can be adjusted to get the best out of the testing exercise.  
 
 ##### OS Versions
 
-Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of the Android OS installed on both the machine and the device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS.
+Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of Android OS installed on the testing device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS.
 
 #### Testing on a Real Device
 
@@ -97,10 +97,11 @@ The available setup options for the network need to be evaluated first. The mobi
 
 Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
 
-* The proxy in the network settings of the WiFi connection of the Android device need to be configured properly to point to the interception proxy in use<sup>[1]</sup>.
+* The proxy in the network settings of the Android device need to be configured properly to point to the interception proxy in use<sup>[1]</sup>.
 * The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage <sup>[2]</sup> of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
 After finishing these steps and starting the app, the requests should show up in the interception proxy.
+
 
 ##### Rooting Your Device
 
@@ -108,16 +109,16 @@ After finishing these steps and starting the app, the requests should show up in
 
 As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed: rooting
 * usually voids the device guarantee (always check the manufacturer policy before taking any action),
-* may "brick" the device, e.g. render it unoperable and unusable.
+* may "brick" the device, e.g. render it inoperable and unusable.
 * brings additional security risks as built-in exploit mitigations are often removed.
 
-** You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be help responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process. **
+**You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be held responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process.**
 
 ###### What Mobiles Can Be Rooted?
 
-Virtually, any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level, evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (which has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
+Virtually, any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (who has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called 'su' used for switching users.
 
-The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found xda forums<sup>[21]</sup>.
+The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in xda forums<sup>[21]</sup>.
 
 See also "Android Platform Overview" for further details.
 
@@ -136,11 +137,9 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 
 It is also possible to simply create an AVD and use this for testing.
 
--- TODO [Develop section Using an Emulator : what can be done with it, difference with using a real Android mobile, availability, how to start and configure one] --
-
 ##### Setting Up a Web Proxy on Virtual Device
 
-To set up a HTTP proxy on the emulator, follow the following procedure (this works on the Android emulator shipping with Android Studio 2.x).
+To set up a HTTP proxy on the emulator follow the following procedure, which works on the Android emulator shipping with Android Studio 2.x:
 
 1. Set up your proxy to listen on localhost. Reverse-forward the proxy port from the emulator to the host, e.g.:
 
@@ -158,13 +157,13 @@ $ adb reverse tcp:8080 tcp:8080
 
 <img width=300px src="Images/Chapters/0x05b/emulator-proxy.jpg"/>
 
-HTTP and HTTPS requests should now be routed over the proxy on the host machine (try toggling airplane mode off and on if it doesn't work).
+HTTP and HTTPS requests should now be routed over the proxy on the host machine. Try toggling airplane mode off and on if it doesn't work.
 
 ##### Installing a CA Certificate on the Virtual Device
 
-An easy way to install a CA certificate is pushing the cert to the device and adding it to the certificate stora via Security Settings. For example, you can install the BURP (PortSwigger) CA certificate as follows.
+An easy way to install a CA certificate is pushing the cert to the device and adding it to the certificate store via Security Settings. For example, you can install the PortSwigger (Burp) CA certificate as follows:
 
-1. Navigate to http://burp/ using a web browser on the host, and download file cacert.der by clicking the "CA Certificate" button.
+1. Start Burp and navigate to http://burp/ using a web browser on the host, and download cacert.der by clicking the "CA Certificate" button.
 2. Change the file extension from .der to .cer
 3. Push the file to the emulator:
 
@@ -201,6 +200,7 @@ Rooting of an emulator is therefore not needed as root access can be granted thr
 There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
 
 Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]</sup> or SMS<sup>[7]</sup> and many more.
+
 
 #### Potential Obstacles
 
