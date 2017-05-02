@@ -78,19 +78,19 @@ The automatic static analysis tools will provide assistance with the manual code
 
 Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
 
-It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed.
+It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed with the results.
 
 In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.  
 
-##### Open Source Static Analysis Tools (non-exhaustive list)
-* [FindBugs](http://findbugs.sourceforge.net/) (Java)
-* [PMD](https://pmd.github.io/) (Java)
-* [VisualCodeGrepper](https://sourceforge.net/projects/visualcodegrepp/) (C/C++, C#, VB, PHP, Java and PL/SQL)
-* [Agnitio](https://sourceforge.net/projects/agnitiotool/) (Objective-C, C#, Java & Android)
+##### Static Analysis Tools
 
-##### Commercial
-* [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) (Java, Objective-C, Swift, etc.)
-* [CheckMarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) (Java, Objective-C, Swift, etc.)
+The following list is non-exhaustive and a full list of tools can be found in the chapter "Testing tools":
+* FindBugs (Java) - http://findbugs.sourceforge.net/
+* FindSecurityBugs (Java) - http://h3xstream.github.io/find-sec-bugs
+* VisualCodeGrepper (C/C++, C#, VB, PHP, Java and PL/SQL) - https://sourceforge.net/projects/visualcodegrepp/
+* Agnitio (Objective-C, C#, Java & Android) - https://sourceforge.net/projects/agnitiotool/
+
+
 
 #### Manual Code Review
 

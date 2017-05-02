@@ -78,22 +78,26 @@ To perform security testing different tools are available in order to be able to
 * gdb - http://cydia.radare.org/ - A tool to perform runtime analysis of IOS applications.
 * keychaindumper - http://cydia.radare.org/ - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
 * BinaryCookieReader - http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py - A tool to dump all the cookies from the binary Cookies.binarycookies file.
+* Burp Suite Mobile Assistant - https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html - A tool to bypass certificate pinning and is able to inject into apps. 
 
 #### Bypassing Root Detection and SSL Pinning
 * SSL Kill Switch 2 - https://github.com/nabla-c0d3/ssl-kill-switch2 - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
 * iOS TrustMe - https://github.com/intrepidusgroup/trustme - Disable certificate trust checks on iOS devices.
 * Xcon - http://apt.modmyi.com - A tool for bypassing Jailbreak detection.
-* tsProtector] (http://cydia.saurik.com/package/kr.typostudio.tsprotector8/ - Another tool for bypassing Jailbreak detection.
+* tsProtector - http://cydia.saurik.com/package/kr.typostudio.tsprotector8/ - Another tool for bypassing Jailbreak detection.
 
-### Tools for Network Interception
+### Tools for Network Interception and Monitoring
 * Tcpdump - http://www.androidtcpdump.com - A command line packet capture utility.
 * Wireshark - https://www.wireshark.org/download.html - An open-source packet analyzer.
 * Canape - http://www.contextis.com/services/research/canape/ - A network testing tool for arbitrary protocols.
-* Mallory - https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTMthat use to monitor and manipulate traffic on mobile devices and applications.
+* Mallory - https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTM) that is used to monitor and manipulate traffic on mobile devices and applications.
+
+### Interception Proxies
 * Burp Suite - https://portswigger.net/burp/download.html - Burp Suite is an integrated platform for performing security testing of applications.
-* Charles Proxy - http://www.charlesproxy.com - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
 * OWASP ZAP - https://github.com/zaproxy/zaproxy - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
 * Fiddler - http://www.telerik.com/fiddler - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
+* Charles Proxy - http://www.charlesproxy.com - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
+
 
 ### IDEs
 * IntelliJ - https://www.jetbrains.com/idea/download/ - IntelliJ IDEA is a Java integrated development environment (IDEfor developing computer software.
