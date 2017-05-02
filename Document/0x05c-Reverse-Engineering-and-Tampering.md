@@ -134,7 +134,7 @@ Right-click the class name - the first <code>a</code> in <code>a.a</code> - and 
 
 Congratulations - you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program, until you understand it completely - or at least, well enough for whatever you want to achieve.
 
-Next, ctrl+click (or command+click on Mac) on the <code>check_input</code> method. The decompiled method looks as follows:
+Next, ctrl+click (or command+click on Mac) on the <code>check_input</code> method. This takes you to the method definition. The decompiled method looks as follows:
 
 ```java
     public static boolean check_input(String string) {
