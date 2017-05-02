@@ -206,7 +206,7 @@ Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]<
 
 ##### SSL Pinning
 
-SSL Pinning is already a strong mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
+SSL Pinning is a mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
 
 For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
 
@@ -216,23 +216,13 @@ To manually deactivate SSL Pinning there are two ways:
 
 Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
-See also test case "Testing Custom Certificate Stores and SSL Pinning" **(-- TODO [add_link] --)** for further details.
+See also test case "Testing Custom Certificate Stores and SSL Pinning" for further details.
 
 ##### Root Detection
 
-To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" **(-- TODO [add_link] --)** and "Testing Advanced Root Detection" for further details.
+To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
-
-#### Software and Tools (non-comprehensive list)
-
-The context of mobile security testing is a conjunction of multiple different tier of components: **application container**, **communications** and **back-end servers**. These three high-level attack surface will be the main attack surface for a mobile security testing.   
-
-* **Application container:**  insecure data storage, poor resiliency against reverse engineering and etc.
-* **Communication:** usage of insecure or unencrypted communication channel, missing certification pinning and etc.
-* **Back-end Servers:** flawed authentication or security logic, vulnerable server side functions and etc.
-
-There are various tool that can be leverage to conduct an effective mobile security testing and like any tool of choice it all depends on the matter of preference and budget. Some basic usage of tools will be covered in the following section and an extensive list of tools can be found in "Testing Tools" **(-- TODO [add_link] --)** page.
 
 #### Other Considerations
 

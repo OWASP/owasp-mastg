@@ -4,6 +4,12 @@
 
 -- TODO [Describe Mobile Security Testing methodology] --
 
+The context of mobile security testing is a conjunction of multiple different tier of components: **app**, **communication** and **back-end server**. These three high-level components will be the main attack surface for a mobile security test.   
+
+* **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
+* **Communication:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
+* **Back-end Servers:** Flawed authentication and session management, vulnerable server side functions etc.
+
 
 ### Testing Process
 
@@ -27,7 +33,7 @@ During a manual test, one can simply walk-through the applicable requirements do
 
 Also important is to note that the OWASP Mobile Security Testing Guide (MSTG) is still "Work In Progress" and being updated even as you are reading this paragraph, therefore, some test cases may not have been written yet or may be in a draft status. (Ideally, if you discover any missing content, you could contribute it yourself).
 
-![The checklist. Requiremenets marked with "L1" should always be verified. Choose either "Pass" or "Fail" in the "Status" column. The links in the "Testing Procedure" column lead to the OWASP Mobile Secuiryt Testing Guide.](Images/Chapters/0x03/mstg-test-cases.png)
+![The checklist. Requirements marked with "L1" should always be verified. Choose either "Pass" or "Fail" in the "Status" column. The links in the "Testing Procedure" column lead to the OWASP Mobile Security Testing Guide.](Images/Chapters/0x03/mstg-test-cases.png)
 
 The status column can have one of the following three different values, that need to be filled out:
 
@@ -37,7 +43,12 @@ The status column can have one of the following three different values, that nee
 
 #### Reverse Engineering Resiliency Testing
 
-*Resiliency Testing* is a new concept introduced in the OWASP MSTG. This kind of testing is used if the app implements defenses against client-side threats, such as tampering and extracting sensitive information. As we  know, such protection is never 100% effective. The goal in resiliency testing is to verify that no glaring weaknesses exist in the protection scheme, and that the expectations as to its effectiveness are met (e.g., a skilled reverse engineer should be forced to invest significant effort to do reach a particular goal).
+*Resiliency Testing* is a new concept introduced in the OWASP MSTG. This kind of testing is used if the app implements defenses against client-side threats, such as tampering and extracting sensitive information. As we  know, such protection is never 100% effective. The goal in resiliency testing is to verify that no glaring weaknesses exist in the protection scheme, and that the expectations as to its effectiveness are met (e.g., a skilled reverse engineer should be forced to invest significant effort to reach a particular goal).
+
+#### Reporting
+
+The checklist itself can be used as a report as it list's down in detail what test cases have been included and verified in the tests and ideally also shows evidence in case a test fails. Also the first page should then be filled out, to include all the meta information needed for a report.
+
 
 #### The Management Summary
 
@@ -51,34 +62,23 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 
 ![Management Summary - Detailed Overview](Images/Chapters/0x03/mstg-detailed-summary.png)
 
-#### Risk Assessment
 
-#### Reporting
 
 ## Vulnerability Analysis Techniques
 
 ### Static Analysis
 
-In a Static Analysis approach, the developers must provide the source code or compiled IPA/APK files of the mobile application for programmatic analysis. The source code will be analyzed to ensure that there is sufficient and correct implementation of security controls, specifically on crucial components such as the authentication, authorization, session management and data storage mechanisms.
-
-##### Pros of Static Analysis
-
-* Great scalability, able to run on lots of mobile applications and can be easily repeated
-* Great at identifying standard security vulnerabilities such as SQL injection flaws and etc.  
-
-##### Cons of Static Analysis
-
-* May require access to the source code
-* High number of false positives
-* Unable to identify issues related to operational deployment environments
+When executing a static analysis, the source code of the mobile App(s) will be analyzed to ensure sufficient and correct implementation of security controls, specifically on crucial components such as cryptographic and data storage mechanisms.
 
 #### Automatic Code Analysis
 
-In automatic code analysis, the tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
+In automatic static analysis, a tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
 
-The automatic code analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings, identified through comparing the source code content with its own predefined set of rules or industry's best practices, and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
+The automatic static analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
 
 Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
+
+It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed.
 
 In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.  
 
@@ -112,7 +112,7 @@ For example, HTTP Request Strings like request.url or request.files, HTML Output
 ##### Cons of Manual Code Review
 
 * Difficult for human code reviewers to identify subtle mistakes such as buffer overflows
-* Requires expert human code reviewer who are proficient in both the language and the frameworks used in the mobile application, as it is essential to have a deep understanding of the security implmentation of the technologies used in the mobile application's source code
+* Requires expert human code reviewer who are proficient in both the language and the frameworks used in the mobile application, as it is essential to have a deep understanding of the security implementation of the technologies used in the mobile application's source code
 * Time consuming, slow and tedious; especially when mobile application source code nowadays usually has so many functionalities that it has a large number of lines of code (e.g. over 10K, or sometimes even over 100K)
 
 ### Dynamic Analysis
@@ -168,7 +168,7 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 ##### Cross-Site Scripting (XSS)
 
-A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF [2]. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App as no adress bar is available. Also clicking on a link will not open the URL in a WebView of an App, instead it will open directly within the browser of Android. Therefore a typical reflected Cross-Site Scripting attack that targets a WebView in an App is not applicable and will not work.
+A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF [2]. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App as no address bar is available. Also clicking on a link will not open the URL in a WebView of an App, instead it will open directly within the browser of Android. Therefore a typical reflected Cross-Site Scripting attack that targets a WebView in an App is not applicable and will not work.
 
 If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
 

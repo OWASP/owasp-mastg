@@ -92,7 +92,9 @@ The iOS chapter of the testing guide contains all technical procedures to verify
 
 -- TODO
 
-### Appendix
+### Testing Tools
+
+There are various tool that can be used to conduct an effective mobile security test and like any tool of choice it all depends on the matter of preference and budget. An extensive list of tools can be found in "Testing Tools" chapter at the end of this document.
 
 -- TODO [Describe the organization of the current guide] --
 
