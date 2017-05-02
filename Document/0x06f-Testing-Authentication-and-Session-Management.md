@@ -35,13 +35,7 @@ It is important to clarify that this control is at the server side, so the testi
 
 -- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
-##### With Source Code
-
 -- TODO [Add content for "Testing Biometric Authentication" with source code] --
-
-##### Without Source Code
-
--- TODO [Add content for "Testing Biometric Authentication" without source code] --
 
 #### Dynamic Analysis
 
@@ -56,7 +50,6 @@ It is important to clarify that this control is at the server side, so the testi
 ##### OWASP Mobile Top 10 2016
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
 ##### OWASP MASVS
 * 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 

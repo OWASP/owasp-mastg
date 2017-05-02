@@ -1,4 +1,4 @@
-# Testing Processes and Techniques
+# Testing Process and Techniques
 
 ## Mobile App Security Testing Methodology
 
@@ -200,7 +200,7 @@ If no data classification policy is available, the general rule should be that n
 * Personal Identifiable Information (PII),
 * Keys or
 * Secrets
-are stored locally on the device itself. If they are needed, the KeyStore on Android or KeyChain on iOS should be used, to secure them accordingly by best practices offered by the OS. 
+are stored locally on the device itself. If they are needed, the KeyStore on Android or KeyChain on iOS should be used, to secure them accordingly by best practices offered by the OS.
 
 Defining sensitive information before the test is important for almost all data storage test cases in Android and iOS, as otherwise the tester has no clear basis for decision.
 
