@@ -64,6 +64,12 @@ Compared to static analysis, dynamic analysis is applied while executing the mob
 
 When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
 
+#### Google Cloud Messaging (GCM)
+
+For a full dynamic analysis of an Android app also GCM push notifications should be intercepted (TCP Port 5228-5230).
+
+-- ToDo
+
 #### Reverse Engineering
 
 There are many reason to reverse engineer an application: to understand application security logic, to identify application secrets and so on. More details on reverse engineering Android applications are covered in [Tampering and Reverse Engineering on Android](0x05b-Reverse-Engineering-and-Tampering.md).

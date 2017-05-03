@@ -10,7 +10,6 @@ The context of mobile security testing is a conjunction of multiple different ti
 * **Communication:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
 * **Back-end Servers:** Flawed authentication and session management, vulnerable server side functions etc.
 
-
 ### Testing Process
 
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test.
@@ -49,7 +48,6 @@ The status column can have one of the following three different values, that nee
 
 The checklist itself can be used as a report as it list's down in detail what test cases have been included and verified in the tests and ideally also shows evidence in case a test fails. Also the first page should then be filled out, to include all the meta information needed for a report.
 
-
 #### The Management Summary
 
 A spider chart is generated on the fly according to the results of the requirements for both supported platforms (Android and iOS) in the "Management Summary" tab. You can use this in your report to point out areas that need improvement, and visualize progress over time.
@@ -63,7 +61,6 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 ![Management Summary - Detailed Overview](Images/Chapters/0x03/mstg-detailed-summary.png)
 
 
-
 ## Vulnerability Analysis Techniques
 
 ### Static Analysis
@@ -72,25 +69,21 @@ When executing a static analysis, the source code of the mobile App(s) will be a
 
 #### Automatic Code Analysis
 
-In automatic static analysis, a tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
+During an automatic static analysis, a tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
 
 The automatic static analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
 
-Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
+Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis,
+
+still require a professional to identify if it's a false positive or not
+
+such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
 
 It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed with the results.
 
-In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.  
+In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.
 
-##### Static Analysis Tools
-
-The following list is non-exhaustive and a full list of tools can be found in the chapter "Testing tools":
-* FindBugs (Java) - http://findbugs.sourceforge.net/
-* FindSecurityBugs (Java) - http://h3xstream.github.io/find-sec-bugs
-* VisualCodeGrepper (C/C++, C#, VB, PHP, Java and PL/SQL) - https://sourceforge.net/projects/visualcodegrepp/
-* Agnitio (Objective-C, C#, Java & Android) - https://sourceforge.net/projects/agnitiotool/
-
-
+A full list of tools can be found in the chapter "Testing tools".
 
 #### Manual Code Review
 
