@@ -10,6 +10,11 @@ To perform security testing different tools are available in order to be able to
 * Santoku - https://santoku-linux.com/ - Santoku is an OS and can be run outside a VM as a standalone operating system.
 * Vezir Project - https://github.com/oguzhantopgul/Vezir-Project - Mobile Application Pentesting and Malware Analysis Environment.
 
+### Static Source Code Analysis
+* Checkmarx - https://www.checkmarx.com/technology/static-code-analysis-sca/ - Static Source Code Scanner that also scans source code for Android and iOS.
+* Fortify - https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security - Static Source Code Scanner that also scans source code for Android and iOS.
+
+
 ### All-in-One Mobile Security Frameworks
 * Mobile Security Framework - MobSF - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOSautomated pen-testing framework capable of performing static and dynamic analysis.
 * Needle - https://github.com/mwrlabs/needle - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
@@ -31,6 +36,7 @@ To perform security testing different tools are available in order to be able to
 * Simplify - https://github.com/CalebFenton/simplify - A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file.
 * ClassNameDeobfuscator - https://github.com/HamiltonianCycle/ClassNameDeobfuscator - Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines.
 * Android backup extractor - https://github.com/nelenkov/android-backup-extractor - Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP.
+* VisualCodeGrepper - https://sourceforge.net/projects/visualcodegrepp/ - Static Code Analysis Tool for several programming languages including Java
 
 #### Dynamic and Runtime Analysis
 * Cydia Substrate - http://www.cydiasubstrate.com/ - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
@@ -68,6 +74,7 @@ To perform security testing different tools are available in order to be able to
 * HopperApp - http://hopperapp.com/ - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
 * Radare2 - http://www.radare.org/ - Radare2 is a unix-like reverse engineering framework and command line tools.
 * iRET - https://www.veracode.com/iret-ios-reverse-engineering-toolkit - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
+* Agnitio - https://sourceforge.net/projects/agnitiotool/ - Tool for static scanning of Objective-C, C# and Java source code.
 
 #### Dynamic and Runtime Analysis
 * cycript - http://www.cycript.org - Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
@@ -78,22 +85,26 @@ To perform security testing different tools are available in order to be able to
 * gdb - http://cydia.radare.org/ - A tool to perform runtime analysis of IOS applications.
 * keychaindumper - http://cydia.radare.org/ - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
 * BinaryCookieReader - http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py - A tool to dump all the cookies from the binary Cookies.binarycookies file.
+* Burp Suite Mobile Assistant - https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html - A tool to bypass certificate pinning and is able to inject into apps.
 
 #### Bypassing Root Detection and SSL Pinning
 * SSL Kill Switch 2 - https://github.com/nabla-c0d3/ssl-kill-switch2 - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
 * iOS TrustMe - https://github.com/intrepidusgroup/trustme - Disable certificate trust checks on iOS devices.
 * Xcon - http://apt.modmyi.com - A tool for bypassing Jailbreak detection.
-* tsProtector] (http://cydia.saurik.com/package/kr.typostudio.tsprotector8/ - Another tool for bypassing Jailbreak detection.
+* tsProtector - http://cydia.saurik.com/package/kr.typostudio.tsprotector8/ - Another tool for bypassing Jailbreak detection.
 
-### Tools for Network Interception
+### Tools for Network Interception and Monitoring
 * Tcpdump - http://www.androidtcpdump.com - A command line packet capture utility.
 * Wireshark - https://www.wireshark.org/download.html - An open-source packet analyzer.
 * Canape - http://www.contextis.com/services/research/canape/ - A network testing tool for arbitrary protocols.
-* Mallory - https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTMthat use to monitor and manipulate traffic on mobile devices and applications.
+* Mallory - https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTM) that is used to monitor and manipulate traffic on mobile devices and applications.
+
+### Interception Proxies
 * Burp Suite - https://portswigger.net/burp/download.html - Burp Suite is an integrated platform for performing security testing of applications.
-* Charles Proxy - http://www.charlesproxy.com - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
 * OWASP ZAP - https://github.com/zaproxy/zaproxy - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
 * Fiddler - http://www.telerik.com/fiddler - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
+* Charles Proxy - http://www.charlesproxy.com - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
+
 
 ### IDEs
 * IntelliJ - https://www.jetbrains.com/idea/download/ - IntelliJ IDEA is a Java integrated development environment (IDEfor developing computer software.
