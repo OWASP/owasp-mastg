@@ -18,35 +18,41 @@ At the very least, you'll need Android Studio <sup>[2]</sup>, which comes with t
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
 
-In addition to the SDK and NDK, you'll also something to make Java bytecode more human-friendly. APKTool <sup>[3]</sup> is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+In addition to the SDK and NDK, you'll also something to make Java bytecode more human-friendly. Fortunately, Java decompilers generally deal well with Android bytecode. Popular free decompilers include JD <sup>[4]</sup>, Jad <sup>[5]</sup>, Proycon <sup>[6]</sup> and CFR <sup>[7]</sup>. For convenience, we have packed some of these decompilers into our <code>apkx</code> wrapper script <sup>[8]</sup>. This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the examples below).
 
 Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
 ### Building a Reverse Engineering Environment For Free
 
-With a little effort you can build a reasonable reverse engineering environment for free. Many free Java decompilers are available that generally deal well with Android bytecode. Popular decompilers include JD <sup>[4]</sup>, Jad <sup>[5]</sup>, Proycon <sup>[6]</sup> and CFR <sup>[7]</sup>. For convenience, we have packed some of these decompilers into our <code>apkx</code> wrapper script <sup>[8]</sup>. This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the examples below).
+With a little effort you can build a reasonable GUI-powered reverse engineering environment for free. 
 
 For navigating the decompiled sources we recommend using IntelliJ, a relatively light-weight IDE that works great for browsing code and allows for basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow and complicated to use, Eclipse is the right IDE for you (note: This piece of advice is based on the author's opinion and personal bias).
 
 If you don’t mind looking at Smali instead of Java code, you can use the smalidea plugin for IntelliJ for debugging on the device <sup>[9]</sup>. Smalidea supports single-stepping through the bytecode, identifier renaming and watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
+APKTool <sup>[3]</sup> is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+
 More elaborate tasks such as program analysis and automated de-obfuscation can be achieved with open source reverse engineering frameworks such as Radare2 <sup>[10]</sup> and Angr <sup>[11]</sup>. You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
 #### Commercial Tools
 
+Even though it is possible to work with a completely free setup, you might want to consider investing in commercial tools. The main advantage of these tools is convenience: They come with a nice GUI, lots of automation, and end user support. If you earn your daily bread as a reverse engineer, this will save you a lot of time.
+
 ##### JEB
 
-JEB <sup>[12]</sup>, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into a convenient all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - and since version 2.0 JEB has changed to a subscription model, so you'll need to pay a hefty monthly fee to use it.
+JEB <sup>[12]</sup>, a commercial decompiler, packs all the functionality needed for static and dynamic analysis of Android apps into an all-in-one package, is reasonably reliable and you get quick support. It has a built-in debugger, which allows for an efficient workflow – setting breakpoints directly in the decompiled (and annotated sources) is invaluable, especially when dealing with ProGuard-obfuscated bytecode. Of course convenience like this doesn’t come cheap - and since version 2.0 JEB has changed from a traditional licensing model to a subscription-based one, so you'll need to pay a monthly fee to use it.
 
 ##### IDA Pro
 
-IDA Pro <sup>[13]</sup> understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with remote debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the Smali disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
+IDA Pro <sup>[13]</sup> understands ARM, MIPS and of course Intel ELF binaries, plus it can deal with Java bytecode. It also comes with debuggers for both Java applications and native processes. With its capable disassembler and powerful scripting and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are somewhat basic – you get the Smali disassembly but not much more. There’s no navigating the package and class structure, and some things (such as renaming classes) can’t be done which can make working with more complex Java apps a bit tedious.
 
 ### Reverse Engineering
 
+Preparation: To follow the examples, you need a Linux or MacOS box. Install Android Studio and the Android SDK. 
+
 #### Statically Analyzing Java Code
 
-Unless some mean anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without issues using free tools. We'll be using UnCrackable Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+Unless some mean, tool-breaking anti-decompilation tricks have been applied, Java bytecode can be converted back into source code without too many problems. We'll be using UnCrackable Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
