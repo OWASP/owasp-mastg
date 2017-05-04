@@ -22,6 +22,10 @@ In addition to the SDK and NDK, you'll also something to make Java bytecode more
 
 Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
+#### Setting up the Android SDK and NDK
+
+-- TODO [Setup instructions for SDK and NDK] --
+
 ### Building a Reverse Engineering Environment For Free
 
 With a little effort you can build a reasonable GUI-powered reverse engineering environment for free. 
@@ -534,11 +538,15 @@ Attached; pid = 14342
 Listening on port 1234
 ```
 
-The process is now suspended, and <code>gdbserver</code> listening for debugging clients on port <code>1234</code>. 
+The process is now suspended, and <code>gdbserver</code> listening for debugging clients on port <code>1234</code>. With the device connected via USB, you can forward this port to a local port on the host using the <code>abd forward</code> command:
 
 
 ```bash
 $ adb forward tcp:1234 tcp:1234
+```
+
+
+
 $ export TOOLCHAIN=[YOUR-NDK-PATH]/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/
 $ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
 GNU gdb (GDB) 7.7
@@ -1450,16 +1458,6 @@ JQAE6ACMABNAAIIA
 
 Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
-#### Preparing a Development Environment
-
--- TODO [Creating a Standalone Toolchain] --
-
-For convenience, you can create a standalone toolchain  create a standalone toolchain for Android Nougat (API 24):
-
-```bash
-$ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
-```
-
 #### Customizing the RAMDisk
 
 The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
@@ -1579,11 +1577,11 @@ $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
 $ make
 ```
 
-Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android 5.1, run make-standalone-toolchain.sh from the Android NDK package as follows:
+Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android Nougat, run make-standalone-toolchain.sh from the Android NDK package as follows:
 
 ```bash
 $ cd android-ndk-rXXX
-$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
 ```
 
 Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
