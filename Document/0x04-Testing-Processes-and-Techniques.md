@@ -191,6 +191,7 @@ For example regulations in Singapore for financial institutions require to encry
 
 If no data classification policy is available, the general rule should be that no
 * Personal Identifiable Information (PII),
+* Authentication information,
 * Keys or
 * Secrets
 are stored locally on the device itself. If they are needed locally, the KeyStore on Android or KeyChain on iOS should be used, to secure them accordingly by best practices offered by the OS.

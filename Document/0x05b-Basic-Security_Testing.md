@@ -64,11 +64,51 @@ Compared to static analysis, dynamic analysis is applied while executing the mob
 
 When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
 
-#### Google Cloud Messaging (GCM)
+#### Firebase/Google Cloud Messaging (FCM/GCM)
 
-For a full dynamic analysis of an Android app also GCM push notifications should be intercepted (TCP Port 5228-5230).
+Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) and is a free service offered by Google and allows to send messages between an application server and client apps. The server and client app are communicating via the FCM/GCM connection server that is handling the downstream and upstream messages.
 
--- ToDo
+![Architectural Overview](Images/FCM-notifications-overview.svg)
+
+Downstream messages are sent from the application server to the client app (Push notifications); Upstream messages are sent from the client app to the server.
+
+FCM is available for Android and also for iOS and Chrome and can therefore be used on different platforms.
+
+##### Preparation
+
+For a full dynamic analysis of an Android app also FCM should be intercepted. The ports used by FCM are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 and 5230 is used. To be able to intercept the messages on these ports several steps should be considered for preparation. The following example can be used on Mac OS X:
+
+* Install the CA certificate of your interception proxy into your Android phone<sup>[2]</sup>.
+* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like ettercap<sup>[24]</sup>. It can be installed by using brew.
+
+```bash
+$ brew install ettercap
+```
+
+* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
+
+```bash
+$ echo "
+rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+* The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+
+##### Intercepting Messages
+
+Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
+
+```bash
+$ ettercap -T -i eth0 -M arp:remote /192.168.0.1// /192.168.0.105//
+```
+
+Start using the app and trigger a function that uses FCM. You should see HTTP messages showing up in your interception proxy.
+
+![Intercepted Messages](Images/FCM_Intercept.png)
+
 
 #### Reverse Engineering
 
@@ -268,3 +308,5 @@ See also test case "Testing If the app is Debuggable" **(-- TODO [add_link] --)*
 - [20] JAADAS - https://github.com/flankerhqd/JAADAS
 - [21] Guide to root mobile devices - https://www.xda-developers.com/root/
 - [22] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
+- [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
+- [23] Ettercap - https://ettercap.github.io
