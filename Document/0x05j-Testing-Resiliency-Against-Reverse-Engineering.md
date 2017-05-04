@@ -1,4 +1,4 @@
-## Testing Resiliency Against Reverse Engineering
+## Testing Anti-Reversing Defenses
 
 ### Testing Root Detection
 
