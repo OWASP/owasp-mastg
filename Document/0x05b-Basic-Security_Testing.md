@@ -68,7 +68,7 @@ When we talk about dynamic analysis of applications that rely on the HTTP(S) pro
 
 Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) and is a free service offered by Google and allows to send messages between an application server and client apps. The server and client app are communicating via the FCM/GCM connection server that is handling the downstream and upstream messages.
 
-![Architectural Overview](Images/FCM-notifications-overview.svg)
+![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.svg)
 
 Downstream messages are sent from the application server to the client app (Push notifications); Upstream messages are sent from the client app to the server.
 
@@ -107,8 +107,11 @@ $ ettercap -T -i eth0 -M arp:remote /192.168.0.1// /192.168.0.105//
 
 Start using the app and trigger a function that uses FCM. You should see HTTP messages showing up in your interception proxy.
 
-![Intercepted Messages](Images/FCM_Intercept.png)
+![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
+##### Router or Access Point
+
+As an alternative to a Mitm attack executed on your machine, a Wifi Access Point (AP) or router can also be used. The port forwarding need to be configured then on the AP or router and need to point to your interception proxy that need to listen on the external interface. For this test setup tools like ettercap are not needed. 
 
 #### Reverse Engineering
 
