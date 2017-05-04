@@ -508,19 +508,21 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 ##### Debugging Native Code
 
-Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, as well as sometimes Intel or MIPS).
+Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, so this is usually not an issue).
 
-To try it out, let's install HelloWorld-JNI.apk.
+We'll now set up our JNI demo app, HelloWorld-JNI.apk, for debugging. It's the same APK you downloaded in "Statically Analyzing Native Code". Use <code>adb install</code> to install it on your device or on an emulator.
 
 ```bash
 $ adb install HelloWorld-JNI.apk
 ```
 
-If you followed the instructions at the start of this chapter, you should already have the Android NDK. The NDK ships with prebuilt versions of gdbserver for various architectures. Copy gdbserver to your device:
+If you followed the instructions at the start of this chapter, you should already have the Android NDK. It contains prebuilt versions of gdbserver for various architectures. Copy the <code>gdbserver binary</code> to your device:
 
 ```bash
 $ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
+
+The <code>gdbserver --attach&lt;comm&gt; &lt;pid&gt;</code> command causes gdbserver to attach to the running process and bind to the IP address and port specified in <code>comm</code>, which in our case is a <code>HOST:PORT</code> descriptor. Start HelloWorld-JNI on the device, then connect to the device and determine the PID of the HelloWorld process. Then, switch to the root user and attach <code>gdbserver</code> as follows.
 
 ```bash
 $ adb shell
@@ -531,6 +533,8 @@ $ su
 Attached; pid = 14342
 Listening on port 1234
 ```
+
+The process is now suspended, and <code>gdbserver</code> listening for debugging clients on port <code>1234</code>. 
 
 
 ```bash
