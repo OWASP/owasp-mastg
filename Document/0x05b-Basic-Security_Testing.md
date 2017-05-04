@@ -230,9 +230,9 @@ Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) 
 
 Downstream messages are sent from the application server to the client app (Push notifications); Upstream messages are sent from the client app to the server.
 
-FCM is available for Android and also for iOS and Chrome and can therefore be used on different platforms.
+FCM is available for Android and also for iOS and Chrome and can therefore be used on different platforms. FCM provides two connection server protocols at the moment: HTTP and XMPP. There are several differences in the implementation of HTTP And XMPP<sup>[24]</sup> when using them in FCM. The following example focuses on intercepting FCM using HTTP.
 
-##### Preparation
+##### Preparation - HTTP
 
 For a full dynamic analysis of an Android app also FCM should be intercepted. The ports used by FCM are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 and 5230 is used. To be able to intercept the messages on these ports several steps should be considered for preparation. The following example can be used on Mac OS X:
 
@@ -255,7 +255,7 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 * The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-##### Intercepting Messages
+##### Intercepting Messages - HTTP
 
 Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
 
@@ -267,9 +267,18 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-##### Router or Access Point
-
 As an alternative to a Mitm attack executed on your machine, a Wifi Access Point (AP) or router can also be used. The port forwarding need to be configured then on the AP or router and need to point to your interception proxy that need to listen on the external interface. For this test setup tools like ettercap are not needed.
+
+
+##### Preparation - XMPP
+
+-- TODO
+
+##### Intercepting Messages - XMPP
+
+https://github.com/iamultra/xmppmitm
+https://github.com/summitt/Burp-Non-HTTP-Extension
+-- TODO
 
 #### Reverse Engineering
 
@@ -302,3 +311,4 @@ There are many reason to reverse engineer an application: to understand applicat
 - [22] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
 - [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
 - [23] Ettercap - https://ettercap.github.io
+- [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
