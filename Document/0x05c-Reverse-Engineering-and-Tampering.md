@@ -22,6 +22,32 @@ In addition to the SDK and NDK, you'll also something to make Java bytecode more
 
 Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
+#### Setting up the Android SDK and NDK
+
+-- TODO [Setup instructions for SDK and NDK] --
+
+The Android NDK contains prebuilt versions of the native compiler and toolchain. Traditionally, both the GCC and Clang compilers were supported, but active support for GCC ended with revision 14 of the NDK. What's the right version to use depends on both the device architecture and host OS. The prebuilt toolchains are located in the <code>toolchains</code>directory of the NDK, which contains one subdirectory per architecture.
+
+|Architecture | Toolchain name|
+|------------ | --------------|
+ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+x86-based|x86-&lt;gcc-version&gt;|
+MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+X86-64-based|x86_64-&lt;gcc-version&gt;|
+MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+
+In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under $NDK/platforms/, each API-level directory contains subdirectories for the various CPUs and architectures. Recent API levels include [X]:
+
+- API 21: Android 5.0 and 5.1
+- API 23: Android 6.0
+- API 24: Android 7.0 through 7.1.1
+- API 26: Android O Developer Preview
+
+One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings. 
+
+-- TODO [Setting up a standalone NDK] --
+
 ### Building a Reverse Engineering Environment For Free
 
 With a little effort you can build a reasonable GUI-powered reverse engineering environment for free. 
@@ -508,19 +534,21 @@ A pretty neat trick is setting up a project in an IDE with the decompiled source
 
 ##### Debugging Native Code
 
-Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, as well as sometimes Intel or MIPS).
+Native code on Android is packed into ELF shared libraries and runs just like any other native Linux program. Consequently, you can debug them using standard tools, including GDB and the built-in native debuggers of IDEs such as IDA Pro and JEB, as long as they support the processor architecture of the device (most devices are based on ARM chipsets, so this is usually not an issue).
 
-To try it out, let's install HelloWorld-JNI.apk.
+We'll now set up our JNI demo app, HelloWorld-JNI.apk, for debugging. It's the same APK you downloaded in "Statically Analyzing Native Code". Use <code>adb install</code> to install it on your device or on an emulator.
 
 ```bash
 $ adb install HelloWorld-JNI.apk
 ```
 
-If you followed the instructions at the start of this chapter, you should already have the Android NDK. The NDK ships with prebuilt versions of gdbserver for various architectures. Copy gdbserver to your device:
+If you followed the instructions at the start of this chapter, you should already have the Android NDK. It contains prebuilt versions of gdbserver for various architectures. Copy the <code>gdbserver binary</code> to your device:
 
 ```bash
 $ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
+
+The <code>gdbserver --attach&lt;comm&gt; &lt;pid&gt;</code> command causes gdbserver to attach to the running process and bind to the IP address and port specified in <code>comm</code>, which in our case is a <code>HOST:PORT</code> descriptor. Start HelloWorld-JNI on the device, then connect to the device and determine the PID of the HelloWorld process. Then, switch to the root user and attach <code>gdbserver</code> as follows.
 
 ```bash
 $ adb shell
@@ -532,10 +560,15 @@ Attached; pid = 14342
 Listening on port 1234
 ```
 
+The process is now suspended, and <code>gdbserver</code> listening for debugging clients on port <code>1234</code>. With the device connected via USB, you can forward this port to a local port on the host using the <code>abd forward</code> command:
+
 
 ```bash
 $ adb forward tcp:1234 tcp:1234
-$ export TOOLCHAIN=[YOUR-NDK-PATH]/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/
+```
+
+
+```
 $ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
 GNU gdb (GDB) 7.7
 (...)
@@ -546,7 +579,6 @@ Remote debugging using :1234
 ```
 
 The problem: At this point it's already too late! The function has already run...
-
 
 
 ```bash
@@ -1446,16 +1478,6 @@ JQAE6ACMABNAAIIA
 
 Working on real device has advantages especially for interactive, debugger-supported static / dynamic analysis. For one, it is simply faster to work on a real device. Also, being run on a real device gives the target app less reason to be suspicious and misbehave. By instrumenting the live environment at strategic points, we can obtain useful tracing functionality and manipulate the environment to help us bypass any anti-tampering defenses the app might implement.
 
-#### Preparing a Development Environment
-
--- TODO [Creating a Standalone Toolchain] --
-
-For convenience, you can create a standalone toolchain  create a standalone toolchain for Android Nougat (API 24):
-
-```bash
-$ $YOUR_NDK_PATH/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
-```
-
 #### Customizing the RAMDisk
 
 The initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot time before the actual root file system is mounted. On Android, the initramfs stays mounted indefinitely, and it contains an important configuration file named default.prop that defines some basic system properties. By making some changes to this file, we can make the Android environment a bit more reverse-engineering-friendly.
@@ -1575,11 +1597,11 @@ $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
 $ make
 ```
 
-Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android 5.1, run make-standalone-toolchain.sh from the Android NDK package as follows:
+Once you are finished editing save the .config file. Optionally, you can now create a standalone toolchain for cross-compiling the kernel and later tasks. To create a toolchain for Android Nougat, run make-standalone-toolchain.sh from the Android NDK package as follows:
 
 ```bash
 $ cd android-ndk-rXXX
-$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-21 --install-dir=/tmp/my-android-toolchain
+$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
 ```
 
 Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
@@ -1866,3 +1888,4 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [20] Frida - https://www.frida.re
 - [X] Hacking Soft Tokens
 - [X] Phrack -
+- [X] Android Developer - Native APIs: https://developer.android.com/ndk/guides/stable_apis.html
