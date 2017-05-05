@@ -26,6 +26,28 @@ Other than that, it's really a matter of preference and budget. A ton of free an
 
 -- TODO [Setup instructions for SDK and NDK] --
 
+The Android NDK contains prebuilt versions of gdb for various operating systems. What's the right version to use depends on both the device architecture and host OS. The prebuilt toolchains are located in the <code>toolchains</code>directory of the NDK, which contains one subdirectory per architecture.
+
+|Architecture | Toolchain name|
+|------------ | --------------|
+ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+x86-based|x86-&lt;gcc-version&gt;|
+MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+X86-64-based|x86_64-&lt;gcc-version&gt;|
+MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+
+In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under $NDK/platforms/, each API-level directory contains subdirectories for the various CPUs and architectures. Recent API levels include [X]:
+
+- API 21: Android 5.0 and 5.1
+- API 23: Android 6.0
+- API 24: Android 7.0 through 7.1.1
+- API 26: Android O Developer Preview
+
+One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings. 
+
+-- TODO [Setting up a standalone NDK] --
+
 ### Building a Reverse Engineering Environment For Free
 
 With a little effort you can build a reasonable GUI-powered reverse engineering environment for free. 
@@ -546,8 +568,7 @@ $ adb forward tcp:1234 tcp:1234
 ```
 
 
-
-$ export TOOLCHAIN=[YOUR-NDK-PATH]/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/
+```
 $ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
 GNU gdb (GDB) 7.7
 (...)
@@ -558,7 +579,6 @@ Remote debugging using :1234
 ```
 
 The problem: At this point it's already too late! The function has already run...
-
 
 
 ```bash
@@ -1868,3 +1888,4 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [20] Frida - https://www.frida.re
 - [X] Hacking Soft Tokens
 - [X] Phrack -
+- [X] Android Developer - Native APIs: https://developer.android.com/ndk/guides/stable_apis.html
