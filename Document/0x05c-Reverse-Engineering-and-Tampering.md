@@ -26,7 +26,7 @@ Other than that, it's really a matter of preference and budget. A ton of free an
 
 -- TODO [Setup instructions for SDK and NDK] --
 
-The Android NDK contains prebuilt versions of gdb for various operating systems. What's the right version to use depends on both the device architecture and host OS. The prebuilt toolchains are located in the <code>toolchains</code>directory of the NDK, which contains one subdirectory per architecture.
+The Android NDK contains prebuilt versions of the native compiler and toolchain. Traditionally, both the GCC and Clang compilers were supported, but active support for GCC ended with revision 14 of the NDK. What's the right version to use depends on both the device architecture and host OS. The prebuilt toolchains are located in the <code>toolchains</code>directory of the NDK, which contains one subdirectory per architecture.
 
 |Architecture | Toolchain name|
 |------------ | --------------|
