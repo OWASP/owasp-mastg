@@ -65,54 +65,41 @@ A more detailed overview can also be found in the "Management Summary" tab. This
 
 ### Static Analysis
 
-When executing a static analysis, the source code of the mobile App(s) will be analyzed to ensure sufficient and correct implementation of security controls, specifically on crucial components such as cryptographic and data storage mechanisms.
+When executing a static analysis, the source code of the mobile App(s) will be analyzed to ensure sufficient and correct implementation of security controls, specifically on crucial components such as cryptographic and data storage mechanisms. Due to the amount of code a tester will be confronted with the ideal approach for static analysis should be a mixture of using tools that scan the code automatically and manual code review.
+
+Through this approach you can get the best out of both worlds. You can get the so called "low hanging fruits" through the automatic scan, as the scanning engine and the (predefined) rules can easily pick up vulnerable patterns in the code. The manual code review can proficiently make a deep dive into the various code paths to check for logical errors and flaws in the mobile application's design and architecture where automated analysis tools are not able to identify it properly as they mostly do not understand the big picture.
 
 #### Automatic Code Analysis
 
 During an automatic static analysis, a tool will check the source code for compliance with a predefined set of rules or industry's best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
 
-The automatic static analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of warnings and then flag all the instances which contains any forms of violations in terms of their programming standards. An automatic code analysis tool can also provide an automated or a programmer-assisted way to correct the issues found.
+The automatic static analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of findings or warnings and then flag all the instances which contains any forms of violations in terms of their programming standards. Automatic static tools come in different variations, some are only running when you can actually build the app, some just need to be feed with the source code and some are running as plugin in an Integrated Development Environments (IDE)<sup>[7] [8]</sup>. The latter one provides assistance within your IDE in improving the security mechanisms in the mobile application code through a programmer-assisted way to correct the issues found. Ideally these tools should be used during the development process, but can also be useful during a source code review.
 
-Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis,
-
-still require a professional to identify if it's a false positive or not
-
-such that it does not require the code reviewer to have the same level of expertise as an expert. Many Integrated Development Environments (IDE) also provide basic automated code review functionality, to provide assistance in improving the security mechanisms implementation code in the mobile applications.
+Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, but still require a professional to identify if it's a false positive or not.
 
 It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed with the results.
 
 In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.
 
-A full list of tools can be found in the chapter "Testing tools".
+A full list of tools for static analysis can be found in the chapter "Testing tools".
 
-#### Manual Code Review
+#### Manual Code Analysis
 
-In manual code review, a human code reviewer will be looking through the source code of the mobile application, to identify security vulnerabilities through various techniques such as performing grep command on key words within the source code repository to identify usages of potentially vulnerable code, such as the likes of strcpy() function or equivalent vulnerable code.
+In manual code analysis, a human code reviewer will be looking through the source code of the mobile application, to identify security vulnerabilities. This can be as basic as from crawling the code by executing grep on key words within the source code repository to identify usages of potentially vulnerable code patterns, to the usage of an Integrated Development Environment (IDE). An IDE provides basic code review functionality and can be extend through different tools to assist in reviewing process.
+
+During a manual code review, the code base will be scanned to look for key indicators wherein a possible security vulnerability might reside. This is also known as "Crawling Code"<sup>[9]</sup> and will be executed by looking for certain keywords used within functions and APIs. For example, cryptographic strings like DES, MD5 or Random, or even database related strings like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code.
 
 The main difference between a manual code review and the use of any automatic code analysis tools is that in manual code review, it is better at identifying vulnerabilities in the business logic, standards violations and design flaws, especially in the situations where the code is technically secure but logically flawed. In such scenarios, the code snippet will not be detected by any automatic code analysis tool as an issue.
 
-##### Crawling Code
-
-Crawling code is the practice of scanning a code base of the review target in question. It is to look for key pointers wherein a possible security vulnerability might reside. In crawling code, it will look for certain APIs that are related to interfacing to the external functions which are key areas for an attacker to focus on.
-
-For example, HTTP Request Strings like request.url or request.files, HTML Output like innerHtml or HtmlUtility, or even Database related codes like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code.
-
-##### Pros of Manual Code Review
-
-* Proficient in deep diving into the various code paths to check for logical errors and flaws in the mobile application's design and architecture where automated analysis tools are not able to identify
-* Great at detecting security issues like authorization, authentication and data validation as compared to automated code analysis tools
-
-##### Cons of Manual Code Review
-
-* Difficult for human code reviewers to identify subtle mistakes such as buffer overflows
-* Requires expert human code reviewer who are proficient in both the language and the frameworks used in the mobile application, as it is essential to have a deep understanding of the security implementation of the technologies used in the mobile application's source code
-* Time consuming, slow and tedious; especially when mobile application source code nowadays usually has so many functionalities that it has a large number of lines of code (e.g. over 10K, or sometimes even over 100K)
+A manual code review requires an expert human code reviewer who is proficient in both the language and the frameworks used in the mobile application. This is essential to have a deep understanding of the security implementation of the technologies used in the mobile application's source code. As a result it can be time consuming, slow and tedious for the reviewer; especially when mobile application source code has a large number of lines of code.
 
 ### Dynamic Analysis
 
-In a Dynamic Analysis approach, the focus is on the testing and evaluation of a program by executing data in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed.
+In a Dynamic Analysis approach, the focus is on testing and evaluation of an app by executing it in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed.
 
-Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent data validation attacks (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors or version issues.
+Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent disclosure of data in transit, authentication and authorization issues, data validation vulnerabilities (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors.
+
+-- ToDo
 
 #### Pros of Dynamic Analysis
 
@@ -189,15 +176,13 @@ Ideally the customer can share a data classification policy that is already cons
 
 For example regulations in Singapore for financial institutions require to encrypt passwords and PINs explicitly, even though they are already transmitted via HTTPS. Even though this might not be a vulnerability from a testers point of view, it need to be raised as compliance issue.
 
-If no data classification policy is available, the general rule should be that no
-* Personal Identifiable Information (PII),
-* Authentication information,
-* Keys or
-* Secrets
-are stored locally on the device itself. If they are needed locally, the KeyStore on Android or KeyChain on iOS should be used, to secure them accordingly by best practices offered by the OS.
+If no data classification policy is available, the following should be considered as sensitive information:
+* User authentication information (credentials, PINs etc.),
+* Personal Identifiable Information (PII) that can be abused for identity theft: Social security numbers, credit card numbers, bank account numbers, health information,
+* Highly sensitive data that would lead to reputational harm and/or financial costs if compromised,
+* Any data that must be protected by law or for compliance reasons.
 
 Defining sensitive information before the test is important for almost all data storage test cases in Android and iOS, as otherwise the tester has no clear basis on what he might need to look for.
-
 
 
 ## Tampering and Reverse Engineering
@@ -304,9 +289,12 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ### References
 
-- [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
-- [2] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
-- [3] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
-- [4] Radare2 - https://github.com/radare/radare2
-- [5] Angr - http://angr.io
-- [6] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+* [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
+* [2] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
+* [3] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
+* [4] Radare2 - https://github.com/radare/radare2
+* [5] Angr - http://angr.io
+* [6] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
+* [7] HP DevInspect - https://saas.hpe.com/en-us/software/agile-secure-code-development
+* [8] Codiscope SecureAssist - https://codiscope.com/products/secureassist/
+* [9] Crawling Code - https://www.owasp.org/index.php/Crawling_Code
