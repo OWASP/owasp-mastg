@@ -262,7 +262,7 @@ The source code should be checked for logging mechanisms used within the Android
 
 1. Functions and classes like:
   * `android.util.Log`
-  * `Log.d`, `Log.e`, `Log.i`, `Log.v`, `Log.w` and `Log.wtf`
+  * `Log.d` | `Log.e` | `Log.i` | `Log.v` | `Log.w` | `Log.wtf`
   * `Logger`
   * `System.out.print` | `System.err.print`
 
@@ -283,7 +283,7 @@ Many application developers still use `System.out.println()` or `printStackTrace
   * LogCat can be executed by using adb in order to store the log output permanently.
 
 ```bash
-# adb logcat > logcat.log
+$ adb logcat > logcat.log
 ```
 
 #### Remediation
