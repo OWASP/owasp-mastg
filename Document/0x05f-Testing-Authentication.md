@@ -4,47 +4,46 @@
 
 #### Overview
 
--- TODO [Provide a general description of the issue.] --
+Applications often have different sections with, on the one hand public and non-privileged information / actions, and on the other hand sensitive and privileged information / actions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information / actions are protected and accessible only to legitimate users, proper authentication has to take place.  
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Develop content on Verifying that Users Are Properly Authenticated with source code] --
+When source code is available, first locate all sections with sensitive and privileged information / actions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user is really who he pretends to and that he is allowed to access the section. Look for keywords in the targeted programming language that are used to authenticate a user or to retrieve and check an existing session token (for instance: KeyStore, SharedPreferences, ...).
 
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Verifying that Users Are Properly Authenticated" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+The easiest way to check authentication on an App is to try to browse the app and access privileged sections. When this cannot be done manually, an automated crawler can be used (for instance, try to start an Activity that contains sensitive information with Drozer without providing authentication elements). 
+
+Sometimes, an intercepting proxy can be used to capture network traffic while being authenticated. Then, log out and try to replay requests while removing authentication information or not.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue.] --
+For every section that needs to be protected, implement a mechanism that checks the session token of the user :
+- if there is no session token, the user may not have authenticated before;
+- if a token exists, make sure this token is valid and that it grants the user with sufficient privileges to allow the user to access the section.
+If any of these two conditions raise an issue, reject the request and do not allow the user to start the Activity.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 - 4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Verifying that Users Are Properly Authenticated"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-287: Improper Authentication - https://cwe.mitre.org/data/definitions/287.html
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
--- TODO [Add relevant tools for "Verifying that Users Are Properly Authenticated"] --
-* Enjarify - https://github.com/google/enjarify
+* Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
 
 
 ### Testing Session Management
