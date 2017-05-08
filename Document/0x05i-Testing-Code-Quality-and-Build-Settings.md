@@ -227,6 +227,7 @@ Add the following to build.gradle:
 
 #### Overview
 
+`StrictMode` - https://developer.android.com/reference/android/os/StrictMode.html
 -- TODO [Give an overview about the functionality and it's potential weaknesses] --
 
 #### Static Analysis

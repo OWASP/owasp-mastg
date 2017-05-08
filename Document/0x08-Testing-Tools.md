@@ -25,6 +25,7 @@ To perform security testing different tools are available in order to be able to
 * Android Debug Bridge - adb - https://developer.android.com/studio/command-line/adb.html - Android Debug Bridge (adbis a versatile command line tool that lets you communicate with an emulator instance or connected Android device.
 * APKInspector - https://github.com/honeynet/apkinspector/ - APKinspector is a powerful GUI tool for analysts to analyze the Android applications.
 * APKTool - http://ibotpeaches.github.io/Apktool/ - A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications.
+* android-classyshark - https://github.com/google/android-classyshark - ClassyShark is a standalone binary inspection tool for Android developers.
 * Sign - https://github.com/appium/sign - Sign.jar automatically signs an apk with the Android test certificate.
 * Jadx - https://github.com/skylot/jadx - Dex to Java decompiler: Command line and GUI tools for produce Java source code from Android Dex and Apk files.
 * Oat2dex - https://github.com/testwhat/SmaliEx - A tool for converting .oat file to .dex files.

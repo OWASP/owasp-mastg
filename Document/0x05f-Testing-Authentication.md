@@ -391,6 +391,7 @@ End<br>
 
 #### Overview
 
+https://authy.com/blog/security-of-sms-for-2fa-what-are-your-options/
 -- TODO [Provide a general description of the issue "Testing 2-Factor Authentication".] --
 
 #### Static Analysis

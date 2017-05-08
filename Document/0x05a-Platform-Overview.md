@@ -138,7 +138,7 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
    * CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
 * **assets**: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
 * **classes.dex**: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+* **lib**: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
 * **res**: A directory containing resources not compiled into resources.arsc.
 * **resources.arsc**: A file containing precompiled resources, such as XML files for the layout.
 
