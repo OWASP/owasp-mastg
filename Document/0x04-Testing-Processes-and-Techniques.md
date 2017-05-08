@@ -3,12 +3,16 @@
 ## Mobile App Security Testing Methodology
 
 -- TODO [Describe Mobile Security Testing methodology] --
+-- ToDo: Explain different kind of Apps (Native, Hybrid etc) and that hte MSTG focuses for now on native implementations.
+
 
 The context of mobile security testing is a conjunction of multiple different tier of components: **app**, **communication** and **back-end server**. These three high-level components will be the main attack surface for a mobile security test.   
 
 * **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
 * **Communication:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
 * **Back-end Servers:** Flawed authentication and session management, vulnerable server side functions etc.
+
+
 
 ### Testing Process
 
@@ -123,7 +127,7 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 * [Configuring an Android Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
 * [Configuring an iOS Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp)
 
-In case another (proprietary) protocol is used in a mobile App that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
+In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
 
@@ -148,7 +152,7 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 ##### Cross-Site Scripting (XSS)
 
-A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF [2]. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App as no address bar is available. Also clicking on a link will not open the URL in a WebView of an App, instead it will open directly within the browser of Android. Therefore a typical reflected Cross-Site Scripting attack that targets a WebView in an App is not applicable and will not work.
+A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF [2]. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app as no address bar is available. Also clicking on a link will not open the URL in a WebView of an app, instead it will open directly within the browser of Android. Therefore a typical reflected Cross-Site Scripting attack that targets a WebView in an app is not applicable and will not work.
 
 If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
 
@@ -160,17 +164,17 @@ As a summary reflected XSS is no concern for a mobile App, but stored XSS or inj
 
 ##### Cross-Site Request Forgery (CSRF)
 
-The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account of triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an App and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an App is not applicable.
+The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
 
-The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every App has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile App is by design not possible as the session cookies are not shared with the Android browser.
+The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
 ## Classification of data
 
-Classification of sensitive information can vary between different industries, countries and their laws and regulations. Therefore laws and regulations need to be known that are applicable to the app to be aware of what sensitive information actually is in the context of the app.
+Classification of sensitive information can vary between different industries and countries. Therefore laws and regulations that are applicable to the app need to be known. This will become the basis of what sensitive information actually is in the context of the app.
 
-Ideally the customer can share a data classification policy that is already considering all different requirements and clearly defines sensitive information, which can be used as baseline during testing. The data classification should be applicable to:
+Ideally the customer can share a data classification policy that is already considering all different requirements and clearly defines sensitive information. This will become then the baseline during testing. The data classification should be applicable to:
 * data in transit and
 * data at rest.
 
