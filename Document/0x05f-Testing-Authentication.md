@@ -181,6 +181,9 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 ##### OWASP MASVS
 * 4.4: "A password policy exists and is enforced at the remote endpoint."
 
+##### OWASP Testing Guide v4
+* 4.5 - Authentication Testing - https://www.owasp.org/index.php/Testing_for_authentication
+
 ##### CWE
 
 -- TODO [Add relevant CWE for "Testing the Password Policy"] --
