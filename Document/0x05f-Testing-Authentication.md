@@ -51,43 +51,63 @@
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Session Management".] --
+All significant, if not privileged, actions must be done after a user is properly authenticated; the application will remember the user inside a "session". When improperly managed, sessions are subject to a variety of attacks where the session of a legitimate user may be abused, allowing the attacker to impersonate the user. As a consequence, data may be lost, confidentiality compromised or illegitimate actions performed.
+
+Sessions must have a beginning and an end; it must be impossible for an attacker to forge a session token: instead, it must be ensured that a session can only be started by the system on the server side. Also, the duration of a session should be as short as possible, and the session must be properly terminated after a given amount of time or after the user has explicitely logged out. It must be impossible to reuse session tokens. 
+
+As such, the scope of this test is to validate that sessions are securely managed and cannot be compromised by an attacker.
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Develop content on "Testing Session Management" with source code] --
+When source code is available, the tester should look for the place where sessions are initiated, stored, exchanged, verified and canceled. This must be done whenever any access to privileged information or action takes place. For those matters, automated tools or custom scripts (in any language like Python or Perl) can be used to look for relevant keywords in the target language. Also, team members knowledgeable on the application structure may be involved to cover all necessary entry points or fasten the process.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing Session Management" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+A best practice is first to crawl the application, either manually or with an automated tool, the goal being to check if all parts of the application leading to privileged information of actions are protected and a valid session token is required or not. 
+
+Then, the tester can use any intercepting proxy to capture network traffic between a client and the server and try to manipulate session tokens :
+- create one from scratch;
+- modify a valid one for an illegitimate one (for instance, add 1 to the valid token);
+- delete a valid token to test if the targeted part of the application can be accessed;
+- if network exchanges have not done over a secure connection, try to intercept one and reuse it;
+- try to log out and re-log in and check if the token has changed or not;
+- when changing privilege level, try to use the former one (hence with a lower authorization level) to access the privileged part of the application;
+- try to use a token after logging out.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Session Management".] --
+In order to offer proper protection against the attacked mentioned earlier, session tokens must:
+- always be created on the server side;
+- not be predictable (use proper length and entropy);
+- always be exchanged between the client and the server over secure connections (ex : https);
+- be stored securely on the client side;
+- be verified when a user is trying to access privileged parts of an application: a token must be valid, correspond to the proper level of authorization;
+- be renewed when a user is asked to log in again to perform an operation requiring higher privileges;
+- be terminated when a user logs out or after a given amount of time.
+
+It is strongly advised to use built-in session token generators as they are usually more secure than custom tokens; such generators exist for most platforms and languages.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 * 4.2: "The remote endpoint uses randomly generated access tokens to authenticate client requests without sending the user's credentials."
 
 ##### CWE
--- TODO [Add relevant CWE for "Testing Session Management"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+
+- CWE-613 - Insufficient Session Expiration https://cwe.mitre.org/data/definitions/613.html
 
 ##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+
+- OWASP Session Management Cheat Sheet: https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 ##### Tools
--- TODO [Add relevant tools for "Testing Session Management"] --
-* Enjarify - https://github.com/google/enjarify
+
+* Proxy tools like Zed Attack Proxy, Burp Suite, Fiddler.
 
 
 
