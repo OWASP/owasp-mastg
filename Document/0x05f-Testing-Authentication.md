@@ -155,6 +155,7 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
+Password policy is a special countermeasure to avoid any application user on creating passwords that are easily guessable. 
 -- TODO [Provide a general description of the issue "Testing the Password Policy".] --
 
 #### Static Analysis
