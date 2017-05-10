@@ -548,19 +548,19 @@ After you choose the Uncrackable1 application from the list, debugger will attac
 
 Then we will step into the <code>onCreate()</code> method by clicking "Force Step Into" button on the Debugger view. This will allow you to move step by step throughout the <code>onCreate()</code> method. It might be useful to "Force Step Into" button insted of "Step Into" since we want to debug the Android framework functions and core Java classes which are normally ignored by debuggers. 
 
-<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="600px" />
+<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="700px" />
 
 Once you "Force Step Into", debugger will stop at the beginning of the next method which is the <code>a()</code> method of class <code>sg.vantagepoint.a.c</code>.
 
-<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="600px" />
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="700px" />
 
 This method will search for "su" binary within well known directories. Since we are running the app on a rooted device/emulator we need to defeat this check by manipulating variables and/or function return values. 
 
-<img src="Images/Chapters/0x05c/variables.png" width="600px" />
+<img src="Images/Chapters/0x05c/variables.png" width="700px" />
 
 You can see the directory names inside the "Variables" window by stepping into the <code>a()</code> method and stepping through the method by clicking "Step Over" button in the Debugger view.
 
-<img src="Images/Chapters/0x05c/step_over.png" width="600px" />
+<img src="Images/Chapters/0x05c/step_over.png" width="700px" />
 
 It will call the <code>getenv</code> method of core Java class <code>System</code> and we could be able step into the <code>System</code> class by using the "Force Step Into" functionality. 
 
@@ -568,31 +568,31 @@ After you get the colon seperated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
 
-<img src="Images/Chapters/0x05c/step_out.png" width="600px" />
+<img src="Images/Chapters/0x05c/step_out.png" width="700px" />
 
 After it gets the directory names, <code>a()</code> method will search for the existance of su binary within these directories. In order to defeat this control, you can modify the directory names (parent) or binary name (child) in each cycle so that the searched binary will not be able to found within the filesystem. You can modify the binary name by pressing F2 or Right-Click and "Set Value".
 
-<img src="Images/Chapters/0x05c/set_value.png" width="600px" />
+<img src="Images/Chapters/0x05c/set_value.png" width="700px" />
 
-<img src="Images/Chapters/0x05c/modified_binary_name.png" width="600px" />
+<img src="Images/Chapters/0x05c/modified_binary_name.png" width="700px" />
 
 Once you modify the binary name or the directory name, <code>exist</code> method of <code>File</code> class will return <code>false</code>.
 
-<img src="Images/Chapters/0x05c/file_exists_false.png" width="600px" />
+<img src="Images/Chapters/0x05c/file_exists_false.png" width="700px" />
 
 You will defeat the first root detection control that was implemented in the Uncrackable1 app by modifying the variables. Then you need to defeat other two anti-tampering and one anti-debugging controls in a similar way to finally reach secret string verification functionality. 
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="350px" />
 
-<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="600px" />
+<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="700px" />
 
 The secret code is verified by <code>a()</code> method of class <code>sg.vantagepoint.uncrackable1.a</code>. So you can set a breakpoint on method <code>a()</code> and "Force Step Into" when you hit the breakpoint. Then step through the method until you reach <code>equals</code> method of class <code>String</code>. This is where user supplied input is compared with the secret string. 
 
-<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="600px" />
+<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="700px" />
 
 You can see the secret string in the Variables view at the time you reach <code>equals</code> method of <code>String</code> class.
 
-<img src="Images/Chapters/0x05c/secret_code.png" width="600px" />
+<img src="Images/Chapters/0x05c/secret_code.png" width="700px" />
 
 <img src="Images/Chapters/0x05c/success.png" width="350px" />
 
