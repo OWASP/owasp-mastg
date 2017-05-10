@@ -1,6 +1,6 @@
 ## Android Platform Overview
 
-This chapter is going to introduce Android on the architecture point of view and will provide the reader with detailed information on security mechanisms. Then, it will describe the structure of an Android application and will emphasize on the Inter Process Communication mechanism. Last, the way Android applications are published is explained to the reader.
+This chapter is going to introduce Android on the architecture point of view and will provide the reader with detailed information on it's security mechanisms. Then, it will describe the structure of an Android application and will emphasize on the Inter Process Communication (IPC) mechanisms. Last, the way Android applications are published is explained to the reader.
 
 ### Android Architecture and Security Mechanisms
 
@@ -16,22 +16,20 @@ The software stack of Android comprises of different layers, where each layer is
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
-On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files and then compiled again into the dex format. The dex files are then executed within the Dalvik VM.
-In the next image we can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
+On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files and then compiled again into the `dex` format. The `dex` files are then executed within the Dalvik VM.
+In the next image you can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-With Android 4.4 the successor of Dalvik VM was introduced, called Android Runtime (ART).
+With Android 4.4 (KitKat) the successor of Dalvik VM was introduced, called Android Runtime (ART). However, it has really been set for general use only in Android 5.0 (Lollipop) in November 2014, where it replaced Dalvik. In KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was done to modify the normal behaviour of the mobile, Dalvik was used.
 
-ART, a.k.a Android RunTime, was born with KitKat (Android 4.4). However, it has really been set for general use only in Lollipop (Android 5.0, API 21) in November 2014, where it replaced Dalvik : in KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was done to modify the normal behaviour of the mobile, Dalvik was used.
-
-In Android, apps are executed into their own environment in a Virtual Machine (VM), that was called Dalvik, located in the RunTime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access: apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different hardwares as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others.
-In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode was compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time an app is executed on a given mobile. As a consequence, Dalvik has been improved to compile an app only once, at installation time (the principle is called AOT, a.k.a. Ahead  Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an app may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use its battery for more time..
+In Android, apps are executed into their own environment in a Virtual Machine (VM), that was called Dalvik, located in the RunTime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access. Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others.
+In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode was compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time an app is executed on a given mobile. As a consequence, Dalvik has been improved to compile an app only once, at installation time (the principle is called AOT, a.k.a. Ahead  Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an app may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use the mobile device and its battery longer.
 
 #### Android Users and Groups
 
 Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a _/etc/password_ file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
-File [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
 File below depicts some of the users defined for Android Nougat:
 
 ~~~
@@ -49,7 +47,14 @@ File below depicts some of the users defined for Android Nougat:
 
 #### Communication with the Operating System
 
-In Android, apps are developed in Java, and the Operating System offers an API to interact with system resources: communication media (Wifi, Bluetooth, NFC, ...), files, cameras, geolocation (GPS), microphone, ... . System resources cannot be accessed directly, and APIs mediate the access for the user. At the time of writting this guide, the current version of Android API is 7.1.1 Nougat, API 25.
+In Android, apps are developed in Java, and the Operating System offers an API to interact with system resources, like
+* communication media (Wifi, Bluetooth, NFC, ...),
+* files,
+* cameras,
+* geolocation (GPS),
+* microphone etc.
+
+System resources cannot be accessed directly, and APIs mediate the access for the user. At the time of writing this guide, the current version of Android API is 7.1 Nougat, API 25.
 
 APIs have evolved a lot since Android creation (the first release happened in September 2008). Early versions are not supported anymore; however, Android is a living project and new features and bug fixes are periodically made.
 
@@ -61,13 +66,13 @@ Noteworthy recent API versions are:
 - Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
 - Android 7.0 Nougat (API 24) in August 2016 (new JIT compiler on ART)
 
-After being developed, apps can be installed on mobiles from a variety of sources: locally through USB, from Google official store (Google Play) or from alternate stores.
+After being developed, apps can be installed on mobiles from a variety of sources: locally through USB, from Googles official store (Google Play Store) or from alternate stores.
 
 #### App Folder Structure
 
-Android apps installed (from Google Play Store or from external sources) are located at /data/app/. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (under developer settings) and has to be connected via USB.
-Once USB-Debugging is enabled, the connected devices can be viewed with the command
+Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
+To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB.
+Once USB-Debugging is enabled, the connected devices can be viewed with the following command:
 
 ```bash
 $ adb devices
@@ -90,7 +95,7 @@ To pull one of those apps from the phone, the following command can be used:
 $ adb pull /data/app/com.google.android.youtube-1/base.apk
 ```
 
-This file only contains the “installer” of the app, meaning this is the app the developer uploaded to the market.
+This file only contains the “installer” of the app, meaning this is the app the developer uploaded to the store.
 The local data of the app is stored at /data/data/PACKAGE-NAME and has the following structure:
 
 ```bash
@@ -102,22 +107,22 @@ drwxr-xr-x system   system            2016-01-06 03:26 lib
 drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 ```
 
-* **cache**: This location used to cache app data on runtime including WebView caches.
-* **code_cache**: TBD
-* **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data
+* **cache**: This location is used to cache app data on runtime including WebView caches.
+* **code_cache**: **ToDO**
+* **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data.
 * **files**: This folder is used to store files that are created in the App when using the internal storage.
 * **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
-   * armeabi: compiled code for all ARM based processors only
-   * armeabi-v7a: compiled code for all ARMv7 and above based processors only
-   * arm64-v8a: compiled code for all ARMv8 arm64 and above based processors only
-   * x86: compiled code for x86 processors only
-   * x86_64: compiled code for x86_64 processors only
-   * mips: compiled code for MIPS processors only
+   * armeabi: Compiled code for all ARM based processors only
+   * armeabi-v7a: Compiled code for all ARMv7 and above based processors only
+   * arm64-v8a: Compiled code for all ARMv8 arm64 and above based processors only
+   * x86: Compiled code for x86 processors only
+   * x86_64: Compiled code for x86_64 processors only
+   * mips: Compiled code for MIPS processors only
 * **shared_prefs**: This folder is used to store the preference file generated by an app at runtime to save current state of the app including data, configuration, session, etc. The file format is XML.
 
 #### APK Structure
 
-An app on Android is a file with the extension .apk. This file is a signed zip-file which contains different files for the bytecode, assets, etc. When unzipped the following directory structure can be identified:
+An app on Android is a file with the extension .apk. This file is a signed zip-file which contains different files for the bytecode, assets, etc. When unzipped the following directory structure can usually be identified:
 
 ```bash
 $ unzip base.apk
@@ -133,7 +138,7 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 
 * **AndroidManifest.xml**: Contains the definition of app’s package name, target and min API version, app configuration,  components, user-granted permissions, etc.
 * **META-INF**: This folder contains metadata of the app:
-   * MANIFEST.MF: stores hashes of app resources.
+   * MANIFEST.MF: Stores hashes of app resources.
    * CERT.RSA: The certificate(s) of the app.
    * CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
 * **assets**: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
