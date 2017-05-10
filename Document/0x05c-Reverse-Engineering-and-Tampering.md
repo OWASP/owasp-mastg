@@ -584,9 +584,11 @@ You will defeat the first root detection control that was implemented in the Unc
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="350px" />
 
+<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="600px" />
+
 The secret code is verified by <code>a()</code> method of class <code>sg.vantagepoint.uncrackable1.a</code>. So you can set a breakpoint on method <code>a()</code> and "Force Step Into" once the breakpoint hit. Then step throughout the method until you reach <code>equals</code> method of class <code>String</code>. This is where the user supplied input is compared with the secret string. 
 
-<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="600px" />
+<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="600px" />
 
 You can see the secret string in the Variables view once you reach  <code>equals</code> method of <code>String</code> class.
 
