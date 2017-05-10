@@ -530,23 +530,23 @@ This is the plaintext string we are looking for!
 
 A pretty neat trick is setting up a project in an IDE with the decompiled sources, which allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app, and inspect the state of variables through the GUI. The experience won't be perfect - it's not the original source code after all, so you can't set line breakpoints and sometimes things will simply not work correctly. Then again, reversing code is never easy, and being able to efficiently navigate and debug plain old Java code is a pretty convenient way of doing it, so it's usually worth giving it a shot. A similar method has been described in the NetSPI blog <sup>[15]</sup>.
 
-In order to debug an app from the decompiled source code, you should first create your Android project and copy the decompiled java sources of the debuggable app into the source folder as described above at "Statically Analyzing Java Code" part. Set the debug app (in this tutorial we will debug Uncrackable1) and make sure you turned on "Wait For Deugger" switch from "Developer Options".
+In order to debug an app from the decompiled source code, you should first create your Android project and copy the decompiled java sources into the source folder as described above at "Statically Analyzing Java Code" part. Set the debug app (in this tutorial it is Uncrackable1) and make sure you turned on "Wait For Deugger" switch from "Developer Options".
 
 Once you tap the Uncrackable app icon from the launcher, it will get suspended and wait for a debugger to attach its process.
 
 <img src="Images/Chapters/0x05c/waitfordebugger.png" width="350px" />
 
-Now you can set breakpoints and attach to the Uncrackable1 app process using the "Attach Debugger" button at the toolbar.
+Now you can set breakpoints and attach to the Uncrackable1 app process using the "Attach Debugger" button on the toolbar.
 
 <img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="700px" />
 
-While debugging an application from decompiled sources, it is useful to set breakpoints on methods even method breakpoints may slow down the debugging process. Hence we don't have the original source code, the decompiled source code won't match with the bytecode running on the device. As a result, the breakpoints which are set within the methods won't get hit most of the time. Once you set the breakpoints on the methods, you will get the chance to single step throughout the method execution. 
+While debugging an application from decompiled sources, it is useful to set breakpoints on methods even method breakpoints may slow down the debugging process. Hence we don't have the original source code, the decompiled source code won't match with the bytecode running on the device. As a result, the breakpoints which are set within the methods won't get hit most of the time (line breakpoints won't work). Once you set the breakpoints on the methods, you will get the chance to single step throughout the method execution. 
 
 <img src="Images/Chapters/0x05c/Choose_Process.png" width="300px" />
 
 After you choose the Uncrackable1 application from the list, debugger will attach to the app process and you will hit the breakpoint that was set on the <code>onCreate()</code> method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the <code>onCreate()</code> method. That's why it is a good idea to set a breakpoint on the <code>onCreate()</code> method just before the anti-tampering and anti-debugging checks performed.
 
-Then we will step into the <code>onCreate()</code> method by clicking "Force Step Into" button on the Debugger view. This will allow you to move step by step throughout the <code>onCreate()</code> method. It might be useful to "Force Step Into" button insted of "Step Into" since we want to debug and manipulate the Android framework functions and core Java classes which are normally ignored by debuggers. 
+Then we will step into the <code>onCreate()</code> method by clicking "Force Step Into" button on the Debugger view. This will allow you to move step by step throughout the <code>onCreate()</code> method. It might be useful to "Force Step Into" button insted of "Step Into" since we want to debug the Android framework functions and core Java classes which are normally ignored by debuggers. 
 
 <img src="Images/Chapters/0x05c/Force_Step_Into.png" width="600px" />
 
@@ -564,9 +564,9 @@ You can see the directory names inside the "Variables" window by stepping into t
 
 It will call the <code>getenv</code> method of core Java class <code>System</code> and we could be able step into the <code>System</code> class by using the "Force Step Into" functionality. 
 
-After you get the colon seperated directory names, the debugger cursor will return back to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled source code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Othervise, it might get complicated to identify which line will be executed next.
+After you get the colon seperated directory names, the debugger cursor will return back to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Othervise, it might get complicated to identify which line will be executed next.
 
-If you don't want to debug core Java and Android classes, you could step out to the next line that will be run by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" from the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
+If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
 
 <img src="Images/Chapters/0x05c/step_out.png" width="600px" />
 
@@ -576,21 +576,21 @@ After it gets the directory names, <code>a()</code> method will search for the e
 
 <img src="Images/Chapters/0x05c/modified_binary_name.png" width="600px" />
 
-Afer you modify the binary name or the directory name, <code>exist</code> method of <code>File</code> class will return <code>false</code>.
+Once you modify the binary name or the directory name, <code>exist</code> method of <code>File</code> class will return <code>false</code>.
 
 <img src="Images/Chapters/0x05c/file_exists_false.png" width="600px" />
 
-You will defeat the first root detection control that was implemented in the Uncrackable1 app by modifying the variables. Then you need to defeat other two anti-tampering and one anti-debugging control in a similar way to finally reach secret string verification functionality. 
+You will defeat the first root detection control that was implemented in the Uncrackable1 app by modifying the variables. Then you need to defeat other two anti-tampering and one anti-debugging controls in a similar way to finally reach secret string verification functionality. 
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="350px" />
 
 <img src="Images/Chapters/0x05c/MainActivity_verify.png" width="600px" />
 
-The secret code is verified by <code>a()</code> method of class <code>sg.vantagepoint.uncrackable1.a</code>. So you can set a breakpoint on method <code>a()</code> and "Force Step Into" once the breakpoint hit. Then step throughout the method until you reach <code>equals</code> method of class <code>String</code>. This is where the user supplied input is compared with the secret string. 
+The secret code is verified by <code>a()</code> method of class <code>sg.vantagepoint.uncrackable1.a</code>. So you can set a breakpoint on method <code>a()</code> and "Force Step Into" when you hit the breakpoint. Then step through the method until you reach <code>equals</code> method of class <code>String</code>. This is where user supplied input is compared with the secret string. 
 
 <img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="600px" />
 
-You can see the secret string in the Variables view once you reach  <code>equals</code> method of <code>String</code> class.
+You can see the secret string in the Variables view at the time you reach <code>equals</code> method of <code>String</code> class.
 
 <img src="Images/Chapters/0x05c/secret_code.png" width="600px" />
 
