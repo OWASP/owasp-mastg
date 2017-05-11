@@ -288,7 +288,7 @@ $ adb logcat > logcat.log
 
 #### Remediation
 
-Ensure that a centralized logging class and mechanism is used and that logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like `ProGuard`, which is already included in Android Studio or `DexGuard` can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls implemented with the class `android.util.Log`, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
+Ensure that a centralized logging class and mechanism is used and that logging statements are removed from the production release, as logs may be interrogated or readable by other applications. Tools like `ProGuard`, which is already included in Android Studio can be used to strip out logging portions in the code when preparing the production release. For example, to remove logging calls implemented with the class `android.util.Log`, simply add the following option in the _proguard-project.txt_ configuration file of ProGuard:
 
 ```java
 -assumenosideeffects class android.util.Log
@@ -323,7 +323,6 @@ public static int wtf(...);
 
 ##### Tools
 * ProGuard - http://proguard.sourceforge.net/
-* DexGuard - https://www.guardsquare.com/dexguard
 * LogCat - http://developer.android.com/tools/help/logcat.html
 
 
