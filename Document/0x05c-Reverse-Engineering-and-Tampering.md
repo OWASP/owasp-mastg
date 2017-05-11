@@ -30,12 +30,12 @@ The Android NDK contains prebuilt versions of the native compiler and toolchain.
 
 |Architecture | Toolchain name|
 |------------ | --------------|
-ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
-x86-based|x86-&lt;gcc-version&gt;|
-MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
-ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
-X86-64-based|x86_64-&lt;gcc-version&gt;|
-MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+|ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+|x86-based|x86-&lt;gcc-version&gt;|
+|MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+|ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+|X86-64-based|x86_64-&lt;gcc-version&gt;|
+|MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
 
 In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under $NDK/platforms/, each API-level directory contains subdirectories for the various CPUs and architectures. Recent API levels include [X]:
 
