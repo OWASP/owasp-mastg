@@ -676,7 +676,7 @@ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK c
 
 ##### Sample Implementation
 
-Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include: 
+Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include:
 
 - AndroidManifest.xml
 - Class files *.dex
@@ -938,11 +938,116 @@ N/A
 #### Overview
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
 
-Device binding has changed on Android //HVG!
+
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, a developer should no longer relie on the SSAID alone as the single identifier of the device as it is not always stable. For instance: The SSAID might change upon a factory reset and when the app is reinstalled after the upgrade to Android O.
+Futhermore, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
+There are 3 methods which allow for easy device binding:
+- augment the credentias used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
+- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
+- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
+
+The following 3 identifiers can be possibly used.
+##### Google InstanceID
+Google InstanceID[https://developers.google.com/instance-id/] uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
+You need to take the following steps into account for instanceID:
+0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
+
+1. Setup Google play services. In your build.gradle, add:
+```groovy
+  apply plugin: 'com.android.application'
+    ...
+
+    dependencies {
+        compile 'com.google.android.gms:play-services-gcm:10.2.4'
+    }
+```
+2. Get an instanceID
+```java
+  String iid = InstanceID.getInstance(context).getId();
+  //now submit this iid to your server.
+```
+
+3. Generate a token
+```java
+String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
+String scope = "GCM"; // e.g. communicating using GCM, but you can use any
+                      // URL-safe characters up to a maximum of 1000, or
+                      // you can also leave it blank.
+String token = InstanceID.getInstance(context).getToken(authorizedEntity,scope);
+//now submit this token to the server.
+```
+4. Make sure that you can handle callbacks from instanceID in case of invalid device information, security issues, etc.
+For this you have to extend the `InstanceIDListenerService` and handle the callbacks there:
+
+```java
+public class MyInstanceIDService extends InstanceIDListenerService {
+  public void onTokenRefresh() {
+    refreshAllTokens();
+  }
+
+  private void refreshAllTokens() {
+    // assuming you have defined TokenList as
+    // some generalized store for your tokens for the different scopes.
+    // Please note that for application validation having just one token with one scopes can be enough.
+    ArrayList<TokenList> tokenList = TokensList.get();
+    InstanceID iid = InstanceID.getInstance(this);
+    for(tokenItem : tokenList) {
+      tokenItem.token =
+        iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
+      // send this tokenItem.token to your server
+    }
+  }
+};
+
+```
+Lastly register the service in your AndroidManifest:
+```xml
+<service android:name=".MyInstanceIDService" android:exported="false">
+  <intent-filter>
+        <action android:name="com.google.android.gms.iid.InstanceID"/>
+  </intent-filter>
+</service>
+```
+When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
+
+Please note that Firebase has support for InstanceID as well [https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId].
+-- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
+
+##### IMEI & Serial
+Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general.
+
+For pre-Android O devices, you can request the serial as follows:
+
+```java
+   String serial = android.os.Build.SERIAL;
+```
+
+From Android O onwards, you can request the device its serial as follows:
+
+1. Set the permission in your Android Manifest:
+```xml
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+```
+2. Request the permission at runtime to the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+3. Get the serial:
+
+```java
+  String serial = android.os.Build.getSerial();
+```
+
+For retrieving the IMEI pre-Android O:
+
+HVG!!! 
+For retrieving the IMEI from Android O onward:
 
 
--- TODO [Provide a general description of the issue "Testing Device Binding".] --
+##### Google SSAID
+Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general.
 
+
+
+Additionaly it is recommended to check whether the device is rooted (Using Safetynet, etc., see XXx-MSTG ref here for more details.).
 #### Static Analysis
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
