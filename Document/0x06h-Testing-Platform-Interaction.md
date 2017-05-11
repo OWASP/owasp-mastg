@@ -169,41 +169,86 @@
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing JavaScript Execution in WebViews".] --
+The WebView object is used to embed a web browser in your iOS application. It is a convinient way to display a web page in your application without any interaction with your native mobile browser. WebView even allows you to interact with JavaScript code in pages it has loaded. This great opportunity however may expose your application for a big risk if no security controls are applied. One of such big risk is a possibility to execute a malicious JavaScript code in your application via WebView object.
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Depending on your iOS version a WebView object can be implemented using UIWebView (for iOS versions 7.1.2 and older)<sup>[1]</sup> or WKWebView (for iOS in version 8.0 and later)<sup>[2]</sup>. WKWebView is recommended to be used. 
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+##### With Source Code
 
--- TODO [Add content on static analysis of "Testing JavaScript Execution in WebViews" with source code] --
+The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your application does not require executing JavaScript (just display a web page), you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
+
+```
+#import "ViewController.h"
+#import <WebKit/WebKit.h>
+@interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
+@property(strong,nonatomic) WKWebView *webView;
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    WKPreferences *pref = [[WKPreferences alloc] init];
+    
+    //Disable javascript execution:
+    [pref setJavaScriptEnabled:NO];
+    [pref setJavaScriptCanOpenWindowsAutomatically:NO];
+    
+    WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
+    [conf setPreferences:pref];
+    _webView = [[WKWebView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x,85, self.view.frame.size.width, self.view.frame.size.height-85) configuration:conf] ;
+    [_webView loadRequest:request];
+    [self.view addSubview:_webView];
+    
+}
+
+```
+
+If there is no explicitly disabled JavaScript execution via WKPreferences object, then it means it is enabled.
 
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing JavaScript Execution in WebViews" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
+
+* Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
+* Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing JavaScript Execution in WebViews".] --
+The UIWebView should be avoided and WKWebView used instead. JavaScript is enabled by default in a WKWebView and should be disabled if not needed. This reduces the attack surface and potential threats to the application. 
+
+In order to address these attack vectors, the outcome of the following checks should be verified:
+
+* that all functions offered by the endpoint need to be free of XSS vulnerabilities<sup>[4]</sup>.
+ 
+* that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
+
 
 #### References
 
-##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+##### OWASP Mobile Top 10 2014
+
+* M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
+
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 
 ##### CWE
+
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 
 ##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
-##### Tools
--- TODO [Add relevant tools for "Testing JavaScript Execution in WebViews"] --
+- [1] UIWebView reference documentation - https://developer.apple.com/reference/uikit/uiwebview
+- [2] WKWebView reference documentation - https://developer.apple.com/reference/webkit/wkwebview
+- [3] WKPreferences - https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled
+- [4] XSS (Cross Site Scripting) Prevention Cheat Sheet - https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
 
 
 ### Testing WebView Protocol Handlers
