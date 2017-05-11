@@ -175,9 +175,7 @@ The WebView object is used to embed a web browser in your iOS application. It is
 
 Depending on your iOS version a WebView object can be implemented using UIWebView (for iOS versions 7.1.2 and older)<sup>[1]</sup> or WKWebView (for iOS in version 8.0 and later)<sup>[2]</sup>. WKWebView is recommended to be used. 
 
-##### With Source Code
-
-The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your application does not require executing JavaScript (just display a web page), you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
+The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
 
 ```
 #import "ViewController.h"
@@ -231,7 +229,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
 * M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
