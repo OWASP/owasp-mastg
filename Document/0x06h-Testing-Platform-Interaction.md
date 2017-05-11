@@ -220,7 +220,7 @@ A Dynamic Analysis depends on different surrounding conditions, as there are dif
 
 #### Remediation
 
-The UIWebView should be avoided and WKWebView used instead. JavaScript is enabled by default in a WKWebView and should be disabled if not needed. This reduces the attack surface and potential threats to the application. If JavaScript is needed it should be ensured:
+The UIWebView should be avoided and WKWebView used instead. JavaScript is enabled by default in a WKWebView and should be disabled if not needed. This reduces the attack surface and potential threats to the application. 
 
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
@@ -233,7 +233,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 ##### OWASP Mobile Top 10 2014
 
-* M7 - Client Side Injection
+* M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 
