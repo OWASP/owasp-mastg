@@ -23,7 +23,7 @@ In the next image you can see the differences between the normal process of comp
 
 With Android 4.4 (KitKat) the successor of Dalvik VM was introduced, called Android Runtime (ART). However, it has really been set for general use only in Android 5.0 (Lollipop) in November 2014, where it replaced Dalvik. In KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was done to modify the normal behaviour of the mobile, Dalvik was used.
 
-In Android, apps are executed into their own environment in a Virtual Machine (VM), that was called Dalvik, located in the RunTime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access. Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others.
+In Android, apps are executed into their own environment in a Virtual Machine (VM), that was called Dalvik, located in the runtime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access. Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others.
 In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode was compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time an app is executed on a given mobile. As a consequence, Dalvik has been improved to compile an app only once, at installation time (the principle is called AOT, a.k.a. Ahead  Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an app may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use the mobile device and its battery longer.
 
 #### Android Users and Groups
@@ -32,7 +32,7 @@ Android is a system based on Linux, however it does not deal with users the same
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
 File below depicts some of the users defined for Android Nougat:
 
-~~~
+```
     #define AID_ROOT             0  /* traditional unix root user */
 
     #define AID_SYSTEM        1000  /* system server */
@@ -41,14 +41,14 @@ File below depicts some of the users defined for Android Nougat:
 	...
     #define AID_APP          10000  /* first app user */
 	...
-~~~
+```
 
 ### Understanding Android Apps
 
 #### Communication with the Operating System
 
 In Android, apps are developed in Java, and the Operating System offers an API to interact with system resources, like
-* communication media (Wifi, Bluetooth, NFC, ...),
+* connectivity (Wifi, Bluetooth, NFC, ...),
 * files,
 * cameras,
 * geolocation (GPS),
@@ -176,13 +176,13 @@ drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
 
-* **AndroidManifest.xml**: This file is not compressed anymore and can be openend in a text editor.
+* **AndroidManifest.xml**: This file is not compressed anymore and can be opened in a text editor.
 * **apktool.yml** : This file contains information about the output of apktool.
 * **assets**: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-* **lib**: A directory containting libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+* **lib**: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
 * **original**: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
 * **res**: A directory containing resources not compiled into resources.arsc.
-* **smali**: A directory containing the disassembled Dalvik Bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+* **smali**: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
 #### Linux UID/GID of Normal Applications
 
@@ -217,28 +217,30 @@ An important element to understand Android security is that all apps have the sa
 
 Apps are executed in the Android Application Sandbox that enforces isolation of an app data and code execution from other apps on the device, that adds an additional layer of security.
 
-When installing new apps (From Google Play or External Sources), a new folder is created in the filesystem in the path /data/data/\<package name>. This folder is going to be the private data folder for that particular app.
+When installing new apps (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode to _read_ and _write_ only to the owner of the app.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
-In this example, the Chrome and Calendar app are completly segmented with different UID and different folder permissions.
+In this example, the Chrome and Calendar app are completely segmented with different UID and different folder permissions.
 
-We can confirm this my looking at the filesystem permissions created for each folder:
+We can confirm this by looking at the filesystem permissions created for each folder:
+
 ```
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
-However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other data directory.
-An example how this is achieved in Nfc app:
+
+However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each others data directory. See the following example on how this is achieved in the Nfc app:
+
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.android.nfc"
 	android:sharedUserId="android.uid.nfc">
 ```
 
-The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of the layers below. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
+The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
 #### App Components
 
