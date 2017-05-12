@@ -62,7 +62,7 @@ Detection code also often looks for binaries that are usually installed once a d
 /system/xbin/su
 /data/local/su
 /data/local/xbin/su
-~~~ 
+~~~
 
 Alternatively, checking whether *su* is in PATH also works:
 
@@ -183,16 +183,16 @@ Check for the presence of root detection mechanisms and apply the following crit
 Develop bypass methods for the root detection mechanisms and answer the following questions:
 
 - Is it possible to easily bypass the mechanisms using standard tools such as RootCloak?
-- Is some amount of static/dynamic analysis necessary to handle the root detection? 
+- Is some amount of static/dynamic analysis necessary to handle the root detection?
 - Did you need to write custom code?
 - How long did it take you to successfully bypass it?
-- What is your subjective assessment of difficulty? 
+- What is your subjective assessment of difficulty?
 
 Also note how well the root detection mechanisms are integrated within the overall protection scheme. For example, the detection functions should obfuscated and protected from tampering.
 
 #### Remediation
 
-If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses. 
+If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
 
 #### References
 
@@ -231,7 +231,7 @@ Debugging is a highly effective way of analyzing the runtime behaviour of an app
 
 As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two different debugging protocols on Android: One could debug on the Java level using JDWP, or on the native layer using a ptrace-based debugger. Consequently, a good anti-debugging scheme needs to implement defenses against both debugger types.
 
-Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app. 
+Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app.
 
 ##### Sample Anti-JDWP-Debugging Methods
 
@@ -248,7 +248,7 @@ We have encountered the <code>android:debuggable</code> attribute a few times al
 
     }
 ```
-###### isDebuggerConnected 
+###### isDebuggerConnected
 
 The Android Debug system class offers a static method for checking whether a debugger is currently connected. The method simply returns a boolean value.
 
@@ -273,10 +273,10 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 The <code>Debug.threadCpuTimeNanos</code> indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, The difference in execution time can be used to make an educated guess on whether a debugger is attached [2].
 
 ```
-static boolean detect_threadCpuTimeNanos(){ 
+static boolean detect_threadCpuTimeNanos(){
   long start = Debug.threadCpuTimeNanos();
 
-  for(int i=0; i<1000000; ++i) 
+  for(int i=0; i<1000000; ++i)
     continue;
 
   long stop = Debug.threadCpuTimeNanos();
@@ -306,14 +306,14 @@ struct DvmGlobals {
     char*       jdwpHost;
     int         jdwpPort;
     bool        jdwpSuspend;
- 
+
     Thread*     threadList;
- 
+
     bool        nativeDebuggerActive;
     bool        debuggerConnected;      /* debugger or DDMS is connected */
     bool        debuggerActive;         /* debugger is making requests */
     JdwpState*  jdwpState;
- 
+
 };
 ```
 
@@ -325,7 +325,7 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
-Debugging can be disabled using similar techniques in ART, even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes include JdwpSocketState and JdwpAdbState - these two handle JDWP connections via network sockets and ADB, respectively. The behaviour of the debugging runtime can be manipulatedB ny overwriting the method pointers in those vtables. 
+Debugging can be disabled using similar techniques in ART, even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes include JdwpSocketState and JdwpAdbState - these two handle JDWP connections via network sockets and ADB, respectively. The behaviour of the debugging runtime can be manipulatedB ny overwriting the method pointers in those vtables.
 
 One possible way of doing this is overwriting the address of "jdwpAdbState::ProcessIncoming()" with the address of "JdwpAdbState::Shutdown()". This will cause the debugger to disconnect immediately [3].
 
@@ -432,7 +432,7 @@ The following implementation is taken from Tim Strazzere's Anti-Emulator project
 
 On Linux, the <code>ptrace()</code> system call is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers [5]. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
 
-As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines: 
+As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines:
 
 ```
 void fork_and_attach()
@@ -650,7 +650,7 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
 - How difficult is it to identify the anti-debugging code using static and dynamic analysis?
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
-- What is your subjective assessment of difficulty? 
+- What is your subjective assessment of difficulty?
 
 Consider how the anti-debugging mechansims fit into the overall protection scheme. For example, anti-debugging defenses should obfuscated and protected from tampering.
 
@@ -658,7 +658,7 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 #### Remediation
 
-If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses. 
+If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
 
 #### References
 
@@ -676,7 +676,7 @@ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK c
 
 ##### Sample Implementation
 
-Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include: 
+Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include:
 
 - AndroidManifest.xml
 - Class files *.dex
@@ -691,10 +691,10 @@ private void crcTest() throws IOException {
  // required dex crc value stored as a text string.
  // it could be any invisible layout element
  long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
- 
+
  ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
  ZipEntry ze = zf.getEntry("classes.dex");
- 
+
  if ( ze.getCrc() != dexCrc ) {
   // dex has been modified
   modified = true;
@@ -708,7 +708,7 @@ private void crcTest() throws IOException {
 
 ##### Bypassing File Integrity Checks
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions. 
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -765,7 +765,7 @@ Popular tools, if installed in their original form, can be detected by looking f
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions. 
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -808,7 +808,7 @@ In the context of anti-reversing, the goal of emulator detection is to make it a
 
 #### Detection Techniques
 
-There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense. 
+There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
 
 The first set of indicaters stem from the build.prop file
 
@@ -845,13 +845,13 @@ TelephonyManager.getNetworkType()                       3                       
 TelephonyManager.getNetworkOperator().substring(0,3)    310                     possibly emulator
 TelephonyManager.getNetworkOperator().substring(3)      260                     possibly emulator
 TelephonyManager.getPhoneType()                         1                       possibly emulator
-TelephonyManager.getSimCountryIso()                     us                      possibly emulator 
+TelephonyManager.getSimCountryIso()                     us                      possibly emulator
 TelephonyManager.getSimSerial Number()                  89014103211118510720    emulator
 TelephonyManager.getSubscriberId()                      310260000000000         emulator
 TelephonyManager.getVoiceMailNumber()                   15552175049             emulator
 ```
 
-Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data. 
+Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data.
 
 -- TODO [Dynamic Detection Techniques] --
 
@@ -936,20 +936,176 @@ N/A
 ### Testing Device Binding
 
 #### Overview
-
--- TODO [Provide a general description of the issue "Testing Device Binding".] --
+The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well.
 
 #### Static Analysis
+When the source-code is available, then there are a few codes you can look for, such as:
+- The presence of unique identifiers that no longer work in the future
+  - `Build.SERIAL` without the presence of `Build.getSerial()`
+  - `htc.camera.sensor.front_SN` for HTC devices
+  - `persist.service.bdroid.bdadd`
+  - `Settings.Secure.bluetooth_address`, unless the system permission LOCAL_MAC_ADDRESS is enabled in the manifest.
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+- The presence of using the ANDROID_ID only as an identifier. This will influence the possible binding quality over time given older devices.
+- The absence of both InstanceID, the `Build.SERIAL` and the IMEI.
+
+```java
+  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+  String IMEI = tm.getDeviceId();
+```
+
+
+Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
 #### Dynamic Analysis
+There are a few ways to test the application binding:
+##### Dynamic Analysis using an Emulator
+1. Run the application on an Emulator
+2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
+3. Retrieve the data from the Emulator This has a few steps:
+- ssh to your simulator using adb shell
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- chmod 777 the contents of cache and shared-preferences
+- exit the current user
+- copy the contents of /dat/data/<your appid>/cache & shared-preferences to the sdcard
+- use ADB or the DDMS to pull the contents
+4. Install the application on another Emulator
+5. Overwrite the data from step 3 in the data folder of the application.
+- copy the contents of step 3 to the sdcard of the second emulator.
+- ssh to your simulator using adb shell
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- chmod 777 the folders cache and shared-preferences
+- copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
+6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+##### Dynamic Analysis using two different rooted devices.
+1. Run the applciation on your rooted device
+2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
+3. Retrieve the data from the first rooted device
+4. Install the application on the second rooted device
+5. Overwrite the data from step 3 in the data folder of the application.
+6. Can you continue in an authenticated state? If so, then binding might not be working properly.
+
 
 #### Remediation
+Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
+Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
+Before we describe the usubale identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
+- augment the credentias used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
+- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
+- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Device Binding".] --
+The following 3 identifiers can be possibly used.
+##### Google InstanceID
+Google InstanceID[https://developers.google.com/instance-id/] uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
+You need to take the following steps into account for instanceID:
+0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
+
+1. Setup Google play services. In your build.gradle, add:
+```groovy
+  apply plugin: 'com.android.application'
+    ...
+
+    dependencies {
+        compile 'com.google.android.gms:play-services-gcm:10.2.4'
+    }
+```
+2. Get an instanceID
+```java
+  String iid = InstanceID.getInstance(context).getId();
+  //now submit this iid to your server.
+```
+
+3. Generate a token
+```java
+String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
+String scope = "GCM"; // e.g. communicating using GCM, but you can use any
+                      // URL-safe characters up to a maximum of 1000, or
+                      // you can also leave it blank.
+String token = InstanceID.getInstance(context).getToken(authorizedEntity,scope);
+//now submit this token to the server.
+```
+4. Make sure that you can handle callbacks from instanceID in case of invalid device information, security issues, etc.
+For this you have to extend the `InstanceIDListenerService` and handle the callbacks there:
+
+```java
+public class MyInstanceIDService extends InstanceIDListenerService {
+  public void onTokenRefresh() {
+    refreshAllTokens();
+  }
+
+  private void refreshAllTokens() {
+    // assuming you have defined TokenList as
+    // some generalized store for your tokens for the different scopes.
+    // Please note that for application validation having just one token with one scopes can be enough.
+    ArrayList<TokenList> tokenList = TokensList.get();
+    InstanceID iid = InstanceID.getInstance(this);
+    for(tokenItem : tokenList) {
+      tokenItem.token =
+        iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
+      // send this tokenItem.token to your server
+    }
+  }
+};
+
+```
+Lastly register the service in your AndroidManifest:
+```xml
+<service android:name=".MyInstanceIDService" android:exported="false">
+  <intent-filter>
+        <action android:name="com.google.android.gms.iid.InstanceID"/>
+  </intent-filter>
+</service>
+```
+When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
+
+Please note that Firebase has support for InstanceID as well [https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId].
+-- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
+
+##### IMEI & Serial
+Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general.
+
+For pre-Android O devices, you can request the serial as follows:
+
+```java
+   String serial = android.os.Build.SERIAL;
+```
+
+From Android O onwards, you can request the device its serial as follows:
+
+1. Set the permission in your Android Manifest:
+```xml
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+```
+2. Request the permission at runtime to the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+3. Get the serial:
+
+```java
+  String serial = android.os.Build.getSerial();
+```
+
+Retrieving the IMEI in Android works as follows:
+
+1. Set the required permission in your Android Manifest:
+```xml
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+```
+
+2. If on Android M or higher: request the permission at runtime to the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+
+3. Get the IMEI:
+```java
+  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+  String IMEI = tm.getDeviceId();
+```
+
+##### SSAID
+Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general. you can retrieve the SSAID as follows:
+```java
+  String SSAID = Settings.Secure.ANDROID_ID;
+```
 
 #### References
 
@@ -959,8 +1115,7 @@ N/A
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" below + description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 
 ##### CWE
 
@@ -968,14 +1123,15 @@ N/A
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Changes in the Android device identifiers - https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html
+- [2] Developer Android documentation - https://developer.android.com/training/articles/user-data-ids.html
+- [3] Documentation on requesting runtime permissions - https://developer.android.com/training/permissions/requesting.html
+- [4] Firebase InstanceID documentation - https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId
+- [5] Google InstanceID documentation - https://developers.google.com/instance-id/
 
 ##### Tools
-
--- TODO [Add link to tools for "Testing Device Binding"] --
-* Enjarify - https://github.com/google/enjarify
+* ADB & DDMS
+* Android Emulator or 2 rooted devices.
 
 ### Testing Obfuscation
 
@@ -1059,4 +1215,3 @@ out_file.close()
 
 -- TODO [Add links to relevant tools for "Testing Obfuscation"] --
 * Enjarify - https://github.com/google/enjarify
-
