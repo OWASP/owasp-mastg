@@ -611,7 +611,6 @@ public class CodeCheck {
 
 -- TODO [Add a generic bypass script using Frida (?)] --
 
-
 ```python
 #v0.1
  
@@ -757,11 +756,187 @@ Popular tools, if installed in their original form, can be detected by looking f
 - RootCloak
 - Android SSL Trust Killer
 
-###### File Checks
+###### Example: Ways of Detecting Frida
 
-###### Checking Running Processes
+-- TODO [Write a few introductionary words] --
 
-###### Checking Loaded Libraries
+An obvious method for detecting frida and similar frameworks is to check the environment for related artefacts, such as package files, binaries, libraries, processes, temporary files, and others. As an example, I'll home in on fridaserver, the daemon responsible for exposing frida over TCP. One could use a Java method that iterates through the list of running processes to check whether fridaserver is running:
+
+```c
+public boolean checkRunningProcesses() {
+
+  boolean returnValue = false;
+
+  // Get currently running application processes
+  List<RunningServiceInfo> list = manager.getRunningServices(300);
+
+  if(list != null){
+    String tempName;
+    for(int i=0;i<list.size();++i){
+      tempName = list.get(i).process;
+
+      if(tempName.contains("fridaserver")) {
+        returnValue = true;
+      }
+    }
+  }
+  return returnValue;
+}
+```
+
+This works if frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies doing their first little baby steps in reverse engineering. It can however be easily bypassed by renaming the fridaserver binary to "lol" or other names, so we should maybe find a better method.
+
+By default, fridaserver binds to TCP port 27047, so checking whether this port is open is another idea. In native code, this could look as follows:
+
+```c
+boolean is_frida_server_listening() {
+    struct sockaddr_in sa;
+
+    memset(&sa, 0, sizeof(sa));
+    sa.sin_family = AF_INET;
+    sa.sin_port = htons(27047);
+    inet_aton("127.0.0.1", &(sa.sin_addr));
+
+    int sock = socket(AF_INET , SOCK_STREAM , 0);
+
+    if (connect(sock , (struct sockaddr*)&sa , sizeof sa) != -1) {
+      /* Frida server detected. Do something… */
+    }
+
+}   
+```
+
+Again, this detects fridaserver in its default mode, but the listening port can be changed easily via command line argument, so bypassing this is a little bit too trivial. The situation can be improved by pulling an nmap -sV. fridaserver uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping for fridaserver to reveal itself. 
+
+```c
+/*
+ * Mini-portscan to detect frida-server on any local port.
+ */
+
+for(i = 0 ; i <= 65535 ; i++) {
+
+    sock = socket(AF_INET , SOCK_STREAM , 0);
+    sa.sin_port = htons(i);
+
+    if (connect(sock , (struct sockaddr*)&sa , sizeof sa) != -1) {
+
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME,  "FRIDA DETECTION [1]: Open Port: %d", i);
+
+        memset(res, 0 , 7);
+
+        // send a D-Bus AUTH message. Expected answer is “REJECT"
+
+        send(sock, "\x00", 1, NULL);
+        send(sock, "AUTH\r\n", 6, NULL);
+
+        usleep(100);
+
+        if (ret = recv(sock, res, 6, MSG_DONTWAIT) != -1) {
+
+            if (strcmp(res, "REJECT") == 0) {
+               /* Frida server detected. Do something… */
+            }
+        }
+    }
+    close(sock);
+} 
+```
+
+We now have a pretty robust method of detecting fridaserver, but there's still some glaring issues. Most importantly, frida offers alternative modes of operations that don't require fridaserver! How do we detect those?
+
+The common theme in all of frida's modes is code injection, so we can expect to have frida-related libraries mapped into memory whenever frida is used. The straightforward way to detect those is walking through the list of loaded libraries and checking for suspicious ones:
+
+```c
+char line[512];
+FILE* fp;
+
+fp = fopen("/proc/self/maps", "r");
+
+if (fp) {
+    while (fgets(line, 512, fp)) {
+        if (strstr(line, "frida")) {
+            /* Evil library is loaded. Do something… */
+        }
+    }
+
+    fclose(fp);
+
+    } else {
+       /* Error opening /proc/self/maps. If this happens, something is off. */
+    }
+}
+```
+
+This detects any libraries containing "frida" in the name. On its surface this works, but there's some major issues:
+
+- Remember how it wasn't a good idea to rely on fridaserver being called fridaserver? The same applies here - with some small modifications to frida, the frida agent libraries could simply be renamed. 
+- Detection relies on standard library calls such as fopen() and strstr(). Essentially, we're attempting to detect frida using functions that can be easily hooked with - you guessed it - frida. Obviously this isn't a very solid strategy.
+
+Issue number one can be addressed by implementing a classic-virus-scanner-like strategy, scanning memory for the presence of "gadgets" found in frida's libraries. I chose the string "LIBFRIDA" which appears to be present in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in /proc/self/maps, and search for the string in every executable section. Note that I ommitted the more boring functions for the sake of brevity, but you can find them on GitHub.
+
+```c
+static char keyword[] = "LIBFRIDA";
+num_found = 0;
+
+int scan_executable_segments(char * map) {
+    char buf[512];
+    unsigned long start, end;
+
+    sscanf(map, "%lx-%lx %s", &start, &end, buf);
+
+    if (buf[2] == 'x') {
+        return (find_mem_string(start, end, (char*)keyword, 8) == 1);
+    } else {
+        return 0;
+    }
+}
+
+void scan() {
+
+    if ((fd = my_openat(AT_FDCWD, "/proc/self/maps", O_RDONLY, 0)) >= 0) {
+
+    while ((read_one_line(fd, map, MAX_LINE)) > 0) {
+        if (scan_executable_segments(map) == 1) {
+            num_found++;
+        }
+    }
+
+    if (num_found > 1) {
+
+        /* Frida Detected */
+    }
+
+}
+```
+
+Note the use of my_openat() etc. instead of the normal libc library functions. These are custom implementations that do the same as their Bionic libc counterparts: They set up the arguments for the respective system call and execute the swi instruction (see below). Doing this removes the reliance on public APIs, thus making it less susceptible to the typical libc hooks. The complete implementation is found in syscall.S. The following is an assembler implementation of my_openat().
+
+```
+#include "bionic_asm.h"
+
+.text
+    .globl my_openat
+    .type my_openat,function
+my_openat:
+    .cfi_startproc
+    mov ip, r7
+    .cfi_register r7, ip
+    ldr r7, =__NR_openat
+    swi #0
+    mov r7, ip
+    .cfi_restore r7
+    cmn r0, #(4095 + 1)
+    bxls lr
+    neg r0, r0
+    b __set_errno_internal
+    .cfi_endproc
+
+    .size my_openat, .-my_openat;
+```
+
+This is a bit more effective as overall, and is difficult to bypass with frida only, especially with some obuscation added. Even so, there are of course many ways of bypassing this as well. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
+
+To experiment with the detection methods above, you can download and build the Android Studio Project. The app should generate entries like the following when frida is injected.
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
@@ -936,10 +1111,12 @@ N/A
 ### Testing Device Binding
 
 #### Overview
+
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
 In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well.
 
 #### Static Analysis
+
 When the source-code is available, then there are a few codes you can look for, such as:
 - The presence of unique identifiers that no longer work in the future
   - `Build.SERIAL` without the presence of `Build.getSerial()`
@@ -959,8 +1136,11 @@ When the source-code is available, then there are a few codes you can look for, 
 Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
 #### Dynamic Analysis
+
 There are a few ways to test the application binding:
+
 ##### Dynamic Analysis using an Emulator
+
 1. Run the application on an Emulator
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the Emulator This has a few steps:
@@ -980,6 +1160,7 @@ There are a few ways to test the application binding:
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
 ##### Dynamic Analysis using two different rooted devices.
+
 1. Run the applciation on your rooted device
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the first rooted device
@@ -987,8 +1168,8 @@ There are a few ways to test the application binding:
 5. Overwrite the data from step 3 in the data folder of the application.
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
-
 #### Remediation
+
 Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
 Before we describe the usubale identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
@@ -997,7 +1178,9 @@ Before we describe the usubale identifiers, let's quickly discuss how they can b
 - Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
 
 The following 3 identifiers can be possibly used.
+
 ##### Google InstanceID
+
 Google InstanceID[https://developers.google.com/instance-id/] uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
 You need to take the following steps into account for instanceID:
 0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
@@ -1064,6 +1247,7 @@ Please note that Firebase has support for InstanceID as well [https://firebase.g
 -- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
 
 ##### IMEI & Serial
+
 Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general.
 
 For pre-Android O devices, you can request the serial as follows:
@@ -1102,6 +1286,7 @@ Retrieving the IMEI in Android works as follows:
 ```
 
 ##### SSAID
+
 Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general. you can retrieve the SSAID as follows:
 ```java
   String SSAID = Settings.Secure.ANDROID_ID;
@@ -1130,6 +1315,7 @@ Please note that Google recommends against using these identifiers unless there 
 - [5] Google InstanceID documentation - https://developers.google.com/instance-id/
 
 ##### Tools
+
 * ADB & DDMS
 * Android Emulator or 2 rooted devices.
 
