@@ -211,13 +211,17 @@ The relationship between group IDs and permissions are defined in the file [fram
 </permission>
 ```
 
-An important element to understand Android security is that all apps have the same level of privileges: both native and third-party apps are built on the same APIs and are run in similar environments. Also, all apps are executed not as 'root', but with the user level of privileges. That means that, basically, apps cannot perform some actions or access some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like for Python, ...), mobiles need to be rooted.
+An important element to understand Android security is that all apps have the same level of privileges: both native and third-party apps are built on the same APIs and are run in similar environments. Also, all apps are executed not as 'root', but with the user level of privileges. That means that, basically, apps cannot perform some actions or access some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
+
+##### Zygote
+
+When booting Android, a process called `Zygote` starts up at init<sup>[]</sup>. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When a new app starts on Android the Zygote process is forked and the app specific code is loaded and executed.
 
 #### The App Sandbox
 
-Apps are executed in the Android Application Sandbox that enforces isolation of an app data and code execution from other apps on the device, that adds an additional layer of security.
+Apps are executed in the Android Application Sandbox that enforces isolation of app data and code execution from other apps on the device, that adds an additional layer of security.
 
-When installing new apps (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
+When installing a new app (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode to _read_ and _write_ only to the owner of the app.
 
@@ -240,7 +244,7 @@ However, if two apps are signed with the same certificate and explicitly share t
 	android:sharedUserId="android.uid.nfc">
 ```
 
-The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android Apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
+The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
 #### App Components
 
@@ -582,12 +586,12 @@ Messages sent by the remote process via the messenger are delivered to the local
 
 -- TODO [Numbering and cleanup of references] -
 
-+ [Android Security](https://source.android.com/security/)
-+ [Android Developer: App Components](https://developer.android.com/guide/components/index.html)
-+ [HAL](https://source.android.com/devices/)
-+ "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
-+ [AProgrammer Blog](https://pierrchen.blogspot.com.br)
-+ [keesj Android internals](https://github.com/keesj/gomo)
-+ [Android Versions] (https://en.wikipedia.org/wiki/Android_version_history)
-+ "Professional Android 4 Application Development" by Reto MEIER
-- [9] APK Signing - https://source.android.com/security/apksigning/
+* [1] Android Security - https://source.android.com/security/
+* [2] Android Developer: App Components - https://developer.android.com/guide/components/index.html
+* [3] HAL - https://source.android.com/devices/
+* [4] "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
+* [5] A Programmer Blog - https://pierrchen.blogspot.com.br
+* [6] keesj Android internals - https://github.com/keesj/gomo
+* [7] Android Versions - https://en.wikipedia.org/wiki/Android_version_history
+* [8] "Professional Android 4 Application Development" by Reto Meier
+* [9] APK Signing - https://source.android.com/security/apksigning/
