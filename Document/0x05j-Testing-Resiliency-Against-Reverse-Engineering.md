@@ -941,33 +941,55 @@ In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) an
 
 #### Static Analysis
 When the source-code is available, then there are a few codes you can look for, such as:
-- The presence of unique identifiers that no longer work in the future (TODO: ADD LIST HERE)
-- The presence of using the ANDROID_ID only as an identifier. (TODO: ADD DETAILS!)
-- The absence of both InstanceID, the `Build.SERIAL` and the IMEI (TODO: FIX THIS!)
+- The presence of unique identifiers that no longer work in the future
+  - `Build.SERIAL` without the presence of `Build.getSerial()`
+  - `htc.camera.sensor.front_SN` for HTC devices
+  - `persist.service.bdroid.bdadd`
+  - `Settings.Secure.bluetooth_address`, unless the system permission LOCAL_MAC_ADDRESS is enabled in the manifest.
 
-Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the ANDROID_ID, the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+- The presence of using the ANDROID_ID only as an identifier. This will influence the possible binding quality over time given older devices.
+- The absence of both InstanceID, the `Build.SERIAL` and the IMEI.
+
+```java
+  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+  String IMEI = tm.getDeviceId();
+```
+
+
+Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
 #### Dynamic Analysis
 There are a few ways to test the application binding:
 ##### Dynamic Analysis using an Emulator
 1. Run the application on an Emulator
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
-3. Retrieve the data from the Emulator (TODO: DESCRIBE HERE!)
+3. Retrieve the data from the Emulator This has a few steps:
+- ssh to your simulator using adb shell
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- chmod 777 the contents of cache and shared-preferences
+- exit the current user
+- copy the contents of /dat/data/<your appid>/cache & shared-preferences to the sdcard
+- use ADB or the DDMS to pull the contents
 4. Install the application on another Emulator
-5. Overwrite the data from step 3 in the data folder of the application. TODO: DESCRIBE HERE!
+5. Overwrite the data from step 3 in the data folder of the application.
+- copy the contents of step 3 to the sdcard of the second emulator.
+- ssh to your simulator using adb shell
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- chmod 777 the folders cache and shared-preferences
+- copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
 ##### Dynamic Analysis using two different rooted devices.
 1. Run the applciation on your rooted device
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
-3. Retrieve the data from the first rooted device (TODO: DESCRIBE HERE!)
+3. Retrieve the data from the first rooted device
 4. Install the application on the second rooted device
-5. Overwrite the data from step 3 in the data folder of the application. TODO: DESCRIBE HERE!
+5. Overwrite the data from step 3 in the data folder of the application.
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
 
 #### Remediation
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
+Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
 Before we describe the usubale identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
 - augment the credentias used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
@@ -1080,9 +1102,10 @@ Retrieving the IMEI in Android works as follows:
 ```
 
 ##### SSAID
-Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general.
-
-HVG: PERMISSION EN DERGELIJKE EVEN TESTEN EN DAN UITSCHRIJVEN!!
+Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general. you can retrieve the SSAID as follows:
+```java
+  String SSAID = Settings.Secure.ANDROID_ID;
+```
 
 #### References
 
