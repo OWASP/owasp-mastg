@@ -1115,8 +1115,7 @@ Please note that Google recommends against using these identifiers unless there 
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" below + description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 
 ##### CWE
 
@@ -1124,14 +1123,15 @@ Please note that Google recommends against using these identifiers unless there 
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Changes in the Android device identifiers - https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html
+- [2] Developer Android documentation - https://developer.android.com/training/articles/user-data-ids.html
+- [3] Documentation on requesting runtime permissions - https://developer.android.com/training/permissions/requesting.html
+- [4] Firebase InstanceID documentation - https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId
+- [5] Google InstanceID documentation - https://developers.google.com/instance-id/
 
 ##### Tools
-
--- TODO [Add link to tools for "Testing Device Binding"] --
-* Enjarify - https://github.com/google/enjarify
+* ADB & DDMS
+* Android Emulator or 2 rooted devices.
 
 ### Testing Obfuscation
 
