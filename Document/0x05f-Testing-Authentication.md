@@ -13,9 +13,10 @@ When source code is available, first locate all sections with sensitive and priv
 
 #### Dynamic Analysis
 
-The easiest way to check authentication on an App is to try to browse the app and access privileged sections. When this cannot be done manually, an automated crawler can be used (for instance, try to start an Activity that contains sensitive information with Drozer without providing authentication elements). 
+The easiest way to check authentication on an App is to try to browse the app and access privileged sections. When this cannot be done manually, an automated crawler can be used (for instance, try to start an Activity that contains sensitive information with Drozer without providing authentication elements; for further information, please refer to the official Drozer guide available at https://labs.mwrinfosecurity.com/tools/drozer/). 
 
-Sometimes, an intercepting proxy can be used to capture network traffic while being authenticated. Then, log out and try to replay requests while removing authentication information or not.
+In case the app is exchanging information with a backend server, an intercepting proxy can be used to capture network traffic while being authenticated. Then, log out and try to replay requests while removing authentication information or not.
+Further attacks methods can be found in the OWASP Testing Guide V4 concerning web-based applications (cf link in the Info section).
 
 #### Remediation
 
@@ -40,6 +41,7 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 ##### Info
 
+* OWASP Testing Guide V4 (web-based applications) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
 
 ##### Tools
 
