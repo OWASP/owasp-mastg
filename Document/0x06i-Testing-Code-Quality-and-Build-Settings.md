@@ -125,8 +125,8 @@ Not applicable.
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
-
--- TODO [Give an overview about the functionality "Testing for Debugging Code and Verbose Error Logging" and it's potential weaknesses] --
+Developers often include debugging code, such as verbose logging statements about responses from their APIs, about the progress and/or state of their application in order to speed up verification and get a better understand on errors.
+This information can easily be used by the reverse-engineer to track back what is happening with the application. Therefore, the debugging code should be removed from the release version of the application.
 
 #### Static Analysis
 
