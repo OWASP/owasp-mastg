@@ -67,13 +67,13 @@ if(error==nil){
 
 ##### Checking Protocol Handlers
 
-Attempting to open a Cydia URL. The Cydia app store, which is installed by default by practically every jailbreaking tool, installs the cydia:// protocol handler. 
+Attempting to open a Cydia URL. The Cydia app store, which is installed by default by practically every jailbreaking tool, installs the cydia:// protocol handler.
 
 ~~~
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ~~~
 
-##### Calling System APIs 
+##### Calling System APIs
 
 -- TODO [Fork-based check] --
 
@@ -96,14 +96,14 @@ Once you start the application, which has jailbreak detection enabled on a jailb
 
 In the first case, it's worth checking if the application is fully functional on non-jailbroken device. It might be that the application is in reality crashing or has a bug that causes exiting. This might happen when you're testing a preproduction version of the application.
 
-Let's look on how to bypass jailbreak detection using once again Damn Vulnerable iOS application as an example. 
+Let's look on how to bypass jailbreak detection using once again Damn Vulnerable iOS application as an example.
 After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar). Then we can look for 'jail' string in the search box. We see two different classes, which are `SFAntiPiracy` and `JailbreakDetectionVC`.
 You might also want to decompile the functions to see what they are doing and especially what do they return.
 
 ![Disassembling with Hopper](Images/Chapters/0x06b/HopperDisassembling.png "Disassembling with Hopper")
 ![Decompiling with Hopper](Images/Chapters/0x06b/HopperDecompile.png "Decompiling with Hopper")
 
-As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated. 
+As you can see, there is a class method `+[SFAntiPiracy isTheDeviceJailbroken]` and instance method `-[JailbreakDetectionVC isJailbroken]`. The main difference for us is that we can inject cycript and call class method directly, whereas when it comes to instance method, we must first look for instances of target class. The function `choose` will look for the memory heap for known signature of a given class and return an array of instances that were found. It's important to put an application into a desired state, so that the class is indeed instantiated.
 
 Let's inject cycript into our process (look for your PID with `top`):
 
@@ -113,7 +113,7 @@ cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
 ```
 
-As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class. 
+As you can see our class method was called directly and returned true. Now, let's call `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call `choose` function to look for instances of `JailbreakDetectionVC` class.
 
 ```
 cy# a=choose(JailbreakDetectionVC)
@@ -131,7 +131,7 @@ True
 
 ![The device is jailbroken](Images/Chapters/0x06j/deviceISjailbroken.png "The device is jailbroken")
 
-Hence you now understand why it's important to have your application in a desired state. 
+Hence you now understand why it's important to have your application in a desired state.
 Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing function implementation with cycript. Please note that this will actually replace function under given name, so beware of side effects in case if the function modifies anything in the application:
 
 ```
@@ -181,9 +181,9 @@ Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
 Changing the return value to:0x0
  22475 ms  -[JailbreakDetectionVC isJailbroken]
  ```
- 
+
 Please note that there were two calls to `-[JailbreakDetectionVC isJailbroken]`, which corresponds to two physical taps on the app GUI.
- 
+
 Frida is a very powerful and versatile tool. Refer to the documentation [3] to get more details.
 
 -- TODO [a generic Frida script that catches many JB detection methods] --
@@ -406,32 +406,32 @@ void disable_ptrace() {
     int                 mib[4];
     struct kinfo_proc   info;
     size_t              size;
-    
+
     info.kp_proc.p_flag = 0;
-    
+
     // Initialize mib, which tells sysctl the info we want, in this case
     // we're looking for information about a specific process ID.
-    
+
     mib[0] = CTL_KERN;
     mib[1] = KERN_PROC;
     mib[2] = KERN_PROC_PID;
     mib[3] = getpid();
-    
+
 
     while(1) {
-     
+
         size = sizeof(info);
         junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
         assert(junk == 0);
 
         // We're being debugged if the P_TRACED flag is set.
-        
+
         if ((info.kp_proc.p_flag & P_TRACED) != 0) {
             exit(0);
         }
-        
+
         sleep(1);
-        
+
     }
 }
 ~~~
@@ -518,7 +518,7 @@ int xyz(char *dst) {
     }
 
     while(1) {
-    
+
         header = dlinfo.dli_fbase;  // Pointer on the Mach-O header
         struct load_command * cmd = (struct load_command *)(header + 1); // First load command
         // Now iterate through load command
@@ -550,16 +550,16 @@ int xyz(char *dst) {
                     CC_MD5(textSectionPtr, textSectionSize, digest);     // calculate the signature
                     for (int i = 0; i < sizeof(digest); i++)             // fill signature
                         sprintf(dst + (2 * i), "%02x", digest[i]);
-                
+
                     // return strcmp(originalSignature, signature) == 0;    // verify signatures match
-                    
+
                     return 0;
                 }
             }
             cmd = (struct load_command *)((uint8_t *)cmd + cmd->cmdsize);
         }
     }
-    
+
 }
 ```
 
@@ -732,6 +732,8 @@ Example code from the Netitude blog <code>[2]</code>.
 
 #### Overview
 
+The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+
 -- TODO [Provide a general description of the issue "Testing Device Binding".] --
 
 #### Static Analysis
@@ -835,5 +837,3 @@ Example code from the Netitude blog <code>[2]</code>.
 
 -- TODO [Add relevant tools for "Testing Obfuscation"] --
 * Enjarify - https://github.com/google/enjarify
-
-
