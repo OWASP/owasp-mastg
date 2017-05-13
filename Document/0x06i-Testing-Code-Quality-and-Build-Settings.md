@@ -144,7 +144,7 @@ Whereas in Swift this has changed: there you need to set either environment-vari
 
 Please note that there are more logging functions, depending on the setup of the application, for instance, when  CocoaLumberjack is used (https://github.com/CocoaLumberjack/CocoaLumberjack), then the static analysis is a bit different.
 
-On the "debug-management" code which is built in: inspect the storyboards to see if there are any flows and/or viewcontrollers that provide different functionality than the ones that should be supported by the application.
+On the "debug-management" code which is built in: inspect the storyboards to see if there are any flows and/or view-controllers that provide different functionality than the ones that should be supported by the application.
 --TODO: reviewer: should we go in depth on different patterns one can find on this subject? --
 
 #### Dynamic Analysis
@@ -155,8 +155,31 @@ The dynamic analysis should be executed on both a simulator as well as a device,
 For the other "manager-based" debug code: click through the application on both a simulator and device and see if you can find any functionality which allows for pre-setting profiles for an app, for selecting the actual server, for selecting possible responses from the API, et cetera.
 
 #### Remediation
+As a developer, it should not be a problem to incorporate debug statements in your debug version of the application as long as you realize that the statements made for debugging should never:
+- have impact on the actual computational results in such a way that the code should be present in the release version of the application;
+- end up in the release-configuration of the application.
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
+In Objective-C, developers can use pre-processor macro's to filter out debug code:
+```objc
+#ifdef DEBUG
+    // Debug-only code
+#endif
+```
+In Swift 2, using xCode 7, one has to set custom compiler flags for every target, where the compiler flag has to start with -D. So, when the debug flag -DMSTG-DEBUG is set, you can use the following annotations:
+
+```swift
+#if MSTG-DEBUG
+    // Debug-only code
+#endif
+```
+
+In swift 3, using xCode 8, one can set Active Compilation Conditions setting in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of conditional compilation blocks based on the conditions defined:
+
+```swift3
+#if DEBUG_LOGGING
+    // Debug-only code
+#endif
+```
 
 #### References
 
@@ -171,6 +194,7 @@ For the other "manager-based" debug code: click through the application on both 
 
 ##### Info
 - [1] CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack]
+- [2] Swift conditional compilation blocks - [https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34]
 
 ##### Tools
 - XCode & simulator
@@ -186,9 +210,9 @@ For the other "manager-based" debug code: click through the application on both 
 
 #### Static Analysis
 
-Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invokation, etc). Here are some examples of the checks to be performed at this stage :
+Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage :
 
-- Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (an unified) scheme to handle exceptions.
+- Verify that the application use a [well-designed] (https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (and unified) scheme to handle exceptions.
 - Verify that the application doesn't expose sensitive information while handling exceptions, but are still verbose enough to explain the issue to the user.
 
 #### Dynamic Testing
