@@ -2,6 +2,8 @@
 
 This chapter is going to introduce Android on the architecture point of view and will provide the reader with detailed information on it's security mechanisms. Then, it will describe the structure of an Android application and will emphasize on the Inter Process Communication (IPC) mechanisms. Last, the way Android applications are published is explained to the reader.
 
+The reader is invited to have a look at the official Android developer documentation<sup>[13]</sup> for more details on the Android platform. Even if numerous examples are given in this section, in no way this guide should be considered as the only reference on the topic.
+
 ### Android Architecture and Security Mechanisms
 
 Android is an open source platform that can be found nowadays on many devices:
@@ -46,6 +48,8 @@ File below depicts some of the users defined for Android Nougat:
 ### Understanding Android Apps
 
 #### Communication with the Operating System
+
+The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
 In Android, apps are developed in Java, and the Operating System offers an API to interact with system resources, like
 * connectivity (Wifi, Bluetooth, NFC, ...),
@@ -215,7 +219,7 @@ An important element to understand Android security is that all apps have the sa
 
 ##### Zygote
 
-When booting Android, a process called `Zygote` starts up at init<sup>[]</sup>. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When a new app starts on Android the Zygote process is forked and the app specific code is loaded and executed.
+When booting Android, a process called `Zygote` starts up at init<sup>[10]</sup>. This is a system service and is used to launch apps. Zygote opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When the socket receives a request a new app starts on Android by forking the Zygote process and the app specific code is loaded and executed.
 
 #### The App Sandbox
 
@@ -244,7 +248,6 @@ However, if two apps are signed with the same certificate and explicitly share t
 	android:sharedUserId="android.uid.nfc">
 ```
 
-The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
 
 #### App Components
 
@@ -254,13 +257,13 @@ Android apps are made of several high-level components that make up their archit
 
 Android apps have their own lifecycles, that is under the control of the operating system. Therefore, apps need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but not in use since a significant time).
 
-Apps implement several event managers to handle events: for example, the onCreate handler implements what is to be done on app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
+Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
 ##### Manifest
 
-Every app must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
+Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A Manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and the rights required by the app (required permissions are listed, and filters can be implemented to refine the way the app will interact with the outside world). It also contains general metadata about the app, like its icon, its version number and the theme is uses for User Experience (UX). It may also list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of memory is can be installed in (external or internal).
+A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and lists down the permissions it's requesting for. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. It also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may also list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of storage it can be installed in (external or internal)<sup>[14]</sup>.
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used), the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters, and the description of the app itself with its activities:
 ```
@@ -298,13 +301,11 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-Manifests are text files and can be edited with any text editor. However, Android Studio, Google prefered IDE for Android development, embeds a graphical editor.
-
-A lot more useful options can be added to manifest files. The reader is invited to refer to Android official documentation available at https://developer.android.com/index.html for more details: even if numerous examples are given in this section, in no way this guide should be considered as a reference on the topic.
+A manifest is a text file and can be edited within Android Studio, the preferred IDE for Android development. A lot more useful options can be added to manifest files, which are listed down in the official Android documentation<sup>[12]</sup>.
 
 ##### Activities
 
-Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app: for instance, apps that have 3 different screens implement 3 different activities, where the user can interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
+Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app. For instance, apps that have 3 different screens implement 3 different activities, that allow the user to interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
 
 Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
 
@@ -315,7 +316,7 @@ Activities implement manifest files. Each activity needs to be declared in the a
 
 When activities are not declared in manifests, they cannot be displayed and would raise an exception.
 
-In the same way as apps do, activities also have their own lifecycles and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating systems. Accordingly, activities can implement the following event managers:
+In the same way as apps do, activities also have their own lifecycle and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
 - onCreate
 - onSaveInstanceState
 - onStart
@@ -326,17 +327,18 @@ In the same way as apps do, activities also have their own lifecycles and need t
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overridden by app developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overridden by app developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
 Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of  several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons, ...); however, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
-As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to Android specification for more details.
+User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.).  However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
+As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to Android specification for more details<sup>[15]</sup>.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
-```
+
+```Java
 public class myFragment extends Fragment {
 	...
 }
@@ -344,25 +346,29 @@ public class myFragment extends Fragment {
 
 Fragments don't need to be declared in manifest files as they depend on activities.
 
-In order to manage its fragments, an Activity can use a Fragment Manager (FragmentManager class). This class makes it easy to find, add, remove and replace associated fragmens.
+In order to manage its fragments, an Activity can use a Fragment Manager (FragmentManager class). This class makes it easy to find, add, remove and replace associated fragments.
 Fragment Managers can be created simply with the following:
-```
+
+```Java
 FragmentManager fm = getFragmentManager();
 ```
 
-Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an app, for instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
+Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
 
 ##### Intents
 
 Intents are messaging components used between apps and components. They can be used by an app to send information to its own components (for instance, start inside the app a new activity) or to other apps, and may be received from other apps or from the operating system. Intents can be used to start activities or services, run an action on a given set of data, or broadcast a message to the whole system. They are a convenient way to decouple components.
 
-There are two kinds of intents : explicit and implicit.
-- explicit intents exactly name the activity class to be used. For instance:
-```
+There are two kinds of intents: explicit and implicit.
+* Explicit intents launch a specific app component, like an activity in your app. For instance:
+
+```Java
 	Intent intent = new Intent(this, myActivity.myClass);
 ```
-- implicit intents are sent to the system with a given action to perform on a given set of data ("http://www.example.com" in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
-```
+
+* Implicit intents are sent to the system with a given action to perform on a given set of data ("http://www.example.com" in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
+
+```Java
 	Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("http://www.example.com"));
 ```
 
@@ -584,8 +590,6 @@ Messages sent by the remote process via the messenger are delivered to the local
 
 ### References
 
--- TODO [Numbering and cleanup of references] -
-
 * [1] Android Security - https://source.android.com/security/
 * [2] Android Developer: App Components - https://developer.android.com/guide/components/index.html
 * [3] HAL - https://source.android.com/devices/
@@ -595,3 +599,9 @@ Messages sent by the remote process via the messenger are delivered to the local
 * [7] Android Versions - https://en.wikipedia.org/wiki/Android_version_history
 * [8] "Professional Android 4 Application Development" by Reto Meier
 * [9] APK Signing - https://source.android.com/security/apksigning/
+* [10] How Android Apps are run - https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run
+* [11] Zygote - https://serializethoughts.com/2016/04/15/android-zygote/
+* [12] Android Developer Guide for Manifest -  https://developer.android.com/guide/topics/manifest/manifest-intro.html
+* [13] Android Developer Guide - https://developer.android.com/index.html
+* [14] Define app install location - https://developer.android.com/guide/topics/data/install-location.html
+* [15] Fragment Class - https://developer.android.com/reference/android/app/Fragment.html
