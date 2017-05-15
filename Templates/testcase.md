@@ -10,9 +10,6 @@
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
-
-##### Without Source Code
 
 #### Dynamic Analysis
 

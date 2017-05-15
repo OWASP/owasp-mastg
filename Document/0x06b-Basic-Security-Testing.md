@@ -73,13 +73,27 @@ $ sudo pip install frida
 
 #### SSH Connection via USB
 
--- TODO [Add content on usbmuxd/tcprelay] --
+-- TODO [Improve writeup on usbmusx] --
+
+<code>usbmuxd</code> <sup>[18]</sup> is a socket daemon for multiplexing connections over USB to iOS devices. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. 
+
+On MacOS:
+
+```
+$ brew install libimobiledevice
+$ iproxy 2222 22
+$ ssh -p 2222 root@localhost
+iPhone:~ root# 
+```
+
+Python client:
 
 ```bash
 $ ./tcprelay.py -t 22:2222
 $ ssh -p 2222 root@localhost
 iPhone:~ root# 
 ```
+See also iphonedevwiki <sup>[24]</sup>.
 
 ### Typical iOS Application Test Workflow
 
@@ -515,3 +529,4 @@ To get more information on testing transport security, please refer to section '
 * [21] iOS Application Security - David Thiel
 * [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 * [23] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
+* [24] iphonedevwiki - SSH over USB - http://iphonedevwiki.net/index.php/SSH_Over_USB

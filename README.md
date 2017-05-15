@@ -8,9 +8,9 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 The MSTG hasn't been officially released yet. There are several options for converting it into an easily readable format:
 
-1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use Gitbook to generate PDF, epub, and other e-book formats.
+1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
 
-2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
+2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git LFS extension](https://git-lfs.github.com) must be installed to download larger files such as crackme installers.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
@@ -48,7 +48,7 @@ If you are willing to write a large portion of the guide and help consistently d
 
 ## High-Level Structure
 
-The following lists contain the individual sections of the MST. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
+The following lists contain the individual sections of the MSTG. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
 
 ### Introductionary
 
@@ -64,28 +64,28 @@ The following lists contain the individual sections of the MST. For a detailed l
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
-- [Basic Security Testing on Android](Document/0x05b-Basic-Security_Testing.md)
-- [Tampering and Reverse Engineering on Android](Document/0x05c-Reverse-Engineering-and-Tampering.md)
+- [Android Security Testing Basics](Document/0x05b-Basic-Security_Testing.md)
 - [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x05e-Testing-Cryptography.md)
 - [Testing Authentication and Session Management](Document/0x05f-Testing-Authentication.md)
 - [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md)
 - [Testing Platform Interaction](Document/0x05h-Testing-Platform-Interaction.md)
 - [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md)
-- [Testing Resiliency Against Reverse Engineering](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
+- [Tampering and Reverse Engineering on Android](Document/0x05c-Reverse-Engineering-and-Tampering.md)
+- [Testing Anti-Reversing Defenses](Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ### iOS Testing Guide
 
 - [Platform Overview](Document/0x06a-Platform-Overview.md)
-- [Basic Security Testing on iOS](Document/0x06b-Basic-Security-Testing.md)
-- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)
+- [iOS Security Testing Basics](Document/0x06b-Basic-Security-Testing.md)
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x06e-Testing-Cryptography.md)
 - [Testing Authentication and Session Management](Document/0x06f-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md)
 - [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md)
 - [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md)
-- [Testing Resiliency Against Reverse Engineering](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
+- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)
+- [Testing Anti-Reversing Defenses](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ### Appendix
 
