@@ -22,9 +22,32 @@ In addition to the SDK and NDK, you'll also something to make Java bytecode more
 
 Other than that, it's really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist - we'll cover some of them below.
 
-#### Setting up the Android SDK and NDK
+#### Setting up the Android SDK
 
--- TODO [Setup instructions for SDK and NDK] --
+Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
+
+- API 21: Android 5.0 and 5.1
+- API 23: Android 6.0
+- API 24: Android 7.0 through 7.1.1
+- API 26: Android O Developer Preview 
+
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>
+
+Depending on your OS, installed SDKs are found at the following location:
+
+```
+Windows:
+
+C:\Users\<username>\AppData\Local\Android\sdk
+
+MacOS:
+
+/Users/<username>/Library/Android/sdk
+```
+
+Note: On Linux, you'll need pick your own SDK location. Common locations are <code>/opt</code>, <code>/srv</code>, and <code>/usr/local</code>.
+
+#### Setting up the Android NDK
 
 The Android NDK contains prebuilt versions of the native compiler and toolchain. Traditionally, both the GCC and Clang compilers were supported, but active support for GCC ended with revision 14 of the NDK. What's the right version to use depends on both the device architecture and host OS. The prebuilt toolchains are located in the <code>toolchains</code>directory of the NDK, which contains one subdirectory per architecture.
 
@@ -37,16 +60,22 @@ The Android NDK contains prebuilt versions of the native compiler and toolchain.
 |X86-64-based|x86_64-&lt;gcc-version&gt;|
 |MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
 
-In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under $NDK/platforms/, each API-level directory contains subdirectories for the various CPUs and architectures. Recent API levels include [X]:
+In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under <code>$NDK/platforms/</code>, each API-level directory contains subdirectories for the various CPUs and architectures. 
 
-- API 21: Android 5.0 and 5.1
-- API 23: Android 6.0
-- API 24: Android 7.0 through 7.1.1
-- API 26: Android O Developer Preview
+One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings.
 
-One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings. 
+To set up a standalone toolchain, download the latest stable version of the NDK. Extract the ZIP file, change into the NDK root directory and run the following command:
 
--- TODO [Setting up a standalone NDK] --
+
+```bash
+$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
+```
+
+This creates a standalone toolchain for Android 7.0 in the directory <code>/tmp/android-7-toolchain</code>. For convenience, you can export an environment variable that points to your toolchain directory - we'll be using this in the examples later.
+
+```bash
+$  export TOOLCHAIN=/tmp/android-7-toolchain
+```
 
 ### Building a Reverse Engineering Environment For Free
 
@@ -74,7 +103,7 @@ IDA Pro <sup>[13]</sup> understands ARM, MIPS and of course Intel ELF binaries, 
 
 ### Reverse Engineering
 
-Preparation: To follow the examples, you need a Linux or MacOS box. Install Android Studio and the Android SDK. 
+-- TODO [General description of reverse engineering] --
 
 #### Statically Analyzing Java Code
 
@@ -1953,3 +1982,4 @@ File hiding is of course only the tip of the iceberg: You can accomplish a whole
 - [X] Hacking Soft Tokens
 - [X] Phrack -
 - [X] Android Developer - Native APIs: https://developer.android.com/ndk/guides/stable_apis.html
+- [X] NDK Downloads - https://developer.android.com/ndk/downloads/index.html#stable-downloads
