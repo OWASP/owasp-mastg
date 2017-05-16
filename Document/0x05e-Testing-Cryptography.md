@@ -216,7 +216,7 @@ Example initialization of DES algorithm, that is considered weak:
 ```Java
 Cipher cipher = Cipher.getInstance("DES");
 ```
-##### block cipher encryption modes
+##### Block cipher encryption modes
 Do not use ECB encryption mode, it is basically raw cipher. For each block of input, you encrypt that block and get some output. The problem with this transform is that any resident properties of the plaintext might well show up in the ciphertext – possibly not as clearly – that's what blocks and key schedules are supposed to protect againt, but analyzing the patterns you may be able to deduce properties that you otherwise thought were hidden.
 
 <p align="center">
