@@ -71,7 +71,7 @@ To set up a standalone toolchain, download the latest stable version of the NDK.
 $ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
 ```
 
-This creates a standalone toolchain for Android 7.0 in the directory <code>/tmp/android-7-toolchain</code>. For convenience, you can export an environment variable that points to your toolchain directory - we'll be using this in the examples later.
+This creates a standalone toolchain for Android 7.0 in the directory <code>/tmp/android-7-toolchain</code>. For convenience, you can export an environment variable that points to your toolchain directory - we'll be using this in the examples later. Run the following command, or add it to your <code>.bash_profile</code> or other startup script.
 
 ```bash
 $  export TOOLCHAIN=/tmp/android-7-toolchain
@@ -649,21 +649,21 @@ $ ps | grep helloworld
 u0_a164   12690 201   1533400 51692 ffffffff 00000000 S sg.vantagepoint.helloworldjni
 $ su
 # /data/local/tmp/gdbserver --attach localhost:1234 12690
-Attached; pid = 14342
+Attached; pid = 12690
 Listening on port 1234
 ```
 
 The process is now suspended, and <code>gdbserver</code> listening for debugging clients on port <code>1234</code>. With the device connected via USB, you can forward this port to a local port on the host using the <code>abd forward</code> command:
 
-
 ```bash
 $ adb forward tcp:1234 tcp:1234
 ```
 
+We'll now use the prebuilt version of <code>gdb</code> contained in the NDK toolchain (if you haven't already, follow the instructions above to install it). 
 
 ```
-$ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
-GNU gdb (GDB) 7.7
+$ $TOOLCHAIN/bin/gdb libnative-lib.so
+GNU gdb (GDB) 7.11
 (...)
 Reading symbols from libnative-lib.so...(no debugging symbols found)...done.
 (gdb) target remote :1234
@@ -671,19 +671,12 @@ Remote debugging using :1234
 0xb6e0f124 in ?? ()
 ```
 
-The problem: At this point it's already too late! The function has already run...
+We have successfully attached to the process! The only problem is that at this point, we're already too late to debug the JNI function <code>StringFromJNI()</code> as it only runs once at startup. We can again solve this problem by activating the "Wait for Debugger" option. Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI, then activate the "Wait for debugger" switch. Then, terminate and re-launch the app. It should be suspended automatically. 
 
+Execute <code>gdbserver</code> to attach to the suspended app. This will have the effect that the app is "double-suspended" by both the Java VM and the Linux kernel. Run the <code>cont</code> command on the gdb commandline to resume native execution. You'll notice that the app still doesn't resume - it is still waiting for a JDWP debugger to attach.
 
-```bash
-$ adb shell
-android $ su
-android # /data/local/tmp/gdbserver --attach localhost:1234 14342
+Now it's time to resume execution of the Java VM. 
 
-
-Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI.  Activate the "Wait for debugger" switch.
-
-
-Launch the app
 
 ```bash
 $ adb jdwp
