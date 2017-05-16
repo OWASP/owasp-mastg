@@ -144,8 +144,6 @@ Only permissions that are needed within the app should be requested in the Andro
 * AAPT - http://elinux.org/Android_aapt
 * Drozer - https://github.com/mwrlabs/drozer
 
-
-
 ### Testing Input Validation and Sanitization
 
 #### Overview
