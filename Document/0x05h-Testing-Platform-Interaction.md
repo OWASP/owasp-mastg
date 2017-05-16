@@ -109,11 +109,10 @@ Package: com.android.mms.service
   - None
 ```
 
-When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a "normal" or "dangerous" permission, Drozer can be rebuilt to contain the required permission:
+When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt to contain the required permission:
 
 ```
-drozer agent build  --permission android.permission.REQUIRED_PERMISSION
-
+$ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
 Note that this method cannot be used for "Signature" level permissions as Drozer would need to be signed by the same certificate as the target application.
@@ -122,8 +121,7 @@ Note that this method cannot be used for "Signature" level permissions as Drozer
 
 Developers should take care to protect sensitive IPC components with the "signature" permission level, which will only allow applications signed with the same certificate to access the component.
 
-Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed.
-
+Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed. 
 
 #### References
 
