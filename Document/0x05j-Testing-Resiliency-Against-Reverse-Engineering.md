@@ -806,7 +806,7 @@ boolean is_frida_server_listening() {
 }   
 ```
 
-Again, this detects fridaserver in its default mode, but the listening port can be changed easily via command line argument, so bypassing this is a little bit too trivial. The situation can be improved by pulling an nmap -sV. fridaserver uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping for fridaserver to reveal itself. 
+Again, this detects fridaserver in its default mode, but the listening port can be changed easily via command line argument, so bypassing this is a little bit too trivial. The situation can be improved by pulling an nmap -sV. fridaserver uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping for fridaserver to reveal itself.
 
 ```c
 /*
@@ -839,7 +839,7 @@ for(i = 0 ; i <= 65535 ; i++) {
         }
     }
     close(sock);
-} 
+}
 ```
 
 We now have a pretty robust method of detecting fridaserver, but there's still some glaring issues. Most importantly, frida offers alternative modes of operations that don't require fridaserver! How do we detect those?
@@ -869,7 +869,7 @@ if (fp) {
 
 This detects any libraries containing "frida" in the name. On its surface this works, but there's some major issues:
 
-- Remember how it wasn't a good idea to rely on fridaserver being called fridaserver? The same applies here - with some small modifications to frida, the frida agent libraries could simply be renamed. 
+- Remember how it wasn't a good idea to rely on fridaserver being called fridaserver? The same applies here - with some small modifications to frida, the frida agent libraries could simply be renamed.
 - Detection relies on standard library calls such as fopen() and strstr(). Essentially, we're attempting to detect frida using functions that can be easily hooked with - you guessed it - frida. Obviously this isn't a very solid strategy.
 
 Issue number one can be addressed by implementing a classic-virus-scanner-like strategy, scanning memory for the presence of "gadgets" found in frida's libraries. I chose the string "LIBFRIDA" which appears to be present in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in /proc/self/maps, and search for the string in every executable section. Note that I ommitted the more boring functions for the sake of brevity, but you can find them on GitHub.
@@ -1144,8 +1144,8 @@ There are a few ways to test the application binding:
 1. Run the application on an Emulator
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the Emulator This has a few steps:
-- ssh to your simulator using adb shell
-- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- ssh to your simulator using ADB shell
+- run-as <your app-id (which is the package as described in the AndroidManifest.xml)>
 - chmod 777 the contents of cache and shared-preferences
 - exit the current user
 - copy the contents of /dat/data/<your appid>/cache & shared-preferences to the sdcard
@@ -1153,7 +1153,7 @@ There are a few ways to test the application binding:
 4. Install the application on another Emulator
 5. Overwrite the data from step 3 in the data folder of the application.
 - copy the contents of step 3 to the sdcard of the second emulator.
-- ssh to your simulator using adb shell
+- ssh to your simulator using ADB shell
 - run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
 - chmod 777 the folders cache and shared-preferences
 - copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
@@ -1161,7 +1161,7 @@ There are a few ways to test the application binding:
 
 ##### Dynamic Analysis using two different rooted devices.
 
-1. Run the applciation on your rooted device
+1. Run the application on your rooted device
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the first rooted device
 4. Install the application on the second rooted device
@@ -1172,8 +1172,8 @@ There are a few ways to test the application binding:
 
 Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usubale identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
-- augment the credentias used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
+- augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
 - obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
 - Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
 
