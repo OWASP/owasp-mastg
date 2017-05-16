@@ -119,7 +119,7 @@ Note that this method cannot be used for "Signature" level permissions as Drozer
 
 #### Remediation
 
-Developers should take care to protect sensitive IPC components with the "signature" permission level, which will only allow applications signed with the same certificate to access the component.
+Developers should take care to secure sensitive IPC components with the `signature` protection level, which will only allow applications signed with the same certificate to access the component.
 
 Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed. 
 
