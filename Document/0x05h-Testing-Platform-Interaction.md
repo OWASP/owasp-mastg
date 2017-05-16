@@ -83,7 +83,7 @@ throw new SecurityException();
 
 #### Dynamic Analysis
 
-Permissions of applications installed on a device can be retrieved using the Android security assessment framework [Drozer](https://github.com/mwrlabs/drozer). The following extract demonstrates how to examine the permissions used by an application, in addition to the the custom permissions defined by the app:
+Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the the custom permissions defined by the app:
 
 ```bash
 dz> run app.package.info  -a com.android.mms.service
@@ -115,7 +115,7 @@ When Android applications expose IPC components to other applications, they can 
 $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
-Note that this method cannot be used for "Signature" level permissions as Drozer would need to be signed by the same certificate as the target application.
+Note that this method cannot be used for `signature` level permissions, as Drozer would need to be signed by the same certificate as the target application.
 
 #### Remediation
 
@@ -142,6 +142,7 @@ Only permissions that are needed within the app should be requested in the Andro
 
 ##### Tools
 * AAPT - http://elinux.org/Android_aapt
+* Drozer - https://github.com/mwrlabs/drozer
 
 
 
