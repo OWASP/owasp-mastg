@@ -82,9 +82,46 @@ throw new SecurityException();
 ```
 
 #### Dynamic Analysis
-Dynamic analysis is not applicable and a solid statement and result for this test case can only be done after reviewing the Android Manifest. See "Static Analysis" for details.
+
+Permissions of applications installed on a device can be retrieved using the Android security assessment framework [Drozer](https://github.com/mwrlabs/drozer). The following extract demonstrates how to examine the permissions used by an application, in addition to the the custom permissions defined by the app:
+
+```bash
+dz> run app.package.info  -a com.android.mms.service
+Package: com.android.mms.service
+  Application Label: MmsService
+  Process Name: com.android.phone
+  Version: 6.0.1
+  Data Directory: /data/user/0/com.android.mms.service
+  APK Path: /system/priv-app/MmsService/MmsService.apk
+  UID: 1001
+  GID: [2001, 3002, 3003, 3001]
+  Shared Libraries: null
+  Shared User ID: android.uid.phone
+  Uses Permissions:
+  - android.permission.RECEIVE_BOOT_COMPLETED
+  - android.permission.READ_SMS
+  - android.permission.WRITE_SMS
+  - android.permission.BROADCAST_WAP_PUSH
+  - android.permission.BIND_CARRIER_SERVICES
+  - android.permission.BIND_CARRIER_MESSAGING_SERVICE
+  - android.permission.INTERACT_ACROSS_USERS
+  Defines Permissions:
+  - None
+```
+
+When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a "normal" or "dangerous" permission, Drozer can be rebuilt to contain the required permission:
+
+```
+drozer agent build  --permission android.permission.REQUIRED_PERMISSION
+
+```
+
+Note that this method cannot be used for "Signature" level permissions as Drozer would need to be signed by the same certificate as the target application.
 
 #### Remediation
+
+Developers should take care to protect sensitive IPC components with the "signature" permission level, which will only allow applications signed with the same certificate to access the component.
+
 Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed.
 
 
