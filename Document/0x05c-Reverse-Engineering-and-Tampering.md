@@ -671,18 +671,21 @@ Remote debugging using :1234
 0xb6e0f124 in ?? ()
 ```
 
-We have successfully attached to the process! The only problem is that at this point, we're already too late to debug the JNI function <code>StringFromJNI()</code> as it only runs once at startup. We can again solve this problem by activating the "Wait for Debugger" option. Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI, then activate the "Wait for debugger" switch. Then, terminate and re-launch the app. It should be suspended automatically. 
+We have successfully attached to the process! The only problem is that at this point, we're already too late to debug the JNI function <code>StringFromJNI()</code> as it only runs once at startup. We can again solve this problem by activating the "Wait for Debugger" option. Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI, then activate the "Wait for debugger" switch. Then, terminate and re-launch the app. It should be suspended automatically.
 
-Execute <code>gdbserver</code> to attach to the suspended app. This will have the effect that the app is "double-suspended" by both the Java VM and the Linux kernel. Run the <code>cont</code> command on the gdb commandline to resume native execution. You'll notice that the app still doesn't resume - it is still waiting for a JDWP debugger to attach.
+Our objective is to set a  breakpoint at the start of the native function <code>Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI()<code> before resuming the app. Unfortunately, this isn't possible at this early point in execution because <code>libnative-lib.so</code> isn't yet mapped into process memory - it is loaded dynamically during runtime. To get this working, we'll first use JDB to gently control the process into the state we need.
 
-Now it's time to resume execution of the Java VM. 
-
+First, we resume execution of the Java VM by attaching JDB. We don't want the process to resume immediately though, so we pipe the <code>suspend</code> command into JDB as follows:
 
 ```bash
 $ adb jdwp
 14342
 $ adb forward tcp:7777 jdwp:14342
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
+```
+
+Next, we want to suspend the process at the point the Java runtime loads <code>libnative-lib.so</code>. In JDB, set a breakpoint on the <code>java.lang.System.loadLibrary()</code> method and resume the process. After the breakpoint has been hit, execute the <code>step up</code> command, which will resume the process until <code>loadLibrary()</code>returns. At this point, <code>libnative-lib.so</code> has been loaded.
+
 > stop in java.lang.System.loadLibrary
 > resume
 All threads resumed.
@@ -695,14 +698,7 @@ Step completed: "thread=main", sg.vantagepoint.helloworldjni.MainActivity.<clini
 main[1]
 ```
 
-At this point, the library has been loaded.
-
-
-```bash
-$ adb shell
-android $ su
-android # /data/local/tmp/gdbserver --attach localhost:1234 14342
-```
+Execute <code>gdbserver</code> to attach to the suspended app. This will have the effect that the app is "double-suspended" by both the Java VM and the Linux kernel.
 
 
 ```bash
@@ -714,6 +710,11 @@ Copyright (C) 2014 Free Software Foundation, Inc.
 (gdb) target remote :1234
 Remote debugging using :1234
 0xb6de83b8 in ?? ()
+```
+
+Execute the <code>resume</code> command in JDB to resume execution of the Java runtime (we're done using JDB, so you can also detach it at this point). You can start exploring the process with GDB. The <code>info sharedlibrary</code> command displays the loaded libraries, which should include <code>libnative-lib.so</code>. The <code>info functions</code> command retrieves a list of all known functions. The JNI function <code>java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI()</code> should be listed as a non-debugging symbol. Set a breakpoint at the address of that function and resume the process.
+
+```bash
 (gdb) info sharedlibrary
 (...)
 0xa3522e3c  0xa3523c90  Yes (*)     libnative-lib.so
@@ -725,29 +726,15 @@ Non-debugging symbols:
 (...)
 0xa3522e78  Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
 (...)
-```
-
-
-Set a breakpoint:
-
-```
 (gdb) b *0xa3522e78
 Breakpoint 1 at 0xa3522e78
 (gdb) cont
-
 ```
 
-In jdb:
+Your breakpoint should be hit when the first instruction of the JNI function is executed. You can now display a disassembly of the function using the <code>disassemble</code> command.
 
 ```
-main[1] resume
-All threads resumed.
-```
-
-In gdb:
-
-```
-Breakpoint 1, 0xa3522e78 in Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI () from libnative-lib.so
+Breakpoint 1, 0xa3522e78 in Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI() from libnative-lib.so
 (gdb) disass $pc
 Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI:
 => 0xa3522e78 <+0>: ldr r2, [r0, #0]
@@ -760,11 +747,11 @@ Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActiv
 End of assembler dump.
 ```
 
-
+From here on, you can single-step through the program, print the contents of registers and memory, or tamper with them, to explore the inner workings of the JNI function (which, in this case, simply returns a string).
 
 ##### Execution Tracing
 
-Besides being useful for debugging, the JDB command line tool also offers basic execution tracing functionality. To trace an app right from the start we can pause the app using the Android "Wait for Debugger" feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the trace go methods command and resume execution. JDB will dump all method entries and exits from that point on.
+Besides being useful for debugging, the JDB command line tool also offers basic execution tracing functionality. To trace an app right from the start we can pause the app using the Android "Wait for Debugger" feature or a kill –STOP command and attach JDB to set a deferred method breakpoint on an initialization method of our choice. Once the breakpoint hits, we activate method tracing with the <code>trace go methods</code> command and resume execution. JDB will dump all method entries and exits from that point on.
 
 ```bash
 $ adb forward tcp:7777 jdwp:7288
