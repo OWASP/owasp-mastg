@@ -577,6 +577,8 @@ private void vulnerableBroadcastFunction() {
 
 #### Dynamic Analysis
 
+##### Testing Content Providers
+
 To begin dynamic analysis of an application's content providers, you should first enumerate the attack surface. This can be achieved using the Drozer module `app.provider.info`:
 
 ```
@@ -690,6 +692,40 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 | thisismypassword | 9876 |
 ```
 
+These steps can be automated by using the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
+
+```
+dz> run scanner.provider.injection -a com.mwr.example.sieve 
+Scanning com.mwr.example.sieve... 
+Injection in Projection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+Injection in Selection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+```
+
+##### File System Based Content Providers
+
+A content provider can provide access to the underlying file system. This allows apps to share files, where the Android sandbox would otherwise prevent it. The Drozer modules `app.provider.read` and `app.provider.download` can be used to read or download files from exported file based content providers. These content providers can be susceptible to directory traversal vulnerabilities, making it possible to read otherwise protected files within the target application's sandbox.
+
+```
+dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
+Written 24488 bytes 
+```
+
+To automate the process of finding content providers susceptible to directory traversal, the `scanner.provider.traversal` module should be used:
+
+```
+dz> run scanner.provider.traversal -a com.mwr.example.sieve 
+Scanning com.mwr.example.sieve... 
+Vulnerable Providers:
+  content://com.mwr.example.sieve.FileBackupProvider/
+  content://com.mwr.example.sieve.FileBackupProvider
+```
+
 Note that `adb` can also be used to query content providers on a device:
 
 ```bash
@@ -698,10 +734,10 @@ Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
 ...
 ```
-* Vulnerable Broadcast
+
+##### Vulnerable Broadcasts
 
 To sniff intents install and run the application on a device (actual device or emulated device) and use tools like Drozer or Intent Sniffer to capture intents and broadcast messages.
-
 
 #### Remediation
 
@@ -781,8 +817,6 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 
 ##### CWE
 - CWE-200 - Information Exposure
-
-
 
 ### Testing for Sensitive Data in Backups
 
