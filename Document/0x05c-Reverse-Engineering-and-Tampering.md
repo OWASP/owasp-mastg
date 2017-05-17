@@ -673,7 +673,7 @@ Remote debugging using :1234
 
 We have successfully attached to the process! The only problem is that at this point, we're already too late to debug the JNI function <code>StringFromJNI()</code> as it only runs once at startup. We can again solve this problem by activating the "Wait for Debugger" option. Go to "Developer Options" -> "Select debug app" and pick HelloWorldJNI, then activate the "Wait for debugger" switch. Then, terminate and re-launch the app. It should be suspended automatically.
 
-Our objective is to set a  breakpoint at the start of the native function <code>Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI()<code> before resuming the app. Unfortunately, this isn't possible at this early point in execution because <code>libnative-lib.so</code> isn't yet mapped into process memory - it is loaded dynamically during runtime. To get this working, we'll first use JDB to gently control the process into the state we need.
+Our objective is to set a breakpoint at the start of the native function <code>Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI()</code> before resuming the app. Unfortunately, this isn't possible at this early point in execution because <code>libnative-lib.so</code> isn't yet mapped into process memory - it is loaded dynamically during runtime. To get this working, we'll first use JDB to gently control the process into the state we need.
 
 First, we resume execution of the Java VM by attaching JDB. We don't want the process to resume immediately though, so we pipe the <code>suspend</code> command into JDB as follows:
 
