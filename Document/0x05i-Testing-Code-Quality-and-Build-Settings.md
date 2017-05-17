@@ -152,7 +152,7 @@ Package: com.vulnerable.app
    - android.permission.INTERNET
 ``` 
 
-If an application is debuggable, it is trivial to get command execution in the application's uid and context. In `adb` shell, execute the `run-as` binary, followed by the package name and command:
+If an application is debuggable, it is trivial to get command execution in the context of the application. In `adb` shell, execute the `run-as` binary, followed by the package name and command:
 
 ```
 $ run-as com.vulnerable.app id
