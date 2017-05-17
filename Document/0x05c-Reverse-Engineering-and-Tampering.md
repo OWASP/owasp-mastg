@@ -26,9 +26,11 @@ Other than that, it's really a matter of preference and budget. A ton of free an
 
 Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
 
-- API 21: Android 5.0 and 5.1
+- API 21: Android 5.0
+- API 22: Android 5.1
 - API 23: Android 6.0
-- API 24: Android 7.0 through 7.1.1
+- API 24: Android 7.0
+- API 25: Android 7.1
 - API 26: Android O Developer Preview 
 
 <img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>

