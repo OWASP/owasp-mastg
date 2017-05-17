@@ -53,7 +53,7 @@ Programmatic defenses aim to hinder various processes used by reverse engineers,
 
 **Do the defense act together in the right ways so that an effective protection scheme?**
 
-All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data. 
+
 
 ## Assessing Programmatic Defenses
 
@@ -172,6 +172,8 @@ Some types of obfuscation that fall into this category are:
 ### Obfuscation Requirements in the MASVS
 
 -- TODO [Describe Obfuscation Requirements in the MASVS] --
+
+"All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data."
 
 ### Obfuscation Effectiveness
 
