@@ -163,7 +163,13 @@ An alternative method to determine if an application is debuggable, is to attach
 
 #### Remediation
 
-Set the <code>android:debuggable</code> to false, or simply omit it from the <code>Application</code> tag.
+In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, as shown below:
+
+```xml
+<application android:debuggable="false">
+...
+</application>
+```
 
 #### References
 
@@ -174,6 +180,7 @@ Set the <code>android:debuggable</code> to false, or simply omit it from the <co
 * V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
 
 ##### CWE
+
 
 -- TODO [Add relevant CWE for "Testing If the App is Debuggable"] --
 * CWE-312 - Cleartext Storage of Sensitive Information
