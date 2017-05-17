@@ -51,17 +51,15 @@ Programmatic defenses aim to hinder various processes used by reverse engineers,
 
 ![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
-** Do the defense act together in the right ways so that an effective protection scheme? **
-
--- TODO [Just copy/paste from MASVS - describe in detail] --
-
-The app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app.
+**Do the defense act together in the right ways so that an effective protection scheme?**
 
 All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data. 
 
-Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app.
+## Assessing Programmatic Defenses
 
-## Testing Programmatic Defenses
+For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
+
+#### Types of Defenses
 
 Software protection schemes incorporate a variety of functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run on a rooted device or on an emulator. These *programmatic defenses* can be further categorized into two modi operandi:
 
@@ -69,31 +67,21 @@ Software protection schemes incorporate a variety of functions that prevent, or 
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way if a debugger is detected.
 
-For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
+#### Effectiveness Criteria
 
--- TODO [What does it mean for programmatic defenses to be effective?] --
-
-### Quality Criteria
+##### Number of Defenses
 
 "More is better" is not always a great motto in real life but it does apply to software protections. Employing multiple defenses simultaneously makes it difficult for the adversary to get a foothold for starting the analysis. They may find that the binary code is encrypted and doesn’t load in their favorite disassembler. Multiple layers of debugging defenses prevent her from easily dumping the decrypted code. Patching the binary code is difficult due to its encrypted nature, and because it triggers additional integrity checks.
 
-#### Response Type
+##### Diversity
 
-Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
+##### Interdependency
 
-- Feedback: When the anti-tampering response is triggered, an error message is displayed to the user or written to a log file. The adversary can immediately discern the nature of the defensive feature as well as the time at which the mechanism was triggered.
-- Indiscernible: The defense mechanism terminates the app without providing any error details and without logging the reason for the termination. The adversary does not learn information about the nature of the defensive feature, but can discern the approximate time at which the feature was triggered.
-- Stealth: The anti-tampering feature either does not visibly respond at all to the detected tampering, or the response happens with a significant delay. For example, the mechanism could corrupt a pointer which leads to a malfunction at a much later point in time.
+"Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
 
-#### API Layer
+##### Effectiveness of a Single Control
 
-Lower-level calls are more difficult to defeat than higher level calls. 
-
-- System Library: The feature relies on public library functions or methods.
-- Kernel: The anti-reversing feature calls directly into the kernel. 
-- Self-contained: The feature does not require any library or system calls to work.
-
-#### Uniqueness
+###### Originality
 
 The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
 
@@ -101,7 +89,25 @@ The more original the anti-reversing trick, the less likely the adversary has se
 - Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
 - Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer. 
 
-#### Parallelism
+###### Dependence on APIs
+
+Lower-level calls are more difficult to defeat than higher level calls. 
+
+- System Library: The feature relies on public library functions or methods.
+- Kernel: The anti-reversing feature calls directly into the kernel. 
+- Self-contained: The feature does not require any library or system calls to work.
+
+###### Response Type
+
+Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
+
+- Feedback: When the anti-tampering response is triggered, an error message is displayed to the user or written to a log file. The adversary can immediately discern the nature of the defensive feature as well as the time at which the mechanism was triggered.
+- Indiscernible: The defense mechanism terminates the app without providing any error details and without logging the reason for the termination. The adversary does not learn information about the nature of the defensive feature, but can discern the approximate time at which the feature was triggered.
+- Stealth: The anti-tampering feature either does not visibly respond at all to the detected tampering, or the response happens with a significant delay. For example, the mechanism could corrupt a pointer which leads to a malfunction at a much later point in time.
+
+"The app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app."
+
+###### Parallelism
 
 Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.
 
