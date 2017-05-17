@@ -1,23 +1,24 @@
 # Assessing Anti-Reverse Engineering Schemes
 
-In practice, you'll find that many mobile apps implement defenses aiming to make reverse engineering and tampering more difficult. There are several reason why the developers choose to do this: For example, the intention could be to add some protection to locally saved data, to make it more difficult to steal the source code and IP, or to prevent users from tampering with the behaviour of the app. As a security tester, being asked to give an assessment of the effectiveness of such defenses is becoming more and more common.
+Software protections are controversial topic. Some security experts dismiss client-side controls, such as anti-tampering and obfuscation, outright. Security-by-obscurity, they argue, is not real security, thus from a security standpoint no value is added. In the MASVS and MSTG, we take a more pragmatic approach. Given that software protection controls are used fairly widely in the mobile world, we argue that there is *some* benefit to such controls, as long as they aren't used to *replace *solid security controls. 
 
-A sizable percentage of security experts will interject: "But anti-reversing defenses can be bypassed! They don't add anything but security-by-obscurity!". And they're right: Ultimately, software-based defenses can always be defeated, and they should **never** be used in place of solid security controls. The point of this kind of defenses is indeed to add certain amount of obscurity - enough to deter and delay particular groups of adversaries from achieving certain goals. *Resiliency testing* is the process of verifying that the defenses implemented have the desired effect.
+What's more, mobile app security testers encounter anti-reversing mechanisms in their daily work, and they not only need ways to "deal" with them to enable static/dynamic analysis, but also to give an assessment on whether these mechanisms are used appropriately and effectively. 
 
-Client-side protections are desirable in some cases, but unnecessary or even counter-productive in others. In the worst case, software protections cause a false sense of security and encourage bad programming practices. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper attack modeling is a necessary prerequisite before implementing any form of software protections.
+The point of software-based reversing defenses is indeed to add obscurity - enough to deter some adversaries from achieving certain goals. There are several reason why developers choose to do this: For example, the intention could be to make it more difficult to steal the source code and IP, or to prevent malware running on the same device from tampering with the runtime behaviour of the app.
 
-In the OWASP Mobile Verification Standard and Testing Guide, anti-reversing controls are, for the most part, treated separately from security controls. This has several reasons: For one, we don't think that a *lack of anti-reversing controls* should ever be reported as a *vulnerability*. Also, assessing anti-reversing defenses requires an extended skillset: The tester must be able to handle advanced anti-reversing tricks and obfuscation techniques. Traditionally, this skillset is associated with malware reseachers - penetration testers often don't have this kind of know-how.  
-
-The goal of resiliency testing is to evaluate the robustness of the a software protection scheme against particular threats. Typically, this kind of testing is performed using a black-box approach, with the objective of circumventing the software protection scheme and reaching a pre-defined goal, such as extracting sensitive assets.
+Resiliency testing is the process of evaluating the robustness of the a software protection scheme against particular threats. Typically, this kind of testing is performed using a black-box approach, with the objective of circumventing the software protection scheme and reaching a pre-defined goal, such as extracting sensitive assets. This process requires skills that are not typically associated with penetration testing: The tester must be able to handle advanced anti-reversing tricks and obfuscation techniques. Traditionally, this is the domain of malware analysts.
 
 Resiliency testing can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process consists of the following high-level steps:
 
 1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
 2. Assess the effectiveness of the defenses in countering the identified threats using hybrid static/dynamic analysis. In other words, play the role of the adversary, and crack the defenses!
+3. In some scenarios, white-box testing can be added to assess specific features of the protection scheme in an isolated fashion (e.g., a particular obfuscation method).
 
 ## Assessing the Threat Model and Software Protection Architecture
 
-The software protection scheme must be designed to protect against clearly defined threats - otherwise it is no more than a random collection of anti-debugging tricks. The OWASP Reverse Engineering and Code Modification Prevention Project [2] lists the following potential threats associated with reverse engineering and tampering:
+Client-side protections are desirable in some cases, but unnecessary or even counter-productive in others. In the worst case, software protections cause a false sense of security and encourage bad programming practices. It is impossible to provide a generic set of resiliency controls that "just works" in every possible case. For this reason, proper attack modeling is a necessary prerequisite before implementing any form of software protections.
+
+The software protection scheme must be designed to protect against clearly defined threats. The OWASP Reverse Engineering and Code Modification Prevention Project <sup>[1]</sup> lists the following threats associated with reverse engineering and tampering:
 
 - Spoofing Identity - Attackers may attempt to modify the mobile application code on a victim’s device to force the application to transmit a user’s authentication credentials (username and password) to a third party malicious site. Hence, the attacker can masquerade as the user in future transactions;
 
@@ -31,13 +32,18 @@ The software protection scheme must be designed to protect against clearly defin
 
 - Elevation of Privilege - Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
-## Anti-Reversing Controls in the MASVS
+## Effectiveness Requirements
 
-The effectiveness of software protection schemes depends to some extent on originality and secrecy. Standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, there'll be a generic tool available for bypassing it.
+The effectiveness of software protection schemes depends to some extent on originality and secrecy. Standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, a generic tool available for bypassing the scheme will be available. Instead of defining a standard way of implementing protection, we take the following approach:
 
-The controls in "Resiliency Against Reverse Engineering" of the MASVS (MASVS-R) therefore don't include detailed technical specifications anti-reversing mechansims.
+1. List high-level requirements pertaining the reverse engineering processes against which should be defended against;
+2. Highlight properties that determine the effectiveness of mechanisms and the overall scheme;
+3. List robustness criteria for specific types of obfuscation and tampering;
+3. Provide testers with knowledge, processes and tools for verifying effectiveness.
 
--- TODO [Anti-Reversing-Controls Overview] --
+Item 1 and 2 are covered in the "Resiliency Against Reverse Engineering" group of controls in the MASVS (MASVS-R), and further elaborated on in the Testing Guide. The MSTG also goes into great detail on item 3 and 4. We went to great length to document both offensive and defensive techniques. Note however that the process cannot be completely formalized. To perform a meaningful assessement, the test must be performed by a skilled reverse engineer who is familiar with the state-of-the-art in mobile app reversing and anti-reversing.
+
+### Questions to Ask
 
 **Does the app defend comprehensively against processes and tools used by reverse engineers?**
 
@@ -45,13 +51,15 @@ Programmatic defenses aim to hinder various processes used by reverse engineers,
 
 ![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
-** Do the defense act together in the right ways so that an effective protection scheme? **
+**Do the defense act together in the right ways so that an effective protection scheme?**
 
--- TODO [Just copy/paste from MASVS - describe in detail] --
+All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data. 
 
-The app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app. All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data. Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app.
+## Assessing Programmatic Defenses
 
-## Testing Programmatic Defenses
+For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
+
+#### Types of Defenses
 
 Software protection schemes incorporate a variety of functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run on a rooted device or on an emulator. These *programmatic defenses* can be further categorized into two modi operandi:
 
@@ -59,31 +67,21 @@ Software protection schemes incorporate a variety of functions that prevent, or 
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way if a debugger is detected.
 
-For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
+#### Effectiveness Criteria
 
--- TODO [What does it mean for programmatic defenses to be effective?] --
-
-### Quality Criteria
+##### Number of Defenses
 
 "More is better" is not always a great motto in real life but it does apply to software protections. Employing multiple defenses simultaneously makes it difficult for the adversary to get a foothold for starting the analysis. They may find that the binary code is encrypted and doesn’t load in their favorite disassembler. Multiple layers of debugging defenses prevent her from easily dumping the decrypted code. Patching the binary code is difficult due to its encrypted nature, and because it triggers additional integrity checks.
 
-#### Response Type
+##### Diversity
 
-Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
+##### Interdependency
 
-- Feedback: When the anti-tampering response is triggered, an error message is displayed to the user or written to a log file. The adversary can immediately discern the nature of the defensive feature as well as the time at which the mechanism was triggered.
-- Indiscernible: The defense mechanism terminates the app without providing any error details and without logging the reason for the termination. The adversary does not learn information about the nature of the defensive feature, but can discern the approximate time at which the feature was triggered.
-- Stealth: The anti-tampering feature either does not visibly respond at all to the detected tampering, or the response happens with a significant delay. For example, the mechanism could corrupt a pointer which leads to a malfunction at a much later point in time.
+"Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
 
-#### API Layer
+##### Effectiveness of a Single Control
 
-Lower-level calls are more difficult to defeat than higher level calls. 
-
-- System Library: The feature relies on public library functions or methods.
-- Kernel: The anti-reversing feature calls directly into the kernel. 
-- Self-contained: The feature does not require any library or system calls to work.
-
-#### Uniqueness
+###### Originality
 
 The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
 
@@ -91,7 +89,25 @@ The more original the anti-reversing trick, the less likely the adversary has se
 - Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
 - Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer. 
 
-#### Parallelism
+###### Dependence on APIs
+
+Lower-level calls are more difficult to defeat than higher level calls. 
+
+- System Library: The feature relies on public library functions or methods.
+- Kernel: The anti-reversing feature calls directly into the kernel. 
+- Self-contained: The feature does not require any library or system calls to work.
+
+###### Response Type
+
+Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
+
+- Feedback: When the anti-tampering response is triggered, an error message is displayed to the user or written to a log file. The adversary can immediately discern the nature of the defensive feature as well as the time at which the mechanism was triggered.
+- Indiscernible: The defense mechanism terminates the app without providing any error details and without logging the reason for the termination. The adversary does not learn information about the nature of the defensive feature, but can discern the approximate time at which the feature was triggered.
+- Stealth: The anti-tampering feature either does not visibly respond at all to the detected tampering, or the response happens with a significant delay. For example, the mechanism could corrupt a pointer which leads to a malfunction at a much later point in time.
+
+"The app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app."
+
+###### Parallelism
 
 Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.
 
@@ -166,3 +182,7 @@ An obfuscation scheme is effective if:
 3. The transformations used are resilient against state-of-the-art de-obfuscation techniques.
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
+
+## References
+
+- [1] OWASP Reverse Engineering and Code Modification Prevention - https://www.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project
