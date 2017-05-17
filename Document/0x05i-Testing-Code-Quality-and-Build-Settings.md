@@ -126,7 +126,40 @@ Check in <code>AndroidManifest.xml</code> whether the <code>android:debuggable</
 
 #### Dynamic Analysis
 
-Attempt to attach to the running process jdb. If debugging is disallowed, this should fail with an error.
+Drozer can be used to identify if an application is debuggable. The module `app.package.attacksurface` displays information about IPC components exported by the application, in addition to whether the app is debuggable.
+
+```
+dz> run app.package.attacksurface com.mwr.dz
+Attack Surface:
+  1 activities exported
+  1 broadcast receivers exported
+  0 content providers exported
+  0 services exported
+    is debuggable
+```
+
+To scan for all debuggable applications on a device, the `app.package.debuggable` module should be used: 
+
+```
+dz> run app.package.debuggable 
+Package: com.mwr.dz
+  UID: 10083
+  Permissions:
+   - android.permission.INTERNET
+Package: com.vulnerable.app
+  UID: 10084
+  Permissions:
+   - android.permission.INTERNET
+``` 
+
+If an application is debuggable, it is trivial to get command execution in the application's uid and context. In `adb` shell, execute the `run-as` binary, followed by the package name and command:
+
+```
+$ run-as com.vulnerable.app id
+uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
+```
+
+An alternative method to determine if an application is debuggable, is to attach jdb to the running process. If debugging is disabled, this should fail with an error.
 
 #### Remediation
 
@@ -148,7 +181,9 @@ Set the <code>android:debuggable</code> to false, or simply omit it from the <co
 ##### Info
 * [1] Application element - https://developer.android.com/guide/topics/manifest/application-element.html
 
+##### Tools
 
+* Drozer - https://github.com/mwrlabs/drozer
 
 ### Testing for Debugging Symbols
 
