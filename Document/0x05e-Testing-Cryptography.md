@@ -205,6 +205,8 @@ Many cryptographic algorithms and protocols should not be used because they have
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as
 * DES
 * RC2
+* RC4
+* BLOWFISH
 * CRC32
 * MD4
 * MD5
