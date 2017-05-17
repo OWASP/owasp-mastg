@@ -218,9 +218,89 @@ Some of these tools are:
 
 #### Dynamic Analysis
 
-Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device or monitoring the communication with the endpoint while using the app.
+Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device to monitoring the communication with the endpoint while using the app.
 
 When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
+
+#### Drozer
+
+Drozer<sup>[25]</sup> is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
+
+##### Installing Drozer
+
+###### Building from Source
+
+```
+git clone https://github.com/mwrlabs/drozer/
+cd drozer
+make apks
+source ENVIRONMENT
+python setup.py build
+sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
+```
+
+###### Installing .egg
+
+```
+sudo easy_install drozer-2.x.x-py2.7.egg
+```
+
+###### Building for Debian/Ubuntu
+
+```
+sudo apt-get install python-stdeb fakeroot
+git clone https://github.com/mwrlabs/drozer/
+cd drozer
+make apks
+source ENVIRONMENT
+python setup.py --command-packages=stdeb.command bdist_deb
+
+```
+
+###### Installing .deb (Debian/Ubuntu)
+
+``` 
+sudo dpkg -i deb_dist/drozer-2.x.x.deb
+```
+
+###### Installing on Arch Linux
+
+`yaourt -S drozer`
+
+##### Installing the Agent
+
+Drozer can be installed using Android Debug Bridge (adb).
+
+Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
+
+`$ adb install drozer-agent-2.x.x.apk`
+
+##### Starting a Session
+
+You should now have the drozer Console installed on your PC, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
+
+We will use the server embedded in the drozer Agent to do this.
+
+If using the Android emulator, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415:
+
+`$ adb forward tcp:31415 tcp:31415`
+
+Now, launch the Agent, select the “Embedded Server” option and tap “Enable” to start the server. You should see a notification that the server has started.
+
+Then, on your PC, connect using the drozer Console:
+
+`$ drozer console connect`
+
+If using a real device, the IP address of the device on the network must be specified:
+
+`$ drozer console connect --server 192.168.0.10`
+
+You should be presented with a drozer command prompt:
+
+```
+selecting f75640f67144d9a3 (unknown sdk 4.1.1)  
+dz>
+```
 
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -312,3 +392,4 @@ There are many reason to reverse engineer an application: to understand applicat
 - [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
 - [23] Ettercap - https://ettercap.github.io
 - [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
+- [25] Drozer - https://github.com/mwrlabs/drozer
