@@ -461,7 +461,6 @@ dz> run post.capture.clipboard
 [*] Clipboard value: ClipData.Item { T:Secretmessage }
 ```
 
-
 #### Remediation
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
