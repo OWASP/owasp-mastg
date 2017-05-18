@@ -133,6 +133,25 @@ Once the activity is called, the file is created with the provided data and the 
 
 It’s also worth to know that files stored outside the application folder (`data/data/<packagename>/`) will not be deleted when the user uninstall the application.
 
+##### KeyChain
+
+The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. 
+
+##### KeyStore
+
+The KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public API for storing and using app-private keys. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
+
+The keys stored into the KeyStore you can be protected such that the the user needs to authenticate to use them. The user's lock screen credentials (pattern/PIN/password or fingerprint) are used for authentication.
+
+Stored keys can be configured to operate in one of the two modes:
+
+1. User authentication authorizes the use of keys for a duration of time. All keys in this mode are authorized for use as soon as the user unlocks the device.  The duration for which the authorization remains valid can be customized for each key. This option can only be used if the secure lock screen is enabled. If the user disables the secure lock screen, any stored keys become permanently invalidated.
+
+2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
+
+The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible to the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device. 
+
+In a software-only implementations, the keys are encrypted with a per-user key-encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
 
 #### Static Analysis
 
@@ -167,7 +186,6 @@ When going through the source code it should be analyzed if native mechanisms th
 * Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and it’s usage.
 * The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
 
-
 #### Dynamic Analysis
 
 Install and use the app as it is intended and execute all functions at least once. Data can be generated when entered by the user, sent by the endpoint or it is already shipped within the app when installing it. Afterwards check the following items:
@@ -186,8 +204,6 @@ If sensitive information (credentials, keys, PII, etc.) is needed locally on the
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitive data in general:
 
-* **Android KeyStore<sup>[8]</sup>**: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStore is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The KeyStore is encrypted using the user’s own lock screen pin/password, hence, when the device screen is locked the KeyStore is unavailable<sup>[9]</sup>.
-* **Android KeyChain<sup>[10]</sup>**: The KeyChain class is used to store and retrieve private keys and their corresponding certificate (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
 * Encryption or decryption functions that were self implemented need to be avoided. Instead use Android implementations such as Cipher<sup>[11]</sup>, SecureRandom<sup>[12]</sup> and KeyGenerator<sup>[13]</sup>.   
 * Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the AccountManager<sup>[14]</sup> class to invoke a cloud-based service and do not store passwords on the device.
 * Usage of `MODE_WORLD_WRITEABLE` or `MODE_WORLD_READABLE` should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis.
@@ -232,6 +248,7 @@ The following is a list of best practice used for secure storage of certificates
 [13]KeyGenerator - https://developer.android.com/reference/javax/crypto/KeyGenerator.html
 [14] AccountManager -  https://developer.android.com/reference/android/accounts/AccountManager.html
 [15] Secure Preferences - https://github.com/scottyab/secure-preferences
+[16] Nikolay Elenvok - Credential storage enhancements in Android 4.3 - https://nelenkov.blogspot.sg/2013/08/credential-storage-enhancements-android-43.html
 
 
 ##### Tools
