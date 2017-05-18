@@ -76,7 +76,7 @@ All requirements specified in the MASVS are described in technical detail in the
 
 ### Testing Process and Techniques
 
-This section explains the checklist and how to use it during a project. The different analysis techniques used for the test cases are explained like static and dynamic analysis on source code, but also on binaries. An introduction into tampering and reverse engineering is also part of this section.
+This section explains the checklist and how to use it during project security evaluation. The different analysis techniques used for the test cases are explained like static and dynamic analysis on source code, but also on binaries. An introduction into tampering and reverse engineering is also part of this section.
 
 ### Android Testing Guide
 
