@@ -277,20 +277,21 @@ It is interesting to clarify that incorrect logon attempts should be cumulative 
 * Burp Suite Professional - https://portswigger.net/burp/
 * OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
-
 ### Testing Biometric Authentication
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Biometric Authentication".] --
+Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the  <code>FingerprintManager</code> class. An app can request fingerprint authentication instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
+
+By using the fingerprint API in conjunction with the Android KeyGenerator class, apps can create a cryptographic key that must be "unlocked" with the user's fingerprint. This can be used to implement more convenient forms of user login. For example, to allow users access to a remote service, a symmetric key can be created and used to encrypt the user PIN or authentication token. By calling <code>setUserAuthenticationRequired(true)</code> when creating the key, it is ensured that the user must re-authenticate using their fingerprint to retrieve it. The encrypted authentication data itself can then be saved using regular storage (e.g. SharedPreferences).
+
+Apart from this relatively reasonable method, fingerprint authentication can also be implemented in unsafe ways. For instance, developers might opt to assume successful authentication based solely on whether the <code>onAuthenticationSucceeded</code> callback is called. This event however isn't proof that the user has performed biometric authentication - such a check can be easily patched or bypassed using instrumentation. Leveraging the Keystore is the only way to be reasonably sure that the user has actually entered their fingerprint (unless of course, the Keystore is compromised).
 
 #### Static Analysis
 
+When verifying fingerprint authentication, you should make sure that it is used only in the way recommended above.
+
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Develop content on "Testing Biometric Authentication" with source code] --
 
 #### Dynamic Analysis
 
@@ -298,12 +299,31 @@ It is interesting to clarify that incorrect logon attempts should be cumulative 
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Biometric Authentication".] --
+Specifically, in this first part of our MainActivity file we’re going to check that:
+
+- The device is running Android 6.0 or higher. If your project’s minSdkversion is 23 or higher, then you won’t need to perform this check.
+- The device features a fingerprint sensor. If you marked android.hardware.fingerprint as something that your app requires (android:required=”true”) then you don’t need to perform this check.
+- The user has granted your app permission to access the fingerprint sensor.
+- The user has protected their lockscreen. Fingerprints can only be registered once the user has secured their lockscreen with either a PIN, pattern or password, so you’ll need to ensure the lockscreen is secure before proceeding.
+- The user has registered at least one fingerprint on their device.
+
+Create a Keystore Keypair
+
+Create a key / key pair Initialize an empty KeyStore by passing null in KeyStore.load(). A KeyGenerator  is the class used to create keys. It must be initialized with with a KeyGenParameterSpec instance created by KeyGenParameterSpec.Builder. 
+
+A key or key pair is created with generateKey() or generateKeyPair() methods. 
+
+KeyGenParameterSpec specifies for which operation the key can be used (encryption, decryption, etc.), block modes, expiration date and other parameters.
+
+It’s important that you require the user to authenticate with a fingerprint to authorize every use of the key by adding setUserAuthenticationRequired(true) in KeyGenParameterSpec.Builder.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder.html#setUserAuthenticationRequired(boolean)
 
 ##### OWASP MASVS
 * 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
