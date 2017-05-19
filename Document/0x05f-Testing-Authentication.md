@@ -281,41 +281,74 @@ It is interesting to clarify that incorrect logon attempts should be cumulative 
 
 #### Overview
 
-Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the  <code>FingerprintManager</code> class. An app can request fingerprint authentication instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
+Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the  <code>FingerprintManager</code> class <sup>[1]</sup>. An app can request fingerprint authentication instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
 
 By using the fingerprint API in conjunction with the Android KeyGenerator class, apps can create a cryptographic key that must be "unlocked" with the user's fingerprint. This can be used to implement more convenient forms of user login. For example, to allow users access to a remote service, a symmetric key can be created and used to encrypt the user PIN or authentication token. By calling <code>setUserAuthenticationRequired(true)</code> when creating the key, it is ensured that the user must re-authenticate using their fingerprint to retrieve it. The encrypted authentication data itself can then be saved using regular storage (e.g. SharedPreferences).
 
-Apart from this relatively reasonable method, fingerprint authentication can also be implemented in unsafe ways. For instance, developers might opt to assume successful authentication based solely on whether the <code>onAuthenticationSucceeded</code> callback is called. This event however isn't proof that the user has performed biometric authentication - such a check can be easily patched or bypassed using instrumentation. Leveraging the Keystore is the only way to be reasonably sure that the user has actually entered their fingerprint (unless of course, the Keystore is compromised).
+Apart from this relatively reasonable method, fingerprint authentication can also be implemented in unsafe ways. For instance, developers might opt to assume successful authentication based solely on whether the <code>onAuthenticationSucceeded</code> callback <sup>3</sup> is called. This event however isn't proof that the user has performed biometric authentication - such a check can be easily patched or bypassed using instrumentation. Leveraging the Keystore is the only way to be reasonably sure that the user has actually entered their fingerprint (unless of course, the Keystore is compromised).
 
 #### Static Analysis
 
-When verifying fingerprint authentication, you should make sure that it is used only in the way recommended above.
+Search for calls of <code>FingerprintManager.authenticate()</code>. The first parameter passed to this method should be a <code>CryptoObject</code> instance. <code>CryptoObject</code> is a wrapper class for the crypto objects supported by FingerprintManager <sup>[2]</sup>. If this parameter is set to <code>null</code>, the fingerprint auth is purely event-bound, which likely causes a security issue.
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Trace back the creation of the key used to initialize the cipher wrapped in the CryptoObject. Verify that the key was created using the <code>KeyGenerator</code> class, and that <code>setUserAuthenticationRequired(true)</code> was called when creating the <code>KeyGenParameterSpec</code> object (see also the code samples below).
+
+Verify the authentication logic. For the authentication to be successful, the remote endpoint **must** require the client to present the secret retrieved from the Keystore, or some value derived from the secret.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing Biometric Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+Patch the app or us runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida call the <code>onAuthenticationSucceeded</code> callback directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 #### Remediation
 
-Specifically, in this first part of our MainActivity file we’re going to check that:
+Fingerprint authentication should be implemented allong the following lines:
 
-- The device is running Android 6.0 or higher. If your project’s minSdkversion is 23 or higher, then you won’t need to perform this check.
-- The device features a fingerprint sensor. If you marked android.hardware.fingerprint as something that your app requires (android:required=”true”) then you don’t need to perform this check.
-- The user has granted your app permission to access the fingerprint sensor.
-- The user has protected their lockscreen. Fingerprints can only be registered once the user has secured their lockscreen with either a PIN, pattern or password, so you’ll need to ensure the lockscreen is secure before proceeding.
-- The user has registered at least one fingerprint on their device.
+Check whether fingerprint authentication is possible. The device must run Android 6.0 or higher (SDK 23+) and feature a fingerprint sensor. The user must have protected their logscreen and registered at least one fingerprint on the device. If any of those checks failed, the option for fingerprint authentication should not be offered.
 
-Create a Keystore Keypair
+When setting up fingerprint authentication, create a new AES key using the <code>KeyGenerator</code> class. Add <code>setUserAuthenticationRequired(true)</code> in <code>KeyGenParameterSpec.Builder</code>. 
 
-Create a key / key pair Initialize an empty KeyStore by passing null in KeyStore.load(). A KeyGenerator  is the class used to create keys. It must be initialized with with a KeyGenParameterSpec instance created by KeyGenParameterSpec.Builder. 
+```java
+	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
 
-A key or key pair is created with generateKey() or generateKeyPair() methods. 
+	generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+	      KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+	      .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+	      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+	      .setUserAuthenticationRequired(true)
+	      .build()
+	);
 
-KeyGenParameterSpec specifies for which operation the key can be used (encryption, decryption, etc.), block modes, expiration date and other parameters.
+	generator.generateKey();
+```
 
-It’s important that you require the user to authenticate with a fingerprint to authorize every use of the key by adding setUserAuthenticationRequired(true) in KeyGenParameterSpec.Builder.
+To perform encryption or decryption, create a <code>Cipher<code> object and initialize it with the AES key. 
+
+```java
+	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+
+    if (mode == Cipher.ENCRYPT_MODE) {
+        cipher.init(mode, keyspec);
+```
+
+Note that the key cannot be used right away - it has to be authenticated through <code>FingerprintManager</code> first. This involves wrapping <code>Cipher</code> into a <code>FingerprintManager.CryptoObject</code> which is passed to <code>FingerprintManager.authenticate()</code>.
+
+```java
+	cryptoObject = new FingerprintManager.CryptoObject(cipher);
+	FingerprintHandler helper = new FingerprintHandler(this);
+	helper.startAuth(fingerprintManager, cryptoObject);
+```
+
+If authentication succeeds, the callback method <code>onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)</code> is called, and the authenticated CryptoObject can be retrieved from the authentication result. 
+
+```java
+public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+	cipher = result.getCryptoObject().getCipher();
+
+	(... do something with the authenticated cipher object ...)
+}
+```
+
+For a full example, see the blog article by Deivi Taka <sup>[4]</sup>.
 
 #### References
 
@@ -323,28 +356,25 @@ It’s important that you require the user to authenticate with a fingerprint to
 
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder.html#setUserAuthenticationRequired(boolean)
-
 ##### OWASP MASVS
+
 * 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Biometric Authentication"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-287 - Improper Authentication
+- CWE-604 - Use of Client-Side Authentication
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] FingerprintManager - https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.html
+- [2] FingerprintManager.CryptoObject - https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html
+- [3] https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder.html#setUserAuthenticationRequired(boolean)
+- [4] Securing Your Android Appps with the Fingerprint API - https://www.sitepoint.com/securing-your-android-apps-with-the-fingerprint-api/#savingcredentials
 
 ##### Tools
 
--- TODO [Add relevant tools for "Testing Biometric Authentication"] --
-* Enjarify - https://github.com/google/enjarify
-
-
-
+N/A
 
 ### Testing the Session Timeout
 
