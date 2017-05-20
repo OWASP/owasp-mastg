@@ -99,7 +99,7 @@ Software protection schemes incorporate a variety of functions that prevent, or 
 
 --[ TODO ] --
 
-##### Response Diversity
+#### Response Diversity
 
 Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
 
