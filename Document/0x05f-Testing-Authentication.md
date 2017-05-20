@@ -321,7 +321,7 @@ When setting up fingerprint authentication, create a new AES key using the <code
 	generator.generateKey();
 ```
 
-To perform encryption or decryption, create a <code>Cipher<code> object and initialize it with the AES key. 
+To perform encryption or decryption, create a <code>Cipher</code> object and initialize it with the AES key. 
 
 ```java
 	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
