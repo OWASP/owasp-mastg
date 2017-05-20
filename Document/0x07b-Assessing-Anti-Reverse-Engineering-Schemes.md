@@ -43,6 +43,20 @@ The effectiveness of software protection schemes depends to some extent on origi
 
 Item 1 and 2 are covered in the "Resiliency Against Reverse Engineering" group of controls in the MASVS (MASVS-R), and further elaborated on in the Testing Guide. The MSTG also goes into great detail on item 3 and 4. We went to great length to document both offensive and defensive techniques. Note however that the process cannot be completely formalized. To perform a meaningful assessement, the test must be performed by a skilled reverse engineer who is familiar with the state-of-the-art in mobile app reversing and anti-reversing.
 
+## The Assessment Process
+
+Software protection effectiveness can be assessed using the white-box or black-box approach. Just like in a "regular" security assessment, the tester performs static and dynamic analysis but with a different objective: Instead of identifying security flaws, the goal is to identify holes in the anti-reversing defenses, and the property assessed is *resiliency* as opposed to *security*. Also, scope and depth of the assessment must be tailored to specific scenario(s), such as tampering with a particular function. Note that the resiliency assessment can be performed as part of a regular security assessment.
+
+1. Design review
+
+Review and evaluate the design and implementation the software protection scheme and its individual components (anti-tampering, anti-debugging, device binding, obfuscating transformations, etc.).
+
+2. Black-box resiliency testing
+
+Evaluate the robustness of their White-Box cryptographic solution against specific attacks. Without prior knowledge about the implementation, with the objective to break or circumvent the protections.
+
+--[ TODO ] --
+
 ## Key Questions
 
 --[ TODO ] --
@@ -67,9 +81,7 @@ Programmatic defenses aim to hinder various processes used by reverse engineers,
 
 --[ TODO ] --
 
-## The Resiliency Testing Process
 
---[ TODO ] --
 
 ## Assessing Programmatic Defenses
 
