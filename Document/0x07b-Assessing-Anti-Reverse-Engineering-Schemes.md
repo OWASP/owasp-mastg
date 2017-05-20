@@ -113,7 +113,7 @@ Less is better in terms of information given to the adversary. The most effectiv
 
 "Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
 
-### Criteria for Singel Control Effectiveness
+### Criteria for Effectiveness of a Single Control
 
 #### Originality
 
