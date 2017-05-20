@@ -32,7 +32,7 @@ The software protection scheme must be designed to protect against clearly defin
 
 - Elevation of Privilege - Attackers may modify a mobile application and redistribute it in a repackaged form to perform actions that are outside of the scope of what the user should be able to do with the app.
 
-## Effectiveness Requirements
+## Anti-Reversing Controls in the MASVS
 
 The effectiveness of software protection schemes depends to some extent on originality and secrecy. Standardizing a particular scheme has the unfortunate side effect of making the scheme ineffective: Soon enough, a generic tool available for bypassing the scheme will be available. Instead of defining a standard way of implementing protection, we take the following approach:
 
@@ -43,23 +43,41 @@ The effectiveness of software protection schemes depends to some extent on origi
 
 Item 1 and 2 are covered in the "Resiliency Against Reverse Engineering" group of controls in the MASVS (MASVS-R), and further elaborated on in the Testing Guide. The MSTG also goes into great detail on item 3 and 4. We went to great length to document both offensive and defensive techniques. Note however that the process cannot be completely formalized. To perform a meaningful assessement, the test must be performed by a skilled reverse engineer who is familiar with the state-of-the-art in mobile app reversing and anti-reversing.
 
-### Questions to Ask
+## Key Questions
+
+--[ TODO ] --
+
+**Does the protection scheme impede the threat(s) they are supposed to?**
+
+It is worth re-iterating that there is no anti-reversing silver bullet. 
+
+--[ TODO ] --
 
 **Does the app defend comprehensively against processes and tools used by reverse engineers?**
 
-Programmatic defenses aim to hinder various processes used by reverse engineers, which we have grouped into five categories. To fully adhere to MASVS-R, an app must implement (sometimes multiple) defenses in each category.
+Programmatic defenses aim to hinder various processes used by reverse engineers, which we have grouped into five categories. To fully adhere to MASVS-R, an app must implement a number of defenses in each category.
 
-![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
+--[ TODO ] --
 
-**Do the defense act together in the right ways so that an effective protection scheme?**
+**Are suitable types of obfuscation used in the approriate places and with the right parameters?**
 
+--[ TODO ] --
 
+**How effective are the defenses taken as a whole?**
+
+--[ TODO ] --
+
+## The Resiliency Testing Process
+
+--[ TODO ] --
 
 ## Assessing Programmatic Defenses
 
+--[ TODO ] --
+
 For a protection scheme to be considered effective, it must incorporate defenses against all five processes. Furthermore, to achieve overall robustness, the defenses in each category must be comprised of multiple mechanisms (e.g. multiple functionally independent means of anti-debugging on different API layers). *Resiliency testing* is the process of verifying the effectiveness of those mechanisms.
 
-#### Types of Defenses
+### Types of Defenses
 
 Software protection schemes incorporate a variety of functions that prevent, or react to, actions of the reverse engineer. For example, an app could terminate when it suspects being run on a rooted device or on an emulator. These *programmatic defenses* can be further categorized into two modi operandi:
 
@@ -67,37 +85,21 @@ Software protection schemes incorporate a variety of functions that prevent, or 
 
 2. Reactive: Features that aim to detect, and respond to, tools or actions of the reverse engineer. For example, an app could terminate when it suspects being run in an emulator, or change its behavior in some way if a debugger is detected.
 
-#### Effectiveness Criteria
+![Reverse engineering processes](Images/Chapters/0x04/reversing-processes.png "Reverse engineering processes")
 
-##### Number of Defenses
+### Criteria for Overall Effectiveness
+
+--[ TODO ] --
+
+#### Number of Defenses
 
 "More is better" is not always a great motto in real life but it does apply to software protections. Employing multiple defenses simultaneously makes it difficult for the adversary to get a foothold for starting the analysis. They may find that the binary code is encrypted and doesn’t load in their favorite disassembler. Multiple layers of debugging defenses prevent her from easily dumping the decrypted code. Patching the binary code is difficult due to its encrypted nature, and because it triggers additional integrity checks.
 
-##### Diversity
+#### Implementation Diversity
 
-##### Interdependency
+--[ TODO ] --
 
-"Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
-
-##### Effectiveness of a Single Control
-
-###### Originality
-
-The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
-
-- Standard API: The feature relies on APIs that are specifically meant to prevent reverse engineering. It can be bypassed easily using generic tools.
-- Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
-- Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer. 
-
-###### Dependence on APIs
-
-Lower-level calls are more difficult to defeat than higher level calls. 
-
-- System Library: The feature relies on public library functions or methods.
-- Kernel: The anti-reversing feature calls directly into the kernel. 
-- Self-contained: The feature does not require any library or system calls to work.
-
-###### Response Type
+##### Response Diversity
 
 Less is better in terms of information given to the adversary. The most effective defensive features are designed to respond in stealth mode: The attacker is left completely unaware that a defensive mechanism has been triggered. 
 
@@ -107,14 +109,37 @@ Less is better in terms of information given to the adversary. The most effectiv
 
 "The app implements multiple different responses to tampering, debugging and emulation, including stealthy responses that don't simply terminate the app."
 
-###### Parallelism
+#### Integration
+
+"Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
+
+### Criteria for Singel Control Effectiveness
+
+#### Originality
+
+The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
+
+- Standard API: The feature relies on APIs that are specifically meant to prevent reverse engineering. It can be bypassed easily using generic tools.
+- Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
+- Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer.
+
+#### Dependence on System APIs
+
+Lower-level calls are more difficult to defeat than higher level calls. 
+
+- System Library: The feature relies on public library functions or methods.
+- Kernel: The anti-reversing feature calls directly into the kernel. 
+- Self-contained: The feature does not require any library or system calls to work.
+
+#### Parallelism
 
 Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.
 
 - Single thread 
 - Multiple threads or processes
 
-## Testing Obfuscation Schemes
+
+## Assessing Obfuscation
 
 Obfuscation is the process of transforming code and data in ways that make it more difficult to comprehend, while preserving its original meaning or function. Think about translating an English sentence into an French one that says the same thing (or pick a different language if you speak French - you get the point).
 
