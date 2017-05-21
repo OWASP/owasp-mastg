@@ -60,7 +60,7 @@ $ adb install UnCrackable-Level3.apk
 
 ### Solutions
 
-N/A
+- [Multiple solutions by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html/)
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/)
 
