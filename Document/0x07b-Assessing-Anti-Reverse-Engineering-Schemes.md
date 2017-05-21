@@ -81,8 +81,6 @@ Programmatic defenses aim to hinder various processes used by reverse engineers,
 
 --[ TODO ] --
 
-
-
 ## Assessing Programmatic Defenses
 
 --[ TODO ] --
@@ -129,10 +127,12 @@ Less is better in terms of information given to the adversary. The most effectiv
 
 #### Originality
 
-The more original the anti-reversing trick, the less likely the adversary has seen it all before. 
+The effort required to reverse engineer an application highly depends on how much information is initially available to the adversary. This includes information about the functionality being reversed as well as knowledge about the obfuscation and anti-tampering techniques used by the target application. Therefore, the level of innovation that went into designing anti-reversing tricks is an important factor.
+
+Adversaries are more likely to be familiar with unqiquituous techniques that are repeatedly documented in reverse engineering books, papers, presentations and tutorials and are more likely to be familiar to the  and can either be bypassed using generic tools, or require little innovation to be bypassed. Below is a possible classification of anti-reversing tricks.
 
 - Standard API: The feature relies on APIs that are specifically meant to prevent reverse engineering. It can be bypassed easily using generic tools.
-- Published: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
+- Widely known: A well-documented and commonly used technique is used. It can be bypassed by using widely available tools with a moderate amount of customization.
 - Proprietary: The feature is not commonly found in published anti-reverse-engineering resources for the target operating system, or a known technique has been sufficiently extended / customized to cause significant effort for the reverse engineer.
 
 #### Dependence on System APIs
@@ -143,9 +143,7 @@ Lower-level calls are more difficult to defeat than higher level calls.
 - System call: The anti-reversing feature calls directly into the kernel. 
 - Self-contained: The feature does not require any library or system calls to work.
 
-
-
-
+--[ TODO ] --
 
 ```c
 #define PT_DENY_ATTACH 31
@@ -157,7 +155,6 @@ void disable_gdb() {
     dlclose(handle);
 }
 ```
-
 
 ```c
 void disable_gdb() {
@@ -171,9 +168,6 @@ void disable_gdb() {
 	);
 }
 ```
-
-
-
 
 #### Parallelism
 
@@ -239,11 +233,13 @@ Some types of obfuscation that fall into this category are:
 
 ### Obfuscation Requirements in the MASVS
 
--- TODO [Describe Obfuscation Requirements in the MASVS] --
+-- TODO [Describe obfuscation requirements in the MASVS] --
 
 "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis should not reveal important code or data."
 
 ### Obfuscation Effectiveness
+
+--[ TODO ] --
 
 An obfuscation scheme is effective if:
 
@@ -252,6 +248,72 @@ An obfuscation scheme is effective if:
 3. The transformations used are resilient against state-of-the-art de-obfuscation techniques.
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
+
+#### The Use of Complexity Metrics
+
+--[ TODO ] --
+
+#### Common Transformations
+
+--[ TODO ] --
+
+##### Control-flow Obfuscation
+
+--[ TODO ] --
+
+##### Polymorphic Code
+
+--[ TODO ] --
+
+##### Virtualization
+
+--[ TODO ] --
+
+##### White-box Cryptography
+
+--[ TODO ] --
+
+## Background and Caveats
+
+--[ TODO ] --
+
+### Academic Research on Obfuscation Metrics
+
+--[ TODO ] --
+
+### Lack of Experimental Data
+
+-- TODO [Insert references] --
+
+With the limitations of existing complexity measures in mind we can see that more human studies on the subject would be helpful (19). As it currently stands, there is little scientific evidence for the effectiveness of any obfuscation method in slowing down a human attacker. As a consequence, we cannot say with any certainty by how much increased algorithmic complexity correlates with a higher reverse engineering effort for a human adversary. The assessment merely reflects to the quality of reverse engineering protections relative to the industry standard.
+
+The best way to quantify the true effectiveness of any type of defense is measuring its impact on humans. Unfortunately, the body of experimental research is relatively small - in fact, the lack of empirical studies is one of the main issues researchers face (19). There are however some interesting papers linking some types of obfuscation to higher reverse engineering difficulty.
+
+Nakamura et. al performed an empirical study to investigate the impact of several novel cost metrics proposed in the same paper (10). In the experiment, twelve subjects were asked to mentally execute two different versions (with varying complexity) of three Java programs. At specific times during the experiment, the subjects were required to describe the program state (i.e., values of all variables in the program). The accuracy and speed of the participants in performing the experiment was then used to assess the validity of the proposed cost metrics. The results demonstrated that the proposed complexity metrics (some more than others) were correlated with the time needed by the subjects to solve the tasks. 
+
+In (20), Sutherland et al. examine a framework for collecting reverse engineering measurement and the execution of reverse engineering experiments. The researchers asked a group of ten students to perform static analysis and dynamic analysis on several binary programs and found a significant correlation between the skill level of the students and the level of success in the tasks (no big surprise there, but let’s count it as preliminary evidence that luck alone won’t get you far in reverse engineering).
+
+In a series of controlled experiments, M. Ceccato et. al. tested the impact of identifier renaming and opaque predicates to increase the effort needed for attacks  (9) (21) (22). In these studies, Master and PhD students with a good knowledge of Java programming were asked to perform understanding tasks or change tasks on the decompiled (either obfuscated or clear) client code of client-server Java applications. The experiments showed that obfuscation reduced the capability of subjects to understand and modify the source code. Interestingly, the results also showed that the presence of obfuscation reduced the gap between highly skilled attackers and low skilled ones: The highly skilled attackers were significantly faster in analyzing the clear source code, but the difference was smaller when analyzing the obfuscated version. Among other results, identifier renaming was shown to at least double the time needed to complete a successful attack (21).
+
+Boxplot of attack efficiency from the Ceccato et. al.  experiment to measure the impact of identifier renaming on program comprehension. Subjects analyzing the obfuscated code gave less correct answers per minute.
+
+The above results are evidence that obfuscations do in fact make code comprehension more difficult. Unfortunately, there’s not nearly enough data to support a comprehensive model that can predict the effectiveness of a set of obfuscations in terms of slowing down the attacker. Many more studies will be needed to filter out the best effectiveness indicators and link them to empirical effects.
+
+Human studies would be immensely helpful for refining the scoring system, while at the time linking the various grades and scores to empirical data. The hope is that higher values on the resiliency scale would be correlated to a certain amount of reverse engineering slowdown that, with sufficient evidence, could eventually be quantified.
+
+### The Device Binding Problem
+
+-- TODO [Insert references] --
+
+In many cases it can be argued that obfuscating some secret functionality misses the point, as for all practical purposes, the adversary does not need to know all the details about the obfuscated functionality. Say, the function of an obfuscated program it to take an input value and use it to compute an output value in an indiscernible way (for example, through a cryptographic operation with a hidden key). In most scenarios, the adversaries goal would be to replicate the functionality of the program – i.e. computing the same output values on a system owned by the adversary. Why not simply copy and re-use whole implementation instead of painstakingly reverse engineering the code? Is there any reason why the adversary needs to look inside the black-box?
+
+This kind of attack is known as code lifting and is commonly used for breaking DRM and white-box cryptographic implementations (23). For example, an adversary aiming to bypass digital media usage could simply extract the encryption routine from a player and include it in a counterfeit player, which decrypts the digital media without enforcing the contained usage policies (1). Designers of white-box implementations have to deal with another issue: one can convert an encryption routine into a decryption routine without actually extracting the key (24).
+
+Protected applications must include measures against code lifting to be useful. In practice, this means binding the obfuscated functionality to the specific environment (hardware, device or client/server infrastructure) in which the binary is executed. Preferably, the protected functionality should execute correctly only in the specific, legitimate computing environment. For example, an obfuscated encryption algorithm could generate its key (or part of the key) using data collected from the environment (25). Techniques that tie the functionality of an app to specific hardware are known as device binding.
+
+Even so, it is relatively easy (as opposed to fully reverse engineering the black-box) to monitor the interactions of an app with its environment. In practice, simple hardware properties such as the IMEI and MAC address of a device are often used to achieve device binding. The effort needed to spoof these environmental properties is certainly lower than the effort required for needed for fully understanding the obfuscated functionality.
+
+What all this means is that, for most practical purposes, the security of an obfuscated application is only as good as the device binding it implements. For device binding to be effective, specific characteristics of the system or device must be deeply intertwined with the various obfuscation layers, and these characteristics must be determined in stealthy ways (ideally, by reading content directly from memory). Advanced device binding methods are often deployed in DRM and malware and some research has been published in this area (26).
 
 ## References
 
