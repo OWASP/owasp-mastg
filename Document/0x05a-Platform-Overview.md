@@ -30,8 +30,8 @@ In Android, apps are installed as bytecode (.dex files, see "Android Application
 
 #### Android Users and Groups
 
-Android is a system based on the Linux Kernel. However it does not deal with users the same way other Unix-like systems do. It does not have a _/etc/password_ file describing a list of users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
+Android is a system based on the Linux Kernel. However it does not deal with users the same way other Unix-like systems do. It does not have a _/etc/password_ file describing a list of users in the system. Instead Android utilizes the multi-user support of the Linux kernel, to achieve application sandboxing, by running each application under a separate user (with some exceptions).
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html)
 File below depicts some of the users defined for Android Nougat:
 
 ```
