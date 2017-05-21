@@ -47,17 +47,19 @@ Item 1 and 2 are covered in the "Resiliency Against Reverse Engineering" group o
 
 Software protection effectiveness can be assessed using the white-box or black-box approach. Just like in a "regular" security assessment, the tester performs static and dynamic analysis but with a different objective: Instead of identifying security flaws, the goal is to identify holes in the anti-reversing defenses, and the property assessed is *resiliency* as opposed to *security*. Also, scope and depth of the assessment must be tailored to specific scenario(s), such as tampering with a particular function. Note that the resiliency assessment can be performed as part of a regular security assessment.
 
-1. Design review
+### Design review
 
 Review and evaluate the design and implementation the software protection scheme and its individual components (anti-tampering, anti-debugging, device binding, obfuscating transformations, etc.).
 
-2. Black-box resiliency testing
+### Black-box resiliency testing
 
 Evaluate the robustness of their White-Box cryptographic solution against specific attacks. Without prior knowledge about the implementation, with the objective to break or circumvent the protections.
 
 --[ TODO ] --
 
-2. White-box assessment of obfuscation effectiveness
+<img src="blackbox-resiliency-testing.png" width="400px" />
+
+### White-box assessment of obfuscation effectiveness
 
 --[ TODO ] --
 
@@ -197,7 +199,7 @@ Debugging and disabling a mechanism becomes more difficult when multiple threats
 
 --[ TODO - description and examples ] --
 
-<img src="Images/Chapters/0x07b/multiprocess-fork-ptrace.jpg" width="350px" />
+<img src="Images/Chapters/0x07b/multiprocess-fork-ptrace.png" width="450px" />
 
 ## Assessing Obfuscation
 
@@ -334,7 +336,7 @@ In (20), Sutherland et al. examine a framework for collecting reverse engineerin
 
 In a series of controlled experiments, M. Ceccato et. al. tested the impact of identifier renaming and opaque predicates to increase the effort needed for attacks  (9) (21) (22). In these studies, Master and PhD students with a good knowledge of Java programming were asked to perform understanding tasks or change tasks on the decompiled (either obfuscated or clear) client code of client-server Java applications. The experiments showed that obfuscation reduced the capability of subjects to understand and modify the source code. Interestingly, the results also showed that the presence of obfuscation reduced the gap between highly skilled attackers and low skilled ones: The highly skilled attackers were significantly faster in analyzing the clear source code, but the difference was smaller when analyzing the obfuscated version. Among other results, identifier renaming was shown to at least double the time needed to complete a successful attack (21).
 
-<img src="Images/Chapters/0x07b/boxplot.jpg" width="350px" />
+<img src="Images/Chapters/0x07b/boxplot.png" width="400px" />
 
 Boxplot of attack efficiency from the Ceccato et. al.  experiment to measure the impact of identifier renaming on program comprehension. Subjects analyzing the obfuscated code gave less correct answers per minute.
 
