@@ -30,7 +30,7 @@ In Android, apps are installed as bytecode (.dex files, see "Android Application
 
 #### Android Users and Groups
 
-Android is a system based on Linux, however it does not deal with users the same way Linux does. It does not have a _/etc/password_ file describing a list of Linux users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
+Android is a system based on the Linux Kernel. However it does not deal with users the same way other Unix-like systems do. It does not have a _/etc/password_ file describing a list of users in the system. Instead Android contains a fixed set of users and groups and they are used to isolate processes and grant permissions.
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups mapped to numbers.
 File below depicts some of the users defined for Android Nougat:
 
