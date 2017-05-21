@@ -1,8 +1,8 @@
 # Assessing Anti-Reverse Engineering Schemes
 
-Software protections are controversial topic. Some security experts dismiss client-side controls, such as anti-tampering and obfuscation, outright. Security-by-obscurity, they argue, is not real security, thus from a security standpoint no value is added. In the MASVS and MSTG, we take a more pragmatic approach. Given that software protection controls are used fairly widely in the mobile world, we argue that there is *some* benefit to such controls, as long as they aren't used to *replace *solid security controls. 
+Software protections are controversial topic. Some security experts dismiss client-side controls, such as anti-tampering and obfuscation, outright. Security-by-obscurity, they argue, is not *real* security, thus from a security standpoint no value is added. In the MASVS and MSTG we take a more pragmatic approach. Given that software protection controls are used fairly widely in the mobile world, we argue that there is *some* benefit to such controls, as long as they are employed with a clear purpose and realistic expectations in mind, and aren't used to *replace* solid security controls.
 
-What's more, mobile app security testers encounter anti-reversing mechanisms in their daily work, and they not only need ways to "deal" with them to enable static/dynamic analysis, but also to give an assessment on whether these mechanisms are used appropriately and effectively. 
+What's more, mobile app security testers encounter anti-reversing mechanisms in their daily work, and they not only need ways to "deal" with them to enable dynamic analysis, but also to assess whether these mechanisms are used appropriately and effectively. Giving clients  advice like "you must use obfuscation" or "never obfuscate code because it's useless" doesn't cut it. However, most mobile app security testers have a background in network and web application security, and lack the reverse engineering and cracking skills required to form an opinion. On top of that, there is no methodology or even industry consensus on how anti-reversing schemes should be assessed.
 
 The point of software-based reversing defenses is indeed to add obscurity - enough to deter some adversaries from achieving certain goals. There are several reason why developers choose to do this: For example, the intention could be to make it more difficult to steal the source code and IP, or to prevent malware running on the same device from tampering with the runtime behaviour of the app.
 
@@ -139,9 +139,41 @@ The more original the anti-reversing trick, the less likely the adversary has se
 
 Lower-level calls are more difficult to defeat than higher level calls. 
 
-- System Library: The feature relies on public library functions or methods.
-- Kernel: The anti-reversing feature calls directly into the kernel. 
+- System library: The feature relies on public library functions or methods.
+- System call: The anti-reversing feature calls directly into the kernel. 
 - Self-contained: The feature does not require any library or system calls to work.
+
+
+
+
+
+```c
+#define PT_DENY_ATTACH 31
+
+void disable_gdb() {
+    void* handle = dlopen(0, RTLD_GLOBAL | RTLD_NOW);
+    ptrace_ptr_t ptrace_ptr = dlsym(handle, "ptrace");
+    ptrace_ptr(PT_DENY_ATTACH, 0, 0, 0);
+    dlclose(handle);
+}
+```
+
+
+```c
+void disable_gdb() {
+
+	asm(
+		"mov	r0, #31\n\t"	// PT_DENY_ATTACH
+		"mov	r1, #0\n\t"
+		"mov	r2, #0\n\t"
+		"mov 	ip, #26\n\t"	// syscall no.
+		"svc    0\n"
+	);
+}
+```
+
+
+
 
 #### Parallelism
 
@@ -149,7 +181,6 @@ Debugging and disabling a mechanism becomes more difficult when multiple threats
 
 - Single thread 
 - Multiple threads or processes
-
 
 ## Assessing Obfuscation
 
