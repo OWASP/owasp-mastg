@@ -57,6 +57,10 @@ Evaluate the robustness of their White-Box cryptographic solution against specif
 
 --[ TODO ] --
 
+2. White-box assessment of obfuscation effectiveness
+
+--[ TODO ] --
+
 ## Key Questions
 
 --[ TODO ] --
@@ -123,7 +127,7 @@ Less is better in terms of information given to the adversary. The most effectiv
 
 "Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
 
-### Criteria for Effectiveness of a Single Control
+### Effectiveness Criteria for a Single Control
 
 #### Originality
 
@@ -143,7 +147,7 @@ Lower-level calls are more difficult to defeat than higher level calls.
 - System call: The anti-reversing feature calls directly into the kernel. 
 - Self-contained: The feature does not require any library or system calls to work.
 
---[ TODO ] --
+--[ TODO - add one example each ] --
 
 ```c
 #define PT_DENY_ATTACH 31
@@ -169,12 +173,31 @@ void disable_gdb() {
 }
 ```
 
+```c
+struct VT_JdwpAdbState *vtable = ( struct VT_JdwpAdbState *)dlsym(lib, "_ZTVN3art4JDWP12JdwpAdbStateE");
+
+	unsigned long pagesize = sysconf(_SC_PAGE_SIZE);
+	unsigned long page = (unsigned long)vtable & ~(pagesize-1);
+
+	mprotect((void *)page, pagesize, PROT_READ | PROT_WRITE);
+
+	vtable->ProcessIncoming = vtable->ShutDown;
+
+	// Reset permissions & flush cache
+
+	mprotect((void *)page, pagesize, PROT_READ);
+```
+
 #### Parallelism
 
 Debugging and disabling a mechanism becomes more difficult when multiple threats or processes are involved.
 
 - Single thread 
 - Multiple threads or processes
+
+--[ TODO - description and examples ] --
+
+<img src="Images/Chapters/0x07b/multiprocess-fork-ptrace.jpg" width="350px" />
 
 ## Assessing Obfuscation
 
@@ -279,11 +302,27 @@ Different types of obfuscating transformations vary in their impact on program c
 
 ### Academic Research on Obfuscation Metrics
 
---[ TODO ] --
+-- TODO [Insert and link references] --
 
-### Lack of Experimental Data
+Collberg et. al. introduce potency as an estimate of the degree of reverse engineering difficulty. A potent obfuscating transformation is any transformation that increases program complexity. Additionally, they propose the concept of resilience which measures how well a transformation holds up under attack from an automatic de-obfuscator. The same paper also contains a useful taxonomy of obfuscating transformations (10).
 
--- TODO [Insert references] --
+Potency can be estimated using a number of methods.  Anaeckart et. al apply traditional software complexity metrics to a control flow graphs generated from executed code (7). The metrics applied are instruction count, cyclomatic number (i.e. number of decision points in the graph) and knot count (number of crossing in a function’s control flow graph). Simply put, the more instructions there are, and the more alternate paths and less expected structure the code has, the more complex it is.
+Jacubowsky et. al. use the same method and add further metrics, such as number of variables per instruction, variable indirection, operational indirection, code homogeneity and dataflow complexity (11). Other complexity metrics such as N-Scope (12), which is determined by the nesting levels of all branches in a program, can be used for the same purpose (13).
+
+All these methods are more or less useful for approximating the complexity of a program, but they don’t always accurately reflect the robustness of the obfuscating transformations. Tsai et al. attempt to remediate this by adding a distance metric that reflects the degree of difference between the original program and the obfuscated program. Essentially, this metric captures how the obfuscated call graph differs from the original one. Taken together, a large distance and potency is thought to be correlated to better robustness against reverse engineering (14).
+
+In the same paper, the authors also make the important observation is that measures of obfuscation express the relationship between the original and the transformed program, but are unable to quantify the amount of effort required for reverse engineering. They recognize that these measure can merely serve as heuristic, general indicators of security. This is perhaps the most pervasive problem that came to light during my initial research: There is a lack of scientific evidence in how far obfuscations are effective in terms of slowing down human attackers.
+
+Taking a human-centered approach, Tamada et. al. describe a mental simulation model to evaluate obfuscation (15). In this model, the short-term memory of the human adversary is simulated as a FIFO queue of limited size. The authors then compute six metrics that are supposed to reflect the difficulty encountered by the adversary in reverse engineering the program. Nakamura et. al. propose similar metrics reflecting the cost of mental simulation (16).
+
+More recently, Rabih Mosen and Alexandre Miranda Pinto proposed the use of a normalized version of Kolmogorov complexity as a metric for obfuscation effectiveness. The intuition behind their approach is based on the following argument: if an adversary fails to capture some patterns (regularities) in an obfuscated code, then the adversary will have difficulty comprehending that code: it cannot provide a valid and brief, i.e., simple description. On the other hand, if these regularities are simple to explain, then describing them becomes easier, and consequently the code will not be difficult to understand (17). The authors also provide empirical results showing that common obfuscation techniques managed to produce a substantial increase in the proposed metric. They also found that the metric was more sensitive then Cyclomatic measure at detecting any increase in complexity comparing to original un-obfuscated code (18).
+
+In other words, the reverse engineering effort increases with the amount of random noise in the program being reverse engineered. An obfuscated program has more non-essential information, and thus higher complexity, than a non-obfuscated one, and the reverse engineer has to comprehend at least some of this information to fully understand what’s going on. The authors also provide empirical results showing that common obfuscation techniques managed to produce a substantial increase in the proposed metric. They also found that the metric was more sensitive then Cyclomatic measure at detecting any increase in complexity comparing to original un-obfuscated code (18). 
+This makes intuitive sense – even though it doesn’t always hold true (see later). Even so, I picked the Kolmogorov metric as the method of choice for approximating the complexity of obfuscated code in the obfuscation assessment, as is easy to apply and works for a variety of use cases. The Kolmogorov complexity metric seems to be sufficient to capture the effects of both control flow and data obfuscation schemes that add random noise to a program.
+
+### Experimental Data
+
+-- TODO [Insert and link references] --
 
 With the limitations of existing complexity measures in mind we can see that more human studies on the subject would be helpful (19). As it currently stands, there is little scientific evidence for the effectiveness of any obfuscation method in slowing down a human attacker. As a consequence, we cannot say with any certainty by how much increased algorithmic complexity correlates with a higher reverse engineering effort for a human adversary. The assessment merely reflects to the quality of reverse engineering protections relative to the industry standard.
 
@@ -295,6 +334,8 @@ In (20), Sutherland et al. examine a framework for collecting reverse engineerin
 
 In a series of controlled experiments, M. Ceccato et. al. tested the impact of identifier renaming and opaque predicates to increase the effort needed for attacks  (9) (21) (22). In these studies, Master and PhD students with a good knowledge of Java programming were asked to perform understanding tasks or change tasks on the decompiled (either obfuscated or clear) client code of client-server Java applications. The experiments showed that obfuscation reduced the capability of subjects to understand and modify the source code. Interestingly, the results also showed that the presence of obfuscation reduced the gap between highly skilled attackers and low skilled ones: The highly skilled attackers were significantly faster in analyzing the clear source code, but the difference was smaller when analyzing the obfuscated version. Among other results, identifier renaming was shown to at least double the time needed to complete a successful attack (21).
 
+<img src="Images/Chapters/0x07b/boxplot.jpg" width="350px" />
+
 Boxplot of attack efficiency from the Ceccato et. al.  experiment to measure the impact of identifier renaming on program comprehension. Subjects analyzing the obfuscated code gave less correct answers per minute.
 
 The above results are evidence that obfuscations do in fact make code comprehension more difficult. Unfortunately, there’s not nearly enough data to support a comprehensive model that can predict the effectiveness of a set of obfuscations in terms of slowing down the attacker. Many more studies will be needed to filter out the best effectiveness indicators and link them to empirical effects.
@@ -303,7 +344,7 @@ Human studies would be immensely helpful for refining the scoring system, while 
 
 ### The Device Binding Problem
 
--- TODO [Insert references] --
+-- TODO [Insert and link references] --
 
 In many cases it can be argued that obfuscating some secret functionality misses the point, as for all practical purposes, the adversary does not need to know all the details about the obfuscated functionality. Say, the function of an obfuscated program it to take an input value and use it to compute an output value in an indiscernible way (for example, through a cryptographic operation with a hidden key). In most scenarios, the adversaries goal would be to replicate the functionality of the program – i.e. computing the same output values on a system owned by the adversary. Why not simply copy and re-use whole implementation instead of painstakingly reverse engineering the code? Is there any reason why the adversary needs to look inside the black-box?
 
