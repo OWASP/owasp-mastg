@@ -139,9 +139,41 @@ The more original the anti-reversing trick, the less likely the adversary has se
 
 Lower-level calls are more difficult to defeat than higher level calls. 
 
-- System Library: The feature relies on public library functions or methods.
-- Kernel: The anti-reversing feature calls directly into the kernel. 
+- System library: The feature relies on public library functions or methods.
+- System call: The anti-reversing feature calls directly into the kernel. 
 - Self-contained: The feature does not require any library or system calls to work.
+
+
+
+
+
+```c
+#define PT_DENY_ATTACH 31
+
+void disable_gdb() {
+    void* handle = dlopen(0, RTLD_GLOBAL | RTLD_NOW);
+    ptrace_ptr_t ptrace_ptr = dlsym(handle, "ptrace");
+    ptrace_ptr(PT_DENY_ATTACH, 0, 0, 0);
+    dlclose(handle);
+}
+```
+
+
+```c
+void disable_gdb() {
+
+	asm(
+		"mov	r0, #31\n\t"	// PT_DENY_ATTACH
+		"mov	r1, #0\n\t"
+		"mov	r2, #0\n\t"
+		"mov 	ip, #26\n\t"	// syscall no.
+		"svc    0\n"
+	);
+}
+```
+
+
+
 
 #### Parallelism
 
@@ -149,7 +181,6 @@ Debugging and disabling a mechanism becomes more difficult when multiple threats
 
 - Single thread 
 - Multiple threads or processes
-
 
 ## Assessing Obfuscation
 
