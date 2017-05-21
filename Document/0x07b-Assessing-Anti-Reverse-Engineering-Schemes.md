@@ -57,7 +57,7 @@ Evaluate the robustness of their White-Box cryptographic solution against specif
 
 --[ TODO ] --
 
-<img src="Images/Chapters/0x07b/blackbox-resiliency-testing.png" width="650px" />
+<img src="Images/Chapters/0x07b/blackbox-resiliency-testing.png" width="550px" />
 
 ### White-box assessment of obfuscation effectiveness
 
