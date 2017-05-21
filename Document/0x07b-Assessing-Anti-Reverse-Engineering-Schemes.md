@@ -282,13 +282,21 @@ An obfuscation scheme is effective if:
 
 Different types of obfuscating transformations vary in their impact on program complexity. The spectrum goes from simple *tricks*, such as packing and encryption of large code blocks and manipulations of executable headers, to more intricate forms of obfuscation like just-in-time compilation and virtualization that add significant complexity to parts of the code, data and execution trace.
 
+#### General Criteria
+
+--[ TODO - describe effectiveness criteria ] --
+
+**Increase in Overall Program Complexity**
+**Difficulty of CFG Recovery**
+**Resiliency against Automated Program Analysis**
+
 #### The Use of Complexity Metrics
 
---[ TODO ] --
+--[ TODO  - what metrics to use and how to apply them] --
 
 #### Common Transformations
 
---[ TODO ] --
+--[ TODO  - describe commonly used schemes, and criteria associated with each scheme. e.g., white-box must incorportate X to be resilient against DFA,  etc.] --
 
 ##### Control-flow Obfuscation
 
