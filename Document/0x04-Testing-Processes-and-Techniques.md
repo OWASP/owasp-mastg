@@ -6,9 +6,10 @@
 -- ToDo: Explain different kind of Apps (Native, Hybrid etc) and that hte MSTG focuses for now on native implementations.
 
 
-The context of mobile security testing is a conjunction of multiple different tier of components: **app**, **communication** and **back-end server**. These three high-level components will be the main attack surface for a mobile security test.   
+The context of mobile security testing is a conjunction of multiple different tier of components: **app**, **system**, **communication** and **back-end server**. These four high-level components will be the main attack surface for a mobile security test.   
 
 * **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
+* **System:** Any system API to which sensitive info is sent. E.g. Tampering with the system HTTP client might give access to the whole communication, even when SSL with certificate pinning is used.
 * **Communication:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
 * **Back-end Servers:** Flawed authentication and session management, vulnerable server side functions etc.
 
