@@ -47,19 +47,27 @@ Item 1 and 2 are covered in the "Resiliency Against Reverse Engineering" group o
 
 Software protection effectiveness can be assessed using the white-box or black-box approach. Just like in a "regular" security assessment, the tester performs static and dynamic analysis but with a different objective: Instead of identifying security flaws, the goal is to identify holes in the anti-reversing defenses, and the property assessed is *resiliency* as opposed to *security*. Also, scope and depth of the assessment must be tailored to specific scenario(s), such as tampering with a particular function. Note that the resiliency assessment can be performed as part of a regular security assessment.
 
-### Design review
+--[ TODO - multiple approaches which can be combined,...] --
+
+### Design Review
 
 Review and evaluate the design and implementation the software protection scheme and its individual components (anti-tampering, anti-debugging, device binding, obfuscating transformations, etc.).
 
-### Black-box resiliency testing
+### Black-box Resiliency Testing
 
 Evaluate the robustness of their White-Box cryptographic solution against specific attacks. Without prior knowledge about the implementation, with the objective to break or circumvent the protections.
 
+The advantage of the black-box approach is that it reflects the real-world effectiveness of the reverse engineering protections: The effort required by actual adversary with a comparable skill level and toolset would likely be close to the effort invested by the assessor. 
+
 --[ TODO ] --
+
+Drawbacks: For one, the result is highly influenced by the skill level of the assessor. Also, the effort for fully reverse engineering a program with state-of-the-art protections is very high (which is exactly the point of having them), and some apps may occupy even experienced reverse engineers for weeks. Experienced reverse engineers aren’t cheap either, and delaying the release of an app may not be feasible in an "agile" world. 
 
 <img src="Images/Chapters/0x07b/blackbox-resiliency-testing.png" width="650px" />
 
-### White-box assessment of obfuscation effectiveness
+### White-box Assessment of Obfuscation Effectiveness
+
+The tester gets full access to the source code as well as complete information about the obfuscation methods and tampering defenses applied. The assessment is done in cooperation with the development team.
 
 --[ TODO ] --
 
@@ -343,6 +351,10 @@ Boxplot of attack efficiency from the Ceccato et. al.  experiment to measure the
 The above results are evidence that obfuscations do in fact make code comprehension more difficult. Unfortunately, there’s not nearly enough data to support a comprehensive model that can predict the effectiveness of a set of obfuscations in terms of slowing down the attacker. Many more studies will be needed to filter out the best effectiveness indicators and link them to empirical effects.
 
 Human studies would be immensely helpful for refining the scoring system, while at the time linking the various grades and scores to empirical data. The hope is that higher values on the resiliency scale would be correlated to a certain amount of reverse engineering slowdown that, with sufficient evidence, could eventually be quantified.
+
+### Dependence on Skill Level of the Assessor
+
+Note that performing the resiliency assessment requires a varied skillset. The assessor must be proficient in general reverse engineering techniques as well as the environment in question: The target architecture, operating system, binary format, programming language, and so on. She must also keep up-to-date with state-of-the-art techniques and tools available to reverse engineers. The quality of the resiliency assessment suffers if the assessor’s skills do not fulfill the minimum requriements.
 
 ### The Device Binding Problem
 
