@@ -2,53 +2,9 @@
 
 # OWASP Mobile Security Testing Guide
 
-This is the official Github Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for testing the security of mobile apps. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). The MSTG provides a baseline set of test cases for black-box and white-box security tests, ensuring completeness and consistency of the tests.
+This is the official Github Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). For easier naviation, [read the MSTG on Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/).
 
-## Reading the Mobile Security Testing Guide
-
-The MSTG hasn't been officially released yet. There are several options for converting it into an easily readable format:
-
-1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
-
-2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git LFS extension](https://git-lfs.github.com) must be installed to download larger files such as crackme installers.
-
-```bash
-$ git clone https://github.com/OWASP/owasp-mstg/
-$ cd owasp-mstg/Tools/
-$ ./generate_document.sh 
-```
-
-You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
-
-## Contributions, Feature Requests and Feedback
-
-**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks.
-
-Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
-
-http://owasp.herokuapp.com/
-
-Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
-
-If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
-
-## Authoring Credit
-
-Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names is sorted by the number of lines added. Authors are categorized as follows:
-
-- Project Leader / Author: Manage development of the guide continuosly and write a large amount of content.
-- Co-Author: Consistently contribute quality content, [at least 500 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
-- Top Contributor: Consistently contribute quality content, [at least 100 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
-- Contributor: Any form of contribution, [at least 1 addition logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
-- Reviewer: People that haven't submitted their own pull requests, but have created issues or given useful feedback in other ways. 
-
-Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
-
-If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact [Bernhard Mueller](https://github.com/b-mueller) (Slack: *bernhardm*) for more information.
-
-## High-Level Structure
-
-The following lists contain the individual sections of the MSTG. For a detailed lists of all headings see the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). If all you desire is a checklist, download the magic [Excel sheet](https://github.com/OWASP/owasp-mstg/raw/master/Checklists/Mobile_App_Security_Checklist.xlsx).
+## Table-of-Contents
 
 ### Introductionary
 
@@ -94,4 +50,44 @@ The following lists contain the individual sections of the MSTG. For a detailed 
 * [Testing Tools](Document/0x08-Testing-Tools.md)
 * [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
+## Reading the Mobile Security Testing Guide
 
+The MSTG hasn't been officially released yet. There are several options for converting it into an easily readable format:
+
+1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
+
+2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git LFS extension](https://git-lfs.github.com) must be installed to download larger files such as crackme installers.
+
+```bash
+$ git clone https://github.com/OWASP/owasp-mstg/
+$ cd owasp-mstg/Tools/
+$ ./generate_document.sh 
+```
+
+You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
+
+## Contributions, Feature Requests and Feedback
+
+**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks.
+
+Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
+
+http://owasp.herokuapp.com/
+
+Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
+
+If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
+
+## Authoring Credit
+
+Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names is sorted by the number of lines added. Authors are categorized as follows:
+
+- Project Leader / Author: Manage development of the guide continuosly and write a large amount of content.
+- Co-Author: Consistently contribute quality content, [at least 500 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
+- Top Contributor: Consistently contribute quality content, [at least 100 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
+- Contributor: Any form of contribution, [at least 1 addition logged](https://github.com/OWASP/owasp-mstg/graphs/contributors).
+- Reviewer: People that haven't submitted their own pull requests, but have created issues or given useful feedback in other ways. 
+
+Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
+
+If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact [Bernhard Mueller](https://github.com/b-mueller) (Slack: *bernhardm*) for more information.
