@@ -287,8 +287,16 @@ Different types of obfuscating transformations vary in their impact on program c
 --[ TODO - describe effectiveness criteria ] --
 
 **Increase in Overall Program Complexity**
+
+--[ TODO ] --
+
 **Difficulty of CFG Recovery**
+
+--[ TODO ] --
+
 **Resiliency against Automated Program Analysis**
+
+--[ TODO ] --
 
 #### The Use of Complexity Metrics
 
