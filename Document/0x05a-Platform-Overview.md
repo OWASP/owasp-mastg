@@ -49,28 +49,28 @@ File below depicts some of the users defined for Android Nougat:
 
 #### Communication with the Operating System
 
-The Android Framework is creating an abstraction layer for all the layers below, so developers can implement Android apps and can utilize the capabilities of Android without deeper knowledge of them. It also offers a robust implementation that offers common security functions like secure IPC or cryptography.
-
-In Android, apps are developed in Java, and the Operating System offers an API to interact with system resources, like
+As explained above, in Android, applications are written in Java and compiled into a `dex` bytecode. System resources are not accessed directly. Instead the Operating System offers libraries to interact with them. For example:
 * connectivity (Wifi, Bluetooth, NFC, ...),
 * files,
 * cameras,
 * geolocation (GPS),
-* microphone etc.
+* microphone,
+* etc.
 
-System resources cannot be accessed directly, and APIs mediate the access for the user. At the time of writing this guide, the current version of Android API is 7.1 Nougat, API 25.
+The Android Framework is an abstraction layer, offering high-level API easily usable from Java, without the need of deeper understanding of system libraries. Among the rest, it offers common security functions like secure IPC and cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
-APIs have evolved a lot since Android creation (the first release happened in September 2008). Early versions are not supported anymore; however, Android is a living project and new features and bug fixes are periodically made.
+APIs have evolved a lot since first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported, at the time of writing this guide, is 4.4 (KitKat), API level 19.
 
-Noteworthy recent API versions are:
+Noteworthy API versions are:
 - Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
 - Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default)
 - Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced)
 - Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features)
 - Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
-- Android 7.0 Nougat (API 24) in August 2016 (new JIT compiler on ART)
+- Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
+- Android 8.0 O (API 26) beta (mayor security fixes expected) 
 
-After being developed, apps can be installed on mobiles from a variety of sources: locally through USB, from Googles official store (Google Play Store) or from alternate stores.
+Apps can be installed on an Android device from a variety of sources: locally through USB, from Googles official store (Google Play Store) or from alternate stores.
 
 #### App Folder Structure
 
