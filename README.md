@@ -6,7 +6,7 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Join the MSTG Working Session at the OWASP Summit 2017
 
-Join our mobile application security working session at the [OWASP Summit](https://www.owasp.org/index.php/Owasp-Summit-2017)! Our objective is to complete the mobile security testing guide in a hardcore five-days working session. The summit will take place in Woburn Forest Center Parcs, Bedfordshire (50 minutes from London) from June 12th to June 16th. [Sign up here](http://owaspsummit.org/Working-Sessions/Mobile-Security/MSTG.html).
+Rhe [OWASP summit 2017](http://owaspsummit.org) will have a whole 5-days track dedicated the the Mobile Testing Guide! This will be a great opportunity to meet other mobile appsec experts and participate in the creation of the industry standard. Our ambitious goal for the summit to complete the MSTG. The summit will take place in Woburn Forest Center Parcs, Bedfordshire (50 minutes from London) from June 12th to June 16th. [Sign up here](http://owaspsummit.org/Working-Sessions/Mobile-Security/MSTG.html).
 
 ## Table-of-Contents
 
