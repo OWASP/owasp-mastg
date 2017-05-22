@@ -74,8 +74,9 @@ Apps can be installed on an Android device from a variety of sources: locally th
 
 #### App Folder Structure
 
-Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. Since this folder cannot be listed without root, another way has to be used to get the exact name of the apk. To list all installed apks, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real phone, e.g., to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB.
+Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. Since this folder cannot be listed without root, another way has to be used to get the exact name of the APK. To list all installed APKs, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real device. E.g. to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
+To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB can be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As in both cases ADB behaves the same, we further assume the default case where connection over USB is established.
+
 Once USB-Debugging is enabled, the connected devices can be viewed with the following command:
 
 ```bash
