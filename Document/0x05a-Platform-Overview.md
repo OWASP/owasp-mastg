@@ -18,7 +18,7 @@ The software stack of Android comprises of different layers, where each layer is
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
-On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files and then compiled again into the `dex` format. The `dex` files are then executed within the Dalvik VM.
+On the lowest level Android is using the Linux Kernel where the core operating system is built up on. The hardware abstraction layer defines a standard interface for hardware vendors. HAL implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files. However since Android integrates a Dalvik VM, not JVM, the Java class files are then compiled again into the `dex` format. The `dex` files are packed into APK (a ZIP archive containing all resources, including the executable) and then unpacked and executed within the Dalvik VM.
 In the next image you can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
