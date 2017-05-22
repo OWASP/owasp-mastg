@@ -127,7 +127,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 
 #### APK Structure
 
-An app on Android is a file with the extension .apk. This file is a signed zip-file which contains different files for the bytecode, assets, etc. When unzipped the following directory structure can usually be identified:
+An app on Android is a file with the extension .apk. This file is a signed zip-file which contains all of the application's resources, byte code, etc. When unzipped the following directory structure can usually be identified:
 
 ```bash
 $ unzip base.apk
