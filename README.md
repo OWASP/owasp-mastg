@@ -8,10 +8,6 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 Join our mobile application security working session at the [OWASP Summit](https://www.owasp.org/index.php/Owasp-Summit-2017)! Our objective is to complete the mobile security testing guide in a hardcore five-days working session. The summit will take place in Woburn Forest Center Parcs, Bedfordshire (50 minutes from London) from June 12th to June 16th. [Sign up here](http://owaspsummit.org/Working-Sessions/Mobile-Security/MSTG.html).
 
-## Note: Broken Images
-
-Due to a recent increase in traffic our git-lfs quota has been used up. Expect issues with images and other large files until we are able to fix this.
-
 ## Table-of-Contents
 
 ### Introductionary
@@ -64,7 +60,7 @@ The MSTG hasn't been officially released yet. There are several options for conv
 
 1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is auto-synced with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
 
-2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory. Note that the [git LFS extension](https://git-lfs.github.com) must be installed to download larger files such as crackme installers.
+2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
