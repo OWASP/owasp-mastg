@@ -155,7 +155,27 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
-Password policy is a special countermeasure to avoid any application user on creating passwords that are easily guessable. 
+Password strength is a key concern when using passwords for authentication. Password policy defines controls that end users should adhere to. Password Length, Password Complexity and Password Topologies should properly be included in the Password Policy. A "strong" password policy makes it difficult or even improbable for one to guess the password through either manual or automated means. 
+
+A good password policy should defines following controls in order to avoid password guessing attacks or even brute-forcing. 
+#####  Password Length
+* Minimum length of the passwords should be enforced by the application.
+* Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
+
+##### Password Complexity
+* Password must meet at least 3 out of the following 4 complexity rules
+1. at least 1 uppercase character (A-Z)
+2. at least 1 lowercase character (a-z)
+3. at least 1 digit (0-9)
+4. at least 1 special character (punctuation)
+* at least 10 characters
+* at most 128 characters
+* not more than 2 identical characters in a row
+
+##### Password Topologies
+* Ban commonly used password topologies.
+* Force multiple users to use different password topologies.
+* Require a minimum topology change between old and new passwords.
 -- TODO [Provide a general description of the issue "Testing the Password Policy".] --
 
 #### Static Analysis
@@ -231,7 +251,6 @@ Issues related to Password Policy can easily be mitigated if application archite
 
 -- TODO [Add relevant tools for "Testing the Password Policy"] --
 * Enjarify - https://github.com/google/enjarify
-
 
 
 
