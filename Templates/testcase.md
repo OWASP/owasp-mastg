@@ -10,9 +10,6 @@
 
 [Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
 
-##### With Source Code
-
-##### Without Source Code
 
 #### Dynamic Analysis
 
@@ -24,7 +21,7 @@
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
 * MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3

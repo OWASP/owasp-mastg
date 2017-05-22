@@ -19,7 +19,7 @@ When in doubt, you can verify proper capitalization on [www.titlecapitalization.
 
 ## External References
 
-External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: [1]. Remember that the MSTG is supposed to work as a printed document, so always include the full URL like in the examples below (hrefs that hide the URL will obviously be problematic in the print version).
+External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: &lt;sup&gt;[1]&lt;/sup&gt;. Remember that the MSTG is supposed to work as a printed document, so always include the full URL like in the examples below (hrefs that hide the URL will obviously be problematic in the print version).
 
 See the [test case template](Templates/testcase.md) for more examples.
 
@@ -34,7 +34,7 @@ For example:
 
 - [1] NIST, the economic impacts of inadequate infrastructure for software testing - http://www.nist.gov/director/planning/upload/report02-3.pdf
 
-### Other Sources:
+### Link to Books and Papers
 
 Papers:
 
@@ -43,6 +43,10 @@ Papers:
 Books:
 
 - [1] \[Author(s)\], \[Title\], \[Published\], \[Year\]
+
+## References Within The Guide
+
+For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenenient to read as a printed book, so use internal references sparingly.
 
 ## Code and Shell Commands
 
