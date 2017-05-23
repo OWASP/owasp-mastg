@@ -176,9 +176,10 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
-Password strength is a key concern when using passwords for authentication. Password policy defines controls that end users should adhere to. Password Length, Password Complexity and Password Topologies should properly be included in the Password Policy. A "strong" password policy makes it difficult or even improbable for one to guess the password through either manual or automated means. 
+Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. Password length, password complexity and password topologies should properly be included in the Password Policy. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means. 
 
 A good password policy should defines following controls in order to avoid password guessing attacks or even brute-forcing. 
+
 #####  Password Length
 * Minimum length of the passwords should be enforced by the application.
 * Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
