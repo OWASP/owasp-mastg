@@ -176,9 +176,53 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 #### Overview
 
+Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. Password length, password complexity and password topologies should properly be included in the Password Policy. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means. 
+
+A good password policy should defines following controls in order to avoid password guessing attacks or even brute-forcing. 
+
+#####  Password Length
+* Minimum length of the passwords should be enforced by the application.
+* Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
+
+##### Password Complexity
+* Password must meet at least 3 out of the following 4 complexity rules
+1. at least 1 uppercase character (A-Z)
+2. at least 1 lowercase character (a-z)
+3. at least 1 digit (0-9)
+4. at least 1 special character (punctuation)
+* at least 10 characters
+* at most 128 characters
+* not more than 2 identical characters in a row
+
+##### Password Topologies
+* Ban commonly used password topologies.
+* Force multiple users to use different password topologies.
+* Require a minimum topology change between old and new passwords.
 -- TODO [Provide a general description of the issue "Testing the Password Policy".] --
 
 #### Static Analysis
+
+When testing a password policy, a well-defined rule set can be used to verify that source code not contain any previously identified technical or logical security flew. A exemplary rule set (source: VT Password<sup>[1]</sup>) is given below:
+* AllowedCharacterRule - Does a password contain only a specific list of characters
+* AlphabeticalSequenceRule - Does a password contain an alphabetical sequence
+* CharacterCharacteristicRule - Does a password contain the desired mix of character types
+* DictionaryRule - Does a password match a word in a dictionary
+* DictionarySubstringRule - Does a password contain a word in a dictionary
+* DigitCharacterRule - Does a password contain a digit
+* HistoryRule - Does a password match a previous password, supports hashes
+* IllegalCharacterRule - Does a password contain an illegal character
+* LengthRule - Is a password of a certain length
+* LowercaseCharacterRule - Does a password contain a lowercase character
+* NonAlphanumericCharacterRule - Does a password contain a non-alphanumeric character
+* NumericalSequenceRule - Does a password contain a numerical sequence
+* RegexRule - Does a password match a regular expression
+* RepeatCharacterRegexRule - Does a password contain a repeated character
+* SequenceRule - Does a password contain a keyboard sequence
+* SourceRule - Does a password match the password from another system or source
+* QwertySequenceRule - Does a password contain a QWERTY keyboard sequence
+* UppercaseCharacterRule - Does a password contain an uppercase character
+* UsernameRule - Does a password contain a username
+* WhitespaceRule - Does a password contain whitespace
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
@@ -191,6 +235,16 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 -- TODO [Describe how to test for this issue "Testing the Password Policy" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
 #### Remediation
+
+Issues related to Password Policy can easily be mitigated if application architecture is built with it from the beginning of the develpoment. Using regular expressions, developers could implement these policy settings. A list of regaular expressions which was discused in stackoverflow<sup>[2]</sup> is given below:
+* ^                 # start-of-string
+* (?=.*[0-9])       # a digit must occur at least once
+* (?=.*[a-z])       # a lower case letter must occur at least once
+* (?=.*[A-Z])       # an upper case letter must occur at least once
+* (?=.*[@#$%^&+=])  # a special character must occur at least once
+* (?=\S+$)          # no whitespace allowed in the entire string
+* .{8,}             # anything, at least eight places though
+* $                 # end-of-string
 
 -- TODO [Describe the best practices that developers should follow to prevent this issue "Testing the Password Policy".] --
 
@@ -212,14 +266,13 @@ Many Apps do not automatically logout a user, because of customer convenience. T
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] VT Password - https://code.google.com/archive/p/vt-middleware/wikis/vtpassword.wiki
+- [2] Stackoverflow - http://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
 
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing the Password Policy"] --
 * Enjarify - https://github.com/google/enjarify
-
 
 
 
@@ -277,54 +330,104 @@ It is interesting to clarify that incorrect logon attempts should be cumulative 
 * Burp Suite Professional - https://portswigger.net/burp/
 * OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
-
 ### Testing Biometric Authentication
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Biometric Authentication".] --
+Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the  <code>FingerprintManager</code> class <sup>[1]</sup>. An app can request fingerprint authentication instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
+
+By using the fingerprint API in conjunction with the Android KeyGenerator class, apps can create a cryptographic key that must be "unlocked" with the user's fingerprint. This can be used to implement more convenient forms of user login. For example, to allow users access to a remote service, a symmetric key can be created and used to encrypt the user PIN or authentication token. By calling <code>setUserAuthenticationRequired(true)</code> when creating the key, it is ensured that the user must re-authenticate using their fingerprint to retrieve it. The encrypted authentication data itself can then be saved using regular storage (e.g. SharedPreferences).
+
+Apart from this relatively reasonable method, fingerprint authentication can also be implemented in unsafe ways. For instance, developers might opt to assume successful authentication based solely on whether the <code>onAuthenticationSucceeded</code> callback <sup>3</sup> is called. This event however isn't proof that the user has performed biometric authentication - such a check can be easily patched or bypassed using instrumentation. Leveraging the Keystore is the only way to be reasonably sure that the user has actually entered their fingerprint (unless of course, the Keystore is compromised).
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Search for calls of <code>FingerprintManager.authenticate()</code>. The first parameter passed to this method should be a <code>CryptoObject</code> instance. <code>CryptoObject</code> is a wrapper class for the crypto objects supported by FingerprintManager <sup>[2]</sup>. If this parameter is set to <code>null</code>, the fingerprint auth is purely event-bound, which likely causes a security issue.
 
--- TODO [Confirm remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+Trace back the creation of the key used to initialize the cipher wrapped in the CryptoObject. Verify that the key was created using the <code>KeyGenerator</code> class, and that <code>setUserAuthenticationRequired(true)</code> was called when creating the <code>KeyGenParameterSpec</code> object (see also the code samples below).
 
--- TODO [Develop content on "Testing Biometric Authentication" with source code] --
+Verify the authentication logic. For the authentication to be successful, the remote endpoint **must** require the client to present the secret retrieved from the Keystore, or some value derived from the secret.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing Biometric Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+Patch the app or us runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida call the <code>onAuthenticationSucceeded</code> callback directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Biometric Authentication".] --
+Fingerprint authentication should be implemented allong the following lines:
+
+Check whether fingerprint authentication is possible. The device must run Android 6.0 or higher (SDK 23+) and feature a fingerprint sensor. The user must have protected their logscreen and registered at least one fingerprint on the device. If any of those checks failed, the option for fingerprint authentication should not be offered.
+
+When setting up fingerprint authentication, create a new AES key using the <code>KeyGenerator</code> class. Add <code>setUserAuthenticationRequired(true)</code> in <code>KeyGenParameterSpec.Builder</code>. 
+
+```java
+	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
+
+	generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+	      KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+	      .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+	      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+	      .setUserAuthenticationRequired(true)
+	      .build()
+	);
+
+	generator.generateKey();
+```
+
+To perform encryption or decryption, create a <code>Cipher</code> object and initialize it with the AES key. 
+
+```java
+	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+
+    if (mode == Cipher.ENCRYPT_MODE) {
+        cipher.init(mode, keyspec);
+```
+
+Note that the key cannot be used right away - it has to be authenticated through <code>FingerprintManager</code> first. This involves wrapping <code>Cipher</code> into a <code>FingerprintManager.CryptoObject</code> which is passed to <code>FingerprintManager.authenticate()</code>.
+
+```java
+	cryptoObject = new FingerprintManager.CryptoObject(cipher);
+	FingerprintHandler helper = new FingerprintHandler(this);
+	helper.startAuth(fingerprintManager, cryptoObject);
+```
+
+If authentication succeeds, the callback method <code>onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)</code> is called, and the authenticated CryptoObject can be retrieved from the authentication result. 
+
+```java
+public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+	cipher = result.getCryptoObject().getCipher();
+
+	(... do something with the authenticated cipher object ...)
+}
+```
+
+For a full example, see the blog article by Deivi Taka <sup>[4]</sup>.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 * 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Biometric Authentication"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-287 - Improper Authentication
+- CWE-604 - Use of Client-Side Authentication
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] FingerprintManager - https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.html
+- [2] FingerprintManager.CryptoObject - https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html
+- [3] https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder.html#setUserAuthenticationRequired(boolean)
+- [4] Securing Your Android Appps with the Fingerprint API - https://www.sitepoint.com/securing-your-android-apps-with-the-fingerprint-api/#savingcredentials
 
 ##### Tools
 
--- TODO [Add relevant tools for "Testing Biometric Authentication"] --
-* Enjarify - https://github.com/google/enjarify
-
-
-
+N/A
 
 ### Testing the Session Timeout
 

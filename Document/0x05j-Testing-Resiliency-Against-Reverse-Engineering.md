@@ -1067,7 +1067,23 @@ N/A
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Memory Integrity Checks".] --
+Controls in this category verify the integrity of the app's own memory space. The goal is to protect against modifications applied both to the app's files, as well against as memory patches applied during runtime. This includes unwanted changes to binary code or bytecode, functions pointer tables, and important data structures. 
+
+In principle, this is done by comparing the contents of memory, or a checksum over the contents, with known "good" values. There are many ways of implementing such checks.
+
+**Detecting GOT hooks**
+
+In the world of ELF binaries, the Global Offset Table (GOT) is used as a layer of indirection for calling library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. Because the GOT is located in writeable memory, it is possible to overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code.
+
+This type of hooks can be detected by verifying that each GOT entry points into a legitimately loaded library.
+
+In contrast to GNU <code>ld</code>, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding).
+
+**Detecting Inline Hooks***
+
+An inline hook overwrites the first few bytes of a function to redirects control flow to adversary-controlled code.
+
+-- TODO [Needs more research and code samples] --
 
 #### Static Analysis
 
@@ -1100,8 +1116,7 @@ N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. "Detecting GOT Overwrites", p. 743.
 
 ##### Tools
 

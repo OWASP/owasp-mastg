@@ -302,6 +302,50 @@ selecting f75640f67144d9a3 (unknown sdk 4.1.1)
 dz>
 ```
 
+##### Using Modules
+
+Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few
+remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
+
+###### Finding Modules
+
+The official Drozer module repository is hosted alongside the main project on Github. This is automatically set
+up in your copy of Drozer. You can search for modules using the `module` command:
+
+```bash
+dz> module search tool
+kernelerror.tools.misc.installcert
+metall0id.tools.setup.nmap
+mwrlabs.tools.setup.sqlite3
+```
+
+For more information about a module, pass the `–d` option to view the module's description:
+
+```
+dz> module  search url -d
+mwrlabs.urls
+    Finds URLs with the HTTP or HTTPS schemes by searching the strings
+    inside APK files.
+    
+        You can, for instance, use this for finding API servers, C&C
+    servers within malicious APKs and checking for presence of advertising
+    networks.
+
+```
+
+###### Installing Modules
+
+You can install modules using the `module` command:
+
+```
+dz> module install mwrlabs.tools.setup.sqlite3
+Processing mwrlabs.tools.setup.sqlite3... Already Installed.
+Successfully installed 1 modules, 0 already installed
+```
+
+This will install any module that matches your query. Newly installed modules are dynamically loaded into the
+console and are available for immediate use.
+
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
 Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) and is a free service offered by Google and allows to send messages between an application server and client apps. The server and client app are communicating via the FCM/GCM connection server that is handling the downstream and upstream messages.
