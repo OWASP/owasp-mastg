@@ -30,10 +30,11 @@ Foreword.md \
 0x06i-Testing-Code-Quality-and-Build-Settings.md \
 0x06c-Reverse-Engineering-and-Tampering.md \
 0x06j-Testing-Resiliency-Against-Reverse-Engineering.md \
-0x07-Appendix \
+0x07-Appendix.md \
 0x07a-Testing-Authentication-and-Session-Management.md \
 0x07b-Testing-Network-Communication.md \
-0x07c-Assessing-Anti-Reverse-Engineering-Schemes.md \
+0x07c-Testing-Cryptography.md \
+0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md \
 0x08-Testing-Tools.md \
 0x09-Suggested-Reading.md \
 0x08-Testing-Tools.md \

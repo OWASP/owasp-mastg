@@ -27,7 +27,7 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 - [Android Security Testing Basics](Document/0x05b-Basic-Security_Testing.md)
 - [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x05e-Testing-Cryptography.md)
-- [Testing Authentication and Session Management](Document/0x05f-Testing-Local-Authentication.md)
+- [Testing Local Authentication](Document/0x05f-Testing-Local-Authentication.md)
 - [Testing Network Communication](Document/0x05g-Testing-Network-Communication.md)
 - [Testing Platform Interaction](Document/0x05h-Testing-Platform-Interaction.md)
 - [Testing Code Quality and Build Settings](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md)
@@ -40,7 +40,7 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 - [iOS Security Testing Basics](Document/0x06b-Basic-Security-Testing.md)
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x06e-Testing-Cryptography.md)
-- [Testing Authentication and Session Management](Document/0x06f-Testing-Local-Authentication.md)
+- [Testing Local Authentication](Document/0x06f-Testing-Local-Authentication.md)
 - [Testing Network Communication](Document/0x06g-Testing-Network-Communication.md)
 - [Testing Platform Interaction](Document/0x06h-Testing-Platform-Interaction.md)
 - [Testing Code Quality and Build Settings](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md)
@@ -51,7 +51,8 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 
 * [Testing Authentication and Session Management](Document/0x07a-Testing-Authentication-and-Session-Management.md)
 * [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
-* [Assessing Anti-Reverse Engineering Schemes](Document/0x07c-Assessing-Anti-Reverse-Engineering-Schemes.md)
+* [Testing Cryptography](Document/0x07c-Testing-Cryptography.md)
+* [Assessing Anti-Reverse Engineering Schemes](Document/0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](Document/0x08-Testing-Tools.md)
 * [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
