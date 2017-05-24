@@ -1,4 +1,4 @@
-## Testing Network Communication
+## Testing Network Communication in iOS Apps
 
 ### Testing for Unencrypted Sensitive Data on the Network
 
