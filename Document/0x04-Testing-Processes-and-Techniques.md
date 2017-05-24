@@ -31,15 +31,19 @@ Please note that there is a little ambiguity when discussion `native` apps for A
 
 Biggest downside of native apps is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases.
 
+#### Web App
+
+Mobile Web apps, or simply Web apps, are websites designed to look and feel like a native app. They run in a browser and are usually developed in HTML5. Normally, both Android and iOS allow for launcher icons to be created out of bookmarked Web apps, which simply run the default web browser and load the bookmarked app.
+
+Web apps have limited integration with the components of the device and usually have a noticeable difference in performance. Since they typically target multiple platforms, their UI does not follow some of the design principles users are used to. Their biggest advantage is the price for supporting multiple platforms (only slight adaptation in the UI can server well most desktop and mobile operating systems), as well as their flexibility for delivering new content (as they are not delivered over an official application store, which sometimes take weeks to distribute through).
+
 #### Hybrid App
 
-Hybrid Apps are similar to Native Apps, runs on a smart phone or tablet devices, and are written with web technologies, which consists of HTML5, CSS and JavaScript. Hybrid Apps run within a native container, and leverages on the device's browser engine (but not the browser, only the browser engine) to render the HTML content and process the JavaScript locally. A web-to-native abstraction layer enables access to device capabilities that are not accessible in Mobile Web applications, such as the accelerometer, camera and local storage.
+Hybrid apps attempt to fill the gap between native and web apps. Namely, hybrid apps are (distributed and executed as) native apps, that have majority of their content implemented on top of web technologies, running in an embedded web browser (web view). As such, hybrid apps inherit some of the pros and cons of both native and web apps.
 
-Companies usually build hybrid apps as wrappers for an existing web page, as an attempt to gain presence within the app store of the respective mobile operating systems, without spending significant effort for developing a different app. Hybrid apps are also popular because they allow cross platform development and thus significantly reduce development costs. The way it is able to support cross platform development is through the usage of the same HTML code components which is then being reused on different mobile operating systems.
+A web-to-native abstraction layer enables access to device capabilities for hybrid apps that are not accessible to mobile web applications. Depending on the framework used for developing, one code base can result in multiple applications, targeting separate platforms, with a UI closely resembling that of the targeted platform. Nevertheless, usually significant effort is required to exactly match the look and feel of a native app.
 
-For example, the HTML, CSS and JavaScript code that is rendered by the browser engine on an Android mobile device could also be rendered in the same way on an iOS mobile device. They will look the same but they may not look native. It is not difficult to visually differentiate between the User Interface (UI) of a Native App and a Hybrid App.   
-
-The following is a non-exhaustive list of the more popular frameworks for developing Hybrid Apps:
+Following is a non-exhaustive list of more popular frameworks for developing Hybrid Apps:
 
 * Apache Cordova - https://cordova.apache.org/
 * Framework 7 - http://framework7.io/
@@ -49,14 +53,6 @@ The following is a non-exhaustive list of the more popular frameworks for develo
 * Onsen UI - https://onsen.io/
 * React Native - http://www.reactnative.com/
 * Sencha Touch - https://www.sencha.com/products/touch/
-
-#### Web App
-
-Web App, more commonly known as the Mobile Web App, are simply websites that were designed to look and feel like a native mobile app, but not implemented as such. Web App are run on a browser (unlike Hybrid App which run on browser engine, Web App run on browser) and are usually developed in HTML5.
-
-Firstly, users will access the Web App on browser via a specific URL, where the look and feel is almost, quite identical to a native mobile app. To perform the installation of the app, a simple bookmark shortcut will be created on the Home screen of the device.
-
-Web App was very popular when HTML5 was first released and people noticed its capability to achieve a look and feel which is very similar to a native app. Today, as the usage of native apps has increased significantly, it become obvious in differentiating between a Web App and a Native App, even for non-tech savvy personnel.
 
 ### Testing Process
 
