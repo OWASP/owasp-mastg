@@ -1,8 +1,8 @@
-## Testing Authentication and Session Management on the Endpoint
+## Testing Authentication and Session Management
 
 The following chapter outlines authentication and session management requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
 
-### Verifying that Users Are Properly Authenticated
+### Verify that Users Are Properly Authenticated
 
 #### Overview
 
@@ -51,6 +51,8 @@ If any of these two conditions raise an issue, reject the request and do not all
 ##### Tools
 
 * Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
+
+
 
 ### Testing Session Management
 
@@ -117,6 +119,8 @@ It is strongly advised to use built-in session token generators as they are usua
 * Zed Attack Proxy
 * Burp Suite
 
+
+
 ### Testing the Logout Functionality
 
 #### Overview
@@ -176,6 +180,8 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 * [1] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
 * [2] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
+
+
 ### Testing the Password Policy
 
 #### Overview
@@ -234,6 +240,7 @@ For further details check the OWASP Authentication Cheat Sheet<sup>[1]</sup>.
 ##### Info
 * [1] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
 * [2] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
+
 
 
 ### Testing Excessive Login Attempts
@@ -344,6 +351,7 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 * [2] OWASP Session management cheatsheet https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
+
 ### Testing 2-Factor Authentication
 
 #### Overview
@@ -438,6 +446,10 @@ https://authy.com/blog/security-of-sms-for-2fa-what-are-your-options/
 
 -- TODO [Add relevant tools for "Testing Step-up Authentication"] --
 * Enjarify - https://github.com/google/enjarify
+
+
+
+
 
 
 ### Testing User Device Management
