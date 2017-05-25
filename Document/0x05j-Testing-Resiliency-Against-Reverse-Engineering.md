@@ -1,4 +1,4 @@
-## Testing Anti-Reversing Defenses
+## Testing Anti-Reversing Defenses on Android
 
 ### Testing Root Detection
 
@@ -1067,7 +1067,23 @@ N/A
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Memory Integrity Checks".] --
+Controls in this category verify the integrity of the app's own memory space. The goal is to protect against modifications applied both to the app's files, as well against as memory patches applied during runtime. This includes unwanted changes to binary code or bytecode, functions pointer tables, and important data structures. 
+
+In principle, this is done by comparing the contents of memory, or a checksum over the contents, with known "good" values. There are many ways of implementing such checks.
+
+**Detecting GOT hooks**
+
+In the world of ELF binaries, the Global Offset Table (GOT) is used as a layer of indirection for calling library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. Because the GOT is located in writeable memory, it is possible to overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code.
+
+This type of hooks can be detected by verifying that each GOT entry points into a legitimately loaded library.
+
+In contrast to GNU <code>ld</code>, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding).
+
+**Detecting Inline Hooks***
+
+An inline hook overwrites the first few bytes of a function to redirects control flow to adversary-controlled code.
+
+-- TODO [Needs more research and code samples] --
 
 #### Static Analysis
 
@@ -1100,8 +1116,7 @@ N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. "Detecting GOT Overwrites", p. 743.
 
 ##### Tools
 
@@ -1113,7 +1128,7 @@ N/A
 #### Overview
 
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well.
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
 
 #### Static Analysis
 
@@ -1170,9 +1185,10 @@ There are a few ways to test the application binding:
 
 #### Remediation
 
-Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
+Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <code>[1]</code>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <code>[2]</code>. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
+
 - augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
 - obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
 - Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
@@ -1181,7 +1197,7 @@ The following 3 identifiers can be possibly used.
 
 ##### Google InstanceID
 
-Google InstanceID[https://developers.google.com/instance-id/] uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
+Google InstanceID <sup>[5]</sup> uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
 You need to take the following steps into account for instanceID:
 0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
 
@@ -1241,9 +1257,10 @@ Lastly register the service in your AndroidManifest:
   </intent-filter>
 </service>
 ```
+
 When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
 
-Please note that Firebase has support for InstanceID as well [https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId].
+Please note that Firebase has support for InstanceID as well <sup>[4]</sup>.
 -- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
 
 ##### IMEI & Serial
@@ -1288,6 +1305,7 @@ Retrieving the IMEI in Android works as follows:
 ##### SSAID
 
 Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general. you can retrieve the SSAID as follows:
+
 ```java
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
@@ -1304,8 +1322,7 @@ Please note that Google recommends against using these identifiers unless there 
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Device Binding"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+N/A
 
 ##### Info
 - [1] Changes in the Android device identifiers - https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html

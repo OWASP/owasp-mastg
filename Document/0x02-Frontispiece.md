@@ -19,7 +19,7 @@ Note: This table is generated based on the contribution log, which can be found 
 
 | Project Leaders and Authors | Co-Authors | Top Contributors | Contributors | Reviewers |
 | --- | --- | --- | --- | --- |
-| Bernhard Mueller, Sven Schleier | Romuald Szkudlarek, Francesco Stillavato, Pawel Rzepa, Abdessamad Temmar, Slawomir Kosowski | Jin Kung Ong,  Alexander Antukh,  Jeroen Willemsen, Gerhard Wagner, Ryan Teoh, Daniel Ramirez Martin, Claudio André, Prathan Phongthiproek, Luander Ribeiro| Michael Helwig, Oguzhan Topgul, Pishu Mahtani, *D00gs*, Stefan Streichsbier, Ben Actis, Anatoly Rosencrantz, Ali Yazdani, Sebastian Banescu, Prabhant Singh, *Romantic668*, Stephen Corbiaux, *Demonbensa*, Anuruddha (L3Osi13nT), Ben Gardiner | Anant Shrivastava, Stephanie Vanroelen |
+| Bernhard Mueller, Sven Schleier | Romuald Szkudlarek, Francesco Stillavato, Pawel Rzepa, Abdessamad Temmar, Slawomir Kosowski | Jin Kung Ong,  Alexander Antukh,  Jeroen Willemsen, Henry Hoggard, Gerhard Wagner, Ryan Teoh, Daniel Ramirez Martin, Claudio André, Prathan Phongthiproek, Luander Ribeiro| Michael Helwig, Oguzhan Topgul, Pishu Mahtani, *D00gs*, Stefan Streichsbier, Ben Actis, Anatoly Rosencrantz, Ali Yazdani, Sebastian Banescu, Prabhant Singh, *Romantic668*, Stephen Corbiaux, *Demonbensa*, Anuruddha (L3Osi13nT), Ben Gardiner | Anant Shrivastava, Stephanie Vanroelen |
 
 ### Older Versions
 
