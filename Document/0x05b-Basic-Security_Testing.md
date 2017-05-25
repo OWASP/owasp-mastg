@@ -8,7 +8,7 @@ This section will give an overview of different methods on how an Android app ca
 
 #### Preparation
 
-The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These can slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+The goal of a test is to verify if the app and the client side of it's communication with the endpoint(s), are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These can slow down the testing dramatically and might already take days to bypass, depending on the implementation.
 
 During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
