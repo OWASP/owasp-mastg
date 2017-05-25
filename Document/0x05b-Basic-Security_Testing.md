@@ -153,10 +153,9 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 
 ##### Root Detection
 
-To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
+To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. Please note that root detection mechanisms are relatively easy to circumvent and should only be used to support, but not base the app security upon. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
 
 To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
-
 
 ### Testing Methods
 
