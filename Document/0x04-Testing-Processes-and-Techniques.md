@@ -348,27 +348,11 @@ These are only suggestions, and other metrics may be even more relevant in your 
 
 ### Testing methods
 
-In a standard SDLC workflow, security testing are part of the testing activities (consists of other testings i.e. functional testing, etc.) that is performed to validate both the security functionality of the application as a whole, as well as the exposure to application level vulnerabilities. 
-
-The objective of the security testing is to determine whether any identified vulnerabilities can be exploited and expose the application to real risks. To achieve the objective of a secure application, there are numerous ways to perform the security testing. On a high level perspective, these methods could be grouped under one of the following three methods of testing, namely the black box, white box and gray box testing.
-
 #### Black box
-
-Black box testing is a method of testing that examines the functionality of an application without any prior knowledge regarding the internal structures or workings of the target application. In testing the functionality of the application, the tester is aware of what the software is supposed to do but is not aware of how it does it. For instance, the tester is aware that a particular input returns a certain, invariable output but is not aware of how the software produces the output in the first place. 
-
-The goal of a black box testing is to simulate an external hacking attack, where attackers merely know your web application URL but not any other details regarding the code, algorithm or the underlying software. 
 
 #### White box
 
-White box testing is a method of testing that evaluates the internal structures or workings of an application, as opposed to its functionality (e.g. black box testing). To achieve the objective of the evaluation, the tester needs to have full knowledge regarding the internal structures and workings of the application, including the application source code. 
-
-The goal of a white box testing is to simulate a malicious insider who has full knowledge and also the basic credentials for the tested application.  
-
 #### Grey box
-
-Gray box testing is a method of testing where testers has only partial knowledge with regards to the internal structures and workings of an application, which includes access to the documentation or algorithm used but not full knowledge and implementation about them. The details are usually high level and the amount of details would depend on the scope of testing. 
-
-The goal of a gray box testing is to simulate a kind of hybrid scenario where internal information about an application were leaked through various methods, which resulted in attackers gaining additional information regarding the target application. In another words, it takes the straight forward technique of black box testing and combines it with the code targeted technique in white box testing. 
 
 ### Team management
 
