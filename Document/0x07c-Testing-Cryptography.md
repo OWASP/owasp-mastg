@@ -309,3 +309,54 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 -- TODO --
 
 * link to ocl hashcat
+
+
+
+### Test if encryption provides data integrity protection
+
+#### Overview
+
+-- TODO: write Introduction --
+
+* encryption only protects data confidenciality, not integrity
+* e.g., bit-flip attacks are possible
+
+#### Static Analysis
+
+-- TODO --
+
+* check source code for used algorithm
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+#### Remediation
+
+-- TODO --
+
+* use integrity-preserving encryption
+* maybe mention the whole mac-then-encrypt vs encrypt-then-mac problems
+* preferably use AEAD
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+##### Tools
+
+-- TODO --
