@@ -360,3 +360,54 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### Tools
 
 -- TODO --
+
+
+
+
+### if symmetric encryption or MACs are used, test for hard coded secret keys
+
+#### Overview
+
+-- TODO: write Introduction --
+
+* encryption is only as secure as its key
+
+#### Static Analysis
+
+-- TODO --
+
+* check source code for used key strings
+* check property files for used keys
+* check files for used keys
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+* reverse engineer source code, then do the same
+
+#### Remediation
+
+-- TODO --
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+##### Tools
+
+-- TODO --
