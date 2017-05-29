@@ -198,3 +198,58 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### Tools
 * QARK - https://github.com/linkedin/qark
 * Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+
+
+
+### Testing if anything but a KDF (key-derivation function) is used for storing passwords
+
+#### Overview
+
+-- TODO: write Introduction --
+
+* move text from generic description to this section
+* describe hashes vs key-derivation-function
+
+#### Static Analysis
+
+-- TODO --
+
+* check source code for used algorithm
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+* check extracted hashes with ocl hashcat
+
+#### Remediation
+
+-- TODO --
+
+* use bcrypt/scrypt
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+* link to oclhashcat performance values
+
+##### Tools
+
+-- TODO --
+
+* link to ocl hashcat
