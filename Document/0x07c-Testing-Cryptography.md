@@ -126,8 +126,6 @@ Periodically ensure that used key length fulfill accepted industry standards.
 
 ### Testing for Custom Implementations of Cryptography
 
--- [TODO - needs more review / editing ] --
-
 #### Overview
 
 The use of a non-standard and custom build algorithm for cryptographic functionalities is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
@@ -136,43 +134,13 @@ The use of a non-standard and custom build algorithm for cryptographic functiona
 
 Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit shift operators like exclusive OR operations might be a good sign to start digging deeper.
 
--- [TODO - The below content was merged from the old iOS 'Verifying Cryptographic Key Management' section. This section needs some review and editing] --
-
-During static analysis, it is important understand how cryptographic algorithms used by the particular target app. Let us divide applications into three main categories:
-
-1. An application is a pure online application, where authentication, authorization is done online with application server and no information is stored locally.
-2. An application is mainly an offline application, where authentication and authorization is done purely locally. Application information is stored also locally.
-3. An application is a mixture of the first two, i.e. it supports both: online and offline authentication, some information may be stored locally and some or all actions that are performed online may be performed offline.
-   * A good example of such an app, may be point of sale (POS), where seller may sell products. The app requires connection to the internet, so that it can communicate with backend and update information on products that were sold, cash amount, etc. However, there might be a business requirement that this app must also work in offline mode and would synchronize all information once it connects back to the internet. This will be a mixed app type, i.e. online and offline.
-
-The following checks would be performed in the last two app categories:
-
-* Ensure that no keys/passwords are hardcoded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
-* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hardcoded keys.
-* If the application is using two-way SSL (i.e. there is both server and client certificate validated) check if:
-   * the password to the client certificate is not stored locally, it should be in the Keychain
-   * the client certificate is not shared among all installations (e.g. hardcoded in the app)
-
-A proper way would be to generate the client certificate upon user registration/first login and then store it in the Keychain.
-
-* Ensure that the keys/passwords/logins are not stored in application data. This can be included in the iTunes backup and increase attack surface. Keychain is the only appropriate place to store credentials of any type (password, certificate, etc.).
-* Ensure that keychain entries have appropriate protection class. The most rigorous being `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` which translates to: entry unlocked only if passcode on the device is set and device is unlocked; the entry is not exportable in backups or by any other means.
-
-The following checks would be performed in the offline application:
-
-* if the app relies on an additional encrypted container stored in app data, ensure how the encryption key is used;
-   * if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
-   * check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
-
 #### Dynamic Analysis
 
 The recommended approach is be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
 
 #### Remediation
 
-Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers.
-
-When there is a need to store sensitive data, use strong, up-to-date cryptographic algorithms. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations. The KeyStore is suitable for storing sensitive information locally and a list of strong ciphers offered by it can be found in the Android documentation<sup>[1]</sup>.
+Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
 
 #### References
 
@@ -416,7 +384,21 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 -- TODO: write Introduction --
 
-* encryption is only as secure as its key
+The following checks would be performed in the last two app categories:
+
+* Ensure that no keys/passwords are hardcoded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
+* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hardcoded keys.
+* If the application is using two-way SSL (i.e. there is both server and client certificate validated) check if:
+   * the password to the client certificate is not stored locally, it should be in the Keychain
+   * the client certificate is not shared among all installations (e.g. hardcoded in the app)
+
+
+The following checks would be performed in the offline application:
+
+* if the app relies on an additional encrypted container stored in app data, ensure how the encryption key is used;
+   * if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
+   * check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
+
 
 #### Static Analysis
 
@@ -426,11 +408,72 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * check property files for used keys
 * check files for used keys
 
+A proper way would be to generate the client certificate upon user registration/first login and then store it in the Keychain.
+
+* Ensure that the keys/passwords/logins are not stored in application data. This can be included in the iTunes backup and increase attack surface. Keychain is the only appropriate place to store credentials of any type (password, certificate, etc.).
+* Ensure that keychain entries have appropriate protection class. The most rigorous being `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` which translates to: entry unlocked only if passcode on the device is set and device is unlocked; the entry is not exportable in backups or by any other means.
+*
 #### Dynamic Analysis
 
 -- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
 
 * reverse engineer source code, then do the same
+
+#### Remediation
+
+-- TODO --
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+##### Tools
+
+-- TODO --
+
+
+
+
+### Test if proper cryptographic means are used
+
+#### Overview
+
+-- TODO --
+
+* reference the other testing blocks within this section
+* move this to the beginning of the document
+* hash vs mac vs signature
+* symmetric vs. public key encryption
+
+During static analysis, it is important understand how cryptographic algorithms used by the particular target app. Let us divide applications into three main categories:
+
+1. An application is a pure online application, where authentication, authorization is done online with application server and no information is stored locally.
+2. An application is mainly an offline application, where authentication and authorization is done purely locally. Application information is stored also locally.
+3. An application is a mixture of the first two, i.e. it supports both: online and offline authentication, some information may be stored locally and some or all actions that are performed online may be performed offline.
+   * A good example of such an app, may be point of sale (POS), where seller may sell products. The app requires connection to the internet, so that it can communicate with backend and update information on products that were sold, cash amount, etc. However, there might be a business requirement that this app must also work in offline mode and would synchronize all information once it connects back to the internet. This will be a mixed app type, i.e. online and offline.
+
+
+#### Static Analysis
+
+-- TODO --
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
 
 #### Remediation
 
