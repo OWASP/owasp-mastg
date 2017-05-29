@@ -75,7 +75,7 @@ $ sudo pip install frida
 
 As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device. 
 
-The *usbmux* is handled by */System/Library/PrivateFrameworks/MobileDevice.framework/Resources/usbmuxd*, which is a socket daemon that watches for iPhone connections via USB. <code>usbmuxd</code><sup>[18]</sup> is a socket daemon for multiplexing connections over USB to iOS devices. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via */var/run/usbmuxd*<sup>[27]</sup>.
+The *usbmux* is handled by */System/Library/PrivateFrameworks/MobileDevice.framework/Resources/usbmuxd*, which is a socket daemon that watches for iPhone connections via USB<sup>[18]</sup>. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via */var/run/usbmuxd*<sup>[27]</sup>.
 
 On MacOS:
 
