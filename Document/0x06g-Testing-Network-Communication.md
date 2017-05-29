@@ -76,7 +76,7 @@ The following is a summarised list of App Transport Security Requirements<sup>[1
 
 ##### ATS Exceptions
 
-ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the NSAppTransportSecurity key. These exceptions can be allied to
+ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the NSAppTransportSecurity key. These exceptions can be applied to
 * allow insecure connections (HTTP),
 * lower the minimum TLS version,
 * disable PFS and 
