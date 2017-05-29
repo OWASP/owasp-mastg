@@ -49,16 +49,16 @@
 ### Testing App Transport Security
 
 #### Overview
-App Transport Security (ATS)<sup>[1]</sup> is a set of security checks that the operating system enforces when making connections with NSURLConnection <sup>[2]</sup>, NSURLSession and CFURL<sup>[3]</sup> to public hostnames. ATS is enabled on application build on iOS SDK 9 and above.
+App Transport Security (ATS)<sup>[1]</sup> is a set of security checks that the operating system enforces when making connections with NSURLConnection <sup>[2]</sup>, NSURLSession and CFURL<sup>[3]</sup> to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
 
 ATS is enforced only when making connections to public hostnames. Therefore any connection made to an IP address, unqualified domain names or TLD of .local is  not protected with ATS.
 
-The following is a summarised list of App Transport Security Requirements<sup>[1]</sup>
+The following is a summarised list of App Transport Security Requirements<sup>[1]</sup>:
 - No HTTP connections are allowed
 - Transport Layer Security (TLS) version must be 1.2 or above and it must,
     - support Perfect Forward Secrecy (PFS) through Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) key exchange and,
     - AES-128 or AES-256 symmetric ciphers
-    - The cipher suit must be one of the following
+    - The cipher suit must be one of the following:
         * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 
         * TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 
         * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 
@@ -71,17 +71,17 @@ The following is a summarised list of App Transport Security Requirements<sup>[1
         * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 
         * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
 
-- The Certificate have a SHA256 fingerprint and must be signed with at least 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key
+- The Certificate has a SHA256 fingerprint and must be signed with at least 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key.
 
-ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the NSAppTransportSecurity key. These exceptions can be allied to
-- allow insecure connections (HTTP),
-- lower the minimum TLS version,
-- disable PFS and
-- allow connections to local domains
+ATS restrictions can be disabled by configuring exceptions in the file Info.plist under the NSAppTransportSecurity key. These exceptions can be allied to:
+- Allow insecure connections (HTTP),
+- Lower the minimum TLS version,
+- Disable PFS and
+- Allow connections to local domains.
 
-Starting from January 1 2017, Apple App Store review and requires justification if ATS exceptions are defined
+Starting from January 1 2017, Apple App Store reviews require justification if ATS exceptions are defined.
 
--- TODO: Decribe ATS exceptions --
+-- TODO: Describe ATS exceptions --
 
 
 #### Static Analysis
@@ -108,7 +108,8 @@ Starting from January 1 2017, Apple App Store review and requires justification 
 
 ##### OWASP MASVS
 
-— TODO —
+* V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
+* V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 
 ##### CWE
 
@@ -208,4 +209,3 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 * [1] Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 * [2] OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
-
