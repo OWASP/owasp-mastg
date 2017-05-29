@@ -4,21 +4,19 @@ The following chapter outlines cryptography requirements of the MASVS into techn
 
 Proper cryptographic key management is a common pitfall when designing mobile applications.
 
-
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
 
-Choosing strong cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected if misconfigured. Many previously strong algorithms and their configurations are now considered vulnerable or non-compliant with best practices. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
-
 Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements.
+
+Many previously strong algorithms and their configurations are now considered vulnerable or non-compliant with best practices. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
 
 #### Static Analysis
 
 The following list shows different checks to validate the usage of cryptographic algorithms in source code:
 
 * Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the app and server code base.
-* Key lengths are in-line with industry standards and provide protection for sufficient amount of time. An online comparison of different key lengths and protection they provide taking into account Moore's law is available online<sup>[3]</sup>.
 * Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
@@ -51,6 +49,54 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * Integrity: SHA-256, SHA-384, SHA-512
 * Digital signature: RSA (3072 bits and higher), ECDSA with NIST P-384
 * Key establishment: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
+
+#### References
+
+##### OWASP Mobile Top 10
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+
+##### CWE
+* CWE-326: Inadequate Encryption Strength
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+
+##### Info
+- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
+- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
+- [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
+- [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
+- [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
+
+##### Tools
+* QARK - https://github.com/linkedin/qark
+* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+
+ 
+
+
+### Testing for Insecure Cryptographic Algorihm Configuration
+
+#### Overview
+
+Choosing strong cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected if misconfigured.
+
+#### Static Analysis
+
+The following list shows different checks to validate the usage of cryptographic algorithms in source code:
+
+* Key lengths are in-line with industry standards and provide protection for sufficient amount of time. An online comparison of different key lengths and protection they provide taking into account Moore's law is available online<sup>[3]</sup>.
+* Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+#### Remediation
+
+Periodically ensure that used key length fulfill accepted industry standards.
 
 #### References
 
