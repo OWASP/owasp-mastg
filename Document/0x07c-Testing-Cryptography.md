@@ -253,3 +253,59 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 -- TODO --
 
 * link to ocl hashcat
+
+
+
+### Test if user-supplied credentials are not directly used as key material
+
+#### Overview
+
+-- TODO: write Introduction --
+
+* sometimes a password is directly used as key for cryptographic functions
+* sometimes it is even filled with spaces to achieve the cryptographic' algorithm's requirements
+
+#### Static Analysis
+
+-- TODO --
+
+* check source code for used algorithm
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+* check extracted hashes with ocl hashcat
+
+#### Remediation
+
+-- TODO --
+
+* use password as input data for a secure hashing function
+* this improves the keyspace of the selected cryptographic function
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+* link to oclhashcat performance values
+
+##### Tools
+
+-- TODO --
+
+* link to ocl hashcat
