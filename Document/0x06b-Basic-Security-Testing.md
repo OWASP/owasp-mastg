@@ -26,9 +26,8 @@ Recommended is:
 ### Jailbreaking iOS
 
 In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
-There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and install Cydia. 
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037). A great book on iOS Security Internals has been written and published by  Jonathan Levin. This won't be very useful for iOS application security testing, but will definitely help dive into the world of iOS exploitation and jailbreak analysis<sup>[11]</sup>.
+There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and install Cydia. 
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
