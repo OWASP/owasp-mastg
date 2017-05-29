@@ -4,6 +4,7 @@ The following chapter outlines cryptography requirements of the MASVS into techn
 
 Proper cryptographic key management is a common pitfall when designing mobile applications.
 
+
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
@@ -38,15 +39,6 @@ Example initialization of DES algorithm, that is considered weak:
 Cipher cipher = Cipher.getInstance("DES");
 ```
 
-##### Block cipher encryption modes
-ECB (Electronic Codebook) encryption mode should not be used, as it is basically a raw cipher. A message is divided into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>.
-
-![Electronic Codebook (ECB mode encryption)](Images/Chapters/0x07c/ECB.png)
-
-The problem with this encryption method is that any resident properties of the plaintext might well show up in the cipher text, just possibly not as clearly. That's what blocks and key schedules are supposed to protect against, but analyzing the patterns you may be able to deduce properties that you otherwise thought were hidden.
-
-![Difference of encryption modes](Images/Chapters/0x07c/EncryptionMode.png)
-
 #### Dynamic Analysis
 
 -- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
@@ -79,7 +71,6 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 - [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 - [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
-- [6] Electronic Codebook (ECB) - https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
 
 ##### Tools
 * QARK - https://github.com/linkedin/qark
@@ -150,3 +141,60 @@ When there is a need to store sensitive data, use strong, up-to-date cryptograph
 
 ##### Info
 [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
+
+
+
+
+### Testing for Usage of ECB Mode
+
+#### Overview
+
+-- TODO: write Introduction --
+
+ECB (Electronic Codebook) encryption mode should not be used, as it is basically a raw cipher. A message is divided into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>.
+
+![Electronic Codebook (ECB mode encryption)](Images/Chapters/0x07c/ECB.png)
+
+The problem with this encryption method is that any resident properties of the plaintext might well show up in the cipher text, just possibly not as clearly. That's what blocks and key schedules are supposed to protect against, but analyzing the patterns you may be able to deduce properties that you otherwise thought were hidden.
+
+![Difference of encryption modes](Images/Chapters/0x07c/EncryptionMode.png)
+
+#### Static Analysis
+
+The following list shows different checks to validate the usage of cryptographic algorithms in source code:
+
+-- TODO --
+
+See "Remediation" section for a basic list of recommended algorithms.
+
+#### Dynamic Analysis
+
+-- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+
+#### Remediation
+
+-- TODO --
+
+Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms<sup>[1] [2]</sup>:
+
+#### References
+
+##### OWASP Mobile Top 10
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+
+##### CWE
+* CWE-326: Inadequate Encryption Strength
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+
+##### Info
+- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
+- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
+- [6] Electronic Codebook (ECB) - https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
+
+##### Tools
+* QARK - https://github.com/linkedin/qark
+* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
