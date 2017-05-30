@@ -715,7 +715,14 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Effectiveness Assessment
 
-Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification an cease to function. Note that some anti-tampering implementations respond in a stealthy way so that changes in behaviour are not immediately apparent.
+Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- How difficult is it to identify the anti-debugging code using static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -947,7 +954,14 @@ Launch the app systematically with various apps and frameworks installed. Includ
 - RootCloak
 - Android SSL Trust Killer
 
-The app should respond in some way to the presence of any of those tools. At the very least, the app should alert the user and/or terminate the app. For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
+The app should respond in some way to the presence of any of those tools. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- How difficult is it to identify the anti-debugging code using static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -1036,8 +1050,6 @@ Keep in mind that a hooking framework such as Xposed or Frida could hook this AP
 
 #### References
 
-- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
-
 ##### OWASP Mobile Top 10 2016
 
 * M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
@@ -1052,8 +1064,7 @@ N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
 
 ##### Tools
 
@@ -1422,13 +1433,13 @@ out_file.close()
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" below and description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.8: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- v8.9: "Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
+- V8.12: "If the architecture requires sensitive computations be performed on the client-side, these computations are isolated from the operating system by using a hardware-based SE or TEE. Alternatively, the computations are protected using obfuscation. Considering current published research, the obfuscation type and parameters are sufficient to cause significant manual effort to reverse engineers seeking to comprehend the sensitive portions of the code and/or data."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Obfuscation"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- N/A
 
 ##### Info
 
