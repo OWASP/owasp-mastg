@@ -743,18 +743,7 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ##### Detection Methods
 
-Popular tools, if installed in their original form, can be detected by looking for associated application packages, files, processes, or other tool-specific modifications and artefacts.
-
--- TODO [Add list of tools and associated files, processes, libs, etc. etc. Cover the tools below] --
-
-- Substrate for Android
-- Xposed
-- Frida
-- Radare2
-- Introspy-Android
-- Drozer
-- RootCloak
-- Android SSL Trust Killer
+Popular reverse engineering tools, if installed in an unmodified form, can be detected by looking for associated application packages, files, processes, or other tool-specific modifications and artefacts. In the following examples, we'll show how different ways of detecting the frida instrumentation framework which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected using similar means. Note that DBI/injection/hooking tools can often also be detected implicitly through runtime integrity checks, which are discussed separately below.
 
 ###### Example: Ways of Detecting Frida
 
@@ -948,9 +937,17 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Effectiveness Assessment
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Launch the app systematically with various apps and frameworks installed. Include at least the following:
 
--- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+- Substrate for Android
+- Xposed
+- Frida
+- Introspy-Android
+- Drozer
+- RootCloak
+- Android SSL Trust Killer
+
+The app should respond in some way to the presence of any of those tools. At the very least, the app should alert the user and/or terminate the app. For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
