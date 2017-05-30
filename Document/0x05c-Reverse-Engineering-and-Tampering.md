@@ -240,7 +240,14 @@ Dalvik and ART both support the Java Native Interface (JNI), which defines defin
 
 Android JNI functions consist of native code compiled into Linux ELF libraries. It's pretty much standard Linux fare. However, instead of relying on widely used C libraries such as glibc, Android binaries are built against a custom libc named Bionic <sup>[17]</sup>. Bionic adds support for important Android-specific services such as system properties and logging, and is not fully POSIX-compatible.
 
-Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device. The app is not exactly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
+Download HelloWorld-JNI.apk from the OWASP MSTG repository and, optionally, install and run it on your emulator or Android device.
+
+```bash
+$ wget HelloWord-JNI.apk
+$ adb install HelloWord-JNI.apk
+```
+
+This app is not exactly spectacular: All it does is show a label with the text "Hello from C++". In fact, this is the default app Android generates when you create a new project with C/C++ support - enough however to show the basic principles of how JNI calls work.
 
 <img src="Images/Chapters/0x05c/helloworld.jpg" width="300px" />
 
@@ -413,10 +420,11 @@ $ cd ..
 $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 ```
 
-Note: If you experience JRE compatibility issues with <code>apksigner</code>, you can use <code>jarsigner</code> instead:
+Note: If you experience JRE compatibility issues with <code>apksigner</code>, you can use <code>jarsigner</code> instead. Note that in this case, <code>zipalign</code> is called *after* signing.
 
 ```bash
 $ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.apk signkey
+$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 4. Reinstall the app:
