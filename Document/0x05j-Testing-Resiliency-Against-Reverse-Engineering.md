@@ -188,7 +188,7 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 - How long did it take you to successfully bypass it?
 - What is your subjective assessment of difficulty?
 
-Also note how well the root detection mechanisms are integrated within the overall protection scheme. For example, the detection functions should obfuscated and protected from tampering.
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### Remediation
 
@@ -399,7 +399,7 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical,
 
 When the <code>ptrace</code> system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
-The following implementation is taken from Tim Strazzere's Anti-Emulator project [3].
+The following implementation is taken from Tim Strazzere's Anti-Emulator project <sup>[3]</sup>.
 
 ```
     public static boolean hasTracerPid() throws IOException {
@@ -651,9 +651,7 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-Consider how the anti-debugging mechansims fit into the overall protection scheme. For example, anti-debugging defenses should obfuscated and protected from tampering.
-
-Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### Remediation
 
