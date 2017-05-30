@@ -4,13 +4,20 @@ The following chapter outlines cryptography requirements of the MASVS into techn
 
 Proper cryptographic key management is a common pitfall when designing mobile applications.
 
+Cryptographic systems are comprised of different building blocks. It is important to use the building blocks in their intended manner (in addition to using the current secure building blocks as well as secure configuration).
+
+Typically encountered building blocks are:
+
+* Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that it is hard that, given a hash, to provide for original data that leads to a pre-determined hash. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
+* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidenciality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
+* Symmetric Encryption utilizes a secret key. The data confidenciality of the encrypted data is solely dependent upon the confidenciality of the secret key.
+* Asymmetric Encryption uses two keys: a pbulic key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
+
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
 
-Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements.
-
-Many previously strong algorithms and their configurations are now considered vulnerable or non-compliant with best practices. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
+Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements. Previously thought secure algorithms may become insecure over time. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
 
 #### Static Analysis
 
@@ -66,7 +73,6 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### Info
 - [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
 - [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-- [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 - [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
 
@@ -223,6 +229,8 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 * move text from generic description to this section
 * describe hashes vs key-derivation-function
+*
+* Key Derivation Functions (KDFs): normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is neglectable during normal operation but prevents brute-force attacks.
 
 #### Static Analysis
 
@@ -325,6 +333,59 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * link to ocl hashcat
 
 
+### Test if sensitive data is integrity protected
+
+#### Overview
+
+-- TODO: write Introduction --
+
+
+* MACs (Message Authentication Codes, also known as keyed hashes) combine hashes with a secret key. The MAC can only be calculated or verified if the secret key is known. In contrast to hashes this means, that an attacker cannot easily calculate a MAC after the original data was modified.
+* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a a public key is sued. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
+
+* maybe mention the whole mac-then-encrypt vs encrypt-then-mac problems
+*
+#### Static Analysis
+
+-- TODO --
+
+* check source code for used algorithm
+
+#### Dynamic Analysis
+
+-- TODO --
+
+
+#### Remediation
+
+-- TODO --
+
+* use integrity-preserving encryption
+* use AEAD based encryption for data storage (provides confidenciality as well as integrity protection)
+* use digital signatures
+
+#### References
+
+##### OWASP Mobile Top 10
+
+-- TODO --
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+-- TODO --
+
+##### Tools
+
+-- TODO --
+
 
 ### Test if encryption provides data integrity protection
 
@@ -351,7 +412,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 * use integrity-preserving encryption
 * maybe mention the whole mac-then-encrypt vs encrypt-then-mac problems
-* preferably use AEAD
+* use AEAD based encryption for data storage (provides confidenciality as well as integrity protection)
 
 #### References
 
@@ -445,73 +506,3 @@ A proper way would be to generate the client certificate upon user registration/
 
 -- TODO --
 
-
-
-
-### Test if proper cryptographic means are used
-
-#### Overview
-
--- TODO: reference the other testing blocks within this section (and move text to the corresponding sections), also rewrite text --
-
--- TODO: maybe move MAC/Hashes/Signatures to the verify data integrity section, move KDFs to password storage --
-
--- TODO: move encryption somewhere else and add text about AEAD --
-
-Cryptographic systems are comprised of different building blocks. It is important to use the building blocks in their intended manner (in addition to using the current secure building blocks as well as secure configuration).
-
-Typically encountered building blocks are:
-
-* Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that it is hard that, given a hash, to provide for original data that leads to a pre-determined hash. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
-* MACs (Message Authentication Codes, also known as keyed hashes) combine hashes with a secret key. The MAC can only be calculated or verified if the secret key is known. In contrast to hashes this means, that an attacker cannot easily calculate a MAC after the original data was modified.
-* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a a public key is sued. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
-* Key Derivation Functions (KDFs): normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is neglectable during normal operation but prevents brute-force attacks.
-* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidenciality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
-* Symmetric Encryption utilizes a secret key. The data confidenciality of the encrypted data is solely dependent upon the confidenciality of the secret key.
-* Asymmetric Encryption uses two keys: a pbulic key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
-
-#### Static Analysis
-
--- TODO --
-
-A list of cryptographic no-gos are:
-
-* use plain-text, hashes, encryption or MACs for password storage
-* verify data stored on untrusted storage with a hash/key also stored on untrusted storage (if an attacker can alter both original data and hashes)
-* trust that encryption also offers integrity protection
-
-#### Dynamic Analysis
-
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
-
-#### Remediation
-
--- TODO --
-
-A list of good cryptographic techniques are:
-
-* use AEAD based encryption for data storage (provides confidenciality as well as integrity protection)
-* use Key Derivation Functions (such as bcrypt, scrypt) for password storage
-* use signatures to provide the authenticity of data
-
-#### References
-
-##### OWASP Mobile Top 10
-
--- TODO --
-
-##### OWASP MASVS
-
--- TODO --
-
-##### CWE
-
--- TODO --
-
-##### Info
-
--- TODO --
-
-##### Tools
-
--- TODO --
