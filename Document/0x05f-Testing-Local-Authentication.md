@@ -6,7 +6,7 @@ Most of the authentication and session management requirements of the MASVS refe
 
 #### Overview
 
-Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the  <code>FingerprintManager</code> class <sup>[1]</sup>. An app can request fingerprint authentication by instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
+Android 6.0 introduced public APIs for authenticating users via fingerprint. Access to the fingerprint hardware is provided through the <code>FingerprintManager</code> class <sup>[1]</sup>. An app can request fingerprint authentication by instantiating a <code>FingerprintManager</code> object and calling its <code>authenticate()</code> method. The caller registers callback methods to handle possible outcomes of the authentication process (success, failure or error).
 
 By using the fingerprint API in conjunction with the Android KeyGenerator class, apps can create a cryptographic key that must be "unlocked" with the user's fingerprint. This can be used to implement more convenient forms of user login. For example, to allow users access to a remote service, a symmetric key can be created and used to encrypt the user PIN or authentication token. By calling <code>setUserAuthenticationRequired(true)</code> when creating the key, it is ensured that the user must re-authenticate using their fingerprint to retrieve it. The encrypted authentication data itself can then be saved using regular storage (e.g. SharedPreferences).
 
