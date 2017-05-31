@@ -1,9 +1,6 @@
 ## Testing Local Authentication in Android Apps
 
-Most of the authentication and session management requirements of the MASVS are generic ones, that do not rely on a specific implementation on iOS or Android.
-
-As a result only requirement "4.6	Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore" is platform specific. All other tests need to verify server side implementations and can be found in the Appendix "Testing Authentication".
-
+Most of the authentication and session management requirements of the MASVS refer to architectural and server-side issues that can be verified independent of the specific implementation on iOS or Android. In the MSTG, we therefore discuss these test cases in a platform-independent way (see the appendix "Testing Authentication and Session Management on the Endpoint").
 
 ### Testing Biometric Authentication
 
