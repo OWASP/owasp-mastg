@@ -1,6 +1,6 @@
 ## Testing Local Authentication in Android Apps
 
-Most of the authentication and session management requirements of the MASVS refer to architectural and server-side issues that can be verified independent of the specific implementation on iOS or Android. In the MSTG, we therefore discuss these test cases in a platform-independent way (see the appendix "Testing Authentication and Session Management on the Endpoint").
+Most of the authentication and session management requirements of the MASVS refer to architectural and server-side issues that can be verified independent of the specific implementation on iOS or Android. In the MSTG, we therefore discuss these test cases in a platform-independent way (see the appendix "Testing Authentication and Session Management on the Endpoint"). There's however also cases where local authentication mechansims are used - e.g. to locally "unlock" the app and/or provide an easy means for users to resume an existing session. These cases are discussed here.
 
 ### Testing Biometric Authentication
 
