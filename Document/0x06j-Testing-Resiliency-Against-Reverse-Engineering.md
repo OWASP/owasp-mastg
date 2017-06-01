@@ -677,19 +677,19 @@ int xyz(char *dst) {
 
 **Detecting Substrate Inline Hooks***
 
-Inline hooks are implemented by overwriting the first few bytes of a function with a trampoline that redirects control flow to adversary-controlled code. They can be detected by scanning the function prologue of each function for unusual and telling instructions. For example, substrate 
+Inline hooks are implemented by overwriting the first few bytes of a function with a trampoline that redirects control flow to adversary-controlled code. They can be detected by scanning the function prologue of each function for unusual and telling instructions. For example, substrate
 
 
 inline int checkSubstrateTrampoline() attribute((always_inline));
 int checkSubstrateTrampoline(void * funcptr) {
- 
+
     unsigned int *funcaddr = (unsigned int *)funcptr;
- 
+
     if(funcptr)
-        // assuming the first word is the trampoline 
+        // assuming the first word is the trampoline
         if (funcaddr[0] == 0xe51ff004) // 0xe51ff004 = ldr pc, [pc-4]
             return 1; // bad
- 
+
     return 0; // good
 }
 Example code from the Netitude blog <code>[2]</code>.
@@ -735,8 +735,9 @@ Example code from the Netitude blog <code>[2]</code>.
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
 
 Please note that since iOS 7.0 hardware identifiers, such as the MAC addresses are off-limits. The possible ways to bind an application to a device are relatively limited:
-- You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C) or `UIDevice.current.identifierForVendor?.uuidString` (in swift3) and `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in swift2). Which will change upon reinstalling the application.
-- You can store something in the keychain to identify the application, but this can be dumped on a jailbroken device if no device protection (e.g. passcode/touch-id) has been enabled on the device.
+- You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C) or `UIDevice.current.identifierForVendor?.uuidString` (in swift3) and `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in swift2). Which might change upon reinstalling the application when no other applications from the same vendor are installed.
+- You can store something in the keychain to identify the application its instance. One needs to make sure that this data is not backed up by using `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure it and properly enforce having a passcode or touch-id) or by using `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
+- You can store something in the keychain to identify the application its instance. This can be effective if it is bound to the specific device only and protected with passcode/touch-id. If , but this can be dumped on a jailbroken device if no device protection (e.g. passcode/touch-id) has been enabled on the device.
 Any scheme based on these two variants will be more secure the moment passcode and/or touch-id has been enabled.
 
 #### Static Analysis
@@ -766,6 +767,7 @@ Take the following steps when you want to verify app-binding at a simulator:
 4. Start the application on another simulator & find its data location as described in step 3.
 5. Stop the application on the second simulator, now overwrite the existing data with the data copied in step 3.
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
+TODO: ADD KEYCHAIN STEPS
 
 Please note that we are saying that the binding "might" not be working as not everything is unique in simulators.
 
@@ -776,7 +778,8 @@ Take the following steps when you want to verify app-binding by using 2 jailbrok
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the jailbroken device
 4. Install the application on the second jailbroken device
-5. TODO: VERIFY WHETHER THIS WILL WORK AND HOW!
+5. TODO: SHOW HWO YOU CAN INSTALL APP ON JAILBROKEN DEVICE AND OVERRIDE DATA
+TODO: ADD KEYCHAIN STEPS
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
 #### Remediation
