@@ -1069,15 +1069,15 @@ catch(Exception e) {
         Log.wtf("HookDetection", "Substrate is active on the device.");
       }
     }
-    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") && 
+    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") &&
         stackTraceElement.getMethodName().equals("invoked")) {
       Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
     }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") && 
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
         stackTraceElement.getMethodName().equals("main")) {
       Log.wtf("HookDetection", "Xposed is active on the device.");
     }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") && 
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
         stackTraceElement.getMethodName().equals("handleHookedMethod")) {
       Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
     }
@@ -1138,18 +1138,11 @@ In contrast to GNU <code>ld</code>, which resolves symbol addresses only once th
 
 #### Overview
 
-<<<<<<< HEAD
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
-<<<<<<< HEAD
-=======
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
-=======
-The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well.
->>>>>>> 0x6j: wip for #396: started with the overview
 
 #### Static Analysis
 
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
 When the source-code is available, then there are a few codes you can look for, such as:
 - The presence of unique identifiers that no longer work in the future
   - `Build.SERIAL` without the presence of `Build.getSerial()`
@@ -1187,45 +1180,12 @@ There are a few ways to test the application binding:
 5. Overwrite the data from step 3 in the data folder of the application.
 - copy the contents of step 3 to the sdcard of the second emulator.
 - ssh to your simulator using ADB shell
-- run-as <your app-id (which is the package as described in the AndroidManifest.xml)>
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
 - chmod 777 the folders cache and shared-preferences
 - copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
->>>>>>> 0x6j: wip for #396: started with the overview
 
-<<<<<<< HEAD
 In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
-=======
-Please note that we are saying that the binding "might" not be working as not everything is unique in emulators.
-##### Dynamic Analysis using two different rooted devices.
-
-1. Run the application on your rooted device
-2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
-3. Retrieve the data from the first rooted device
-4. Install the application on the second rooted device
-5. Overwrite the data from step 3 in the data folder of the application.
-6. Can you continue in an authenticated state? If so, then binding might not be working properly.
-
-#### Remediation
-
-<<<<<<< HEAD
-Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <code>[1]</code>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <code>[2]</code>. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
-Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
-
-- augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
-- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
-=======
-Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overwritten.
-Next, the Build.Serial was often used. Now, apps targeting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
-- Augment the credentials used for authentication with device/app instance identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
-- Obfuscate the data stored on the device using device/app instance identifiers as part of a key derivation function, which ends up in creating the keys for the encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
->>>>>>> Updated 0x05j a bit given late night typos during appsec
-- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
-
-The following 3 identifiers can be used.
->>>>>>> Updated 0x05j a bit given late night typos during appsec
 
 ##### Google InstanceID
 
@@ -1402,7 +1362,6 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 - Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
 
 The following 3 identifiers can be possibly used.
-
 
 #### References
 
