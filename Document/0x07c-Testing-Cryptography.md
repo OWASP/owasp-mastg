@@ -1,22 +1,21 @@
 ## Testing Cryptography
 
-The following chapter outlines cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are based upon cryptographic concepts and are not relying on a specific implementation on iOS or Android.
+The following chapter translates the cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are based upon generic cryptographic concepts and are not relying on a specific implementation on iOS or Android.
 
-Proper design of a cryptographic system is a common pitfall when designing mobile applications. To achieve good security, a developer has to chose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
+Proper design of a cryptographic system is a common pitfall for mobile application development. To achieve good security, a developer has to chose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
 
-Throughout this chapter, multiple basic cryptographic building blocks are used. It is important to use the building blocks in their intended manner, the following gives a rough introduction into commonly referred concepts:
+Throughout this chapter, multiple basic cryptographic building blocks are used. The following gives a rough introduction into commonly referred concepts:
 
-* Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that it is hard that, given a hash, to provide for original data that leads to a pre-determined hash. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
-* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidentiality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
-* Symmetric Encryption utilizes a secret key. The data confidentiality of the encrypted data is solely dependent upon the confidentiality of the secret key.
-* Asymmetric Encryption uses two keys: a public key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
-
+* Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that, given a hash, providing input data that leads to the same hash is not feasible. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
+* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidentiality.
+* Symmetric Encryption utilizes a secret key. The data confidentiality of the encrypted data is solely dependent upon the confidentiality of the secret key. This implies, that the secret key should be secret and thus not be predictable.
+* Asymmetric Encryption utilizes two keys: a public key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
 
 ### Testing for Custom Implementations of Cryptography
 
 #### Overview
 
-The use of a non-standard and custom build algorithm for cryptographic functionalities is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
+The use of non-standard or custom built cryptographic algorithms is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and very likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
 
 #### Static Analysis
 
@@ -24,7 +23,7 @@ Carefully inspect all the cryptographic methods used within the source code, esp
 
 #### Dynamic Analysis
 
-The recommended approach is be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
+The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
 
 #### Remediation
 
@@ -44,10 +43,6 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 ##### Info
 [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
 
-
-
-
-
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
@@ -56,20 +51,18 @@ Many cryptographic algorithms and protocols should not be used because they have
 
 #### Static Analysis
 
-The source code should be checked that cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the app and server code base.
+The source code should be checked that cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG. Please note, that an algorithm that was certified, e.g., by the NIST, can also become insecure over time. A certification does not replace periodic verification of an algorithm's soundness. All of these should be marked as insecure and should not be used and removed from the application code base.
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
 
-* DES
+* DES, 3DES<sup>[6]</sup>
 * RC2
 * RC4
-* BLOWFISH
+* BLOWFISH<sup>[6]</sup>
 * CRC32
 * MD4
 * MD5
 * SHA1 and others.
-
-See "Remediation" section for a basic list of recommended algorithms.
 
 Example initialization of DES algorithm, that is considered weak:
 ```Java
@@ -78,14 +71,16 @@ Cipher cipher = Cipher.getInstance("DES");
 
 #### Dynamic Analysis
 
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
+
+If you encounter locally stored data during the test, try to identify the used algorithm and verify them against a list of known insecure algorithms.
 
 #### Remediation
 
 Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms<sup>[1] [2]</sup>:
 
-* Confidentiality: AES-256
-* Integrity: SHA-256, SHA-384, SHA-512
+* Confidentiality: AES-GCM-256 or ChaCha20-Poly1305
+* Integrity: SHA-256, SHA-384, SHA-512, Blake2
 * Digital signature: RSA (3072 bits and higher), ECDSA with NIST P-384
 * Key establishment: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
@@ -107,6 +102,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 - [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
 - [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
+- [6] Sweet32 attack -- https://sweet32.info/
 
 ##### Tools
 * QARK - https://github.com/linkedin/qark
@@ -119,15 +115,21 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 #### Overview
 
-Choosing strong cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected if misconfigured.
+Choosing strong cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected through their configuration. Most prominent for cryptographic algorithms is the selection of their used key length.
 
 #### Static Analysis
 
-The source code should be analyzed that cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
+Through source code analysis the following non-exhausting configuration options should be checked:
+
+* cryptographic salt, which should be at least the same length as hash function output
+* * reasonable choice of iteration counts when using password derivation functions
+* IVs being random and unique
+* fit-for-purpose block encryption modes
+* key management being done properly
 
 #### Dynamic Analysis
 
-If hashes were extracted and they have been configured in an insecure manner, a brute-force password cracking tool, e.g. hashcat, can be used to extract the original plain-text passwords from the encrypted hashes. Hashcat's wiki contains examples of cracking speeds for different algorithms, this can be utilized to estimate the effort that an attacker would have to recover plain-text passwords.
+If hashes were extracted during the analysis, and they have been configured in an insecure manner, a brute-force password cracking tool, e.g. hashcat, can be used to extract the original plain-text passwords from the encrypted hashes. Hashcat's wiki contains examples of cracking speeds for different algorithms, this can be utilized to estimate the effort that an attacker would have to recover plain-text passwords.
 
 To utilize brute-force tools, the used hash algorithm (e.g., MD5 or SHA1) must be known. If this knowledge is not gathered during the Testing, tools like hashID can be used to automatically identify hash algorithms.
 
@@ -162,19 +164,15 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 * hashcat - https://hashcat.net/hashcat/
 * hashID - https://pypi.python.org/pypi/hashID
 
-
-
 ### Testing for Usage of ECB Mode
 
 #### Overview
 
--- TODO: write Introduction --
+As the name implies, block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
 
-ECB (Electronic Codebook) encryption mode should not be used, as it is basically a raw cipher. A message is divided into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>.
+The ECB (Electronic Codebook) encryption mode should not be used, as it is basically divides the input into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>. For example, if an image is encrypted utilizing the ECB block mode, then the input image is split up into multiple smaller blocks. Each block might represent a small area of the original image. Each of which is encrypted using the same secret input key. If input blocks are similar, e.g., each input block is just a white background, the resulting encrypted output block will also be the same. While each block of the resulting encrypted image is encrypted, the overall structure of the image will still be recognizable within the resulting encrypted image.
 
 ![Electronic Codebook (ECB mode encryption)](Images/Chapters/0x07c/ECB.png)
-
-The problem with this encryption method is that any resident properties of the plaintext might well show up in the cipher text, just possibly not as clearly. That's what blocks and key schedules are supposed to protect against, but analyzing the patterns you may be able to deduce properties that you otherwise thought were hidden.
 
 ![Difference of encryption modes](Images/Chapters/0x07c/EncryptionMode.png)
 
@@ -388,6 +386,8 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 #### Overview
 
 -- TODO: write Introduction --
+
+ Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
 
 * encryption only protects data confidentiality, not integrity
 * e.g., bit-flip attacks are possible
