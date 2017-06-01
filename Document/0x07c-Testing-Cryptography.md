@@ -19,10 +19,7 @@ Many cryptographic algorithms and protocols should not be used because they have
 
 #### Static Analysis
 
-The following list shows different checks to validate the usage of cryptographic algorithms in source code:
-
-* Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the app and server code base.
-* Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
+The source code should be checked that cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the app and server code base.
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
 
@@ -89,18 +86,17 @@ Choosing strong cryptographic algorithm alone is not enough. Often security of o
 
 #### Static Analysis
 
-The following list shows different checks to validate the usage of cryptographic algorithms in source code:
-
-* Key lengths are in-line with industry standards and provide protection for sufficient amount of time. An online comparison of different key lengths and protection they provide taking into account Moore's law is available online<sup>[3]</sup>.
-* Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
+The source code should be analyzed that cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
 #### Dynamic Analysis
 
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+If hashes were extracted and they have been configured in an insecure manner, a brute-force password cracking tool, e.g. hashcat, can be used to extract the original plain-text passwords from the encrypted hashes. Hashcat's wiki contains examples of cracking speeds for different algorithms, this can be utilized to estimate the effort that an attacker would have to recover plain-text passwords.
+
+To utilize brute-force tools, the used hash algorithm (e.g., MD5 or SHA1) must be known. If this knowledge is not gathered during the Testing, tools like hashID can be used to automatically identify hash algorithms.
 
 #### Remediation
 
-Periodically ensure that used key length fulfill accepted industry standards.
+Periodically ensure that used key length fulfill accepted industry standards<sup>[6]</sup>.
 
 #### References
 
@@ -121,10 +117,13 @@ Periodically ensure that used key length fulfill accepted industry standards.
 - [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 - [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
+- [6] ENISA Algorithms, key size and parameters report 2014 - https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014
 
 ##### Tools
 * QARK - https://github.com/linkedin/qark
 * Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
 
 
 
@@ -223,12 +222,9 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 #### Overview
 
--- TODO: write Introduction --
+Normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. For example, when the insecure MD5 hash has been used, an attacker with access to eight high-level graphics cards can test 200.3 Giga-Hashes per Second<sup>[1]</sup>.
 
-* move text from generic description to this section
-* describe hashes vs key-derivation-function
-*
-* Key Derivation Functions (KDFs): normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is neglectable during normal operation but prevents brute-force attacks.
+A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is neglectable during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
 
 #### Static Analysis
 
@@ -238,25 +234,24 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 #### Dynamic Analysis
 
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+If hashes were extracted and they have been configured in an insecure manner, a brute-force password cracking tool, e.g. hashcat, can be used to extract the original plain-text passwords from the encrypted hashes. Hashcat's wiki contains examples of cracking speeds for different algorithms, this can be utilized to estimate the effort that an attacker would have to recover plain-text passwords.
 
-* check extracted hashes with ocl hashcat
+To utilize brute-force tools, the used hash algorithm (e.g., MD5 or SHA1) must be known. If this knowledge is not gathered during the Testing, tools like hashID can be used to automatically identify hash algorithms.
 
 #### Remediation
 
--- TODO --
-
-* use bcrypt/scrypt
+Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup>), Argon2<sup>[4]</sup>, bcrypt<sup>[3]</sup> or scrypt (RFC 7914<sup>[2]</sup>).
 
 #### References
 
 ##### OWASP Mobile Top 10
 
--- TODO --
+* M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
--- TODO --
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
 ##### CWE
 
@@ -264,15 +259,16 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 ##### Info
 
--- TODO --
-
-* link to oclhashcat performance values
+[1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
+[2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914
+[3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html
+[4] https://github.com/p-h-c/phc-winner-argon2
+[5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
 
 ##### Tools
 
--- TODO --
-
-* link to ocl hashcat
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
 
 
 
@@ -308,11 +304,11 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 ##### OWASP Mobile Top 10
 
--- TODO --
+* M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
--- TODO --
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 
 ##### CWE
 
