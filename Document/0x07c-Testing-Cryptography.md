@@ -4,12 +4,12 @@ The following chapter outlines cryptography requirements of the MASVS into techn
 
 Proper design of a cryptographic system is a common pitfall when designing mobile applications. To achieve good security, a developer has to chose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
 
-Throughout this chapter, multiple basic cryptographic building blocks are used. It is important to use the building blocks in their intended manner, the following gives a rough introduction into commonly refered concepts:
+Throughout this chapter, multiple basic cryptographic building blocks are used. It is important to use the building blocks in their intended manner, the following gives a rough introduction into commonly referred concepts:
 
 * Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that it is hard that, given a hash, to provide for original data that leads to a pre-determined hash. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
-* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidenciality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
-* Symmetric Encryption utilizes a secret key. The data confidenciality of the encrypted data is solely dependent upon the confidenciality of the secret key.
-* Asymmetric Encryption uses two keys: a pbulic key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
+* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidentiality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
+* Symmetric Encryption utilizes a secret key. The data confidentiality of the encrypted data is solely dependent upon the confidentiality of the secret key.
+* Asymmetric Encryption uses two keys: a public key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
 
 
 ### Testing for Custom Implementations of Cryptography
@@ -115,7 +115,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
  
 
 
-### Testing for Insecure Cryptographic Algorihm Configuration
+### Testing for Insecure Cryptographic Algorithm Configuration
 
 #### Overview
 
@@ -226,7 +226,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 Normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. For example, when the insecure MD5 hash has been used, an attacker with access to eight high-level graphics cards can test 200.3 Giga-Hashes per Second<sup>[1]</sup>.
 
-A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is neglectable during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
+A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is negligible during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
 
 #### Static Analysis
 
@@ -357,7 +357,7 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 -- TODO --
 
 * use integrity-preserving encryption
-* use AEAD based encryption for data storage (provides confidenciality as well as integrity protection)
+* use AEAD based encryption for data storage (provides confidentiality as well as integrity protection)
 * use digital signatures
 
 #### References
@@ -389,7 +389,7 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 -- TODO: write Introduction --
 
-* encryption only protects data confidenciality, not integrity
+* encryption only protects data confidentiality, not integrity
 * e.g., bit-flip attacks are possible
 
 #### Static Analysis
@@ -408,7 +408,7 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 * use integrity-preserving encryption
 * maybe mention the whole mac-then-encrypt vs encrypt-then-mac problems
-* use AEAD based encryption for data storage (provides confidenciality as well as integrity protection)
+* use AEAD based encryption for data storage (provides confidentiality as well as integrity protection)
 
 #### References
 
@@ -443,11 +443,11 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 The following checks would be performed in the last two app categories:
 
-* Ensure that no keys/passwords are hardcoded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
-* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hardcoded keys.
+* Ensure that no keys/passwords are hard coded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
+* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
 * If the application is using two-way SSL (i.e. there is both server and client certificate validated) check if:
    * the password to the client certificate is not stored locally, it should be in the Keychain
-   * the client certificate is not shared among all installations (e.g. hardcoded in the app)
+   * the client certificate is not shared among all installations (e.g. hard coded in the app)
 
 
 The following checks would be performed in the offline application:
