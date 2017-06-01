@@ -1,12 +1,10 @@
 ## Testing Cryptography
 
-The following chapter outlines cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.
+The following chapter outlines cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are based upon cryptographic concepts and are not relying on a specific implementation on iOS or Android.
 
-Proper cryptographic key management is a common pitfall when designing mobile applications.
+Proper design of a cryptographic system is a common pitfall when designing mobile applications. To achieve good security, a developer has to chose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
 
-Cryptographic systems are comprised of different building blocks. It is important to use the building blocks in their intended manner (in addition to using the current secure building blocks as well as secure configuration).
-
-Typically encountered building blocks are:
+Throughout this chapter, multiple basic cryptographic building blocks are used. It is important to use the building blocks in their intended manner, the following gives a rough introduction into commonly refered concepts:
 
 * Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that it is hard that, given a hash, to provide for original data that leads to a pre-determined hash. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
 * Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidenciality. Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
@@ -17,7 +15,7 @@ Typically encountered building blocks are:
 
 #### Overview
 
-Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements. Previously thought secure algorithms may become insecure over time. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
+Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements. Previously thought secure algorithms may become insecure over time. It is therefore important to periodically check current best practices and adjust configurations accordingly.
 
 #### Static Analysis
 
