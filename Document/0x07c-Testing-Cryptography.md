@@ -178,21 +178,21 @@ The ECB (Electronic Codebook) encryption mode should not be used, as it is basic
 
 #### Static Analysis
 
-The following list shows different checks to validate the usage of cryptographic algorithms in source code:
+Use the source code to verify the used blcok mode. Especially check for ECB mode, e.g.:
 
--- TODO --
-
-See "Remediation" section for a basic list of recommended algorithms.
+```
+Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+```
 
 #### Dynamic Analysis
 
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
+Test encrypted data for reoccuring patterns -- thse can be an indication of ECB mode being used.
 
 #### Remediation
 
--- TODO --
+Use an established block mode that provides a feedback mechanism for subsequent blocks, e.g. Counter Mode (CTR). For storing encrypted data it is often advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation -- thus being available on all modern plattforms.
 
-Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms<sup>[1] [2]</sup>:
+Consult the NIST guidelines on block mode selection<sup>[1]</sup>.
 
 #### References
 
@@ -201,15 +201,14 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 
 ##### OWASP MASVS
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
 ##### CWE
 * CWE-326: Inadequate Encryption Strength
 * CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 ##### Info
-- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
+
+- [1] NIST Modes Development, Proposed Modes - http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html
 - [6] Electronic Codebook (ECB) - https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
 
 ##### Tools
