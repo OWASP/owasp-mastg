@@ -11,6 +11,43 @@ Throughout this chapter, multiple basic cryptographic building blocks are used. 
 * Symmetric Encryption utilizes a secret key. The data confidenciality of the encrypted data is solely dependent upon the confidenciality of the secret key.
 * Asymmetric Encryption uses two keys: a pbulic key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
 
+
+### Testing for Custom Implementations of Cryptography
+
+#### Overview
+
+The use of a non-standard and custom build algorithm for cryptographic functionalities is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
+
+#### Static Analysis
+
+Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit shift operators like exclusive OR operations might be a good sign to start digging deeper.
+
+#### Dynamic Analysis
+
+The recommended approach is be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
+
+#### Remediation
+
+Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+- V3.2: "The app uses proven implementations of cryptographic primitives"
+
+##### CWE
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+
+##### Info
+[1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
+
+
+
+
+
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
@@ -124,41 +161,6 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 * Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
 * hashcat - https://hashcat.net/hashcat/
 * hashID - https://pypi.python.org/pypi/hashID
-
-
-
-### Testing for Custom Implementations of Cryptography
-
-#### Overview
-
-The use of a non-standard and custom build algorithm for cryptographic functionalities is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
-
-#### Static Analysis
-
-Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit shift operators like exclusive OR operations might be a good sign to start digging deeper.
-
-#### Dynamic Analysis
-
-The recommended approach is be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
-
-#### Remediation
-
-Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M6 - Broken Cryptography
-
-##### OWASP MASVS
-- V3.2: "The app uses proven implementations of cryptographic primitives"
-
-##### CWE
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-[1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
-
 
 
 
