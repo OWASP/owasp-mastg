@@ -186,7 +186,7 @@ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
 #### Dynamic Analysis
 
-Test encrypted data for reoccuring patterns -- thse can be an indication of ECB mode being used.
+Test encrypted data for reoccuring patterns -- those can be an indication of ECB mode being used.
 
 #### Remediation
 
@@ -227,9 +227,13 @@ A solution this are Key-Derivation Functions (KDFs) that have a configurable cal
 
 #### Static Analysis
 
--- TODO --
+Use the source code to determine how the hash is calculated, an exmaple of an insecure instantiation would be:
 
-* check source code for used algorithm
+```
+MessageDigest md = MessageDigest.getInstance("MD5");
+md.updat("too many secrets");
+byte[] digest = md.digest();
+```
 
 #### Dynamic Analysis
 
@@ -269,35 +273,38 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 * hashcat - https://hashcat.net/hashcat/
 * hashID - https://pypi.python.org/pypi/hashID
 
-
-
 ### Test if user-supplied credentials are not directly used as key material
 
 #### Overview
 
--- TODO: write Introduction --
+Cryptographic algorithms -- such as symmetric encryption or MACs -- expect a secret input of a a given size, e.g. 128 or 256 bit. A naive implementation might use the use-supplied password directly as an input key. There are a couple of problems with this approach:
 
-* sometimes a password is directly used as key for cryptographic functions
-* sometimes it is even filled with spaces to achieve the cryptographic' algorithm's requirements
+* if the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
+* A user-supplied password will realistically consist mostly of display- and pronounce-able characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is (approx. 2<sup>6</sup>) is used.
+* If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
 
 #### Static Analysis
 
--- TODO --
+Use the source code to verify that no password is directly passed into an encryption function, e.g.:
 
-* check source code for used algorithm
+
+```
+String userKeyString = "trustno1"; // given by user
+byte[] userKeyByte = userKeyString.getBytes();
+byte[] validKey = new byte[16]; // needed input key, filled with 0
+
+System.arraycopy(userKeyByte, 0, validKey, 0, (userKeyByte.length > 16) ? 16 : userKeyByte.length));
+
+Key theAESKEy = new SecretKeySpec(validKey, "AES");
+```
 
 #### Dynamic Analysis
 
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
-
-* check extracted hashes with ocl hashcat
+Test extrated hashes as within "Testing if anything but a KDF (key-derivation function) is used for storing passwords". If no hash or KDF has been used, brute-force attacks or attacks using dictionaries will be more efficient due to the reduced key space.
 
 #### Remediation
 
--- TODO --
-
-* use password as input data for a secure hashing function
-* this improves the keyspace of the selected cryptographic function
+Pass the user-supplied password into a salted hash funcation or KDF; use its resuls as key for the cryptographic function.
 
 #### References
 
@@ -315,20 +322,18 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 ##### Info
 
--- TODO --
-
-* link to oclhashcat performance values
+* Wikipedia -- https://en.wikipedia.org/wiki/Key_stretching
 
 ##### Tools
 
--- TODO --
-
-* link to ocl hashcat
-
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
 
 ### Test if sensitive data is integrity protected
 
 #### Overview
+
+The attack surface of an application is defined as the sum of all potential input paths. An often forgotten attack vector are files stored on insecure locations, e.g., cloud storage or local file storage.
 
 -- TODO: write Introduction --
 
