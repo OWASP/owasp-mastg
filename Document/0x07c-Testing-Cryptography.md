@@ -389,7 +389,9 @@ Two typical cryptographic counter-measures for integrity protection are:
 
 Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
 
--- TODO: add example bit-flip attack against XOR encryption --
+A good example for an symmetric algorithm that does not protect integrity is One-Time-Pad. This algorithm XORs the input data with a secret input key. This leads to a cipher text which's data confidenciality is information theoretical secure -- i.e. even an attacker with unlimited processing power would not be able to crack the encryption. But data integrity is not protected.
+
+For example, image that you have a message with an amount of money to be transfered. Let the amount be 1000 Euro/Dollars, which would be `0x0011 1110 1000` the secret key that you are using is `0x0101 0101 0101` (not very random, I know). XORing those two leads to a transfered message of `0x0110 1011 1101`. The attacker has no idea of knowning the plain-text. But she imagines that normally a low amount of money is transfered and bit-flips the highest bit of the message, making it `0x1110 1011 1101`. The victim now retrieves the message, decrypts it through XORing it with the secret key and has retrieved the value of `0x1011 1110 1000` which amounts to 3048 Euro/Dollars. So while the attacker was not able to break the encryption, she was able to change the undelying message as the underlying message was not integrity protected.
 
 #### Static Analysis
 
@@ -403,11 +405,9 @@ Please note that, encryption does not provide data integrity, i.e., if an attack
 
 #### Remediation
 
--- TODO --
+The cryptographic method that secures encrypted data is unsurprisingly called Authenticated Encryption<sup>[1]</sup>. The basic primitive used for creating the checksum is a MAC (also known as keyed hash). The exact selection what data is MACed (plain-text or cipher-text) is highly complex<sup>[2]</sup>.
 
-* use integrity-preserving encryption
-* maybe mention the whole mac-then-encrypt vs encrypt-then-mac problems
-* use AEAD based encryption for data storage (provides confidentiality as well as integrity protection)
+It is recommended to use an AEAD scheme for integrity-protecting encryption such as AES-GCM.
 
 #### References
 
@@ -425,14 +425,12 @@ Please note that, encryption does not provide data integrity, i.e., if an attack
 
 ##### Info
 
--- TODO --
+* [1] Wikipedia: Authenticated Encryption -- https://en.wikipedia.org/wiki/Authenticated_encryption
+* [2] Luck Thirteen: Breaking the TLS and DTLS Record Protocols -- http://www.isg.rhul.ac.uk/tls/TLStiming.pdf
 
 ##### Tools
 
 -- TODO --
-
-
-
 
 ### if symmetric encryption or MACs are used, test for hard coded secret keys
 
