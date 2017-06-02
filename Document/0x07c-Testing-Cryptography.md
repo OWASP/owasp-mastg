@@ -109,7 +109,62 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
 
  
+### If symmetric encryption or MACs are used, test for hard coded secret keys
 
+#### Overview
+
+The security of symmetric encryption and keyed hashes (MACs) is highly dependent upon the secrecy of the used secret key. If the secret key is disclosed, the security gained by encryption/MACing is rendered naught.
+
+This mandates, that the secret key is protected and should not be stored together with the encrypted data.
+
+#### Static Analysis
+
+The following checks would be performed against the used source code:
+
+* Ensure that no keys/passwords are hard coded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
+*
+* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
+*
+* If the application is using two-way SSL (i.e. there is both server and client certificate validated) check if:
+   * the password to the client certificate is not stored locally, it should be in the Keychain
+   * the client certificate is not shared among all installations (e.g. hard coded in the app)
+* if the app relies on an additional encrypted container stored in app data, ensure how the encryption key is used;
+   * if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
+   * check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
+
+Mobile operating systems provide a specially protected storage area for secret keys, commonly named key stores or key chains. Those storage areas will not be part of normal backup routines and might even be protected by hardware means. The application should use this special storage locations/mechanisms for all secret keys.
+
+#### Dynamic Analysis
+
+The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
+
+#### Remediation
+
+-- TODO --
+
+#### References
+
+##### OWASP Mobile Top 10
+
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+
+-- TODO --
+
+##### CWE
+
+-- TODO --
+
+##### Info
+
+* iOS: Managing Keys, Certificates, and Passwords -- https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
+* Android: The Android Keystore System -- https://developer.android.com/training/articles/keystore.html
+* Android: Hardware-backed Keystore -- https://source.android.com/security/keystore/
+
+##### Tools
+
+-- TODO --
 
 ### Testing for Insecure Cryptographic Algorithm Configuration
 
@@ -427,73 +482,6 @@ It is recommended to use an AEAD scheme for integrity-protecting encryption such
 
 * [1] Wikipedia: Authenticated Encryption -- https://en.wikipedia.org/wiki/Authenticated_encryption
 * [2] Luck Thirteen: Breaking the TLS and DTLS Record Protocols -- http://www.isg.rhul.ac.uk/tls/TLStiming.pdf
-
-##### Tools
-
--- TODO --
-
-### if symmetric encryption or MACs are used, test for hard coded secret keys
-
-#### Overview
-
--- TODO: write Introduction --
-
-The following checks would be performed in the last two app categories:
-
-* Ensure that no keys/passwords are hard coded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing fixed salt within application or password hashes may cause problems too.
-* Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
-* If the application is using two-way SSL (i.e. there is both server and client certificate validated) check if:
-   * the password to the client certificate is not stored locally, it should be in the Keychain
-   * the client certificate is not shared among all installations (e.g. hard coded in the app)
-
-
-The following checks would be performed in the offline application:
-
-* if the app relies on an additional encrypted container stored in app data, ensure how the encryption key is used;
-   * if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
-   * check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
-
-
-#### Static Analysis
-
--- TODO --
-
-* check source code for used key strings
-* check property files for used keys
-* check files for used keys
-
-A proper way would be to generate the client certificate upon user registration/first login and then store it in the Keychain.
-
-* Ensure that the keys/passwords/logins are not stored in application data. This can be included in the iTunes backup and increase attack surface. Keychain is the only appropriate place to store credentials of any type (password, certificate, etc.).
-* Ensure that keychain entries have appropriate protection class. The most rigorous being `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` which translates to: entry unlocked only if passcode on the device is set and device is unlocked; the entry is not exportable in backups or by any other means.
-*
-#### Dynamic Analysis
-
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
-
-* reverse engineer source code, then do the same
-
-#### Remediation
-
--- TODO --
-
-#### References
-
-##### OWASP Mobile Top 10
-
--- TODO --
-
-##### OWASP MASVS
-
--- TODO --
-
-##### CWE
-
--- TODO --
-
-##### Info
-
--- TODO --
 
 ##### Tools
 
