@@ -10,14 +10,7 @@ Note that "sensitive data" needs to be identified in the context of each specifi
 
 Common wisdom suggest to save as little sensitive data as possible on permanent local storage. However, in most practical scenarios, a least some types user-related data need to be stored. For example, asking the user to enter a highly complex password every time the app is started isn't a great idea from a usability perspective. As a result, most apps must locally cache some kind of session token. Other types of sensitive data, such as personally identifyable information, might also be saved if the particular scenario calls for it.
 
-Fortunately, Apple's data storage APIs allow developers to make use of the crypto hardware available in every iOS device. Provided that these APIs are used correclty, key data and files can be secured using hardware-backed 256 bit AES encryption.
-
--- [TODO: Where data shouldn't be saved:] -- 
-
-* CoreData/SQLite Databases
-* NSUserDefaults
-* Property List (Plist) files
-* Plain files
+Fortunately, iOS offers secure storage APIs allow developers to make use of the crypto hardware available in every iOS device. Provided that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
 
 ##### The Keychain
 
@@ -32,11 +25,9 @@ The KeyChain API consists of the following main operations with self-explaining 
 - SecItemCopyMatching
 - SecItemDelete
 
-Keychain data is protected using a class structure similar to the one used for file encryption (see also iOS platfom overview).
+Keychain data is protected using a class structure similar to the one used for file encryption (see below). Items added to the Keychain are encoded as a binary plist and encrypted with using an 128 bit AES per-item key. 
 
-Items added with the SecItemAdd call are encoded as a binary plist and encrypted with using an 128 bit AES per-item key. 
-
-Note that larger blobs of data are not to meant to be saved directly in the keychain. That's what the Data Protection API is for (which also makes use of the Keychain).
+Note that larger blobs of data are not to meant to be saved directly in the keychain - that's what the Data Protection API is for.
 
 ##### The Data Protection API
 
@@ -44,7 +35,7 @@ App developers can leverage the iOS *Data Protection* APIs to implement fine-gra
 
 The data protection architecture is based on a hierarchy of keys. The hardware key sits at the top of this hierarchy, and can be used to "unlock" so-called class keys which are associated with different device states (e.g. locked / unlocked).
 
-Every file stored in the iOS file system is encrypted with its own, individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the the Keychain item.
+Every file stored in the iOS file system is encrypted with its own, individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file.
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
 *iOS Data Protection Key Hierarchy <sup>[3]</sup>*
@@ -59,20 +50,15 @@ Files can be assigned one of four protection classes:
 
 - No Protection (NSFileProtectionNone): This class key is protected only with the UID and is kept in Effaceable Storage. This protection class exists to enable fast remote wipe: Deleting the class key immediately makes the data inacessible. 
 
--- [TODO: Finish data protection overview] -- 
+#### Local Storage APIs
 
-#### Static Analysis
-
-If there is a requirement to store sensitive information on the device itself, several functions/API calls are available to protect the data on IOS devices by using for example the Keychain.
-
-During the static analysis it should be checked if sensitive data is stored permanently on the device. The following frameworks and functions should be checked when handling sensitive data.
+When looking for instances of insecure data storage in an iOS app you should consider the following data storage mechanisms.
 
 ##### CoreData/SQLite Databases
 
 * `Core Data` is a framework that you use to manage the model layer objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level.
 
 * `sqlite3`: The `libsqlite3.dylib` library in framework section is required to be added in an application, which is a C++ wrapper that provides the API to the SQLite commands.
-
 
 ##### NSUserDefaults
 
@@ -86,6 +72,9 @@ The `NSUserDefaults` class provides a programmatic interface for interacting wit
 * Managing File Paths: `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`
 * The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
 
+#### Static Analysis
+
+Identify sensitive data saved throughout the app. This incudes passwords, secret keys, and personally identifyable information, as well as other data identified as sensitive by the client. Look for instances where this data is saved using any of the local storage APIs listed above. Make sure that sensitive data is *always* stored using the Data Protection API with sensible settings (see also "remediation").
 
 #### Dynamic Analysis
 
@@ -107,7 +96,9 @@ Manual dynamic analysis such as debugging can also be leveraged to verify how sp
 If sensitive information (credentials, keys, PII, etc.) is needed locally on the device, several best practices are offered by iOS that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
 
 The following is a list of best practices used for secure storage of certificates and keys and sensitive data in general:
+
 * For small amounts of sensitive data such as credentials or keys use the Keychain Services<sup>[1]</sup> to securely store it locally on the device. Keychain data is protected using a class structure similar to the one used in file Data Protection. These classes have behaviors equivalent to file Data Protection classes, but use distinct keys and are part of APIs that are named differently. The the default behaviour is `kSecAttrAccessibleWhenUnlocked`. For more information have a look at the available modes Keychain Item Accessibility<sup>[8]</sup>.
+
 * Cryptographic functions that have been self implemented to encrypt or decrypt local files should be avoided.  
 
 
