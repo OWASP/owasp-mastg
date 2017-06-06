@@ -496,15 +496,13 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 
 #### Overview
 
-Like every modern mobile operating system, iOS offers auto-backup features. These backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups. 
+Like other modern mobile operating systems iOS offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups. 
 
-However, 
-
-
+-- [TODO complete the backups overview] --
 
 #### Static Analysis
 
-Review the iOS mobile application source code to see if there is any usage of the `NSURLIsExcludedFromBackupKey`<sup>[1]</sup> or `kCFURLIsExcludedFromBackupKey`<sup>[2]</sup> file system properties to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories. 
+Review the iOS mobile application source code to see if there is any usage of the <code>NSURLIsExcludedFromBackupKey</code> <sup>[1]</sup> or <code>CFURLIsExcludedFromBackupKey</code> <sup>[2]</sup> file system properties to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories. 
 
 Either of these APIs is preferred over the older, deprecated approach of directly setting an extended attribute. All apps running on iOS 5.1 and later should use these APIs to exclude data from backups. 
 
