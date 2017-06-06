@@ -27,7 +27,7 @@ The following examples shows snippets of code to demonstrate bad practices that 
 
 ##### Shared Preferences
 
-SharedPreferences<sup>[2]</sup> is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
+SharedPreferences<sup>[2]</sup> is a common approach to store Key/Value pairs persistently in the filesystem by using an XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
 
 ```java
 SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
