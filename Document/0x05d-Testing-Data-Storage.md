@@ -21,7 +21,7 @@ Storing data<sup>[1]</sup> is essential for many mobile applications, for exampl
 * External Storage  
 * SQLite Databases  
 
-The following snippets of code demonstrate bad practices that disclose sensitive information, but also  show the different storage mechanisms on Android in detail.
+The following snippets of code demonstrate bad practices that disclose sensitive information, but also show the different storage mechanisms on Android in detail.
 
 ##### Shared Preferences
 
@@ -163,7 +163,7 @@ In a software-only implementation, the keys are encrypted with a per-user encryp
 
 As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code to identify the storage mechanisms used within the Android app and whether or not sensitive data is processed insecurely.
 
-* Check `AndroidManifest.xml` for permissions to read from or  write to external storage, like `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`
+* Check `AndroidManifest.xml` for permissions to read from or write to external storage, like `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`
 * Check the source code for functions and API calls that are used for storing data:
   * Open the Java Files in an IDE or text editor of your choice or use grep on the command line to search for:
     * file permissions like:
