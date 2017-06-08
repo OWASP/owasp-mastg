@@ -191,7 +191,8 @@ Once the file is converted to a human readable format, the exceptions can analys
 * [2] API Reference NSURLConnection - https://developer.apple.com/reference/foundation/nsurlconnection
 * [3] API Reference NSURLSession - https://developer.apple.com/reference/foundation/urlsession
 * [4] API Reference CFURL - https://developer.apple.com/reference/corefoundation/cfurl-rd7
-* [5] Supporting App Transport Security - https://developer.apple.com/news/?id=12212016b
+* [5] Apple Developer Portal Announcement - Supporting App Transport Security - https://developer.apple.com/news/?id=12212016b
+* [6] OS X Man Pages - Plutil - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html
 
 ##### Tools
 
