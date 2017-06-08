@@ -162,14 +162,11 @@ $ plutil -convert xml1 Info.plist
 
 Once the file is converted to a human readable format, the exceptions can analysed. The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP web sites or website that do not have the ATS requirements.
 
-
-#### Dynamic Analysis
-
-— TODO —
-
 #### Remediation
 
-— TODO —
+* If the application connects to a defined number of domains that the application author controls, then configure the servers to support the ATS requirements
+* If the application connects to a set of domains that the application owner controls and some third-party domains, then opt in for ATS support for the own domains
+* If the application opens third party web sites in web views, then from iOS 10 `NSAllowsArbitraryLoadsInWebContent` can be used disable ATS restrictions for the content loaded in web views.
 
 #### References
 
