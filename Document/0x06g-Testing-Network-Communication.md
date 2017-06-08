@@ -75,20 +75,33 @@ The cipher suit must be one of the following:
 
 ##### ATS Exceptions
 
-ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the NSAppTransportSecurity key. These exceptions can be applied to:
-
+ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the `NSAppTransportSecurity` key. These exceptions can be applied to:
 * allow insecure connections (HTTP),
 * lower the minimum TLS version,
-* disable PFS and 
+* disable PFS or
 * allow connections to local domains
 
-Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. However this decline is extended later by Apple stating "to give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed"<sup>[5]</sup>
+ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `NSAppTransportSecurity` dictionary<sup>[1]</sup>.
 
-* NSAllowsArbitraryLoads - disables ATS globally for all the domains
-* NSExceptionAllowsInsecureHTTPLoads - disables ATS for a single domain
-* NSExceptionMinimumTLSVersion - enable support for TLS versions less than 1.2
+```
+NSAppTransportSecurity : Dictionary {
+    NSAllowsArbitraryLoads : Boolean
+    NSAllowsArbitraryLoadsForMedia : Boolean
+    NSAllowsArbitraryLoadsInWebContent : Boolean
+    NSAllowsLocalNetworking : Boolean
+    NSExceptionDomains : Dictionary {
+        <domain-name-string> : Dictionary {
+            NSIncludesSubdomains : Boolean
+            NSExceptionAllowsInsecureHTTPLoads : Boolean
+            NSExceptionMinimumTLSVersion : String
+            NSExceptionRequiresForwardSecrecy : Boolean   // Default value is YES
+            NSRequiresCertificateTransparency : Boolean
+        }
+    }
+}
+```
+Source: Apple Developer Documentation<sup>[1]</sup>.
 
--- TODO: Describe ATS exceptions --
 
 #### Static Analysis
 
