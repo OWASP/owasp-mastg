@@ -102,6 +102,32 @@ NSAppTransportSecurity : Dictionary {
 ```
 Source: Apple Developer Documentation<sup>[1]</sup>.
 
+The following table summarises the global ATS exceptions. For more information about these exceptions, please refer to Table 2 in reference [1].
+
+|  Key | Description |
+| -----| ------------|
+| `NSAllowsArbitraryLoads` | Disable ATS restrictions globally excepts for individual domains specified under `NSExceptionDomains` |
+| `NSAllowsArbitraryLoadsInWebContent` | Disable ATS restrictions for all the connections made from web views |
+| `NSAllowsLocalNetworking` | Allow connection to unqualified domain names and .local domains |
+| `NSAllowsArbitraryLoadsForMedia` | Disable all ATS restrictions for media loaded through the AV Foundations framework |
+
+
+The following table summarises the per-domain ATS exceptions. For more information about these exceptions, please refer to Table 3 in reference [1].
+
+|  Key | Description |
+| -----| ------------|
+| `NSIncludesSubdomains` | Indicates whether ATS exceptions should apply to subdomains of the named domain |
+| `NSExceptionAllowsInsecureHTTPLoads` | Allows HTTP connections to the named domain, but does not affect TLS requirements |
+| `NSExceptionMinimumTLSVersion` | Allows connections to servers with TLS versions less than 1.2 |
+| `NSExceptionRequiresForwardSecrecy` | Disable perfect forward secrecy (PFS) |
+
+
+Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. However this decline is extended later by Apple stating “To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”<sup>[5]</sup>
+
+* `NSAllowsArbitraryLoads`
+* `NSExceptionAllowsInsecureHTTPLoads`
+* `NSExceptionMinimumTLSVersion`
+
 
 #### Static Analysis
 
