@@ -131,7 +131,37 @@ Starting from January 1 2017, Apple App Store review and requires justification 
 
 #### Static Analysis
 
-— TODO —
+If the source code is available, open then `Info.plist` file in the application bundle directory using a text editor and look for any exceptions that the application developer has configured. This file should be examined taking the applications context into consideration. 
+
+The following listing is an example of an exception configured to disable ATS restrictions globally. 
+
+```
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+```
+
+If the source code is not available, then the `Info.plist` file should be either can be obtained from a jailbroken device or by extracting the application IPA file.
+
+Since IPA files are ZIP archives, they can be extracted using any zip utility.
+
+```
+$ unzip app-name.ipa
+```
+
+`Info.plist` file can be found in the `Payload/BundleName.app/` directory of the extract. It’s a binary encoded file and has to be converted to a human readable format for the analysis. 
+
+`plutil`<sup>[6]</sup> is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
+
+The following command shows how to convert the Info.plist file into XML format.
+```
+$ plutil -convert xml1 Info.plist
+```
+
+Once the file is converted to a human readable format, the exceptions can analysed. The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP web sites or website that do not have the ATS requirements.
+
 
 #### Dynamic Analysis
 
