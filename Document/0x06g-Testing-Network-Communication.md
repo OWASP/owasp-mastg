@@ -168,7 +168,7 @@ Once the file is converted to a human readable format, the exceptions can analys
 --TODO
 
 #### Remediation
-
+* ATS should always be activated and only be deactivated under certain circumstances.
 * If the application connects to a defined number of domains that the application author controls, then configure the servers to support the ATS requirements
 * If the application connects to a set of domains that the application owner controls and some third-party domains, then opt in for ATS support for the own domains
 * If the application opens third party web sites in web views, then from iOS 10 `NSAllowsArbitraryLoadsInWebContent` can be used disable ATS restrictions for the content loaded in web views.
