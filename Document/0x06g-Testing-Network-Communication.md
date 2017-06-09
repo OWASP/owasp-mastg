@@ -194,7 +194,8 @@ Once the file is converted to a human readable format, the exceptions can analys
 ```
 
 * If the application connects to a set of domains that the application owner controls and some third-party domains, then opt in for ATS support for the own domains
-* If the application opens third party web sites in web views, then from iOS 10 `NSAllowsArbitraryLoadsInWebContent` can be used disable ATS restrictions for the content loaded in web views.
+* If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and deactivated.
+
 
 #### References
 
