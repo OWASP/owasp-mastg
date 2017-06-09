@@ -125,9 +125,10 @@ The following table summarises the per-domain ATS exceptions. For more informati
 Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. However this decline is extended later by Apple stating “To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”<sup>[5]</sup>
 
 * `NSAllowsArbitraryLoads`
+* `NSAllowsArbitraryLoadsForMedia`
+* `NSAllowsArbitraryLoadsInWebContent`
 * `NSExceptionAllowsInsecureHTTPLoads`
 * `NSExceptionMinimumTLSVersion`
-
 
 #### Static Analysis
 
@@ -169,7 +170,29 @@ Once the file is converted to a human readable format, the exceptions can analys
 
 #### Remediation
 * ATS should always be activated and only be deactivated under certain circumstances.
-* If the application connects to a defined number of domains that the application author controls, then configure the servers to support the ATS requirements
+* If the application connects to a defined number of domains that the application owner controls, then configure the servers to support the ATS requirements and opt-in for the ATS requirements within the app. In the following example, `example.com` is owned by the applicaiton owner and ATS is enabled for that domain.
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>example.com</key>
+        <dict>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+            <key>NSExceptionMinimumTLSVersion</key>
+            <string>TLSv1.2</string>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <false/>
+            <key>NSExceptionRequiresForwardSecrecy</key>
+            <true/>
+        </dict>
+    </dict>
+</dict>
+```
+
 * If the application connects to a set of domains that the application owner controls and some third-party domains, then opt in for ATS support for the own domains
 * If the application opens third party web sites in web views, then from iOS 10 `NSAllowsArbitraryLoadsInWebContent` can be used disable ATS restrictions for the content loaded in web views.
 
