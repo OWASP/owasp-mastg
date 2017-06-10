@@ -496,20 +496,21 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 
 #### Overview
 
-Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device, including the data and settings of installed apps. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups. 
+Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings. 
 
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place. 
 
 ##### How the Keychain is Backed Up
 
 When a user backs up their iPhone, the keychain data is backed up as well, but the secrets in the keychain remain encrypted. The class keys needed to decrypt they keychain data are not included in the backup. To restore the keychain data, the backup must be restored to a device, and the device must be unlocked with the same passcode. 
 
-Note that keychain items with the <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> attribute set can be decrypted only if the backup is restored to the same device. If the backup is restored to a new device, these items are missing. 
+Keychain items with the <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
 
--- [TODO complete the backups overview] --
+The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), then backups aren't an issue.
 
-#### Static Analysis
+##### Excluding Items from Backup
 
-Review the iOS mobile application source code to see if there is any usage of the <code>NSURLIsExcludedFromBackupKey</code> <sup>[1]</sup> or <code>CFURLIsExcludedFromBackupKey</code> <sup>[2]</sup> file system properties to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories. 
+the <code>NSURLIsExcludedFromBackupKey</code> <sup>[1]</sup> and <code>CFURLIsExcludedFromBackupKey</code> <sup>[2]</sup> file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories. 
 
 Either of these APIs is preferred over the older, deprecated approach of directly setting an extended attribute. All apps running on iOS 5.1 and later should use these APIs to exclude data from backups. 
 
@@ -571,6 +572,10 @@ If your app must support iOS 5.0.1, you can use the following method to set the 
 }
 ```
 
+
+#### Static Analysis
+
+Review the iOS mobile application source code to see if there is any usage of 
 #### Dynamic Analysis
 
 After the App data has been backed up, review the data content of the backup files and folders. Specifically, the following directories should be reviewed to check if it contains any sensitive data: 
