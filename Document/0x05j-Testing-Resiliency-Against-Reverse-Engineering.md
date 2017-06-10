@@ -905,7 +905,7 @@ To experiment with the detection methods above, you can download and build the A
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -962,7 +962,7 @@ In the context of anti-reversing, the goal of emulator detection is to make it a
 
 #### Emulator Detection Examples
 
-There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
+There are several indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
 
 The first set of indicaters stem from the build.prop file
 
@@ -1007,14 +1007,25 @@ TelephonyManager.getVoiceMailNumber()                   15552175049             
 
 Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data.
 
--- TODO [Dynamic Detection Techniques] --
-
-
 #### Bypassing Emulator Detection
 
+1. Patch out the emulator detection functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the <code>TelephonyManager.getDeviceID()</code> method to return an IMEI value.
+
+Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
 #### Effectiveness Assessment
 
+Install and run the app in the emulator. The app should detect this and terminate, or refuse to run the functionality that is meant to be protected. 
+
+Work on bypassing the defenses and answer the following questions:
+
+- How difficult is it to identify the emulator detection code using static and dynamic analysis?
+- Can the detection mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -1036,8 +1047,7 @@ N/A
 
 ##### Tools
 
--- TODO [Add links to tools for "Testing Emulator Detection"] --
-* Enjarify - https://github.com/google/enjarify
+N/A
 
 ### Testing Runtime Integrity Checks
 
