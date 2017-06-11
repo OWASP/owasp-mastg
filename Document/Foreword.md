@@ -6,8 +6,6 @@
 
 https://www.github.com/OWASP/owasp-mstg/
 
-*-- TODO [Write a clever and inspriring foreword that, while entertaining, also teaches the reader a valuable lesson. Will be added when the whole guide is finished ...] --*
-
 **script kiddie**
 
 *noun informal derogatory*
@@ -17,4 +15,6 @@ https://www.github.com/OWASP/owasp-mstg/
 ---
 
 **The first rule of the OWASP Mobile Security Testing Guide is: Don't just follow the OWASP Mobile Security Testing Guide.**
+
+If this was a normal security book, the introduction would start with some impressive facts and data to prove the importance of mobile security in this day and age. The author would g
 
