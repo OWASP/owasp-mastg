@@ -2,7 +2,7 @@
 
 ## Mobile App Security Testing Methodology
 
--- TODO [Describe Mobile Security Testing methodology] --
+-- TODO [This chapter is a partial mess. It needs cleanup, editing and rewriting. ] --
 
 The context of mobile security testing is a conjunction of multiple different tier of components: **app**, **system**, **communication** and **back-end server**. These four high-level components will be the main attack surface for a mobile security test.   
 
