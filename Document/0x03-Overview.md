@@ -4,8 +4,6 @@ The OWASP Mobile Security Testing Guide (MSTG) is an extension of the OWASP Test
 
 The goal of this project is to help people understand the what, why, when, where, and how of testing applications on Android and iOS devices. The project delivers a complete suite of test cases designed to address the OWASP Mobile Top 10, the Mobile App Security Checklist and the Mobile Application Security Verification Standard (MASVS). 
 
-The guide is organized as follows: This introduction describes the layout of the Mobile Security Testing Guide, and explains what makes mobile security testing unique. The Testing Processes and Techniques Section presents the mobile app security testing methodology, vulnerability analysis techniques, security testing in the SDLC, and vulnerability analysis techniques. The Android Testing Guide covers the android platform, security basics, security test cases, and reverse engineering and tampering techniques and preventions. The iOS Testing Guide Testing Guide covers everything the Android Testing Guide covers but on iOS devices. Finally, the appendix presents some technical test cases such as authentication and session management endpoint, network communications, and cryptography that are not Android or iOS specific followed by a set of testing tools. 
-
 ## What Makes Mobile Security Testing Different?
 
 Technological revolutions can happen quickly. Less than a decade ago, smartphones were clunky devices with little keyboards - expensive playthings for tech-savvy business users. Today, smartphones are an essential part of our lives. We've come to rely on them for information, navigation and communication, and they are ubiquitous both in business and in our social lives.
@@ -60,35 +58,21 @@ This guide belongs to a set of three closely related mobile application security
 
 For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during of after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
 
-## How to Use The Mobile Security Testing Guide
-
 ## Organization of the Mobile Security Testing Guide
 
 All requirements specified in the MASVS are described in technical detail in the testing guide. The main sections of the MSTG are explained briefly in this chapter.
 
-### Testing Process and Techniques
+The guide is organized as follows: 
 
-This section explains the checklist and how to use it during project security evaluation. The different analysis techniques used for the test cases are explained like static and dynamic analysis on source code, but also on binaries. An introduction into tampering and reverse engineering is also part of this section.
+- This introduction describes the layout of the Mobile Security Testing Guide, and explains what makes mobile security testing unique. 
 
-### Android Testing Guide
+- The Testing Processes and Techniques Section presents the mobile app security testing methodology, vulnerability analysis techniques, security testing in the SDLC, and vulnerability analysis techniques. 
 
--- TODO
-The Android chapter of the testing guide contains all technical procedures to verify the requirements of the MASVS on the Android platform.
+- The Android Testing Guide covers the android platform, security basics, security test cases, and reverse engineering and tampering techniques and preventions.
 
-### iOS Testing Guide
+- The iOS Testing Guide Testing Guide covers everything the Android Testing Guide covers but on iOS devices. 
 
--- TODO
-The iOS chapter of the testing guide contains all technical procedures to verify the requirements of the MASVS on the iOS platform.
-
-### Reverse Engineering and Tampering
-
--- TODO
-
-### Testing Tools
-
-There are various tool that can be used to conduct an effective mobile security test and like any tool of choice it all depends on the matter of preference and budget. An extensive list of tools can be found in "Testing Tools" chapter at the end of this document.
-
--- TODO [Describe the organization of the current guide] --
+- The appendix presents some technical test cases such as authentication and session management endpoint, network communications, and cryptography that are not Android or iOS specific followed by a set of testing tools. 
 
 ## References
 
