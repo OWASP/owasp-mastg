@@ -2,14 +2,11 @@
 
 The OWASP Mobile Security Testing Guide (MSTG) is an extension of the OWASP Testing Project specifically focusing on the security testing of Android and iOS devices.
 
-The goal of this project is to help people understand the what, why, when, where, and how of testing applications on Android
-and iOS devices. The project delivers a complete suite of test cases designed to address the OWASP Mobile Top 10, the Mobile App Security Checklist and the Mobile Application Security Verification Standard (MASVS). 
+The goal of this project is to help people understand the what, why, when, where, and how of testing applications on Android and iOS devices. The project delivers a complete suite of test cases designed to address the OWASP Mobile Top 10, the Mobile App Security Checklist and the Mobile Application Security Verification Standard (MASVS). 
 
-The guide is organized as follows: This introduction describes the layout of the Mobile Security Testing Guide, and explains what makes mobile security testing unique. The Testing Processes and Techniques Section presents the mobile app security testing methodology, vulnerability analysis techniques, security testing in the SDLC, and vulnerability analysis techniques. The Android Testing
-Guide covers the android platform, security basics, security test cases, and reverse engineering and tampering techniques and preventions. The iOS Testing Guide Testing Guide covers everything the Android Testing Guide covers but on iOS devices. Finally,
-the appendix presents some technical test cases such as authentication and session management endpoint, network communications, and cryptography that are not Android or iOS specific followed by a set of testing tools. 
+The guide is organized as follows: This introduction describes the layout of the Mobile Security Testing Guide, and explains what makes mobile security testing unique. The Testing Processes and Techniques Section presents the mobile app security testing methodology, vulnerability analysis techniques, security testing in the SDLC, and vulnerability analysis techniques. The Android Testing Guide covers the android platform, security basics, security test cases, and reverse engineering and tampering techniques and preventions. The iOS Testing Guide Testing Guide covers everything the Android Testing Guide covers but on iOS devices. Finally, the appendix presents some technical test cases such as authentication and session management endpoint, network communications, and cryptography that are not Android or iOS specific followed by a set of testing tools. 
 
-# What Makes Mobile Security Testing Different?
+## What Makes Mobile Security Testing Different?
 
 Technological revolutions can happen quickly. Less than a decade ago, smartphones were clunky devices with little keyboards - expensive playthings for tech-savvy business users. Today, smartphones are an essential part of our lives. We've come to rely on them for information, navigation and communication, and they are ubiquitous both in business and in our social lives.
 
@@ -21,7 +18,7 @@ Every new technology introduces new security risks, and mobile computing is no d
 
 Security concerns in the mobile app space differ from traditional desktop software in some important ways. Firstly, while not many people opt to carry a desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored. Also leaving a device unattended, which allows adversaries temporary physical access (Evil-Maid attack) can already lead to full compromise of the device or steal data without the owner noticing it.
 
-## Local Data Storage
+### Local Data Storage
 
 From the view of a mobile app, this extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user?
 
@@ -29,25 +26,25 @@ Data stored on mobile devices also differ from the data stored on desktops and l
 
 The protection of sensitive data, such as user credentials and private information, is a key focus in mobile security. Firstly, sensitive data can be unintentionally exposed to other apps running on the same device if operating system mechanisms like IPC are used improperly. Data may also unintentionally leak to cloud storage, backups, or the keyboard cache. Additionally, mobile devices can be lost or stolen more easily compared to other types of devices, so an adversary gaining physical access is a more likely scenario.
 
-## Communication with Trusted Endpoints
+### Communication with Trusted Endpoints
 
 Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
 
 It is crucial to maintain confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. At the very least, a mobile app must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings. Level 2 lists additional defense-in-depth measure such as SSL pinning.
 
-## Authentication and Session Management
+### Authentication and Session Management
 
 In most cases, user login to a remote service is an integral part of the overall mobile app architecture. Even though most of the logic happens at the endpoint, MASVS defines some basic requirements regarding how user accounts and sessions are managed. The requirements can be easily verified without access to the source code of the service endpoint.
 
-## Interaction with the Mobile Platform
+### Interaction with the Mobile Platform
 
 -- [TODO] --
 
-## Code Quality and Exploit Mitigation
+### Code Quality and Exploit Mitigation
 
 -- [TODO] --
 
-## Anti-Tampering and Anti-Reversing
+### Anti-Tampering and Anti-Reversing
 
 -- [TODO] --
 
@@ -62,29 +59,6 @@ This guide belongs to a set of three closely related mobile application security
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
 For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during of after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
-
-## OWASP Mobile Application Security Verification Standard (MASVS) 
-
-The OWASP Mobile Application Security Verification Standard (MASVS) ... 
-
-The following are the eight requirement categories of the MASVS: 
-
-* V1: Architecture, Design and Threat Modelling Requirements
-* V2: Data Storage and Privacy Requirements
-* V3: Cryptography Requirements
-* V4: Authentication and Session Management Requirements
-* V5: Network Communication Requirements
-* V6: Platform Interaction Requirements
-* V7: Code Quality and Build Setting Requirements
-* V8: Resiliency Against Reverse Engineering Requirements
-
-## OWASP Mobile Application Security Checklist
-
-The OWASP Mobile Application Security Checklist ...
-
-## OWASP Mobile Security Testing Guide (MSTG) 
-
-The OWASP Mobile Security Testing Guide (MSTG)... 
 
 ## How to Use The Mobile Security Testing Guide
 
