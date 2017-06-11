@@ -12,11 +12,11 @@ As already mentioned many times in this guide, as little sensitive data as possi
 
 ##### Data Protection API
 
-App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access control for user data stored in flash memory. The API is built on top of the Secure Enclave, a coprocessor that provides cryptographic operations for Data Protection key management. A device-specific hardware key is embedded into the secure enclave, ensuring the integrity of Data Protection even if the operating system kernel is compromised.
+App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access control for user data stored in flash memory. The API is built on top of the Secure Enclave, a coprocessor that provides cryptographic operations for Data Protection key management. A device-specific hardware key - the device UID - is embedded into the secure enclave, ensuring the integrity of Data Protection even if the operating system kernel is compromised.
 
-The data protection architecture is based on a hierarchy of keys. The hardware key sits at the top of this hierarchy, and can be used to "unlock" so-called class keys which are associated with different device states (e.g. locked / unlocked).
+The data protection architecture is based on a hierarchy of keys. The UID and the user passcode key, which is derived from the user's passphrase using the PBKDF2 algorithm, sit at the top of this hierarchy. Together, they can be used to "unlock" so-called class keys which are associated with different device states (e.g. device is locked / unlocked).
 
-Every file stored in the iOS file system is encrypted with its own individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file.
+Every file stored in the iOS file system is encrypted with its own individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file. 
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
 *iOS Data Protection Key Hierarchy <sup>[3]</sup>*
@@ -48,23 +48,14 @@ The KeyChain API consists of the following main operations with self-explanatory
 - SecItemCopyMatching
 - SecItemDelete
 
-Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the keychain - that's what the Data Protection API is for.
+Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the keychain - that's what the Data Protection API is for. Data protection is activated by setting the <code>kSecAttrAccessible</code> attribute in the <code>SecItemAdd</code> or <code>SecItemUpdate</code> call. The following settings are available:
 
 - kSecAttrAccessibleAfterFirstUnlock: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
-- kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user. The data will not be included in an iCloud or iTunes backup.
 - kSecAttrAccessibleAlways: The data in the keychain item can always be accessed regardless of whether the device is locked.
 - kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
 - kSecAttrAccessibleAlwaysThisDeviceOnly: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
 - kSecAttrAccessibleWhenUnlocked: The data in the keychain item can be accessed only while the device is unlocked by the user.
 - kSecAttrAccessibleWhenUnlockedThisDeviceOnly: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
-
-The keychain file is located at:
-
-```
-/private/var/Keychains/keychain-2.db
-```
-
-If necessary during dynamic analysis, the contents of the Keychain can be dumped using keychain dumper <sup>[9]</sup> as described in the chapter "Basic Security Testing on iOS".
 
 #### Static Analysis
 
@@ -150,6 +141,20 @@ The following example shows how to create a securely encrypted file using the <c
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
   forKey:NSFileProtectionKey]];
 ```
+
+
+
+```
+-- [TODO - KeyChain Sample Code ] --
+```
+
+The keychain file is located at:
+
+```
+/private/var/Keychains/keychain-2.db
+```
+
+If necessary during dynamic analysis, the contents of the Keychain can be dumped using keychain dumper <sup>[9]</sup> as described in the chapter "Basic Security Testing on iOS".
 
 #### References
 
