@@ -4,8 +4,9 @@
 
 #### Overview
 
--- REVIEW --
-Choosing good cryptographic algorithm alone is not enough. Often security of otherwise sound algorithms can be affected if misconfigured. Many previously strong algorithms and their configurations are now considered vulnerable or non-compliant with best practices. It is therefore important to periodically check current best practices and adjust configurations accordingly.  
+A general rule in app development is that one should never attempt to invent their own cryptography. In mobile apps in particular, any form of crypto should be implemented using existing, robust implementations. In 99% of cases, this simply means using the data storage APIs and cryptographic libraries that come with the mobile OS.
+
+Android developers don't need to bother much with the intricate details of cryptography most of the time. However, even when using standard algorithms can be affected if misconfigured. 
 
 #### Static Analysis
 
