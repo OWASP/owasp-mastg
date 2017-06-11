@@ -54,7 +54,6 @@ Use cryptographic algorithm configurations that are currently considered strong,
 * Enjarify - https://github.com/google/enjarify
 
 
-
 ### Testing Random Number Generation
 
 #### Overview
