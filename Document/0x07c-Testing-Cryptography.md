@@ -2,14 +2,33 @@
 
 The following chapter translates the cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are based upon generic cryptographic concepts and are not relying on a specific implementation on iOS or Android.
 
-Proper design of a cryptographic system is a common pitfall for mobile application development. To achieve good security, a developer has to choose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
+The primary goal of cryptography is to provide confidentiality, data integrity, and authentication, even in the presence of a malicious attacker. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity prevents tampering or modifying the data, and authentication ensures that the data came from a trusted source.
 
-Throughout this chapter, multiple basic cryptographic building blocks are used. The following gives a rough introduction into commonly referred concepts:
+Encryption converts the plain-text data into a form (called cipher text) that does not reveal any information about the original contents. The original data can be restored from the cipher text through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key).
 
-* Hashes are used to quickly calculate a fixed-length checksum based upon the original data. The same input data will produce the same output hash. Cryptographic hashes guarantee, that the generated hash will limit reasoning about the original data, that small changes within the original date will produce a completely different hash and that, given a hash, providing input data that leads to the same hash is not feasible. As no secret keys are used, an attacker can recalculate a new hash after data was modified.
-* Encryption converts the original plain-text data into encrypted text and subsequently allows to reconstruct the original data form the encrypted text (also known as cipher text). Thus it provides data confidentiality.
-* Symmetric Encryption utilizes a secret key. The data confidentiality of the encrypted data is solely dependent upon the confidentiality of the secret key. This implies, that the secret key should be secret and thus not be predictable.
-* Asymmetric Encryption utilizes two keys: a public key that can be used to encrypt plain-text and a secret private key that can be used to reconstruct the original data from the plain-text.
+* Symmetric-key encryption algorithms use the same key for both encryption and decryption. They are very fast but require careful key management, since everybody who has access to the key is able to decrypt the encrypted content.
+* Public-key (or asymmetric) encryption algorithms operate with two separate keys: the public key and the private key. The public key can be distributed freely, while the private key should not be shared with anyone. A message encrypted with the public key can only be decrypted with the private key.
+
+Hash functions deterministically map arbitrary pieces of data into fixed-length values. It is typically easy to compute the hash, but difficult (or impossible) to determine the original input based on the hash. Cryptographic hash functions additionally guarantee that even small changes to the input data result in large changes to the resulting hash values. Cryptographic hash functions are used for authentication, data verification, digital signatures, message authentication codes, etc.
+
+Two uses of cryptography are covered in other chapters:
+* Secure communications. TLS (Transport Layer Security) uses both symmetric and public-key cryptography.
+* Secure storage. Android and iOS both support disk and file encryption. In addition, they also provide secure data storage (Keychain and Keystore) capabilities.
+
+Other uses of cryptography require careful adherence to best practices:
+* For encryption, use a strong, modern cipher with the appropriate, secure mode and a strong key. Examples:
+  - 256-bit key AES in GCM mode (provides both encryption and integrity verification.)
+  - 4096-bit RSA with OAEP padding.
+  - 224/256-bit elliptic curve cryptography.
+* Do not use known weak algorithms. For example:
+  - AES in ECB mode is not considered secure, because it leaks information about the structure of the original data.
+  - Several other AES modes can be weak.
+  - RSA with 768-bit and weaker keys can be broken. Older PKCS#1 padding leaks information.
+* Rely on secure hardware, if available, for storing encryption keys, performing cryptographic operations, etc.
+
+#### References
+
+[1] Best Practices for Security & Privacy: Cryptography - https://developer.android.com/training/articles/security-tips.html#Crypto
 
 ### Testing for Custom Implementations of Cryptography
 
@@ -19,7 +38,7 @@ The use of non-standard or custom built cryptographic algorithms is dangerous be
 
 #### Static Analysis
 
-Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit shift operators like exclusive OR operations might be a good sign to start digging deeper.
+Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
 
 #### Dynamic Analysis
 
