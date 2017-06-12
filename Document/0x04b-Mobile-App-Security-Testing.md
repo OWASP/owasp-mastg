@@ -17,9 +17,9 @@ The following sections will show how to use the OWASP mobile application securit
 
 First of all, you need to decide what security level of the [MASVS](https://github.com/OWASP/owasp-masvs) to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we do not live in an ideal world. 
 
-Different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of Level 1 and Level 2 MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
+Different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
 
-Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be needed due to industry regulations or local laws - for example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
+Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
 Security goals/controls defined before these discussions may also be reviewed during the stakeholder discussion. Some controls may conform to MASVS sections, but others may be specific to the organization or application. 
 
