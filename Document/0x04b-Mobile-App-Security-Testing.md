@@ -1,6 +1,6 @@
 ## Mobile App Security Testing
 
-Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, the **network** and **remote services**.  
+Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, any **remote services** consumed by the app, and the **network** used to communicate with them.  
 
 Examples of attacks against these surfaces include:
 
