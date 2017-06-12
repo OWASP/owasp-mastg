@@ -1,45 +1,153 @@
+## Mobile App Security Testing
 
-## Mobile App Taxonomy
+Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, any **remote services** consumed by the app, and the **network** used to communicate with them.  
 
-The following section is a brief introduction to the 3 different types of mobile applications, namely (1) Native Apps, (2) Hybrid Apps and (3) Web Apps. Before we dive into them, it is essential to first understand what a mobile app is.
+Examples of attacks against these surfaces include:
 
-### Mobile App
+* **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
+* **Operating System:** Any native API to which sensitive info is sent. E.g. Tampering with the system HTTP client might give access to the all SSL/TLS traffic from and to the phone, even when SSL with certificate pinning is used.
+* **Network:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
+* **Remote Services:** Flawed authentication and session management, vulnerable server side functions etc.
 
-The term `mobile app` refers to applications (self-contained computer programs), designed to execute and enhance the functionality of a mobile device. In this guide we will focus on the mobile apps designed to run on Android and iOS operating systems, as cumulatively they take more than 99% of the market share<sup>[12]</sup>. Due to the expansion of these operating systems to other device types, like smart watches, TVs, cars, the more general term `app` is more appropriate. Nevertheless, for historic reasons, both terms are used interchangeably to refer to an application that can run on some of these systems, regardless of the exact device type.
+-- TODO --
 
-Today, mobile internet usage has surpassed desktop usage for the first time in history and mobile apps are the most widespread kind of applications<sup>[10]</sup>, making mobile devices increasingly likely targets for malicious actors.
+The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test.
 
-### Native App
+### Preparation - Defining The Baseline
 
-Most operating systems, including Android and iOS, come with a set of high-level APIs that can be used to develop applications specifically for that system. Such applications are called `native` for the system for which they have been developed. Usually, when discussing a `mobile app`, the assumption is that it is a `native app`, implemented in the standard programming languages for that operating system - either Objective-C or Swift for iOS, and Java or Kotlin for Android.
+First of all, you need to decide what security level of the [MASVS](https://github.com/OWASP/owasp-masvs) to test against. The security requirements should ideally have been decided at the beginning of the SDLC - but unfortunately we do not live in an ideal world. 
 
-Native mobile apps can provide fast performance and a high degree of reliability. They usually adhere to platform-specific design principles (e.g. the Android Design Principles<sup>[13]</sup>), and provide a more consistent UI than `hybrid` and `web` apps. Due to their close integration with the operating system, native apps have access to almost every component of the device (camera, sensors, hardware backed key stores, etc.)
+Different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
 
-There can be some ambiguity when discussing `native` apps for Android. Android provides two sets of APIs to develop against - the Android SDK and the Android NDK. The SDK (or Software Development Kit) is a Java API and is the default API against which applications are built. The NDK (or Native Development Kit) is a C/C++ based API used for developing application components that require specific optimization, or which can otherwise benefit from access to lower level APIs (such as OpenGL). Normally, you can only distribute apps built with the SDK, which potentially can also consum NDK APIs. Therefore we say that Android `native **apps**` (built with the SDK) can have `native **code**` (built with the NDK).
+Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
-The most obvious downside of native apps is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases, or introduce often complex development tools to port a single code base to two platforms (e.g. Xamarin)
+Security goals/controls defined earlier in the SDLC may also be reviewed during the stakeholder discussion. Some controls may conform to MASVS controls, but others may be specific to the organization or application. 
 
-<!-- Note that Xamarin, unlike Cordova, actually creates native binaries for iOS and Android apps -->
+![Preparation](Images/Chapters/0x03/mstg-preparation.png)
 
-### Web App
+All involved parties need to agree on the decisions made and on the scope in the checklist, as this will define the baseline for all security testing, regardless if done manually or automatically.
 
-Mobile Web apps, or simply Web apps, are websites designed to look and feel like a native app. They run in a browser and are usually developed in HTML5. Launcher icons may be created to give starting-up the app a native feel, but these often simply act as browser bookmarks, opening the default web browser and loading the bookmarked webpage.
+#### Identifying Sensitive Data
 
-Web apps have limited integration with the general components of the device (usually being sandboxed in the browser), and may have noticeable differences in performance from native apps. Since they typically target multiple platforms, their UIs do not follow some of the design principles users of a specific platform are used to. Their biggest advantage is reduced development and maintenance costs arising from having a single codebase, as well as allowing developers to distribute updates without engaging the platform specific app stores (such as by simply changing HTML files on the webserver hosting the application).
+Classification of sensitive information can vary between different industries and countries. Beyond legal and civic obligations, organizations may take a more restrictive view of what counts as sensitive data, and may have a data classification policy that clearly defines what counts as sensitive information. 
 
-### Hybrid App
+There are three general states in which data may be accessible:
 
-Hybrid apps attempt to fill the gap between native and web apps. Namely, hybrid apps are (distributed and executed as) native apps, that have majority of their content implemented on top of web technologies, running in an embedded web browser (web view). As such, hybrid apps inherit some of the pros and cons of both native and web apps.
+* At rest - when the data is sitting in a file or data store
+* In use - when an application has loaded the data into its address space
+* In transit - when data has been sent between consuming process - e.g. during IPC.
 
-A web-to-native abstraction layer enables access to device capabilities for hybrid apps that are not accessible to mobile web applications. Depending on the framework used for developing, one code base can result in multiple applications, targeting separate platforms, with a UI closely resembling that of the targeted platform. Nevertheless, usually significant effort is required to exactly match the look and feel of a native app.
+The degree of scrutiny to apply to each state may depend on the criticality of the data, and liklihood of access. For example, because the likelihood of malicious actors gaining physical access to mobile devices is greater, data held in application memory may be more at risk of being accessed via core dumps than that on a web-server.
 
-Following is a non-exhaustive list of more popular frameworks for developing Hybrid Apps:
+If no data classification policy is available, the following kinds of information are generally considered to be sensitive:
 
-* Apache Cordova - https://cordova.apache.org/
-* Framework 7 - http://framework7.io/
-* Ionic - https://ionicframework.com/
-* jQuery Mobile - https://jquerymobile.com/
-* Native Script - https://www.nativescript.org/
-* Onsen UI - https://onsen.io/
-* React Native - http://www.reactnative.com/
-* Sencha Touch - https://www.sencha.com/products/touch/
+* User authentication information (credentials, PINs etc.).
+* Personal Identifiable Information (PII) that can be abused for identity theft: Social security numbers, credit card numbers, bank account numbers, health information.
+* Highly sensitive data that would lead to reputational harm and/or financial costs if compromised.
+* Any data that must be protected by law or for compliance reasons.
+* Finally any technical data, generated by the application or it's related systems, that is used to protect other data or the system, should also be considered as sensitive information (e.g. encryption keys).
+
+It may be impossible to detect leakage of sensitive data without a firm definition of what counts as such, so such a definition must be agreed upon in advance of testing.
+
+### Vulnerability Analysis
+
+#### Static Analysis
+
+When executing a static analysis, the source code of the mobile App(s) will be analyzed to ensure sufficient and correct implementation of security controls, specifically on crucial components such as cryptographic and data storage mechanisms. Due to the amount of code a tester will be confronted with, the ideal approach for static analysis should be a mixture of using tools that scan the code automatically and manual code review.
+
+Through this approach you can get the best out of both worlds. You can get the so called "low hanging fruits" through the automatic scan, as the scanning engine and the (predefined) rules can detect many common vulnerabilities in the code. A manual code review can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
+
+#### Automatic Code Analysis
+
+During automatic static analysis, a tool will check the source code for compliance with a predefined set of rules or industry best practices. It has been a standard development practice to use analytical methods to review and inspect the mobile application's source code to detect bugs and implementation errors.
+
+The automatic static analysis tools will provide assistance with the manual code review and inspection process. The tool will typically display a list of findings or warnings and then flag all the instances which contains any forms of violations in terms of their programming standards. Automatic static tools come in different variations, some are only running when you can actually build the app, some just need to be feed with the source code and some are running as plugin in an Integrated Development Environments (IDE)<sup>[7] [8]</sup>. The latter one provides assistance within your IDE in improving the security mechanisms in the mobile application code through a programmer-assisted way to correct the issues found. Ideally these tools should be used during the development process, but can also be useful during a source code review.
+
+Some static code analysis tools encapsulate deep knowledge of the underlying rules and semantics required to perform the specific type of analysis, but still require a professional to identify if it's a false positive or not.
+
+It should be noted that automatic static analysis can produce a high number of false positives, if the tool is not configured properly to the target environment. Executing the scan only for certain vulnerability classes might be a good decision for the first scan to not get overwhelmed with the results.
+
+In the role of a penetration testing engagement, the use of automatic code analysis tools can be very handy as it could quickly and easily provide a first-level analysis of source code, to identify the low hanging fruits before diving deeper into the more complicated functions, where it is essential to thoroughly assess the method of implementation in varying contexts.
+
+A full list of tools for static analysis can be found in the chapter "Testing tools".
+
+#### Manual Code Analysis
+
+In manual code analysis, a human code reviewer will be looking through the source code of the mobile application, to identify security vulnerabilities. This can be as basic as from crawling the code by executing grep on key words within the source code repository to identify usages of potentially vulnerable code patterns, to the usage of an Integrated Development Environment (IDE). An IDE provides basic code review functionality and can be extend through different tools to assist in reviewing process.
+
+During a manual code review, the code base will be scanned to look for key indicators wherein a possible security vulnerability might reside. This is also known as "Crawling Code"<sup>[9]</sup> and will be executed by looking for certain keywords used within functions and APIs. For example, cryptographic strings like DES, MD5 or Random, or even database related strings like executeStatement or executeQuery are key indicators which are of interest in the process of crawling code.
+
+The main difference between a manual code review and the use of any automatic code analysis tools is that in manual code review, it is better at identifying vulnerabilities in the business logic, standards violations and design flaws, especially in the situations where the code is technically secure but logically flawed. In such scenarios, the code snippet will not be detected by any automatic code analysis tool as an issue.
+
+A manual code review requires an expert human code reviewer who is proficient in both the language and the frameworks used in the mobile application. This is essential to have a deep understanding of the security implementation of the technologies used in the mobile application's source code. As a result it can be time consuming, slow and tedious for the reviewer; especially when mobile application source code has a large number of lines of code.
+
+#### Dynamic Analysis
+
+In a Dynamic Analysis approach, the focus is on testing and evaluation of an app by executing it in a real-time manner, under different stimuli. The main objective of a dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed.
+
+Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms being put in place to prevent disclosure of data in transit, authentication and authorization issues, data validation vulnerabilities (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors.
+
+##### Pros of Dynamic Analysis
+
+* Does not require to have access to the source code
+* Does not need to understand how the mobile application is supposed to behave
+* Able to identify infrastructure, configuration and patch issues that Static Analysis approach tools will miss
+
+##### Cons of Dynamic Analysis
+
+* Limited scope of coverage because the mobile application must be footprinted to identify the specific test area
+* No access to the actual instructions being executed, as the tool is exercising the mobile application and conducting pattern matching on the requests and responses
+
+#### Runtime Analysis
+
+-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] --
+
+#### Traffic Analysis
+
+Dynamic analysis of the traffic exchanged between client and server can be performed by launching a Man-in-the-middle (MITM) attack. This can be achieved by using an interception proxy like Burp Suite or OWASP ZAP for HTTP traffic.  
+
+* Configuring an Android Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
+* Configuring an iOS Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
+
+In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
+* Mallory - https://github.com/intrepidusgroup/mallory
+* Wireshark - https://www.wireshark.org/
+
+#### Input Fuzzing
+
+The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occations when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
+
+Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input. Below are the steps in performing the fuzzing:
+
+* Identifying a target
+* Generating malicious inputs
+* Test case delivery
+* Crash monitoring
+
+Also refer to the OWASP Fuzzing guide - https://www.owasp.org/index.php/Fuzzing
+
+Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
+
+### Eliminating Common False Positives
+
+-- [TODO] --
+
+#### Cross-Site Scripting (XSS)
+
+A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF<sup>[2]</sup>. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser, it is not possible for a user to insert a URL into a WebView of an app as no address bar is available. Also, clicking on a link will not open the URL in a WebView of an app, instead it will open directly within the default browser of the respective mobile device. Therefore, a typical reflected Cross-Site Scripting attack that targets a WebView in an app is not applicable and will not work.
+
+If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
+
+* JavaScript is not deactivated in the WebView (see OMTG-ENV-005)
+* File access is not deactivated in the WebView (see OMTG-ENV-006)
+* The function addJavascriptInterface() is used (see OMTG-ENV-008)
+
+As a summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting or injected JavaScript through MITM can become a dangerous vulnerability if the WebView in used is configured insecurely.
+
+#### Cross-Site Request Forgery (CSRF)
+
+The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
+
+The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
+
+Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
