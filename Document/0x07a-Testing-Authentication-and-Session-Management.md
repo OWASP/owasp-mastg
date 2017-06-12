@@ -102,6 +102,11 @@ JWT implementations are available for all major programming languages, like PHP<
 
 Identify the JWT library that is used on server and client side. It should be checked if there are any known vulnerabilities available for the JWT library in use.
 
+The following best practices should be verified in the JWT library:
+* Verify the signature at all times for all incoming requests containing a token.
+* Verify the data embedded into the JWT and check if sensitive information is available.
+* To stop replay attacks, you can use `jti` (JWT ID) Claim, which provides a unique identifier for the JWT.
+
 #### Dynamic Analysis
 
 Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
