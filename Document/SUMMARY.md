@@ -5,7 +5,10 @@
 ### Overview
 
 - [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
-- [Testing Processes and Techniques](0x04-Testing-Processes-and-Techniques.md)
+
+### General Testing Guide
+
+- [General Testing Guide](0x04-Testing-Processes-and-Techniques.md)
 
 ### Android Testing Guide
 
@@ -35,8 +38,8 @@
 
 ### Appendix
 
-* [Testing Authentication and Session Management on the Endpoint](0x07a-Testing-Authentication-and-Session-Management.md)
+* [Remote Authentication and Authorization](0x07a-Testing-Authentication-and-Session-Management.md)
 * [Testing Network Communication](0x07b-Testing-Network-Communication.md)
-* [Testing Cryptography](0x07c-Testing-Cryptography.md)
+* [Cryptography for Mobile Apps](0x07c-Testing-Cryptography.md)
 * [Assessing Software Protection Schemes](0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](0x08-Testing-Tools.md)
