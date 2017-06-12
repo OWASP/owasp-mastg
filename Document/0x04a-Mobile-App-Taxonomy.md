@@ -37,3 +37,9 @@ Following is a non-exhaustive list of more popular frameworks for developing Hyb
 * Onsen UI - https://onsen.io/
 * React Native - http://www.reactnative.com/
 * Sencha Touch - https://www.sencha.com/products/touch/
+
+### References
+
+* [1] Mobile internet usage surpasses desktop usage for the first time in history - http://bgr.com/2016/11/02/internet-usage-desktop-vs-mobile
+* [2] Worldwide Smartphone OS Market Share - http://www.idc.com/promo/smartphone-market-share/os
+* [3] Android Design Principles - https://developer.android.com/design/get-started/principles.html
