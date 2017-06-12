@@ -2,7 +2,7 @@
 
 The following chapter translates the cryptography requirements of the MASVS into technical test cases. Test cases listed in this chapter are based upon generic cryptographic concepts and are not relying on a specific implementation on iOS or Android.
 
-Proper design of a cryptographic system is a common pitfall for mobile application development. To achieve good security, a developer has to chose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
+Proper design of a cryptographic system is a common pitfall for mobile application development. To achieve good security, a developer has to choose the right cryptographic directive (e.g., symmetric encryption), chose the right implementation for that directive (e.g., AES-GCM) and then configure that implementation correctly (e.g., key length, block modes, key management). While this chapter does not give an introduction into cryptography, its questions are designed to find common problems within the mentioned selection and implementation process.
 
 Throughout this chapter, multiple basic cryptographic building blocks are used. The following gives a rough introduction into commonly referred concepts:
 
@@ -23,7 +23,7 @@ Carefully inspect all the cryptographic methods used within the source code, esp
 
 #### Dynamic Analysis
 
-The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
+The recommended approach is to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
 
 #### Remediation
 
@@ -71,7 +71,7 @@ Cipher cipher = Cipher.getInstance("DES");
 
 #### Dynamic Analysis
 
-The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
+The recommended approach is to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
 
 If you encounter locally stored data during the test, try to identify the used algorithm and verify them against a list of known insecure algorithms.
 
@@ -136,7 +136,7 @@ Mobile operating systems provide a specially protected storage area for secret k
 
 #### Dynamic Analysis
 
-The recommended approach is be to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
+The recommended approach is to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
 
 #### Remediation
 
@@ -233,7 +233,7 @@ The ECB (Electronic Codebook) encryption mode should not be used, as it is basic
 
 #### Static Analysis
 
-Use the source code to verify the used blcok mode. Especially check for ECB mode, e.g.:
+Use the source code to verify the used block mode. Especially check for ECB mode, e.g.:
 
 ```
 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -241,11 +241,11 @@ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
 #### Dynamic Analysis
 
-Test encrypted data for reoccuring patterns -- those can be an indication of ECB mode being used.
+Test encrypted data for reoccurring patterns -- those can be an indication of ECB mode being used.
 
 #### Remediation
 
-Use an established block mode that provides a feedback mechanism for subsequent blocks, e.g. Counter Mode (CTR). For storing encrypted data it is often advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation -- thus being available on all modern plattforms.
+Use an established block mode that provides a feedback mechanism for subsequent blocks, e.g. Counter Mode (CTR). For storing encrypted data it is often advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation -- thus being available on all modern platforms.
 
 Consult the NIST guidelines on block mode selection<sup>[1]</sup>.
 
@@ -282,11 +282,11 @@ A solution this are Key-Derivation Functions (KDFs) that have a configurable cal
 
 #### Static Analysis
 
-Use the source code to determine how the hash is calculated, an exmaple of an insecure instantiation would be:
+Use the source code to determine how the hash is calculated, an example of an insecure instantiation would be:
 
 ```
 MessageDigest md = MessageDigest.getInstance("MD5");
-md.updat("too many secrets");
+md.update("too many secrets");
 byte[] digest = md.digest();
 ```
 
@@ -355,11 +355,11 @@ Key theAESKEy = new SecretKeySpec(validKey, "AES");
 
 #### Dynamic Analysis
 
-Test extrated hashes as within "Testing if anything but a KDF (key-derivation function) is used for storing passwords". If no hash or KDF has been used, brute-force attacks or attacks using dictionaries will be more efficient due to the reduced key space.
+Test extracted hashes as within "Testing if anything but a KDF (key-derivation function) is used for storing passwords". If no hash or KDF has been used, brute-force attacks or attacks using dictionaries will be more efficient due to the reduced key space.
 
 #### Remediation
 
-Pass the user-supplied password into a salted hash funcation or KDF; use its resuls as key for the cryptographic function.
+Pass the user-supplied password into a salted hash function or KDF; use its result as key for the cryptographic function.
 
 #### References
 
@@ -392,7 +392,7 @@ The attack surface of an application is defined as the sum of all potential inpu
 
 All data that is stored on potential insecure locations should be integrity protected, i.e., an attacker should not be able to change their content without the application detecting the change prior to the data being used.
 
-Most countermeasures work by calculating a checksum for the stored data, and then by comparing the checksum with the retrieved data prior to the data's import. If the checksum/hash is stored with the data on the insecure location, typical hash algorithms will not be sufficient. As they do not posess a secret key, an attacker that is able to change the stored data, can easily recalculate the hash and store the newly calculated hash.
+Most countermeasures work by calculating a checksum for the stored data, and then by comparing the checksum with the retrieved data prior to the data's import. If the checksum/hash is stored with the data on the insecure location, typical hash algorithms will not be sufficient. As they do not possess a secret key, an attacker that is able to change the stored data, can easily recalculate the hash and store the newly calculated hash.
 
 #### Static Analysis
 
@@ -411,7 +411,7 @@ Two typical cryptographic counter-measures for integrity protection are:
 
 * MACs (Message Authentication Codes, also known as keyed hashes) combine hashes with a secret key. The MAC can only be calculated or verified if the secret key is known. In contrast to hashes this means, that an attacker cannot easily calculate a MAC after the original data was modified. This is well suited, if the application can store the secret key within its own storage and no other party needs to verify the authenticity of the data.
 
-* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a a public key is sued. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
+* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a a public key is used. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
 
 * Another possibility is the usage of encryption using AEAD schemes (see "Test if encryption provides data integrity protection")
 
@@ -444,9 +444,9 @@ Two typical cryptographic counter-measures for integrity protection are:
 
 Please note that, encryption does not provide data integrity, i.e., if an attacker modifies the cipher text and a user decrypts the modified cipher text, the resulting plain-text will be garbage (but the decryption operation itself will perform successfully).
 
-A good example for an symmetric algorithm that does not protect integrity is One-Time-Pad. This algorithm XORs the input data with a secret input key. This leads to a cipher text which's data confidenciality is information theoretical secure -- i.e. even an attacker with unlimited processing power would not be able to crack the encryption. But data integrity is not protected.
+A good example for an symmetric algorithm that does not protect integrity is One-Time-Pad. This algorithm XORs the input data with a secret input key. This leads to a cipher text which's data confidentiality is information theoretical secure -- i.e. even an attacker with unlimited processing power would not be able to crack the encryption. But data integrity is not protected.
 
-For example, image that you have a message with an amount of money to be transfered. Let the amount be 1000 Euro/Dollars, which would be `0x0011 1110 1000` the secret key that you are using is `0x0101 0101 0101` (not very random, I know). XORing those two leads to a transfered message of `0x0110 1011 1101`. The attacker has no idea of knowning the plain-text. But she imagines that normally a low amount of money is transfered and bit-flips the highest bit of the message, making it `0x1110 1011 1101`. The victim now retrieves the message, decrypts it through XORing it with the secret key and has retrieved the value of `0x1011 1110 1000` which amounts to 3048 Euro/Dollars. So while the attacker was not able to break the encryption, she was able to change the undelying message as the underlying message was not integrity protected.
+For example, image that you have a message with an amount of money to be transferred. Let the amount be 1000 Euro/Dollars, which would be `0x0011 1110 1000` the secret key that you are using is `0x0101 0101 0101` (not very random, I know). XORing those two leads to a transferred message of `0x0110 1011 1101`. The attacker has no idea of the contents of the plain-text. But she imagines that normally a low amount of money is transferred and bit-flips the highest bit of the message, making it `0x1110 1011 1101`. The victim now retrieves the message, decrypts it through XORing it with the secret key and has retrieved the value of `0x1011 1110 1000` which amounts to 3048 Euro/Dollars. So while the attacker was not able to break the encryption, she was able to change the underlying message as the underlying message was not integrity protected.
 
 #### Static Analysis
 
