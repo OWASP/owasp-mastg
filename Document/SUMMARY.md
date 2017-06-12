@@ -8,7 +8,10 @@
 
 ### General Testing Guide
 
-- [General Testing Guide](0x04-Testing-Processes-and-Techniques.md)
+- [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
+- [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
+- [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
+- [Security Testing in the SDLC](0x04d-Security-Testing-SDLC.md)
 
 ### Android Testing Guide
 
