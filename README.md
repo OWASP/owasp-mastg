@@ -19,10 +19,9 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 
 ### General Testing Guide
 
-- [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
-- [Cryptography for Mobile Apps](Document/0x07c-Testing-Cryptography.md)
-- [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
-- [Remote Authentication and Authorization](Document/x07a-Testing-Authentication-and-Session-Management.md)
+- [Mobile App Taxnonomy](Document/0x04-Testing-Processes-and-Techniques.md#user-content-mobile-app-taxonomy)
+- [Mobile App Security Testing](Document/0x04-Testing-Processes-and-Techniques.md#user-content-mobile-app-security-testing)
+- [Security Testing in the Software Development Lifecycle](Document/0x04-Testing-Processes-and-Techniques.md#user-content-security-testing-in-the-software-development-lifecycle)
 
 ### Android Testing Guide
 
@@ -52,6 +51,9 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 
 ### Appendix
 
+- [Remote Authentication and Authorization](Document/x07a-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
+- [Cryptography for Mobile Apps](Document/0x07c-Testing-Cryptography.md)
 * [Assessing Software Protection Schemes](Document/0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](Document/0x08-Testing-Tools.md)
 * [Suggested Reading](Document/0x09-Suggested-Reading.md)

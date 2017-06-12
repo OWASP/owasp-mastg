@@ -2,7 +2,7 @@
 
 -- TODO [This chapter is a partial mess. It needs cleanup, editing and rewriting. ] --
 
-## Mobile Application Taxonomy
+## Mobile App Taxonomy
 
 The following section is a brief introduction to the 3 different types of mobile applications, namely the (1) Native App, (2) Hybrid App and (3) Web App. Before we dive into them, it is essential to first understand what a mobile app is.
 
@@ -170,6 +170,30 @@ Fuzz testing, is a method for testing software input validation by feeding it in
 Also refer to the OWASP Fuzzing guide - https://www.owasp.org/index.php/Fuzzing
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
+
+### Eliminating Common False Positives
+
+-- [TODO] --
+
+#### Cross-Site Scripting (XSS)
+
+A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF<sup>[2]</sup>. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser, it is not possible for a user to insert a URL into a WebView of an app as no address bar is available. Also, clicking on a link will not open the URL in a WebView of an app, instead it will open directly within the default browser of the respective mobile device. Therefore, a typical reflected Cross-Site Scripting attack that targets a WebView in an app is not applicable and will not work.
+
+If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
+
+* JavaScript is not deactivated in the WebView (see OMTG-ENV-005)
+* File access is not deactivated in the WebView (see OMTG-ENV-006)
+* The function addJavascriptInterface() is used (see OMTG-ENV-008)
+
+As a summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting or injected JavaScript through MITM can become a dangerous vulnerability if the WebView in used is configured insecurely.
+
+#### Cross-Site Request Forgery (CSRF)
+
+The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
+
+The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
+
+Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
 ## Tampering and Reverse Engineering
 
@@ -407,30 +431,6 @@ Depending on the maturity of the organisation, or development team, the deployme
 The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exists. Typically, the commit phase should run within 5 minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time<sup>[14][15]</sup>.
 
 Todo: Automating security tools in Jenkins,...
-
-## Eliminating Common False Positives
-
--- [TODO] --
-
-### Cross-Site Scripting (XSS)
-
-A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF<sup>[2]</sup>. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser, it is not possible for a user to insert a URL into a WebView of an app as no address bar is available. Also, clicking on a link will not open the URL in a WebView of an app, instead it will open directly within the default browser of the respective mobile device. Therefore, a typical reflected Cross-Site Scripting attack that targets a WebView in an app is not applicable and will not work.
-
-If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
-
-* JavaScript is not deactivated in the WebView (see OMTG-ENV-005)
-* File access is not deactivated in the WebView (see OMTG-ENV-006)
-* The function addJavascriptInterface() is used (see OMTG-ENV-008)
-
-As a summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting or injected JavaScript through MITM can become a dangerous vulnerability if the WebView in used is configured insecurely.
-
-### Cross-Site Request Forgery (CSRF)
-
-The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
-
-The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
-
-Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
 ### References
 
