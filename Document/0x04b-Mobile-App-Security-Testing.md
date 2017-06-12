@@ -21,11 +21,11 @@ Different organizations have different security needs, and different amounts of 
 
 Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
-Security goals/controls defined before these discussions may also be reviewed during the stakeholder discussion. Some controls may conform to MASVS sections, but others may be specific to the organization or application. 
+Security goals/controls defined earlier in the SDLC may also be reviewed during the stakeholder discussion. Some controls may conform to MASVS controls, but others may be specific to the organization or application. 
 
 ![Preparation](Images/Chapters/0x03/mstg-preparation.png)
 
-All involved parties need to agree on the decisions made and on the scope in the checklist, as this will present the baseline for all security testing, regardless if done manually or automatically.
+All involved parties need to agree on the decisions made and on the scope in the checklist, as this will define the baseline for all security testing, regardless if done manually or automatically.
 
 #### Identifying Sensitive Data
 
@@ -36,6 +36,8 @@ There are three general states in which data may be accessible:
 * At rest - when the data is sitting in a file or data store
 * In use - when an application has load the data into its address space
 * In transit - when data has been sent between consuming process - e.g. during IPC.
+
+The degree of scrutiny to apply to each state may depend on the criticality of the data, and liklihood of access. For example, because the likelihood of malicious actors gaining physical access to mobile devices is greater, data held in application memory may be more at risk of being accessed via core dumps than that on a web-server.
 
 If no data classification policy is available, the following kinds of information are generally considered to be sensitive:
 
