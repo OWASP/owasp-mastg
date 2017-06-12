@@ -1198,8 +1198,6 @@ There are a few ways to test the application binding:
 - copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
-
 ##### Google InstanceID
 
 Google InstanceID <sup>[5]</sup> uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
