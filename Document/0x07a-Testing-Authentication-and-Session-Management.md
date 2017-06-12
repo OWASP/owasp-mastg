@@ -69,7 +69,7 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 #### Overview
 
-The standard RFC 7519 is defining JSON Web Token (JWT). JWT ensures the integrity and secure transmission of information within a JSON object between two parties. For mobile apps it's more and more used to authenticate both, the message sender and receiver.
+JSON Web Token (JWT) ensures the integrity and secure transmission of information within a JSON object between two parties and is defined in RFC 7519<sup>[1]</sup>. For mobile apps it's more and more used to authenticate both, the message sender and receiver.
 
 An example of an encoded JSON Web Token can be found below<sup>[5]</sup>.
 
@@ -79,15 +79,15 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
 JWTs are Base-64 encoded and are divided into three parts:
 
-* **Header** Algorith and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
+* **Header** Algorithm and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
 ```JSON
 {"alg":"HS256","typ":"JWT"}
 ```
-* **Payload** Data  (eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9):
+* **Claims** Data  (eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9):
 ```JSON
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
-* **Verify Signature** (TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ):
+* **JSON Web Signature (JWS)** (TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ):
 ```JSON
 HMACSHA256(
   base64UrlEncode(header) + "." +
@@ -96,28 +96,33 @@ HMACSHA256(
 )
 ```
 
-JWT implementations are available for all major programming languages, like PHP<sup>[1]</sup> or Java Spring<sup>[2]</sup>.
+JWT implementations are available for all major programming languages, like PHP<sup>[2]</sup> or Java Spring<sup>[3]</sup>.
 
 #### Static Analysis
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
+Identify the JWT library that is used on server and client side. It should be checked if there are any known vulnerabilities available for the JWT library in use.
 
 #### Dynamic Analysis
 
-Several known vulnerabilities can be checked while executing a dynamic analysis:
-* NONE hashing algorithm:
-  *
+Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
+* Hashing algorithm `none`<sup>[6]</sup>:
+  * Modify the `alg` attribute in the token header and delete `HS256` and set it to `none` and use an empty signature (e.g. signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This would allow an attacker to create their own "signed" tokens.
+* Usage of asymmetric algorithms:
+  * Within JWT asymmetric algorithms as RSA or ECDSA can be used for signing the token. Due to vulnerabilities in some JWT frameworks the public key can be misused as HMAC secret key in order to sign the token.
 * Token Storage on client side:
   * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device<sup>[5]</sup>.
+* Information Disclosure:
+  * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it.
 
+Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> if JWT is used.
 
 #### Remediation
 
-Store the JWT using the browser sessionStorage container and add it as a Bearer with JavaScript when calling service.
-Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[1]</sup> if JWT is used.
+The latest version available of the JWT libraries in use should be implemented.
+
+Store the JWT using the browser sessionStorage container and add it as a Bearer with JavaScript when calling the endpoint.
+
+Ideally the content of JWT should be encrypted. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
 
 #### References
 
@@ -127,11 +132,11 @@ Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[1]</sup> if 
 
 ##### OWASP MASVS
 
-- 4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
+* 4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
 
 ##### CWE
 
-- CWE-287: Improper Authentication - https://cwe.mitre.org/data/definitions/287.html
+* CWE-287: Improper Authentication - https://cwe.mitre.org/data/definitions/287.html
 
 ##### Info
 
@@ -140,6 +145,8 @@ Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[1]</sup> if 
 * [3] Java Spring with JWT - http://projects.spring.io/spring-security-oauth/docs/oauth2.html
 * [4] OWASP JWT Cheat Sheet - `https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java`
 * [5] Sample of JWT Token - https://jwt.io/#debugger
+* [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
+
 
 
 ### Testing Session Management
