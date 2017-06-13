@@ -34,9 +34,9 @@ Classification of sensitive information can vary between different industries an
 
 There are three general states in which data may be accessible:
 
-* At rest - when the data is sitting in a file or data store
-* In use - when an application has load the data into its address space
-* In transit - when data has been sent between consuming process - e.g. during IPC.
+* **At rest** - when the data is sitting in a file or data store
+* **In use** - when an application has load the data into its address space
+* **In transit** - when data has been sent between consuming process - e.g. during IPC.
 
 The degree of scrutiny to apply to each state may depend on the criticality of the data, and liklihood of access. For example, because the likelihood of malicious actors gaining physical access to mobile devices is greater, data held in application memory may be more at risk of being accessed via core dumps than that on a web-server.
 
