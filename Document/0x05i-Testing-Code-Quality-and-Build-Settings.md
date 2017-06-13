@@ -376,19 +376,32 @@ The DEVELOPER_MODE has to be disabled for release build in order to disable `Str
 ### Testing Exception Handling
 
 #### Overview
-
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+Exceptions can often occur when an application gets into a non-normal or erroneous state. Both in Java and C++ Exceptions can be thrown when such state occurs. 
+Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the ADB logs.
 
 #### Static Analysis
 
 Review the source code to understand and identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
-* Verify that the application doesn't expose sensitive information while handling exceptions, but are still verbose enough to explain the issue to the user.
+* Verify that standard `RuntimeException`s such as `NullPointerException`, `IndexOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`, etc.. are anticipated upon by creating proper null-checks, bound-checks and alike. See <sup>[2]</sup> for an overview of the provided child-classes of `RuntimeException`. If the developer still throws a child of `RuntimeException` then this should always be intentional and that intention should be handled by the calling method.
+* Verify that for every non-runtime `Throwable`, there is a proper catch handler, which ends up handling the actual exception propperly. 
+* Verify that the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+
 
 #### Dynamic Analysis
+There are various ways of doing dynamic analysis: 
 
--- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
+- Use Xposed to hook into methods and call the method with unexpected values or overwrite existing variables to unexpected values (e.g. Null values, etc.).
+- Provide unexpected values to UI fields in the Android application.
+- Interact with the application using its intents and public providers by using values that are unexpected. 
+- Tamper the network communication and/or the files stored by the application.
+
+In all cases, the application should not crash, but instead, it should:
+
+- Recover from the error or get into a state in which it can inform the user of not being able to continue.
+- If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
+- Not provide any information in the ADB logs.
 
 #### Remediation
 
@@ -410,6 +423,7 @@ Review the source code to understand and identify how the application handles va
 ##### Info
 
 [1] Exceptional Behavior (ERR) - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047
+[2] Android developer API documentation - https://developer.android.com/reference/java/lang/RuntimeException.html
 
 ##### Tools
 
