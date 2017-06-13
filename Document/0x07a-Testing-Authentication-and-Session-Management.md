@@ -462,29 +462,52 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 * [2] OWASP Session management cheatsheet https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
-### Testing 2-Factor Authentication
+### Testing 2-Factor Authentication and Step-up Authentication
 
 #### Overview
 
-https://authy.com/blog/security-of-sms-for-2fa-what-are-your-options/
--- TODO [Provide a general description of the issue "Testing 2-Factor Authentication".] --
+Two-factor (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. It could be implemented also through different mechanisms, that use factors like:
+* Passwords
+* Hardware tokens
+* Software tokens
+* Biometric authentication
+* X.509 certificates (in enterprise environments)
+
+Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
+
+A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with
+the additional factor only when necessary.
+
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
 
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the client and server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices. Widely used OTP mechanisms are for example:
 
--- TODO [Develop content on Testing 2-Factor Authentication with source code] --
+- Google Authenticator
+- Microsoft Authenticator
+- Authy
 
+Look for keywords in the server source code that are used to implement 2FA or step-up authentication.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing 2-Factor Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
+
+The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing 2-Factor Authentication".] --
+The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations.
+
+Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data. Additionally it should be supplemented with passive contextual authentication<sup>[1]</sup>, this can be:
+
+* Geolocation
+* IP address
+* Time of day
+
+Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
 
 #### References
 
@@ -492,70 +515,17 @@ https://authy.com/blog/security-of-sms-for-2fa-what-are-your-options/
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-* 4.8: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+* 4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+* 4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing 2-Factor Authentication"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-308 - Use of Single-factor Authentication
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Best Practices for Step-up Multi-factor Authentication  - http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf
 
-##### Tools
-
--- TODO [Add relevant tools for "Testing 2-Factor Authentication"] --
-* Enjarify - https://github.com/google/enjarify
-
-
-
-
-### Testing Step-up Authentication
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Step-up Authentication".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
-
--- TODO [Develop content on Testing Step-up Authentication with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Step-up Authentication" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Step-up Authentication".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-* 4.9: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Step-up Authentication"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing Step-up Authentication"] --
-* Enjarify - https://github.com/google/enjarify
 
 
 ### Testing User Device Management
