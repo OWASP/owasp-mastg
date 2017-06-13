@@ -6,7 +6,7 @@ The primary goal of cryptography is to provide confidentiality, data integrity, 
 
 Encryption converts the plain-text data into a form (called cipher text) that does not reveal any information about the original contents. The original data can be restored from the cipher text through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key).
 
-* Symmetric-key encryption algorithms use the same key for both encryption and decryption. They are very fast but require careful key management, since everybody who has access to the key is able to decrypt the encrypted content.
+* Symmetric-key encryption algorithms use the same key for both encryption and decryption. Since everybody who has access to the key is able to decrypt the encrypted content, they require careful key management.
 * Public-key (or asymmetric) encryption algorithms operate with two separate keys: the public key and the private key. The public key can be distributed freely, while the private key should not be shared with anyone. A message encrypted with the public key can only be decrypted with the private key.
 
 Hash functions deterministically map arbitrary pieces of data into fixed-length values. It is typically easy to compute the hash, but difficult (or impossible) to determine the original input based on the hash. Cryptographic hash functions additionally guarantee that even small changes to the input data result in large changes to the resulting hash values. Cryptographic hash functions are used for authentication, data verification, digital signatures, message authentication codes, etc.
