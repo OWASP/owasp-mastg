@@ -20,7 +20,9 @@ Class-dump-dyld by Elias Limneos<sup>[2]</sup> allows dumping and retrieving sym
 
 MachoOView<sup>[3]</sup> is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
 
--- TODO [otool] --
+otool is a tool for  displays  specified  parts	of object files or libraries. It understands both Mach-O (Mach object) files and universal file formats.  
+
+-- TODO [otool examples] --
 
 #### Reversing Frameworks
 
