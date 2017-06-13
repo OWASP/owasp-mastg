@@ -255,8 +255,8 @@ Add the following to build.gradle:
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
-StrictMode is a developer tool able to detect policy violation, e.g. disk or network access.
-It could be implemented in order to check the use of good coding practices such as no slow code or network access on the main thread.
+StrictMode is a developer tool to be able to detect policy violation, e.g. disk or network access.
+It can be implemented in order to check the usage of good coding practices such as implementing high-performance code or usage of network access on the main thread.
 The policy are defined together with rules and different methods of showing the violation of a policy.
 
 There are two category of policies:
@@ -274,8 +274,49 @@ The VM policies,  applied to all threads in the virtual machine's process, are:
 * Leaked SQLite objects
 * Leaked Closable objects
 
-In order to enable `StrictMode`, is better to put the code as soon as possible, as for example in the onCreate().
-Here an example of enabling both the two kind of policies:
+The various detect methods for Thread Policy are<sup>[3]</sup>:
+```
+detectDiskWrites() //API level 9
+detectDiskReads() //API level 9
+detectNetwork() //API level 9
+detectCustomSlowCalls()//Introduced in API level 11
+detectAll()
+detectCustomSlowCalls()
+```
+
+Another possibility is to capture all kind of violation as:
+```
+detectAll()
+detectCustomSlowCalls()
+```
+
+The possible penalties for thread policy are<sup>[3]</sup>:
+```
+penaltyLog() //Logs a message to LogCat
+penaltyDeath() //Crashes application, runs at the end of all enabled penalties
+penaltyDialog() //Show a dialog
+penaltyDeathOnNetwork() //Crashes the whole process on any network usage
+penaltyDropBox() //Enable detected violations log a stacktrace and timing data to the DropBox on policy violation
+penaltyFlashScreen() //Introduced in API level 11 which Flash the screen during a violation
+```
+
+Considering the VM policy of StrictMode, the policy are<sup>[3]</sup>:
+```
+detectActivityLeaks() //API level 11. Detect leaks of Activity subclasses.
+detectLeakedClosableObjects() //API level 11. Detect when an Closeable or other object with a explict termination method is finalized without having been closed.
+detectLeakedSqlLiteObjects() //API level 9. Detect when an SQLiteCursor or other SQLite object is finalized without having been closed.
+setClassInstanceLimit(Class.forName("my.app.sample.sampleclass"),10) //API level 11
+```
+
+The possible penalties for VM policy violation are<sup>[3]</sup>:
+```
+penaltyLog()
+penaltyDeath()
+penaltyDropBox()
+```
+
+In order to enable `StrictMode`, the code should be implemented in onCreate().
+Here is an example of enabling both policies mentioned above<sup>[1]</sup>:
 ```
 public void onCreate() {
      if (DEVELOPER_MODE) {
@@ -296,26 +337,21 @@ public void onCreate() {
  }
 
 ```
-
-In the a release build `StrictMode` has to be disabled.
 #### Static Analysis
-With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` with high probability in the onCreate() method.
+With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy`. Most likely they will be in the onCreate() method.
+
 #### Dynamic Analysis
-There are different way of detecting the `StrictMode` it depends on how the policies' role are implemented. Some of them are:
+There are different way of detecting the `StrictMode` and it depends on how the policies' role are implemented. Some of them are:
 * Logcat
 * Warning Dialog
 * Crash of the application
-* Dropbox
 
-Especially for the last one, the attempt of internet connection could be checked.
 #### Remediation
+In the a release build `StrictMode` has to be disabled.
 It's recommended to insert the policy in the `if` statement with `DEVELOPER_MODE` as condition.
 The DEVELOPER_MODE has to be disabled for release build.
 
 #### References
-* Official Developer Guide - https://developer.android.com/reference/android/os/StrictMode.html
-* https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581
-* http://javabeat.net/strictmode-android-1/
 
 ##### OWASP Mobile Top 10 2016
 * M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
@@ -328,7 +364,9 @@ The DEVELOPER_MODE has to be disabled for release build.
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
--- TODO
+- [1] Official Developer Guide - https://developer.android.com/reference/android/os/StrictMode.html
+- [2] Envatotuts+ - https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581
+- [3] Javabeat- http://javabeat.net/strictmode-android-1/
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Debugging Code and Verbose Error Logging"] --
