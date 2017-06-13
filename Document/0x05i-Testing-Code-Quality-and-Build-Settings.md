@@ -274,6 +274,31 @@ The VM policies,  applied to all threads in the virtual machine's process, are:
 * Leaked SQLite objects
 * Leaked Closable objects
 
+In order to enable `StrictMode`, the code should be implemented in onCreate().
+Here is an example of enabling both policies mentioned above<sup>[1]</sup>:
+```
+public void onCreate() {
+     if (DEVELOPER_MODE) {
+         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                 .detectDiskReads()
+                 .detectDiskWrites()
+                 .detectNetwork()   // or .detectAll() for all detectable problems
+                 .penaltyLog()
+                 .build());
+         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                 .detectLeakedSqlLiteObjects()
+                 .detectLeakedClosableObjects()
+                 .penaltyLog()
+                 .penaltyDeath()
+                 .build());
+     }
+     super.onCreate();
+ }
+
+```
+#### Static Analysis
+With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy`. Most likely they will be in the onCreate() method.
+
 The various detect methods for Thread Policy are<sup>[3]</sup>:
 ```
 detectDiskWrites() //API level 9
@@ -315,31 +340,6 @@ penaltyDeath()
 penaltyDropBox()
 ```
 
-In order to enable `StrictMode`, the code should be implemented in onCreate().
-Here is an example of enabling both policies mentioned above<sup>[1]</sup>:
-```
-public void onCreate() {
-     if (DEVELOPER_MODE) {
-         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                 .detectDiskReads()
-                 .detectDiskWrites()
-                 .detectNetwork()   // or .detectAll() for all detectable problems
-                 .penaltyLog()
-                 .build());
-         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                 .detectLeakedSqlLiteObjects()
-                 .detectLeakedClosableObjects()
-                 .penaltyLog()
-                 .penaltyDeath()
-                 .build());
-     }
-     super.onCreate();
- }
-
-```
-#### Static Analysis
-With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy`. Most likely they will be in the onCreate() method.
-
 #### Dynamic Analysis
 There are different way of detecting the `StrictMode` and it depends on how the policies' role are implemented. Some of them are:
 * Logcat
@@ -347,9 +347,8 @@ There are different way of detecting the `StrictMode` and it depends on how the 
 * Crash of the application
 
 #### Remediation
-In the a release build `StrictMode` has to be disabled.
 It's recommended to insert the policy in the `if` statement with `DEVELOPER_MODE` as condition.
-The DEVELOPER_MODE has to be disabled for release build.
+The DEVELOPER_MODE has to be disabled for release build in order to disable `StrictMode` too.
 
 #### References
 
