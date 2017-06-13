@@ -74,7 +74,6 @@ Inspect the source code to identify the instances of cryptographic algorithms th
 * RC2
 * RC4
 * BLOWFISH<sup>[6]</sup>
-* CRC32
 * MD4
 * MD5
 * SHA1 and others.
