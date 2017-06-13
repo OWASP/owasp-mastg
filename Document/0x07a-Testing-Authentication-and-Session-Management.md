@@ -103,37 +103,39 @@ For mobile apps it's more and more used to authenticate both the message sender 
 
 Identify the JWT library that is used on server and client side. Check if there are any known vulnerabilities available for the JWT libraries in use.
 
-The following best practices should be verified in the JWT libraries<sup>[7]</sup>:
-* Verify the signature on server-side at all times for all incoming requests containing a token.
-* Verify the data embedded into the JWT and check if sensitive information is available. If so, it should be considered to encrypt the JWT content.
+The following best practices should be checked in the JWT libraries<sup>[7]</sup>:
+* Verify the signature or HMAC on server-side at all times for all incoming requests containing a token.
+* Verify where the private signing key or secret key for HMAC is located and stored. The key should always reside on the server side and never shared with the client. It should only be available for the issuer and verifier.
+* Verify if encryption is used to encrypt the data embedded into JWT.
 * Verify if replay attacks are addressed by using `jti` (JWT ID) claim, which provides a unique identifier for JWT.
-* Verify where the secret signing key is located and stored. It should only be available for the issuer and consumer.
+
 
 #### Dynamic Analysis
 
 Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
 * Hashing algorithm `none`<sup>[6]</sup>:
   * Modify the `alg` attribute in the token header and delete `HS256` and set it to `none` and use an empty signature (e.g. signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This would allow an attacker to create their own "signed" tokens.
-* Usage of asymmetric algorithms:
-  * Within JWT asymmetric algorithms as RSA or ECDSA can be used for signing the token. Due to vulnerabilities in some JWT frameworks the public key can be misused as HMAC secret key in order to sign the token.
+* Usage of asymmetric algorithms<sup>[6]</sup>:
+  *  JWT offers several asymmetric algorithms as RSA or ECDSA. In this case the private key will be used to sign the tokens and the verification will be done through the public key. If a server is expecting a token signed with an asymmetric algorithm as RSA, but actually receives a token signed with HMAC, it will think the public key is actually an HMAC secret key. The public key can now be misused as HMAC secret key in order to sign the tokens.
 * Token Storage on client side:
   * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device<sup>[5]</sup>.
 * Cracking the signing key:
-  * Creating a signature of the token is done through a secret key on server side. Once a JWT is obtained there are several tools available that can try to brute force the secret key offline<sup>[8]</sup>. See the tools section for details.
+  * Creating a signature of the token is done through a private key on server side. Once a JWT is obtained there are several tools available that can try to brute force the secret key offline<sup>[8]</sup>. See the tools section for details.
 * Information Disclosure:
-  * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it.
+  * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it and if it's encrypted or not.
 
-Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> if JWT is used.
+Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> and check the implementation of the logout as described in "Testing the Logout Functionality".
 
 #### Remediation
 
-The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+The following best practices should be considered, when implementing JWT:
 
-Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
-
-If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
-
-Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
+* The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+* Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
+* The private signing key or secret key for HMAC should only be available on server side.
+* If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
+* Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
+* Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced. 
 
 #### References
 
@@ -143,7 +145,7 @@ Ideally the content of JWT should be encrypted in order to ensure the confidenti
 
 ##### OWASP MASVS
 
-* 4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
+* 4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
