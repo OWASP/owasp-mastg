@@ -404,8 +404,50 @@ In all cases, the application should not crash, but instead, it should:
 - Not provide any information in the ADB logs.
 
 #### Remediation
+There are a few things a developer can do:
+- Ensure that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
+- When an exception is thrown, make sure that the application has centralized handlers for the Exceptions. This can be a static class for instance.
+- Add a general Exception handler for uncaught exceptions to clear out the state of the application prior to a crash:
+```java
+public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
+    private static final MemoryCleanerOnCrash S_INSTANCE = new MemoryCleanerOnCrash();
+    private final List<Thread.UncaughtExceptionHandler> mHandlers = new ArrayList<>();
+
+	//initiaze the handler and set it as the default exception handler
+    public static void init() {
+        S_INSTANCE.mHandlers.add(Thread.getDefaultUncaughtExceptionHandler());
+        Thread.setDefaultUncaughtExceptionHandler(S_INSTANCE);
+    }
+
+	 //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
+    public void subscribeCrashHandler(Thread.UncaughtExceptionHandler handler) {
+        mHandlers.add(handler);
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+
+			//handle the cleanup here
+			//....
+			//and then show a message to the user if possible given the context
+			
+        for (Thread.UncaughtExceptionHandler handler : mHandlers) {
+            handler.uncaughtException(thread, ex);
+        }
+    }
+}
+
+```
+Now you need to call the initializer for the handler at your custom `Application` class (e.g. the class that extends `Application`):
+```java
+	
+	 @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MemoryCleanerOnCrash.init();
+    }
+```
 
 #### References
 
@@ -427,8 +469,8 @@ In all cases, the application should not crash, but instead, it should:
 
 ##### Tools
 
--- TODO [Add relevant tools for "Testing Exception Handling"] --
 * Enjarify - https://github.com/google/enjarify
+* Xposed - http://repo.xposed.info/
 
 
 
