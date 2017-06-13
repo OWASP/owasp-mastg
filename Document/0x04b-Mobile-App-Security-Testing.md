@@ -16,6 +16,8 @@ The following sections will show how to use the OWASP mobile application securit
 * **Threat Modelling** - consumes information gathered during the earlier phases to determine what threats are the most likey, or the most serious, and therefore which should recieve the most attention from a security tester. Produces test cases that may be used during test execution.
 * **Vulnerability Analysis** - identifies vulnerabilities using the previously created test cases, including static, dynamic and forensic methodologies.
 
+----------
+
 ### Preparation
 
 Before conducting a test, an agreement must be reached as to what security level of the [MASVS](https://github.com/OWASP/owasp-masvs) to test against. The security requirements should ideally have been decided at the beginning of the SDLC, but this may not always be the case. In addittion, different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
@@ -50,6 +52,8 @@ If no data classification policy is available, the following kinds of informatio
 
 It may be impossible to detect leakage of sensitive data without a firm definition of what counts as such, so such a definition must be agreed upon in advance of testing.
 
+----------
+
 ### Intelligence Gathering
 
 Intelligence gathering involves the collection of information about the architecture of the app, the business use cases it serves, and the context in which it operates. Such information may be broadly divided into `environmental` and `architectural`.
@@ -73,8 +77,6 @@ Architectural information concerns understanding:
 * **Remote Services:** - what remote services does the app consume? If they were compromised, could the client by compromised? 
 
 #### Outcomes and Deliverables
-
-
 
 ----------
 
