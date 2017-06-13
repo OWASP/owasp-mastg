@@ -297,10 +297,10 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 #### Overview
 
-Cryptographic algorithms -- such as symmetric encryption or MACs -- expect a secret input of a a given size, e.g. 128 or 256 bit. A naive implementation might use the use-supplied password directly as an input key. There are a couple of problems with this approach:
+Cryptographic algorithms -- such as symmetric encryption or MACs -- expect a secret input of a given size, e.g. 128 or 256 bit. A naive implementation might use the use-supplied password directly as an input key. There are a couple of problems with this approach:
 
-* if the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
-* A user-supplied password will realistically consist mostly of display- and pronounce-able characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is (approx. 2<sup>6</sup>) is used.
+* If the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
+* A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is (approx. 2<sup>6</sup>) is used.
 * If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
 
 #### Static Analysis
@@ -376,7 +376,7 @@ Two typical cryptographic counter-measures for integrity protection are:
 
 * MACs (Message Authentication Codes, also known as keyed hashes) combine hashes with a secret key. The MAC can only be calculated or verified if the secret key is known. In contrast to hashes this means, that an attacker cannot easily calculate a MAC after the original data was modified. This is well suited, if the application can store the secret key within its own storage and no other party needs to verify the authenticity of the data.
 
-* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a a public key is used. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
+* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a public key is used. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
 
 * Another possibility is the usage of encryption using AEAD schemes (see "Test if encryption provides data integrity protection")
 
