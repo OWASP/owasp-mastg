@@ -496,7 +496,12 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 There are two file-integrity related topics:
 
- 1. _The application-source related integrity checks:_
+ 1. _The application-source related integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed iOS IPA application signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder, is to add an internal runtime check in which you check whether the signatures still match at runtime.
+
+ 2. _The file storage related integrity checks:_ When files are stored by the application or key-value pars in the keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database or a Realm database, then their integrity should be protected.
+
+##### Sample Implementation - application-source
+Integrity checks are already taken care off by Apple using their DRM. However, there are additional controls possible, such as in the example below. Here the `mach_header` is parsed through to calculate the start of the instruction data and then use that to generate the signature. Now the signature is compared to the one given. Please make sure that the signature to be compared to is stored or coded somewhere else.
  
 ```c
 int xyz(char *dst) {
@@ -554,15 +559,50 @@ int xyz(char *dst) {
 }
 ```
 
- 2. _The file storage related integrity checks:_ 
-
-##### Sample Implementation - application-source
-
 ##### Sample Implementation - Storage
 
+When providing integrity on the application storage itself, you can either create an HMAC or a signature over a given key-value pair or over a file stored on the device. When you create an HMAC, it is best to use hte CommonCrypto implementation.
+In case of the need for encryption: Please make sure that you encrypt and then HMAC as described in [1].
+
+When generating an HMAC with CC:
+
+1. get the data as `NSData`.
+2. Get the data key (possibly from the keychain)
+3. Calculate the hashvalue
+4. Append the hashvalue to the actual data
+5. Store the results of step 4.
+
+
+```obj-c
+	// Allocate a buffer to hold the digest, and perform the digest.
+	NSMutableData* actualData = [getData]; //get the data
+ 	//get the key from the keychain
+	NSData* key = [getKey];	
+    NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData
+     bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+     [actualData appendData: digestBuffer];
+```
+
+When verifying the HMAC with CC:
+1. Extract the message and the hmacbytes as separate `NSData` .
+2. Repeat step 1-3 of generating an hmac on the `NSData`.
+3. Now compare the extracted hamcbytes to the result of step 1.
+
+```obj-c
+	NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
+	NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
+	NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+	CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+	return [hmac isEqual: digestBuffer];
+
+```
+
+ 
 ##### Bypassing File Integrity Checks
 
 *When trying to bypass the application-source integrity checks* 
+
 
 *When trying to bypass the storage integrity checks*
 
@@ -588,8 +628,7 @@ int xyz(char *dst) {
 
 ##### Info
 
-- TDOO REPLACE[1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
-
+- [1] Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm - http://cseweb.ucsd.edu/~mihir/papers/oem.html
 
 ### Testing Detection of Reverse Engineering Tools
 
