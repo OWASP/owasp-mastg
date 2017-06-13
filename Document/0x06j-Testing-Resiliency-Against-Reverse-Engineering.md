@@ -489,12 +489,15 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 -- TODO [Add tools for "Testing Anti-Debugging"] --
 
-### Testing File Integrity Checks
+
+#### Bypassing File Integrity Checks
 
 #### Overview
 
--- TODO [Implementation from UnCrackable2] --
+There are two file-integrity related topics:
 
+ 1. _The application-source related integrity checks:_
+ 
 ```c
 int xyz(char *dst) {
     const struct mach_header * header;
@@ -550,14 +553,6 @@ int xyz(char *dst) {
 
 }
 ```
-
-#### Bypassing File Integrity Checks
-
-#### Overview
-
-There are two file-integrity related topics:
-
- 1. _The application-source related integrity checks:_
 
  2. _The file storage related integrity checks:_ 
 

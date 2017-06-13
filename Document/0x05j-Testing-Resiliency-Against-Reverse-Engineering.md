@@ -680,7 +680,7 @@ private void crcTest() throws IOException {
 ##### Sample Implementation - Storage
 
 When providing integrity on the file-storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the filesystem.
-When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on. There are a few steps to take care off.
+When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on. There are a few steps to take care of.
 In case of the need for encryptionl. Please make sure that you encrypt and then HMAC as described in [2].
 
 When generating an HMAC with BC:
@@ -704,7 +704,7 @@ A convinient HMAC implementation without the `AndroidKeyStore` can be found belo
 
 ```java
 public enum HMACWrapper {
-    HMAC_512("HMac-SHA512"),
+    HMAC_512("HMac-SHA512"), //please note that this is the spec for the BC provider
     HMAC_256("HMac-SHA256");
 
     private final String algorithm;
@@ -790,7 +790,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 *When trying to bypass the storage integrity checks*
 
-1. retrieve the data from the device, as described at the secion for device binding.
+1. Retrieve the data from the device, as described at the secion for device binding.
 2. Alter the data retrieved and then put it back in the storage
 
 #### Effectiveness Assessment
@@ -946,7 +946,7 @@ if (fp) {
     fclose(fp);
 
     } else {
-       /* Error opening /proc/self/maps. If this happens, something is off. */
+       /* Error opening /proc/self/maps. If this happens, something is of. */
     }
 }
 ```
