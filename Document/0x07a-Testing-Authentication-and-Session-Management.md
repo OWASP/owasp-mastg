@@ -515,6 +515,7 @@ Ideally the user's context is compared to previously recorded data to identify a
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 * 4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 * 4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
 
