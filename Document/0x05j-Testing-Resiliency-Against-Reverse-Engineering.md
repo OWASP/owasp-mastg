@@ -700,8 +700,7 @@ When verifying the HMAC with BC:
 4. now compare the extracted hamcbytes to the result of step 3.
 
 When generating the HMAC based on the Android keystore, then it is best to only do this for Android 6 and higher. In that case you generate the key for hmacking as described in [3].
-
-----TODO: ADD REFERENCE TO SAMPLE IMPELEMTNATION CLASSES, o ruse:
+A convinient HMAC implementation without the `AndroidKeyStore` can be found below:
 
 ```java
 public enum HMACWrapper {
