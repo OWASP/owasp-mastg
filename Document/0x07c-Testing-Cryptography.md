@@ -83,10 +83,7 @@ Inspect the source code to identify the instances of cryptographic algorithms th
 * MD5
 * SHA1 and others.
 
-Example initialization of DES algorithm, that is considered weak:
-```Java
-Cipher cipher = Cipher.getInstance("DES");
-```
+On Android (via Java Cryptography APIs), selecting an algorithm is done by requesting an instance of the `Cipher` (or other primitive) by passing a string containing the algorithm name. For example, `Cipher cipher = Cipher.getInstance("DES");`. On iOS, algorithms are typically selected using predefined constants defined in CommonCryptor.h, e.g., `kCCAlgorithmDES`. Thus, searching the source code for the presence of these algorithm names would indicate that they are used. Note that since the constants on iOS are numeric, an additional check needs to be performed to check whether the algorithm values sent to CCCrypt function map to one of the deprecated/insecure algorithms.
 
 #### Dynamic Analysis
 
