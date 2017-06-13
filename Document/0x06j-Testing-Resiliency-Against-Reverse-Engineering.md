@@ -603,14 +603,34 @@ When verifying the HMAC with CC:
 
 *When trying to bypass the application-source integrity checks* 
 
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective code with NOP instructions.
+2. Patch any stored hash that is used to evaluate the integrity of the code.
+3. Use Frida to hook APIs to hook file system APIs. Return a handle to the original file instead of the modified file.
 
 *When trying to bypass the storage integrity checks*
+
+1. Retrieve the data from the device, as described at the secion for device binding.
+2. Alter the data retrieved and then put it back in the storage
 
 #### Effectiveness Assessment
 
 *For the application source integrity checks*
+Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool and re-sign the app as described in the chapter "Basic Security Testing" and run it. 
+The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- How difficult is it to identify the anti-debugging code using static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Progra
 
 *For the storage integrity checks*
+A similar approach holds here, but now answer the following questions:
+- Can the mechanisms be bypassed using trivial methods (e.g. changing the contents of a file or a key-value)?
+- How difficult is it to obtain the HMAC key or the asymmetric private key?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
 
 #### References
 
