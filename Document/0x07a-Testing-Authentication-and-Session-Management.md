@@ -70,7 +70,7 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 #### Overview
 
-JSON Web Token (JWT) ensures the integrity and secure transmission of information within a JSON object between two parties and is defined in RFC 7519<sup>[1]</sup>. For mobile apps it's more and more used to authenticate both, the message sender and receiver.
+JSON Web Token (JWT) ensures the integrity of information within a JSON object between two parties and is defined in RFC 7519<sup>[1]</sup>. A cryptographic signature is created for the data within the token. This only allows the server to create and modify tokens and enables a stateless authentication. The server doesn't need to remember any session or any other authentication information, as everything is contained within JWT.
 
 An example of an encoded JSON Web Token can be found below<sup>[5]</sup>.
 
@@ -97,11 +97,11 @@ HMACSHA256(
 )
 ```
 
-JWT implementations are available for all major programming languages, like PHP<sup>[2]</sup> or Java Spring<sup>[3]</sup>.
+For mobile apps it's more and more used to authenticate both the message sender and receiver by using JWT. JWT implementations are available for all major programming languages, like PHP<sup>[2]</sup> or Java Spring<sup>[3]</sup>.
 
 #### Static Analysis
 
-Identify the JWT library that is used on server and client side. It should be checked if there are any known vulnerabilities available for the JWT libraries in use.
+Identify the JWT library that is used on server and client side. Check if there are any known vulnerabilities available for the JWT libraries in use.
 
 The following best practices should be verified in the JWT libraries<sup>[7]</sup>:
 * Verify the signature on server-side at all times for all incoming requests containing a token.
@@ -118,6 +118,8 @@ Several known vulnerabilities in JWT should be checked while executing a dynamic
   * Within JWT asymmetric algorithms as RSA or ECDSA can be used for signing the token. Due to vulnerabilities in some JWT frameworks the public key can be misused as HMAC secret key in order to sign the token.
 * Token Storage on client side:
   * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device<sup>[5]</sup>.
+* Cracking the signing key:
+  * Creating a signature of the token is done through a secret key on server side. Once a JWT is obtained there are several tools available that can try to brute force the secret key offline<sup>[8]</sup>. See the tools section for details.
 * Information Disclosure:
   * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it.
 
@@ -131,7 +133,7 @@ Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS
 
 If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
 
-Ideally the content of JWT should be encrypted. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
+Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
 
 #### References
 
@@ -156,6 +158,12 @@ Ideally the content of JWT should be encrypted. An example implementation in Jav
 * [5] Sample of JWT Token - https://jwt.io/#debugger
 * [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
 * [7] JWT the right way - https://stormpath.com/blog/jwt-the-right-way
+* [8] Attacking JWT Authentication - https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/
+
+##### Tools
+* jwtbrute - https://github.com/jmaxxz/jwtbrute
+* crackjwt - https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py
+* John the ripper - https://github.com/magnumripper/JohnTheRipper
 
 
 ### Testing Session Management
