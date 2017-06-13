@@ -71,26 +71,20 @@ Environmental information concerns understanding:
 
 Architectural information concerns understanding:
 
-* **App:**  - how the app accesses data and manages it in-process, how it communicates with other resources, user session management, and detection of jailbroken or rooted phones.
-* **Operating System:** - what operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with [MDM](https://en.wikipedia.org/wiki/Mobile_device_management) controls, and what OSA vulnerabilities might be relevant to the app
+* **App:** - how the app accesses data and manages it in-process, how it communicates with other resources, manages user sessions, and whether it detects and reacts to running on jailbroken or rooted phones.
+* **Operating System:** - what operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with [MDM](https://en.wikipedia.org/wiki/Mobile_device_management) controls, and what OS vulnerabilities might be relevant to the app
 * **Network:** - are secure transport protocols used (e.g. TLS), is network traffic encryption secured with strong keys and cryptographic algorithms (e.g. SHA-2), is certificate pinning used to verify the client, etc.
 * **Remote Services:** - what remote services does the app consume? If they were compromised, could the client by compromised? 
-
-#### Outcomes and Deliverables
 
 ----------
 
 ### Threat Modelling
 
-#### Identifying application components
+Threat modeling involves using the results of the information gathering phase to determine what threats are likely or severe, producing test cases that may be executed at later stages. Threat modeling should be a key part of the general SDLC, ideally perfomed throughout development, rather than just before a penetration test.
 
-#### Assessing component risk profiles
+General threat modeling guidelines [have been defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling), and these are usually applicable to mobile apps.
 
-#### Comparison and rating of risks across components
-
-#### Assessing countermeasures
-
-#### Test case creation
+<!-- are there any threat modelling techniques specially applicable to mobile apps? -->
 
 ----------
 
