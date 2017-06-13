@@ -8,21 +8,76 @@ A general rule in app development is that one should never attempt to invent the
 
 Android developers don't need to bother much with the intricate details of cryptography most of the time. However, even when using standard algorithms can be affected if misconfigured. 
 
+Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
+
+Here's an example of using AES:
+
+```
+String keyAlias = "MySecretKey";
+String ANDROID_KEY_STORE = "AndroidKeyStore";
+
+KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAlias,
+        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+        .setRandomizedEncryptionRequired(true)
+        .build();
+
+KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,
+        ANDROID_KEY_STORE);
+keyGenerator.init(keyGenParameterSpec);
+
+SecretKey secretKey = keyGenerator.generateKey();
+```
+
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (GCM), padding (none), and explicitly specifies that randomized encryption is required (this is the default.)
+
+Attempting to use the generated key in violation of the above spec would result in a security exception.
+
+Here's an example of using that key correctly:
+
+```
+String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
+        + "/" + KeyProperties.BLOCK_MODE_GCM
+        + "/" + KeyProperties.ENCRYPTION_PADDING_NONE;
+KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
+
+Key key = keyStore.getKey(keyAlias, null);
+
+Cipher cipher = Cipher.getInstance(AES_MODE);
+cipher.init(Cipher.ENCRYPT_MODE, key);
+
+byte[] encryptedBytes = cipher.doFinal(input);
+byte[] iv = cipher.getIV();
+```
+
+Since the IV (initialization vector) is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`) in order to decrypt it later.
+
+Prior to Android 6.0, AES key generation was not supported. As a result, many implementations used `SecureRandom` to generate AES keys.
+
+-- TODO Add the pre-Marshmallow example --
+
+
+
 #### Static Analysis
 
--- TODO [Describe Static Analysis on Verifying the Configuration of Cryptographic Standard Algorithms : how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
 
--- TODO [Clarify the purpose of "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+* `Cipher`
+* `Mac`
+* `MessageDigest`
+* `Signature`
+* `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
+* And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
--- TODO [Develop Static Analysis with source code of "Verifying the Configuration of Cryptographic Standard Algorithms"] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Verifying the Configuration of Cryptographic Standard Algorithms" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+Ensure that the best practices outlined in the [Cryptography for Mobile Apps](#cryptography-for-mobile-apps) chapter are followed.
 
 #### Remediation
 
+See the Remediation section in the [Cryptography for Mobile Apps](#cryptography-for-mobile-apps) chapter.
+
 -- REVIEW --
+
 Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations.
 
 
@@ -35,19 +90,24 @@ Use cryptographic algorithm configurations that are currently considered strong,
 ##### OWASP MASVS
 
 -- REVIEW --
+
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 
 ##### CWE
 
 -- REVIEW --
+
 * CWE-326: Inadequate Encryption Strength
 
 
 ##### Info
 
 -- REVIEW --
+
 - [1] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
+- [3] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
+- [4] Credential storage enhancements in Android 4.3 (August 21, 2013) - https://nelenkov.blogspot.co.uk/2013/08/credential-storage-enhancements-android-43.html
 
 ##### Tools
 
@@ -59,11 +119,13 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 #### Overview
 
-When software generates predictable values in a context requiring unpredictability, it may be possible for an attacker to guess the next value that will be generated, and use this guess to impersonate another user or access sensitive information.
+Cryptography requires secure pseudo random number generation (PRNG). Standard Java classes do not provide sufficient randomness and in fact may make it possible for an attacker to guess the next value that will be generated, and use this guess to impersonate another user or access sensitive information.
+
+In general, `SecureRandom` should be used. However, if the Android versions below KitKat are supported, additional care needs to be taken in order to work around the bug in Jelly Bean (Android 4.1-4.3) versions that failed to properly initialize the PRNG<sup>[4]</sup>.
 
 #### Static Analysis
 
-Identify all the instances of random number generators and look for either custom or known insecure java.util.Random class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
+Identify all the instances of random number generators and look for either custom or known insecure `java.util.Random` class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
 The following sample source code shows weak random number generation:
 
 ```Java
@@ -85,8 +147,8 @@ Once an attacker is knowing what type of weak pseudo-random number generator (PR
 
 #### Remediation
 
-Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of SecureRandom that uses the system-specified seed value to generate a 128-byte-long random number<sup>[2]</sup>.
-In general, if a PRNG is not advertised as being cryptographically secure (e.g. java.util.Random), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
+Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the no-argument constructor of `SecureRandom` that uses the system-specified seed value to generate a 128-byte-long random number<sup>[2]</sup>.
+In general, if a PRNG is not advertised as being cryptographically secure (e.g. `java.util.Random`), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
 Pseudo-random number generators can produce predictable numbers if the generator is known and the seed can be guessed<sup>[3]</sup>. A 128-bit seed is a good starting point for producing a "random enough" number.
 
 The following sample source code shows the generation of a secure random number:
@@ -117,9 +179,10 @@ public static void main (String args[]) {
 * CWE-330: Use of Insufficiently Random Values
 
 ##### Info
-[1] Predicting the next Math.random() in Java - http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/
-[2] Generation of Strong Random Numbers - https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers
-[3] Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
+- [1] Predicting the next Math.random() in Java - http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/
+- [2] Generation of Strong Random Numbers - https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers
+- [3] Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
+- [4] Some SecureRandom Thoughts - https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html
 
 ##### Tools
 * QARK - https://github.com/linkedin/qark
