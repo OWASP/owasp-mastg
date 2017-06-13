@@ -40,10 +40,6 @@ The use of non-standard or custom built cryptographic algorithms is dangerous be
 
 Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
 
-#### Dynamic Analysis
-
-The recommended approach is to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
-
 #### Remediation
 
 Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
@@ -149,10 +145,6 @@ The following checks would be performed against the used source code:
    * check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
 
 Mobile operating systems provide a specially protected storage area for secret keys, commonly named key stores or key chains. Those storage areas will not be part of normal backup routines and might even be protected by hardware means. The application should use this special storage locations/mechanisms for all secret keys.
-
-#### Dynamic Analysis
-
-The recommended approach is to decompile the APK and inspect the resulting source code for usage of custom encryption schemes (see "Static Analysis").
 
 #### Remediation
 
