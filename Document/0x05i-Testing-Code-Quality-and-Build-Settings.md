@@ -53,19 +53,6 @@ sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 (...)
 ```
 
-The output for an APK signed with a Release certificate looks as follows:
-
-```
-$ jarsigner -verify -verbose -certs example.apk
-
-sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
-
-      X.509, CN=Awesome Corporation, OU=Awesome, O=Awesome Mobile, L=Palo Alto, ST=CA, C=US
-      [certificate is valid from 9/1/09 4:52 AM to 9/26/50 4:52 AM]
-      [CertPath not validated: Path does not chain with any of the trust anchors]
-(...)
-```
-
 Ignore the "CertPath not validated" error -  this error appears with Java SDK 7 and greater. Instead, you can rely on the <code>apksigner</code> to verify the certificate chain.
 
 #### Dynamic Analysis
@@ -138,10 +125,10 @@ Attack Surface:
     is debuggable
 ```
 
-To scan for all debuggable applications on a device, the `app.package.debuggable` module should be used: 
+To scan for all debuggable applications on a device, the `app.package.debuggable` module should be used:
 
 ```
-dz> run app.package.debuggable 
+dz> run app.package.debuggable
 Package: com.mwr.dz
   UID: 10083
   Permissions:
@@ -150,7 +137,7 @@ Package: com.vulnerable.app
   UID: 10084
   Permissions:
    - android.permission.INTERNET
-``` 
+```
 
 If an application is debuggable, it is trivial to get command execution in the context of the application. In `adb` shell, execute the `run-as` binary, followed by the package name and command:
 
@@ -268,23 +255,67 @@ Add the following to build.gradle:
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
+StrictMode is a developer tool able to detect policy violation, e.g. disk or network access.
+It could be implemented in order to check the use of good coding practices such as no slow code or network access on the main thread.
+The policy are defined together with rules and different methods of showing the violation of a policy.
 
-`StrictMode` - https://developer.android.com/reference/android/os/StrictMode.html
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+There are two category of policies:
+* `StrictMode.ThreadPolicy`
+* `StrictMode.VmPolicy`
 
+The ThreadPolicy can monitor:
+* Disk Reads
+* Disk Writes
+* Network access
+* Custom Slow Code
+
+The VM policies,  applied to all threads in the virtual machine's process, are:
+* Leaked Activity objects
+* Leaked SQLite objects
+* Leaked Closable objects
+
+In order to enable `StrictMode`, is better to put the code as soon as possible, as for example in the onCreate().
+Here an example of enabling both the two kind of policies:
+```
+public void onCreate() {
+     if (DEVELOPER_MODE) {
+         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                 .detectDiskReads()
+                 .detectDiskWrites()
+                 .detectNetwork()   // or .detectAll() for all detectable problems
+                 .penaltyLog()
+                 .build());
+         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                 .detectLeakedSqlLiteObjects()
+                 .detectLeakedClosableObjects()
+                 .penaltyLog()
+                 .penaltyDeath()
+                 .build());
+     }
+     super.onCreate();
+ }
+
+```
+
+In the a release build `StrictMode` has to be disabled.
 #### Static Analysis
-
--- TODO [Add content on white-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
-
+With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` with high probability in the onCreate() method.
 #### Dynamic Analysis
+There are different way of detecting the `StrictMode` it depends on how the policies' role are implemented. Some of them are:
+* Logcat
+* Warning Dialog
+* Crash of the application
+* Dropbox
 
--- TODO [Add content on black-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
-
+Especially for the last one, the attempt of internet connection could be checked.
 #### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
+It's recommended to insert the policy in the `if` statement with `DEVELOPER_MODE` as condition.
+The DEVELOPER_MODE has to be disabled for release build.
 
 #### References
+* Official Developer Guide - https://developer.android.com/reference/android/os/StrictMode.html
+* https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581
+* http://javabeat.net/strictmode-android-1/
 
 ##### OWASP Mobile Top 10 2016
 * M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
