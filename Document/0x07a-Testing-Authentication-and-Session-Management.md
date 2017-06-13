@@ -9,9 +9,10 @@ For all of the test cases below, it need to be investigated first what kind of a
 Cookie-Based Authentication is the traditional authentication mechanism used in web applications. In order to adopt to the different requirements of mobile apps Token-Based Authentication was specified and is more and more used nowadays in mobile apps. A prominent example for this is JSON Web Token or JWT<sup>[1]</sup> which can be part of an OAuth2 authentication and authorization framework.
 
 #### OAuth2
+
 OAuth2 is an authorization framework used to authorize an application to use a user account on an HTTP service for a limited time and, at the same time, preventing the client applications from having knowledge of any user credentials.
 
-OAuth2 defines four roles:
+OAuth2 defines 4 roles:
 
 * Resource Owner: the user owning the account.
 * Client: the application that wants to access the user's account using the access tokens.
@@ -194,7 +195,7 @@ The following best practices should be considered, when implementing JWT:
 * The private signing key or secret key for HMAC should only be available on server side.
 * If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
 * Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
-* Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced. 
+* Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
 
 #### References
 
