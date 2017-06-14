@@ -6,15 +6,18 @@
 
 A general rule in app development is that one should never attempt to invent their own cryptography. In mobile apps in particular, any form of crypto should be implemented using existing, robust implementations. In 99% of cases, this simply means using the data storage APIs and cryptographic libraries that come with the mobile OS.
 
-Android developers don't need to bother much with the intricate details of cryptography most of the time. However, even when using standard algorithms can be affected if misconfigured. 
+Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several cryptographic service providers that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages.
 
-Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
+The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 
-Here's an example of using AES:
+For some applications that support older versions of Android, bundling an up-to-date library may be the only option. SpongyCastle (a repackaged version of BouncyCastle) is a common choice in these situations. Repackaging is necessary because BouncyCastle is included in the Android SDK. The latest version of SpongyCastle likely fixes issues encountered in the earlier versions of BouncyCastle that were included in older versions of Android.
+
+Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application. 
+
+Here's an example of using AES on API 23+:
 
 ```
 String keyAlias = "MySecretKey";
-String ANDROID_KEY_STORE = "AndroidKeyStore";
 
 KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAlias,
         KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
@@ -24,7 +27,7 @@ KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAli
         .build();
 
 KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,
-        ANDROID_KEY_STORE);
+        "AndroidKeyStore");
 keyGenerator.init(keyGenParameterSpec);
 
 SecretKey secretKey = keyGenerator.generateKey();
@@ -53,9 +56,37 @@ byte[] iv = cipher.getIV();
 
 Since the IV (initialization vector) is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`) in order to decrypt it later.
 
-Prior to Android 6.0, AES key generation was not supported. As a result, many implementations used `SecureRandom` to generate AES keys.
+Prior to Android 6.0, AES key generation was not supported. As a result, many implementations chose to use RSA and generated public-private key pair for asymmetric encryption using `KeyPairGeneratorSpec` or used `SecureRandom` to generate AES keys.
 
--- TODO Add the pre-Marshmallow example --
+Here's an example of `KeyPairGenerator` and `KeyPairGeneratorSpec` used to create the RSA key pair:
+
+```Java
+Date startDate = Calendar.getInstance().getTime();
+Calendar endCalendar = Calendar.getInstance();
+endCalendar.add(Calendar.YEAR, 1);
+Date endDate = endCalendar.getTime();
+KeyPairGeneratorSpec keyPairGeneratorSpec = new KeyPairGeneratorSpec.Builder(context)
+        .setAlias(RSA_KEY_ALIAS)
+        .setKeySize(4096)
+        .setSubject(new X500Principal("CN=" + RSA_KEY_ALIAS))
+        .setSerialNumber(BigInteger.ONE)
+        .setStartDate(startDate)
+        .setEndDate(endDate)
+        .build();
+
+KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA",
+        "AndroidKeyStore");
+keyPairGenerator.initialize(keyPairGeneratorSpec);
+
+KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+```
+
+This sample creates the RSA key pair with the 4096-bit key (i.e., modulus size).
+
+
+-- TODO Add the pre-Marshmallow AES example using BC --
+
 
 
 
