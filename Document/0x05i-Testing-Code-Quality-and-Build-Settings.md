@@ -384,8 +384,8 @@ Testing exception handling is about reassuring that the application will handle 
 Review the source code to understand and identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
-* Verify that standard `RuntimeException`s such as `NullPointerException`, `IndexOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`, etc.. are anticipated upon by creating proper null-checks, bound-checks and alike. See <sup>[2]</sup> for an overview of the provided child-classes of `RuntimeException`. If the developer still throws a child of `RuntimeException` then this should always be intentional and that intention should be handled by the calling method.
-* Verify that for every non-runtime `Throwable`, there is a proper catch handler, which ends up handling the actual exception propperly. 
+* Verify that standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) are anticipated upon by creating proper null-checks, bound-checks and alike. See <sup>[2]</sup> for an overview of the provided child-classes of `RuntimeException`. If the developer still throws a child of `RuntimeException` then this should always be intentional and that intention should be handled by the calling method.
+* Verify that for every non-runtime `Throwable`, there is a proper catch handler, which ends up handling the actual exception properly. 
 * Verify that the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
 
 
