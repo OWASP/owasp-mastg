@@ -387,6 +387,7 @@ Review the source code to understand and identify how the application handles va
 * Verify that standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) are anticipated upon by creating proper null-checks, bound-checks and alike. See <sup>[2]</sup> for an overview of the provided child-classes of `RuntimeException`. If the developer still throws a child of `RuntimeException` then this should always be intentional and that intention should be handled by the calling method.
 * Verify that for every non-runtime `Throwable`, there is a proper catch handler, which ends up handling the actual exception properly. 
 * Verify that the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+* Verify that any confidential information, such as keying material and/or authentication information is always wiped at the `finally` blocks in case of a high risk application.
 
 
 #### Dynamic Analysis
@@ -406,7 +407,20 @@ In all cases, the application should not crash, but instead, it should:
 #### Remediation
 There are a few things a developer can do:
 - Ensure that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
-- When an exception is thrown, make sure that the application has centralized handlers for the exceptions. This can be a static class for instance.
+- When an exception is thrown, make sure that the application has centralized handlers for exceptions that result in similar behavior. This can be a static class for instance. For specific exceptions given the methods context, specific catch blocks should be provided.
+- When executing operations that involve high risk information, make sure you wipe the information in the finally block in java:
+
+```java
+byte[] secret;
+try{
+	//use secret
+} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
+	// handle any issues
+} finally {
+	//clean the secret.
+}
+```
+
 - Add a general exception-handler for uncaught exceptions to clear out the state of the application prior to a crash:
 ```java
 public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
