@@ -141,11 +141,11 @@ It’s also worth to know that files stored outside the application folder (`dat
 
 The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. Please note that the keychain is system-wide: so every application can access the materials stored in the KeyChain.
 
-##### KeyStore
+##### KeyStore (AndroidKeyStore)
 
 The Android KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
 
-The keys stored in the KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
+The keys stored in the Android KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
 
 Stored keys can be configured to operate in one of the two modes:
 
@@ -153,14 +153,15 @@ Stored keys can be configured to operate in one of the two modes:
 
 2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
 
-The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a Trusted Execution Environment or a Secure Element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be easily retrieved even from a rooted device. You can check whether the keys are inside the secure hardware, based on the `isInsideSecureHardware()` which is part of the `KeyInfo` of the key. Please note that private keys are often indeed stored correctly within the secure hardware, but secret keys, hmac-keys are, on quite some devices not stored securely according to the KeyInfo.
+The level of security afforded by the Android KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a Trusted Execution Environment or a Secure Element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be easily retrieved even from a rooted device. You can check whether the keys are inside the secure hardware, based on the `isInsideSecureHardware()` which is part of the `KeyInfo` of the key. Please note that private keys are often indeed stored correctly within the secure hardware, but secret keys, hmac-keys are, on quite some devices not stored securely according to the KeyInfo.
 
-In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
+In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the Android KeyStore is unavailable when the device is locked <sup>[9]</sup>.
 
 ##### Older Java-KeyStore
-Older Android versions do not have a KeyStore, but do have the KeyStore interface from JCA (Java Cryptography Architecture). One can use various KeyStores that implement this interface and provide secrecy and integrity protection to the keys stored in the keystore implementation. The impelemntations all rely on the fact that a file is stored on the filesystem, which then protects its contents by a password. For this, we recommend to use the BounceyCastle KeyStore (BKS), which can be created by calling `KeyStore.getInstance("BKS", "BC");` or `KeyStore.getInstance("BKS", "SC");` in case Spongey Castle has been packed with the app as a security provider.
+Older Android versions do not have a KeyStore, but do have the KeyStore interface from JCA (Java Cryptography Architecture). One can use various KeyStores that implement this interface and provide secrecy and integrity protection to the keys stored in the keystore implementation. The impelemntations all rely on the fact that a file is stored on the filesystem, which then protects its contents by a password. For this, we recommend to use the BounceyCastle KeyStore (BKS). 
+You can create one by using the `KeyStore.getInstance("BKS", "BC");`, where "BKS" is the keystore name (BounceycastleKeyStore) and "BC" is the provider (BounceyCastle). Alternatively you can use SpongeyCastle as a wrapper and initialize the keystore: `KeyStore.getInstance("BKS", "SC");`.
 
-Please be aware that not all KeyStores offer propper protection to the keys stored in the keystore files.
+Please be aware that not all KeyStores offer proper protection to the keys stored in the keystore files.
 
 
 
@@ -186,7 +187,7 @@ As already pointed out, there are several ways to store information within Andro
 Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked with the source code:
 
 * Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered.
-* Check if keys are created or used without taking advantage of the Android onboard features like the KeyStore<sup>[8]</sup>.
+* Check if keys are created or used without taking advantage of the Android onboard features like the Android KeyStore<sup>[8]</sup>.
 * Check if keys are disclosed.
 
 ###### Typical Misuse: Hardcoded Cryptographic Keys
@@ -254,12 +255,12 @@ buildTypes {
 
 * shared preferences, typically at /data/data/package_name/shared_prefs
 
-##### KeyChain and KeyStore
+##### KeyChain and Android KeyStore
 
-When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information must not be stored in clear text but should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Keystore<sup>[8]</sup>**. The following controls should therefore be used:
+When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information must not be stored in clear text but should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Android Keystore<sup>[8]</sup>**. The following controls should therefore be used:
 
 * Check if a key pair is created within the app by looking for the class `KeyPairGenerator`.
-* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and corresponding usages.
+* Check that the application is using the Android KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and corresponding usages.
 * The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
 
 #### Dynamic Analysis
@@ -1134,9 +1135,9 @@ First, you need to identify which sensitive information is stored in memory. The
 
 
 **NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
-Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and propperly protected (see remediation for more details).
-Understand that an RSA keypair is based on `Biginteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
-Lastly, some of the ciphers do not propperly clean up their byte-arrays, for instance: the AES `Cipher` in `BounceyCastle` does not always clean up its latest working key.
+Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see remediation for more details).
+Understand that an RSA keypair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
+Lastly, some of the ciphers do not properly clean up their byte-arrays, for instance: the AES `Cipher` in `BounceyCastle` does not always clean up its latest working key.
 
 #### Dynamic Analysis
 
@@ -1175,14 +1176,15 @@ Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned af
 
 
 ```java
+
 byte[] secret = null;
 try{
 	//get or generate the secret, do work with it, make sure you make no local copies
 } finally {
-	if(null != secret && secret.length > 0) {
+	if (null != secret && secret.length > 0) {
 		for (int i = 0; i < secret; i++) {
-        array[i] = (byte) 0;
-       }
+			array[i] = (byte) 0;
+		}
 	}
 }
 ```
@@ -1191,21 +1193,21 @@ Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs t
 
 
 ```java
-public class SecretKey implements Serializable {
+public class ErasableSecretKey implements Serializable {
 
     public static final int KEY_LENGTH = 256;
 
     private java.security.Key secKey;
 
-    protected SecretKey(final java.security.Key key) {
+    protected ErasableSecretKey(final java.security.Key key) {
         this.secKey = key;
     }
 
-    public static SecretKey fromByte(byte[] key) {
-        return new SecretKey(new SecretKey.InternalKey(key, "AES"));
+    public static ErasableSecretKey fromByte(byte[] key) {
+        return new ErasableSecretKey(new SecretKey.InternalKey(key, "AES"));
     }
 
-    public static SecretKey newKey() {
+    public static ErasableSecretKey newKey() {
         return fromByte(CryptoUtils.getRandomKey());
     }
 
@@ -1220,7 +1222,7 @@ public class SecretKey implements Serializable {
         }
     }
 
-    public static void clearKey(SecretKey key) {
+    public static void clearKey(ErasableSecretKey key) {
         if (key != null) {
             key.clean();
         }
@@ -1244,7 +1246,9 @@ public class SecretKey implements Serializable {
         }
 
         public byte[] getEncoded() {
-            Preconditions.checkNotNull(this.key);
+            if(null == this.key){
+               throw new NullPointerException();
+            }
             return this.key;
         }
 
