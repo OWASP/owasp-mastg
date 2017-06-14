@@ -305,7 +305,13 @@ Regular Expressions are often used to validate passwords. The password verificat
 
 Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process. All of the available functions in the application that are able to change or set a password need to be identified in the source code. They should all be using the same password verification check, that is aligned with the password policy.
 
-If a frameworks is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
+Here are different examples on how a validation can be implemented server-side:
+
+* Spring (Java) -  https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html
+* Ruby on Rails -  http://guides.rubyonrails.org/active_record_validations.html
+* PHP - http://php.net/manual/en/filter.filters.validate.php
+
+If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
 
 
 #### Dynamic Analysis
@@ -316,12 +322,12 @@ All available functions that allow a user to set a password need to be verified,
 - Forgot Password function that allows a user to set a new password or
 - Change Password function that allows a logged in user to set a new password.
 
-An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side.
+An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide (OTG-AUTHN-007)<sup>[1]</sup>
 
 
 #### Remediation
 
-A good password policy should define the following requirements in order to avoid password brute-forcing.
+A good password policy should define the following requirements<sup>[2]</sup> in order to avoid password brute-forcing:
 
 **Password Length**
 * Minimum length of the passwords should be enforced, at least 10 characters.
@@ -334,7 +340,7 @@ A good password policy should define the following requirements in order to avoi
 3. at least 1 digit (0-9)
 4. at least 1 special character (punctuation)
 
-For further details check the OWASP Authentication Cheat Sheet<sup>[1]</sup>.
+For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>.
 
 #### References
 
@@ -348,8 +354,8 @@ For further details check the OWASP Authentication Cheat Sheet<sup>[1]</sup>.
 * CWE-521 - Weak Password Requirements
 
 ##### Info
-* [1] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
-* [2] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
+* [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
+* [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
 
 
 
@@ -457,8 +463,8 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 - CWE-613 - Insufficient Session Expiration
 
 ##### Info
-* [1] OWASP Web Application Test Guide (OTG-SESS-007) -  https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
-* [2] OWASP Session management cheatsheet https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
+* [1] OWASP Web Application Test Guide (OTG-SESS-007) - https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
+* [2] OWASP Session management cheatsheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 * [3] Session Timeout in Java Spring - http://docs.spring.io/spring-session/docs/current/reference/html5/
 * [4] Session Timeout in Ruby on Rails - https://github.com/rails/rails/blob/318a20c140de57a7d5f820753c82258a3696c465/railties/lib/rails/application/configuration.rb#L130
 * [5] Session Timeout in PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
