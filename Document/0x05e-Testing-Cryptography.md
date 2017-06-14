@@ -108,6 +108,7 @@ Use cryptographic algorithm configurations that are currently considered strong,
 - [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
 - [3] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
 - [4] Credential storage enhancements in Android 4.3 (August 21, 2013) - https://nelenkov.blogspot.co.uk/2013/08/credential-storage-enhancements-android-43.html
+- [5] Cipher documentation - https://developer.android.com/reference/javax/crypto/Cipher.html
 
 
 ### Testing Random Number Generation
@@ -117,6 +118,8 @@ Use cryptographic algorithm configurations that are currently considered strong,
 Cryptography requires secure pseudo random number generation (PRNG). Standard Java classes do not provide sufficient randomness and in fact may make it possible for an attacker to guess the next value that will be generated, and use this guess to impersonate another user or access sensitive information.
 
 In general, `SecureRandom` should be used. However, if the Android versions below KitKat are supported, additional care needs to be taken in order to work around the bug in Jelly Bean (Android 4.1-4.3) versions that failed to properly initialize the PRNG<sup>[4]</sup>.
+
+Most developers should instantiate `SecureRandom` via the default constructor without any arguments. Other constructors are for more advanced uses and, if used incorrectly, can lead to decreased randomness and security. The PRNG provider backing `SecureRandom` uses the `/dev/urandom` device file as the source of randomness by default.<sup>[5]</sup>
 
 #### Static Analysis
 
@@ -135,6 +138,8 @@ for (int i = 0; i < 20; i++) {
   System.out.println(n);
 }
 ```
+
+Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness.
 
 #### Dynamic Analysis
 
@@ -178,4 +183,5 @@ public static void main (String args[]) {
 - [2] Generation of Strong Random Numbers - https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers
 - [3] Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
 - [4] Some SecureRandom Thoughts - https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html
+- [5] N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
