@@ -396,9 +396,15 @@ There are various ways of doing dynamic analysis:
 - Provide unexpected values to UI fields in the Android application.
 - Interact with the application using its intents and public providers by using values that are unexpected. 
 - Tamper the network communication and/or the files stored by the application.
+<<<<<<< HEAD
 
 In all cases, the application should not crash, but instead, it should:
 
+=======
+
+In all cases, the application should not crash, but instead, it should:
+
+>>>>>>> a33138b36855c1943fc98226103b9c1784773359
 - Recover from the error or get into a state in which it can inform the user of not being able to continue.
 - If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
 - Not provide any information in the ADB logs.
