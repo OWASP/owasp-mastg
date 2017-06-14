@@ -466,30 +466,33 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 
 #### Overview
 
-Two-factor (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. It could be implemented also through different mechanisms, that use factors like:
-* Passwords
-* Hardware tokens
-* Software tokens
-* Biometric authentication
-* X.509 certificates (in enterprise environments)
+Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
+* Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
+* Something you know: this can be a secret only known to the user like a password.
+* Something you are: this can be biometric characteristics that identify the users like TouchID.
 
 Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
 
-A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with
-the additional factor only when necessary.
+A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
 
 
 #### Static Analysis
 
 When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
 
-2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the client and server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices. Widely used OTP mechanisms are for example:
+2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
 
-- Google Authenticator
-- Microsoft Authenticator
-- Authy
+For example server side libraries like GoogleAuth<sup>[2]</sup> can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
 
-Look for keywords in the server source code that are used to implement 2FA or step-up authentication.
+Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
+
+- Google Authenticator<sup>[2]</sup>
+- Microsoft Authenticator<sup>[3]</sup>
+- Authy<sup>[4]</sup>
+
+Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
+
+For local biometric authentication as an additional factor, please verify the test case "Testing Biometric Authentication".
 
 #### Dynamic Analysis
 
@@ -499,15 +502,19 @@ The recorded requests should also be replayed without providing any authenticati
 
 #### Remediation
 
-The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations.
+The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If cloud solutions are in place, they should be implemented accordingly to best practices.
 
-Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data. Additionally it should be supplemented with passive contextual authentication<sup>[1]</sup>, this can be:
+Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data.
+
+Regardless of 2FA or step-up authentication, additionally it should be supplemented with passive contextual authentication<sup>[1]</sup>, which can be:
 
 * Geolocation
 * IP address
 * Time of day
 
 Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
+
+An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
 
 #### References
 
@@ -525,8 +532,10 @@ Ideally the user's context is compared to previously recorded data to identify a
 
 ##### Info
 
-- [1] Best Practices for Step-up Multi-factor Authentication  - http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf
-
+* [1] Best Practices for Step-up Multi-factor Authentication  - http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf
+* [2] Google Authenticator - https://support.google.com/accounts/answer/1066447?hl=en
+* [3] Microsoft Authenticator - https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to
+* [4] Authy - https://authy.com/
 
 
 ### Testing User Device Management
