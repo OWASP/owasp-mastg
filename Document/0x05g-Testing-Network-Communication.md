@@ -162,7 +162,7 @@ sslContext.init(null, tmf.getTrustManagers(), null);
 
 The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain. 
 
-Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, okhttp <sup>[3]</sup> can be set up with the `CertificatePinner` as follows:
+Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, okhttp<sup>[3]</sup> can be set up with the `CertificatePinner` as follows:
 
 ```java
 OkHttpClient client = new OkHttpClient.Builder()

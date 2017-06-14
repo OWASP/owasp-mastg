@@ -6,7 +6,7 @@ The following chapter outlines network communication requirements of the MASVS i
 
 #### Overview
 
-A functionality of most mobile applications requires sending or receiving information from services on the Internet. This reveals another surface of attacks aimed at data on the way. It's possible for an attacker to sniff or even modify (MiTM attacks) an unencrypted information if he controls any part of network infrastructure (e.g. an WiFi Access Point) <sup>[1]</sup>. For this reason, developers should make a general rule, that any confidential data cannot be sent in a cleartext <sup>[2]</sup>.
+A functionality of most mobile applications requires sending or receiving information from services on the Internet. This reveals another surface of attacks aimed at data on the way. It's possible for an attacker to sniff or even modify (MiTM attacks) an unencrypted information if he controls any part of network infrastructure (e.g. an WiFi Access Point)<sup>[1]</sup>. For this reason, developers should make a general rule, that any confidential data cannot be sent in a cleartext<sup>[2]</sup>.
 
 #### Static Analysis
 
@@ -35,11 +35,11 @@ It is important to capture all traffic (TCP and UDP), so you should run all poss
 
 #### Remediation
 
-Ensure that sensitive information is being sent via secure channels, using HTTPS <sup>[5]</sup>, or SSLSocket <sup>[6]</sup> for socket-level communication using TLS.
+Ensure that sensitive information is being sent via secure channels, using HTTPS<sup>[5]</sup>, or SSLSocket<sup>[6]</sup> for socket-level communication using TLS.
 
-> Please be aware that `SSLSocket` **does not** verify hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. Consult documentation <sup>[7]</sup> for an example of correct usage.
+Please be aware that `SSLSocket` **does not** verify hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. Consult documentation<sup>[7]</sup> for an example of correct usage.
 
-Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure Android IPC mechanism <sup>[8]</sup>.
+Some applications may use localhost address, or binding to INADDR_ANY for handling sensitive IPC, what is bad from security perspective, as this interface is accessible for other applications installed on a device. For such purpose developers should consider using secure Android IPC mechanism<sup>[8]</sup>.
 
 #### References
 
@@ -191,7 +191,7 @@ Any vulnerability or misconfiguration should be solved either by patching or rec
 
 #### Overview
 
-For sensitive applications, like banking apps, OWASP MASVS introduces "Defense in Depth" verification level <sup>[1]</sup>. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
+For sensitive applications, like banking apps, OWASP MASVS introduces "Defense in Depth" verification level<sup>[1]</sup>. Critical operations (e.g. user enrollment, or account recovery) of such sensitive applications are the most attractive targets from attacker's perspective. This creates a need of implementing advanced security controls for such operations, like adding additional channels (e.g. SMS and e-mail) to confirm user's action. Additional channels may reduce a risk of many attacking scenarios (mainly phishing), but only when they are out of any security faults.
 
 #### Static Analysis
 
@@ -210,7 +210,7 @@ Identify all critical operations implemented in tested application (e.g. user en
 
 #### Remediation
 
-Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation. If you are going to implement additional factor to verify user's identity, you may consider usage of Infobip 2FA library <sup>[2]</sup>, one-time passcodes via Google Authenticator <sup>[3]</sup>.
+Ensure that critical operations require at least one additional channel to confirm user's action. Each channel must not be bypassed to execute a critical operation. If you are going to implement additional factor to verify user's identity, you may consider usage of Infobip 2FA library<sup>[2]</sup>, one-time passcodes via Google Authenticator<sup>[3]</sup>.
 
 #### References
 
