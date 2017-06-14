@@ -216,22 +216,112 @@ In swift 3, using xCode 8, one can set Active Compilation Conditions setting in 
 ### Testing Exception Handling
 
 #### Overview
+Exceptions can often occur when an application gets into a non-normal or erroneous state. 
+Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
--- TODO [Give an overview about the functionality "Testing Exception Handling" and it's potential weaknesses] --
+However, bare in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic. 
 
-#### Static Analysis
+##### Exception handling in Objective-C
+Objective-C has two types of errors :
 
-Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage :
+**NSException**
+`NSException` is used for resolving programming errors (e.g. divided by 0, out-of-bounds array access). 
+An `NSException` can either be raised by `raise()` or thrown with `@throw`. `raise()` will invoke the unhandled exception handler where you can log the statement and then the program will be halted, `@throw` allows you to recover from it using a `@try`-`@catch`-block:
+```obj-c
+ @try {
+ 	//do work here
+ }
 
--	Verify that the application use a [well-designed](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047) (and unified) scheme to handle exceptions.
--	Verify that the application doesn't expose sensitive information while handling exceptions, but are still verbose enough to explain the issue to the user.
+@catch (NSException *e) {
+	//recover from exception
+}
+
+@finally {
+ 	//cleanup
+```
+
+Bare in mind that using NSException comes with pittfals regarding memory management: you need to cleanup allocations from the try block in the finally block <sup>[1], [2]</sup>. Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
+
+**NSError**
+`NSError` is used for all other type of errors <sup>[3]</sup>. Some APIs of the Cocoa frameworks provide them as as an object in their failure callback in case something went wrong, otherwise a reference is passed to an `NSError` object. It can be a good practice to reassure a return type of the method that could offer the pointer to the `NSError` object (either  a `BOOL` if it needs to indicate a success or another type of class) so that the success of the method can be indicated and the error / reason for failure can be inspected upon failure of the method.
+ 
+##### Exception handling in Swift
+Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift4, `ErrorType` in Swift2) protocol. This can be challenging when combinding Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved.
+Methods that can throw an error use the `throws` keyword. There are four ways to handle errors in Swift<sup>[4]</sup>:  
+
+- You can propagate the error from a function to the code that calls that function: in this case there is no do-catch, there is only a `throw` throwing the acutal error or there is a `try` to execute the method that throws. The method containing the `try` will need the `throws` keyword as well:
+
+```swift
+func dosomething(argumentx:TypeX) throws {
+	try functionThatThrows(argumentx: argumentx)
+```
+- Handle the error using a do-catch statement: here you can use the following pattern:
+
+```swift
+do {
+    try functionThatThrows()
+    statements
+} catch pattern 1 {
+    statements
+} catch pattern 2 where condition {
+    statements
+}
+```
+
+- Handle the error as an optional value: 
+
+```
+	let x = try? functionThatThrows()
+	//In this case the value of x is nil in case of an error.
+
+```
+- Assert that the error will not occur: by using the `try!` expression.
+
+
+
+#### Static Analysis 
+Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
+
+##### Static Analysis in Objective-C
+Here you can verify that:
+* The application uses a well-designed and unified scheme to handle exceptions and errors.
+* The exceptions from the Cocoa frameworks are handled correctly.
+* The allocated memory in the `@try` blocks are released in the `@finally` blocks.
+* For every `@throw` the calling method has a proper `@catch` on either the calling method level or at the level of the `NSApplication` / `UIApplication` objects.
+* That the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+* That any confidential information, such as keying material and/or authentication information is always wiped at the `@finally` blocks in case of a high risk application.
+* That `raise()` is only used in rare occassions when termination of the program without any further warning is required.
+
+##### Static Analysis in Swift
+Here you can verify that:
+
+* The application uses a well-designed and unified scheme to handle errors.
+* Verify that the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+* In case of a 
+
+
+
+
 
 #### Dynamic Testing
 
--- TODO [Describe how to test for this issue "Testing Exception Handling" using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
+There are various methods for dynamic analysis:
+
+- Provide unexpected values to UI fields in the iOS application.
+- Test the custom url-schemes, pasteboard and other inter-app communication controls by providing values that are unexpected or could raise an exception.
+- Tamper the network communication and/or the files stored by the application.
+- In case of Objective-C, you can use Cycript to hook into methods and provide them with arguments that could possibly make the callee throw an exception.
+
+In all cases, the application should not crash, but instead, it should:
+
+- Recover from the error or get into a state in which it can inform the user that it is not able to continue.
+- If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
+- Not provide any information in logging mechanims used by the application.
 
 #### Remediation
-
+There are a few things a developer can do:
+- Ensure that the application use a well-designed and unified scheme to handle exceptions<sup>[3]</sup>.
+- 
 -- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
 
 #### References
@@ -251,7 +341,11 @@ Review the source code to understand/identify who the application handle various
 
 ##### Info
 
--	[1] https://www.gnu.org/s/binutils/
+-  [1] Raising exceptions - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF
+-  [2] Handling Exceptions - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html
+-  [3] Dealing with Errors - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html
+-  [4] Error Handling - https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html
+
 
 ##### Tools
 
