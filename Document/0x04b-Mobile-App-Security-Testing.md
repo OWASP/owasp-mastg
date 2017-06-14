@@ -12,15 +12,15 @@ Examples of vulnerabilities in these surfaces include:
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test. It is split into four sections:
 
 * **Preparation** - defining the scope of security testing, such as which security controls are applicable, what goals the development team/organization have for the testing, and what counts as sensitive data in the context of the test. 
-* **Intelligence Gathering** - involves analyzing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
-* **Threat Modelling** - consumes information gathered during the earlier phases to determine what threats are the most likey, or the most serious, and therefore which should recieve the most attention from a security tester. Produces test cases that may be used during test execution.
+* **Intelligence Gathering** - involves analysing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
+* **Threat Modelling** - consumes information gathered during the earlier phases to determine what threats are the most likely, or the most serious, and therefore which should receive the most attention from a security tester. Produces test cases that may be used during test execution.
 * **Vulnerability Analysis** - identifies vulnerabilities using the previously created test cases, including static, dynamic and forensic methodologies.
 
 ----------
 
 ### Preparation
 
-Before conducting a test, an agreement must be reached as to what security level of the [MASVS](https://github.com/OWASP/owasp-masvs) to test against. The security requirements should ideally have been decided at the beginning of the SDLC, but this may not always be the case. In addittion, different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
+Before conducting a test, an agreement must be reached as to what security level of the [MASVS](https://github.com/OWASP/owasp-masvs) to test against. The security requirements should ideally have been decided at the beginning of the SDLC, but this may not always be the case. In addition, different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
 
 Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor-authentation (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
@@ -40,7 +40,7 @@ There are three general states in which data may be accessible:
 * **In use** - when an application has load the data into its address space
 * **In transit** - when data has been sent between consuming process - e.g. during IPC.
 
-The degree of scrutiny to apply to each state may depend on the criticality of the data, and liklihood of access. For example, because the likelihood of malicious actors gaining physical access to mobile devices is greater, data held in application memory may be more at risk of being accessed via core dumps than that on a web-server.
+The degree of scrutiny to apply to each state may depend on the criticality of the data, and likelihood of access. For example, because the likelihood of malicious actors gaining physical access to mobile devices is greater, data held in application memory may be more at risk of being accessed via core dumps than that on a web-server.
 
 If no data classification policy is available, the following kinds of information are generally considered to be sensitive:
 
@@ -80,9 +80,9 @@ Architectural information concerns understanding:
 
 ### Threat Modelling
 
-Threat modeling involves using the results of the information gathering phase to determine what threats are likely or severe, producing test cases that may be executed at later stages. Threat modeling should be a key part of the general SDLC, ideally perfomed throughout development, rather than just before a penetration test.
+Threat modelling involves using the results of the information gathering phase to determine what threats are likely or severe, producing test cases that may be executed at later stages. Threat modelling should be a key part of the general SDLC, ideally performed throughout development, rather than just before a penetration test.
 
-General threat modeling guidelines [have been defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling), and these are usually applicable to mobile apps.
+General threat modelling guidelines [have been defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling), and these are usually applicable to mobile apps.
 
 <!-- are there any threat modelling techniques specially applicable to mobile apps? -->
 
@@ -92,7 +92,7 @@ General threat modeling guidelines [have been defined by OWASP](https://www.owas
 
 #### Static Analysis
 
-When executing static analysis, the source code of the mobile app(s) will be analyzed to ensure sufficient and correct implementation of security controls, focusing on crucial components such as cryptographic and data storage mechanisms. Due to the amount of code a tester may be confronted with, the ideal approach for static analysis should be a mixture of using tools that scan the code automatically and manual code review.
+When executing static analysis, the source code of the mobile app(s) will be analysed to ensure sufficient and correct implementation of security controls, focusing on crucial components such as cryptographic and data storage mechanisms. Due to the amount of code a tester may be confronted with, the ideal approach for static analysis should be a mixture of using tools that scan the code automatically and manual code review.
 
 Through this approach you can get the best out of both worlds. You can get the so called "low hanging fruits" through the automatic scan, as the scanning engine and its (predefined) rules can detect many common vulnerabilities in the code. A manual code review can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
 
@@ -146,13 +146,13 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 * Configuring an Android Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
 * Configuring an iOS Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 
-In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
+In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyse the traffic:
 * Mallory - https://github.com/intrepidusgroup/mallory
 * Wireshark - https://www.wireshark.org/
 
 ##### Input Fuzzing
 
-The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occations when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
+The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occasions when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
 
 Fuzz testing, is a method for testing software input validation by feeding it intentionally malformed input. Below are the steps in performing the fuzzing:
 
@@ -167,9 +167,9 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 ##### Eliminating Common False Positives
 
-* **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
+* **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
 
-* **[Fuzz Vectors](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors)** - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behaviour in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
+* **[Fuzz Vectors](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors)** - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behaviour in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.å
 
 
 #### Cross-Site Scripting (XSS)
@@ -189,5 +189,15 @@ In summary, a reflected Cross-Site Scripting is no concern for a mobile App, but
 The same problems with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. Just as with XSS, it is not possible for a user to insert a URL into a WebView of an app. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
 
 The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
+
+Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
+## Mobile App Security Testing
+
+Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, any **remote services** consumed by the app, and the **network** used to communicate with them.  
+
+Examples of vulnerabilities in these surfaces include:
+
+* **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
+* **Operating System:** Any native API to which sensitive info is sent. E.g. Tampering with the system HTTP client might give access to the all SSL/TLS traffic from and to the phone, even when SSL with certificate pinning is used.…mobile app is by design not possible as the session cookies are not shared with the Android browser.
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
