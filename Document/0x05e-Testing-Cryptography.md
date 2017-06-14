@@ -14,15 +14,15 @@ For some applications that support older versions of Android, bundling an up-to-
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application. 
 
-Here's an example of using AES on API 23+:
+Here's an example of using AES/CBC/PKCS7Padding on API 23+:
 
 ```
 String keyAlias = "MySecretKey";
 
 KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAlias,
         KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
         .setRandomizedEncryptionRequired(true)
         .build();
 
@@ -33,7 +33,9 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (GCM), padding (none), and explicitly specifies that randomized encryption is required (this is the default.) Note that GCM is the only mode of AES that does not support paddings. For all other modes, padding should be used, e.g., `PKCS5Padding`.<sup>[3], [5]</sup>
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS7), and explicitly specifies that randomized encryption is required (this is the default.) `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example.
+
+GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs. Note that GCM is the only mode of AES that does not support paddings.<sup>[3], [5]</sup>
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
@@ -41,9 +43,9 @@ Here's an example of using that key to decrypt:
 
 ```
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
-        + "/" + KeyProperties.BLOCK_MODE_GCM
-        + "/" + KeyProperties.ENCRYPTION_PADDING_NONE;
-KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
+        + "/" + KeyProperties.BLOCK_MODE_CBC
+        + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7;
+KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
 
 // byte[] input
 Key key = keyStore.getKey(keyAlias, null);
@@ -63,7 +65,7 @@ Here's how that cipher text would be decrypted:
 Key key = keyStore.getKey(AES_KEY_ALIAS, null);
 
 Cipher cipher = Cipher.getInstance(AES_MODE);
-GCMParameterSpec params = new GCMParameterSpec(128, iv);
+IvParameterSpec params = new IvParameterSpec(iv);
 cipher.init(Cipher.DECRYPT_MODE, key, params);
 
 byte[] result = cipher.doFinal(input);
