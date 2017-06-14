@@ -200,6 +200,7 @@ Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> and
 The following best practices should be considered, when implementing JWT:
 
 * The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+* Make sure that tokens with a different signature type are guaranteed to be rejected.
 * Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
 * The private signing key or secret key for HMAC should only be available on server side.
 * If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
