@@ -430,7 +430,7 @@ We will explain here how to check that this control is implemented correctly, bo
 If server side code is available, it should be reviewed that the session timeout or token invalidation functionality is correctly configured and a timeout is triggered after a defined period of time.  
 The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
 * Spring (Java) - http://docs.spring.io/spring-session/docs/current/reference/html5/
-* Ruby on Rails - https://github.com/rails/rails/blob/318a20c140de57a7d5f820753c82258a3696c465/railties/lib/rails/application/configuration.rb#L130
+* Ruby on Rails - http://guides.rubyonrails.org/security.html#session-expiry
 * PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
 * ASP.Net - https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx
 
