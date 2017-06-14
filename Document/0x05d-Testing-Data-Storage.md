@@ -1,12 +1,16 @@
-## Testing Data Storage
+## Testing Data Storage on Android
 
-For all test cases it need to be known what sensitive information is, in context of the app. Please have a look at "Classification of data" for further details.
+The protection of sensitive data, such as user credentials and private information, is a key focus in mobile security. In this chapter, you will learn about the APIs Android offers for local data storage, as well as best practices for using those APIs.
+
+Note that "sensitive data" needs to be identified in the context of each specific app. Data classification is described in detail in the chapter "Testing Processes and Techniques".
 
 ### Testing for Sensitive Data in Local Storage
 
 #### Overview
 
-This vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit this kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information, PII).
+Common wisdom suggest to save as little sensitive data as possible on permanent local storage. However, in most practical scenarios, a least some types user-related data need to be stored. For example, asking the user to enter a highly complex password every time the app is started isn't a great idea from a usability perspective. As a result, most apps must locally cache some kind of session token. Other types of sensitive data, such as personally identifiable information, might also be saved if the particular scenario calls for it.
+
+A vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit these kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information, PII).
 
 Consequences for disclosing sensitive information can be various, like disclosure of encryption keys that can be used by an attacker to decrypt information. More generally speaking an attacker might be able to identify this information to use it as a basis for other attacks like social engineering (when PII is disclosed), session hijacking (if session information or a token is disclosed) or gather information from apps that have a payment option in order to attack and abuse it.
 
@@ -17,11 +21,11 @@ Storing data<sup>[1]</sup> is essential for many mobile applications, for exampl
 * External Storage  
 * SQLite Databases  
 
-The following examples shows snippets of code to demonstrate bad practices that discloses sensitive information and also shows the different storage mechanisms in detail on Android.
+The following snippets of code demonstrate bad practices that disclose sensitive information, but also show the different storage mechanisms on Android in detail.
 
 ##### Shared Preferences
 
-SharedPreferences<sup>[2]</sup> is a common approach to store Key/Value pairs persistently in the filesystem by using a XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
+SharedPreferences<sup>[2]</sup> is a common approach to store Key/ Value pairs persistently in the filesystem by using an XML structure. Within an Activity the following code might be used to store sensitive information like a username and a password:
 
 ```java
 SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
@@ -55,7 +59,7 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 
 ##### SQLite Database (Unencrypted)
 
-SQLite is a SQL database that stores data to a `.db` file. The Android SDK comes with built in classes to operate SQLite databases. The main package to manage the databases is `android.database.sqlite`.
+SQLite is a SQL database that stores data to a `.db` file. The Android SDK comes with built in support for SQLite databases. The main package to manage the databases is `android.database.sqlite`.
 Within an Activity the following code might be used to store sensitive information like a username and a password:
 
 ```java
@@ -110,7 +114,7 @@ try {
 }
 ```
 
-The file mode need to be checked, to make sure that only the app itself has access to the file by using `MODE_PRIVATE`. Other modes like `MODE_WORLD_READABLE` (deprecated) and  `MODE_WORLD_WRITEABLE` (deprecated) are more lax and can pose a security risk.
+The file mode needs to be checked to make sure that only the app itself has access to the file by using `MODE_PRIVATE`. Other modes like `MODE_WORLD_READABLE` (deprecated) and  `MODE_WORLD_WRITEABLE` (deprecated) are more lax and can pose a security risk.
 
 It should also be checked what files are read within the app by searching for the class `FileInputStream`. Part of the internal storage mechanisms is also the cache storage. To cache data temporarily, functions like `getCacheDir()` can be used.
 
@@ -133,14 +137,33 @@ Once the activity is called, the file is created with the provided data and the 
 
 It’s also worth to know that files stored outside the application folder (`data/data/<packagename>/`) will not be deleted when the user uninstall the application.
 
+##### KeyChain
+
+The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
+
+##### KeyStore
+
+The KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
+
+The keys stored in the KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
+
+Stored keys can be configured to operate in one of the two modes:
+
+1. User authentication authorizes the use of keys for a duration of time. All keys in this mode are authorized for use as soon as the user unlocks the device.  The duration for which the authorization remains valid can be customized for each key. This option can only be used if the secure lock screen is enabled. If the user disables the secure lock screen, any stored keys become permanently invalidated.
+
+2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
+
+The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device.
+
+In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
 
 #### Static Analysis
 
 ##### Local Storage
 
-As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code to identify the storage mechanisms used within the Android app and if sensitive data is processed insecurely.
+As already pointed out, there are several ways to store information within Android. Several checks should therefore be applied to the source code to identify the storage mechanisms used within the Android app and whether or not sensitive data is processed insecurely.
 
-* Check `AndroidManifest.xml` for permissions to read and write to external storage, like `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`
+* Check `AndroidManifest.xml` for permissions to read from or write to external storage, like `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`
 * Check the source code for functions and API calls that are used for storing data:
   * Open the Java Files in an IDE or text editor of your choice or use grep on the command line to search for:
     * file permissions like:
@@ -159,14 +182,78 @@ Encryption operations should rely on solid and tested functions provided by the 
 * Check if keys are created or used without taking advantage of the Android onboard features like the KeyStore<sup>[8]</sup>.
 * Check if keys are disclosed.
 
+###### Typical Misuse: Hardcoded Cryptographic Keys
+
+The use of a hard-coded or world-readable cryptographic key significantly increases the possibility that encrypted data may be recovered. Once it is obtained by an attacker, the task to decrypt the sensitive data becomes trivial, and the initial idea to protect confidentiality fails.
+
+When using symmetric cryptography, the key needs to be stored within the device and it is just a matter of time and effort from the attacker to identify it.
+
+Consider the following scenario: An application is reading and writing to an encrypted database but the decryption is done based on a hardcoded key:
+
+```Java
+this.db = localUserSecretStore.getWritableDatabase("SuperPassword123");
+```
+
+Since the key is the same for all App installations it is trivial to obtain it. The advantages of having sensitive data encrypted are gone, and there is effectively no benefit in using encryption in this way. Similarly, look for hardcoded API keys / private keys and other valuable pieces. Encoded/encrypted keys is just another attempt to make it harder but not impossible to get the crown jewels.
+
+Let's consider this piece of code:
+
+```Java
+//A more complicated effort to store the XOR'ed halves of a key (instead of the key itself)
+private static final String[] myCompositeKey = new String[]{
+  "oNQavjbaNNSgEqoCkT9Em4imeQQ=","3o8eFOX4ri/F8fgHgiy/BS47"
+};
+```
+
+Algorithm to decode the original key in this case might look like this<sup>[1]</sup>:
+
+```Java
+public void useXorStringHiding(String myHiddenMessage) {
+  byte[] xorParts0 = Base64.decode(myCompositeKey[0],0);
+  byte[] xorParts1 = Base64.decode(myCompositeKey[1],0);
+
+  byte[] xorKey = new byte[xorParts0.length];
+  for(int i = 0; i < xorParts1.length; i++){
+    xorKey[i] = (byte) (xorParts0[i] ^ xorParts1[i]);
+  }
+  HidingUtil.doHiding(myHiddenMessage.getBytes(), xorKey, false);
+}
+```
+
+Verify common places where secrets are usually hidden:
+* resources (typically at res/values/strings.xml)
+
+Example:
+```xml
+<resources>
+    <string name="app_name">SuperApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="secret_key">My_S3cr3t_K3Y</string>
+  </resources>
+```
+
+* build configs, such as in local.properties or gradle.properties
+
+Example:
+```
+buildTypes {
+  debug {
+    minifyEnabled true
+    buildConfigField "String", "hiddenPassword", "\"${hiddenPassword}\""
+  }
+}
+```
+
+* shared preferences, typically at /data/data/package_name/shared_prefs
+
 ##### KeyChain and KeyStore
 
-When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information should not be stored in clear text and should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Keystore<sup>[8]</sup>**. The following controls should therefore be used:
+When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information must not be stored in clear text but should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Keystore<sup>[8]</sup>**. The following controls should therefore be used:
 
 * Check if a key pair is created within the app by looking for the class `KeyPairGenerator`.
-* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and it’s usage.
+* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and corresponding usages.
 * The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
-
 
 #### Dynamic Analysis
 
@@ -177,17 +264,14 @@ Install and use the app as it is intended and execute all functions at least onc
 * Check Shared Preferences that are stored as XML files in the shared_prefs directory of the app for sensitive information, which is in `/data/data/<package_nam>/shared_prefs`.
 * Check the file system permissions of the files in `/data/data/<package_name>`. Only the user and group created when installing the app (e.g. u0_a82) should have the user rights read, write, execute (rwx). Others should have no permissions to files, but may have the executable flag to directories.
 
-
 #### Remediation
 
-The credo for saving data can be summarized quite easily: Public data should be available for everybody, but sensitive and private data needs to be protected or not stored in the first place on the device itself.
+The credo for saving data can be summarized quite easily: Public data should be available for everybody, but sensitive and private data needs to be protected or even better not get stored on the devise in the first place.
 
-If sensitive information (credentials, keys, PII, etc.) is needed locally on the device several best practices are offered by Android that should be used to store data securely instead of reinventing the wheel or leave it unencrypted on the device.
+If sensitive information (credentials, keys, PII, etc.) is needed locally on the device several best practices are offered by Android that should be used to store data securely instead of reinventing the wheel or leaving data unencrypted on the device.
 
 The following is a list of best practice used for secure storage of certificates and keys and sensitive data in general:
 
-* **Android KeyStore<sup>[8]</sup>**: The KeyStore provides a secure system level credential storage. It is important to note that the credentials are not actually stored within the KeyStore. An app can create a new private/public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key. The KeyStore is a secure container that makes it difficult for an attacker to retrieve the private key and guards the encrypted data. Nevertheless an attacker can access all keys on a rooted device in the folder `/data/misc/keystore/`. The KeyStore is encrypted using the user’s own lock screen pin/password, hence, when the device screen is locked the KeyStore is unavailable<sup>[9]</sup>.
-* **Android KeyChain<sup>[10]</sup>**: The KeyChain class is used to store and retrieve private keys and their corresponding certificate (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
 * Encryption or decryption functions that were self implemented need to be avoided. Instead use Android implementations such as Cipher<sup>[11]</sup>, SecureRandom<sup>[12]</sup> and KeyGenerator<sup>[13]</sup>.   
 * Username and password should not be stored on the device. Instead, perform initial authentication using the username and password supplied by the user, and then use a short-lived, service-specific authorization token (session token). If possible, use the AccountManager<sup>[14]</sup> class to invoke a cloud-based service and do not store passwords on the device.
 * Usage of `MODE_WORLD_WRITEABLE` or `MODE_WORLD_READABLE` should generally be avoided for files. If data needs to be shared with other applications, a content provider should be considered. A content provider offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis.
@@ -232,6 +316,7 @@ The following is a list of best practice used for secure storage of certificates
 [13]KeyGenerator - https://developer.android.com/reference/javax/crypto/KeyGenerator.html
 [14] AccountManager -  https://developer.android.com/reference/android/accounts/AccountManager.html
 [15] Secure Preferences - https://github.com/scottyab/secure-preferences
+[16] Nikolay Elenvok - Credential storage enhancements in Android 4.3 - https://nelenkov.blogspot.sg/2013/08/credential-storage-enhancements-android-43.html
 
 
 ##### Tools
@@ -340,7 +425,7 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 #### Static Analysis
 
-Some 3rd party libraries can be automatically integrated into the app through a wizard within the IDE. The permissions set in the `AnroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also `Testing App Permissions`. When talking to developers it should be shared to them that it’s actually necessary to have a look at the differences on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
+Some 3rd party libraries can be automatically integrated into the app through a wizard within the IDE. The permissions set in the `AndroidManifest.xml`  when installing a library through an IDE wizard should be reviewed. Especially permissions to access `SMS (READ_SMS)`, contacts (`READ_CONTACTS`) or the location (`ACCESS_FINE_LOCATION`) should be challenged if they are really needed to make the library work at a bare minimum, see also `Testing App Permissions`. When talking to developers it should be shared to them that it’s actually necessary to have a look at the differences on the project source code before and after the library was installed through the IDE and what changes have been made to the code base.
 
 The same thing applies when adding a library or SDK manually. The source code should be checked for API calls or functions provided by the 3rd party library or SDK. The applied code changes should be reviewed and it should be checked if available security best practices of the library and SDK are applied and used.
 
@@ -437,6 +522,13 @@ Input fields that are asking for sensitive information need to be identified and
 
 Start the app and click into the input fields that ask for sensitive data. When it is possible to get the menu to copy/paste data the functionality is not disabled for this input field.
 
+To extract the data stored in the clipboard, the Drozer module `post.capture.clipboard` can be used:
+
+```
+dz> run post.capture.clipboard
+[*] Clipboard value: ClipData.Item { T:Secretmessage }
+```
+
 #### Remediation
 
 A general best practice is overwriting different functions in the input field to disable the clipboard specifically for it.
@@ -483,7 +575,8 @@ android:longClickable="false"
 ##### Info
 [1] Copy and Paste in Android - https://developer.android.com/guide/topics/text/copy-paste.html
 
-
+##### Tools
+* Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
@@ -577,18 +670,156 @@ private void vulnerableBroadcastFunction() {
 
 #### Dynamic Analysis
 
-Similar to White-box testing, you should decompile the application (if possible) and create a list of IPC mechanisms implemented by going through the AndroidManifest.xml file. Once you have the list, prove each IPC via ADB or custom applications to see if they leak any sensitive information.
+##### Testing Content Providers
 
-* Vulnerable ContentProvider
+To begin dynamic analysis of an application's content providers, you should first enumerate the attack surface. This can be achieved using the Drozer module `app.provider.info`:
 
-In the case of the previous content provider, we can probe the content provider via ADB, but we need to know the correct URI. Once the APK has been decompiled, use the commands `strings` and `grep` to identify the correct URI to use:
-
-```bash
-$ strings classes.dex | grep "content://"
-com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
+```
+dz> run app.provider.info -a com.mwr.example.sieve
+  Package: com.mwr.example.sieve
+  Authority: com.mwr.example.sieve.DBContentProvider
+  Read Permission: null
+  Write Permission: null
+  Content Provider: com.mwr.example.sieve.DBContentProvider
+  Multiprocess Allowed: True
+  Grant Uri Permissions: False
+  Path Permissions:
+  Path: /Keys
+  Type: PATTERN_LITERAL
+  Read Permission: com.mwr.example.sieve.READ_KEYS
+  Write Permission: com.mwr.example.sieve.WRITE_KEYS
+  Authority: com.mwr.example.sieve.FileBackupProvider
+  Read Permission: null
+  Write Permission: null
+  Content Provider: com.mwr.example.sieve.FileBackupProvider
+  Multiprocess Allowed: True
+  Grant Uri Permissions: False
 ```
 
-Now you can probe the content provider via `adb` with the following command:
+In the example, two content providers are exported, each not requiring any permission to interact with them, except for the `/Keys` path in the `DBContentProvider`. Using this information you can reconstruct part of the content URIs to access the `DBContentProvider`, because it is known that they must begin with `content://`. However, the full content provider URI is not currently known.
+
+To identify content provider URIs within the application, Drozer's `scanner.provider.finduris` module should be used. This utilizes various techniques to guess paths and determine a list of accessible content URIs:
+
+```
+dz> run scanner.provider.finduris -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
+Unable to Query content://com.mwr.
+example.sieve.DBContentProvider/
+...
+Unable to Query content://com.mwr.example.sieve.DBContentProvider/Keys
+Accessible content URIs:
+content://com.mwr.example.sieve.DBContentProvider/Keys/
+content://com.mwr.example.sieve.DBContentProvider/Passwords
+content://com.mwr.example.sieve.DBContentProvider/Passwords/
+```
+
+Now that you have a list of accessible content providers, the next step is to attempt to extract data from each provider, which can be achieved using the `app.provider.query` module:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --vertical
+_id: 1
+service: Email
+username: incognitoguy50
+password: PSFjqXIMVa5NJFudgDuuLVgJYFD+8w== (Base64
+-
+encoded)
+email: incognitoguy50@gmail.com
+```
+
+In addition to querying data, Drozer can be used to update, insert and delete records from a vulnerable content provider:
+
+* Insert record
+
+```
+dz> run app.provider.insert content://com.vulnerable.im/messages
+                --string date 1331763850325
+                --string type 0
+                --integer _id 7
+```
+
+* Update record
+
+```
+dz> run app.provider.update content://settings/secure
+                --selection "name=?"
+                --selection-args assisted_gps_enabled
+                --integer value 0
+```
+
+* Delete record
+
+```
+dz> run app.provider.delete content://settings/secure
+                --selection "name=?"
+                --selection-args my_setting
+```
+
+##### SQL Injection in Content Providers
+
+The Android platform promotes the use of SQLite databases for storing user data. Since these databases use SQL, they can be vulnerable to SQL injection. The Drozer module `app.provider.query` can be used to test for SQL injection by manipulating the projection and selection fields that are passed to the content provider:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "'"
+unrecognized token: "' FROM Passwords" (code 1): , while compiling: SELECT ' FROM Passwords
+
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --selection "'"
+unrecognized token: "')" (code 1): , while compiling: SELECT * FROM Passwords WHERE (')
+```
+
+If vulnerable to SQL Injection, the application will return a verbose error message. SQL Injection in Android can be exploited to modify or query data from the vulnerable content provider. In the following example, the Drozer module `app.provider.query` is used to list all tables in the database:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
+FROM SQLITE_MASTER WHERE type='table';--"
+| type  | name             | tbl_name         | rootpage | sql              |
+| table | android_metadata | android_metadata | 3        | CREATE TABLE ... |
+| table | Passwords        | Passwords        | 4        | CREATE TABLE ... |
+| table | Key              | Key              | 5        | CREATE TABLE ... |
+```
+
+SQL Injection can also be exploited to retrieve data from otherwise protected tables:
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "* FROM Key;--"
+| Password | pin |
+| thisismypassword | 9876 |
+```
+
+These steps can be automated by using the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
+
+```
+dz> run scanner.provider.injection -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
+Injection in Projection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+Injection in Selection:
+  content://com.mwr.example.sieve.DBContentProvider/Keys/
+  content://com.mwr.example.sieve.DBContentProvider/Passwords
+  content://com.mwr.example.sieve.DBContentProvider/Passwords/
+```
+
+##### File System Based Content Providers
+
+A content provider can provide access to the underlying file system. This allows apps to share files, where the Android sandbox would otherwise prevent it. The Drozer modules `app.provider.read` and `app.provider.download` can be used to read or download files from exported file based content providers. These content providers can be susceptible to directory traversal vulnerabilities, making it possible to read otherwise protected files within the target application's sandbox.
+
+```
+dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
+Written 24488 bytes
+```
+
+To automate the process of finding content providers susceptible to directory traversal, the `scanner.provider.traversal` module should be used:
+
+```
+dz> run scanner.provider.traversal -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
+Vulnerable Providers:
+  content://com.mwr.example.sieve.FileBackupProvider/
+  content://com.mwr.example.sieve.FileBackupProvider
+```
+
+Note that `adb` can also be used to query content providers on a device:
 
 ```bash
 $ adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
@@ -596,10 +827,10 @@ Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
 ...
 ```
-* Vulnerable Broadcast
+
+##### Vulnerable Broadcasts
 
 To sniff intents install and run the application on a device (actual device or emulated device) and use tools like Drozer or Intent Sniffer to capture intents and broadcast messages.
-
 
 #### Remediation
 
@@ -680,17 +911,27 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 ##### CWE
 - CWE-200 - Information Exposure
 
-
-
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-When backup options are available, it is important to consider that user data may be stored within the app data directory. The backup feature could potentially leak sensitive information such as session identifiers, usernames, email addresses, passwords, keys and much more. Consider to encrypt backup data and avoid to store any sensitive information that is not strictly required within the data directory of the app.
+Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups.
 
-Besides a local backup, Android provides two ways for apps to backup their data to the cloud:
-* Auto Backup for apps in Android 6.0 (available >= API level 23), which uploads the data to the user's Google Drive account.
-* Key/Value Backup (Backup API or Android Backup Service), which uploads the data to the Android Backup Service.
+Given its diverse ecosystem, Android has a lot of backup options to account for.
+
+- Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>abd backup</code> command when USB debugging is enabled.
+
+- Google also provides a "Back Up My Data" feature that backs up all app data to Google's servers.
+
+- Multiple Backup APIs are available to app developers:
+
+  - Key/ Value Backup (Backup API or Android Backup Service) uploads selected data to the Android Backup Service.
+
+  - Auto Backup for Apps: With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature". This feature automatically syncs up to 25MB of app data to the user's Google Drive account.
+
+- OEMs may add additional options. For example, HTC devices have a "HTC Backup" option that, when activated, performs daily backups to the cloud.
+
+-- [TODO - recommended approach] --
 
 #### Static Analysis
 
@@ -709,13 +950,13 @@ android:allowBackup="true"
 If the value is set to **true**, investigate whether the app saves any kind of sensitive data, check the test case "Testing for Sensitive Data in Local Storage".
 
 ##### Cloud
-Regardless of using either key/value or auto backup, it needs to be identified:
+Regardless of using either key/ value or auto backup, it needs to be identified:
 * what files are sent to the cloud (e.g. SharedPreferences),
 * if the files contain sensitive information,
 * if sensitive information is protected through encryption before sending it to the cloud.
 
 **Auto Backup**
-When setting the attribute `android:allowBackup` to true in the manifest file, auto backup is enabled. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
+Auto Backup is configured through the boolean attribute `android:allowBackup` within the application's manifest file. If not explicitly set, applications targeting Android 6.0 (API Level 23) or higher enable Auto Backup by default<sup>[10]</sup>. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/ value backup instead.
 
 ```xml
 android:fullBackupOnly
@@ -723,18 +964,18 @@ android:fullBackupOnly
 
 Auto backup includes almost all of the app files and stores them in the Google Drive account of the user, limited to 25MB per app. Only the most recent backup is stored, the previous backup is deleted.
 
-**Key/Value Backup**
-To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+**Key/ Value Backup**
+To enable key/ value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
 ```
 
-To implement the key/value backup, either one of the following classes needs to be extended:
+To implement the key/ value backup, either one of the following classes needs to be extended:
 * BackupAgent
 * BackupAgentHelper
 
-Look for these classes within the source code to check for implementations of Key/Value backup.
+Look for these classes within the source code to check for implementations of key/ value backup.
 
 
 #### Dynamic Analysis
@@ -797,6 +1038,7 @@ Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should n
 [7] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7 - http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
 [8] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8 - http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
 [9] AutoBackup - https://developer.android.com/guide/topics/data/autobackup.html
+[10] Enabling AutoBackup - https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup
 
 
 ##### Tools
@@ -879,7 +1121,7 @@ It needs to be identified within the code when sensitive information is stored w
 
 #### Dynamic Analysis
 
-To analyse the memory of an app, the app must be **debuggable**.
+To analyse the memory of an app in Android Studio, the app must be **debuggable**.
 See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android app to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
 For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
@@ -992,18 +1234,15 @@ The following list shows potential warnings or advises for a user when opening t
 
 #### Static Analysis
 
-A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices.  
--- TODO [Create content on Static Analysis for Verifying User Education Controls] --
+A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices.
 
 #### Dynamic Analysis
 
-After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose.
--- TODO [Develop content on Dynamic Analysis on Verifying User Education Controls] --
+After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose and are aligned with the defined education controls.
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
--- TODO [Develop remediations on Verifying User Education Controls] --
 
 #### References
 
@@ -1012,6 +1251,3 @@ Warnings should be implemented that address the key points listed in the overvie
 
 ##### OWASP MASVS
 - V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
-
-##### CWE
-- CWE: -- TODO [Link to CWE issue] --

@@ -8,7 +8,7 @@ This section will give an overview of different methods on how an Android app ca
 
 #### Preparation
 
-The goal of a test is to verify if the app and the endpoint(s) it's communicating with, are implemented in a secure way. Several security controls like SSL Pinning or root detection might be implemented. These can slow down the testing dramatically and might already take days to bypass, depending on the implementation.
+Security testing involves many invasive tasks such as monitoring and manipulating the network traffic between the mobile app and its remote endpoints, inspecting the app's data files, and instrumenting API calls. Security controls like SSL Pinning and root detection might can impede these tasks and slow down the testing dramatically.
 
 During the preparation phase it should be discussed with the company developing the mobile app, to provide two versions of the app. One app should be built as release to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The same app should also be provided as debug build that deactivates certain security controls. Through this approach all scenarios and test cases can be tested in the most efficient way.
 
@@ -153,10 +153,9 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 
 ##### Root Detection
 
-To implement root detection on Android, libraries like RootBeer<sup>[14]</sup> or custom checks are used to verify if the device is rooted or not. See also test case "Testing Root Detection" and "Testing Advanced Root Detection" for further details.
+Root detection can be implemented using pre-made libraries like RootBeer<sup>[14]</sup> or custom checks. An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
-To be able to efficiently test during a white box test, a debug build with disabled root detection should be provided.
-
+In a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, root detection can be disabled using a variety of methods which will be introduced later in this book.
 
 ### Testing Methods
 
@@ -218,9 +217,133 @@ Some of these tools are:
 
 #### Dynamic Analysis
 
-Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device or monitoring the communication with the endpoint while using the app.
+Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device to monitoring the communication with the endpoint while using the app.
 
 When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
+
+#### Drozer
+
+Drozer<sup>[25]</sup> is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
+
+##### Installing Drozer
+
+###### Building from Source
+
+```
+git clone https://github.com/mwrlabs/drozer/
+cd drozer
+make apks
+source ENVIRONMENT
+python setup.py build
+sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
+```
+
+###### Installing .egg
+
+```
+sudo easy_install drozer-2.x.x-py2.7.egg
+```
+
+###### Building for Debian/Ubuntu
+
+```
+sudo apt-get install python-stdeb fakeroot
+git clone https://github.com/mwrlabs/drozer/
+cd drozer
+make apks
+source ENVIRONMENT
+python setup.py --command-packages=stdeb.command bdist_deb
+
+```
+
+###### Installing .deb (Debian/Ubuntu)
+
+```
+sudo dpkg -i deb_dist/drozer-2.x.x.deb
+```
+
+###### Installing on Arch Linux
+
+`yaourt -S drozer`
+
+##### Installing the Agent
+
+Drozer can be installed using Android Debug Bridge (adb).
+
+Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
+
+`$ adb install drozer-agent-2.x.x.apk`
+
+##### Starting a Session
+
+You should now have the Drozer console installed on your PC, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
+
+We will use the server embedded in the Drozer Agent to do this.
+
+If using the Android emulator, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415:
+
+`$ adb forward tcp:31415 tcp:31415`
+
+Now, launch the Agent, select the “Embedded Server” option and tap “Enable” to start the server. You should see a notification that the server has started.
+
+Then, on your PC, connect using the drozer Console:
+
+`$ drozer console connect`
+
+If using a real device, the IP address of the device on the network must be specified:
+
+`$ drozer console connect --server 192.168.0.10`
+
+You should be presented with a Drozer command prompt:
+
+```
+selecting f75640f67144d9a3 (unknown sdk 4.1.1)  
+dz>
+```
+
+##### Using Modules
+
+Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few
+remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
+
+###### Finding Modules
+
+The official Drozer module repository is hosted alongside the main project on Github. This is automatically set
+up in your copy of Drozer. You can search for modules using the `module` command:
+
+```bash
+dz> module search tool
+kernelerror.tools.misc.installcert
+metall0id.tools.setup.nmap
+mwrlabs.tools.setup.sqlite3
+```
+
+For more information about a module, pass the `–d` option to view the module's description:
+
+```
+dz> module  search url -d
+mwrlabs.urls
+    Finds URLs with the HTTP or HTTPS schemes by searching the strings
+    inside APK files.
+
+        You can, for instance, use this for finding API servers, C&C
+    servers within malicious APKs and checking for presence of advertising
+    networks.
+
+```
+
+###### Installing Modules
+
+You can install modules using the `module` command:
+
+```
+dz> module install mwrlabs.tools.setup.sqlite3
+Processing mwrlabs.tools.setup.sqlite3... Already Installed.
+Successfully installed 1 modules, 0 already installed
+```
+
+This will install any module that matches your query. Newly installed modules are dynamically loaded into the
+console and are available for immediate use.
 
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -228,20 +351,34 @@ Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) 
 
 ![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
 
-Downstream messages are sent from the application server to the client app (Push notifications); Upstream messages are sent from the client app to the server.
+Downstream messages are sent from the application server to the client app (push notifications); upstream messages are sent from the client app to the server.
 
-FCM is available for Android and also for iOS and Chrome and can therefore be used on different platforms. FCM provides two connection server protocols at the moment: HTTP and XMPP. There are several differences in the implementation of HTTP And XMPP<sup>[24]</sup> when using them in FCM. The following example focuses on intercepting FCM using HTTP.
+FCM is available for Android and also for iOS and Chrome. FCM provides two connection server protocols at the moment: HTTP and XMPP and there are several differences in the implementation, as described in the official documentation<sup>[24]</sup>. The following example demonstrates how to intercept both protocols.
 
-##### Preparation - HTTP
+##### Preparation
 
-For a full dynamic analysis of an Android app also FCM should be intercepted. The ports used by FCM are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 and 5230 is used. To be able to intercept the messages on these ports several steps should be considered for preparation. The following example can be used on Mac OS X:
+For a full dynamic analysis of an Android app FCM should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
 
 * Install the CA certificate of your interception proxy into your Android phone<sup>[2]</sup>.
-* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like ettercap<sup>[24]</sup>. It can be installed by using brew.
+* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like ettercap<sup>[24]</sup>. It can be installed by using brew on Mac OS X.
 
 ```bash
 $ brew install ettercap
 ```
+
+Ettercap can also be installed through `apt-get` on Debian based linux distributions.
+
+```bash
+sudo apt-get install zlib1g zlib1g-dev
+sudo apt-get install build-essential
+sudo apt-get install ettercap
+```
+
+FCM can use two different protocols to communicate with the Google backend, either XMPP or HTTP.
+
+**HTTP**
+
+The ports used by FCM for HTTP are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 or 5230 is used.
 
 * Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
 
@@ -255,7 +392,22 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 * The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-##### Intercepting Messages - HTTP
+**XMPP**
+
+The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[26]</sup>.
+
+* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
+
+```bash
+$ echo "
+rdr pass inet proto tcp from any to any port 5235-> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+* The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+
+##### Intercepting Messages
 
 Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
 
@@ -267,18 +419,12 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-As an alternative to a Mitm attack executed on your machine, a Wifi Access Point (AP) or router can also be used. The port forwarding need to be configured then on the AP or router and need to point to your interception proxy that need to listen on the external interface. For this test setup tools like ettercap are not needed.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are two plugins available for Burp, which are Burp-non-HTTP-Extension<sup>[28]<sup> and Mitm-relay<sup>[27]<sup> that leverages Burp to visualize XMPP traffic.
 
+As an alternative to a Mitm attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
-##### Preparation - XMPP
+Tools like Wireshark can be used to monitor and record the traffic for further investigation either locally on your machine or through a span port, if the router or Wifi AP offers this functionality.
 
--- TODO
-
-##### Intercepting Messages - XMPP
-
-https://github.com/iamultra/xmppmitm
-https://github.com/summitt/Burp-Non-HTTP-Extension
--- TODO
 
 #### Reverse Engineering
 
@@ -312,3 +458,7 @@ There are many reason to reverse engineer an application: to understand applicat
 - [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
 - [23] Ettercap - https://ettercap.github.io
 - [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
+- [25] Drozer - https://github.com/mwrlabs/drozer
+- [26] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
+- [27] Mitm-relay - https://github.com/jrmdev/mitm_relay
+- [28] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension

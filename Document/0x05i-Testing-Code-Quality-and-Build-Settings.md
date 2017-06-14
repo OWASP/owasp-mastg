@@ -1,4 +1,4 @@
-## Testing Code Quality and Build Settings
+## Testing Code Quality and Build Settings of Android Apps
 
 ### Verifying That the App is Properly Signed
 
@@ -53,19 +53,6 @@ sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 (...)
 ```
 
-The output for an APK signed with a Release certificate looks as follows:
-
-```
-$ jarsigner -verify -verbose -certs example.apk
-
-sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
-
-      X.509, CN=Awesome Corporation, OU=Awesome, O=Awesome Mobile, L=Palo Alto, ST=CA, C=US
-      [certificate is valid from 9/1/09 4:52 AM to 9/26/50 4:52 AM]
-      [CertPath not validated: Path does not chain with any of the trust anchors]
-(...)
-```
-
 Ignore the "CertPath not validated" error -  this error appears with Java SDK 7 and greater. Instead, you can rely on the <code>apksigner</code> to verify the certificate chain.
 
 #### Dynamic Analysis
@@ -75,6 +62,7 @@ Static analysis should be used to verify the APK signature.
 #### Remediation
 
 Developers need to make sure that release builds are signed with the appropriate certificate from the release keystore. In Android Studio, this can be done manually or by configuring creating a signing configuration and assigning it to the release build type<sup>[2]</sup>.
+
 The signing configuration can be managed through the Android Studio GUI or the <code>signingConfigs {}</code> block in <code>build.gradle</code>. The following values need to be set to activate both v1 and v2 scheme:
 
 ```
@@ -101,7 +89,6 @@ N/A
 - jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
 
 
-
 ### Testing If the App is Debuggable
 
 #### Overview
@@ -126,11 +113,50 @@ Check in <code>AndroidManifest.xml</code> whether the <code>android:debuggable</
 
 #### Dynamic Analysis
 
-Attempt to attach to the running process jdb. If debugging is disallowed, this should fail with an error.
+Drozer can be used to identify if an application is debuggable. The module `app.package.attacksurface` displays information about IPC components exported by the application, in addition to whether the app is debuggable.
+
+```
+dz> run app.package.attacksurface com.mwr.dz
+Attack Surface:
+  1 activities exported
+  1 broadcast receivers exported
+  0 content providers exported
+  0 services exported
+    is debuggable
+```
+
+To scan for all debuggable applications on a device, the `app.package.debuggable` module should be used:
+
+```
+dz> run app.package.debuggable
+Package: com.mwr.dz
+  UID: 10083
+  Permissions:
+   - android.permission.INTERNET
+Package: com.vulnerable.app
+  UID: 10084
+  Permissions:
+   - android.permission.INTERNET
+```
+
+If an application is debuggable, it is trivial to get command execution in the context of the application. In `adb` shell, execute the `run-as` binary, followed by the package name and command:
+
+```
+$ run-as com.vulnerable.app id
+uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
+```
+
+An alternative method to determine if an application is debuggable, is to attach jdb to the running process. If debugging is disabled, this should fail with an error.
 
 #### Remediation
 
-Set the <code>android:debuggable</code> to false, or simply omit it from the <code>Application</code> tag.
+In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, as shown below:
+
+```xml
+<application android:debuggable="false">
+...
+</application>
+```
 
 #### References
 
@@ -142,13 +168,16 @@ Set the <code>android:debuggable</code> to false, or simply omit it from the <co
 
 ##### CWE
 
+
 -- TODO [Add relevant CWE for "Testing If the App is Debuggable"] --
 * CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
 * [1] Application element - https://developer.android.com/guide/topics/manifest/application-element.html
 
+##### Tools
 
+* Drozer - https://github.com/mwrlabs/drozer
 
 ### Testing for Debugging Symbols
 
@@ -226,21 +255,100 @@ Add the following to build.gradle:
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
+StrictMode is a developer tool to be able to detect policy violation, e.g. disk or network access.
+It can be implemented in order to check the usage of good coding practices such as implementing high-performance code or usage of network access on the main thread.
+The policy are defined together with rules and different methods of showing the violation of a policy.
 
-`StrictMode` - https://developer.android.com/reference/android/os/StrictMode.html
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+There are two category of policies:
+* `StrictMode.ThreadPolicy`
+* `StrictMode.VmPolicy`
 
+The ThreadPolicy can monitor:
+* Disk Reads
+* Disk Writes
+* Network access
+* Custom Slow Code
+
+The VM policies,  applied to all threads in the virtual machine's process, are:
+* Leaked Activity objects
+* Leaked SQLite objects
+* Leaked Closable objects
+
+In order to enable `StrictMode`, the code should be implemented in onCreate().
+Here is an example of enabling both policies mentioned above<sup>[1]</sup>:
+```
+public void onCreate() {
+     if (DEVELOPER_MODE) {
+         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                 .detectDiskReads()
+                 .detectDiskWrites()
+                 .detectNetwork()   // or .detectAll() for all detectable problems
+                 .penaltyLog()
+                 .build());
+         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                 .detectLeakedSqlLiteObjects()
+                 .detectLeakedClosableObjects()
+                 .penaltyLog()
+                 .penaltyDeath()
+                 .build());
+     }
+     super.onCreate();
+ }
+
+```
 #### Static Analysis
+With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy`. Most likely they will be in the onCreate() method.
 
--- TODO [Add content on white-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
+The various detect methods for Thread Policy are<sup>[3]</sup>:
+```
+detectDiskWrites() //API level 9
+detectDiskReads() //API level 9
+detectNetwork() //API level 9
+detectCustomSlowCalls()//Introduced in API level 11
+detectAll()
+detectCustomSlowCalls()
+```
+
+Another possibility is to capture all kind of violation as:
+```
+detectAll()
+detectCustomSlowCalls()
+```
+
+The possible penalties for thread policy are<sup>[3]</sup>:
+```
+penaltyLog() //Logs a message to LogCat
+penaltyDeath() //Crashes application, runs at the end of all enabled penalties
+penaltyDialog() //Show a dialog
+penaltyDeathOnNetwork() //Crashes the whole process on any network usage
+penaltyDropBox() //Enable detected violations log a stacktrace and timing data to the DropBox on policy violation
+penaltyFlashScreen() //Introduced in API level 11 which Flash the screen during a violation
+```
+
+Considering the VM policy of StrictMode, the policy are<sup>[3]</sup>:
+```
+detectActivityLeaks() //API level 11. Detect leaks of Activity subclasses.
+detectLeakedClosableObjects() //API level 11. Detect when an Closeable or other object with a explict termination method is finalized without having been closed.
+detectLeakedSqlLiteObjects() //API level 9. Detect when an SQLiteCursor or other SQLite object is finalized without having been closed.
+setClassInstanceLimit(Class.forName("my.app.sample.sampleclass"),10) //API level 11
+```
+
+The possible penalties for VM policy violation are<sup>[3]</sup>:
+```
+penaltyLog()
+penaltyDeath()
+penaltyDropBox()
+```
 
 #### Dynamic Analysis
-
--- TODO [Add content on black-box testing for "Testing for Debugging Code and Verbose Error Logging"] --
+There are different way of detecting the `StrictMode` and it depends on how the policies' role are implemented. Some of them are:
+* Logcat
+* Warning Dialog
+* Crash of the application
 
 #### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Debugging Code and Verbose Error Logging"] --
+It's recommended to insert the policy in the `if` statement with `DEVELOPER_MODE` as condition.
+The DEVELOPER_MODE has to be disabled for release build in order to disable `StrictMode` too.
 
 #### References
 
@@ -255,7 +363,9 @@ Add the following to build.gradle:
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Info
--- TODO
+- [1] Official Developer Guide - https://developer.android.com/reference/android/os/StrictMode.html
+- [2] Envatotuts+ - https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581
+- [3] Javabeat- http://javabeat.net/strictmode-android-1/
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Debugging Code and Verbose Error Logging"] --
@@ -266,23 +376,92 @@ Add the following to build.gradle:
 ### Testing Exception Handling
 
 #### Overview
-
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+Exceptions can often occur when an application gets into a non-normal or erroneous state. Both in Java and C++ exceptions can be thrown when such state occurs. 
+Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
 #### Static Analysis
 
 Review the source code to understand and identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage :
 
 * Verify that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
-* Verify that the application doesn't expose sensitive information while handling exceptions, but are still verbose enough to explain the issue to the user.
+* Verify that standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) are anticipated upon by creating proper null-checks, bound-checks and alike. See <sup>[2]</sup> for an overview of the provided child-classes of `RuntimeException`. If the developer still throws a child of `RuntimeException` then this should always be intentional and that intention should be handled by the calling method.
+* Verify that for every non-runtime `Throwable`, there is a proper catch handler, which ends up handling the actual exception properly. 
+* Verify that the application doesn't expose sensitive information while handling exceptions in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+* Verify that any confidential information, such as keying material and/or authentication information is always wiped at the `finally` blocks in case of a high risk application.
+
 
 #### Dynamic Analysis
+There are various ways of doing dynamic analysis: 
 
--- TODO [Describe how to test for this issue using static and dynamic analysis techniques. This can include everything from simply monitoring aspects of the app’s behavior to code injection, debugging, instrumentation, etc. ] --
+- Use Xposed to hook into methods and call the method with unexpected values or overwrite existing variables to unexpected values (e.g. Null values, etc.).
+- Provide unexpected values to UI fields in the Android application.
+- Interact with the application using its intents and public providers by using values that are unexpected. 
+- Tamper the network communication and/or the files stored by the application.
+
+In all cases, the application should not crash, but instead, it should:
+
+- Recover from the error or get into a state in which it can inform the user of not being able to continue.
+- If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
+- Not provide any information in logging mechanims used by the application.
 
 #### Remediation
+There are a few things a developer can do:
+- Ensure that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
+- When an exception is thrown, make sure that the application has centralized handlers for exceptions that result in similar behavior. This can be a static class for instance. For specific exceptions given the methods context, specific catch blocks should be provided.
+- When executing operations that involve high risk information, make sure you wipe the information in the finally block in java:
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Exception Handling"] --
+```java
+byte[] secret;
+try{
+	//use secret
+} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
+	// handle any issues
+} finally {
+	//clean the secret.
+}
+```
+
+- Add a general exception-handler for uncaught exceptions to clear out the state of the application prior to a crash:
+```java
+public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
+
+    private static final MemoryCleanerOnCrash S_INSTANCE = new MemoryCleanerOnCrash();
+    private final List<Thread.UncaughtExceptionHandler> mHandlers = new ArrayList<>();
+
+	//initiaze the handler and set it as the default exception handler
+    public static void init() {
+        S_INSTANCE.mHandlers.add(Thread.getDefaultUncaughtExceptionHandler());
+        Thread.setDefaultUncaughtExceptionHandler(S_INSTANCE);
+    }
+
+	 //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
+    public void subscribeCrashHandler(Thread.UncaughtExceptionHandler handler) {
+        mHandlers.add(handler);
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+
+			//handle the cleanup here
+			//....
+			//and then show a message to the user if possible given the context
+			
+        for (Thread.UncaughtExceptionHandler handler : mHandlers) {
+            handler.uncaughtException(thread, ex);
+        }
+    }
+}
+
+```
+Now you need to call the initializer for the handler at your custom `Application` class (e.g. the class that extends `Application`):
+```java
+	
+	 @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MemoryCleanerOnCrash.init();
+    }
+```
 
 #### References
 
@@ -300,11 +479,11 @@ Review the source code to understand and identify how the application handles va
 ##### Info
 
 [1] Exceptional Behavior (ERR) - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047
+[2] Android developer API documentation - https://developer.android.com/reference/java/lang/RuntimeException.html
 
 ##### Tools
 
--- TODO [Add relevant tools for "Testing Exception Handling"] --
-* Enjarify - https://github.com/google/enjarify
+* Xposed - http://repo.xposed.info/
 
 
 

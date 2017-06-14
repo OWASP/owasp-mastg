@@ -1,4 +1,4 @@
-## Testing Anti-Reversing Defenses
+## Testing Anti-Reversing Defenses on Android
 
 ### Testing Root Detection
 
@@ -10,7 +10,7 @@ On Android, we define the term "root detection" a bit more broadly to include de
 
 ##### Common Root Detection Methods
 
-In the following section, we list some of the root detection methods you'll commonly encounter. You'll find some of those checks implemented in the Crackme examples that accompany the OWASP Mobile Testing Guide <sup>[1]</sup>.
+In the following section, we list some of the root detection methods you'll commonly encounter. You'll find some of those checks implemented in the crackme examples that accompany the OWASP Mobile Testing Guide <sup>[1]</sup>.
 
 ###### SafetyNet
 
@@ -162,7 +162,7 @@ Missing Google Over-The-Air (OTA) certificates are another sign of a custom ROM,
 
 ##### Bypassing Root Detection
 
-Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one. If you're performing a black-box resiliency assessment, disabling the root detection mechanisms is your first step.
+Run execution traces using JDB, DDMS, strace and/or Kernel modules to find out what the app is doing - you'll usually see all kinds of suspect interactions with the operating system, such as opening *su* for reading or obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms one-by-one. If you're performing a black-box resilience assessment, disabling the root detection mechanisms is your first step.
 
 You can use a number of techniques to bypass these checks, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
@@ -188,7 +188,7 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 - How long did it take you to successfully bypass it?
 - What is your subjective assessment of difficulty?
 
-Also note how well the root detection mechanisms are integrated within the overall protection scheme. For example, the detection functions should obfuscated and protected from tampering.
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### Remediation
 
@@ -233,7 +233,7 @@ As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal
 
 Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging tricks prevent the debugger from attaching in the first place, while reactive tricks attempt to detect whether a debugger is present and react to it in some way (e.g. terminating the app, or triggering some kind of hidden behaviour). The "more-is-better" rule applies: To maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are distributed throughout the app.
 
-##### Sample Anti-JDWP-Debugging Methods
+##### Anti-JDWP-Debugging Examples
 
 In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
@@ -391,7 +391,7 @@ JNIEXPORT void JNICALL Java_sg_vantagepoint_jdwptest_MainActivity_JDWPfun(
 }
 ```
 
-##### Sample Anti-Native-Debugging Methods
+##### Anti-Native-Debugging Examples
 
 Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical, ptrace-based debuggers, so separate defenses are needed to defend against this type of debugging. Many "traditional" Linux anti-debugging tricks are employed here.
 
@@ -399,7 +399,7 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical,
 
 When the <code>ptrace</code> system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
-The following implementation is taken from Tim Strazzere's Anti-Emulator project [3].
+The following implementation is taken from Tim Strazzere's Anti-Emulator project <sup>[3]</sup>.
 
 ```
     public static boolean hasTracerPid() throws IOException {
@@ -579,13 +579,13 @@ As usual, there is no generic way of bypassing anti-debugging: It depends on the
 2. Using Frida or Xposed to hook APIs on the Java and native layers. Manipulate the return values of functions such as isDebuggable and isDebuggerConnected to hide the debugger.
 3. Change the environment. Android is an open enviroment. If nothing else works, you can modify the operating system to subvert the assumptions the developers made when designing the anti-debugging tricks.
 
-###### Example: UnCrackable App for Android Level 2
+###### Bypass Example: UnCrackable App for Android Level 2
 
--- TODO [Bypassing Debugger Detection - Solve UnCrackable Level 2] --
-
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in level 2 of the "UnCrackable App'.
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example for this in level 2 of the "UnCrackable App for Android'.
 
 At first glance, the code looks similar to the prior challenge. A class called "CodeCheck" is responsible for verifying the code entered by the user. The actual check appears to happen in the method "bar()", which is declared as a *native* method.
+
+-- TODO [Example for Bypassing Debugger Detection] --
 
 ```java
 package sg.vantagepoint.uncrackable2;
@@ -608,33 +608,6 @@ public class CodeCheck {
     }
 ```
 
-
--- TODO [Add a generic bypass script using Frida (?)] --
-
-```python
-#v0.1
- 
-import frida
-import sys
- 
-session = frida.get_remote_device().attach("com.example.targetapp")
- 
-script = session.create_script("""
- 
-var funcPtr = Module.findExportByName("libdvm.so", "_Z25dvmDbgIsDebuggerConnectedv");
-Interceptor.replace(funcPtr, new NativeCallback(function (pathPtr, flags) {
-    return 0;
-}, 'int', []));
-""") 
-
-def on_message(message, data):
-    print(message)
- 
-script.on('message', on_message)
-script.load()
-sys.stdin.read()
-```
-
 #### Effectiveness Assessment
 
 Check for the presence of anti-debugging mechanisms and apply the following criteria:
@@ -651,9 +624,7 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-Consider how the anti-debugging mechansims fit into the overall protection scheme. For example, anti-debugging defenses should obfuscated and protected from tampering.
-
-Note that some anti-debugging implementations respond in a stealthy way so that changes in behaviour are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### Remediation
 
@@ -670,10 +641,12 @@ If anti-debugging is missing or too easily bypassed, make suggestions in line wi
 ### Testing File Integrity Checks
 
 #### Overview
+There are two file-integrity related topics:
 
-In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
+ 1. _The application-source related integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
+ 2. _The file storage related integrity checks:_ When files are stored by the application using the SD-card or public storage, or when key-value pairs are stored in the `SharedPreferences`, then their integrity should be protected.
 
-##### Sample Implementation
+##### Sample Implementation - application-source
 
 Integrity checks often calculate a checksum or hash over selected files. Files that are commonly protected include:
 
@@ -704,8 +677,110 @@ private void crcTest() throws IOException {
  }
 }
 ```
+##### Sample Implementation - Storage
+
+When providing integrity on the storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the filesystem.
+When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on: There are a few steps to take care of.
+In case of the need for encryption. Please make sure that you encrypt and then HMAC as described in [2].
+
+When generating an HMAC with BouncyCastle:
+
+1. Make sure BounceyCastle or SpongeyCastle are registered as a security provider.
+2. Initialize the HMAC with a key, which can be stored in a keystore.
+3. Get the bytearray of the content that needs an HMAC.
+4. Call `doFinal` on the HMAC with the bytecode.
+5. Append the HMAC to the bytearray of step 3.
+6. Store the result of step 5.
+
+When verifying the HMAC with BouncyCastle:
+
+1. Make sure BounceyCastle or SpongeyCastle are registered as a security provider.
+2. Extract the message and the hmacbytes as separate arrays.
+3. Repeat step 1-4 of generating an hmac on the data.
+4. Now compare the extracted hamcbytes to the result of step 3.
+
+When generating the HMAC based on the Android keystore, then it is best to only do this for Android 6 and higher. In that case you generate the key for hmacking as described in [3].
+A convinient HMAC implementation without the `AndroidKeyStore` can be found below:
+
+```java
+public enum HMACWrapper {
+    HMAC_512("HMac-SHA512"), //please note that this is the spec for the BC provider
+    HMAC_256("HMac-SHA256");
+
+    private final String algorithm;
+
+    private HMACWrapper(final String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public Mac createHMAC(final SecretKey key) {
+        try {
+            Mac e = Mac.getInstance(this.algorithm, "BC");
+            SecretKeySpec secret = new SecretKeySpec(key.getKey().getEncoded(), this.algorithm);
+            e.init(secret);
+            return e;
+        } catch (NoSuchProviderException | InvalidKeyException | NoSuchAlgorithmException e) {
+            //handle them
+        }
+    }
+
+    public byte[] hmac(byte[] message, SecretKey key) {
+        Mac mac = this.createHMAC(key);
+        return mac.doFinal(message);
+    }
+
+    public boolean verify(byte[] messageWithHMAC, SecretKey key) {
+        Mac mac = this.createHMAC(key);
+        byte[] checksum = extractChecksum(messageWithHMAC, mac.getMacLength());
+        byte[] message = extractMessage(messageWithHMAC, mac.getMacLength());
+        byte[] calculatedChecksum = this.hmac(message, key);
+        int diff = checksum.length ^ calculatedChecksum.length;
+
+        for (int i = 0; i < checksum.length && i < calculatedChecksum.length; ++i) {
+            diff |= checksum[i] ^ calculatedChecksum[i];
+        }
+
+        return diff == 0;
+    }
+
+    public byte[] extractMessage(byte[] messageWithHMAC) {
+        Mac hmac = this.createHMAC(SecretKey.newKey());
+        return extractMessage(messageWithHMAC, hmac.getMacLength());
+    }
+
+    private static byte[] extractMessage(byte[] body, int checksumLength) {
+        if (body.length >= checksumLength) {
+            byte[] message = new byte[body.length - checksumLength];
+            System.arraycopy(body, 0, message, 0, message.length);
+            return message;
+        } else {
+            return new byte[0];
+        }
+    }
+
+    private static byte[] extractChecksum(byte[] body, int checksumLength) {
+        if (body.length >= checksumLength) {
+            byte[] checksum = new byte[checksumLength];
+            System.arraycopy(body, body.length - checksumLength, checksum, 0, checksumLength);
+            return checksum;
+        } else {
+            return new byte[0];
+        }
+    }
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+}
+
+
+```
+
+Another way of providing integrity, is by signing the obtained byte-array. Please check [3] on how to generate a signature. Do not forget to add the signature to the original byte-array.
 
 ##### Bypassing File Integrity Checks
+
+*When trying to bypass the application-source integrity checks* 
 
 1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
@@ -713,9 +788,29 @@ private void crcTest() throws IOException {
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
+*When trying to bypass the storage integrity checks*
+
+1. Retrieve the data from the device, as described at the secion for device binding.
+2. Alter the data retrieved and then put it back in the storage
+
 #### Effectiveness Assessment
 
-Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification an cease to function. Note that some anti-tampering implementations respond in a stealthy way so that changes in behaviour are not immediately apparent.
+*For the application source integrity checks*
+Run the app on the device in an unmodified state and make sure that everything works. Then, apply simple patches to the classes.dex and any .so libraries contained in the app package. Re-package and re-sign the app as described in the chapter "Basic Security Testing" and run it. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- How difficult is it to identify the anti-debugging code using static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
+
+*For the storage integrity checks*
+A similar approach holds here, but now answer the following questions:
+- Can the mechanisms be bypassed using trivial methods (e.g. changing the contents of a file or a key-value)?
+- How difficult is it to obtain the HMAC key or the asymmetric private key?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
 
 #### References
 
@@ -734,6 +829,8 @@ Run the app on the device in an unmodified state and make sure that everything w
 ##### Info
 
 - [1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
+- [2] Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm - http://cseweb.ucsd.edu/~mihir/papers/oem.html
+- [3] Android Keystore System - https://developer.android.com/training/articles/keystore.html
 
 ### Testing Detection of Reverse Engineering Tools
 
@@ -743,22 +840,9 @@ Reverse engineers use a lot of tools, frameworks and apps to aid the reversing p
 
 ##### Detection Methods
 
-Popular tools, if installed in their original form, can be detected by looking for associated application packages, files, processes, or other tool-specific modifications and artefacts.
-
--- TODO [Add list of tools and associated files, processes, libs, etc. etc. Cover the tools below] --
-
-- Substrate for Android
-- Xposed
-- Frida
-- Radare2
-- Introspy-Android
-- Drozer
-- RootCloak
-- Android SSL Trust Killer
+Popular reverse engineering tools, if installed in an unmodified form, can be detected by looking for associated application packages, files, processes, or other tool-specific modifications and artefacts. In the following examples, we'll show how different ways of detecting the frida instrumentation framework which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected using similar means. Note that DBI/injection/hooking tools can often also be detected implicitly through runtime integrity checks, which are discussed separately below.
 
 ###### Example: Ways of Detecting Frida
-
--- TODO [Write a few introductionary words] --
 
 An obvious method for detecting frida and similar frameworks is to check the environment for related artefacts, such as package files, binaries, libraries, processes, temporary files, and others. As an example, I'll home in on fridaserver, the daemon responsible for exposing frida over TCP. One could use a Java method that iterates through the list of running processes to check whether fridaserver is running:
 
@@ -806,7 +890,7 @@ boolean is_frida_server_listening() {
 }   
 ```
 
-Again, this detects fridaserver in its default mode, but the listening port can be changed easily via command line argument, so bypassing this is a little bit too trivial. The situation can be improved by pulling an nmap -sV. fridaserver uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping for fridaserver to reveal itself. 
+Again, this detects fridaserver in its default mode, but the listening port can be changed easily via command line argument, so bypassing this is a little bit too trivial. The situation can be improved by pulling an nmap -sV. fridaserver uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping for fridaserver to reveal itself.
 
 ```c
 /*
@@ -839,7 +923,7 @@ for(i = 0 ; i <= 65535 ; i++) {
         }
     }
     close(sock);
-} 
+}
 ```
 
 We now have a pretty robust method of detecting fridaserver, but there's still some glaring issues. Most importantly, frida offers alternative modes of operations that don't require fridaserver! How do we detect those?
@@ -862,14 +946,14 @@ if (fp) {
     fclose(fp);
 
     } else {
-       /* Error opening /proc/self/maps. If this happens, something is off. */
+       /* Error opening /proc/self/maps. If this happens, something is of. */
     }
 }
 ```
 
 This detects any libraries containing "frida" in the name. On its surface this works, but there's some major issues:
 
-- Remember how it wasn't a good idea to rely on fridaserver being called fridaserver? The same applies here - with some small modifications to frida, the frida agent libraries could simply be renamed. 
+- Remember how it wasn't a good idea to rely on fridaserver being called fridaserver? The same applies here - with some small modifications to frida, the frida agent libraries could simply be renamed.
 - Detection relies on standard library calls such as fopen() and strstr(). Essentially, we're attempting to detect frida using functions that can be easily hooked with - you guessed it - frida. Obviously this isn't a very solid strategy.
 
 Issue number one can be addressed by implementing a classic-virus-scanner-like strategy, scanning memory for the presence of "gadgets" found in frida's libraries. I chose the string "LIBFRIDA" which appears to be present in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in /proc/self/maps, and search for the string in every executable section. Note that I ommitted the more boring functions for the sake of brevity, but you can find them on GitHub.
@@ -940,7 +1024,7 @@ To experiment with the detection methods above, you can download and build the A
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
-1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code it with NOP instructions.
+1. Patch out the anti-debugging functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use Kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file instead.
 
@@ -948,9 +1032,24 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Effectiveness Assessment
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Launch the app systematically with various apps and frameworks installed. Include at least the following:
 
--- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+- Substrate for Android
+- Xposed
+- Frida
+- Introspy-Android
+- Drozer
+- RootCloak
+- Android SSL Trust Killer
+
+The app should respond in some way to the presence of any of those tools. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- How difficult is it to identify the anti-debugging code using static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -972,8 +1071,7 @@ N/A
 
 ##### Tools
 
--- TODO [Add link to tools for "Testing Detection of Reverse Engineering Tools"] --
-* Enjarify - https://github.com/google/enjarify
+* frida - https://www.frida.re/
 
 ### Testing Emulator Detection
 
@@ -981,9 +1079,9 @@ N/A
 
 In the context of anti-reversing, the goal of emulator detection is to make it a bit more difficult to run the app on a emulated device, which in turn impedes some tools and techniques reverse engineers like to use. This forces the reverse engineer to defeat the emulator checks or utilize the physical device. This provides a barrier to entry for large scale device analysis.
 
-#### Detection Techniques
+#### Emulator Detection Examples
 
-There are several static indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
+There are several indicators that indicate the device in question is being emulated. While all of these API calls could be hooked, this provides a modest first line of defense.
 
 The first set of indicaters stem from the build.prop file
 
@@ -1028,18 +1126,27 @@ TelephonyManager.getVoiceMailNumber()                   15552175049             
 
 Keep in mind that a hooking framework such as Xposed or Frida could hook this API to provide false data.
 
--- TODO [Dynamic Detection Techniques] --
-
-
 #### Bypassing Emulator Detection
 
+1. Patch out the emulator detection functionality. Disable the unwanted behaviour by simply overwriting the respective bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the <code>TelephonyManager.getDeviceID()</code> method to return an IMEI value.
+
+Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
 #### Effectiveness Assessment
 
+Install and run the app in the emulator. The app should detect this and terminate, or refuse to run the functionality that is meant to be protected. 
+
+Work on bypassing the defenses and answer the following questions:
+
+- How difficult is it to identify the emulator detection code using static and dynamic analysis?
+- Can the detection mechanisms be bypassed using trivial methods (e.g. hooking a single API function)?
+- Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need to invest?
+- What is your subjective assessment of difficulty?
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
-
-- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
 
 ##### OWASP Mobile Top 10 2016
 
@@ -1055,33 +1162,83 @@ N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
 
 ##### Tools
 
--- TODO [Add links to tools for "Testing Emulator Detection"] --
-* Enjarify - https://github.com/google/enjarify
+N/A
 
-### Testing Memory Integrity Checks
+### Testing Runtime Integrity Checks
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Memory Integrity Checks".] --
+Controls in this category verify the integrity of the app's own memory space, with the goal of protecting against memory patches applied during runtime. This includes unwanted changes to binary code or bytecode, functions pointer tables, and important data structures, as well as rogue code loaded into process memory. Intergrity can be verified either by:
 
-#### Static Analysis
+1. Comparing the contents of memory, or a checksum over the contents, with known good values;
+2. Searching memory for signatures of unwanted modifications.
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+There is some overlap with the category "detecting reverse engineering tools and frameworks", and in fact we already demonstrated the signature-based approach in that chapter, when we showed how to search for frida-related strings in process memory. Below are a few more examples for different kinds of integrity monitoring.
 
--- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+##### Runtime Integrity Check Examples
 
-#### Dynamic Analysis
+**Detecting tampering with the Java Runtime**
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+Detection code from the dead && end blog <sup>[3]</sup>.
 
-#### Remediation
+```java
+try {
+  throw new Exception();
+}
+catch(Exception e) {
+  int zygoteInitCallCount = 0;
+  for(StackTraceElement stackTraceElement : e.getStackTrace()) {
+    if(stackTraceElement.getClassName().equals("com.android.internal.os.ZygoteInit")) {
+      zygoteInitCallCount++;
+      if(zygoteInitCallCount == 2) {
+        Log.wtf("HookDetection", "Substrate is active on the device.");
+      }
+    }
+    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") &&
+        stackTraceElement.getMethodName().equals("invoked")) {
+      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
+    }
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
+        stackTraceElement.getMethodName().equals("main")) {
+      Log.wtf("HookDetection", "Xposed is active on the device.");
+    }
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
+        stackTraceElement.getMethodName().equals("handleHookedMethod")) {
+      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
+    }
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "-- TODO [Add content on "Testing Memory Integrity Checks" with source code] --".] --
+  }
+}
+```
+
+**Detecting Native Hooks**
+
+With ELF binaries, native function hooks can be installed by either overwriting function pointers in memory (e.g. GOT or PLT hooking), or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one technique to detect this kind of hooks.
+
+The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. *GOT hooks* overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points into a legitimately loaded library.
+
+In contrast to GNU <code>ld</code>, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding). One can therefore expect all GOT entries to point valid memory locations within the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify that this is indeed the case.
+
+*Inline hooks* work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. Inline hooks can be detected by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
+
+#### Bypass and Effectiveness Assessment
+
+Make sure that all file-based detection of reverse engineering tools is disabled. Then, inject code using Xposed, Frida and Substrate, and attempt to install native hooks and Java method hooks. The app should detect the "hostile" code in its memory and respond accordingly. For a more detailed assessment, identify and bypass the detection mechanisms employed and use the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
+
+Work on bypassing the checks using the following techniques:
+
+1. Patch out the integrity checks. Disable the unwanted behaviour by overwriting the respective bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook APIs to hook the APIs used for detection and return fake values. 
+
+Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
+
+#### Effectiveness Assessment
+
+
 
 #### References
 
@@ -1100,8 +1257,9 @@ N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- [1] Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. "Detecting GOT Overwrites", p. 743.
+- [2] Netitude Blog - "Who owns your runtime?" - https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/
+- [3] dead && end blog - Android Anti-Hooking Techniques in Java - http://d3adend.org/blog/?p=589
 
 ##### Tools
 
@@ -1113,10 +1271,10 @@ N/A
 #### Overview
 
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well.
 
 #### Static Analysis
 
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
 When the source-code is available, then there are a few codes you can look for, such as:
 - The presence of unique identifiers that no longer work in the future
   - `Build.SERIAL` without the presence of `Build.getSerial()`
@@ -1144,8 +1302,8 @@ There are a few ways to test the application binding:
 1. Run the application on an Emulator
 2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
 3. Retrieve the data from the Emulator This has a few steps:
-- ssh to your simulator using adb shell
-- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- ssh to your simulator using ADB shell
+- run-as <your app-id (which is the package as described in the AndroidManifest.xml)>
 - chmod 777 the contents of cache and shared-preferences
 - exit the current user
 - copy the contents of /dat/data/<your appid>/cache & shared-preferences to the sdcard
@@ -1153,35 +1311,15 @@ There are a few ways to test the application binding:
 4. Install the application on another Emulator
 5. Overwrite the data from step 3 in the data folder of the application.
 - copy the contents of step 3 to the sdcard of the second emulator.
-- ssh to your simulator using adb shell
+- ssh to your simulator using ADB shell
 - run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
 - chmod 777 the folders cache and shared-preferences
 - copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
-##### Dynamic Analysis using two different rooted devices.
-
-1. Run the applciation on your rooted device
-2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
-3. Retrieve the data from the first rooted device
-4. Install the application on the second rooted device
-5. Overwrite the data from step 3 in the data folder of the application.
-6. Can you continue in an authenticated state? If so, then binding might not be working properly.
-
-#### Remediation
-
-Like mentioned earlier in the guide: Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N. [https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html]. Google has set a new set of recommendations in their SDK documentation[https://developer.android.com/training/articles/user-data-ids.html] regarding identifiers as well. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
-Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usubale identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
-- augment the credentias used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
-- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
-- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
-
-The following 3 identifiers can be possibly used.
-
 ##### Google InstanceID
 
-Google InstanceID[https://developers.google.com/instance-id/] uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
+Google InstanceID <sup>[5]</sup> uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
 You need to take the following steps into account for instanceID:
 0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
 
@@ -1241,9 +1379,10 @@ Lastly register the service in your AndroidManifest:
   </intent-filter>
 </service>
 ```
+
 When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
 
-Please note that Firebase has support for InstanceID as well [https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId].
+Please note that Firebase has support for InstanceID as well <sup>[4]</sup>.
 -- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
 
 ##### IMEI & Serial
@@ -1288,9 +1427,71 @@ Retrieving the IMEI in Android works as follows:
 ##### SSAID
 
 Please note that Google recommends against using these identifiers unless there is a high risk involved with the application in general. you can retrieve the SSAID as follows:
+
 ```java
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
+#### Effectiveness Assessment
+
+When the source-code is available, then there are a few codes you can look for, such as:
+- The presence of unique identifiers that no longer work in the future
+  - `Build.SERIAL` without the presence of `Build.getSerial()`
+  - `htc.camera.sensor.front_SN` for HTC devices
+  - `persist.service.bdroid.bdadd`
+  - `Settings.Secure.bluetooth_address`, unless the system permission LOCAL_MAC_ADDRESS is enabled in the manifest.
+
+- The presence of using the ANDROID_ID only as an identifier. This will influence the possible binding quality over time given older devices.
+- The absence of both InstanceID, the `Build.SERIAL` and the IMEI.
+
+```java
+  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+  String IMEI = tm.getDeviceId();
+```
+
+Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+
+There are a few ways to test device binding dynamically:
+
+##### Using an Emulator
+
+1. Run the application on an Emulator
+2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
+3. Retrieve the data from the Emulator This has a few steps:
+- ssh to your simulator using ADB shell
+- run-as <your app-id (which is the package as described in the AndroidManifest.xml)>
+- chmod 777 the contents of cache and shared-preferences
+- exit the current user
+- copy the contents of /dat/data/<your appid>/cache & shared-preferences to the sdcard
+- use ADB or the DDMS to pull the contents
+4. Install the application on another Emulator
+5. Overwrite the data from step 3 in the data folder of the application.
+- copy the contents of step 3 to the sdcard of the second emulator.
+- ssh to your simulator using ADB shell
+- run-as <your app-id (which is the pacakge as described in the AndroidManifest.xml)>
+- chmod 777 the folders cache and shared-preferences
+- copy the older contents of the sdcard to /dat/data/<your appid>/cache & shared-preferences
+6. Can you continue in an authenticated state? If so, then binding might not be working properly.
+
+##### Using two different rooted devices.
+
+1. Run the application on your rooted device
+2. Make sure you can raise the trust in the instance of the application (e.g. authenticate)
+3. Retrieve the data from the first rooted device
+4. Install the application on the second rooted device
+5. Overwrite the data from step 3 in the data folder of the application.
+6. Can you continue in an authenticated state? If so, then binding might not be working properly.
+
+#### Remediation
+
+The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <code>[1]</code>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <code>[2]</code>. Because of this new behavior, we recommend developers to no relie on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
+Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
+
+- augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
+- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
+- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
+
+The following 3 identifiers can be possibly used.
 
 #### References
 
@@ -1304,8 +1505,7 @@ Please note that Google recommends against using these identifiers unless there 
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Device Binding"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+N/A
 
 ##### Info
 - [1] Changes in the Android device identifiers - https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html
@@ -1323,58 +1523,19 @@ Please note that Google recommends against using these identifiers unless there 
 
 #### Overview
 
--- TODO [Add content for overview on "Testing Obfuscation"] --
+Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Rather, there's a whole lot of different ways in which a program, or part of it, can be made incomprehensible, and it can be done to different grades.
 
-##### Simple Tricks
+In this test case, we describe a few basic obfuscation techniques that are commonly used on Android. For a more detailed discussion of obfuscation, refer to the "Assessing Software Protection Schemes" chapter.
 
-- Modifying the DEX file so static analysis tools can't load it;
-- Using dynamic class loading and reflection to obfuscated the control flow;
-- Pack or encrypt portions of the code and/or data;
-- Frequently jumping between Java and native code.
+#### Effectiveness Assessment
 
-![Identifier Renaming with ProGuard](Images/Chapters/0x05j/proguard.jpg)
-*Identifier renaming with ProGuard.*
+Attempt to decompile the bytecode and disassemble any included libary files, and make a reasonable effort to perform static analysis. At the very least, you should not be able to easily discern the app's core functionality (i.e., the functionality meant to be obfuscated). Verify that: 
 
-#### Static Analysis
+- Meaningful identifiers such as class names, method names and variable names have been discarded;
+- String resources and strings in binaries are encrypted;
+- Code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of sentence "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>." ] --
-
--- TODO [Add content on "Testing Obfuscation" without source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
--- TODO [Dumping process memory] --
-
-```python
-#! /usr/bin/env python
-import re
-import sys
-
-pid = sys.argv[1]
-startaddr = sys.argv[2]
-endaddr = sys.argv[3]
-
-mem_file = open("/proc/" + pid + "/mem", 'r', 0)
-out_file = open("./" + pid + "_" + startaddr + "-" + endaddr + ".dump", 'w')
-
-start = int(startaddr, 16)
-end = int(endaddr, 16)
-mem_file.seek(start)
-chunk = mem_file.read(end - start)
-
-out_file.write(chunk)
-
-mem_file.close()
-out_file.close()
-```
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Obfuscation".] --
+For a more detailed assessment, you need to have a detailed understanding of the threats defended against and the obfuscation methods used. Refer to the "Assessing Obfuscation" section of the  "Assessing Software Protection Schemes" chapter for more information.
 
 #### References
 
@@ -1384,20 +1545,18 @@ out_file.close()
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" below and description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- V8.8: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- v8.9: "Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
+- V8.12: "If the architecture requires sensitive computations be performed on the client-side, these computations are isolated from the operating system by using a hardware-based SE or TEE. Alternatively, the computations are protected using obfuscation. Considering current published research, the obfuscation type and parameters are sufficient to cause significant manual effort to reverse engineers seeking to comprehend the sensitive portions of the code and/or data."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Obfuscation"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- N/A
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
+- N/A
 
 ##### Tools
 
--- TODO [Add links to relevant tools for "Testing Obfuscation"] --
-* Enjarify - https://github.com/google/enjarify
+- N/A

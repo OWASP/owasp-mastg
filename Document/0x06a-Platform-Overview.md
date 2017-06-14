@@ -1,10 +1,8 @@
 ## iOS Platform Overview
 
-As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
+iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. Apple also keeps tight control over which apps are allowed to run on iOS devices.
 
-Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
-
-Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+In many ways, iOS is more "closed" than Android. Sideloading is only possible with jailbreak or complicated workarounds. There is hardly any IPC functionality to speak of.
 
 ### The iOS Security Architecture
 
@@ -16,7 +14,15 @@ The core features of the iOS security architecture:
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-A very good and detailed analysis of iOS security architecture has been done by [Johnatan Levin in MacOS and iOS Internals Vol. 3](http://www.newosxbook.com/2ndUpdate.html) [4]
+A very good and detailed analysis of iOS security architecture has been done by Johnatan Levin in MacOS and iOS Internals Vol. 3 - http://www.newosxbook.com/2ndUpdate.html <sup>[4]</sup>
+ 
+#### Hardware Security
+
+The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys. 
+
+The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encrytion. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
+
+To enable secure deletion of sensitive data on flash memory, iOS devices inlcude a feature called Effaceable Storage. This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks <sup>[6]</sup>.
 
 #### Secure Boot
 
@@ -30,7 +36,8 @@ All new devices that have Secure Enclave coprocessor, i.e. starting from iPhone 
 The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
 
 The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
-[iPhone Dev Wiki](http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+iPhone Dev Wiki (http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+
 As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox.
 
 #### Code Signing
@@ -43,7 +50,7 @@ There exist at least two scenarios where you can install an application without 
 2. via sideloading - i.e. by signing the app with developer's certificate and installing it on one device. There is an upper limit of number of devices that can be used with the same certificate
 
 Developer Profile and Apple-signed certificate is required in order to deploy and run an application. 
-Developers need to register with Apple and join the Apple Developer Program and pay subscription fee[https://developer.apple.com/support/compare-memberships/] to get full range of development and deployment possibilites. Free account still allows you to compile and deploy an application via sideload.  
+Developers need to register with Apple and join the Apple Developer Program and pay subscription fee (https://developer.apple.com/support/compare-memberships/) to get full range of development and deployment possibilites. Free account still allows you to compile and deploy an application via sideload.  
 
 #### Encryption and Data Protection
 
@@ -70,10 +77,20 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
 
+### Software Development on iOS 
+
+As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
+
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
+
+Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+
 ### Understanding iOS Apps
 
 iOS applications are distributed in IPA (iOS App Store Package) archives. This IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be easily decompressed.
+
 An IPA has a built-in structure for iTunes and App Store to recognize, The example below shows the high level structure of an IPA.
+
 * /Payload/ folder contains all the application data. We will come back to the content of this folder in more detail.
 * /Payload/Application.app contains the application data itself (ARM compiled code) and associated static resources
 * /iTunesArtwork is a 512x512 pixel PNG images used as the application’s icon
@@ -98,7 +115,7 @@ A language.lproj folder is defined for each language that the application suppor
 
 ![iOS App Folder Structure](http://bb-conservation.de/sven/iOS_project_folder.png)
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using IPA Installer (see also [Testing Processes and Techniques](Document/0x05b-Testing-Process-and-Techniques-iOS.md)). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp] or [Testflight].
+On a jailbroken device, you can recover the IPA for an installed iOS app using IPA Installer (see also [Testing Processes and Techniques](Document/0x05b-Testing-Process-and-Techniques-iOS.md)). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. HockeyApp<sup>[12]</sup> or Testflight<sup>[13]</sup>.
 
 #### App Structure on the iOS File System
 
@@ -117,11 +134,11 @@ The following figure represents the application’s folder structure:
 
 Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. ITunes Packages exist for OS X as well as for Windows. iTunes allows you to download applications through the App Store, after which you can synchronise them to an iOS device. The App store is the official application distribution platform from Apple. You can also use iTunes to load an ipa to a device. This can be done by adding “dragging” it into the Apps section, after which we can then add it to a device.
 
-On Linux we can make use of libimobiledevice, a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Through ideviceinstaller we can install packages over an USB connection. The connection is implemented using USB multiplexing daemon [usbmuxd] which provides a TCP tunnel over USB. During normal operations, iTunes communicates with the iPhone using this usbmux, multiplexing several “connections” over the one USB pipe. Processes on the host machine open up connections to specific, numbered ports on the mobile device. [usbmux]
+On Linux we can make use of libimobiledevice, a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Through ideviceinstaller we can install packages over an USB connection. The connection is implemented using USB multiplexing daemon usbmuxd<sup>[8]</sup> which provides a TCP tunnel over USB. During normal operations, iTunes communicates with the iPhone using this usbmux, multiplexing several “connections” over the one USB pipe. Processes on the host machine open up connections to specific, numbered ports on the mobile device<sup>[9]</sup>.
 
-On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install it. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. This means that we can only install it after the code signature is valid. On a jailbroken phone this can however be circumvented using [AppSync], a package made available on the Cydia store. This is an alternate app store containing a lot of useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow for the installation of fake-signed IPA packages.
+On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install it. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. This means that we can only install it after the code signature is valid. On a jailbroken phone this can however be circumvented using AppSync <sup>[10]</sup>, a package made available on the Cydia store. This is an alternate app store containing a lot of useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow for the installation of fake-signed IPA packages.
 
-The IPA can also be installed directly from command line by using [ipainstaller]. After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
+The IPA can also be installed directly from command line by using ipainstaller <sup>[11]</sup>. After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
 
 ```bash
 $ ipainstaller App_in_scope.ipa
@@ -129,7 +146,7 @@ $ ipainstaller App_in_scope.ipa
 
 #### Code Signing and Encryption
 
-Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison [1].
+Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison <sup>[1]</sup>.
 
 -- TODO [Develop section on iOS Code Signing and Encryption] --
 
@@ -137,7 +154,7 @@ In addition to code signing, *FairPlay Code Encryption* is applied to apps downl
 
 #### The App Sandbox
 
-In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releasees of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include [3]:
+In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releases of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include <sup>[3]</sup>:
 
 - The app process is restricted to it's own directory(below /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism.
 - The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable, preventing processes  from executing dynamically generated code. In combination with code signing and FairPlay, this places strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
@@ -150,12 +167,12 @@ In line with the "crystal prison" theme, sandboxing has been is a core security 
 - [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
 - [3] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
 - [4] Johnatan Levin, MacOS and iOS Internals, Volume III: Security & Insecurity
-+ [iOS Technology Overview](https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1)
-+ [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
-+ [How iOS Security Really Works](https://developer.apple.com/videos/play/wwdc2016/705/)
-- [usbmuxd](http://www.libimobiledevice.org/)
-- [usbmux](http://wikee.iphwn.org/usb:usbmux)
-- [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)
-- [ipainstaller](https://github.com/autopear/ipainstaller)
-- [Hockey Flight](https://hockeyapp.net/)
-- [Testflight](https://developer.apple.com/testflight/)
+- [5] iOS Technology Overview - https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1
+- [6] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+- [7] How iOS Security Really Works - https://developer.apple.com/videos/play/wwdc2016/705/
+- [8] libimobiledevice - http://www.libimobiledevice.org/
+- [9] USB Layered Communications - http://wikee.iphwn.org/usb:usbmux
+- [10] AppSync - https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified
+- [11] ipainstaller - https://github.com/autopear/ipainstaller
+- [12] Hockey Flight - https://hockeyapp.net/
+- [13] Testflight - https://developer.apple.com/testflight/

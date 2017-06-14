@@ -26,16 +26,15 @@ Recommended is:
 ### Jailbreaking iOS
 
 In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
-There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and install Cydia. 
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerabilty in the Photos app (CVE-2015-7037). A great book on iOS Security Internals has been written and published by  Jonathan Levin. This won't be very useful for iOS application security testing, but will definitely help dive into the world of iOS exploitation and jailbreak analysis [11]
+There's an important different between exploit chain and jailbreak. The former will disable iOS system protections like code signing or MAC, but will not install Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and install Cydia. 
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-Jailbreaking methods vary across iOS versions. Best choice is to check if a [public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+Jailbreaking methods vary across iOS versions. Best choice is to check if a public jailbreak is available for your iOS version<sup>[25]</sup>. Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
 
 **Important** caveat regarding jailbreaking iOS: contrary to Android, you **can't** downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
-The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from [this site](https://ipsw.me). More information on jailbreaking is available on [The iPhone Wiki](https://www.theiphonewiki.com/)
+The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from this site<sup>[30]</sup>. More information on jailbreaking is available on The iPhone Wiki<sup>[26]</sup>.
 
 ### Preparing your test environment
 
@@ -73,9 +72,9 @@ $ sudo pip install frida
 
 #### SSH Connection via USB
 
--- TODO [Improve writeup on usbmusx] --
+As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device. 
 
-<code>usbmuxd</code> <sup>[18]</sup> is a socket daemon for multiplexing connections over USB to iOS devices. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. 
+The *usbmux* is handled by */System/Library/PrivateFrameworks/MobileDevice.framework/Resources/usbmuxd*, which is a socket daemon that watches for iPhone connections via USB<sup>[18]</sup>. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via */var/run/usbmuxd*<sup>[27]</sup>.
 
 On MacOS:
 
@@ -98,14 +97,15 @@ See also iphonedevwiki <sup>[24]</sup>.
 ### Typical iOS Application Test Workflow
 
 Typical workflow for iOS Application test is following:
-* Obtain IPA file
-* Bypass jailbreak detection (if present)
-* Bypass certificate pinning (if present)
-* Inspect HTTP(S) traffic - usual web app test
-* Abuse application logic by runtime manipulation
-* Check for local data storage (caches, binary cookies, plists, databases)
-* Check for client-specific bugs, e.g. SQLi, XSS
-* Other checks like: logging to ASL with NSLog, application compile options, application screenshots, no app backgrounding
+
+1. Obtain IPA file
+2. Bypass jailbreak detection (if present)
+3. Bypass certificate pinning (if present)
+4. Inspect HTTP(S) traffic - usual web app test
+5. Abuse application logic by runtime manipulation
+6. Check for local data storage (caches, binary cookies, plists, databases)
+7. Check for client-specific bugs, e.g. SQLi, XSS
+8. Other checks like: logging to ASL with NSLog, application compile options, application screenshots, no app backgrounding
 
 ### Static Analysis
 
@@ -234,7 +234,31 @@ Your main focus while performing static analysis would be:
 * Any hardcoded credentials, certificates
 * Any methods that are used for obfuscation and in consequence may reveal sensitive information
 
-#### Copying App Data Files
+### Dynamic Analysis
+
+-- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+
+#### Monitoring Console Logs
+
+Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the XCode "Devices" window as follows:
+
+1. Launch Xcode
+2. Connect your device to your host computer
+3. Choose Devices from the Window menu
+4. Click on your connected iOS device in the left section of the Devices window
+5. Reproduce the problem
+6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
+window to expose the console log contents
+
+To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
+
+![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
+
+#### Dynamic Analysis On Jailbroken Devices
+
+Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
+
+##### Copying App Data Files
 
 Files belonging to an app are stored app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
 
@@ -262,7 +286,7 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-#### Dumping KeyChain Data
+##### Dumping KeyChain Data
 
 Keychain-Dumper [23] lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
 
@@ -296,29 +320,11 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the Github repository.
 
-### Dynamic Analysis
+##### Security Profiling with Introspy
 
--- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
-#### Monitoring Console Logs
-
-Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the XCode "Devices" window as follows:
-
-1. Launch Xcode
-2. Connect your device to your host computer
-3. Choose Devices from the Window menu
-4. Click on your connected iOS device in the left section of the Devices window
-5. Reproduce the problem
-6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
-window to expose the console log contents
-
-To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
-
-![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
-
-#### Dynamic Analysis On Jailbroken Devices
-
-Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
+-- TODO [Write an IntroSpy howto] --
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -498,7 +504,7 @@ The simplest method is to use `SSL Kill Switch` (can be installed via Cydia stor
 #### Recommendations
 
 Certificate pinning is a good security practice and should be used for all applications handling sensitive information. 
-[EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf). Use certificate pinning if you don't trust at least one of these CAs.
+EFF's Observatory<sup>[28]</sup> provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft<sup>[29]</sup>. Use certificate pinning if you don't trust at least one of these CAs.
 
 If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [21]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
@@ -530,3 +536,11 @@ To get more information on testing transport security, please refer to section '
 * [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 * [23] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
 * [24] iphonedevwiki - SSH over USB - http://iphonedevwiki.net/index.php/SSH_Over_USB
+* [25] Can I Jailbreak? by IPSW Downloads - https://canijailbreak.com/
+* [26] The iPhone Wiki - https://www.theiphonewiki.com/
+* [27] The iPhone Wiki - https://www.theiphonewiki.com/wiki/Usbmux 
+* [28] EFF's Observatory - https://www.eff.org/pl/observatory
+* [29] Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft - https://www.eff.org/files/colour_map_of_CAs.pdf
+* [30] IPSW Downloads - https://ipsw.me
+* [31] IntroSpy - http://isecpartners.github.io/Introspy-iOS/
+* [32] IntroSpy Analyzer - https://github.com/iSECPartners/Introspy-Analyzer
