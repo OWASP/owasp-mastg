@@ -32,28 +32,27 @@ A mechanism responsible for verifying conditions to establish a trusted connecti
 
 You should look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
 
-```
+```java
 TrustManager[] trustAllCerts = new TrustManager[] {
-new X509TrustManager()
-{
+    new X509TrustManager() {
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[] {};
+        }
 
-    public java.security.cert.X509Certificate[] getAcceptedIssuers()
-    {
-        return new java.security.cert.X509Certificate[] {};
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType)
+            throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType)
+            throws CertificateException {
+        }
     }
-    public void checkClientTrusted(X509Certificate[] chain,
-    String authType) throws CertificateException
-    {
+};
 
-    }
-    public void checkServerTrusted(X509Certificate[] chain,
-    String authType) throws CertificateException
-    {
-
-    }
-
-}};
-
+// SSLContext context
 context.init(null, trustAllCerts, new SecureRandom());
 ```
 
@@ -61,12 +60,10 @@ context.init(null, trustAllCerts, new SecureRandom());
 
 Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
 
-```
-final static HostnameVerifier NO_VERIFY = new HostnameVerifier()
-{
-    public boolean verify(String hostname, SSLSession session)
-    {
-              return true;
+```java
+final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
+    public boolean verify(String hostname, SSLSession session) {
+        return true;
     }
 };
 ```
