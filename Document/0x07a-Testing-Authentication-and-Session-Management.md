@@ -19,53 +19,51 @@ OAuth2 defines 4 roles:
 * Resource Server: hosts the user accounts.
 * Authorization Server: verifies the identity of the user and issues access tokens to the application.
 
-Note: the API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
+Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
 
 <img src="Images/Chapters/0x07a/abstract-oauth2-flow.png" width="350px"/>
 
-Here is a more detailed explanation of the steps in the diagram:
+Here is a more detailed explanation of the steps in the diagram <sup>[1]</sup> <sup>[2]</sup>:
 
-1. The application requests authorization to access service resources from the user
-2. If the user authorized the request, the application receives an authorization grant
-3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant
-4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. Authorization is complete.
-5. The application requests the resource from the resource server (API) and presents the access token for authentication
-6. If the access token is valid, the resource server (API) serves the resource to the application
-
-Source: https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
-
-The authorization grant might have different forms (explicit, implicit, etc), the access token might have a companion refresh token and might be used on different ways (e.g., as a bearer token). Please refer to https://tools.ietf.org/html/rfc6749 for further details.
+1. The application requests authorization to access service resources from the user.
+2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
+3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant. 
+4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. The access token might have a companion refresh token. Authorization is complete.
+5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token). 
+6. If the access token is valid, the resource server (API) serves the resource to the application.
 
 These are some of the common best practices for OAuth2 on native apps:
 
 User-agent:
-- Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing. However, doing this the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
+- Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing (e.g. you do not want an app offering you a "Login with Facebook" to get your Facebook password). However, by using the browser, the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
 - The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, web site mechanisms).
 - The client should validate the fully qualified domain name of the server to the public key presented by the server during connection establishment to prevent man-in-the-middle attacks.
 
 Type of grant:
 - Use code grant instead of implicit grant on native apps.
 - When using code grant, implement PKCE (Proof Key for Code Exchange) to protect the code grant. Make sure that the server also implements it.
-- The auth "code" should short-lived and only used inmidiately after receiving it. Make sure that they only reside on transient memory and are not stored or logged.
+- The auth "code" should be short-lived and only used immediately after receiving it. Make sure that they only reside on transient memory and are not stored or logged.
 
 Client secrets:
 - No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in secure local storage.
 
-End-User credentials
-- The transmission of end-user credentials must be protected using transport-layer mechanisms such as TLS or any alternative that avoids the sending of plaintext credentials over the wire (e.g., Hash-based Message Authentication Code).
+End-User credentials:
+- The transmission of end-user credentials must be protected using transport-layer mechanisms such as TLS.
 
 Tokens:
 - Keep access tokens in transient memory.
-- Access tokens must be securely transmitted using secure transport (TLS).
-- The scope and expiry time of access tokens should be reduced when end-to-end confidentiality cannot be guaranteed or when the token provides access to high risk information or action.
-- Remember that if the app uses access tokens as bearer tokens and no additional mechanism is used to identify the client, the attacker can access all resources associated with the token and its scope.
+- Access tokens must be securely transmitted via TLS.
+- The scope and expiry time of access tokens should be reduced when end-to-end confidentiality cannot be guaranteed or when the token provides access to sensitive information or allows the execution of high risk actions.
+- Remember that if the app uses access tokens as bearer tokens and no additional mechanism is used to identify the client, the attacker can access all resources associated with the token and its scope after stealing the tokens.
 - Store refresh tokens in secure local storage as they are long-term credentials.
 
-For additional best practices and detailed information please refer to the source documents:
+For additional best practices and detailed information please refer to the source documents <sup>[2]</sup> <sup>[3]</sup> <sup>[4]</sup>.
 
-- RFC6749: The OAuth 2.0 Authorization Framework (October 2012) https://tools.ietf.org/html/rfc6749
-- draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017) https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12
-- RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013) https://tools.ietf.org/html/rfc6819
+##### References
+- [1] An Introduction into OAuth2 - https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
+- [2] RFC6749: The OAuth 2.0 Authorization Framework (October 2012) - https://tools.ietf.org/html/rfc6749
+- [3] draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017) - https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12
+- [4] RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013) - https://tools.ietf.org/html/rfc6819
 
 
 
