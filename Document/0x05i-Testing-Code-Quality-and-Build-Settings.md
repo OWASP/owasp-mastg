@@ -376,8 +376,8 @@ The DEVELOPER_MODE has to be disabled for release build in order to disable `Str
 ### Testing Exception Handling
 
 #### Overview
-Exceptions can often occur when an application gets into a non-normal or erroneous state. Both in Java and C++ Exceptions can be thrown when such state occurs. 
-Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the ADB logs.
+Exceptions can often occur when an application gets into a non-normal or erroneous state. Both in Java and C++ exceptions can be thrown when such state occurs. 
+Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
 #### Static Analysis
 
@@ -396,24 +396,18 @@ There are various ways of doing dynamic analysis:
 - Provide unexpected values to UI fields in the Android application.
 - Interact with the application using its intents and public providers by using values that are unexpected. 
 - Tamper the network communication and/or the files stored by the application.
-<<<<<<< HEAD
 
 In all cases, the application should not crash, but instead, it should:
 
-=======
-
-In all cases, the application should not crash, but instead, it should:
-
->>>>>>> a33138b36855c1943fc98226103b9c1784773359
 - Recover from the error or get into a state in which it can inform the user of not being able to continue.
 - If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
-- Not provide any information in the ADB logs.
+- Not provide any information in logging mechanims used by the application.
 
 #### Remediation
 There are a few things a developer can do:
 - Ensure that the application use a well-designed and unified scheme to handle exceptions<sup>[1]</sup>.
-- When an exception is thrown, make sure that the application has centralized handlers for the Exceptions. This can be a static class for instance.
-- Add a general Exception handler for uncaught exceptions to clear out the state of the application prior to a crash:
+- When an exception is thrown, make sure that the application has centralized handlers for the exceptions. This can be a static class for instance.
+- Add a general exception-handler for uncaught exceptions to clear out the state of the application prior to a crash:
 ```java
 public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
 
@@ -475,7 +469,6 @@ Now you need to call the initializer for the handler at your custom `Application
 
 ##### Tools
 
-* Enjarify - https://github.com/google/enjarify
 * Xposed - http://repo.xposed.info/
 
 
