@@ -429,12 +429,33 @@ We will explain here how to check that this control is implemented correctly, bo
 
 If server side code is available, it should be reviewed that the session timeout or token invalidation functionality is correctly configured and a timeout is triggered after a defined period of time.  
 The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-- Spring (Java)<sup>[3]</sup>
-- Ruby on Rails<sup>[4]</sup>  
-- PHP<sup>[5]</sup>
-- ASP.Net<sup>[6]</sup>
+* Spring (Java) - http://docs.spring.io/spring-session/docs/current/reference/html5/
+* Ruby on Rails - https://github.com/rails/rails/blob/318a20c140de57a7d5f820753c82258a3696c465/railties/lib/rails/application/configuration.rb#L130
+* PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
+* ASP.Net - https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx
 
--- TODO explain timeout for Stateless and give examples of implementations
+In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed or expiration explicitly set. One could use "exp" expiration claim<sup>[3]</sup> to define the expiration time on or after which the JWT must not be accepted for processing.
+Speaking of tokens for stateless authentication, one should differentiate types of tokens, such as access tokens and refresh tokens<sup>[4]</sup>. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use. 
+
+The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
+```
+ app.post('/refresh_token', function (req, res) {
+  // verify the existing token
+  var profile = jwt.verify(req.body.token, secret);
+
+  // if more than 14 days old, force login
+  if (profile.original_iat - new Date() > 14) { // iat == issued at
+    return res.send(401); // re-logging
+  }
+
+  // check if the user still exists or if authorization hasn't been revoked
+  if (!valid) return res.send(401); // re-logging
+
+  // issue a new token
+  var refreshed_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
+  res.json({ token: refreshed_token });
+});
+```
 
 #### Dynamic Analysis
 
@@ -467,10 +488,9 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 ##### Info
 * [1] OWASP Web Application Test Guide (OTG-SESS-007) - https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
 * [2] OWASP Session management cheatsheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
-* [3] Session Timeout in Java Spring - http://docs.spring.io/spring-session/docs/current/reference/html5/
-* [4] Session Timeout in Ruby on Rails - https://github.com/rails/rails/blob/318a20c140de57a7d5f820753c82258a3696c465/railties/lib/rails/application/configuration.rb#L130
-* [5] Session Timeout in PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
-* [6] Session Timeout in ASP -  https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx
+* [3] RFC 7519 - https://tools.ietf.org/html/rfc7519#section-4.1.4
+* [4] Refresh tokens & access tokens - https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
+
 
 ### Testing 2-Factor Authentication and Step-up Authentication
 
