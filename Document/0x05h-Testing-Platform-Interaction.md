@@ -239,7 +239,7 @@ dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms:
 * V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 
 ##### CWE
--- TODO [Add link to relevant CWE for "Testing Custom URL Schemes"]
+N/A
 
 ##### Info
 - [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
@@ -578,7 +578,7 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 
 ##### CWE
--- TODO [Add links and titles to relevant CWE for "Testing WebView Protocol Handlers"] --
+N/A
 
 ##### Info
 - [1] File Access in WebView - https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29
@@ -634,7 +634,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 - V6.7: "The app does not load user-supplied local resources into WebViews."
 
 ##### CWE
--- TODO [Add reference to relevant CWE for "Testing for Local File Inclusion in WebViews"] --
+N/A
 
 ##### Info
 - [1] loadURL() in WebView - https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String)
@@ -773,17 +773,15 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### OWASP MASVS
 - V6.8: "If Java objects are exposed in a WebView, verify that the WebView only renders JavaScript contained within the app package."
+
 ##### CWE
--- TODO [Add links and titles to relevant CWE for "Testing Whether Java Objects Are Exposed Through WebViews"] --
+* CWE-502 - Deserialization of Untrusted Data
 
 ##### Info
 - [1] DRD13 addJavascriptInterface()  - https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614
 - [2] WebView addJavascriptInterface Remote Code Execution - https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/
 - [3] Method shouldOverrideUrlLoading() - https://developer.android.com/reference/android/webkit/WebViewClient.html#shouldOverrideUrlLoading(android.webkit.WebView,%20java.lang.String)
 - [4] Method addJavascriptInterface() - https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
-
-##### Tools
--- TODO [Add links to tools for "Testing Whether Java Objects Are Exposed Through WebViews"] --
 
 
 
@@ -822,16 +820,11 @@ Check if serialized data is stored temporarily or permanently within the app's d
 * V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
-
--- TODO [Add link and title to CWE for "Testing Object (De-)Serialization"] --
+N/A
 
 ##### Info
-
 * [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
 
-
-##### Tools
--- TODO [Add link to relevant tools for "Testing Object (De-)Serialization"] --
 
 
 ### Testing Root Detection
@@ -899,7 +892,7 @@ To implement root detection within an Android app, libraries can be used like `R
 - V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
-Not covered.
+N/A
 
 ##### Info
 - [1] RootBeer - https://github.com/scottyab/rootbeer
