@@ -1,10 +1,16 @@
 ## Mobile App Security Testing
 
-Mobile app security testing involves evaluating the security of mobile apps using static and dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used (somehat inconsistenly) in the security industry. Throughout the guide, we'll simply use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used in the security industry. All those terms refer to roughly the same thing. Throughout the guide, we'll simply use "mobile app security testing" as an all-catch phrase. There's a few key points to consider:
+A few key points to consider:
 
-- As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. You always have access to the compiled app, and once you learn reading bytecode and binary code (or using a decompiler), having the compiled app is pretty much the same as having the source code.
+- It doesn't make a lot of sense to talk of mobile app "penetration testing" because there's nothing to penetrate.
+
+- As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. You always have access to the compiled app, and once you learn reading bytecode and binary code (or using a decompiler), having the compiled app is pretty much equivalent to having the source code.
+
+In this guide, we'll cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development lifecyle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is automating security tests during earlier stages of the software development lifecycle. In both cases, the same basic requirements and test cases apply, but there's a big difference in the high-level methodology and level of interaction with the client.
+
+### Security Testing the Old-School Way
 
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test. It is split into four sections:
 
@@ -12,8 +18,6 @@ The following sections will show how to use the OWASP mobile application securit
 * **Intelligence Gathering** - involves analysing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
 * **Threat Modelling** - consumes information gathered during the earlier phases to determine what threats are the most likely, or the most serious, and therefore which should receive the most attention from a security tester. Produces test cases that may be used during test execution.
 * **Vulnerability Analysis** - identifies vulnerabilities using the previously created test cases, including static, dynamic and forensic methodologies.
-
-----------
 
 ### Preparation
 
@@ -49,8 +53,6 @@ If no data classification policy is available, the following kinds of informatio
 
 It may be impossible to detect leakage of sensitive data without a firm definition of what counts as such, so such a definition must be agreed upon in advance of testing.
 
-----------
-
 ### Intelligence Gathering
 
 Intelligence gathering involves the collection of information about the architecture of the app, the business use cases it serves, and the context in which it operates. Such information may be broadly divided into `environmental` and `architectural`.
@@ -73,8 +75,6 @@ Architectural information concerns understanding:
 * **Network:** - are secure transport protocols used (e.g. TLS), is network traffic encryption secured with strong keys and cryptographic algorithms (e.g. SHA-2), is certificate pinning used to verify the client, etc.
 * **Remote Services:** - what remote services does the app consume? If they were compromised, could the client by compromised? 
 
-----------
-
 ### Threat Modelling
 
 Threat modelling involves using the results of the information gathering phase to determine what threats are likely or severe, producing test cases that may be executed at later stages. Threat modelling should be a key part of the general SDLC, ideally performed throughout development, rather than just before a penetration test.
@@ -82,8 +82,6 @@ Threat modelling involves using the results of the information gathering phase t
 General threat modelling guidelines [have been defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling), and these are usually applicable to mobile apps.
 
 <!-- are there any threat modelling techniques specially applicable to mobile apps? -->
-
-----------
 
 ### Vulnerability Analysis
 
