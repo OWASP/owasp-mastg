@@ -1170,7 +1170,105 @@ To quickly discover potential sensitive data in the _.hprof_ file, it is also us
 
 #### Remediation
 
-In Java memory cannot be directly overwritten, instead the garbage collector will collect the object once no references are available anymore. To achieve this the object should be _nulled_ immediately after usage to reduce the attack surface.
+In Java, no immutable structures should be used to carry secrets (E.g. `String`, `BigInteger`). Nullifying them will not be effective: the Garbage collector might collect them, but they might remain in the JVMs heap for a longer period of time. 
+Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
+
+
+```java
+byte[] secret = null;
+try{
+	//get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+	if(null != secret && secret.length > 0) {
+		for (int i = 0; i < secret; i++) {
+        array[i] = (byte) 0;
+       }
+	}
+}
+```
+
+Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the class below:
+
+
+```java
+public class SecretKey implements Serializable {
+
+    public static final int KEY_LENGTH = 256;
+
+    private java.security.Key secKey;
+
+    protected SecretKey(final java.security.Key key) {
+        this.secKey = key;
+    }
+
+    public static SecretKey fromByte(byte[] key) {
+        return new SecretKey(new SecretKey.InternalKey(key, "AES"));
+    }
+
+    public static SecretKey newKey() {
+        return fromByte(CryptoUtils.getRandomKey());
+    }
+
+    public void clean() {
+        try {
+            if (this.getKey() instanceof Destroyable) {
+                ((Destroyable) this.getKey()).destroy();
+            }
+
+        } catch (DestroyFailedException e) {
+            throw new CryptoException(e);
+        }
+    }
+
+    public static void clearKey(SecretKey key) {
+        if (key != null) {
+            key.clean();
+        }
+    }
+
+    private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
+        private byte[] key;
+        private final String algorithm;
+
+        public InternalKey(final byte[] key, final String algorithm) {
+            this.key = key;
+            this.algorithm = algorithm;
+        }
+
+        public String getAlgorithm() {
+            return this.algorithm;
+        }
+
+        public String getFormat() {
+            return "RAW";
+        }
+
+        public byte[] getEncoded() {
+            Preconditions.checkNotNull(this.key);
+            return this.key;
+        }
+
+        public void destroy() throws DestroyFailedException {
+            if (this.key != null) {
+                Arrays.fill(this.key, (byte) 0);
+            }
+
+            this.key = null;
+        }
+
+        public boolean isDestroyed() {
+            return this.key == null;
+        }
+    }
+
+
+    public final java.security.Key getKey() {
+        return this.secKey;
+    }
+
+}
+
+```
 
 #### References
 
