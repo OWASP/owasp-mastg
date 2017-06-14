@@ -213,6 +213,7 @@ In swift 3, using xCode 8, one can set Active Compilation Conditions setting in 
 -	XCode & simulator
 -	A standard iPhone/iPad
 
+
 ### Testing Exception Handling
 
 #### Overview
@@ -240,13 +241,13 @@ An `NSException` can either be raised by `raise()` or thrown with `@throw`, unle
  	//cleanup
 ```
 
-Bare in mind that using NSException comes with pitfalls regarding memory management: you need to cleanup allocations from the try block in the finally block <sup>[1], [2]</sup>. Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
+Bear in mind that using NSException comes with pitfalls regarding memory management: you need to cleanup allocations from the try block in the finally block <sup>[1], [2]</sup>. Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
 
 **NSError**
 `NSError` is used for all other type of errors <sup>[3]</sup>. Some APIs of the Cocoa frameworks provide them as as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
  
 ##### Exception handling in Swift
-Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combinding Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the Apple documentation<sup></sup>
+Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combinding Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the Apple documentation<sup>[4]</sup>
 Methods that can throw an error use the `throws` keyword. There are four ways to handle errors in Swift<sup>[5]</sup>:  
 
 - You can propagate the error from a function to the code that calls that function: in this case there is no do-catch, there is only a `throw` throwing the acutal error or there is a `try` to execute the method that throws. The method containing the `try` will need the `throws` keyword as well:
@@ -284,7 +285,7 @@ do {
 
 
 #### Static Analysis 
-Review the source code to understand/identify who the application handle various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
+Review the source code to understand/identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
 
 ##### Static Analysis in Objective-C
 Here you can verify that:
