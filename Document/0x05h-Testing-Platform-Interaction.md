@@ -119,9 +119,9 @@ Note that this method cannot be used for `signature` level permissions, as Droze
 
 #### Remediation
 
-Developers should take care to secure sensitive IPC components with the `signature` protection level, which will only allow applications signed with the same certificate to access the component.
+Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed.
 
-Only permissions that are needed within the app should be requested in the Android Manifest file and all other permissions should be removed. 
+Developers should take care to secure sensitive IPC components with the `signature` protection level, which will only allow applications signed with the same certificate to access the component.
 
 #### References
 
@@ -143,6 +143,7 @@ Only permissions that are needed within the app should be requested in the Andro
 ##### Tools
 * AAPT - http://elinux.org/Android_aapt
 * Drozer - https://github.com/mwrlabs/drozer
+
 
 ### Testing Input Validation and Sanitization
 
@@ -196,15 +197,16 @@ For any application, each of these custom URL schemes needs to be enumerated, an
 
 #### Static Analysis
 
-Inside of an intent-filter a custom URL scheme can be defined<sup>[1]</sup>.
+It should be investigated if custom URL schemes are defined. This can be done in the AndroidManifest file inside of an intent-filter element<sup>[1]</sup>.
 
 ```xml
 <data android:scheme="myapp" android:host="path" />
 ```
+The example above is specifying a new URL called `myapp://`.
 
 #### Dynamic Analysis
 
-To enumerate URL schemes within an application that can be called by a web browser, the module `scanner.activity.browsable` should be used:
+To enumerate URL schemes within an application that can be called by a web browser, the Drozer module `scanner.activity.browsable` should be used:
 
 ```
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
@@ -313,7 +315,7 @@ Package: com.mwr.example.sieve
 
 To communicate with a service, static analysis must first be used to identify the required inputs. By reversing the target application we can see the service `AuthService` provides functionality to change the password and PIN protecting the target app.
 
-```java
+```
    public void handleMessage(Message msg) {
             AuthService.this.responseHandler = msg.replyTo;
             Bundle returnBundle = msg.obj;
@@ -342,7 +344,7 @@ To communicate with a service, static analysis must first be used to identify th
                     }
 ```
 
-Since this service is exported, it is possible to use the module `app.service.send` to communicate with the service and change the password stored in the target application: 
+Since this service is exported, it is possible to use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
 ```
 dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
@@ -368,7 +370,7 @@ In the example app "Android Insecure Bank"<sup>2</sup>, we can see that one broa
 
 In the extract below taken from the source code of the target application, we can see that the broadcast receiver triggers a SMS message to be sent containing the decrypted password of the user.
 
-```java
+```
 public class MyBroadCastReceiver extends BroadcastReceiver {
   String usernameBase64ByteString;
   public static final String MYPREFS = "mySharedPreferences";
@@ -447,6 +449,7 @@ Extra: newpass=12345 (java.lang.String)
 ##### Tools
 * Drozer - https://github.com/mwrlabs/drozer
 
+
 ### Testing JavaScript Execution in WebViews
 
 #### Overview
@@ -513,9 +516,6 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 - [2] clearCache() in WebViews - https://developer.android.com/reference/android/webkit/WebView.html#clearCache(boolean)
 - [3] WebView Best Practices - https://developer.android.com/training/articles/security-tips.html#WebView
 - [4] Stored Cross-Site Scripting - https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002)
-
-##### Tools
--- TODO [Add link to tools for "Testing JavaScript Execution in WebViews"] --
 
 
 ### Testing WebView Protocol Handlers
@@ -586,8 +586,6 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 - [3] Intent List - https://developer.android.com/guide/appendix/g-app-intents.html
 - [4] WebView Settings - https://developer.android.com/reference/android/webkit/WebSettings.html
 
-##### Tools
--- TODO [Add links to relevant tools for "Testing WebView Protocol Handlers"] --
 
 
 ### Testing for Local File Inclusion in WebViews
@@ -641,8 +639,6 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 ##### Info
 - [1] loadURL() in WebView - https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String)
 
-##### Tools
--- TODO [Add links to tools for "Testing for Local File Inclusion in WebViews"] --
 
 
 ### Testing Whether Java Objects Are Exposed Through WebViews
@@ -788,6 +784,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### Tools
 -- TODO [Add links to tools for "Testing Whether Java Objects Are Exposed Through WebViews"] --
+
 
 
 ### Testing Object (De-)Serialization
