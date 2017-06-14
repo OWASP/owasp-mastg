@@ -32,28 +32,27 @@ A mechanism responsible for verifying conditions to establish a trusted connecti
 
 You should look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
 
-```
+```java
 TrustManager[] trustAllCerts = new TrustManager[] {
-new X509TrustManager()
-{
+    new X509TrustManager() {
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[] {};
+        }
 
-    public java.security.cert.X509Certificate[] getAcceptedIssuers()
-    {
-        return new java.security.cert.X509Certificate[] {};
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType)
+            throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType)
+            throws CertificateException {
+        }
     }
-    public void checkClientTrusted(X509Certificate[] chain,
-    String authType) throws CertificateException
-    {
+};
 
-    }
-    public void checkServerTrusted(X509Certificate[] chain,
-    String authType) throws CertificateException
-    {
-
-    }
-
-}};
-
+// SSLContext context
 context.init(null, trustAllCerts, new SecureRandom());
 ```
 
@@ -61,12 +60,10 @@ context.init(null, trustAllCerts, new SecureRandom());
 
 Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
 
-```
-final static HostnameVerifier NO_VERIFY = new HostnameVerifier()
-{
-    public boolean verify(String hostname, SSLSession session)
-    {
-              return true;
+```java
+final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
+    public boolean verify(String hostname, SSLSession session) {
+        return true;
     }
 };
 ```
@@ -165,6 +162,16 @@ sslContext.init(null, tmf.getTrustManagers(), null);
 
 The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain. 
 
+Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, okhttp<sup>[3]</sup> can be set up with the `CertificatePinner` as follows:
+
+```java
+OkHttpClient client = new OkHttpClient.Builder()
+        .certificatePinner(new CertificatePinner.Builder()
+            .add("bignerdranch.com", "sha256/UwQAapahrjCOjYI3oLUx5AQxPBR02Jz6/E2pt0IeLXA=")
+            .build())
+        .build();
+```
+
 #### Dynamic Analysis
 
 Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy<sup>[1]</sup>. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
@@ -188,3 +195,4 @@ The SSL pinning process should be implemented as described on the static analysi
 
 * [1] Setting Burp Suite as a proxy for Android Devices -  https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
 * [2] OWASP Certificate Pinning for Android - https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
+* [3] okhttp library - https://github.com/square/okhttp/wiki/HTTPS
