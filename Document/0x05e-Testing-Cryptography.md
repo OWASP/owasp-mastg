@@ -109,11 +109,6 @@ Use cryptographic algorithm configurations that are currently considered strong,
 - [3] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
 - [4] Credential storage enhancements in Android 4.3 (August 21, 2013) - https://nelenkov.blogspot.co.uk/2013/08/credential-storage-enhancements-android-43.html
 
-##### Tools
-
--- TODO [Add relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
-* Enjarify - https://github.com/google/enjarify
-
 
 ### Testing Random Number Generation
 
@@ -184,5 +179,3 @@ public static void main (String args[]) {
 - [3] Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
 - [4] Some SecureRandom Thoughts - https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html
 
-##### Tools
-* QARK - https://github.com/linkedin/qark
