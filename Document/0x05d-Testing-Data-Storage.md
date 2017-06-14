@@ -139,11 +139,11 @@ It’s also worth to know that files stored outside the application folder (`dat
 
 ##### KeyChain
 
-The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
+The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. Please note that the keychain is system-wide: so every application can access the materials stored in the KeyChain.
 
 ##### KeyStore
 
-The KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
+The Android KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
 
 The keys stored in the KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
 
@@ -153,9 +153,10 @@ Stored keys can be configured to operate in one of the two modes:
 
 2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
 
-The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device.
+The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a Trusted Execution Environment or a Secure Element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be easily retrieved even from a rooted device. You can check whether the keys are inside the secure hardware, based on the `isInsideSecureHardware()` which is part of the `KeyInfo` of the key.
 
 In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
+
 
 #### Static Analysis
 
