@@ -315,7 +315,6 @@ Here are different examples on how a validation can be implemented server-side:
 
 If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
 
-
 #### Dynamic Analysis
 
 All available functions that allow a user to set a password need to be verified, if passwords can be used that violate the password policy specifications. This can be:
@@ -342,7 +341,8 @@ A good password policy should define the following requirements<sup>[2]</sup> in
 3. at least 1 digit (0-9)
 4. at least 1 special character (punctuation)
 
-For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>.
+For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A common library that can be used for estimating password strength is zxcvbn<sup>[3]</sup>, which is availalbe for many programming languages. 
+
 
 #### References
 
@@ -358,7 +358,7 @@ For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>.
 ##### Info
 * [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
 * [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
-
+* [3] zxcvbn - https://github.com/dropbox/zxcvbn
 
 
 ### Testing Excessive Login Attempts
