@@ -157,6 +157,12 @@ The level of security afforded by the KeyStore depends on its implementation, wh
 
 In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
 
+##### Older Java-KeyStore
+Older Android versions do not have a KeyStore, but do have the KeyStore interface from JCA (Java Cryptography Architecture). One can use various KeyStores that implement this interface and provide secrecy and integrity protection to the keys stored in the keystore implementation. The impelemntations all rely on the fact that a file is stored on the filesystem, which then protects its contents by a password. For this, we recommend to use the BounceyCastle KeyStore (BKS), which can be created by calling `KeyStore.getInstance("BKS", "BC");` or `KeyStore.getInstance("BKS", "SC");` in case Spongey Castle has been packed with the app as a security provider.
+
+Please be aware that not all KeyStores offer propper protection to the keys stored in the keystore files.
+
+
 
 #### Static Analysis
 
