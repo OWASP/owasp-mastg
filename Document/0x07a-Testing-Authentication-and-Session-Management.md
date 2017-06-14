@@ -27,7 +27,7 @@ When server-side source code is available, first identify which authentication m
 Authentication mechanisms shouldn't be implemented from scratch, instead they should be build on top of frameworks that offer this functionality. The framework used on the server side should be identified and the usage of the available authentication APIs/functions should be verified if they are used accordingly to best practices. Widely used frameworks on server side are for example:
 
 - Spring (Java) - https://projects.spring.io/spring-security/
-- Struts (Java) - https://struts.apache.org/docs/
+- Struts (Java) - https://struts.apache.org/docs/security.html
 - Laravel (PHP) - https://laravel.com/docs/5.4/authentication
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 
@@ -61,9 +61,9 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 ##### Info
 
-[1] OWASP JWT Cheat Sheet for Java: `https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java`
-[2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
-[3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
+* [1] OWASP JWT Cheat Sheet for Java: https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
+* [2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
+* [3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
 
 
 ### Testing Session Management
@@ -200,6 +200,7 @@ Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> and
 The following best practices should be considered, when implementing JWT:
 
 * The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+* Make sure that tokens with a different signature type are guaranteed to be rejected.
 * Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
 * The private signing key or secret key for HMAC should only be available on server side.
 * If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
@@ -225,7 +226,7 @@ The following best practices should be considered, when implementing JWT:
 * [1] RFC 7519 JSON Web Token (JWT) - https://tools.ietf.org/html/rfc7519
 * [2] PHP JWT - https://github.com/firebase/php-jwt
 * [3] Java Spring with JWT - http://projects.spring.io/spring-security-oauth/docs/oauth2.html
-* [4] OWASP JWT Cheat Sheet - `https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java`
+* [4] OWASP JWT Cheat Sheet - https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
 * [5] Sample of JWT Token - https://jwt.io/#debugger
 * [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
 * [7] JWT the right way - https://stormpath.com/blog/jwt-the-right-way
@@ -253,7 +254,7 @@ If server side code is available, it should be reviewed that the session is bein
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 - PHP - http://php.net/manual/en/function.session-destroy.php
 
-For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the refresh token should be invalidated on server side.
+For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the refresh token should be invalidated on server side<sup>[1]</sup>.
 
 #### Dynamic Analysis
 
@@ -264,11 +265,11 @@ For a dynamic analysis of the application an interception proxy should be used. 
 4.  Resend one of the operations detailed in step 2 using an interception proxy. For example, with Burp Repeater. The purpose of this is to send to the server a request with the session ID or token that has been invalidated in step 3.
  
 If the logout is correctly implemented on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then the token or session ID is still valid and has not been correctly terminated on the server side.
-A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide (OTG-SESS-006)<sup>[1]</sup>.
+A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide (OTG-SESS-006)<sup>[2]</sup>.
 
 #### Remediation 
 
-The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it.
+The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it<sup>[3]</sup>.
 
 Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
 
@@ -287,8 +288,9 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 ##### Info
 
-* [1] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
-* [2] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
+* [1] JWT token blacklisting - https://auth0.com/blog/blacklist-json-web-token-api-keys/
+* [2] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
+* [3] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
 
