@@ -4,7 +4,7 @@
 
 ---
 
-Mobile app security is a thing. As of this writing however, there is no widely accepted list of security best practices for mobile apps. Thus, on a beautiful summer day, a group of ~10 young men, one woman and approximately three squirrels met in a Woburn Forest villa. So far, nothing unusual. But little did you know, within the next five days, they'd redefine not only mobile application security, but the very fundamentals of bookwriting itself!
+Mobile app security is a thing. As of this writing however, there is no widely accepted list of security best practices for mobile apps. Thus, on a beautiful summer day, a group of ~7 young men, a woman, and approximately three squirrels met in a Woburn Forest villa. So far, nothing unusual. But little did you know, within the next five days, they'd redefine not only mobile application security, but the very fundamentals of bookwriting itself!
 
 Or maybe not. But at the very least, the Mobile Security Testing Guide (MSTG) is an unusual security book. It doesn't have a single author. Instead, it is an open, agile, crowd-sourced effort, made of the contributions of dozens of authors and reviewers from all over the world. 
 
