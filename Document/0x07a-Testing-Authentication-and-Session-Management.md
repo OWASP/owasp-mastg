@@ -61,9 +61,9 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 ##### Info
 
-[1] OWASP JWT Cheat Sheet for Java: `https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java`
-[2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
-[3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
+* [1] OWASP JWT Cheat Sheet for Java: https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
+* [2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
+* [3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
 
 
 ### Testing Session Management
@@ -226,7 +226,7 @@ The following best practices should be considered, when implementing JWT:
 * [1] RFC 7519 JSON Web Token (JWT) - https://tools.ietf.org/html/rfc7519
 * [2] PHP JWT - https://github.com/firebase/php-jwt
 * [3] Java Spring with JWT - http://projects.spring.io/spring-security-oauth/docs/oauth2.html
-* [4] OWASP JWT Cheat Sheet - `https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java`
+* [4] OWASP JWT Cheat Sheet - https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
 * [5] Sample of JWT Token - https://jwt.io/#debugger
 * [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
 * [7] JWT the right way - https://stormpath.com/blog/jwt-the-right-way
