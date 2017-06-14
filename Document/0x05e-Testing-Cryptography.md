@@ -30,7 +30,7 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (GCM), padding (none), and explicitly specifies that randomized encryption is required (this is the default.)
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (GCM), padding (none), and explicitly specifies that randomized encryption is required (this is the default.) Note that GCM is the only mode of AES that does not support paddings. For all other modes, padding should be used, e.g., `PKCS5Padding`.<sup>[3], [5]</sup>
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
