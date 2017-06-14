@@ -27,7 +27,7 @@ When server-side source code is available, first identify which authentication m
 Authentication mechanisms shouldn't be implemented from scratch, instead they should be build on top of frameworks that offer this functionality. The framework used on the server side should be identified and the usage of the available authentication APIs/functions should be verified if they are used accordingly to best practices. Widely used frameworks on server side are for example:
 
 - Spring (Java) - https://projects.spring.io/spring-security/
-- Struts (Java) - https://struts.apache.org/docs/
+- Struts (Java) - https://struts.apache.org/docs/security.html
 - Laravel (PHP) - https://laravel.com/docs/5.4/authentication
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 
