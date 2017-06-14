@@ -683,7 +683,7 @@ When providing integrity on the storage itself. You can either create an HMAC ov
 When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on: There are a few steps to take care of.
 In case of the need for encryption. Please make sure that you encrypt and then HMAC as described in [2].
 
-When generating an HMAC with BC:
+When generating an HMAC with BouncyCastle:
 
 1. Make sure BounceyCastle or SpongeyCastle are registered as a security provider.
 2. Initialize the HMAC with a key, which can be stored in a keystore.
@@ -692,7 +692,7 @@ When generating an HMAC with BC:
 5. Append the HMAC to the bytearray of step 3.
 6. Store the result of step 5.
 
-When verifying the HMAC with BC:
+When verifying the HMAC with BouncyCastle:
 
 1. Make sure BounceyCastle or SpongeyCastle are registered as a security provider.
 2. Extract the message and the hmacbytes as separate arrays.

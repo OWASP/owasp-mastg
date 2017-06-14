@@ -561,12 +561,12 @@ int xyz(char *dst) {
 
 ##### Sample Implementation - Storage
 
-When providing integrity on the application storage itself, you can either create an HMAC or a signature over a given key-value pair or over a file stored on the device. When you create an HMAC, it is best to use hte CommonCrypto implementation.
+When providing integrity on the application storage itself, you can either create an HMAC or a signature over a given key-value pair or over a file stored on the device. When you create an HMAC, it is best to use the CommonCrypto implementation.
 In case of the need for encryption: Please make sure that you encrypt and then HMAC as described in [1].
 
 When generating an HMAC with CC:
 
-1. get the data as `NSData`.
+1. get the data as `NSMutableData`.
 2. Get the data key (possibly from the keychain)
 3. Calculate the hashvalue
 4. Append the hashvalue to the actual data
@@ -575,14 +575,15 @@ When generating an HMAC with CC:
 
 ```obj-c
 	// Allocate a buffer to hold the digest, and perform the digest.
-	NSMutableData* actualData = [getData]; //get the data
+	NSMutableData* actualData = [getData]; 
  	//get the key from the keychain
 	NSData* key = [getKey];	
-    NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData
+   NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+   CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData
      bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
-     [actualData appendData: digestBuffer];
+   [actualData appendData: digestBuffer];
 ```
+Alternatively you can use NSData for step 1 and 3, but then you need to create a new buffer in step 4.
 
 When verifying the HMAC with CC:
 1. Extract the message and the hmacbytes as separate `NSData` .
@@ -623,7 +624,7 @@ The app should detect the modification and respond in some way. At the very leas
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-For a more detailed assessment, apply the criteria listed under "Assessing Progra
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 *For the storage integrity checks*
 A similar approach holds here, but now answer the following questions:
