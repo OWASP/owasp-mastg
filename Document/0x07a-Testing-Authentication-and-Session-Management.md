@@ -253,7 +253,7 @@ If server side code is available, it should be reviewed that the session is bein
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 - PHP - http://php.net/manual/en/function.session-destroy.php
 
-For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the refresh token should be invalidated on server side.
+For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the refresh token should be invalidated on server side<sup>[1]</sup>.
 
 #### Dynamic Analysis
 
@@ -264,11 +264,11 @@ For a dynamic analysis of the application an interception proxy should be used. 
 4.  Resend one of the operations detailed in step 2 using an interception proxy. For example, with Burp Repeater. The purpose of this is to send to the server a request with the session ID or token that has been invalidated in step 3.
  
 If the logout is correctly implemented on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then the token or session ID is still valid and has not been correctly terminated on the server side.
-A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide (OTG-SESS-006)<sup>[1]</sup>.
+A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide (OTG-SESS-006)<sup>[2]</sup>.
 
 #### Remediation 
 
-The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it.
+The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it<sup>[3]</sup>.
 
 Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
 
@@ -287,8 +287,9 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 ##### Info
 
-* [1] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
-* [2] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
+* [1] JWT token blacklisting - https://auth0.com/blog/blacklist-json-web-token-api-keys/
+* [2] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
+* [3] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
 
