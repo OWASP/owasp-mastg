@@ -214,19 +214,19 @@ The relationship between group IDs and permissions are defined in the file [fram
 	<group gid="sdcard_rw" />
 </permission>
 ```
-An important aspect of Android security is that all apps have the same level of privileges: both native and third-party apps are built on the same APIs and are run in similar environments. All apps are not executed as 'root', but with the user level of privileges. This restricts the actions apps can perform as well as access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
+An important aspect of Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions apps can perform as well as access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
 
 ##### Zygote
 
-When booting Android, a process called `Zygote` starts up at init<sup>[10]</sup>. This is a system service and is used to launch apps. Zygote opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When the socket receives a request a new app starts on Android by forking the Zygote process and the app specific code is loaded and executed.
+When booting Android, a process called `Zygote` starts up at init<sup>[10]</sup>. This is a system service used to launch apps. Zygote opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When the socket receives a request, a new app starts on Android by forking the Zygote process and the app specific code is loaded and executed.
 
 #### The App Sandbox
 
-Apps are executed in the Android Application Sandbox that enforces isolation of app data and code execution from other apps on the device, that adds an additional layer of security.
+Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
 
 When installing a new app (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
-Since every app has its own unique Id, Android separates app data folders configuring the mode to _read_ and _write_ only to the owner of the app.
+Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
@@ -250,11 +250,19 @@ However, if two apps are signed with the same certificate and explicitly share t
 
 #### App Components
 
-Android apps are made of several high-level components that make up their architectures. The main components are activities, fragments, intents, broadcast receivers, content providers and services. All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
+Android apps are made of several high-level components that make up their architectures. The main components are:
+
+* Activities
+* Fragments
+* Iintents
+* Broadcast receivers
+* Content providers and services 
+
+All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
 ##### Application Lifecycle
 
-Android apps have their own lifecycles, that is under the control of the operating system. Therefore, apps need to listen to state changes and must be able to react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but not in use since a significant time).
+Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
 Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
@@ -262,9 +270,9 @@ Apps implement several event managers to handle events: for example, the onCreat
 
 Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and lists down the permissions it's requesting for. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. It also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may also list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of storage it can be installed in (external or internal)<sup>[14]</sup>.
+A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of storage it can be installed in (external or internal)<sup>[14]</sup>.
 
-Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used), the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters, and the description of the app itself with its activities:
+Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
 <manifest
 	package="com.owasp.myapplication"
@@ -300,11 +308,11 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-A manifest is a text file and can be edited within Android Studio, the preferred IDE for Android development. A lot more useful options can be added to manifest files, which are listed down in the official Android documentation<sup>[12]</sup>.
+A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official Android documentation<sup>[12]</sup>.
 
 ##### Activities
 
-Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app. For instance, apps that have 3 different screens implement 3 different activities, that allow the user to interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
+Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with 3 different screens is implementing 3 different activities. This allows the user to interact with the system (get and enter information). Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
 
 Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
 
@@ -315,7 +323,8 @@ Activities implement manifest files. Each activity needs to be declared in the a
 
 When activities are not declared in manifests, they cannot be displayed and would raise an exception.
 
-In the same way as apps do, activities also have their own lifecycle and need to listen to system changes to be able to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
+In the same way as apps do, activities also have their own lifecycle and need to listen to system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
+
 - onCreate
 - onSaveInstanceState
 - onStart
@@ -326,7 +335,7 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers; in that situation, default actions are taken. However, usually at least the onCreate manager is overridden by app developers, as this is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by app developers. This is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
