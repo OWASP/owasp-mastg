@@ -1,13 +1,10 @@
 ## Mobile App Security Testing
 
-Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, any **remote services** consumed by the app, and the **network** used to communicate with them.  
+Mobile app security testing involves evaluating the security of mobile apps using static and dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-Examples of vulnerabilities in these surfaces include:
+You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used in the security industry. All those terms refer to roughly the same thing. Throughout the guide, we'll simply use "mobile app security testing" as an all-catch phrase. There's a few key points to consider:
 
-* **App:**  Insecure data storage, poor resiliency against reverse engineering etc.
-* **Operating System:** Any native API to which sensitive info is sent. E.g. Tampering with the system HTTP client might give access to the all SSL/TLS traffic from and to the phone, even when SSL with certificate pinning is used.
-* **Network:** Usage of insecure or unencrypted communication channel, missing SSL certificate pinning etc.
-* **Remote Services:** Flawed authentication and session management, vulnerable server side functions etc.
+- As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. You always have access to the compiled app, and once you learn reading bytecode and binary code (or using a decompiler), having the compiled app is pretty much the same as having the source code.
 
 The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test. It is split into four sections:
 
@@ -187,6 +184,7 @@ The basis for CSRF attacks, access to session cookies of all browser tabs and at
 
 Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
 
+<<<<<<< HEAD
 #### References
 
 * [1] MASVS - https://github.com/OWASP/owasp-masvs
@@ -195,3 +193,5 @@ Only if a user logs in by using the Android browser (instead of using the mobile
 * [4] SecureAssist - https://www.synopsys.com/software-integrity/resources/datasheets/secureassist.html
 * [5] OWASP Fuzzing Guide - https://www.owasp.org/index.php/Fuzzing
 * [6] OWASP Testing Guide Fuzzing - https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors
+=======
+>>>>>>> 5cbecb98eb6ff6fabefe97988c6088e1e7740858
