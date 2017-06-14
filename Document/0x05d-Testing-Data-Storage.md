@@ -1129,8 +1129,14 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 First, you need to identify which sensitive information is stored in memory. Then there are a few checks that must be executed:
 
-- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory.
-- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared. **NOTICE** destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does not work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
+- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory. 
+- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared. 
+
+
+**NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
+Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and propperly protected (see remediation for more details).
+Understand that an RSA keypair is based on `Biginteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
+Lastly, some of the ciphers do not propperly clean up their byte-arrays, for instance: the AES `Cipher` in `BounceyCastle` does not always clean up its latest working key.
 
 #### Dynamic Analysis
 
