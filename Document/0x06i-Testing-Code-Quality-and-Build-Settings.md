@@ -219,7 +219,7 @@ In swift 3, using xCode 8, one can set Active Compilation Conditions setting in 
 Exceptions can often occur when an application gets into a non-normal or erroneous state. 
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
-However, bare in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic. 
+However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic. 
 
 ##### Exception handling in Objective-C
 Objective-C has two types of errors :
@@ -303,7 +303,6 @@ Here you can verify that:
 
 * The application uses a well-designed and unified scheme to handle errors.
 * The application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
-* The throws are handled correctly: e.g. 
 * That any confidential information, such as keying material and/or authentication information is always wiped at the `defer` blocks in case of a high risk application.
 * That `try!` is only used with proper guarding up front, so it is programmatically verified that indeed no error can be thrown by the method that is called using `try!`.
 
@@ -328,7 +327,7 @@ There are a few things a developer can do:
 - Make sure that all logging is removed or guarded as described in ["Testing for Debugging Code and Verbose Error Logging" for iOS]{TODO: whatlinkshouldbehere?}.
 - For Objective-C, in case of a high-risk application: create your own exception handler which cleans out any secret that should not be easily retrieved. The handler that can be set through `NSSetUncaughtExceptionHandler`.
 - When using Swift, make sure that you do not use `try!` unless you have made sure that there really cannot be any error in the method the throwing method that is being called.
-- When using Swift, make sure that the error does not propagate too far off.
+- When using Swift, make sure that the error does not propagate too far off through intermediate methods.
 
 #### References
 
