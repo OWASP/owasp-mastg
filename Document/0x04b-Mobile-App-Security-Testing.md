@@ -120,20 +120,20 @@ A manual code review requires an expert human code reviewer who is proficient in
 
 #### Dynamic Analysis
 
-In Dynamic Analysis, the focus is on testing and evaluating an app by executing it in a real-time manner, in differing situations. The main objective of dynamic analysis is to find the security vulnerabilities or weak spots in a program while it is running. Dynamic analysis should also be conducted against the backend services and APIs of mobile applications, where its request and response patterns would be analysed.
+In Dynamic Analysis the focus is on testing and evaluating an app by executing it in real-time, in differing situations. The main objective of dynamic analysis is to find security vulnerabilities or weak spots in a program while it is running. Dynamic analysis should also be conducted against the backend services and APIs of mobile applications, where its request and response patterns can be analysed.
 
 Usually, dynamic analysis is performed to check whether there are sufficient security mechanisms in place to prevent disclosure of data in transit, authentication and authorization issues, data validation vulnerabilities (e.g. cross-site scripting, SQL injection, etc.) and server configuration errors.
 
 ##### Pros of Dynamic Analysis
 
-* Does not require to have access to the source code
-* Does not need to understand how the mobile application is supposed to behave
-* Able to identify infrastructure, configuration and patch issues that Static Analysis approach tools will miss
+* Does not require access to the source code
+* Does not need an understanding of how the mobile application is supposed to behave
+* Able to identify infrastructure, configuration and patch issues that Static Analysis tools may miss
 
 ##### Cons of Dynamic Analysis
 
 * Limited scope of coverage because the mobile application must be footprinted to identify the specific test area
-* No access to the actual instructions being executed, as the tool is exercising the mobile application and conducting pattern matching on the requests and responses
+* No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses
 
 #### Runtime Analysis
 
@@ -150,7 +150,7 @@ In case another (proprietary) protocol is used in a mobile app that is not HTTP,
 * Mallory - https://github.com/intrepidusgroup/mallory
 * Wireshark - https://www.wireshark.org/
 
-#### Input Fuzzing
+##### Input Fuzzing
 
 The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occations when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
 
@@ -165,9 +165,12 @@ Also refer to the OWASP Fuzzing guide - https://www.owasp.org/index.php/Fuzzing
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
 
-### Eliminating Common False Positives
+##### Eliminating Common False Positives
 
--- [TODO] --
+* **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short space of time. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
+
+* **[Fuzz Vectors](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors)** - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behaviour in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
+
 
 #### Cross-Site Scripting (XSS)
 
@@ -179,11 +182,11 @@ If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint,
 * File access is not deactivated in the WebView (see OMTG-ENV-006)
 * The function addJavascriptInterface() is used (see OMTG-ENV-008)
 
-As a summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting or injected JavaScript through MITM can become a dangerous vulnerability if the WebView in used is configured insecurely.
+In summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting vulnerability or MITM injected JavaScript can become a dangerous vulnerability if the WebView if configured insecurely.
 
 #### Cross-Site Request Forgery (CSRF)
 
-The same problem described with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. As a WebView is only a slim browser it is not possible for a user to insert a URL into a WebView of an app and also clicking on a link will not open the URL in a WebView of an App. Instead it will open directly within the browser of Android. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
+The same problems with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. Just as with XSS, it is not possible for a user to insert a URL into a WebView of an app. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
 
 The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behaviour of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
 
