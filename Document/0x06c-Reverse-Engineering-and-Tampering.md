@@ -174,7 +174,7 @@ We have injected cycript into SpringBoard, lets try to trigger an alert message 
 	cy# [alertView show]
 	cy# [alertView release]
 
-![Cycript Alert Sample](Images/Chapters/cycript_sample.png)
+![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
 
 To discover Document directory with cycript 
 
