@@ -1,6 +1,12 @@
 ## Mobile App Security Testing
 
+Mobile app security testing involves, not surprisingly, evaluation the security of mobile apps using technical analysis methods, often (but not necessarily) in the context of a larger security assessment that also encompasses the overall client-server architecture as well as server-side APIs used by the mobile app. You'll find that different synonyms for this are used in the industry: "Mobile App Penetration Testing", "Mobile App Security Review", and similar terms are used somewhat  interchangeably, but not necessarily consistently between different vendors.
+
+### Penetration Testing Methodologies.
+
 Mobile app testing involves evaluating the security of four different attack surfaces: the **app**, the **operating system**, any **remote services** consumed by the app, and the **network** used to communicate with them.  
+
+### Attack Service
 
 Examples of attacks against these surfaces include:
 
