@@ -37,7 +37,7 @@ The `KeyGenParameterSpec` indicates that the key can be used for encryption and 
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
-Here's an example of using that key correctly:
+Here's an example of using that key to decrypt:
 
 ```
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
@@ -45,6 +45,7 @@ String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
         + "/" + KeyProperties.ENCRYPTION_PADDING_NONE;
 KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
 
+// byte[] input
 Key key = keyStore.getKey(keyAlias, null);
 
 Cipher cipher = Cipher.getInstance(AES_MODE);
@@ -52,6 +53,20 @@ cipher.init(Cipher.ENCRYPT_MODE, key);
 
 byte[] encryptedBytes = cipher.doFinal(input);
 byte[] iv = cipher.getIV();
+```
+
+Here's how that cipher text would be decrypted:
+
+```
+// byte[] input
+// byte[] iv
+Key key = keyStore.getKey(AES_KEY_ALIAS, null);
+
+Cipher cipher = Cipher.getInstance(AES_MODE);
+GCMParameterSpec params = new GCMParameterSpec(128, iv);
+cipher.init(Cipher.DECRYPT_MODE, key, params);
+
+byte[] result = cipher.doFinal(input);
 ```
 
 Since the IV (initialization vector) is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`) in order to decrypt it later.
