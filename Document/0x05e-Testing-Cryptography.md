@@ -35,7 +35,7 @@ SecretKey secretKey = keyGenerator.generateKey();
 
 The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS7), and explicitly specifies that randomized encryption is required (this is the default.) `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example.
 
-GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs. Note that GCM is the only mode of AES that does not support paddings.<sup>[3], [5]</sup>
+GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the Reverse Engineering chapter). Note that GCM is the only mode of AES that does not support paddings.<sup>[3], [5]</sup>
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
@@ -118,11 +118,11 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 * `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 * And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-Ensure that the best practices outlined in the [Cryptography for Mobile Apps](#cryptography-for-mobile-apps) chapter are followed.
+Ensure that the best practices outlined in the Cryptography for Mobile Apps chapter are followed.
 
 #### Remediation
 
-See the Remediation section in the [Cryptography for Mobile Apps](#cryptography-for-mobile-apps) chapter.
+See the Remediation section in the Cryptography for Mobile Apps chapter.
 
 -- REVIEW --
 
