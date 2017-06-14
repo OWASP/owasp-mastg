@@ -1127,7 +1127,10 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 #### Static Analysis
 
-It needs to be identified within the code when sensitive information is stored within a variable or processed and is therefore available within the memory. This information can then be used in dynamic testing when using the app.
+First, you need to identify which sensitive information is stored in memory. Then there are a few checks that must be executed:
+
+- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory.
+- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared. **NOTICE** destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does not work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
 
 #### Dynamic Analysis
 
