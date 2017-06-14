@@ -55,9 +55,12 @@ cipher.init(Cipher.ENCRYPT_MODE, key);
 
 byte[] encryptedBytes = cipher.doFinal(input);
 byte[] iv = cipher.getIV();
+// save both the iv and the encryptedBytes
 ```
 
-Here's how that cipher text would be decrypted:
+Both the IV and the encrypted bytes need to be stored; otherwise decryption is not possible.
+
+Here's how that cipher text would be decrypted. The `input` is the encrypted byte array and `iv` is the initialization vector from the encryption step:
 
 ```
 // byte[] input
