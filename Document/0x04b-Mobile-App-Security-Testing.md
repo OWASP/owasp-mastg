@@ -1,8 +1,8 @@
 ## Mobile App Security Testing
 
-Mobile app security testing involves, unsurprisingly, evaluating the security of mobile apps using technical analysis methods. Often (but not necessarily) this is done in the context of a larger security assessment that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Mobile app security testing involves evaluating the security of mobile apps using static and dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used in the security industry. All of those terms refer to roughly the same thing. Throughout the guide, we'll simply use "mobile app security testing" as an umbrella term. There's a few key points to consider:
+You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used in the security industry. All those terms refer to roughly the same thing. Throughout the guide, we'll simply use "mobile app security testing" as an all-catch phrase. There's a few key points to consider:
 
 - As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. You always have access to the compiled app, and once you learn reading bytecode and binary code (or using a decompiler), having the compiled app is pretty much the same as having the source code.
 
