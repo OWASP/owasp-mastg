@@ -4,17 +4,15 @@ This chapter introduces Android from an architecture point of view. It covers fo
 
 1. Android security architecture
 2. Android application structure
-3. Inter Process Communication (IPC)
+3. Inter-process Communication (IPC)
 4. Android application publishing
 
-The reader is invited to have a look at the official Android developer documentation[13] for more details on the Android platform. 
+Visit the official Android developer documentation website <sup>[13]</sup> for more details on the Android platform. 
 
 ## Android Security Architecture
 
-Android is an open source platform found on many commonly used devices such as Mobile Phones and Tablets, Wearables, "Smart" devices in general like TVs
-
-It also offers an application environment supporting 3rd party apps that can be downloaded from marketplaces like Google Play as well as pre-installed apps on the device. 
-
+Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces. 
+ 
 The software stack of Android comprises different layers. Each layer defines certain behavior and offers specific services to the layer above.
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
@@ -29,8 +27,10 @@ In Android, apps are executed into their own environment in a Virtual Machine (V
 
 #### Android Users and Groups
 
-Android is a system based on the Linux Kernel. However it does not deal with users the same way other Unix-like systems do. It does not have a _/etc/password_ file describing a list of users in the system. Instead Android utilizes the multi-user support of the Linux kernel, to achieve application sandboxing, by running each application under a separate user (with some exceptions).
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html)
+Even though the Android operating system is based on the Linux, it does utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing a list of users in the system. Instead, Android utilizes the multi-user support of the Linux kernel to achieve application sandboxing, by running each application under a separate user (with some exceptions).
+
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
+
 File below depicts some of the users defined for Android Nougat:
 
 ```
