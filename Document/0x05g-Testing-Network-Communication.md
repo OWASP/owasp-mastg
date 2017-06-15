@@ -215,7 +215,7 @@ In case of an NDK based application: make sure that the application does only bi
 #### Dynamic Analysis
 When you have the source-code: 
 
-- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the backend.
+- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the backend (e.g. do a call to the backend-services/server).
 - Right click at the code that is highlighted and select `Evaluate Expression`
 - Type `Security.getProviders()` and press enter
 - Check the providers and see if you can find `GmsCore_OpenSSL` which should be the new toplisted provider.
