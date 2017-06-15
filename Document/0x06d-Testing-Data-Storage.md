@@ -39,23 +39,33 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 The iOS Keychain is used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can be accessed only through Keychain APIs. The Keychain database is encrypted using the device Key and the user PIN/password (if one has been set by the user).
 
-By default, each app can only access the Keychain created by itself. Access can however be shared between apps signed by the same developer by using the "access groups" feature. Access to the Keychain is managed by the <code>securityd</code> daemon, which grants access based on the app's <code>Keychain-access-groups</code>, <code>application-identifier</code> and <code>application-group</code> entitlements.
+By default, each app can only access the Keychain created by itself. Access can however be shared between apps signed by the same developer by using the "access groups" feature (`kSecAttrAccessGroup` see <sup>[https://developer.apple.com/documentation/security/ksecattraccessgroup]</sup> for more details). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements (More information can be found within the Apple documentation <sup>[https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html, https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html]</sup>).
 
 The KeyChain API consists of the following main operations with self-explanatory names:
 
-- SecItemAdd
-- SecItemUpdate
-- SecItemCopyMatching
-- SecItemDelete
+- `SecItemAdd`
+- `SecItemUpdate`
+- `SecItemCopyMatching`
+- `SecItemDelete`
 
-Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the keychain - that's what the Data Protection API is for. Data protection is activated by setting the <code>kSecAttrAccessible</code> attribute in the <code>SecItemAdd</code> or <code>SecItemUpdate</code> call. The following settings are available:
+Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the keychain - that's what the Data Protection API is for. Data protection is activated by setting the <code>kSecAttrAccessible</code> attribute in the <code>SecItemAdd</code> or <code>SecItemUpdate</code> call. The following Data Protection classes are available:
 
-- kSecAttrAccessibleAfterFirstUnlock: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
-- kSecAttrAccessibleAlways: The data in the keychain item can always be accessed regardless of whether the device is locked.
-- kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
-- kSecAttrAccessibleAlwaysThisDeviceOnly: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
-- kSecAttrAccessibleWhenUnlocked: The data in the keychain item can be accessed only while the device is unlocked by the user.
-- kSecAttrAccessibleWhenUnlockedThisDeviceOnly: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleAfterFirstUnlock`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+- `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
+- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleWhenUnlocked`: The data in the keychain item can be accessed only while the device is unlocked by the user.
+- `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
+
+Next to the Data Protection classes, there are `AccessControlFlags` which define with which mechanism one can authenticate to unlock the key(`SecAccessControlCreateFlags`):
+- `kSecAccessControlDevicePasscode`: only access the item using a passcode
+- `kSecAccessControlTouchIDAny` : access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint will not invalidate the item.
+- `kSecAccessControlTouchIDCurrentSet`: access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
+- `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprint (using TouchID) or fallback to the PassCode.
+
+Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key that is protected.
+
+
 
 #### Static Analysis
 
