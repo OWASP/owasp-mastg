@@ -587,7 +587,7 @@ First, all privileged endpoints a user can only access with step-up authenticati
 
 The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
 
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step it would take less than 72 hours to find a match.
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
 
 #### Remediation
 
