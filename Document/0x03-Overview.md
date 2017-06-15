@@ -42,11 +42,11 @@ The controls in this group ensure that the app uses platform APIs and standard c
 
 "Classical" injection and memory management issues play less of a role on the mobile app side. This is mostly due to the lack of the necessary attack surface: For the most part, mobile apps only interface with the trusted backend service and the user interface, so even if a ton of buffer overflow vulnerabilities would exist in the app, those vulnerabilities wouldn't open up any useful attack vectors. The same can be said for browser exploits such as XSS that are very prevalent in the web world (again, XSS is theoretically possible in some cases, but it's very rare to see XSS issues that one can actually exploit for benefit).
 
-The goal of this control is to ensure that basic security coding practices are followed in developing the app, and that "free" security features offered by the compiler are activated.
+All that doesn't mean however that we should let developers get away with writing sloppy code. Following security best practice results in hardened release builds that are resilient against tampering. "Free" security features offered by compilers and mobile SDKs help to increase security and mitigate attacks.
 
 ### Anti-Tampering and Anti-Reversing
 
--- [TODO] --
+There is three things you should never bring up in date conversations: Religion, politics and code obfuscation. Many security experts dismiss client-side protections outright. However, the fast is that software protection controls are widely used in the mobile app world, so security testers need ways to deal with them. We also think that there is *some* benefit to be had, as long as the protections are employed with a clear purpose and realistic expectations in mind, and aren't used to *replace* security controls.
 
 ## The OWASP Mobile AppSec Verification Standard, Checklist and Testing Guide
 
