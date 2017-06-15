@@ -4,10 +4,6 @@
 
 This is the official Github Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). The current master branch can also be [read on Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/).
 
-## Join the MSTG Working Session at the OWASP Summit 2017
-
-The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track dedicated to the the Mobile Testing Guide! This will be a great opportunity to meet other mobile appsec experts and participate in the creation of the industry standard. Our ambitious goal for the summit to complete the MSTG. The summit will take place in Woburn Forest Center Parcs, Bedfordshir, 50 minutes from London, from June 12th to June 16th. [Sign up here](http://owaspsummit.org/Working-Sessions/Mobile-Security/MSTG.html).
-
 ## Table-of-Contents
 
 ### Introduction
@@ -15,11 +11,14 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 - [Header](Document/0x00-Header.md)
 - [Foreword](Document/Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
+- [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 
-### Overview
+### General Testing Guide
 
-* [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
-* [Testing Processes and Techniques](Document/0x04-Testing-Processes-and-Techniques.md)
+- [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
+- [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
+- [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
+- [Security Testing in the Software Development Lifecycle](Document/0x04d-Security-Testing-SDLC.md)
 
 ### Android Testing Guide
 
@@ -49,12 +48,12 @@ The [OWASP Summit 2017](http://owaspsummit.org) will have a whole 5-days track d
 
 ### Appendix
 
-* [Testing Authentication and Session Management on Endpoints](Document/0x07a-Testing-Authentication-and-Session-Management.md)
-* [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
-* [Testing Cryptography](Document/0x07c-Testing-Cryptography.md)
-* [Assessing Software Protection Schemes](Document/0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
-* [Testing Tools](Document/0x08-Testing-Tools.md)
-* [Suggested Reading](Document/0x09-Suggested-Reading.md)
+- [Remote Authentication and Authorization](Document/0x07a-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
+- [Cryptography for Mobile Apps](Document/0x07c-Testing-Cryptography.md)
+- [Assessing Software Protection Schemes](Document/0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
+- [Testing Tools](Document/0x08-Testing-Tools.md)
+- [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
 ## Reading the Mobile Security Testing Guide
 

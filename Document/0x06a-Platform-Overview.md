@@ -1,10 +1,8 @@
 ## iOS Platform Overview
 
-As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
+iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. Apple also keeps tight control over which apps are allowed to run on iOS devices.
 
-Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
-
-Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+In many ways, iOS is more "closed" than Android. Sideloading is only possible with jailbreak or complicated workarounds. There is hardly any IPC functionality to speak of.
 
 ### The iOS Security Architecture
 
@@ -17,6 +15,14 @@ The core features of the iOS security architecture:
 - General Exploit Mitigations
 
 A very good and detailed analysis of iOS security architecture has been done by Johnatan Levin in MacOS and iOS Internals Vol. 3 - http://www.newosxbook.com/2ndUpdate.html <sup>[4]</sup>
+ 
+#### Hardware Security
+
+The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys. 
+
+The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encrytion. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
+
+To enable secure deletion of sensitive data on flash memory, iOS devices inlcude a feature called Effaceable Storage. This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks <sup>[6]</sup>.
 
 #### Secure Boot
 
@@ -31,6 +37,7 @@ The sandbox is an access control technology that was provided for iOS and it is 
 
 The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
 iPhone Dev Wiki (http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+
 As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox.
 
 #### Code Signing
@@ -70,10 +77,20 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
 
+### Software Development on iOS 
+
+As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
+
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
+
+Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+
 ### Understanding iOS Apps
 
 iOS applications are distributed in IPA (iOS App Store Package) archives. This IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be easily decompressed.
+
 An IPA has a built-in structure for iTunes and App Store to recognize, The example below shows the high level structure of an IPA.
+
 * /Payload/ folder contains all the application data. We will come back to the content of this folder in more detail.
 * /Payload/Application.app contains the application data itself (ARM compiled code) and associated static resources
 * /iTunesArtwork is a 512x512 pixel PNG images used as the application’s icon

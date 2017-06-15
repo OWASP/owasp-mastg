@@ -97,14 +97,15 @@ See also iphonedevwiki <sup>[24]</sup>.
 ### Typical iOS Application Test Workflow
 
 Typical workflow for iOS Application test is following:
-* Obtain IPA file
-* Bypass jailbreak detection (if present)
-* Bypass certificate pinning (if present)
-* Inspect HTTP(S) traffic - usual web app test
-* Abuse application logic by runtime manipulation
-* Check for local data storage (caches, binary cookies, plists, databases)
-* Check for client-specific bugs, e.g. SQLi, XSS
-* Other checks like: logging to ASL with NSLog, application compile options, application screenshots, no app backgrounding
+
+1. Obtain IPA file
+2. Bypass jailbreak detection (if present)
+3. Bypass certificate pinning (if present)
+4. Inspect HTTP(S) traffic - usual web app test
+5. Abuse application logic by runtime manipulation
+6. Check for local data storage (caches, binary cookies, plists, databases)
+7. Check for client-specific bugs, e.g. SQLi, XSS
+8. Other checks like: logging to ASL with NSLog, application compile options, application screenshots, no app backgrounding
 
 ### Static Analysis
 
@@ -134,7 +135,7 @@ The random string in the URI is application's GUID, which will be different from
 
 ##### Recovering an IPA File From an Installed App
 
-###### From Jailbroken devices
+###### From Jailbroken Devices
 
 You can use Saurik's IPA Installer to recover IPAs from apps installed on the device. To do this, install IPA installer console [1] via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
 
@@ -152,7 +153,7 @@ Generate the IPA file for using the following command:
 iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 ~~~
 
-###### From non-Jailbroken devices
+###### From non-Jailbroken Devices
 
 If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps:
 
@@ -233,7 +234,31 @@ Your main focus while performing static analysis would be:
 * Any hardcoded credentials, certificates
 * Any methods that are used for obfuscation and in consequence may reveal sensitive information
 
-#### Copying App Data Files
+### Dynamic Analysis
+
+-- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+
+#### Monitoring Console Logs
+
+Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the XCode "Devices" window as follows:
+
+1. Launch Xcode
+2. Connect your device to your host computer
+3. Choose Devices from the Window menu
+4. Click on your connected iOS device in the left section of the Devices window
+5. Reproduce the problem
+6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
+window to expose the console log contents
+
+To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
+
+![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
+
+#### Dynamic Analysis On Jailbroken Devices
+
+Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
+
+##### Copying App Data Files
 
 Files belonging to an app are stored app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
 
@@ -261,7 +286,7 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-#### Dumping KeyChain Data
+##### Dumping KeyChain Data
 
 Keychain-Dumper [23] lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
 
@@ -295,29 +320,11 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the Github repository.
 
-### Dynamic Analysis
+##### Security Profiling with Introspy
 
--- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
-#### Monitoring Console Logs
-
-Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the XCode "Devices" window as follows:
-
-1. Launch Xcode
-2. Connect your device to your host computer
-3. Choose Devices from the Window menu
-4. Click on your connected iOS device in the left section of the Devices window
-5. Reproduce the problem
-6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
-window to expose the console log contents
-
-To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
-
-![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
-
-#### Dynamic Analysis On Jailbroken Devices
-
-Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail in the "Tampering and Reverse Engineering" chapter. For basic API monitoring purposes however, you can get away without knowing Substrate in detail - you can simply use existing tools built for this purpose.
+-- TODO [Write an IntroSpy howto] --
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -535,3 +542,5 @@ To get more information on testing transport security, please refer to section '
 * [28] EFF's Observatory - https://www.eff.org/pl/observatory
 * [29] Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft - https://www.eff.org/files/colour_map_of_CAs.pdf
 * [30] IPSW Downloads - https://ipsw.me
+* [31] IntroSpy - http://isecpartners.github.io/Introspy-iOS/
+* [32] IntroSpy Analyzer - https://github.com/iSECPartners/Introspy-Analyzer
