@@ -234,23 +234,23 @@ Here is a sample in swift with which you can create the keys as follows (notice 
 
 ##### Info
 
-[1] KeyChain Services - https://developer.apple.com/reference/security/1658642-keychain_services?language=objc
-[2] Keychain Services Programming Guide - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html
-[3] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
-[4] File System Basics - https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
-[5] Foundation Functions - https://developer.apple.com/reference/foundation/1613024-foundation_functions
-[6] NSFileManager - https://developer.apple.com/reference/foundation/nsfilemanager
-[7] NSUserDefaults - https://developer.apple.com/reference/foundation/userdefaults
-[8] Keychain Item Accessibility -  https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons
-[9] Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper/
-[10] Core Data iOS - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1
-[11] NSUserDefaults - https://developer.apple.com/documentation/foundation/nsuserdefaults
-[12] GenericKeyChain - https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2
-[13] KeychainTouchID - https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10
-[14] Adding capabilities - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html
-[15] Keychain concepts - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html
-[16] Realm Objective-C - https://realm.io/docs/objc/latest/
-[17] Realm Swift - https://realm.io/docs/swift/latest/
+- [1] KeyChain Services - https://developer.apple.com/reference/security/1658642-keychain_services?language=objc
+- [2] Keychain Services Programming Guide - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html
+- [3] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+- [4] File System Basics - https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+- [5] Foundation Functions - https://developer.apple.com/reference/foundation/1613024-foundation_functions
+- [6] NSFileManager - https://developer.apple.com/reference/foundation/nsfilemanager
+- [7] NSUserDefaults - https://developer.apple.com/reference/foundation/userdefaults
+- [8] Keychain Item Accessibility -  https://developer.apple.com/reference/security/1658642-keychain_services/1663541-keychain_item_accessibility_cons
+- [9] Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper/
+- [10] Core Data iOS - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1
+- [11] NSUserDefaults - https://developer.apple.com/documentation/foundation/nsuserdefaults
+- [12] GenericKeyChain - https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2
+- [13] KeychainTouchID - https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10
+- [14] Adding capabilities - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html
+- [15] Keychain concepts - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html
+- [16] Realm Objective-C - https://realm.io/docs/objc/latest/
+- [17] Realm Swift - https://realm.io/docs/swift/latest/
 
 ### Testing for Sensitive Data in Logs
 
@@ -415,7 +415,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 - CWE-524: Information Exposure Through Caching
 
 #### Info
-[1] UIText​Input​Traits protocol - https://developer.apple.com/reference/uikit/uitextinputtraits
+- [1] UIText​Input​Traits protocol - https://developer.apple.com/reference/uikit/uitextinputtraits
 
 
 ### Testing for Sensitive Data in the Clipboard
@@ -491,8 +491,8 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 - CWE-200: Information Exposure
 
 #### Info
-[1] Disable clipboard on iOS - http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
-[2] UIPasteboardNameGeneral - https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc
+- [1] Disable clipboard on iOS - http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview
+- [2] UIPasteboardNameGeneral - https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc
 
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
@@ -570,13 +570,13 @@ NSFileCoordinator<sup>[6]</sup> methods run synchronously, so your code will blo
 - CWE-634 - Weaknesses that Affect System Processes
 
 #### Info
-[1] iPhoneDevWiki IPC - http://iphonedevwiki.net/index.php/IPC
-[2] Inter-Process Communication - http://nshipster.com/inter-process-communication/
-[3] XPC Services - https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html
-[4] xpc.h - https://developer.apple.com/documentation/xpc/xpc_services_xpc.h
-[5] NSMachPort - https://developer.apple.com/documentation/foundation/nsmachport
-[6] NSFileCoordinator - http://www.atomicbird.com/blog/sharing-with-app-extensions
-[7] Security Attributes of NSXPCConnection -  https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection
+- [1] iPhoneDevWiki IPC - http://iphonedevwiki.net/index.php/IPC
+- [2] Inter-Process Communication - http://nshipster.com/inter-process-communication/
+- [3] XPC Services - https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html
+- [4] xpc.h - https://developer.apple.com/documentation/xpc/xpc_services_xpc.h
+- [5] NSMachPort - https://developer.apple.com/documentation/foundation/nsmachport
+- [6] NSFileCoordinator - http://www.atomicbird.com/blog/sharing-with-app-extensions
+- [7] Security Attributes of NSXPCConnection -  https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection
 
 
 ### Testing for Sensitive Data Disclosure Through the User Interface
