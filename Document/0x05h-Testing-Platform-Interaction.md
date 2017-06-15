@@ -858,13 +858,18 @@ If an attacker has access to the JavaScript code, for example through stored XSS
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+The dynamic analysis of the app can determine what HTML or JavaScript files are loaded and if known vulnerabilities are present. The procedure to exploit the vulnerability is to produce a JavaScript payload and then inject it into the file that the app is requesting for. The injection could be done either though MITM attack, or by modifying directly the file in case it is stored on the external storage.
+The whole process could be done through Drozer that using weasel (MWR's advanced exploitation payload) is able to install a full agent, injecting a limited agent into a running process, or connecting a reverse shell to act as a Remote Access Tool (RAT).
+
+A full description of the attack can be found in the blog article by MWR<sup>[2]</sup>.
 
 #### Remediation
 
 If `shouldOverrideUrlLoading()` is needed, it should be verified how the input is processed and if it's possible to execute native functions through malicious JavaScript.
 
 If `addJavascriptInterface()` is needed, only JavaScript provided with the APK should be allowed to call it but no JavaScript loaded from remote endpoints.
+
+Moreover pay attention if you imported library, e.g. for advertising, because they con uses the methods mentioned before and bring the vulnerabilities in your app.
 
 Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the App. For these API levels, only public methods that are annotated with `JavascriptInterface` can be accessed from JavaScript<sup>[1]</sup>.
 
