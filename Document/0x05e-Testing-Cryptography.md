@@ -14,7 +14,8 @@ You can list the set of existing providers as follows:
 ```java
 StringBuilder builder = new StringBuilder();
 for (Provider provider : Security.getProviders()) {
-    builder.append(provider.getName())
+    builder.append("provider: ")
+    		  .append(provider.getName())
             .append(" ")
             .append(provider.getVersion())
             .append("(")
@@ -24,6 +25,20 @@ for (Provider provider : Security.getProviders()) {
 String providers = builder.toString();
 //now display the string on the screen or in the logs for debugging.
 ```
+Below you can find the output on the Emulator running Android 4.4 with Google Play APIs after the security provider has been patched:
+
+
+```
+
+provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider) 
+provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider) 
+provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7) 
+provider: BC1.49 (BouncyCastle Security Provider v1.49) 
+provider: Crypto1.0 (HARMONY (SHA1 digest; SecureRandom; SHA1withDSA signature)) 
+provider: HarmonyJSSE1.0 (Harmony JSSE Provider) 
+provider: AndroidKeyStore1.0 (Android KeyStore security provider) 
+```
+
 
 For some applications that support older versions of Android, bundling an up-to-date library may be the only option. SpongyCastle (a repackaged version of BouncyCastle) is a common choice in these situations. Repackaging is necessary because BouncyCastle is included in the Android SDK. The latest version of SpongyCastle <sup>[6]</sup> likely fixes issues encountered in the earlier versions of BouncyCastle <sup>[7]</sup> that were included in Android. Note that the BouncyCastle libraries packed with Android are often not as complete as their counterparts from the Legion of the BounceyCastle. Lastly: bear in mind that packing large libraries such as SpongyCastle will often lead to a multidexed Android application.
 

@@ -205,15 +205,18 @@ Android relies on a security provider to provide SSL/TLS based connections. The 
 Developers need to make sure that the application will install a proper security provider to make sure that there will be lesser bugs and vulnerabilities.
 
 #### Static Analysis
-In case of an Android SDK based application. The application should have a dependency on the GooglePlayServices. (e.g. in a. gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block). Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()` is called as soon as possible and that errors comming from that are handled correctly: either the application informs the API on his lesser secure state or it restricts the user in its possible actions as all https-traffic should now be deemed more risky.
+In case of an Android SDK based application. The application should have a dependency on the GooglePlayServices. (e.g. in a. gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block). Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()` is called as soon as possible. Exceptions that are thrown by these methods should be caught and handled correctly.
+If the application cannot patch its securityprovider then it can either inform the API on his lesser secure state or it can restrict the user in its possible actions as all https-traffic should now be deemed more risky. 
+See remediation for possible examples.
 
---- {TODO: ADD ANDROID NATIVE STATIC ANALYSIS}
+In case of an NDK based application: make sure that the application does only bind to a recent and properly patched library that provides SSL/TLS functionality.
+
 
 #### Dynamic Analysis
 When you have the source-code: 
 
-- Run the application in debugmode, then make a debug-point right at the point where the app will make it first contact with the backend.
-- rightclick at the code that is highlighted and select `Evaluate Expression`
+- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the backend.
+- Right click at the code that is highlighted and select `Evaluate Expression`
 - Type `Security.getProviders()` and press enter
 - Check the providers and see if you can find `GmsCore_OpenSSL` which should be the new toplisted provider.
 
@@ -221,11 +224,10 @@ When you do not have the source-code:
 - Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`. 
 - Check if the first provider is `GmsCore_OpenSSL`.
 
---- {TODO: ADD ANDROID NATIVE DYNAMIC ANALYSIS}
 
 #### Remediation
 To make sure that the application is using a patched security provider, the application needs to use the `ProviderInstaller` class which comes with the Google Play services. The Google Play Services can be installed as a dependency in the build.gradle file by adding `compile 'com.google.android.gms:play-services-gcm:x.y.z'` (where x.y.z is a version number) in the dependencies block.
-Next, the `ProviderInstaller` needs to be called as early as possible by a component of the application. Here are two adjusted examples from google on how this could work. In both cases, the developer needs to handle the exceptions propperly and it might be wise to report to the backend when the application is working with an unpatched security provider. The first example shows how to do the installation synchronously, the second example shows how to do it asynchronously.
+Next, the `ProviderInstaller` needs to be called as early as possible by a component of the application. Here are two adjusted examples from Google on how this could work. In both cases, the developer needs to handle the exceptions properly and it might be wise to report to the backend when the application is working with an unpatched security provider. The first example shows how to do the installation synchronously, the second example shows how to do it asynchronously.
 
 ```java
 //this is a syncadapter that runs in the background, so you can run the synchronous patching.
