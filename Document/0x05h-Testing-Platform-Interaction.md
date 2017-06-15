@@ -808,8 +808,19 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 #### Overview
 
+There are various ways to persistn an object within Android:
+
+##### Object Serialization
 
 An object and its data can be represented as a sequence of bytes. In Java, this is possible using object serialization. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to sign and encrypt serialized data but, if the source code is available, this is always reversible.  
+
+##### Json
+
+TODO: CONTINUE HERE! (HVG)
+
+##### ORM
+
+##### Parcelable
 
 #### Static Analysis
 
