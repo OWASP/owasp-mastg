@@ -139,7 +139,7 @@ It’s also worth to know that files stored outside the application folder (`dat
 
 ##### KeyChain
 
-The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. 
+The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time.
 
 ##### KeyStore
 
@@ -153,7 +153,7 @@ Stored keys can be configured to operate in one of the two modes:
 
 2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
 
-The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device. 
+The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device.
 
 In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
 
@@ -578,36 +578,20 @@ android:longClickable="false"
 ##### Tools
 * Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
 
-### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
+### Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
 
-During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC, these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
-
-The following is a list of Android IPC Mechanisms that may expose sensitive data:
-* Binders<sup>[1]</sup>
-* Services<sup>[2]</sup>
-  * Bound Services<sup>[9]</sup>
-  * AIDL<sup>[10]</sup>
-* Intents<sup>[3]</sup>
-* Content Providers<sup>[4]</sup>
+As part of the IPC mechanisms included on Android, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, they could lead to leackage of stored sensitive data.
 
 #### Static Analysis
 
-The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the app. You will want to identify elements such as:
+The first step is to look into the `AndroidManifest.xml` in order to detect and identify content providers exposed by the app and identified by the  `<provider>` element.
 
-* `<intent-filter>`<sup>[5]</sup>
-* `<service>`<sup>[6]</sup>
-* `<provider>`<sup>[7]</sup>
-* `<receiver>`<sup>[8]</sup>
+Check if the provider has the export tag set to "true": `android:exported="true"`.
+Even if this is not the case, remember that if it has an `<intent-filter>` defined, the export tag will be automatically set to "true".
 
-Except for the `<intent-filter>` element, check if the previous elements contain the following attributes:
-* `android:exported`
-* `android:permission`
-
-Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can be probed to see if they return data. Also BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
-
-**Vulnerable ContentProvider**
+Finally, check if it is being protected by any permission tag (`android:permission`) which will also limit the exposure to other apps.
 
 An example of a vulnerable _ContentProvider_:
 (and SQL injection **-- TODO [Refer to any input validation test in the project] --**
@@ -650,23 +634,6 @@ public Cursor query(Uri uri, String[] projection, String selection,
 
 The query statement would return all credentials when accessing `content://com.owaspomtg.vulnapp.provider.CredentialProvider/CREDENTIALS`.
 
-
-* Vulnerable Broadcast
-Search in the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, `sendStickyBroadcast` and verify that the application doesn't send any sensitive data.
-
-An example of a vulnerable broadcast is the following:
-
-```java
-private void vulnerableBroadcastFunction() {
-    // ...
-    Intent VulnIntent = new Intent();
-    VulnIntent.setAction("com.owasp.omtg.receiveInfo");
-    VulnIntent.putExtra("ApplicationSession", "SESSIONID=A4EBFB8366004B3369044EE985617DF9");
-    VulnIntent.putExtra("Username", "litnsarf_omtg");
-    VulnIntent.putExtra("Group", "admin");
-  }
-  this.sendBroadcast(VulnIntent);
-```
 
 #### Dynamic Analysis
 
@@ -770,9 +737,9 @@ If vulnerable to SQL Injection, the application will return a verbose error mess
 
 ```
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
-FROM SQLITE_MASTER WHERE type='table';--" 
+FROM SQLITE_MASTER WHERE type='table';--"
 | type  | name             | tbl_name         | rootpage | sql              |
-| table | android_metadata | android_metadata | 3        | CREATE TABLE ... | 
+| table | android_metadata | android_metadata | 3        | CREATE TABLE ... |
 | table | Passwords        | Passwords        | 4        | CREATE TABLE ... |
 | table | Key              | Key              | 5        | CREATE TABLE ... |
 ```
@@ -788,8 +755,8 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 These steps can be automated by using the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
 
 ```
-dz> run scanner.provider.injection -a com.mwr.example.sieve 
-Scanning com.mwr.example.sieve... 
+dz> run scanner.provider.injection -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
 Injection in Projection:
   content://com.mwr.example.sieve.DBContentProvider/Keys/
   content://com.mwr.example.sieve.DBContentProvider/Passwords
@@ -806,14 +773,14 @@ A content provider can provide access to the underlying file system. This allows
 
 ```
 dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
-Written 24488 bytes 
+Written 24488 bytes
 ```
 
 To automate the process of finding content providers susceptible to directory traversal, the `scanner.provider.traversal` module should be used:
 
 ```
-dz> run scanner.provider.traversal -a com.mwr.example.sieve 
-Scanning com.mwr.example.sieve... 
+dz> run scanner.provider.traversal -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
 Vulnerable Providers:
   content://com.mwr.example.sieve.FileBackupProvider/
   content://com.mwr.example.sieve.FileBackupProvider
@@ -828,21 +795,13 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-##### Vulnerable Broadcasts
-
-To sniff intents install and run the application on a device (actual device or emulated device) and use tools like Drozer or Intent Sniffer to capture intents and broadcast messages.
-
 #### Remediation
 
-For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
+Set `android:exported` to "false" if the content is only meant to be accessed by the app itself. If not, some read and write permissions should be defined.
 
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file, as otherwise this allows all other apps on Android to communicate and invoke it.
+Protect the content provider with signature `android:protectionLevel` if it is only meant to be accessed by your own apps.
 
-If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
-BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast<sup>[11]</sup>.
-You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
-
-If your IPC is intended to be accessible to other applications, you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission` in a service declaration, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service.
+In order to avoid SQL injection attacks, use parameterized query methods such as query(), update(), and delete().
 
 #### References
 
@@ -857,17 +816,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 - CWE-634 - Weaknesses that Affect System Processes
 
 ##### Info
-[1] IPCBinder - https://developer.android.com/reference/android/os/Binder.html
-[2] IPCServices - https://developer.android.com/guide/components/services.html
-[3] IPCIntent - https://developer.android.com/reference/android/content/Intent.html
-[4] IPCContentProviders - https://developer.android.com/reference/android/content/ContentProvider.html
-[5] IntentFilterElement - https://developer.android.com/guide/topics/manifest/intent-filter-element.html
-[6] ServiceElement - https://developer.android.com/guide/topics/manifest/service-element.html
-[7] ProviderElement - https://developer.android.com/guide/topics/manifest/provider-element.html
-[8] ReceiverElement - https://developer.android.com/guide/topics/manifest/receiver-element.html
-[9] BoundServices - https://developer.android.com/guide/components/bound-services.html
-[10] AIDL - https://developer.android.com/guide/components/aidl.html
-[11] SendBroadcast - https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent)
+
 
 ##### Tools
 * Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
@@ -915,9 +864,9 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 
 #### Overview
 
-Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups. 
+Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups.
 
-Given its diverse ecosystem, Android has a lot of backup options to account for. 
+Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 - Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>abd backup</code> command when USB debugging is enabled.
 
@@ -931,7 +880,7 @@ Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 - OEMs may add additional options. For example, HTC devices have a "HTC Backup" option that, when activated, performs daily backups to the cloud.
 
--- [TODO - recommended approach] -- 
+-- [TODO - recommended approach] --
 
 #### Static Analysis
 
