@@ -6,7 +6,7 @@ The following rules are meant to ensure consistency of the MSTG:
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person.
 
-## How to write Content
+## 1. How to write Content
 
 ### Amount of content
   
@@ -82,9 +82,10 @@ When using a number between zero and ten, spell out the number (e.g., "three" or
 
 When using any number higher than ten, use the numeric version (e.g., "12" or “300”).
 
-## Language 
+## 2. Language 
 
  * British spellings and terminology
+ 
 Change all British spellings to American spellings where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), etc.
 
  * Plurals
@@ -92,7 +93,7 @@ Adhere to standard grammar and punctuation rules when it comes to pluralization 
 
 The plural of calendar years does not take the apostrophe before the “s.” For example, the plural form of 1990 is 1990s
 
-## Title Capitalization
+### Title Capitalization
 
 We follow the title case rules from the "Chicago Manual of Style":  
 
@@ -103,7 +104,7 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-## External References
+## 3. External References
 
 External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: &lt;sup&gt;[1]&lt;/sup&gt;. Remember that the MSTG is supposed to work as a printed document, so always include the full URL like in the examples below (hrefs that hide the URL will obviously be problematic in the print version).
 
