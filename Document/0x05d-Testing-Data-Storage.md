@@ -1189,7 +1189,9 @@ try{
 }
 ```
 
-Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the class below:
+Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts: 
+- A wrapperclass, called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convinience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
+- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets nullbytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
 
 
 ```java
@@ -1199,18 +1201,23 @@ public class ErasableSecretKey implements Serializable {
 
     private java.security.Key secKey;
 
+	// Do not try to instantiate it: use the static methods.
+	// The static construction methods only use mutable structures or create a new key directly.
     protected ErasableSecretKey(final java.security.Key key) {
         this.secKey = key;
     }
-
+	
+	//Create a new `ErasableSecretKey` from a byte-array.
+	//Don't forget to clean the byte-array when you are done with the key.
     public static ErasableSecretKey fromByte(byte[] key) {
         return new ErasableSecretKey(new SecretKey.InternalKey(key, "AES"));
     }
-
+	//Create a new key. Do not forget to implement your own 'Helper.getRandomKeyBytes()'.
     public static ErasableSecretKey newKey() {
-        return fromByte(CryptoUtils.getRandomKey());
+        return fromByte(Helper.getRandomKeyBytes());
     }
 
+	//clean the internal key, but only do so if it is not destroyed yet.
     public void clean() {
         try {
             if (this.getKey() instanceof Destroyable) {
@@ -1218,16 +1225,17 @@ public class ErasableSecretKey implements Serializable {
             }
 
         } catch (DestroyFailedException e) {
-            throw new CryptoException(e);
+            //choose what you want to do now: so you could not destroy it, would you run on? Or rather inform the caller of the clean method informing him of the failure?
         }
     }
-
+	//convinience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
     public static void clearKey(ErasableSecretKey key) {
         if (key != null) {
             key.clean();
         }
     }
 
+	//internal key klass which represents the actual key.
     private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
         private byte[] key;
         private final String algorithm;
@@ -1245,6 +1253,7 @@ public class ErasableSecretKey implements Serializable {
             return "RAW";
         }
 
+		//Do not return a copy of the byte-array but the byte-array itself. Be careful: clearing this byte-array, will clear the key.
         public byte[] getEncoded() {
             if(null == this.key){
                throw new NullPointerException();
@@ -1252,6 +1261,7 @@ public class ErasableSecretKey implements Serializable {
             return this.key;
         }
 
+		//destroy the key.
         public void destroy() throws DestroyFailedException {
             if (this.key != null) {
                 Arrays.fill(this.key, (byte) 0);
