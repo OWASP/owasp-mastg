@@ -65,38 +65,7 @@ Next to the Data Protection classes, there are `AccessControlFlags` which define
 
 Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key. The key resides in the Secure Enclave.
 
-Next, from iOS 9 onward, you can do ECC based signign operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enlave.
-you can create the keys as follows (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
-
-```swift
- // private key parameters
-    let privateKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "privateLabel",
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]        
-    // public key parameters
-    let publicKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "publicLabel",
-        kSecAttrIsPermanent as String: false,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
-
-    // global parameters
-    let parameters: [String: AnyObject] = [
-        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-        kSecAttrKeySizeInBits as String: 256,
-        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        kSecPublicKeyAttrs as String: publicKeyParams,
-        kSecPrivateKeyAttrs as String: privateKeyParams
-    ]        
-
-    var pubKey, privKey: SecKeyRef?
-    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
-
-
-```
-
+Next, from iOS 9 onward, you can do ECC based signign operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enlave. See the remedation chapter for more info on creating the ECC keys.
 iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave.
 
 Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
@@ -196,7 +165,40 @@ The following example shows how to create a securely encrypted file using the `c
 
 A generic example for using the KeyChain to store, update or delete data can be found in the official Apple documentation<sup>[12]</sup>.
 
+A sample for using TouchID and passcode protected keys can be found in the official Apple documentaiton <sup><[13]</sup>.
 
+Here is a sample in swift with which you can create the keys as follows (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
+
+```swift
+ // private key parameters
+    let privateKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "privateLabel",
+        kSecAttrIsPermanent as String: true,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]        
+    // public key parameters
+    let publicKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "publicLabel",
+        kSecAttrIsPermanent as String: false,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]
+
+    // global parameters
+    let parameters: [String: AnyObject] = [
+        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+        kSecAttrKeySizeInBits as String: 256,
+        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+        kSecPublicKeyAttrs as String: publicKeyParams,
+        kSecPrivateKeyAttrs as String: privateKeyParams
+    ]        
+
+    var pubKey, privKey: SecKeyRef?
+    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+```
+
+
+--- {TODO: add key generation for RSA encryption 
 
 #### References
 
@@ -227,6 +229,7 @@ A generic example for using the KeyChain to store, update or delete data can be 
 [10] Core Data iOS - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1
 [11] NSUserDefaults - https://developer.apple.com/documentation/foundation/nsuserdefaults
 [12] GenericKeyChain - https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2
+[13] KeychainTouchID - https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10
 
 
 ### Testing for Sensitive Data in Logs
