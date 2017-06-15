@@ -171,12 +171,11 @@ Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: 
 
 Use code tags when including sample code and shell commands. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
-```
- ```java
+\`\`\`java
 
- public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
- ```
-```
+public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
+
+\`\`\`
 
 This produces the following result:
 
