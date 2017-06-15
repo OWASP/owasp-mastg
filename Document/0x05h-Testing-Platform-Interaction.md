@@ -149,23 +149,104 @@ Developers should take care to secure sensitive IPC components with the `signatu
 
 #### Overview
 
--- TODO [Provide a general description of the issue.] --
+Android apps can expose functionality to:
+* other apps via IPC mechanisms like Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers,
+* through custom URL schemes (which are part of Intents) and
+* the user via the user interface.
+
+All input that is coming from these different sources cannot be trusted and need to be validated and/or sanitized. Validation ensures that only data is processed that the app is expecting. If validation is not enforced any input can be sent to the app, which might allow an attacker or malicious app to exploit vulnerable functionalities within the app.
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+The source code should be checked if any functionality of the app is exposed, through:
+* Custom URL schemes: check also the test case "Testing Custom URL Schemes"
+* IPC Mechanisms (Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers): check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"
+* User interface
 
--- TODO [Clarify the purpose of "[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]" ] --
+An example for a vulnerable IPC mechanisms is listed below.
 
--- TODO [Develop content for "Testing Input Validation and Sanitization" with source code] --
+_ContentProviders_ can be used to access database information, while services can be probed to see if they return data. If data is not validated properly the content provider might be prone to SQL injection when others apps are interacting with it. See the following vulnerable implementation of a _ContentProvider_:
+
+```xml
+<provider
+    android:name=".OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation"
+    android:authorities="sg.vp.owasp_mobile.provider.College">
+</provider>
+```
+
+The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. . In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function need to be inspected to detect if any sensitive information is leaked:
+
+```java
+@Override
+public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
+    SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+    qb.setTables(STUDENTS_TABLE_NAME);
+
+    switch (uriMatcher.match(uri)) {
+        case STUDENTS:
+            qb.setProjectionMap(STUDENTS_PROJECTION_MAP);
+            break;
+
+        case STUDENT_ID:
+            // SQL Injection when providing an ID
+            qb.appendWhere( _ID + "=" + uri.getPathSegments().get(1));
+            Log.e("appendWhere",uri.getPathSegments().get(1).toString());
+            break;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+    }
+
+    if (sortOrder == null || sortOrder == ""){
+        /**
+         * By default sort on student names
+         */
+        sortOrder = NAME;
+    }
+    Cursor c = qb.query(db,	projection,	selection, selectionArgs,null, null, sortOrder);
+
+    /**
+     * register to watch a content URI for changes
+     */
+    c.setNotificationUri(getContext().getContentResolver(), uri);
+    return c;
+}
+```
+
+The query statement would return all credentials when accessing `content://sg.vp.owasp_mobile.provider.College/students`. Prepared statements<sup>[4]</sup> need to be used to avoid the SQL injection, but ideally also input validation should be applied<sup>[3]</sup>.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+The tester should test manually the input fields with strings like "' OR 1=1--'" if for example a local SQL injection vulnerability can be identified.
+
+When being on a rooted device the command content can be used to query the data from a Content Provider. The following command is querying the vulnerable function described above.
+
+```
+content query --uri content://sg.vp.owasp_mobile.provider.College/students
+```
+
+The SQL injection can be exploited by using the following command. Instead of getting the record for Bob all data can be retrieved.
+
+```
+content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
+```
+
+Even if the risk is only locally on the device itself, it is possible for malicious Apps to exploit this functionality through SQL injection. Also tools like Drozer can be used to automate such attacks to check for SQL Injection or Path Traversal, as described in section 3.5.4 of the Drozer User Guide<sup>[5]</sup>.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue.] --
+All functions in the app that process data that is coming from external and through the UI should be validated.
+* For input coming from the user interface Android Saripaar v2<sup>[1]</sup> can be used.
+* For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if the value is alphanumeric<sup>[2]</sup>.
+
+```java
+public boolean isAlphaNumeric(String s){
+    String pattern= "^[a-zA-Z0-9]*$";
+    return s.matches(pattern);
+}
+```
+
+Alternatively to validation functions type conversion by using `Integer.parseInt()` should be considered for numbers. The OWASP Input Validation Cheat Sheet contains more information about this topic<sup>[3]</sup>
 
 #### References
 
@@ -179,10 +260,15 @@ Developers should take care to secure sensitive IPC components with the `signatu
 * CWE-20 - Improper Input Validation
 
 ##### Info
-* [1] xyz
+* [1] Android Saripaar v2 - https://github.com/ragunathjawahar/android-saripaar
+* [2] Input Validation - https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric
+* [3] OWASP Input Validation Cheat Sheet - https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet
+* [4] OWASP SQL Injection Cheat Sheet - https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet
+* [5] Drozer User Guide - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
 
 ##### Tools
-* Enjarify - https://github.com/google/enjarify
+
+* Drozer
 
 
 ### Testing Custom URL Schemes
