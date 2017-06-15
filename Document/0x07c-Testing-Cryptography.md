@@ -5,23 +5,23 @@ This chapter strives to provide recommendations for static testing methods where
 
 #### Background on cryptography
 
-The primary goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data came from a trusted source. Since this is a testing guide and not a cryptography textbook, the following paragraphs provide only a very limited outline of relevant techniques and their usages in the context of mobile applications.
+The primary goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data comes from a trusted source. Since this is a testing guide and not a cryptography textbook, the following paragraphs provide only a very limited outline of relevant techniques and their usages in the context of mobile applications.
 
-* Encryption ensures data confidentiality by using special algorithms to convert the plaintext data into ciphertext, which does not reveal any information about the original contents. The plaintext data can be restored from the ciphertext through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection (see “Testing Sensitive Data Protection” section).
+* Encryption ensures data confidentiality by using special algorithms to convert the plaintext data into cipher text, which does not reveal any information about the original contents. The plaintext data can be restored from the cipher text through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection (see “Testing Sensitive Data Protection” section).
   - Symmetric-key encryption algorithms use the same key for both encryption and decryption. It is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, they require careful key management.
   - Public-key (or asymmetric) encryption algorithms operate with two separate keys: the public key and the private key. The public key can be distributed freely, while the private key should not be shared with anyone. A message encrypted with the public key can only be decrypted with the private key. Since asymmetric encryption is several times slower than symmetric operations, it is typically only used to encrypt small amounts of data, such as symmetric keys for bulk encryption.
 * Hash functions deterministically map arbitrary pieces of data into fixed-length values. It is typically easy to compute the hash, but difficult (or impossible) to determine the original input based on the hash. Cryptographic hash functions additionally guarantee that even small changes to the input data result in large changes to the resulting hash values. Cryptographic hash functions are used for integrity verification, but do not provide authenticity guarantees.
-* Message Authentication Codes, or MACs, combine other cryptographic mechanism, such as symmetric encryption or hashes, with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key, and any of those entities will be able to generate a valid MAC. The most commonly used type of MAC, called HMAC, relies on hash as the underlying cryptographic primitive. As a rule, full name an HMAC algorithm also includes the name of the underlying hash, e.g. - HMAC-SHA256.
-* Signatures combine asymmetric cryptography (i.e. - using a public/private keypair) with hashing to provide integrity and authenticity by encrypting hash of the message with the private key. However, unlike MACs, signatures also provide non-repuditiation property, as the private key should remain unique to the data signer.
-* Key Derivation Functions, or KDFs, are often confused with Password Hashing functions. KDFs do have many useful properties for password hashing, but were created with different purposes in mind. In context of mobile applications, it is the Password Hashing functions that are typically meant for protecting stored passwords. 
+* Message Authentication Codes, or MACs, combine other cryptographic mechanism, such as symmetric encryption or hashes, with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key, and any of those entities will be able to generate a valid MAC. The most commonly used type of MAC, called HMAC, relies on hash as the underlying cryptographic primitive. As a rule, full name of an HMAC algorithm also includes the name of the underlying hash, e.g. - HMAC-SHA256.
+* Signatures combine asymmetric cryptography (i.e. - using a public/private keypair) with hashing to provide integrity and authenticity by encrypting hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property, as the private key should remain unique to the data signer.
+* Key Derivation Functions, or KDFs, are often confused with password hashing functions. KDFs do have many useful properties for password hashing, but were created with different purposes in mind. In context of mobile applications, it is the password hashing functions that are typically meant for protecting stored passwords.
 
 Two uses of cryptography are covered in other chapters:
 
 * Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
-* Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific Data Storage chapters.
+* Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
 
 #### References
-* [1] Password Hashing Competition - https://password-hashing.net/ 
+* [1] Password Hashing Competition - https://password-hashing.net/
 * TODO - list references to sources of algorithm definitions (RFCs, NIST SP, etc)
 
 ### Testing for Custom Implementations of Cryptography
@@ -51,6 +51,7 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 
 ##### Info
 * [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
+
 
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
@@ -118,6 +119,7 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 * QARK - https://github.com/linkedin/qark
 * Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
 
+
 ### Testing for Insecure Cryptographic Algorithm Configuration and Misuse
 
 #### Overview
@@ -133,7 +135,7 @@ Through source code analysis the following non-exhausting configuration options 
 * IVs being random and unique
 * fit-for-purpose block encryption modes
 * key management being done properly
- 
+
 #### Remediation
 
 Periodically ensure that used key length fulfill accepted industry standards<sup>[6]</sup>.
@@ -192,27 +194,29 @@ Mobile operating systems provide a specially protected storage area for secret k
 -- TODO --
 
 #### References
+
 ##### OWASP Mobile Top 10
 
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
--- TODO --
+- V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 
 ##### CWE
 
--- TODO --
+- CWE-321 - Use of Hard-coded Cryptographic Key
 
 ##### Info
 
-* iOS: Managing Keys, Certificates, and Passwords -- https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
-* Android: The Android Keystore System -- https://developer.android.com/training/articles/keystore.html
-* Android: Hardware-backed Keystore -- https://source.android.com/security/keystore/
+- [1] iOS: Managing Keys, Certificates, and Passwords - https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
+- [2] Android: The Android Keystore System - https://developer.android.com/training/articles/keystore.html
+- [3] Android: Hardware-backed Keystore - https://source.android.com/security/keystore/
 
 ##### Tools
 
 -- TODO --
+
 
 ### Testing Key Generation Techniques
 
@@ -221,13 +225,13 @@ Mobile operating systems provide a specially protected storage area for secret k
 Cryptographic algorithms -- such as symmetric encryption or MACs -- expect a secret input of a given size, e.g. 128 or 256 bit. A naive implementation might use the use-supplied password directly as an input key. There are a couple of problems with this approach:
 
 * If the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
-* A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 28 when using ASCII, only a small subset is (approx. 26) is used.
+* A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 28 when using ASCII, only a small subset is used (approx. 26).
 * If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
 
 #### Static Analysis
 
 Use the source code to verify that no password is directly passed into an encryption function.
- 
+
 #### Remediation
 
 Pass the user-supplied password into a salted hash function or KDF; use its result as key for the cryptographic function.
@@ -240,7 +244,7 @@ Pass the user-supplied password into a salted hash function or KDF; use its resu
 
 ##### OWASP Mobile Top 10
 
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
@@ -252,13 +256,14 @@ Pass the user-supplied password into a salted hash function or KDF; use its resu
 
 ##### Info
 
-* Wikipedia -- https://en.wikipedia.org/wiki/Key_stretching
+- Wikipedia -- https://en.wikipedia.org/wiki/Key_stretching
 
 ##### Tools
 
-* hashcat - https://hashcat.net/hashcat/
-* hashID - https://pypi.python.org/pypi/hashID
- 
+- hashcat - https://hashcat.net/hashcat/
+- hashID - https://pypi.python.org/pypi/hashID
+
+
 ### Testing Sensitive Data Protection
 
 #### Overview
@@ -274,7 +279,7 @@ Most countermeasures work by calculating a checksum for the stored data, and the
 -- TODO --
 
 check source code for used algorithm
- 
+
 #### Remediation
 
 Two typical cryptographic counter-measures for integrity protection are:
@@ -306,19 +311,18 @@ Another possibility is the usage of encryption using AEAD schemes (see "Test if 
 
 -- TODO --
 
+
 ### Testing for Stored Passwords
 
 #### Overview
 
 Normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. For example, when the insecure MD5 hash has been used, an attacker with access to eight high-level graphics cards can test 200.3 Giga-Hashes per Second<sup>[1]</sup>.
-A solution this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is negligible during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
+A solution to this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is negligible during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
 
 #### Static Analysis
 
 Use the source code to determine how the hash is calculated.
 
-
- 
 #### Remediation
 
 Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup>), Argon2<sup>[4]</sup>, bcrypt<sup>[3]</sup> or scrypt (RFC 7914<sup>[2]</sup>).
@@ -350,6 +354,3 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 * hashcat - https://hashcat.net/hashcat/
 * hashID - https://pypi.python.org/pypi/hashID
- 
- 
-
