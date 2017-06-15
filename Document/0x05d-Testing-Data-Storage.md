@@ -1219,6 +1219,7 @@ Different checks on the Android device can be implemented by querying different 
 * [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
 
 
+
 ### Verifying User Education Controls
 
 #### Overview
