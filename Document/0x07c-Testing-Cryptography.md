@@ -21,8 +21,9 @@ Two uses of cryptography are covered in other chapters:
 * Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
 
 #### References
-* [1] Password Hashing Competition - https://password-hashing.net/
-* TODO - list references to sources of algorithm definitions (RFCs, NIST SP, etc)
+- [1] Password Hashing Competition - https://password-hashing.net/
+-- TODO - list references to sources of algorithm definitions (RFCs, NIST SP, etc)
+
 
 ### Testing for Custom Implementations of Cryptography
 
@@ -41,16 +42,16 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 - V3.2: "The app uses proven implementations of cryptographic primitives"
 
 ##### CWE
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 ##### Info
-* [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
+- [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
 
 
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
@@ -98,15 +99,15 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 #### References
 
 ##### OWASP Mobile Top 10
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 - V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
 ##### CWE
-* CWE-326: Inadequate Encryption Strength
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+- CWE-326: Inadequate Encryption Strength
+- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 ##### Info
 - [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
@@ -116,8 +117,8 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 - [6] Sweet32 attack -- https://sweet32.info/
 
 ##### Tools
-* QARK - https://github.com/linkedin/qark
-* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+- QARK - https://github.com/linkedin/qark
+- Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
 
 
 ### Testing for Insecure Cryptographic Algorithm Configuration and Misuse
@@ -143,15 +144,15 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 #### References
 
 ##### OWASP Mobile Top 10
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 - V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
 ##### CWE
-* CWE-326: Inadequate Encryption Strength
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+- CWE-326: Inadequate Encryption Strength
+- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 ##### Info
 - [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
@@ -162,10 +163,10 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 - [6] ENISA Algorithms, key size and parameters report 2014 - https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014
 
 ##### Tools
-* QARK - https://github.com/linkedin/qark
-* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
-* hashcat - https://hashcat.net/hashcat/
-* hashID - https://pypi.python.org/pypi/hashID
+- QARK - https://github.com/linkedin/qark
+- Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+- hashcat - https://hashcat.net/hashcat/
+- hashID - https://pypi.python.org/pypi/hashID
 
 
 ### Testing for Hardcoded Cryptographic Keys
@@ -293,7 +294,7 @@ Another possibility is the usage of encryption using AEAD schemes (see "Test if 
 
 ##### OWASP Mobile Top 10
 
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
@@ -331,7 +332,7 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 ##### OWASP Mobile Top 10
 
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
@@ -344,13 +345,13 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 
 ##### Info
 
-* [1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
-* [2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914
-* [3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html
-* [4] https://github.com/p-h-c/phc-winner-argon2
-* [5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
+- [1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
+- [2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914
+- [3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html
+- [4] https://github.com/p-h-c/phc-winner-argon2
+- [5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
 
 ##### Tools
 
-* hashcat - https://hashcat.net/hashcat/
-* hashID - https://pypi.python.org/pypi/hashID
+- hashcat - https://hashcat.net/hashcat/
+- hashID - https://pypi.python.org/pypi/hashID
