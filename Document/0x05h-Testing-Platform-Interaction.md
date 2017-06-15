@@ -150,8 +150,8 @@ Developers should take care to secure sensitive IPC components with the `signatu
 #### Overview
 
 Android apps can expose functionality to:
-* other apps via IPC mechanisms,
-* through custom URL schemes and
+* other apps via IPC mechanisms like Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers,
+* through custom URL schemes (which are part of Intents) and
 * the user via the user interface.
 
 All input that is coming from these different sources cannot be trusted and need to be validated and/or sanitized. Validation ensures that only data is processed that the app is expecting. If validation is not enforced any input can be sent to the app, which might allow an attacker or malicious app to exploit vulnerable functionalities within the app.
@@ -160,7 +160,7 @@ All input that is coming from these different sources cannot be trusted and need
 
 The source code should be checked if any functionality of the app is exposed, through:
 * Custom URL schemes: check also the test case "Testing Custom URL Schemes"
-* IPC Mechanisms: check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"
+* IPC Mechanisms (Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers): check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"
 * User interface
 
 An example for a vulnerable IPC mechanisms is listed below.
@@ -174,7 +174,7 @@ _ContentProviders_ can be used to access database information, while services ca
 </provider>
 ```
 
-As can be seen in the `AndroidManifest.xml` above, the application exports the content provider. In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function need to be inspected to detect if any sensitive information is leaked:
+The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. . In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function need to be inspected to detect if any sensitive information is leaked:
 
 ```java
 @Override
@@ -213,7 +213,7 @@ public Cursor query(Uri uri, String[] projection, String selection,String[] sele
 }
 ```
 
-The query statement would return all credentials when accessing `content://sg.vp.owasp_mobile.provider.College/students`. Ideally prepared statements would be used to avoid the SQL injection, but also input validation should be applied.
+The query statement would return all credentials when accessing `content://sg.vp.owasp_mobile.provider.College/students`. Prepared statements<sup>[4]</sup> need to be used to avoid the SQL injection, but ideally also input validation should be applied<sup>[3]</sup>.
 
 #### Dynamic Analysis
 
@@ -231,26 +231,19 @@ The SQL injection can be exploited by using the following command. Instead of ge
 content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
-Even if the risk is only locally on the device itself, it is possible for malicious Apps to exploit this functionality through SQL injection.
+Even if the risk is only locally on the device itself, it is possible for malicious Apps to exploit this functionality through SQL injection. Also tools like Drozer can be used to automate such attacks to check for SQL Injection or Path Traversal, as described in section 3.5.4 of the Drozer User Guide<sup>[5]</sup>.
 
 #### Remediation
 
 All functions in the app that process data that is coming from external and through the UI should be validated.
 * For input coming from the user interface Android Saripaar v2<sup>[1]</sup> can be used.
-* For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if a value is numeric<sup>[2]</sup>.
+* For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if the value is alphanumeric<sup>[2]</sup>.
 
 ```java
-Scanner sc = new Scanner(System.in);
-int number;
-do {
-    System.out.println("Please enter a positive number!");
-    while (!sc.hasNextInt()) {
-        System.out.println("That's not a number!");
-        sc.next(); // this is important!
-    }
-    number = sc.nextInt();
-} while (number <= 0);
-System.out.println("Thank you! Got " + number);
+public boolean isAlphaNumeric(String s){
+    String pattern= "^[a-zA-Z0-9]*$";
+    return s.matches(pattern);
+}
 ```
 
 Alternatively to validation functions type conversion by using `Integer.parseInt()` should be considered for numbers. The OWASP Input Validation Cheat Sheet contains more information about this topic<sup>[3]</sup>
@@ -268,9 +261,14 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 
 ##### Info
 * [1] Android Saripaar v2 - https://github.com/ragunathjawahar/android-saripaar
-* [2] Input Validation - https://stackoverflow.com/questions/3059333/validating-input-using-java-util-scanner
+* [2] Input Validation - https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric
 * [3] OWASP Input Validation Cheat Sheet - https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet
+* [4] OWASP SQL Injection Cheat Sheet - https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet
+* [5] Drozer User Guide - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
 
+##### Tools
+
+* Drozer
 
 
 ### Testing Custom URL Schemes
