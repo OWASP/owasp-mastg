@@ -816,9 +816,11 @@ An object and its data can be represented as a sequence of bytes. In Java, this 
 
 ##### Json
 
-TODO: CONTINUE HERE! (HVG)
+There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide veriaty of libraries which can be used, such as: GSON, Jackson, JSONP, JSON.Simple and more. They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the json representations are String based and therefore immutable. This means that any secret stored in json will be harder to remove from memory.
 
 ##### ORM
+
+
 
 ##### Parcelable
 
