@@ -32,20 +32,21 @@ The use of non-standard or custom built cryptographic algorithms is dangerous be
 
 #### Static Analysis
 
-Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
+Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. All cryptographic operations (see the list in the introduction section) should come from the standard providers (for standard APIs for Android and iOS, see cryptography chapters for the respective platforms). Any cryptographic invocations which do not invoke standard routines from known providers should be candidates for closer inspection. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
 
 #### Remediation
 
 Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
 
 #### References
-OWASP Mobile Top 10 2016
-M6 - Broken Cryptography
-OWASP MASVS
-V3.2: "The app uses proven implementations of cryptographic primitives"
-CWE
-CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+##### OWASP Mobile Top 10 2016
+* M6 - Broken Cryptography
 
+##### OWASP MASVS
+- V3.2: "The app uses proven implementations of cryptographic primitives"
+
+##### CWE
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 #### Info
 [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
 
@@ -90,25 +91,29 @@ Digital signature: RSA (3072 bits and higher), ECDSA with NIST P-384
 Key establishment: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
-V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
-CWE
-CWE-326: Inadequate Encryption Strength
-CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
-#### Info
-[1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-[2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-[4] NIST recommendations (2016) - https://www.keylength.com/en/4/
-[5] BSI recommendations (2017) - https://www.keylength.com/en/8/
-[6] Sweet32 attack -- https://sweet32.info/
 
-#### Tools
-QARK - https://github.com/linkedin/qark
-Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+##### OWASP Mobile Top 10
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+
+##### CWE
+* CWE-326: Inadequate Encryption Strength
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+
+##### Info
+- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
+- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
+- [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
+- [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
+- [6] Sweet32 attack -- https://sweet32.info/
+
+##### Tools
+* QARK - https://github.com/linkedin/qark
+* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
 
 ### Testing for Insecure Cryptographic Algorithm Configuration and Misuse
 
@@ -128,29 +133,32 @@ key management being done properly
 Periodically ensure that used key length fulfill accepted industry standards[6].
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
-V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
-CWE
-CWE-326: Inadequate Encryption Strength
-CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+##### OWASP Mobile Top 10
+* M6 - Broken Cryptography
 
-#### Info
-[1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-[2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-[3] Security "Crypto" provider deprecated in Android N - https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
-[4] NIST recommendations (2016) - https://www.keylength.com/en/4/
-[5] BSI recommendations (2017) - https://www.keylength.com/en/8/
-[6] ENISA Algorithms, key size and parameters report 2014 - https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014
+##### OWASP MASVS
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
 
-#### Tools
-QARK - https://github.com/linkedin/qark
-Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
-hashcat - https://hashcat.net/hashcat/
-hashID - https://pypi.python.org/pypi/hashID
- 
+##### CWE
+* CWE-326: Inadequate Encryption Strength
+* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+
+##### Info
+- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
+- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
+- [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
+- [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
+- [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
+- [6] ENISA Algorithms, key size and parameters report 2014 - https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014
+
+##### Tools
+* QARK - https://github.com/linkedin/qark
+* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
+
+
 ### Testing for Hardcoded Cryptographic Keys
 
 #### Overview
@@ -175,19 +183,26 @@ Mobile operating systems provide a specially protected storage area for secret k
 -- TODO --
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
--- TODO --
-CWE
+##### OWASP Mobile Top 10
+
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+
 -- TODO --
 
-#### Info
-iOS: Managing Keys, Certificates, and Passwords -- https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
-Android: The Android Keystore System -- https://developer.android.com/training/articles/keystore.html
-Android: Hardware-backed Keystore -- https://source.android.com/security/keystore/
+##### CWE
 
-#### Tools
+-- TODO --
+
+##### Info
+
+* iOS: Managing Keys, Certificates, and Passwords -- https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
+* Android: The Android Keystore System -- https://developer.android.com/training/articles/keystore.html
+* Android: Hardware-backed Keystore -- https://source.android.com/security/keystore/
+
+##### Tools
+
 -- TODO --
 
 ### Testing Key Generation Techniques
@@ -205,19 +220,30 @@ Use the source code to verify that no password is directly passed into an encryp
 Pass the user-supplied password into a salted hash function or KDF; use its result as key for the cryptographic function.
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
-V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-CWE
+Pass the user-supplied password into a salted hash function or KDF; use its result as key for the cryptographic function.
+
+#### References
+
+##### OWASP Mobile Top 10
+
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+
+##### CWE
+
 -- TODO --
 
-#### Info
-Wikipedia -- https://en.wikipedia.org/wiki/Key_stretching
+##### Info
 
-#### Tools
-hashcat - https://hashcat.net/hashcat/
-hashID - https://pypi.python.org/pypi/hashID
+* Wikipedia -- https://en.wikipedia.org/wiki/Key_stretching
+
+##### Tools
+
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
  
 ### Testing Sensitive Data Protection
 
@@ -237,15 +263,24 @@ Digital Signatures are a public key-based scheme where, instead of a single secr
 Another possibility is the usage of encryption using AEAD schemes (see "Test if encryption provides data integrity protection")
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
-V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-CWE
+##### OWASP Mobile Top 10
+
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+
+##### CWE
+
 -- TODO --
-Info
+
+##### Info
+
 -- TODO --
-Tools
+
+##### Tools
+
 -- TODO --
 
 ### Testing for Stored Passwords
@@ -263,16 +298,31 @@ Use the source code to determine how the hash is calculated.
 Use an established key derivation function such as PBKDF2 (RFC 2898[5]), Argon2[4], bcrypt[3] or scrypt (RFC 7914[2]).
 
 #### References
-OWASP Mobile Top 10
-M6 - Broken Cryptography
-OWASP MASVS
-V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
-CWE
+##### OWASP Mobile Top 10
+
+* M6 - Broken Cryptography
+
+##### OWASP MASVS
+
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+
+##### CWE
+
 -- TODO --
-Info
-[1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40 [2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914 [3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html [4] https://github.com/p-h-c/phc-winner-argon2 [5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
-Tools
-hashcat - https://hashcat.net/hashcat/
-hashID - https://pypi.python.org/pypi/hashID
+
+##### Info
+
+[1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
+[2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914
+[3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html
+[4] https://github.com/p-h-c/phc-winner-argon2
+[5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
+
+##### Tools
+
+* hashcat - https://hashcat.net/hashcat/
+* hashID - https://pypi.python.org/pypi/hashID
  
+ 
+
