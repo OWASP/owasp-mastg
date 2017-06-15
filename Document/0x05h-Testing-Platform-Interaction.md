@@ -267,7 +267,6 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 * [5] Drozer User Guide - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
 
 ##### Tools
-
 * Drozer
 
 
@@ -309,6 +308,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
+
 #### Dynamic Analysis
 
 To enumerate URL schemes within an application that can be called by a web browser, the Drozer module `scanner.activity.browsable` should be used:
@@ -329,11 +329,23 @@ Custom URL schemes can be called using the Drozer module `app.activity.start`:
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+When calling a defined schema (myapp://someaction/?var0=str&var1=string), it might be used to send data to the app as in the example below.
+
+```Java
+Intent intent = getIntent();
+if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+  Uri uri = intent.getData();
+  String valueOne = uri.getQueryParameter("var0");
+  String valueTwo = uri.getQueryParameter("var1");
+}
+```
+
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue.] --
+Defining your own URL scheme should be avoided. If it is needed to call an intent via an URL, it should be considered to use toUri()<sup>[2] [3]</sup>.
+
+Data coming in through URL schemes, which is processed by the app should also be validated, as described in the test case "Testing Input Validation and Sanitization".
 
 #### References
 
@@ -347,8 +359,9 @@ dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms:
 N/A
 
 ##### Info
-* [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
-* [2] How to build your URL scheme on Android - https://stackoverflow.com/questions/2448213/how-to-implement-my-very-own-uri-scheme-on-android
+- [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
+- [2] Intent.toUI() - https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29
+- [3] How to register URL namespace  -  https://stackoverflow.com/questions/2430045/how-to-register-some-url-namespace-myapp-app-start-for-accessing-your-progr/2430468#2430468
 
 ##### Tools
 * Drozer - https://github.com/mwrlabs/drozer
@@ -564,7 +577,7 @@ In Web applications, JavaScript can be injected in many ways by leveraging refle
 
 #### Static Analysis
 
-To create and use a WebView, an instance of the class WebView need to be created.
+The source code need to be checked for usage and implementations of the WebView class. To create and use a WebView, an instance of the class WebView need to be created.
 
 ```Java
 WebView webview = new WebView(this);
@@ -580,7 +593,6 @@ webview.getSettings().setJavaScriptEnabled(true);
 
 This allows the WebView to interpret JavaScript and execute it's command.
 
-
 #### Dynamic Analysis
 
 A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an App:
@@ -591,15 +603,15 @@ A Dynamic Analysis depends on different surrounding conditions, as there are dif
 In order to address these attack vectors, the outcome of the following checks should be verified:
 * All functions offered by the endpoint need to be free of stored XSS<sup>[4]</sup>.
 * The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means:
-  * whole communication is encrypted via TLS (see OMTG-NET-001),
-  * the certificate is checked properly (see OMTG-NET-002) and/or
-  * the certificate is even pinned (see OMTG-NET-004)
-* Only files within the App data directory should be rendered in a WebView (see OMTG-ENV-007).
+  * whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
+  * the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or
+  * the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")
+* Only files within the App data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 #### Remediation
 
 JavaScript is disabled by default in a WebView and if not needed shouldn't be enabled. This reduces the attack surface and potential threats to the App. If JavaScript is needed it should be ensured:
-* that the communication relies consistently on HTTPS (see also OMTG-NET-001) to protect the HTML and JavaScript from tampering while in transit.
+* that the communication relies consistently on HTTPS to protect the HTML and JavaScript from tampering while in transit.
 * that JavaScript and HTML is only loaded locally from within the App data directory or from trusted web servers.
 
 The cache of the WebView should also be cleared in order to remove all JavaScript and locally stored data, by using `clearCache()`<sup>[2]</sup> when closing the App.
@@ -633,11 +645,8 @@ Several schemas are available by default in an URI on Android and can be trigger
 * http(s):
 * file:
 * tel:
-* geo:
 
-When using them in a link the App can be triggered for example to access a local file when using `file:///storage/emulated/0/private.xml`. This can be exploited by an attacker if he is able to inject JavaScript into the Webview to access local resources via the file schema.
-
--- TODO [Further develop content on "Testing WebView Protocol Handlers"] --
+When using them in a link the App can be triggered for example to access a local file when using `file:///storage/emulated/0/private.xml`. This can be exploited by an attacker if he is able to inject JavaScript into the WebView to access local resources via the file schema.
 
 #### Static Analysis
 
@@ -652,9 +661,7 @@ If one or all of the methods above can be identified and they are activated it s
 
 #### Dynamic Analysis
 
-While using the App look for ways to trigger phone calls or accessing files from the file system to identify usage of protocol handlers.
-
--- TODO [Further develop content on dynamic analysis for "Testing WebView Protocol Handlers" ] --
+While using the app look for ways to trigger phone calls or accessing files from the file system to identify usage of protocol handlers.
 
 #### Remediation
 
@@ -672,8 +679,6 @@ webView.getSettings().setAllowContentAccess(false);
 ```
 
 Access to files in the file system can be enabled and disabled for a WebView with `setAllowFileAccess()`. File access is enabled by default and should be deactivated if not needed. Note that this enables or disables file system access only. Assets and resources are still accessible using `file:///android_asset` and `file:///android_res`<sup>[1]</sup>.
-
--- TODO [How to disable tel and geo schema?] --
 
 #### References
 
@@ -698,9 +703,7 @@ N/A
 
 #### Overview
 
-WebViews can load content remotely, but can also load it locally from the App data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
-
--- TODO [Further develop content on the overview for "Testing for Local File Inclusion in WebViews"] --
+WebViews can load content remotely, but can also load it locally from the app data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
 
 #### Static Analysis
 
@@ -723,7 +726,7 @@ The URL specified in `loadURL()` should be checked, if any dynamic parameters ar
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+This test case should be verified through static analysis.
 
 #### Remediation
 
