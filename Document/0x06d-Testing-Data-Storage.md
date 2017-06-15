@@ -63,13 +63,49 @@ Next to the Data Protection classes, there are `AccessControlFlags` which define
 - `kSecAccessControlTouchIDCurrentSet`: access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
 - `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprint (using TouchID) or fallback to the PassCode.
 
-Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key that is protected.
+Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key. The key resides in the Secure Enclave.
 
+Next, from iOS 9 onward, you can do ECC based signign operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enlave.
+you can create the keys as follows (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
+
+```swift
+ // private key parameters
+    let privateKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "privateLabel",
+        kSecAttrIsPermanent as String: true,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]        
+    // public key parameters
+    let publicKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "publicLabel",
+        kSecAttrIsPermanent as String: false,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]
+
+    // global parameters
+    let parameters: [String: AnyObject] = [
+        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+        kSecAttrKeySizeInBits as String: 256,
+        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+        kSecPublicKeyAttrs as String: publicKeyParams,
+        kSecPrivateKeyAttrs as String: privateKeyParams
+    ]        
+
+    var pubKey, privKey: SecKeyRef?
+    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+
+```
+
+iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave.
+
+Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
 
 #### Static Analysis
 
-When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code>.
+When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
+Furthermore, make sure that the `AccessControlFlags` are set appropriately according to the security policy for the given keys in the Keychain.
 
 When looking for instances of insecure data storage in an iOS app you should consider the following possible means of storing data.
 
@@ -159,6 +195,8 @@ The following example shows how to create a securely encrypted file using the `c
 ```
 
 A generic example for using the KeyChain to store, update or delete data can be found in the official Apple documentation<sup>[12]</sup>.
+
+
 
 #### References
 
