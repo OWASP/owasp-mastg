@@ -39,7 +39,7 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 The iOS Keychain is used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can be accessed only through Keychain APIs. The Keychain database is encrypted using the device Key and the user PIN/password (if one has been set by the user).
 
-By default, each app can only access the Keychain created by itself. Access can however be shared between apps signed by the same developer by using the "access groups" feature (`kSecAttrAccessGroup` see <sup>[https://developer.apple.com/documentation/security/ksecattraccessgroup]</sup> for more details). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements (More information can be found within the Apple documentation <sup>[https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html, https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html]</sup>).
+By default, each app can only access the Keychain created by itself. Access can however be shared between apps signed by the same developer by using the "access groups" feature (`kSecAttrAccessGroup` see <sup>[https://developer.apple.com/documentation/security/ksecattraccessgroup]</sup> for more details). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements (More information can be found within the Apple documentation <sup>[14], [15]</sup>).
 
 The KeyChain API consists of the following main operations with self-explanatory names:
 
@@ -65,7 +65,7 @@ Next to the Data Protection classes, there are `AccessControlFlags` which define
 
 Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key. The key resides in the Secure Enclave.
 
-Next, from iOS 9 onward, you can do ECC based signign operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enlave. See the remedation chapter for more info on creating the ECC keys.
+Next, from iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the remedation chapter for more info on creating the ECC keys.
 iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave.
 
 Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
@@ -165,7 +165,7 @@ The following example shows how to create a securely encrypted file using the `c
 
 A generic example for using the KeyChain to store, update or delete data can be found in the official Apple documentation<sup>[12]</sup>.
 
-A sample for using TouchID and passcode protected keys can be found in the official Apple documentaiton <sup><[13]</sup>.
+A sample for using TouchID and passcode protected keys can be found in the official Apple documentaiton <sup>[13]</sup>.
 
 Here is a sample in swift with which you can create the keys as follows (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
 
@@ -230,6 +230,8 @@ Here is a sample in swift with which you can create the keys as follows (notice 
 [11] NSUserDefaults - https://developer.apple.com/documentation/foundation/nsuserdefaults
 [12] GenericKeyChain - https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2
 [13] KeychainTouchID - https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10
+[14] Adding capabilities - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html
+[15] Keychain concepts - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html
 
 
 ### Testing for Sensitive Data in Logs
