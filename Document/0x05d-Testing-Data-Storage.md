@@ -139,13 +139,13 @@ It’s also worth to know that files stored outside the application folder (`dat
 
 ##### KeyChain
 
-The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. 
+The KeyChain class <sup>[10]</sup> is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if it hasn’t been set, if something gets imported into the KeyChain the first time. Please note that the keychain is system-wide: so every application can access the materials stored in the KeyChain.
 
-##### KeyStore
+##### KeyStore (AndroidKeyStore)
 
-The KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
+The Android KeyStore <sup>[8]</sup> provides a means of (more or less) secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can create a new private/ public key pair to encrypt application secrets by using the public key and decrypt the same by using the private key.
 
-The keys stored in the KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
+The keys stored in the Android KeyStore can be protected such that the user needs to authenticate to access them. The user's lock screen credentials (pattern, PIN, password or fingerprint) are used for authentication.
 
 Stored keys can be configured to operate in one of the two modes:
 
@@ -153,9 +153,17 @@ Stored keys can be configured to operate in one of the two modes:
 
 2. User authentication authorizes a specific cryptographic operation associated with one key. In this mode, each operation involving such a key must be individually authorized by the user. Currently, the only means of such authorization is fingerprint authentication.
 
-The level of security afforded by the KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a secure hardware element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be retrieved even from a rooted device. 
+The level of security afforded by the Android KeyStore depends on its implementation, which differs between devices. Most modern devices offer a hardware-backed key store implementation. In that case, keys are generated and used in a Trusted Execution Environment or a Secure Element and are not directly accessible for the operating system. This means that the encryption keys themselves cannot be easily retrieved even from a rooted device. You can check whether the keys are inside the secure hardware, based on the `isInsideSecureHardware()` which is part of the `KeyInfo` of the key. Please note that private keys are often indeed stored correctly within the secure hardware, but secret keys, hmac-keys are, on quite some devices not stored securely according to the KeyInfo.
 
-In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the KeyStore is unavailable when the device is locked <sup>[9]</sup>.
+In a software-only implementation, the keys are encrypted with a per-user encryption master key <sup>[16]</sup>. In that case, an attacker can access all keys on a rooted device in the folder <code>/data/misc/keystore/</code>. As the master key is generated using the user’s own lock screen pin/ password, the Android KeyStore is unavailable when the device is locked <sup>[9]</sup>.
+
+##### Older Java-KeyStore
+Older Android versions do not have a KeyStore, but do have the KeyStore interface from JCA (Java Cryptography Architecture). One can use various KeyStores that implement this interface and provide secrecy and integrity protection to the keys stored in the keystore implementation. The impelemntations all rely on the fact that a file is stored on the filesystem, which then protects its contents by a password. For this, we recommend to use the BounceyCastle KeyStore (BKS). 
+You can create one by using the `KeyStore.getInstance("BKS", "BC");`, where "BKS" is the keystore name (BounceycastleKeyStore) and "BC" is the provider (BounceyCastle). Alternatively you can use SpongeyCastle as a wrapper and initialize the keystore: `KeyStore.getInstance("BKS", "SC");`.
+
+Please be aware that not all KeyStores offer proper protection to the keys stored in the keystore files.
+
+
 
 #### Static Analysis
 
@@ -179,7 +187,7 @@ As already pointed out, there are several ways to store information within Andro
 Encryption operations should rely on solid and tested functions provided by the SDK. The following describes different “bad practices” that should be checked with the source code:
 
 * Check if simple bit operations are used, like XOR or Bit flipping to “encrypt” sensitive information like credentials or private keys that are stored locally. This should be avoided as the data can easily be recovered.
-* Check if keys are created or used without taking advantage of the Android onboard features like the KeyStore<sup>[8]</sup>.
+* Check if keys are created or used without taking advantage of the Android onboard features like the Android KeyStore<sup>[8]</sup>.
 * Check if keys are disclosed.
 
 ###### Typical Misuse: Hardcoded Cryptographic Keys
@@ -247,12 +255,12 @@ buildTypes {
 
 * shared preferences, typically at /data/data/package_name/shared_prefs
 
-##### KeyChain and KeyStore
+##### KeyChain and Android KeyStore
 
-When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information must not be stored in clear text but should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Keystore<sup>[8]</sup>**. The following controls should therefore be used:
+When going through the source code it should be analyzed if native mechanisms that are offered by Android are applied to the identified sensitive information. Sensitive information must not be stored in clear text but should be encrypted. If sensitive information needs to be stored on the device itself, several API calls are available to protect the data on the Android device by using the **KeyChain<sup>[10]</sup>** and **Android Keystore<sup>[8]</sup>**. The following controls should therefore be used:
 
 * Check if a key pair is created within the app by looking for the class `KeyPairGenerator`.
-* Check that the application is using the KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and corresponding usages.
+* Check that the application is using the Android KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the pattern `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom` and corresponding usages.
 * The `store(OutputStream stream, char[] password)` function can be used to store the KeyStore to disk with a specified password. Check that the password provided is not hardcoded and is defined by user input as this should only be known to the user. Look for the pattern `.store(`.
 
 #### Dynamic Analysis
@@ -578,6 +586,8 @@ android:longClickable="false"
 ##### Tools
 * Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
 
+
+
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
@@ -770,9 +780,9 @@ If vulnerable to SQL Injection, the application will return a verbose error mess
 
 ```
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
-FROM SQLITE_MASTER WHERE type='table';--" 
+FROM SQLITE_MASTER WHERE type='table';--"
 | type  | name             | tbl_name         | rootpage | sql              |
-| table | android_metadata | android_metadata | 3        | CREATE TABLE ... | 
+| table | android_metadata | android_metadata | 3        | CREATE TABLE ... |
 | table | Passwords        | Passwords        | 4        | CREATE TABLE ... |
 | table | Key              | Key              | 5        | CREATE TABLE ... |
 ```
@@ -788,8 +798,8 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 These steps can be automated by using the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
 
 ```
-dz> run scanner.provider.injection -a com.mwr.example.sieve 
-Scanning com.mwr.example.sieve... 
+dz> run scanner.provider.injection -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
 Injection in Projection:
   content://com.mwr.example.sieve.DBContentProvider/Keys/
   content://com.mwr.example.sieve.DBContentProvider/Passwords
@@ -806,14 +816,14 @@ A content provider can provide access to the underlying file system. This allows
 
 ```
 dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
-Written 24488 bytes 
+Written 24488 bytes
 ```
 
 To automate the process of finding content providers susceptible to directory traversal, the `scanner.provider.traversal` module should be used:
 
 ```
-dz> run scanner.provider.traversal -a com.mwr.example.sieve 
-Scanning com.mwr.example.sieve... 
+dz> run scanner.provider.traversal -a com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
 Vulnerable Providers:
   content://com.mwr.example.sieve.FileBackupProvider/
   content://com.mwr.example.sieve.FileBackupProvider
@@ -911,13 +921,14 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 ##### CWE
 - CWE-200 - Information Exposure
 
+
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups. 
+Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups.
 
-Given its diverse ecosystem, Android has a lot of backup options to account for. 
+Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 - Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>abd backup</code> command when USB debugging is enabled.
 
@@ -931,7 +942,7 @@ Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 - OEMs may add additional options. For example, HTC devices have a "HTC Backup" option that, when activated, performs daily backups to the cloud.
 
--- [TODO - recommended approach] -- 
+-- [TODO - recommended approach] --
 
 #### Static Analysis
 
@@ -1117,11 +1128,20 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 #### Static Analysis
 
-It needs to be identified within the code when sensitive information is stored within a variable or processed and is therefore available within the memory. This information can then be used in dynamic testing when using the app.
+First, you need to identify which sensitive information is stored in memory. Then there are a few checks that must be executed:
+
+- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory. 
+- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared. 
+
+
+**NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
+Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see remediation for more details).
+Understand that an RSA keypair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
+Lastly, some of the ciphers do not properly clean up their byte-arrays, for instance: the AES `Cipher` in `BounceyCastle` does not always clean up its latest working key.
 
 #### Dynamic Analysis
 
-To analyse the memory of an app, the app must be **debuggable**.
+To analyse the memory of an app in Android Studio, the app must be **debuggable**.
 See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android app to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
 For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyse in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
@@ -1151,7 +1171,118 @@ To quickly discover potential sensitive data in the _.hprof_ file, it is also us
 
 #### Remediation
 
-In Java memory cannot be directly overwritten, instead the garbage collector will collect the object once no references are available anymore. To achieve this the object should be _nulled_ immediately after usage to reduce the attack surface.
+In Java, no immutable structures should be used to carry secrets (E.g. `String`, `BigInteger`). Nullifying them will not be effective: the Garbage collector might collect them, but they might remain in the JVMs heap for a longer period of time. 
+Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
+
+
+```java
+
+byte[] secret = null;
+try{
+	//get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+	if (null != secret && secret.length > 0) {
+		for (int i = 0; i < secret; i++) {
+			array[i] = (byte) 0;
+		}
+	}
+}
+```
+
+Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts: 
+- A wrapperclass, called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convinience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
+- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets nullbytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
+
+
+```java
+public class ErasableSecretKey implements Serializable {
+
+    public static final int KEY_LENGTH = 256;
+
+    private java.security.Key secKey;
+
+	// Do not try to instantiate it: use the static methods.
+	// The static construction methods only use mutable structures or create a new key directly.
+    protected ErasableSecretKey(final java.security.Key key) {
+        this.secKey = key;
+    }
+	
+	//Create a new `ErasableSecretKey` from a byte-array.
+	//Don't forget to clean the byte-array when you are done with the key.
+    public static ErasableSecretKey fromByte(byte[] key) {
+        return new ErasableSecretKey(new SecretKey.InternalKey(key, "AES"));
+    }
+	//Create a new key. Do not forget to implement your own 'Helper.getRandomKeyBytes()'.
+    public static ErasableSecretKey newKey() {
+        return fromByte(Helper.getRandomKeyBytes());
+    }
+
+	//clean the internal key, but only do so if it is not destroyed yet.
+    public void clean() {
+        try {
+            if (this.getKey() instanceof Destroyable) {
+                ((Destroyable) this.getKey()).destroy();
+            }
+
+        } catch (DestroyFailedException e) {
+            //choose what you want to do now: so you could not destroy it, would you run on? Or rather inform the caller of the clean method informing him of the failure?
+        }
+    }
+	//convinience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
+    public static void clearKey(ErasableSecretKey key) {
+        if (key != null) {
+            key.clean();
+        }
+    }
+
+	//internal key klass which represents the actual key.
+    private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
+        private byte[] key;
+        private final String algorithm;
+
+        public InternalKey(final byte[] key, final String algorithm) {
+            this.key = key;
+            this.algorithm = algorithm;
+        }
+
+        public String getAlgorithm() {
+            return this.algorithm;
+        }
+
+        public String getFormat() {
+            return "RAW";
+        }
+
+		//Do not return a copy of the byte-array but the byte-array itself. Be careful: clearing this byte-array, will clear the key.
+        public byte[] getEncoded() {
+            if(null == this.key){
+               throw new NullPointerException();
+            }
+            return this.key;
+        }
+
+		//destroy the key.
+        public void destroy() throws DestroyFailedException {
+            if (this.key != null) {
+                Arrays.fill(this.key, (byte) 0);
+            }
+
+            this.key = null;
+        }
+
+        public boolean isDestroyed() {
+            return this.key == null;
+        }
+    }
+
+
+    public final java.security.Key getKey() {
+        return this.secKey;
+    }
+
+}
+
+```
 
 #### References
 
@@ -1211,9 +1342,6 @@ Different checks on the Android device can be implemented by querying different 
 ##### OWASP MASVS
 * V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
-##### CWE
-* CWE -- TODO [Link to CWE issue] --
-
 ##### Info
 * [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
 * [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
@@ -1234,18 +1362,15 @@ The following list shows potential warnings or advises for a user when opening t
 
 #### Static Analysis
 
-A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices.  
--- TODO [Create content on Static Analysis for Verifying User Education Controls] --
+A list of implemented education controls should be provided. The controls should be verified in the code if they are implemented properly and according to best practices.
 
 #### Dynamic Analysis
 
-After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose.
--- TODO [Develop content on Dynamic Analysis on Verifying User Education Controls] --
+After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an educational purpose and are aligned with the defined education controls.
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
--- TODO [Develop remediations on Verifying User Education Controls] --
 
 #### References
 
@@ -1254,6 +1379,3 @@ Warnings should be implemented that address the key points listed in the overvie
 
 ##### OWASP MASVS
 - V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
-
-##### CWE
-- CWE: -- TODO [Link to CWE issue] --
