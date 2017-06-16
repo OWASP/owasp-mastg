@@ -812,8 +812,8 @@ There are various ways to persist an object within Android:
 
 ##### Object Serialization
 
-An object and its data can be represented as a sequence of bytes. In Java, this is possible using object serialization <sup>[1]</sup>. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to encrypt and sign/HMAC serialized data as long as the keys are stored safely.
-The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.  
+An object and its data can be represented as a sequence of bytes. In Java, this is possible using object serialization <sup>[1]</sup>. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to encrypt and sign/HMAC serialized data as long as the keys are stored safely. Note that, when classes are changed, the `ObjectInputStream` will not be able to create objects from older .ser files.
+The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.
 
 ```java
 import java.io.Serializable;
@@ -843,7 +843,7 @@ Now in another class, you can read/write the object using an `ObjectInputStream`
 
 There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide veriety of libraries which can be used, such as: GSON<sup>[2]</sup>, Jackson<sup>[3]</sup> and others. They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the JSON representations are String based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory. 
 The JSON itself can be stored somewhere (E.g. (NoSQL) database or a file). You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g. encrypted/HMACed). See the storage chapter for more details.
-Here is a simple example of how JSON can be written and read using GSON from the GSON User Guide:
+Here is a simple example of how JSON can be written and read using GSON from the GSON User Guide. In this sample, the contents of an instance of the `BagOfPrimitives` is serialized into JSON:
 
 ```java
 class BagOfPrimitives {
@@ -865,15 +865,15 @@ String json = gson.toJson(obj);
 ```
 
 
-
 ##### ORM
-
-Object-Relational Mapping (ORM) is used to store the contents of an object directly into a database. Libraries like OrmLite<sup>[4]</sup>, SugarORM<sup>[5]</sup>, GreenDAO<sup>[6]</sup> and ActiveAndroid<sup>[7]</sup> use a SQLite database to store the data in. Realm <sup>[8]</sup>, another library, uses its own database to store the contents of a class. 
+There are libraries that provide the functionality to store the contents of an object directly into a database and then instantiate the objects based on the database content again. This is called Object-Relational Mapping (ORM). 
+There are libraries that use SQLite as a database, such as: OrmLite<sup>[4]</sup>, SugarORM<sup>[5]</sup>, GreenDAO<sup>[6]</sup> and ActiveAndroid<sup>[7]</sup> use a SQLite database to store the data in. Realm <sup>[8]</sup> on the other hand, uses its own database to store the contents of a class. 
 The amount of protection that ORM can provide mostly relies on whether the database is encrypted. See the storage chapter for more details.
+A nice example of ORMLite can be found at <sup>[9]</sup>.
 
 ##### Parcelable
 
-`Parcelable` is an interface for classes whose instances can be written to and restored from a `Parcel` <sup>[9][10][11]</sup>. A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`. Here's an example from the Google developer docs that implements `Parcelable`:
+`Parcelable` is an interface for classes whose instances can be written to and restored from a `Parcel` <sup>[10][11][12]</sup>. A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`. Here's an example from the Google developer docs that implements `Parcelable`:
 ```java
 public class MyParcelable implements Parcelable {
      private int mData;
@@ -903,20 +903,48 @@ public class MyParcelable implements Parcelable {
  }
 ```
 
+Please note that `Parcelable` is not meant for storing data!
+
 #### Static Analysis
+
+In general: if the object persistence is used for persisting any sensitive information on the device, then make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, you need to make sure that obtaining the keys to decrypt and verify are only obtainable if the user is authenticated. Security checks should be made at the correct positions as defined in <sup>[13]</sup>.
+
 ##### Object Serialization
 Search the source code for the following keywords:
 
 - `import java.io.Serializable`
 - `implements Serializable`
 
-Check if serialized data is stored temporarily or permanently within the app's data directory or external storage and if it contains sensitive data.
-
-
-
-**https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager**
 ##### JSON
+
+Static analysis depends on the library being used. In case of the need to counter memory-dumping, make sure that highly sensitive information is not stored in JSON as you cannot guarantee any anti-memory dumping techniques with the standard libraries. You can check for the following keywords per library:
+
+**`JSONObject`**
+Search the source code for the following keywords:
+
+- `import org.json.JSONObject;`
+- `import org.json.JSONArray;`
+
+**`GSON`**
+Search the source code for the following keywords:
+
+- `import com.google.gson`
+- `import com.google.gson.annotations`
+- `import com.google.gson.reflect`
+- `import com.google.gson.stream`
+- `new Gson();`
+- Annotations such as: `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, `@Until`
+
+**`Jackson`**
+Search the sourc code for the following keywords:
+
+- `import com.fasterxml.jackson.core`
+- `import org.codehaus.jackson` for the older version.
+
 ##### ORM
+
+
+
 ##### Parcelable
 
 
@@ -952,9 +980,11 @@ N/A
 - [6] GreenDAO - http://greenrobot.org/greendao/
 - [7] ActiveAndroid - http://www.activeandroid.com/
 - [8] Realm Java - https://realm.io/docs/java/latest/
-- [9] Parcelable - https://developer.android.com/reference/android/os/Parcelable.html
-- [10] Parcel - https://developer.android.com/reference/android/os/Parcel.html
-- [11] Parcelable.Creator - https://developer.android.com/reference/android/os/Parcelable.Creator.html
+- [9] Orm Lite example - https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid
+- [10] Parcelable - https://developer.android.com/reference/android/os/Parcelable.html
+- [11] Parcel - https://developer.android.com/reference/android/os/Parcel.html
+- [12] Parcelable.Creator - https://developer.android.com/reference/android/os/Parcelable.Creator.html
+- [13] SER04-J. Do not allow serialization and deserialization to bypass the security manager -  https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager
 
 ### Testing Root Detection
 
