@@ -160,6 +160,7 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 
 ```HTML
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
+- *iOS Data Protection Key Hierarchy <sup>[3]</sup>*
 ```
 
 ## Lowercase or capital letter after a colon
