@@ -996,12 +996,18 @@ Verify that, when sensitive information is stored in an Intent using a Bundle co
 
 
 #### Dynamic Analysis
+There are various steps one can take to do dynamic analysis:
 
--- TODO [Create content for dynamic analysis of "Testing Object (De-)Serialization" ] --
+1. Regarding the actual persistence: use the techniques described in the data storage chapter.
+2. Regarding the reflection based approaches: use Xposed to hook into the de-serialization methods or add extra unprocessable information to the serialized objects to see how they are handled (e.g.: will the application crash? Or can you extract extra information by enriching the objects?)
 
 #### Remediation
+There are a few generic remediation steps one can always take:
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Object (De-)Serialization".] --
+1. Make sure that sensitive data after serialization/persistance has been encrypted and HMACed/signed. See the crypto chapter for more details.
+2. Make sure that keys used for step 1 cannot be extracted easily. See the storage data chapter for more details.
+3. Make sure that you only use `Serializable` in case a class remains stable.
+4. Dont use reflection based persistence (e.g. do not use reflection based serializable, JSON based libraries or ORM libraries) in case of high risk applications.
 
 #### References
 
