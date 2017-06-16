@@ -227,3 +227,34 @@ Ensure that critical operations require at least one additional channel to confi
 * [1] The Mobile Application Security Verification Standard - https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md
 * [2] Infobip 2FA library - https://2-fa.github.io/libraries/android-library.html
 * [3] Google Authenticator for Android - https://github.com/google/google-authenticator-android
+
+
+### Testing SSL/TLS Pinning
+
+#### Overview
+
+Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
+
+
+#### Static Analysis
+
+#### Dynamic Analysis
+
+
+#### Remediation
+
+
+#### References
+
+
+
+##### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
+##### OWASP MASVS
+* V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+
+##### CWE
+
+##### Info
+

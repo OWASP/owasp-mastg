@@ -129,8 +129,6 @@ Ensure, that the hostname and certificate is verified correctly. Examples and co
 
 #### Overview
 
-Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
-
 #### Static Analysis
 
 The process to implement the SSL pinning involves three main steps outlined below:
