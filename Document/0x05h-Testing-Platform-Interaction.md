@@ -947,23 +947,52 @@ You can check for the following keywords per library:
 
 **`OrmLite`**
 Search the source code for the following keywords:
+- `import com.j256.*`
+- `import com.j256.dao`
+- `import com.j256.db`
+- `import com.j256.stmt`
+- `import com.j256.table`
+
+Please make sure that logging is disabled.
 
 **`SugarORM`**
 Search the source code for the following keywords:
+- `import com.github.satyan`
+- `extends SugarRecord<Type>`
+- in the AndroidManifest, there will be `meta-data` entries with values such as `DATABASE`, `VERSION`, `QUERY_LOG` and `DOMAIN_PACKAGE_NAME`. 
+
+Make sure that `QUERY_LOG` is set to false.
+
 **`GreenDAO`**
 Search the source code for the following keywords:
+
+- `import org.greenrobot.greendao.annotation.Convert`
+- `import org.greenrobot.greendao.annotation.Entity`
+- `import org.greenrobot.greendao.annotation.Generated`
+- `import org.greenrobot.greendao.annotation.Id`
+- `import org.greenrobot.greendao.annotation.Index`
+- `import org.greenrobot.greendao.annotation.NotNull`
+- `import org.greenrobot.greendao.annotation.*`
+- `import org.greenrobot.greendao.database.Database`
+- `import org.greenrobot.greendao.query.Query`
+
+
 **`ActiveAndroid`**
 Search the source code for the following keywords:
+
+- `ActiveAndroid.initialize(<contextReference>);`
+- `import com.activeandroid.Configuration`
+- `import com.activeandroid.query.*`
+
 **`Realm`**
 Search the source code for the following keywords:
 
+- `import io.realm.RealmObject;`
+- `import io.realm.annotations.PrimaryKey;`
 
 
 ##### Parcelable
-
-
-
-
+Verify that, when sensitive information is stored in an Intent using a Bundle containing a Parcelable, then appropriate security measures are taken. Make sure to use explicit intents and reassure proper additional security controls in case of application level IPC (e.g. signature verification, intent-permissions, crypto).
 
 
 #### Dynamic Analysis
