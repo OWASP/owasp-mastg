@@ -942,6 +942,14 @@ Search the sourc code for the following keywords:
 - `import org.codehaus.jackson` for the older version.
 
 ##### ORM
+When using an ORM library, verify that the the data is stored in an encrypted database or that the json is indivually encrypted before storing it.  See the chapters on data storage and cryptographic management for more details. 
+You can check for the following keywords per library:
+
+**`OrmLite`**
+**`SugarORM`**
+**`GreenDAO`**
+**`ActiveAndroid`**
+**`Realm`**
 
 
 
