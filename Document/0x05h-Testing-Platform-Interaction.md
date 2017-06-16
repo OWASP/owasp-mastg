@@ -270,6 +270,101 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 * Drozer
 
 
+### Testing Custom URL Schemes
+
+#### Overview
+
+Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
+
+As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. Using something like this embedded as a link on a web page, when clicked by a victim on their mobile device, calling the custom URI with maliciously crafted parameters might trigger an SMS to be sent by the vulnerable SMS application with attacker defined content.
+
+For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
+
+#### Static Analysis
+
+It should be investigated if custom URL schemes are defined. This can be done in the AndroidManifest file inside of an intent-filter element<sup>[1]</sup>.
+
+```xml
+<activity android:name=".MyUriActivity">
+  <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="myapp" android:host="path" />
+  </intent-filter>
+</activity>
+
+```
+The example above is specifying a new URL scheme called `myapp://`. The category `brwoseable` will allow to open the URI within a browser.
+
+Data can then be transmitted trough this new scheme, by using for example the following URI:  `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
+
+```
+Intent intent = getIntent();
+if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+  Uri uri = intent.getData();
+  String valueOne = uri.getQueryParameter("keyOne");
+  String valueTwo = uri.getQueryParameter("keyTwo");
+}
+```
+
+
+#### Dynamic Analysis
+
+To enumerate URL schemes within an application that can be called by a web browser, the Drozer module `scanner.activity.browsable` should be used:
+
+```
+dz> run scanner.activity.browsable -a com.google.android.apps.messaging
+Package: com.google.android.apps.messaging
+  Invocable URIs:
+    sms://
+    mms://
+  Classes:
+    com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
+```
+
+Custom URL schemes can be called using the Drozer module `app.activity.start`:
+
+```
+dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
+```
+
+When calling a defined schema (myapp://someaction/?var0=str&var1=string), it might be used to send data to the app as in the example below.
+
+```Java
+Intent intent = getIntent();
+if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+  Uri uri = intent.getData();
+  String valueOne = uri.getQueryParameter("var0");
+  String valueTwo = uri.getQueryParameter("var1");
+}
+```
+
+
+#### Remediation
+
+Defining your own URL scheme should be avoided. If it is needed to call an intent via an URL, it should be considered to use toUri()<sup>[2] [3]</sup>.
+
+Data coming in through URL schemes, which is processed by the app should also be validated, as described in the test case "Testing Input Validation and Sanitization".
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+
+##### OWASP MASVS
+* V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+
+##### CWE
+N/A
+
+##### Info
+- [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
+- [2] Intent.toUI() - https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29
+- [3] How to register URL namespace  -  https://stackoverflow.com/questions/2430045/how-to-register-some-url-namespace-myapp-app-start-for-accessing-your-progr/2430468#2430468
+
+##### Tools
+* Drozer - https://github.com/mwrlabs/drozer
 
 
 
