@@ -276,9 +276,12 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 
 Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
 
-As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. Using something like this embedded as a link on a web page, when clicked by a victim on their mobile device, calling the custom URI with maliciously crafted parameters might trigger an SMS to be sent by the vulnerable SMS application with attacker defined content.
+As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a web page in their mobile browser, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to:
+* massive financial loss for the victims if messages are sent to premium services,
+* disclosing the phone number if messages are sent to predefined addresses that collect phone numbers or
+* rigging votes for talent shows.
 
-For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
+Once a URL scheme is defined, multiple apps can register for any available scheme. For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
 
 #### Static Analysis
 
@@ -295,7 +298,7 @@ It should be investigated if custom URL schemes are defined. This can be done in
 </activity>
 
 ```
-The example above is specifying a new URL scheme called `myapp://`. The category `brwoseable` will allow to open the URI within a browser.
+The example above is specifying a new URL scheme called `myapp://`. The category `browsable` will allow to open the URI within a browser.
 
 Data can then be transmitted trough this new scheme, by using for example the following URI:  `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
 
@@ -340,12 +343,13 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
+Defining your own URL scheme and using it can become a risk in this case, if data is sent to it from an external party and processed in the app.
 
 #### Remediation
 
-Defining your own URL scheme should be avoided. If it is needed to call an intent via an URL, it should be considered to use toUri()<sup>[2] [3]</sup>.
+URL schemes can be used for deeplinking, which is a widespread and convenient methodology for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
 
-Data coming in through URL schemes, which is processed by the app should also be validated, as described in the test case "Testing Input Validation and Sanitization".
+Nevertheless data coming in through URL schemes which is processed by the app should be validated, as described in the test case "Testing Input Validation and Sanitization".
 
 #### References
 
@@ -361,7 +365,7 @@ N/A
 ##### Info
 - [1] Custom URL scheme - https://developer.android.com/guide/components/intents-filters.html#DataTest
 - [2] Intent.toUI() - https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29
-- [3] How to register URL namespace  -  https://stackoverflow.com/questions/2430045/how-to-register-some-url-namespace-myapp-app-start-for-accessing-your-progr/2430468#2430468
+- [3] Mobile Deeplinking - http://mobiledeeplinking.org
 
 ##### Tools
 * Drozer - https://github.com/mwrlabs/drozer
