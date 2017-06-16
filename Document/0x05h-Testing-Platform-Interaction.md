@@ -804,18 +804,35 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 
 
-### Testing Object (De-)Serialization
+### Testing Object persistance
 
 #### Overview
 
-An object and it's data can be represented as a sequence of bytes. In Java, this is possible using object serialization. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to sign and encrypt serialized data but, if the source code is available, this is always reversible.  
+There are various ways to persistn an object within Android:
+
+##### Object Serialization
+
+An object and its data can be represented as a sequence of bytes. In Java, this is possible using object serialization <sup>[1]</sup>. Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to sign and encrypt serialized data but, if the source code is available, this is always reversible.  
+
+##### Json
+
+There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide veriaty of libraries which can be used, such as: GSON<sup>[2]</sup>, Jackson<sup>[3]</sup> and others. They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the json representations are String based and therefore immutable. This means that any secret stored in json will be harder to remove from memory. 
+The JSON itself can be stored somewhere (E.g. (NoSQL) database or a file). You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g. encrypted/HMACed). See the storage chapter for more details.
+
+##### ORM
+
+Object-Relational Mapping (ORM) is used to store the contents of an object directly into a database. Libraries like OrmLite<sup>[4]</sup>, SugarORM<sup>[5]</sup>, GreenDAO<sup>[6]</sup> and ActiveAndroid<sup>[7]</sup> use a SQLite database to store the data in. Realm <sup>[8]</sup>, another library, uses its own database to store the contents of a class. 
+The amount of protection that ORM can provide mostly relies on whether the database is encrypted. See the storage chapter for more details.
+
+##### Parcelable
+`Parcelable` is an interface for classes whose instances can be written to and restored from a `Parcel` <sup>[9][10][11]</sup>. A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`. 
 
 #### Static Analysis
 
 Search the source code for the following keywords:
 
-* `import java.io.Serializable`
-* `implements Serializable`
+- `import java.io.Serializable`
+- `implements Serializable`
 
 Check if serialized data is stored temporarily or permanently within the app's data directory or external storage and if it contains sensitive data.
 
@@ -842,9 +859,17 @@ Check if serialized data is stored temporarily or permanently within the app's d
 N/A
 
 ##### Info
-* [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
-
-
+- [1] Serializable - https://developer.android.com/reference/java/io/Serializable.html
+- [2] Google Gson - https://github.com/google/gson
+- [3] Jackson core - https://github.com/FasterXML/jackson-core
+- [4] ORM Lite - http://ormlite.com/
+- [5] Sugar ORM - http://satyan.github.io/sugar/
+- [6] GreenDAO - http://greenrobot.org/greendao/
+- [7] ActiveAndroid - http://www.activeandroid.com/
+- [8] Realm Java - https://realm.io/docs/java/latest/
+- [9] Parcelable - https://developer.android.com/reference/android/os/Parcelable.html
+- [10] Parcel - https://developer.android.com/reference/android/os/Parcel.html
+- [11] Parcelable.Creator - https://developer.android.com/reference/android/os/Parcelable.Creator.html
 
 ### Testing Root Detection
 
