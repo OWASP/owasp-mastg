@@ -936,7 +936,7 @@ Search the source code for the following keywords:
 - Annotations such as: `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, `@Until`
 
 **`Jackson`**
-Search the sourc code for the following keywords:
+Search the source code for the following keywords:
 
 - `import com.fasterxml.jackson.core`
 - `import org.codehaus.jackson` for the older version.
@@ -946,10 +946,16 @@ When using an ORM library, verify that the the data is stored in an encrypted da
 You can check for the following keywords per library:
 
 **`OrmLite`**
+Search the source code for the following keywords:
+
 **`SugarORM`**
+Search the source code for the following keywords:
 **`GreenDAO`**
+Search the source code for the following keywords:
 **`ActiveAndroid`**
+Search the source code for the following keywords:
 **`Realm`**
+Search the source code for the following keywords:
 
 
 
