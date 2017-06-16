@@ -51,12 +51,13 @@ Top contributors have consistently contributed quality content with at least 500
 - Abdessamad Temmar
 - Alexander Anthuk
 - Slawomir Kosowski
+- Bolot Kerimbaev
 
 ### Contributors
 
 Contributors have made a quality contribution with at least 50 additions logged in the GitHub repository.
 
-Bolot Kerimbaev, Jin Kung Ong, Gerhard Wagner, Andreas Happe, Wen Bin Kong, Michael Helwig, Jeroen Willemsen, Denis Pilipchuk, Ryan Teoh,  Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha
+Jin Kung Ong, Gerhard Wagner, Andreas Happe, Wen Bin Kong, Michael Helwig, Jeroen Willemsen, Denis Pilipchuk, Ryan Teoh,  Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha
 
 ### Reviewers
 
