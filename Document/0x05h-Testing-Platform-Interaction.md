@@ -251,8 +251,6 @@ dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms:
 
 #### Overview
 
--- TODO [Provide a general description of the issue.] --
-
 During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC, these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
@@ -263,44 +261,32 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 * Intents<sup>[3]</sup>
 * Content Providers<sup>[4]</sup>
 
-
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+We start by looking at the AndroidManifest, where all activities, services and content providers included in the source code must be declared (otherwise the system will not recognize them and they will not run). However, broadcast receivers can be either declared in the manifest or created dynamically. You will want to identify elements such as:
 
-    The first step is to look into the `AndroidManifest.xml` in order to detect and identify IPC mechanisms exposed by the app. You will want to identify elements such as:
+* `<intent-filter>`<sup>[5]</sup>
+* `<service>`<sup>[6]</sup>
+* `<provider>`<sup>[7]</sup>
+* `<receiver>`<sup>[8]</sup>
 
-    * `<intent-filter>`<sup>[5]</sup>
-    * `<service>`<sup>[6]</sup>
-    * `<provider>`<sup>[7]</sup>
-    * `<receiver>`<sup>[8]</sup>
-
-    Except for the `<intent-filter>` element, check if the previous elements contain the following attributes:
-    * `android:exported`
-    * `android:permission`
-
-    Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, _ContentProviders_ can be used to access database information, while services can be probed to see if they return data. Also BroadcastReceiver and Broadcast intents can leak sensitive information if probed or sniffed.
-
-
-
-We start by looking at the AndroidManifest, where all activities and services included in the source code must be declared (otherwise the system will not recognize them and they will not run). However, broadcast receivers can be either declared in the manifest or created dynamically.
-
-Making an activity, service or content provided as "exported" means that it can be accessed by other apps.
-
-There are two common ways to set a component as exported <sup>[3]</sup>. The obvious one is to set the export tag to true `android:exported="true"`.
-The second way is to define an `<intent-filter>` within the component element (`<activity>` <sup>[4]</sup>, `<service>` <sup>[5]</sup>, `<receiver>` <sup>[6]</sup>). When doing this, the export tag is automatically set to "true".
+Making an activity, service or content provided as "exported" means that it can be accessed by other apps. There are two common ways to set a component as exported. The obvious one is to set the export tag to true `android:exported="true"`.
+The second way is to define an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When doing this, the export tag is automatically set to "true".
 
 Apart from that, remember that using the permission tag (`android:permission`) will also limit the exposure of a component to other applications.
 
+For more information about the content providers, please refer to the test case "Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms" in chapter "Testing Data Storage".
+
+Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, content providers can be used to access database information, while services can be probed to see if they return data. Also broadcast receivers can leak sensitive information if probed or sniffed.
+
+In the following we will use two example apps and give examples on how to identify vulnerable IPC components:
+- "Sieve" <sup>[12]</sup>
+- "Android Insecure Bank" <sup>[13]</sup>
 
 ##### Activities
-There are two common ways to set an activity as "exported" <sup>[3]</sup>. The obvious one is to set the export tag to true `android:exported="true"`.
-The second way is to define an `<intent-filter>` within the `<activity>`. When doing this, the export tag is automatically set to true.
 
-Apart from that, remember that using the permission tag (`android:permission`) will also limit the exposure of an activity to other applications.
-
-On AndroidManifest we can find 3 exported activities:
-
+##### Inspect the AndroidManifest
+In the "Sieve" app we can find three exported activities idendified by `<activity>`:
 ```xml
 <activity android:excludeFromRecents="true" android:label="@string/app_name" android:launchMode="singleTask" android:name=".MainLoginActivity" android:windowSoftInputMode="adjustResize|stateVisible">
     <intent-filter>
@@ -313,18 +299,22 @@ On AndroidManifest we can find 3 exported activities:
 
 ```
 
+##### Inspect the source code
+By inspecting the `PWList.java` activity we see that it offers options to list all keys, add, delete, etc. If we invoke it directly we will be able to bypass the LoginActivity. More on this can be found below in the dynamic analysis.
+
 ##### Services
 
-Check the AndroidManifest:
-
+##### Inspect the AndroidManifest
+In the "Sieve" app we can find two exported services identified by `<service>`:
 ```xml
 <service android:exported="true" android:name=".AuthService" android:process=":remote"/>
 <service android:exported="true" android:name=".CryptoService" android:process=":remote"/>
 ```
 
+##### Inspect the source code
 Check the source code for the class `android.app.Service`:
 
-By reversing the target application "Sieve", we can see the service `AuthService` provides functionality to change the password and PIN protecting the target app.
+By reversing the target application, we can see the service `AuthService` provides functionality to change the password and PIN protecting the target app.
 
 ```java
    public void handleMessage(Message msg) {
@@ -358,10 +348,8 @@ By reversing the target application "Sieve", we can see the service `AuthService
 
 ##### Broadcast Receivers
 
-Inspect the AndroidManifest:
-
-In the example app "Android Insecure Bank"<sup>2</sup> we can find a broadcast receiver in the manifest.
-
+##### Inspect the AndroidManifest
+In "Android Insecure Bank" app we can find a broadcast receiver in the manifest identified by `<receiver>`:
 ```xml
 <receiver android:exported="true" android:name="com.android.insecurebankv2.MyBroadCastReceiver">
     <intent-filter>
@@ -370,8 +358,7 @@ In the example app "Android Insecure Bank"<sup>2</sup> we can find a broadcast r
 </receiver>
 ```
 
-Inspect the source code:
-
+##### Inspect the source code
 Search in the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, `sendStickyBroadcast` and verify that the application doesn't send any sensitive data.
 
 In order to know more about what the receiver is intended to do we have to go deeper in our static analysis and search for usages of the class `android.content.BroadcastReceiver` and the `Context.registerReceiver()` method used to dynamically create receivers.
@@ -513,17 +500,9 @@ Extra: newpass=12345 (java.lang.String)
 
 #### Remediation
 
-    >Consider this as well:
-    >If your content provider is just for your app’s use then set it to be android:exported=false in the manifest. If you are intentionally exporting the content provider then you should also specify one or more permissions for reading and writing.
-    >If you are using a content provider for sharing data between only your own apps, it is preferable to use the android:protectionLevel attribute set to “signature” protection.
-    >When accessing a content provider, use parameterized query methods such as query(), update(), and delete() to avoid potential SQL injection from untrusted sources.
+If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file nor an `<intent-filter>`, as otherwise this allows all other apps on Android to communicate and invoke it.
 
-
-For an _activity_, _broadcast_ and _service_ the permission of the caller can be checked either by code or in the manifest.
-
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file, as otherwise this allows all other apps on Android to communicate and invoke it.
-
-If the _intent_ is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
+If an Intent is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
 BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast<sup>[11]</sup>.
 You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
 
@@ -541,25 +520,19 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 -- TODO [Add links and titles for CWE related to the "Testing For Sensitive Functionality Exposure Through IPC" topic] --
 
 ##### Info
-- [1] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
-- [2] Android Insecure Bank V2 - https://github.com/dineshshetty/Android-InsecureBankv2
-- [3] Android Components - https://developer.android.com/guide/components/fundamentals.html#Components
-- [4] Android Activity Element - https://developer.android.com/guide/topics/manifest/activity-element.html
-- [5] Android Service Element - https://developer.android.com/guide/topics/manifest/service-element.html
-- [6] Android Broadcast Receiver Element -  https://developer.android.com/guide/topics/manifest/receiver-element.html
-
-
-[1] IPCBinder - https://developer.android.com/reference/android/os/Binder.html
-[2] IPCServices - https://developer.android.com/guide/components/services.html
-[3] IPCIntent - https://developer.android.com/reference/android/content/Intent.html
-[4] IPCContentProviders - https://developer.android.com/reference/android/content/ContentProvider.html
-[5] IntentFilterElement - https://developer.android.com/guide/topics/manifest/intent-filter-element.html
-[6] ServiceElement - https://developer.android.com/guide/topics/manifest/service-element.html
-[7] ProviderElement - https://developer.android.com/guide/topics/manifest/provider-element.html
-[8] ReceiverElement - https://developer.android.com/guide/topics/manifest/receiver-element.html
-[9] BoundServices - https://developer.android.com/guide/components/bound-services.html
-[10] AIDL - https://developer.android.com/guide/components/aidl.html
-[11] SendBroadcast - https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent)
+- [1] IPCBinder - https://developer.android.com/reference/android/os/Binder.html
+- [2] IPCServices - https://developer.android.com/guide/components/services.html
+- [3] IPCIntent - https://developer.android.com/reference/android/content/Intent.html
+- [4] IPCContentProviders - https://developer.android.com/reference/android/content/ContentProvider.html
+- [5] IntentFilterElement - https://developer.android.com/guide/topics/manifest/intent-filter-element.html
+- [6] ServiceElement - https://developer.android.com/guide/topics/manifest/service-element.html
+- [7] ProviderElement - https://developer.android.com/guide/topics/manifest/provider-element.html
+- [8] ReceiverElement - https://developer.android.com/guide/topics/manifest/receiver-element.html
+- [9] BoundServices - https://developer.android.com/guide/components/bound-services.html
+- [10] AIDL - https://developer.android.com/guide/components/aidl.html
+- [11] SendBroadcast - https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent)
+- [12] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
+- [13] Android Insecure Bank V2 - https://github.com/dineshshetty/Android-InsecureBankv2
 
 ##### Tools
 * Drozer - https://github.com/mwrlabs/drozer

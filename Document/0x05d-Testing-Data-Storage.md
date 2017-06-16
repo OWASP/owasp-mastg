@@ -593,46 +593,43 @@ Even if this is not the case, remember that if it has an `<intent-filter>` defin
 
 Finally, check if it is being protected by any permission tag (`android:permission`) which will also limit the exposure to other apps.
 
-An example of a vulnerable _ContentProvider_:
-(and SQL injection **-- TODO [Refer to any input validation test in the project] --**
+Inspect the source code to further understand how the content provider is meant to be used.
 
+> Useful strings to search for: `android.content.ContentProvider`, `android.database.Cursor`, `android.database.sqlite`, `.query(`, `.update(`.  
+
+Check if parametrized query methods <sup>[1]</sup> (query(), update(), and delete()) are being used, and if so, check if all inputs to them are properly sanitized (especially the `selection` argument).
+
+As an example of a vulnerable content provider we will use the vulnerable password manager app "Sieve" <sup>[2]</sup>.
+
+##### Inspect the AndroidManifest
+Identify all defined `<provider>` elements:
 ```xml
-<provider android:name=".CredentialProvider"
-          android:authorities="com.owaspomtg.vulnapp.provider.CredentialProvider"
-          android:exported="true">
+<provider android:authorities="com.mwr.example.sieve.DBContentProvider" android:exported="true" android:multiprocess="true" android:name=".DBContentProvider">
+    <path-permission android:path="/Keys" android:readPermission="com.mwr.example.sieve.READ_KEYS" android:writePermission="com.mwr.example.sieve.WRITE_KEYS"/>
 </provider>
+<provider android:authorities="com.mwr.example.sieve.FileBackupProvider" android:exported="true" android:multiprocess="true" android:name=".FileBackupProvider"/>
 ```
+As can be seen in the `AndroidManifest.xml` above, the application exports two content providers. Note that one path ("/Keys") is being protected by read and write permissions.
 
-As can be seen in the `AndroidManifest.xml` above, the application exports the content provider. In the `CredentialProvider.java` file the `query` function need to be inspected to detect if any sensitive information is leaked:
+##### Inspect the source code
+In the `DBContentProvider.java` file the `query` function need to be inspected to detect if any sensitive information is leaked:
 
 ```java
-public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
-		 SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		 // the TABLE_NAME to query on
-		 queryBuilder.setTables(TABLE_NAME);
-	      switch (uriMatcher.match(uri)) {
-	      // maps all database column names
-	      case CREDENTIALS:
-	    	  queryBuilder.setProjectionMap(CredMap);
-	         break;
-	      case CREDENTIALS_ID:
-	    	  queryBuilder.appendWhere( ID + "=" + uri.getLastPathSegment());
-	         break;
-	      default:
-	         throw new IllegalArgumentException("Unknown URI " + uri);
-	      }
-	      if (sortOrder == null || sortOrder == ""){
-	         sortOrder = USERNAME;
-	      }
-	     Cursor cursor = queryBuilder.query(database, projection, selection,
-	    		  selectionArgs, null, null, sortOrder);
-	      cursor.setNotificationUri(getContext().getContentResolver(), uri);
-	      return cursor;
-	}
+public Cursor query(final Uri uri, final String[] array, final String s, final String[] array2, final String s2) {
+    final int match = this.sUriMatcher.match(uri);
+    final SQLiteQueryBuilder sqLiteQueryBuilder = new SQLiteQueryBuilder();
+    if (match >= 100 && match < 200) {
+        sqLiteQueryBuilder.setTables("Passwords");
+    }
+    else if (match >= 200) {
+        sqLiteQueryBuilder.setTables("Key");
+    }
+    return sqLiteQueryBuilder.query(this.pwdb.getReadableDatabase(), array, s, array2, (String)null, (String)null, s2);
+}
 ```
+Here we see that there are actually two paths, "/Keys" and "/Passwords", being the latter not protected in the manifest and therefore vulnerable.
 
-The query statement would return all credentials when accessing `content://com.owaspomtg.vulnapp.provider.CredentialProvider/CREDENTIALS`.
+The query statement would return all passwords when accessing an URI including this path `Passwords/`. We will address this in the dynamic analysis below and find out the exact URI required.
 
 
 #### Dynamic Analysis
@@ -797,11 +794,13 @@ Row: 1 id=2, username=test, password=test
 
 #### Remediation
 
-Set `android:exported` to "false" if the content is only meant to be accessed by the app itself. If not, some read and write permissions should be defined.
+Set `android:exported` to "false" if the content is only meant to be accessed by the app itself. If not, set it to "true" and define proper read and write permissions.
 
-Protect the content provider with signature `android:protectionLevel` if it is only meant to be accessed by your own apps.
+Protect the content provider with the `android:protectionLevel` attribute set to `signature` protection, if it is only intended to be accessed by your own apps (signed with the same key). On the other hand, you may also want to offer access to other apps, for that you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission`, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to interact with your content provider.
 
-In order to avoid SQL injection attacks, use parameterized query methods such as query(), update(), and delete().
+In order to avoid SQL injection attacks, use parameterized query methods such as `query()`, `update()`, and `delete()`. Be sure to properly sanitize all inputs to these methods because if, for instance, the `selection` argument is built out of user input concatenation, it could also lead to SQL injection.
+
+You may also want to provide more granular access to other apps by using the android:grantUriPermissions attribute in the manifest and limit the scope with the <grant-uri-permission> element.
 
 #### References
 
@@ -816,7 +815,8 @@ In order to avoid SQL injection attacks, use parameterized query methods such as
 - CWE-634 - Weaknesses that Affect System Processes
 
 ##### Info
-
+- [1] ContentProvider query() - https://developer.android.com/reference/android/content/ContentProvider.html#query%28android.net.Uri,%20java.lang.String[],%20android.os.Bundle,%20android.os.CancellationSignal%29
+- [2] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
 
 ##### Tools
 * Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
