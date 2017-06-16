@@ -277,7 +277,7 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
 
 As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a web page in their mobile browser, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to:
-* massive financial loss for the victims if messages are sent to premium services,
+* financial loss for the victims if messages are sent to premium services,
 * disclosing the phone number if messages are sent to predefined addresses that collect phone numbers or
 * rigging votes for talent shows.
 
@@ -285,7 +285,7 @@ Once a URL scheme is defined, multiple apps can register for any available schem
 
 #### Static Analysis
 
-It should be investigated if custom URL schemes are defined. This can be done in the AndroidManifest file inside of an intent-filter element<sup>[1]</sup>.
+Investigate if custom URL schemes are defined. This can be done in the AndroidManifest file inside of an intent-filter element<sup>[1]</sup>.
 
 ```xml
 <activity android:name=".MyUriActivity">
