@@ -21,7 +21,7 @@ OAuth2 defines 4 roles:
 
 Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
 
-<img src="Images/Chapters/0x07a/abstract-oauth2-flow.png" width="350px"/>
+<img src="Images/Chapters/0x07a/abstract_oath2_flow.png" width="350px"/>
 
 Here is a more detailed explanation of the steps in the diagram <sup>[1]</sup> <sup>[2]</sup>:
 
