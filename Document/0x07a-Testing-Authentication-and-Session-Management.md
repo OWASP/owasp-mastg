@@ -398,24 +398,24 @@ A good password policy should define the following requirements<sup>[2]</sup> in
 3. at least 1 digit (0-9)
 4. at least 1 special character (punctuation)
 
-For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A common library that can be used for estimating password strength is zxcvbn<sup>[3]</sup>, which is availalbe for many programming languages.
+For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A common library that can be used for estimating password strength is zxcvbn<sup>[3]</sup>, which is available for many programming languages.
 
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-* 4.5: "A password policy exists and is enforced at the remote endpoint."
+- 4.5: "A password policy exists and is enforced at the remote endpoint."
 
 ##### CWE
-* CWE-521: Weak Password Requirements
+- CWE-521: Weak Password Requirements
 
 ##### Info
-* [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
-* [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
-* [3] zxcvbn - https://github.com/dropbox/zxcvbn
+- [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
+- [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
+- [3] zxcvbn - https://github.com/dropbox/zxcvbn
 
 
 ### Testing Excessive Login Attempts

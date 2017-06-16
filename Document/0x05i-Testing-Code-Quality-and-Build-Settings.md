@@ -316,8 +316,8 @@ The DEVELOPER_MODE has to be disabled for release build in order to disable `Str
 * V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 
 ##### CWE
--- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-215 - Information Exposure Through Debug Information
+- CWE-489 - Leftover Debug Code
 
 ##### Info
 - [1] Official Developer Guide - https://developer.android.com/reference/android/os/StrictMode.html
@@ -325,9 +325,7 @@ The DEVELOPER_MODE has to be disabled for release build in order to disable `Str
 - [3] Javabeat- http://javabeat.net/strictmode-android-1/
 
 ##### Tools
--- TODO [Add relevant tools for "Testing for Debugging Code and Verbose Error Logging"] --
-* Enjarify - https://github.com/google/enjarify
-
+- LogCat
 
 
 ### Testing Exception Handling
