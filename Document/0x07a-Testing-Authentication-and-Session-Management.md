@@ -92,26 +92,25 @@ For additional best practices and detailed information please refer to the sourc
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+* M6 - Insecure Authorization - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
 
 ##### OWASP MASVS
-* 4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
+* --TODO [Propose adding verification of OAuth2 implementation to MASVS] --
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing OAuth2 implementation"] --
-- CWE-312: Cleartext Storage of Sensitive Information
+- CWE-285: Improper Authorization
 
 ##### Info
 
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx 
 - [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 - [3] Blackhat OAuth2 mobile attacks article - https://www.blackhat.com/docs/eu-16/materials/eu-16-Yang-Signing-Into-Billion-Mobile-Apps-Effortlessly-With-OAuth20-wp.pdf
 
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing OAuth2 implementation"] --
-* Enjarify - https://github.com/google/enjarify
+* OWASP ZAP - https://github.com/zaproxy/zaproxy
 
 
 ### Verifying that Users Are Properly Authenticated
