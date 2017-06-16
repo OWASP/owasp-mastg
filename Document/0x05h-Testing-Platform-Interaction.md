@@ -820,9 +820,10 @@ There are various ways to serialize the contents of an object to JSON. Android c
 
 ##### ORM
 
-
+Object-Relational Mapping (ORM) is used to store the contents of an object directly into a database. Libraries like OrmLite, SugarORM, GreenDAO and ActiveAndroid use a SQLite database to store the data in. Realm, another library, uses its own database to store the contents of a class.
 
 ##### Parcelable
+
 
 #### Static Analysis
 
