@@ -235,6 +235,8 @@ Once the file is converted to a human readable format, the exceptions can analys
 
 #### Overview
 
+Implementing certificate pinning correctly is a challenging task. Check the general Networking section for some of the possible pitfalls.
+
 #### Static Analysis
 
 The code presented below shows how it is possible to check if the certificate provided by the server reflects the certificate hard-coded  in the application. The method below implements the connection authentication tells the delegate that the connection will send a request for an authentication challenge.
@@ -289,3 +291,4 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 * [1] Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 * [2] OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
+

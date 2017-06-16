@@ -129,6 +129,8 @@ Ensure, that the hostname and certificate is verified correctly. Examples and co
 
 #### Overview
 
+Implementing certificate pinning correctly is a challenging task. Check the general Networking section for some of the possible pitfalls.
+
 #### Static Analysis
 
 The process to implement the SSL pinning involves three main steps outlined below:
@@ -375,3 +377,4 @@ public class MainActivity extends Activity
 - [1] OpenSSL Vulnerabilities - https://www.openssl.org/news/vulnerabilities.html
 - [2] Updating Your Security Provider to Protect Against SSL Exploits - https://developer.android.com/training/articles/security-gms-provider.html
 - [3] How to address OpenSSL vulnerabilities in your apps - https://support.google.com/faqs/answer/6376725?hl=en
+
