@@ -274,7 +274,7 @@ Start the analysis by testing the application's behavior while establishing secu
 
 ##### Client certificate validation
 
-Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
+Some applications use a two-way SSL handshake, meaning that the application verifies server's certificate and the server verifies the client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
 
 There are a couple of things worth noting:
 
