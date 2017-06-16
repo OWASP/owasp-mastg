@@ -172,7 +172,7 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 #### Dynamic Analysis
 
-Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy<sup>[1]</sup>. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
+See the general Networking chapter for details.
 
 #### Remediation
 
