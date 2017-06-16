@@ -525,7 +525,7 @@ Extra: newpass=12345 (java.lang.String)
 
 #### Remediation
 
-If not strictly required, be sure that your IPC does not have the `android:exported="true"` value in the `AndroidManifest.xml` file nor an `<intent-filter>`, as otherwise this allows all other apps on Android to communicate and invoke it.
+If not strictly required, be sure that your IPC component element does not have the `android:exported="true"` value in the `AndroidManifest.xml` file nor an `<intent-filter>`, to prevent all other apps on Android from being able to interact with it.
 
 If an Intent is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast().
 BroadcastReceivers` should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to read the broadcast<sup>[11]</sup>.
@@ -905,16 +905,16 @@ An object and its data can be represented as a sequence of bytes. In Java, this 
 
 ##### Json
 
-There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide veriaty of libraries which can be used, such as: GSON<sup>[2]</sup>, Jackson<sup>[3]</sup> and others. They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the json representations are String based and therefore immutable. This means that any secret stored in json will be harder to remove from memory. 
+There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide veriaty of libraries which can be used, such as: GSON<sup>[2]</sup>, Jackson<sup>[3]</sup> and others. They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the json representations are String based and therefore immutable. This means that any secret stored in json will be harder to remove from memory.
 The JSON itself can be stored somewhere (E.g. (NoSQL) database or a file). You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g. encrypted/HMACed). See the storage chapter for more details.
 
 ##### ORM
 
-Object-Relational Mapping (ORM) is used to store the contents of an object directly into a database. Libraries like OrmLite<sup>[4]</sup>, SugarORM<sup>[5]</sup>, GreenDAO<sup>[6]</sup> and ActiveAndroid<sup>[7]</sup> use a SQLite database to store the data in. Realm <sup>[8]</sup>, another library, uses its own database to store the contents of a class. 
+Object-Relational Mapping (ORM) is used to store the contents of an object directly into a database. Libraries like OrmLite<sup>[4]</sup>, SugarORM<sup>[5]</sup>, GreenDAO<sup>[6]</sup> and ActiveAndroid<sup>[7]</sup> use a SQLite database to store the data in. Realm <sup>[8]</sup>, another library, uses its own database to store the contents of a class.
 The amount of protection that ORM can provide mostly relies on whether the database is encrypted. See the storage chapter for more details.
 
 ##### Parcelable
-`Parcelable` is an interface for classes whose instances can be written to and restored from a `Parcel` <sup>[9][10][11]</sup>. A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`. 
+`Parcelable` is an interface for classes whose instances can be written to and restored from a `Parcel` <sup>[9][10][11]</sup>. A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`.
 
 #### Static Analysis
 

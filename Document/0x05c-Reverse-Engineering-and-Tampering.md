@@ -696,7 +696,7 @@ $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 
 Next, we want to suspend the process at the point the Java runtime loads <code>libnative-lib.so</code>. In JDB, set a breakpoint on the <code>java.lang.System.loadLibrary()</code> method and resume the process. After the breakpoint has been hit, execute the <code>step up</code> command, which will resume the process until <code>loadLibrary()</code>returns. At this point, <code>libnative-lib.so</code> has been loaded.
 
-```bash
+```
 > stop in java.lang.System.loadLibrary
 > resume
 All threads resumed.
