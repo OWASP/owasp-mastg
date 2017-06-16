@@ -235,8 +235,30 @@ Ensure that critical operations require at least one additional channel to confi
 
 Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
 
+Implementing certificate pinning is not a trivial task. Most applications will not benefit from using this technique and may introduce new vulnerabilities if they implement it incorrectly or without regard to operational challenges<sup>1</sup>:
+
+- It does not protect against compromises of the pinned certificate itself.
+- It makes the operations more complex and thus requires a more mature process.
+- It may break SSL/TLS validation.
+- It can be circumvented by reverse engineering or on rooted/jailbroken devices.
+
+Even large organizations with mature processes and large devops staff are not immune to mistakes in implementing certificate pinning<sup>1</sup>. One high profile case involving a bank involved an expired intermediate certificate and caused outage to the customers.
+
+Once the challenges are understood and the proper processes are being implemented, important decisions have to be made:
+
+- Which level in the certificate chain should be pinned, CA, intermediate, or leaf? Pinning to the most specific certificate reduces flexibility, pinning to the CA increases vulnerability.
+- What should be pinned, the certificate, the certificate bytes, public key or the thumb?
+- Lifecycle concerns: since the certificates expire, may be revoked or compromised, processes that handle these situations should be implemented.
+- Platform-specific implementation details are discussed in the respective networking chapters.
 
 #### Static Analysis
+
+If source code is available, the test should check for the following issues:
+
+* Apps performing their own X.509 certificate chain validation. They should instead rely on the existing proven implementations available on the platform SDKs or in trusted, updated third party libraries.
+* Apps implementing certificate pinning by using custom trust/CA stores. These are potentially error prone and may result in performing no certificate validation.
+
+Refer to the platform specific networking chapter for additional details.
 
 #### Dynamic Analysis
 
@@ -257,4 +279,6 @@ Certificate pinning allows to hard-code the certificate or parts of it into the 
 ##### CWE
 
 ##### Info
+
+- [1] Pinning: Not as simple as it sounds, https://usmile.at/symposium/2017/program/kozyrakis
 
