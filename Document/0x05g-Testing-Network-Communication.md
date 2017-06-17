@@ -129,7 +129,7 @@ Ensure, that the hostname and certificate is verified correctly. Examples and co
 
 #### Overview
 
-Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
+Implementing certificate pinning correctly is a challenging task. Check the general Networking section for some of the possible pitfalls.
 
 #### Static Analysis
 
@@ -174,7 +174,7 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 #### Dynamic Analysis
 
-Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy<sup>[1]</sup>. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
+See the general Networking chapter for details.
 
 #### Remediation
 
@@ -377,3 +377,4 @@ public class MainActivity extends Activity
 - [1] OpenSSL Vulnerabilities - https://www.openssl.org/news/vulnerabilities.html
 - [2] Updating Your Security Provider to Protect Against SSL Exploits - https://developer.android.com/training/articles/security-gms-provider.html
 - [3] How to address OpenSSL vulnerabilities in your apps - https://support.google.com/faqs/answer/6376725?hl=en
+

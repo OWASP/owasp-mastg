@@ -227,3 +227,87 @@ Ensure that critical operations require at least one additional channel to confi
 * [1] The Mobile Application Security Verification Standard - https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md
 * [2] Infobip 2FA library - https://2-fa.github.io/libraries/android-library.html
 * [3] Google Authenticator for Android - https://github.com/google/google-authenticator-android
+
+
+### Testing SSL/TLS Pinning
+
+#### Overview
+
+Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server<sup>[1]</sup>. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
+
+Implementing certificate pinning is not a trivial task. Most applications will not benefit from using this technique and may introduce new vulnerabilities if they implement it incorrectly or without regard to operational challenges<sup>1</sup>:
+
+- It does not protect against compromises of the pinned certificate itself.
+- It makes the operations more complex and thus requires a more mature process.
+- It may break SSL/TLS validation.
+- It can be circumvented by reverse engineering or on rooted/jailbroken devices.
+
+Even large organizations with mature processes and large devops staff are not immune to mistakes in implementing certificate pinning<sup>[2]</sup>. One high profile case involving a bank involved an expired intermediate certificate and caused outage to the customers.
+
+Once the challenges are understood and the proper processes are being implemented, important decisions have to be made:
+
+- Which level in the certificate chain should be pinned, CA, intermediate, or leaf? Pinning to the most specific certificate reduces flexibility, pinning to the CA increases vulnerability.
+- What should be pinned, the certificate, the certificate bytes, public key or the thumb?
+- Lifecycle concerns: since the certificates expire, may be revoked or compromised, processes that handle these situations should be implemented.
+- Platform-specific implementation details are discussed in the respective networking chapters.
+
+#### Static Analysis
+
+If source code is available, the test should check for the following issues:
+
+* Apps performing their own X.509 certificate chain validation. They should instead rely on the existing proven implementations available on the platform SDKs or in trusted, updated third party libraries.
+* Apps implementing certificate pinning by using custom trust/CA stores. These are potentially error prone and may result in performing no certificate validation.
+
+Refer to the platform specific networking chapter for additional details.
+
+#### Dynamic Analysis
+
+Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy<sup>[1]</sup>. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
+
+##### Server certificate validation
+
+Start the analysis by testing the application's behavior while establishing secure connection. The test approach is to gradually relax security of SSL/TLS handshake negotiation and check which security mechanisms are enabled.
+
+1. Using Burp set up a proxy in WiFi settings. Make sure that no certificates are added to trust store (iOS: Settings -> General -> Profiles, Android: depends on the vendor and version of the OS) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under the 'Alerts' tab. If you can see the traffic, it means that certificate validation is not performed at all! This effectively means that an active attacker can silently do MiTM against your application. If, however, you can't see any traffic and you have information about the SSL handshake failure, proceed to the next step.
+2. Install the Burp certificate, as explained in the Basic Security Testing section. If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed. The risk is less significant than in the previous scenario, as two main attack scenarios at this point are misbehaving CAs and phishing attacks, as discussed in Basic Security Testing section.
+3. If executing instructions from previous step doesn't lead to traffic being proxied through Burp, it means that certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to Basic Security Testing section for more information on this.
+
+##### Client certificate validation
+
+Some applications use a two-way SSL handshake, meaning that the application verifies server's certificate and the server verifies the client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
+
+There are a couple of things worth noting:
+
+1. Client certificate contains private key that will be used in key exchange.
+2. Usually certificate would also need a password to use (decrypt) it.
+3. Certificate itself can be stored in the binary itself, data directory or the keychain.
+
+Most common but improper and insecure way of doing two-way handshake is to store client certificate within the application bundle and hardcode the password. This obviously does not bring much security, because all clients will share the same certificate.
+
+Second way of storing the certificate (and possibly password) is to use the keychain. Upon first login, the application should download personal certificate and store it securely in the keychain.
+
+Sometimes application have one certificate that is hardcoded and used for first login and then personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server.
+
+Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
+
+
+#### Remediation
+
+
+#### References
+
+
+
+##### OWASP Mobile Top 10 2016
+* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
+##### OWASP MASVS
+* V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+
+##### CWE
+
+##### Info
+
+- [1] OWASP - Certificate and Public Key Pinning: https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning
+- [2] Pinning: Not as simple as it sounds, https://usmile.at/symposium/2017/program/kozyrakis
+
