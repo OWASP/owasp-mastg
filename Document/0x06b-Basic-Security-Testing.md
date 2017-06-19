@@ -29,7 +29,16 @@ If you want to get serious with iOS security testing, you need a Mac, for the si
 
 In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
 
-Colloquially, the word "jailbreak" if often used to refer to the  tools that automate the complete jailbreaking progress, from executing the exploit(s) to disabling system protections and installing the Cydia app store. 
+Some of the benefits of jailbreaking an iOS Device includes the following:
+
+* Removing the security (and other) limitations on the OS imposed by Apple
+* Providing root access to the operating system
+* Allowing important testing software tools to be installed
+* Providing access to the Objective-C Runtime
+
+Colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disabling system protections and installing the Cydia app store. 
+
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037) <sup>[4]</sup>.
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
@@ -38,6 +47,16 @@ Jailbreaking methods vary across iOS versions. Best choice is to check if a publ
 An important caveat regarding jailbreaking iOS is that you can't downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
 
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from this site<sup>[30]</sup>. More information on jailbreaking is available on The iPhone Wiki<sup>[26]</sup>.
+
+#### What's the Latest Jailbreak?
+
+The iOS jailbreak scene is evolving so rapidly that it is difficult to provide-up-to-date instructions. Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
+
+Some reliable resources to read about content regarding jailbreak iOS:
+
+* The iPhone Wiki - https://www.theiphonewiki.com/wiki/Jailbreak
+* Redmond Pie - http://www.redmondpie.com/
+* Reddit Jailbreak - https://www.reddit.com/r/jailbreak/
 
 ### Preparing the Test Environment
 
@@ -416,6 +435,8 @@ If you want to get more details on white-box testing and usual code patters, ref
 To get more information on testing transport security, please refer to section 'Testing Network Communication' 
 
 ### References
+
+-- [TODO: Clean up references] --
 
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
 * [2] Clutch - https://github.com/KJCracks/Clutch
