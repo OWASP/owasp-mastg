@@ -73,7 +73,116 @@ In this guide, we'll give an introduction on static and dynamic analysis and ins
 
 #### Static Analysis
 
--- TODO [iOS Static Analysis with examples] --
+##### Recovering an IPA File From an Installed App
+
+###### From Jailbroken Devices
+
+You can use Saurik's IPA Installer to recover IPAs from apps installed on the device. To do this, install IPA installer console [1] via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
+
+~~~
+iPhone:~ root# ipainstaller -l
+com.apple.Pages
+com.example.targetapp
+com.google.ios.youtube
+com.spotify.client
+~~~
+
+Generate the IPA file for using the following command:
+
+~~~
+iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
+~~~
+
+###### From non-Jailbroken Devices
+
+If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps:
+
+- Download the app in itunes
+- Go to your itunes Apps Library
+- Right-click on the app and select show in finder
+
+-- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] --
+
+#### Dumping Decrypted Executables
+
+On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
+
+~~~
+# Clutch -i 
+~~~
+
+**NOTE:** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
+
+~~~
+# otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
+~~~
+
+If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
+
+#### Getting Basic Information with Class-dump and Hopper Disassembler
+
+Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application [12]. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
+
+```
+$ unzip DamnVulnerableiOSApp.ipa
+
+$ cd Payload/DamnVulnerableIOSApp.app
+
+$ otool -hv DamnVulnerableIOSApp 
+
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+```
+
+Note architecture `armv7` which is 32 bit and `arm64`. This design permits to deploy the same application on all devices. 
+In order to analyze the application with class-dump we must create so-called thin binary, which contains only one architecture:
+
+```
+iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
+```
+
+And then we can proceed to performing class-dump:
+
+```
+iOS8-jailbreak:~ root# class-dump DVIA32 
+
+@interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
+{
+}
++ (BOOL)appIsCracked;
++ (BOOL)deviceIsJailbroken;
+```
+
+Note the plus sign, which means that this is a class method returning BOOL type. 
+A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
+
+Alternatively, you can easily decompile the application with Hopper Disassembler [13]. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
+
+Your main focus while performing static analysis would be:
+* Identifying and understanding functions responsible for jailbreak detection and certificate pinning
+  * For jailbreak detection, look for methods or classes containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
+  * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
+* Understanding application logic and possible ways to bypass it 
+* Any hardcoded credentials, certificates
+* Any methods that are used for obfuscation and in consequence may reveal sensitive information
+
+
+Other commands:
+
+Listing shared libraries:
+
+
+```bash
+$ otool -L <binary>
+```
 
 #### Debugging
 
