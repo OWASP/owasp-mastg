@@ -1079,7 +1079,7 @@ public class MyParcelable implements Parcelable {
  }
 ```
 
-Please note that `Parcelable` is not meant for storing data!
+As the mechanisms with Parcels and Intents might change over time, and the `Parcelable` might contain `IBinder` pointers, it is not recommended to store any data on disk using `Parcelable` .
 
 #### Static Analysis
 
@@ -1117,7 +1117,7 @@ Static analysis depends on the library being used. In case of the need to counte
 
 ##### ORM
 
-When using an ORM library, verify that the the data is stored in an encrypted database or that the json is indivually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
+When using an ORM library, verify that the the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
 
 \**`OrmLite`\*\* Search the source code for the following keywords: - `import com.j256.*`
 -`import com.j256.dao`
@@ -1156,7 +1156,7 @@ Make sure that `QUERY_LOG` is set to false.
 
 ##### Parcelable
 
-Verify that, when sensitive information is stored in an Intent using a Bundle containing a Parcelable, then appropriate security measures are taken. Make sure to use explicit intents and reassure proper additional security controls in case of application level IPC (e.g. signature verification, intent-permissions, crypto).
+Verify that, when sensitive information is stored in an Intent using a Bundle containing a Parcelable, the appropriate security measures are taken. Make sure to use explicit intents and reassure proper additional security controls in case of application level IPC (e.g. signature verification, intent-permissions, crypto).
 
 #### Dynamic Analysis
 
@@ -1169,10 +1169,11 @@ There are various steps one can take to do dynamic analysis:
 
 There are a few generic remediation steps one can always take:
 
-1.	Make sure that sensitive data after serialization/persistance has been encrypted and HMACed/signed. See the crypto chapter for more details.
-2.	Make sure that keys used for step 1 cannot be extracted easily. See the storage data chapter for more details.
-3.	Make sure that you only use `Serializable` in case a class remains stable.
-4.	Dont use reflection based persistence (e.g. do not use reflection based serializable, JSON based libraries or ORM libraries) in case of high risk applications.
+1.	Make sure that sensitive data after serialization/persistance has been encrypted and HMACed/signed. Evaluate the signature before you coninue or the HMAC before you use the data. See the crypto chapter for more details.
+2.	Make sure that keys used for step 1 cannot be extracted easily. Instead, the user and/or application instance should be propperly authenticated/authorized to obtain the keys to use the data. See the storage data chapter for more details.
+3.	Make sure that the data within the de-serialized Object is carefully validated before you can actively use it (e.g. no exploit of business/application logic).
+
+In case of a high-risk application with a focus on availability, we would recommend to only use `Serializable` when the Classes that are serialized are stable. Second, we would recommend to rather not use reflection based persistence unless the reflection method strings are propperly encrypted and other forms of logic exploiting have been implemented. See the anti-reverse-engineering chapter for more details.
 
 #### References
 
