@@ -1,10 +1,14 @@
 ## Basic Security Testing on iOS
 
-### Foreword on Swift and Objective-C 
+### Foreword on Swift and Objective-C
 
 Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods. 
 
 ### Setting Up Your Testing Environment
+
+In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device.  Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator completely useless for black-box-analysis and reverse engineering.
+
+Ideally you want to have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process easy. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a less smooth experience.
 
 **Requirements for iOS testing lab**
 
@@ -227,16 +231,25 @@ A minus sign would mean that this is an instance method. Please refer to further
 Alternatively, you can easily decompile the application with Hopper Disassembler [13]. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
 
 Your main focus while performing static analysis would be:
-* Identifying and undestanding functions responsible for jailbreak detection and certificate pinning
-  * For jailbreak detection, look for methods or classess containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
+* Identifying and understanding functions responsible for jailbreak detection and certificate pinning
+  * For jailbreak detection, look for methods or classes containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
   * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
 * Understanding application logic and possible ways to bypass it 
 * Any hardcoded credentials, certificates
 * Any methods that are used for obfuscation and in consequence may reveal sensitive information
 
-### Dynamic Analysis
 
--- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
+Other commands:
+
+Listing shared libraries:
+
+
+```bash
+$ otool -L <binary>
+```
+
+
+### Dynamic Analysis
 
 #### Monitoring Console Logs
 
@@ -253,6 +266,10 @@ window to expose the console log contents
 To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
 
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
+
+##### Setting up a Web Proxy
+
+
 
 #### Dynamic Analysis On Jailbroken Devices
 
@@ -318,13 +335,14 @@ Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
 
-Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the Github repository.
+Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
 ##### Security Profiling with Introspy
 
 Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
 -- TODO [Write an IntroSpy howto] --
+
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -384,7 +402,7 @@ $ cat entitlements.plist
 </plist>
 ~~~
 
-Note the application identitifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
+Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
 
 ##### Other Preparations
 
