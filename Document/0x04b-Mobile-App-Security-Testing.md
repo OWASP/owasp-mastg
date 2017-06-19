@@ -1,14 +1,8 @@
 ## Mobile App Security Testing
 
-You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry. Throughout the guide, we'll use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-A few key points to consider:
-
-- It doesn't make a lot of sense to talk of mobile app "penetration testing" because there's nothing to penetrate.
-
-- As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. The tester always has at least access to the compiled app, and for someone who can read bytecode and binary code (or use a decompiler), having the compiled app is pretty much equivalent to having the source code.
-
-In this guide, we'll cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is automating security tests during earlier stages of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a big difference in the high-level methodology and level of interaction with the client.
+We cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is automating security tests during earlier stages of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a big difference in the high-level methodology and level of interaction with the client.
 
 ### Security Testing the Old-School Way
 
@@ -84,6 +78,10 @@ The threat modeling guidelines defined by OWASP<sup>[3]</sup> are generally appl
 <!-- are there any threat Modeling techniques specially applicable to mobile apps? -->
 
 ### Vulnerability Analysis
+
+#### White-box versus Black-box
+
+As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. The tester always has at least access to the compiled app, and for someone who can read bytecode and binary code (or use a decompiler), having the compiled app is pretty much equivalent to having the source code.
 
 #### Static Analysis
 

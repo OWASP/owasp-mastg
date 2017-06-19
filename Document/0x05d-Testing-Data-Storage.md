@@ -909,8 +909,6 @@ Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 - OEMs may add additional options. For example, HTC devices have a "HTC Backup" option that, when activated, performs daily backups to the cloud.
 
--- [TODO - recommended approach] --
-
 #### Static Analysis
 
 ##### Local
@@ -1107,9 +1105,6 @@ Understand that an RSA keypair is based on `BigInteger` as well and therefore re
 Lastly, some of the ciphers do not properly clean up their byte-arrays, for instance: the AES `Cipher` in `BouncyCastle` does not always clean up its latest working key.
 
 #### Dynamic Analysis
-
-To analyze the memory of an app in Android Studio, the app must be **debuggable**.
-See the instructions in XXX (-- TODO [Link to repackage and sign] --) on how to repackage and sign an Android app to enable debugging for an app, if not already done. Also adb integration need to be activated in Android Studio in “_Tools/Android/Enable ADB Integration_” in order to take a memory dump.
 
 For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyze in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
 
