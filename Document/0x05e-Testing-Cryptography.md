@@ -134,12 +134,6 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with the 4096-bit key (i.e., modulus size).
 
-
--- TODO Add the pre-Marshmallow AES example using BC --
-
-
-
-
 #### Static Analysis
 
 Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
@@ -155,12 +149,7 @@ Ensure that the best practices outlined in the Cryptography for Mobile Apps chap
 
 #### Remediation
 
-See the Remediation section in the Cryptography for Mobile Apps chapter.
-
--- REVIEW --
-
-Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations.
-
+Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations. See also the "Remediation" section in the "Cryptography for Mobile Apps" chapter.
 
 #### References
 
@@ -170,20 +159,13 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 ##### OWASP MASVS
 
--- REVIEW --
-
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 
 ##### CWE
 
--- REVIEW --
-
 * CWE-326: Inadequate Encryption Strength
 
-
 ##### Info
-
--- REVIEW --
 
 - [1] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
