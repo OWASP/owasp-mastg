@@ -18,7 +18,9 @@ A full list of all Android Permissions can be found in the developer documentati
 
 **Custom Permissions**
 
-Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. Custom permission can be defined in `AndroidManifest.xml`, by creating a permission tag with two mandatory attributes:* `android:name` and* `android:protectionLevel`.
+Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. Custom permission can be defined in `AndroidManifest.xml`, by creating a permission tag with two mandatory attributes:
+- `android:name` and
+- `android:protectionLevel`.
 
 It is crucial to create custom permission that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose with meaningful and accurate label and description.
 
@@ -151,13 +153,21 @@ Developers should take care to secure sensitive IPC components with the `signatu
 
 #### Overview
 
-Android apps can expose functionality to:* other apps via IPC mechanisms like Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers,* through custom URL schemes (which are part of Intents) and* the user via the user interface.
+Android apps can expose functionality to:
+
+- other apps via IPC mechanisms like Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers,
+- through custom URL schemes (which are part of Intents) and
+- the user via the user interface.
 
 All input that is coming from these different sources cannot be trusted and need to be validated and/or sanitized. Validation ensures that only data is processed that the app is expecting. If validation is not enforced any input can be sent to the app, which might allow an attacker or malicious app to exploit vulnerable functionalities within the app.
 
 #### Static Analysis
 
-The source code should be checked if any functionality of the app is exposed, through:* Custom URL schemes: check also the test case "Testing Custom URL Schemes"* IPC Mechanisms (Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers): check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"* User interface
+The source code should be checked if any functionality of the app is exposed, through:
+
+- Custom URL schemes: check also the test case "Testing Custom URL Schemes"
+- IPC Mechanisms (Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers): check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"
+- User interface
 
 An example for a vulnerable IPC mechanisms is listed below.
 
@@ -231,7 +241,10 @@ Even if the risk is only locally on the device itself, it is possible for malici
 
 #### Remediation
 
-All functions in the app that process data that is coming from external and through the UI should be validated.* For input coming from the user interface Android Saripaar v2<sup>[1]</sup> can be used.* For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if the value is alphanumeric<sup>[2]</sup>.
+All functions in the app that process data that is coming from external and through the UI should be validated.
+
+- For input coming from the user interface Android Saripaar v2<sup>[1]</sup> can be used.
+- For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if the value is alphanumeric<sup>[2]</sup>.
 
 ```java
 public boolean isAlphaNumeric(String s){
@@ -274,7 +287,10 @@ Alternatively to validation functions type conversion by using `Integer.parseInt
 
 Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
 
-As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a web page in their mobile browser, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to:* financial loss for the victims if messages are sent to premium services,* disclosing the phone number if messages are sent to predefined addresses that collect phone numbers or* rigging votes for talent shows.
+As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a web page in their mobile browser, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to:
+
+- financial loss for the victims if messages are sent to premium services,
+- disclosing the phone number if messages are sent to predefined addresses that collect phone numbers or* rigging votes for talent shows.
 
 Once a URL scheme is defined, multiple apps can register for any available scheme. For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
 
@@ -376,7 +392,14 @@ N/A
 
 During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC, these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
-The following is a list of Android IPC Mechanisms that may expose sensitive data:* Binders<sup>[1]</sup>* Services<sup>[2]</sup> * Bound Services<sup>[9]</sup> * AIDL<sup>[10]</sup>* Intents<sup>[3]</sup>* Content Providers<sup>[4]</sup>
+The following is a list of Android IPC Mechanisms that may expose sensitive data:
+
+-  Binders<sup>[1]</sup>
+-  Services<sup>[2]</sup>
+-  Bound Services<sup>[9]</sup>
+-  AIDL<sup>[10]</sup>
+-  Intents<sup>[3]</sup>
+-  Content Providers<sup>[4]</sup>
 
 #### Static Analysis
 
@@ -395,7 +418,10 @@ For more information about the content providers, please refer to the test case 
 
 Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, content providers can be used to access database information, while services can be probed to see if they return data. Also broadcast receivers can leak sensitive information if probed or sniffed.
 
-In the following we will use two example apps and give examples on how to identify vulnerable IPC components: - "Sieve" <sup>[12]</sup> - "Android Insecure Bank" <sup>[13]</sup>
+In the following we will use two example apps and give examples on how to identify vulnerable IPC components: 
+
+- "Sieve" <sup>[12]</sup> 
+- "Android Insecure Bank" <sup>[13]</sup>
 
 ##### Activities
 
@@ -689,13 +715,27 @@ This allows the WebView to interpret JavaScript and execute it's command.
 
 #### Dynamic Analysis
 
-A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an App:* Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.* Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.* Malware tampering local files that are loaded by the WebView.
+A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an App:
 
-In order to address these attack vectors, the outcome of the following checks should be verified:* All functions offered by the endpoint need to be free of stored XSS<sup>[4]</sup>.* The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means: * whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"), * the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or * the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")* Only files within the App data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
+- Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
+- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
+- Malware tampering local files that are loaded by the WebView.
+
+In order to address these attack vectors, the outcome of the following checks should be verified:
+
+- All functions offered by the endpoint need to be free of stored XSS<sup>[4]</sup>.
+- The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means: 
+  - whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"), 
+  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or 
+  - the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")
+- Only files within the App data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 #### Remediation
 
-JavaScript is disabled by default in a WebView and if not needed shouldn't be enabled. This reduces the attack surface and potential threats to the App. If JavaScript is needed it should be ensured:* that the communication relies consistently on HTTPS to protect the HTML and JavaScript from tampering while in transit.* that JavaScript and HTML is only loaded locally from within the App data directory or from trusted web servers.
+JavaScript is disabled by default in a WebView and if not needed shouldn't be enabled. This reduces the attack surface and potential threats to the App. If JavaScript is needed it should be ensured:
+
+- that the communication relies consistently on HTTPS to protect the HTML and JavaScript from tampering while in transit.
+- that JavaScript and HTML is only loaded locally from within the App data directory or from trusted web servers.
 
 The cache of the WebView should also be cleared in order to remove all JavaScript and locally stored data, by using `clearCache()`<sup>[2]</sup> when closing the App.
 
@@ -1119,15 +1159,21 @@ Static analysis depends on the library being used. In case of the need to counte
 
 When using an ORM library, verify that the the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
 
-\**`OrmLite`\*\* Search the source code for the following keywords: - `import com.j256.*`
--`import com.j256.dao`
--`import com.j256.db`
--`import com.j256.stmt`
--`import com.j256.table\`
+**`OrmLite`** Search the source code for the following keywords: 
+
+- `import com.j256.*`
+- `import com.j256.dao`
+- `import com.j256.db`
+- `import com.j256.stmt`
+- `import com.j256.table\`
 
 Please make sure that logging is disabled.
 
-\*\*`SugarORM`\*\* Search the source code for the following keywords: - `import com.github.satyan` - `extends SugarRecord<Type>` - in the AndroidManifest, there will be `meta-data` entries with values such as `DATABASE`, `VERSION`, `QUERY_LOG` and `DOMAIN_PACKAGE_NAME`.
+**`SugarORM`** Search the source code for the following keywords:
+
+- `import com.github.satyan`
+- `extends SugarRecord<Type>`
+- in the AndroidManifest, there will be `meta-data` entries with values such as `DATABASE`, `VERSION`, `QUERY_LOG` and `DOMAIN_PACKAGE_NAME`.
 
 Make sure that `QUERY_LOG` is set to false.
 
@@ -1173,7 +1219,12 @@ There are a few generic remediation steps one can always take:
 2.	Make sure that keys used for step 1 cannot be extracted easily. Instead, the user and/or application instance should be propperly authenticated/authorized to obtain the keys to use the data. See the storage data chapter for more details.
 3.	Make sure that the data within the de-serialized Object is carefully validated before you can actively use it (e.g. no exploit of business/application logic).
 
-In case of a high-risk application with a focus on availability, we would recommend to only use `Serializable` when the Classes that are serialized are stable. Second, we would recommend to rather not use reflection based persistence unless the reflection method strings are propperly encrypted and other forms of logic exploiting have been implemented. See the anti-reverse-engineering chapter for more details.
+In case of a high-risk application with a focus on availability, we would recommend to only use `Serializable` when the Classes that are serialized are stable. Second, we would recommend to rather not use reflection based persistence because:
+
+- The attacker could possibly find the signature of the method due to the String based argument
+- The attacker might be able to manipulate the reflection based steps in order to execute business logic.
+
+See the anti-reverse-engineering chapter for more details.
 
 #### References
 
@@ -1236,7 +1287,12 @@ If this library is used, code like the following might be used for root detectio
         }
 ```
 
-If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:* Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.* Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.* Checking for installed Apps that allow or support rooting of a device, like verifying the presence of *Superuser.apk*.* Checking available commands, like is it possible to execute `su` and being root afterwards.
+If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:
+
+- Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
+- Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
+- Checking for installed Apps that allow or support rooting of a device, like verifying the presence of *Superuser.apk*.
+- Checking available commands, like is it possible to execute `su` and being root afterwards.
 
 #### Dynamic Analysis
 
