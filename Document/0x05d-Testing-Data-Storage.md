@@ -893,7 +893,7 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 
 #### Overview
 
-Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups.
+Like other modern mobile operating systems Android offers auto-backup features. The backups usually include copies of the data and settings of all apps installed on the device. An obvious concern is whether sensitive user data stored by the app might unintentionally leak to those data backups.
 
 Given its diverse ecosystem, Android has a lot of backup options to account for.
 

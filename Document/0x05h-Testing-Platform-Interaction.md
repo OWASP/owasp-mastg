@@ -83,7 +83,7 @@ throw new SecurityException();
 
 #### Dynamic Analysis
 
-Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the the custom permissions defined by the app:
+Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the custom permissions defined by the app:
 
 ```bash
 dz> run app.package.info  -a com.android.mms.service
