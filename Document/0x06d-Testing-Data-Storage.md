@@ -70,7 +70,6 @@ iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to 
 
 Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
-
 #### Static Analysis
 
 When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
@@ -251,7 +250,6 @@ Here is a sample in swift with which you can create the keys as follows (notice 
 - [15] Keychain concepts - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html
 - [16] Realm Objective-C - https://realm.io/docs/objc/latest/
 - [17] Realm Swift - https://realm.io/docs/swift/latest/
-
 
 ### Testing for Sensitive Data in Logs
 
@@ -584,19 +582,19 @@ NSFileCoordinator<sup>[6]</sup> methods run synchronously, so your code will blo
 
 ##### Overview
 
--- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Static Analysis
 
--- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Dynamic Analysis
 
--- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Remediation
 
--- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### References
 
@@ -611,7 +609,7 @@ NSFileCoordinator<sup>[6]</sup> methods run synchronously, so your code will blo
 - CWE
 
 #### Info
--- TODO --
+<!-- TODO -->
 
 
 ### Testing for Sensitive Data in Backups
@@ -796,23 +794,13 @@ This will cause the background image to be set to the "overlayImage.png" instead
 
 ### Testing for Sensitive Data in Memory
 
--- TODO [Add content for "Testing for Sensitive Data in Memory"] --
-
 #### Overview
-
--- TODO
 
 #### Static Analysis
 
--- TODO
-
 #### Dynamic Analysis
 
--- TODO
-
 #### Remediation
-
--- TODO
 
 #### References
 
@@ -826,27 +814,25 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - CWE: -- TODO [Add link to CWE issue] --
 
 #### Info
--- TODO
-
 
 
 ### Testing the Device-Access-Security Policy
 
 #### Overview
 
--- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] -->
 
 #### Static Analysis
 
--- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] -->
 
 #### Dynamic Analysis
 
--- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] -->
 
 #### Remediation
 
--- TODO [Add remediation of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add remediation of "Testing the Device-Access-Security Policy"] -->
 
 #### References
 
@@ -860,7 +846,7 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - CWE: -- TODO [Add link to CWE issue] --
 
 #### Info
--- TODO
+<!-- TODO -->
 
 
 ### Verifying User Education Controls
@@ -875,27 +861,27 @@ The following list shows potential warnings or advises for a user when opening t
 * If the user is installing the app on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the app on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
--- TODO [What else can be a warning on iOS?] --
+<!-- TODO [What else can be a warning on iOS?] -->
 
 #### Static Analysis
 
--- TODO [Add content for static analysis of "Verifying User Education Controls"] --
+<!-- TODO [Add content for static analysis of "Verifying User Education Controls"] -->
 
 #### Dynamic Analysis
 
 After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
 
--- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] --
+<!-- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] -->
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
 
--- TODO [Further develop remediation of "Verifying User Education Controls"] --
+<!-- TODO [Further develop remediation of "Verifying User Education Controls"] -->
 
 #### References
 
--- TODO [Add references for "Verifying User Education Controls"] --
+<!-- TODO [Add references for "Verifying User Education Controls"] -->
 
 ##### OWASP MASVS
 
@@ -909,4 +895,4 @@ Warnings should be implemented that address the key points listed in the overvie
 - CWE: -- TODO [Add link to CWE issue for "Verifying User Education Controls"] --
 
 #### Info
--- TODO
+<!-- TODO -->
