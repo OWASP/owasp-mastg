@@ -385,7 +385,7 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are two plugins available for Burp, which are Burp-non-HTTP-Extension<sup>[28]<sup> and Mitm-relay<sup>[27]<sup> that leverages Burp to visualize XMPP traffic.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[28]</sup> and Mitm-relay<sup>[27]</sup> that visualize XMPP traffic.
 
 As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
