@@ -121,7 +121,7 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 
 #### Runtime Analysis
 
--- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] --
+<!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
 
 #### Traffic Analysis
 
