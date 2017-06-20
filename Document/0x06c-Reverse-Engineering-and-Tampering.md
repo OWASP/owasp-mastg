@@ -6,7 +6,7 @@
 
 #### XCode and iOS SDK
 
-Xcode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is Xcode 8 and it can be downloaded from the official Apple website<sup>[1]</sup>.
+XCode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is XCode 8 which can be downloaded from the official Apple website<sup>[1]</sup>.
 
 The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be downloaded from the Official Apple website as well<sup>[2]</sup>.
 
@@ -284,7 +284,6 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 <!-- TODO Hooking native functions -->
 <!-- TODO Hooking objective-C methods -->
 
-
 Cycript tricks:
 
 http://iphonedevwiki.net/index.php/Cycript_Tricks
@@ -302,7 +301,6 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 - [5] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
 - [6] MachOView - https://sourceforge.net/projects/machoview/
 - [7] IPA Installer 
-- [8] Damn Vulnerable iOS app
-- [9] Hopper -
+- [8] Damn Vulnerable iOS app - http://damnvulnerableiosapp.com/
+- [9] Hopper- https://www.hopperapp.com
 - [10] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
-
