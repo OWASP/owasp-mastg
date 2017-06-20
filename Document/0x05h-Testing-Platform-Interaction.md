@@ -1,5 +1,4 @@
-Testing Platform Interaction on Android
----------------------------------------
+## Testing Platform Interaction on Android
 
 ### Testing App Permissions
 
