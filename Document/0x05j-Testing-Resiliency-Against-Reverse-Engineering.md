@@ -585,7 +585,7 @@ When dealing with obfuscated apps, you'll often find that developers purposely "
 
 At first glance, the code looks similar to the prior challenge. A class called "CodeCheck" is responsible for verifying the code entered by the user. The actual check appears to happen in the method "bar()", which is declared as a *native* method.
 
--- TODO [Example for Bypassing Debugger Detection] --
+<!-- TODO [Example for Bypassing Debugger Detection] -->
 
 ```java
 package sg.vantagepoint.uncrackable2;
@@ -1236,10 +1236,6 @@ Work on bypassing the checks using the following techniques:
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
-#### Effectiveness Assessment
-
-
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -1248,23 +1244,17 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 ##### OWASP MASVS
 
--- TODO [Update reference "VX.Y" below and description] --
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+- v8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
 
 ##### CWE
--- TODO [Add relevant CWE for "Testing Memory Integrity Checks"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+
+N/A
 
 ##### Info
 
 - [1] Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. "Detecting GOT Overwrites", p. 743.
 - [2] Netitude Blog - "Who owns your runtime?" - https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/
 - [3] dead && end blog - Android Anti-Hooking Techniques in Java - http://d3adend.org/blog/?p=589
-
-##### Tools
-
--- TODO [Add link to relevant tools for "Testing Memory Integrity Checks"] --
-* Enjarify - https://github.com/google/enjarify
 
 ### Testing Device Binding
 
@@ -1383,7 +1373,7 @@ Lastly register the service in your AndroidManifest:
 When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
 
 Please note that Firebase has support for InstanceID as well <sup>[4]</sup>.
--- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] --
+<!-- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] -->
 
 ##### IMEI & Serial
 
@@ -1535,7 +1525,7 @@ Attempt to decompile the bytecode and disassemble any included libary files, and
 - String resources and strings in binaries are encrypted;
 - Code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
 
-For a more detailed assessment, you need to have a detailed understanding of the threats defended against and the obfuscation methods used. Refer to the "Assessing Obfuscation" section of the  "Assessing Software Protection Schemes" chapter for more information.
+For a more detailed assessment, you need to have a detailed understanding of the threats defended against and the obfuscation methods used. Refer to the "Assessing Obfuscation" section of the "Assessing Software Protection Schemes" chapter for more information.
 
 #### References
 
