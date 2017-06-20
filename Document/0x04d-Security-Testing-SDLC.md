@@ -1,4 +1,4 @@
-## Security Testing in the Software Development Lifecycle
+## Security Testing in the Software Development Life Cycle
 
 The history of software development is not that old after all, and it is easy to see that, rapidly, teams have stopped developing programs without any framework: we have all experienced the fact that, as the number of lines of code grows, a minimal set of rules are needed in order to keep work under control, meet deadlines, quality and budgets.
 
