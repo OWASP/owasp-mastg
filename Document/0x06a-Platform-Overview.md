@@ -22,7 +22,7 @@ The iOS security architecture makes heavy use of hardware-based security feature
 
 The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encrytion. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
-To enable secure deletion of sensitive data on flash memory, iOS devices inlcude a feature called Effaceable Storage. This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks <sup>[6]</sup>.
+To enable secure deletion of sensitive data on flash memory, iOS devices include a feature called Effaceable Storage. This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks <sup>[6]</sup>.
 
 #### Secure Boot
 
@@ -72,7 +72,7 @@ ASLR is a technique that does the job of randomizing the memory location of the 
 
 Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions. 
 
--- TODO [Further develop section on iOS General Exploit Mitigation] --
+<!-- TODO [Further develop section on iOS General Exploit Mitigation] -->
 
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
@@ -148,7 +148,7 @@ $ ipainstaller App_in_scope.ipa
 
 Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison <sup>[1]</sup>.
 
--- TODO [Develop section on iOS Code Signing and Encryption] --
+<!-- TODO [Develop section on iOS Code Signing and Encryption] -->
 
 In addition to code signing, *FairPlay Code Encryption* is applied to apps downloaded from the App Store. Originally, FairPlay was developed as a means of DRM for multimedia content purchased via iTunes. In that case, encryption was applied to MPEG and Quicktime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair is created and assigned to your account. The private key is stored securely on your device. This means that Fairplay-encrypted code can be decrypted only on devices associated with your account -- TODO [Be more specific] --. The usual way to obtain reverse FairPlay encryption is to run the app on the device and then dump the decrypted code from memory (see also "Basic Security Testing on iOS").
 

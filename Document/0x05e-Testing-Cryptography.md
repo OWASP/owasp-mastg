@@ -40,7 +40,7 @@ provider: AndroidKeyStore1.0 (Android KeyStore security provider)
 ```
 
 
-For some applications that support older versions of Android, bundling an up-to-date library may be the only option. SpongyCastle (a repackaged version of BouncyCastle) is a common choice in these situations. Repackaging is necessary because BouncyCastle is included in the Android SDK. The latest version of SpongyCastle <sup>[6]</sup> likely fixes issues encountered in the earlier versions of BouncyCastle <sup>[7]</sup> that were included in Android. Note that the BouncyCastle libraries packed with Android are often not as complete as their counterparts from the Legion of the BounceyCastle. Lastly: bear in mind that packing large libraries such as SpongyCastle will often lead to a multidexed Android application.
+For some applications that support older versions of Android, bundling an up-to-date library may be the only option. SpongyCastle (a repackaged version of BouncyCastle) is a common choice in these situations. Repackaging is necessary because BouncyCastle is included in the Android SDK. The latest version of SpongyCastle <sup>[6]</sup> likely fixes issues encountered in the earlier versions of BouncyCastle <sup>[7]</sup> that were included in Android. Note that the BouncyCastle libraries packed with Android are often not as complete as their counterparts from the Legion of the BouncyCastle. Lastly: bear in mind that packing large libraries such as SpongyCastle will often lead to a multidexed Android application.
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
@@ -134,12 +134,6 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with the 4096-bit key (i.e., modulus size).
 
-
--- TODO Add the pre-Marshmallow AES example using BC --
-
-
-
-
 #### Static Analysis
 
 Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
@@ -155,12 +149,7 @@ Ensure that the best practices outlined in the Cryptography for Mobile Apps chap
 
 #### Remediation
 
-See the Remediation section in the Cryptography for Mobile Apps chapter.
-
--- REVIEW --
-
-Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations.
-
+Use cryptographic algorithm configurations that are currently considered strong, such those from NIST<sup>1</sup> and BSI<sup>2</sup> recommendations. See also the "Remediation" section in the "Cryptography for Mobile Apps" chapter.
 
 #### References
 
@@ -170,20 +159,13 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 ##### OWASP MASVS
 
--- REVIEW --
-
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
 
 ##### CWE
 
--- REVIEW --
-
 * CWE-326: Inadequate Encryption Strength
 
-
 ##### Info
-
--- REVIEW --
 
 - [1] NIST recommendations (2016) - https://www.keylength.com/en/4/
 - [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
@@ -191,7 +173,7 @@ Use cryptographic algorithm configurations that are currently considered strong,
 - [4] Credential storage enhancements in Android 4.3 (August 21, 2013) - https://nelenkov.blogspot.co.uk/2013/08/credential-storage-enhancements-android-43.html
 - [5] Cipher documentation - https://developer.android.com/reference/javax/crypto/Cipher.html
 - [6] Spongy Castle - https://rtyley.github.io/spongycastle/
-- [7] CVE Details Bouncey Castle - https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html
+- [7] CVE Details Bouncy Castle - https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html
 - [8] Provider - https://developer.android.com/reference/java/security/Provider.html
 
 ### Testing Random Number Generation

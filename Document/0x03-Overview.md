@@ -36,7 +36,7 @@ Mobile app architectures also increasingly incorporate authorization frameworks 
 
 ### Interaction with the Mobile Platform
 
-The controls in this group ensure that the app uses platform APIs and standard components in a secure manner. Additionally, the controls cover communication between apps (IPC).
+Mobile operating system architectures differ from that of classical Desktop architectures in important ways. For example, all mobile OSes implement app permission systems that regulate access to specific APIs. They also offer more more (Android) or less (iOS) rich inter-process communication facilities that enable apps to exchange signals and data. These platform specific features come with their own set of pitfalls. For example, if IPC APIs are used incorrectly, sensitive data or functionality might be unintentionally exposed to other apps running on the device.
 
 ### Code Quality and Exploit Mitigation
 
@@ -66,10 +66,10 @@ All requirements specified in the MASVS are described in technical detail in the
 
 The guide is organized as follows:
 
-- In the Testing Processes and Techniques Section, we present the mobile app security testing methodology, vulnerability analysis techniques, security testing in the SDLC, and vulnerability analysis techniques.
+- In the general testing guide (the following few chapters), we present the mobile app security testing methodology, and talk about general vulnerability analysis techniques as they apply to mobile application security. 
 
 - The Android Testing Guide covers the everything specific to the Android platform, including security basics, security test cases, and reverse engineering and tampering techniques and preventions.
 
 - The iOS Testing Guide Testing Guide covers everything specific to iOS, including an overview of the iOS OS, security testing, reverse engineering and anti-reversing.
 
-- The appendix presents technical test cases that apply independent of mobile OS, such as authentication and session management, network communications and cryptography. We also include a methodology for assessing software protection schemes.
+- The appendix presents additional technical test cases that are OS-independent, such as authentication and session management, network communications and cryptography. We also include a methodology for assessing software protection schemes.

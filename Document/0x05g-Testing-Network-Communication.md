@@ -56,7 +56,7 @@ TrustManager[] trustAllCerts = new TrustManager[] {
 context.init(null, trustAllCerts, new SecureRandom());
 ```
 
-##### Hostname verification
+##### Hostname Verification
 
 Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
 
@@ -100,7 +100,6 @@ A dynamic analysis approach will require usage of intercept proxy. To test impro
 
 Ensure, that the hostname and certificate is verified correctly. Examples and common pitfalls can be found in the official Android documentation<sup>[3]</sup>.
 
-
 #### References
 
 #### OWASP Mobile Top 10 2016
@@ -122,7 +121,7 @@ Ensure, that the hostname and certificate is verified correctly. Examples and co
 * [5] Configuring an Android device to work with Burp -  https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
 * [6] Announcing CERT Tapioca for MITM Analysis - https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html
 * [7] Downloading the CERT Tapioca Virtual Machine - http://www.cert.org/download/mitm/CERT_Tapioca.ova
-* [8] Finding Android SSL vulnerabilites with CERT Tapioca - https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
+* [8] Finding Android SSL vulnerabilities with CERT Tapioca - https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
 
 
 ### Testing Custom Certificate Stores and SSL Pinning
@@ -198,7 +197,7 @@ The SSL pinning process should be implemented as described on the static analysi
 * [3] okhttp library - https://github.com/square/okhttp/wiki/HTTPS
 
 
-### Testing used connectivity and communication libraries
+### Testing the Security Provider
 
 #### Overview 
 Android relies on a security provider to provide SSL/TLS based connections. The problem with this security provider (for instance OpenSSL) which is packed with the device, is that it often has bugs and/or vulnerabilities<sup>[1]</sup>.
@@ -361,7 +360,8 @@ public class MainActivity extends Activity
 
 ```
 
----TODO: {What to do in case of the NDK?}
+<!-- TODO: {What to do in case of the NDK?} -->
+
 #### References
 ##### OWASP Mobile Top 10 2016
 ##### OWASP MASVS
@@ -370,7 +370,7 @@ public class MainActivity extends Activity
 
 ##### CWE
 
--- {TODO: add CWE references }
+<!-- {TODO: add CWE references } -->
 
 ##### Info
 

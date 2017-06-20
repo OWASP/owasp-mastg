@@ -1,18 +1,12 @@
 ## Mobile App Security Testing
 
-You'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry. Throughout the guide, we'll use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. Often (but not necessarily) this is done in the context of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-A few key points to consider:
-
-- It doesn't make a lot of sense to talk of mobile app "penetration testing" because there's nothing to penetrate.
-
-- As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. The tester always has at least access to the compiled app, and for someone who can read bytecode and binary code (or use a decompiler), having the compiled app is pretty much equivalent to having the source code.
-
-In this guide, we'll cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is automating security tests during earlier stages of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a big difference in the high-level methodology and level of interaction with the client.
+In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
 
 ### Security Testing the Old-School Way
 
-The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test. It is split into four sections:
+The classical approach is to perform all-around security testing of the mobile app and its environment on the final or near-final build of the app. In that case, we recommend using the Mobile App Security Verification Standard (MASVS) and checklist as a reference. A typical security test is structured as follows.
 
 * **Preparation** - defining the scope of security testing, such as which security controls are applicable, what goals the development team/organization have for the testing, and what counts as sensitive data in the context of the test.
 * **Intelligence Gathering** - involves analyzing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
@@ -57,7 +51,7 @@ It may be impossible to detect leakage of sensitive data without a firm definiti
 
 Intelligence gathering involves the collection of information about the architecture of the app, the business use cases it serves, and the context in which it operates. Such information may be broadly divided into "environmental" and "architectural".
 
-#### Environmental information
+#### Environmental Information
 
 Environmental information concerns understanding:
 
@@ -66,7 +60,7 @@ Environmental information concerns understanding:
 - Stakeholders and investors. Understanding who is interested in and responsible for the app.
 - Internal processes, workflows and organizational structures. Organization-specific internal processes and workflows may create opportunities for business logic exploits<sup>[2]</sup>.
 
-#### Architectural information
+#### Architectural Information
 
 Architectural information concerns understanding:
 
@@ -81,13 +75,15 @@ Threat Modeling involves using the results of the information gathering phase to
 
 The threat modeling guidelines defined by OWASP<sup>[3]</sup> are generally applicable to mobile apps.
 
-<!-- are there any threat Modeling techniques specially applicable to mobile apps? -->
-
 ### Vulnerability Analysis
+
+#### White-box versus Black-box
+
+As far as the mobile app itself is concerned, there isn't really a difference between white-box and black-box testing. The tester has access to at least the compiled app, and with a good decompiler and disassembler that's pretty much equivalent to having the source code.
 
 #### Static Analysis
 
-When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls.In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
+When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
 
 #### Automatic Code Analysis
 
@@ -95,11 +91,11 @@ Automated analysis tools check the source code for compliance with a predefined 
 
 While some static code analysis tools do encapsulate a deep knowledge of the underlying rules and semantics required to perform analysis of mobile apps, they can produce a high number of false positives, particularly if the tool is not configured properly for the target environment. The results must therefore always be reviewed by a security professional.
 
-A full list of tools for static analysis can be found in the chapter "Testing tools".
+A list of static analysis tools can be found in the chapter "Testing tools".
 
 #### Manual Code Analysis
 
-In manual code analysis, a human reviewer manually analyses the source code of the mobile application for security vulnerabilities. Methods range from a basic keyword search with grep to identify usages of potentially vulnerable code patterns, to detailed line-by-line reading of the source code. IDEs often provide basic code review functionality and can be extended through different tools to assist in the reviewing process.
+In manual code analysis, a human reviewer manually analyzes the source code of the mobile application for security vulnerabilities. Methods range from a basic keyword search with grep to identify usages of potentially vulnerable code patterns, to detailed line-by-line reading of the source code. IDEs often provide basic code review functionality and can be extended through different tools to assist in the reviewing process.
 
 A common approach is to identify key indicators of security vulnerabilities by searching for certain APIs and keywords. For example, database-related method calls like "executeStatement" or "executeQuery" are key indicators which may be of interest. Code locations containing these strings are good starting points for manual analysis.
 
@@ -125,7 +121,7 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 
 #### Runtime Analysis
 
--- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] --
+<!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
 
 #### Traffic Analysis
 
@@ -134,7 +130,7 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 * Configuring an Android Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
 * Configuring an iOS Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 
-In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyse the traffic:
+In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
 * Mallory - https://github.com/intrepidusgroup/mallory
 * Wireshark - https://www.wireshark.org/
 
@@ -155,27 +151,7 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 * **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
 
-* **Fuzz Vectors**<sup>[6]</sup> - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behaviour in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
-
-### Common Pitfalls
-
-#### False Positives From Web App Scanners
-
-A typical reflected XSS attack is executed by sending a URL to the victim(s), which for example can contain a payload to connect to some exploitation framework like BeeF<sup>[2]</sup>. When clicking on it a reverse tunnel is established with the Beef server in order to attack the victim(s). As a WebView is only a slim browser, it is not possible for a user to insert a URL into a WebView of an app as no address bar is available. Also, clicking on a link will not open the URL in a WebView of an app, instead it will open directly within the default browser of the respective mobile device. Therefore, a typical reflected Cross-Site Scripting attack that targets a WebView in an app is not applicable and will not work.
-
-If an attacker finds a stored Cross-Site Scripting vulnerability in an endpoint, or manages to get a Man-in-the-middle (MITM) position and injects JavaScript into the response, then the exploit will be sent back within the response. The attack will then be executed directly within the WebView. This can become dangerous in case:
-
-* JavaScript is not deactivated in the WebView (see OMTG-ENV-005)
-* File access is not deactivated in the WebView (see OMTG-ENV-006)
-* The function addJavascriptInterface() is used (see OMTG-ENV-008)
-
-In summary, a reflected Cross-Site Scripting is no concern for a mobile App, but a stored Cross-Site Scripting vulnerability or MITM injected JavaScript can become a dangerous vulnerability if the WebView if configured insecurely.
-
-The same problems with reflected XSS also applied to CSRF attacks. A typical CSRF attack is executed by sending a URL to the victim(s) that contains a state changing request like creation of a user account or triggering a financial transaction. Just as with XSS, it is not possible for a user to insert a URL into a WebView of an app. Therefore a typical CSRF attack that targets a WebView in an app is not applicable.
-
-The basis for CSRF attacks, access to session cookies of all browser tabs and attaching them automatically if a request to a web page is executed is not applicable on mobile platforms. This is the default behavior of full blown browsers. Every app has, due to the sandboxing mechanism, it's own web cache and stores it's own cookies, if WebViews are used. Therefore a CSRF attack against a mobile app is by design not possible as the session cookies are not shared with the Android browser.
-
-Only if a user logs in by using the Android browser (instead of using the mobile App) a CSRF attack would be possible, as then the session cookies are accessible for the browser instance.
+* **Fuzz Vectors**<sup>[6]</sup> - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
 
 #### References
 
