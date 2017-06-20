@@ -133,7 +133,7 @@ Typical workflow for iOS Application test is following:
 
 #### With Source Code
 
--- TODO [Add content on security Static Analysis of an iOS app with source code] --
+<!-- TODO [Add content on security Static Analysis of an iOS app with source code] -->
 
 #### Without Source Code
 
@@ -174,8 +174,6 @@ To save the console output to a text file, click the circle with a downward-poin
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
 
 ##### Setting up a Web Proxy
-
-
 
 #### Dynamic Analysis On Jailbroken Devices
 
@@ -247,8 +245,7 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
--- TODO [Write an IntroSpy howto] --
-
+<!-- TODO [Write an IntroSpy howto] -->
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
