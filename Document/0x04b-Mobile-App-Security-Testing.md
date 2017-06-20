@@ -1,12 +1,12 @@
 ## Mobile App Security Testing
 
-Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
 
-We cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is automating security tests during earlier stages of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a big difference in the high-level methodology and level of interaction with the client.
+In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
 
 ### Security Testing the Old-School Way
 
-The following sections will show how to use the OWASP mobile application security checklist and testing guide during a security test. It is split into four sections:
+The classical approach is to perform all-around security testing of the mobile app and its environment on the final or near-final build of the app. In that case, we recommend using the Mobile App Security Verification Standard (MASVS) and checklist as a reference. A typical security test is structured as follows.
 
 * **Preparation** - defining the scope of security testing, such as which security controls are applicable, what goals the development team/organization have for the testing, and what counts as sensitive data in the context of the test.
 * **Intelligence Gathering** - involves analyzing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
@@ -51,7 +51,7 @@ It may be impossible to detect leakage of sensitive data without a firm definiti
 
 Intelligence gathering involves the collection of information about the architecture of the app, the business use cases it serves, and the context in which it operates. Such information may be broadly divided into "environmental" and "architectural".
 
-#### Environmental information
+#### Environmental Information
 
 Environmental information concerns understanding:
 
@@ -60,7 +60,7 @@ Environmental information concerns understanding:
 - Stakeholders and investors. Understanding who is interested in and responsible for the app.
 - Internal processes, workflows and organizational structures. Organization-specific internal processes and workflows may create opportunities for business logic exploits<sup>[2]</sup>.
 
-#### Architectural information
+#### Architectural Information
 
 Architectural information concerns understanding:
 
@@ -75,17 +75,15 @@ Threat Modeling involves using the results of the information gathering phase to
 
 The threat modeling guidelines defined by OWASP<sup>[3]</sup> are generally applicable to mobile apps.
 
-<!-- are there any threat Modeling techniques specially applicable to mobile apps? -->
-
 ### Vulnerability Analysis
 
 #### White-box versus Black-box
 
-As far as mobile apps are concerned, there isn't really a difference between white-box and black-box testing. The tester always has at least access to the compiled app, and for someone who can read bytecode and binary code (or use a decompiler), having the compiled app is pretty much equivalent to having the source code.
+As far as the mobile app itself is concerned, there isn't really a difference between white-box and black-box testing. The tester has access to at least the compiled app, and with a good decompiler and disassembler that's pretty much equivalent to having the source code.
 
 #### Static Analysis
 
-When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls.In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
+When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
 
 #### Automatic Code Analysis
 
@@ -93,7 +91,7 @@ Automated analysis tools check the source code for compliance with a predefined 
 
 While some static code analysis tools do encapsulate a deep knowledge of the underlying rules and semantics required to perform analysis of mobile apps, they can produce a high number of false positives, particularly if the tool is not configured properly for the target environment. The results must therefore always be reviewed by a security professional.
 
-A full list of tools for static analysis can be found in the chapter "Testing tools".
+A list of static analysis tools can be found in the chapter "Testing tools".
 
 #### Manual Code Analysis
 
