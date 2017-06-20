@@ -131,7 +131,7 @@ Typical workflow for iOS Application test is following:
 
 ### Static Analysis
 
-#### With Source Code
+<!-- #### With Source Code -->
 
 <!-- TODO [Add content on security Static Analysis of an iOS app with source code] -->
 
@@ -241,9 +241,13 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
+<!--
+
 ##### Security Profiling with Introspy
 
 Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
+
+-->
 
 <!-- TODO [Write an IntroSpy howto] -->
 
@@ -433,7 +437,7 @@ To get more information on testing transport security, please refer to section '
 
 ### References
 
--- [TODO: Clean up references] --
+<!-- [TODO: Clean up references] -->
 
 * [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
 * [2] Clutch - https://github.com/KJCracks/Clutch
@@ -467,3 +471,8 @@ To get more information on testing transport security, please refer to section '
 * [30] IPSW Downloads - https://ipsw.me
 * [31] IntroSpy - http://isecpartners.github.io/Introspy-iOS/
 * [32] IntroSpy Analyzer - https://github.com/iSECPartners/Introspy-Analyzer
+
+* [X] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
+* [X] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
+* [X] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
+* [X] Uninformed - Replacing ptrace() - http://uninformed.org/index.cgi?v=4&a=3&p=14

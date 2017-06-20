@@ -1,24 +1,24 @@
 ## Tampering and Reverse Engineering on iOS
 
-### Environment and Toolset
+<!-- ### Environment and Toolset -->
 
--- TODO [Environment Overview] --
+<!-- TODO [Environment Overview] -->
 
 #### XCode and iOS SDK
 
-Xcode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is Xcode 8 and it can be downloaded from the official Apple website<sup>[7]</sup>.
+Xcode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is Xcode 8 and it can be downloaded from the official Apple website<sup>[1]</sup>.
 
-The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be downloaded from the Official Apple website as well<sup>[8]</sup>.
+The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be downloaded from the Official Apple website as well<sup>[2]</sup>.
 
 #### Utilities
 
-- Class-dump by Steve Nygard<sup>[1]</sup> is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+- Class-dump by Steve Nygard<sup>[3]</sup> is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
 
-- Class-dump-z<sup>[9]</sup> is re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
+- Class-dump-z<sup>[4]</sup> is re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
 
-- Class-dump-dyld by Elias Limneos<sup>[2]</sup> allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
+- Class-dump-dyld by Elias Limneos<sup>[5]</sup> allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
-- MachoOView<sup>[3]</sup> is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+- MachoOView<sup>[6]</sup> is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
 
 - otool is a tool for  displays  specified  parts	of object files or libraries. It understands both Mach-O (Mach object) files and universal file formats.  
 
@@ -42,7 +42,7 @@ In this guide, we'll give an introduction on static and dynamic analysis and ins
 
 ###### From Jailbroken Devices
 
-You can use Saurik's IPA Installer to recover IPAs from apps installed on the device. To do this, install IPA installer console [1] via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
+You can use Saurik's IPA Installer <sup>[7]</sup> to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
 
 ~~~
 iPhone:~ root# ipainstaller -l
@@ -66,7 +66,7 @@ If the app is available on itunes, you are able to recover the ipa on MacOS with
 - Go to your itunes Apps Library
 - Right-click on the app and select show in finder
 
--- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] --
+<!-- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] -->
 
 #### Dumping Decrypted Executables
 
@@ -86,7 +86,7 @@ If the output contains cryptoff, cryptsize and cryptid fields, then the binary i
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 
-Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application [12]. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
+Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application <sup>[8]</sup>. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
 
 ```
 $ unzip DamnVulnerableiOSApp.ipa
@@ -129,7 +129,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method returning BOOL type. 
 A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
 
-Alternatively, you can easily decompile the application with Hopper Disassembler [13]. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
+Alternatively, you can easily decompile the application with Hopper Disassembler <code>[9]</code>. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
 
 Your main focus while performing static analysis would be:
 * Identifying and understanding functions responsible for jailbreak detection and certificate pinning
@@ -151,7 +151,7 @@ $ otool -L <binary>
 
 #### Debugging
 
--- TODO [iOS Debugging Overview] --
+<!-- TODO [iOS Debugging Overview] -->
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the <code>task_for_pid()</code> function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
@@ -159,7 +159,7 @@ Even though the XNU kernel implements the <code>ptrace()</code> system call as w
 
 ##### Using lldb
 
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode <sup>[5]</sup>.
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode <sup>[10]</sup>.
 
 To obtain the executable mount the following DMG image:
 
@@ -208,11 +208,11 @@ debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
 Attaching to process 2670...
 ~~~
 
--- TODO [Solving UnCrackable App with lldb] --
+<!-- TODO [Solving UnCrackable App with lldb] -->
 
 ##### Using Radare2
 
--- TODO [Write Radare2 tutorial] --
+<!-- TODO [Write Radare2 tutorial] -->
 
 ### Tampering and Instrumentation
 
@@ -234,14 +234,17 @@ To spawn the interactive cycript shell, you can run “./cyript” or just “cy
 $ cycyript
 cy#
 ```
-To inject into a running process, we need to first find out the process ID (PID). We can run “cycript -p” with the PID to inject cycript into the process. To illustrate we will inject into springboard.
+To inject into a running process, we need to first find out the process ID (PID). We can run "cycript -p" with the PID to inject cycript into the process. To illustrate we will inject into springboard.
+
 ```bash
 $ ps -ef | grep SpringBoard 
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
 ```
+
 We have injected cycript into SpringBoard, lets try to trigger an alert message on SpringBoard with cycript. 		
+
 ```bash
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
@@ -276,44 +279,30 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
    |    | <_UILayoutGuide: 0x16d92c10; frame = (0 568; 0 0); hidden = YES; layer = <CALayer: 0x16d92cb0>>`
 ```
 
-Obtain references to existing objects
+<!-- TODO Obtain references to existing objects -->
+<!-- TODO Instantiate objects from classes -->
+<!-- TODO Hooking native functions -->
+<!-- TODO Hooking objective-C methods -->
 
-TODO
-
-Instantiate objects from classes
-
-TODO
-
-Hooking native functions
-
-TODO
-
-Hooking objective-C methods
-
-TODO
 
 Cycript tricks:
 
 http://iphonedevwiki.net/index.php/Cycript_Tricks
 
-#### Frida
-
--- TODO [Develop section on Frida] --
+<!-- TODO [Develop section on Frida] -->
 
 ### References
 
--- TODO [Clean up References] --
+<!-- TODO [Clean up References] -->
 
-* [1] Class-dump - http://stevenygard.com/projects/class-dump/
-* [2] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
-* [3] MachOView - https://sourceforge.net/projects/machoview/
-* [3] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
-* [4] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
-* [5] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
-* [6] Uninformed - Replacing ptrace() - http://uninformed.org/index.cgi?v=4&a=3&p=14
-* [7] Apple Xcode IDE - https://developer.apple.com/xcode/ide/
-* [8] Apple iOS 10 SDK - https://developer.apple.com/ios/
-* [9] Class-dump-z - https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki
+- [1] Apple Xcode IDE - https://developer.apple.com/xcode/ide/
+- [2] Apple iOS 10 SDK - https://developer.apple.com/ios/
+- [3] Class-dump - http://stevenygard.com/projects/class-dump/
+- [4] Class-dump-z - https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki
+- [5] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
+- [6] MachOView - https://sourceforge.net/projects/machoview/
+- [7] IPA Installer 
+- [8] Damn Vulnerable iOS app
+- [9] Hopper -
+- [10] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
 
-
-- [x] IDA Pro - https://www.hex-rays.com/products/ida/
