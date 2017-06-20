@@ -168,7 +168,6 @@ In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, a
 
 ##### CWE
 
-
 -- TODO [Add relevant CWE for "Testing If the App is Debuggable"] --
 * CWE-312 - Cleartext Storage of Sensitive Information
 
@@ -183,7 +182,9 @@ In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, a
 
 #### Overview
 
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+<!-- TODO [Give an overview about the functionality and it's potential weaknesses] -->
+
+As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
 
 For native binaries, use a standard tool like nm or objdump to inspect the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unneeded dynamic symbols is also recommended.
 
@@ -230,33 +231,33 @@ Add the following to build.gradle:
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 * M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
+
 * V7.3: "Debugging symbols have been removed from native binaries."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing for Debugging Symbols"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-215 - Information Exposure Through Debug Information
 
 ##### Info
 
-[1] Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
-[2] Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
+- [1] Configuring your application for release - http://developer.android.com/tools/publishing/preparing.html#publishing-configure
+- [2] Debugging with Android Studio - http://developer.android.com/tools/debugging/debugging-studio.html
 
 ##### Tools
 
--- TODO [Add relevant tools for "Testing for Debugging Symbols"] --
-* Enjarify - https://github.com/google/enjarify
-
-
+- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
 
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
+
 StrictMode is a developer tool to be able to detect policy violation, e.g. disk or network access.
 It can be implemented in order to check the usage of good coding practices such as implementing high-performance code or usage of network access on the main thread.
+
 The policy are defined together with rules and different methods of showing the violation of a policy.
 
 Here an example of `StrictMode`.
@@ -282,6 +283,7 @@ public void onCreate() {
 
 ```
 #### Static Analysis
+
 With the purpose to check if `StrictMode` is enabled you could look for the methods `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy`. Most likely they will be in the onCreate() method.
 
 The various detect methods for Thread Policy are<sup>[3]</sup>:
@@ -298,12 +300,15 @@ penaltyDialog() //Show a dialog
 ```
 
 #### Dynamic Analysis
-There are different way of detecting the `StrictMode` and it depends on how the policies' role are implemented. Some of them are:
+
+There are different ways of detecting the `StrictMode` and it depends on how the policies' role are implemented. Some of them are:
+
 * Logcat
 * Warning Dialog
 * Crash of the application
 
 #### Remediation
+
 It's recommended to insert the policy in the `if` statement with `DEVELOPER_MODE` as condition.
 The DEVELOPER_MODE has to be disabled for release build in order to disable `StrictMode` too.
 
@@ -331,6 +336,7 @@ The DEVELOPER_MODE has to be disabled for release build in order to disable `Str
 ### Testing Exception Handling
 
 #### Overview
+
 Exceptions can often occur when an application gets into a non-normal or erroneous state. Both in Java and C++ exceptions can be thrown when such state occurs.
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
