@@ -175,7 +175,7 @@ Defenses can be roughly categorized into the following categories in terms of or
 
 ##### API Layer
 
-Generally speaking, the less your mechanisms relies on operating operating system APIs to work, the more difficult it is to discover and bypass. Also, lower-level calls are more difficult to defeat than higher level calls. To illustrate this, let's have a look at a few examples.
+Generally speaking, the less your mechanisms relies on operating system APIs to work, the more difficult it is to discover and bypass. Also, lower-level calls are more difficult to defeat than higher level calls. To illustrate this, let's have a look at a few examples.
 
 As you have learned in the 
 
