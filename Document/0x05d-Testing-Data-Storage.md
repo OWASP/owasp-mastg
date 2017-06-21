@@ -414,6 +414,23 @@ public static int e(...);
 public static int wtf(...);
 }
 ```
+Please note that the above example only ensures the logging calls will be stripped. Any code for dynamic log statement generation, might be left in the bytecode, making the log statements accessible with a debugger <sup>[3]</sup>. According to the ProGuard author, latest version of ProGuard implement some heuristics to improve on this issue, however there is no guarantee, that complex string builders will be removed.
+To avoid the issue, one may choose to remove logs on source level, instead of compiled bytecode. Bellow is a simple Gradle task which comments out all log statements including any inline string builder.
+```
+afterEvaluate {
+  project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
+    task.dependsOn('removeLogs')
+  }
+ 
+  task removeLogs() {
+    doLast {
+      fileTree(dir: project.file('src')).each { File file ->
+        def out = file.getText("UTF-8").replaceAll("((android\\.util\\.)*Log\\.([ewidv]|wtf)\\s*\\([\\S\\s]*?\\)\\s*;)", "/*\$1*/")
+        file.write(out);
+      }
+    }
+  }
+```
 
 #### References
 
@@ -432,6 +449,7 @@ public static int wtf(...);
 ##### Info
 * [1] Overview of Class Log - http://developer.android.com/reference/android/util/Log.html
 * [2] Debugging Logs with LogCat - http://developer.android.com/tools/debugging/debugging-log.html
+* [3] Removing logs with ProGuard may leak dynamic log statements - https://stackoverflow.com/questions/22713166/removing-log-calls-with-proguard-leaves-behind-stringbuilders
 
 ##### Tools
 * ProGuard - http://proguard.sourceforge.net/
