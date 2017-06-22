@@ -298,13 +298,13 @@ Drozer agent is the component running on the device itself. It can be installed 
 
 * To identify the the list of Activities exported in the target application,execute the following command:
 
- `run app.activity.info -a (package name)`
+  `run app.activity.info -a (package name)`
 
   ![alt text](Images/Android/ainfo.png "Drozer") 
 
  * To launch the activities exported,run the following command:
 
- `dz> run app.activity.start --component (package name) (component name)`
+   `dz> run app.activity.start --component (package name) (component name)`
  
   ![alt text](Images/Android/comp.png "Drozer")
 
@@ -312,7 +312,7 @@ Drozer agent is the component running on the device itself. It can be installed 
 
  * To get the list of exported Broadcast Receivers,run the following command:
 
-  `dz>run app.broadcast.info --package (package name)`
+   `dz>run app.broadcast.info --package (package name)`
 
  ![alt text](Images/Android/broadcast.png "Drozer")
 
@@ -322,7 +322,7 @@ Drozer agent is the component running on the device itself. It can be installed 
 
  * While passing the intent we have to give two inputs “phoneNumber” and “message”
 
-  `adb shell am broadcast -a (action name)  -n (component name ) --es  phonenumber (phonenumber) (component name)  --es message (msg)`
+   `adb shell am broadcast -a (action name)  -n (component name ) --es  phonenumber (phonenumber) (component name)  --es message (msg)`
   
   ![alt text](Images/Android/msg.png "Drozer") 
 
@@ -336,27 +336,27 @@ Here we have used Sieve Application for showcasing the attack on Content Provide
 
 * To identify the the list of content providers exported in the application,execute the following command:
 
- `run app.provider.finduri (package name)`
+  `run app.provider.finduri (package name)`
 
    ![alt text](Images/Android/uri.png "Drozer")
 
  * We can see that there are two similar URIS
 
-	content://com.mwr.example.sieve.DBContentProvider/keys
+   content://com.mwr.example.sieve.DBContentProvider/keys
 
 	&
 
-	content://com.mwr.example.sieve.DBContentProvider/keys/  
+   content://com.mwr.example.sieve.DBContentProvider/keys/  
 
-  * Lets open first URI  : <font face="verdana" color="Blue" font size="2"> content://com.mwr.example.sieve.DBContentProvider/keys</font>,run the following command:
+  * Lets open first URI  : content://com.mwr.example.sieve.DBContentProvider/keys ,run the following command:
 
-     `run app.provider.query (URI)`
-
+  `run app.provider.query (URI)`
 
     ![alt text](Images/Android/1uri.png "Drozer") 
-   Here upon accessing,it  need com.mwr.example.sieve.READ_KEYS permission 
 
-  * Lets open second URI : <font face="verdana" color="Blue" font size="2"> content://com.mwr.example.sieve.DBContentProvider/keys/</font>
+Here upon accessing,it  need com.mwr.example.sieve.READ_KEYS permission 
+
+  * Lets open second URI : <font face="verdana" color="Blue" font size="2">    content://com.mwr.example.sieve.DBContentProvider/keys/</font>
   
      ![alt text](Images/Android/uri2.png "Drozer") 
 
@@ -378,13 +378,13 @@ Here we have used Sieve Application for showcasing the attack on Content Provide
 
     `run app.service.info -a (package name)`
 
-   ![alt text](Images/Android/service.png "Drozer") 
+    ![alt text](Images/Android/service.png "Drozer") 
 
 * To launch the services exported,run the following command: 
 
     `run  app.service.start  --action (action name)  --component (package name) (component name)`
 
-   ![alt text](Images/Android/location.png "Drozer") 
+    ![alt text](Images/Android/location.png "Drozer") 
 
  *  After running the above command notify that the application got crashed
 
