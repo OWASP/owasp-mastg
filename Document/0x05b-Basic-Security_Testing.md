@@ -195,17 +195,11 @@ Drozer is open source software, maintained by MWR InfoSecurity, and can be downl
 
 ###### Installing Drozer
 
-<font face="verdana" color="Green" font size="2">
-**Prerequisites:** 
-</font>
+### Prerequisites:
 
 1. JRE or JDK
 2. Android SDK
 3. An Android emulator 
-
-<font face="verdana" color="Green" font size="2">
-**Installation:**
-</font>
 
 **On Linux:**
 
@@ -224,25 +218,13 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 <!-- TODO: Mac Install instructions -->
 
-**Installing the Agent:**
-
-Drozer agent is the component running on the device itself. It can be installed using Android Debug Bridge (adb).
-
-Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
-
-`$ adb install drozer-agent-2.x.x.apk`
-
 **Starting a Session:**
 
 You should now have the Drozer console installed on your host machine, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
 
-We will use the server embedded in the Drozer Agent to do this.
-
-If using the Android emulator, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415:
-
-`$ adb forward tcp:31415 tcp:31415`
-
 * Drozer Agent can be installed using Android Debug Bridge (adb)
+
+Drozer agent is the component running on the device itself. It can be installed using Android Debug Bridge (adb). Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
 
 		adb install drozer.apk
 
@@ -275,9 +257,7 @@ If using the Android emulator, you need to set up a suitable port forward so tha
  	![alt text](Images/Android/console.png "Drozer")
       
 
- <font face="verdana" color="Green" font size="2">
  **Listing out all the modules**
- </font>
 
  * To show the list of all Drozer modules that can be executed in the current session,give the followming command
 
@@ -285,11 +265,8 @@ If using the Android emulator, you need to set up a suitable port forward so tha
 
    	 ![alt text](Images/Android/list.png "Drozer")
      
-
-<font face="verdana" color="Green" font size="2">
-   **Retrieving package information**  
-  </font> 
-
+  **Retrieving package information**  
+ 
   * To list out all the packages installed on the emulator, run the following command:
 
      `dz>run app.package.list`
@@ -309,10 +286,7 @@ If using the Android emulator, you need to set up a suitable port forward so tha
 
        ![alt text](Images/Android/info.png "Drozer")
   
-
-<font face="verdana" color="Green" font size="2">
    **Identifying the attack surface**    
-</font>
 
 * To identify the exported applications components,run the following command:
  
@@ -320,9 +294,7 @@ If using the Android emulator, you need to set up a suitable port forward so tha
 
    ![alt text](Images/Android/attacksurface.png "Drozer") 
 
-<font face="verdana" color="Green" font size="2">
    **Attacks on exported Activities**
-</font>
 
 * To identify the the list of Activities exported in the target application,execute the following command:
 
@@ -336,9 +308,7 @@ If using the Android emulator, you need to set up a suitable port forward so tha
  
   ![alt text](Images/Android/comp.png "Drozer")
 
-<font face="verdana" color="Green" font size="2">
    **Attacks on Broadcast Receivers**
-</font>
 
  * To get the list of exported Broadcast Receivers,run the following command:
 
@@ -360,9 +330,7 @@ If using the Android emulator, you need to set up a suitable port forward so tha
 
   ![alt text](Images/Android/msent.png "Drozer")
 
-<font face="verdana" color="Green" font size="2">
    **Attacks on Content Providers**
-</font>
 
 Here we have used Sieve Application for showcasing the attack on Content Providers:
 
@@ -404,9 +372,7 @@ Here we have used Sieve Application for showcasing the attack on Content Provide
 
      ![alt text](Images/Android/newp.png "Drozer") 
 
-  <font face="verdana" color="Green" font size="2">
    **Attacks on Services**
-</font>   
 
 * To identify the the list of services exported in the application,execute the following command:
 
