@@ -179,7 +179,7 @@ An example for a vulnerable IPC mechanisms is listed below.
 </provider>
 ```
 
-The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. . In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function need to be inspected to detect if any sensitive information is leaked:
+The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function must be inspected to detect if any sensitive information is leaked:
 
 ```java
 @Override
@@ -357,7 +357,7 @@ Defining your own URL scheme and using it can become a risk in this case, if dat
 
 #### Remediation
 
-URL schemes can be used for deeplinking, which is a widespread and convenient methodology for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
+URL schemes can be used for deeplinking, which is a widespread and convenient method for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
 
 Nevertheless data coming in through URL schemes which is processed by the app should be validated, as described in the test case "Testing Input Validation and Sanitization".
 
