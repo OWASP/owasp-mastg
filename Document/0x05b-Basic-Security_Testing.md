@@ -208,13 +208,57 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 **On Mac:**
 
-<!-- TODO: Mac Install instructions -->
+On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by installing OpenSSL manually <sup>[27]</sup>. To install openSSL, run:
+
+```
+$ brew install openssl
+```
+
+Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like pyenv <sup>[28]</sup> is even better, but setting this up is beyond the scope of this book).
+
+Install virtualenv via pip:
+
+```
+$ pip install virtualenv
+```
+
+Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command <code>virtualenv drozer</code>. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library. 
+
+```
+$ virtualenv drozer
+$ source drozer/bin/activate
+(drozer) $
+```
+
+You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a blog post <sup>[27]</sup>. Run the following commands:
+
+```
+$ wget https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz
+$ tar xzvf pyOpenSSL-0.13.tar.gz
+$ cd pyOpenSSL-0.13
+$ sed -i '' 's/X509_REVOKED_dup/X509_REVOKED_dupe/' OpenSSL/crypto/crl.c
+$ python setup.py build_ext -L/usr/local/opt/openssl/lib -I/usr/local/opt/openssl/include
+$ python setup.py build
+$ python setup.py install
+```
+
+With that out of the way, you can install the remaining dependencies.
+
+```
+$ easy_install protobuf==2.4.1 twisted==10.2.0
+```
+
+Finally, download and install the Python .egg from the MWR labs website:
+
+```
+$ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
+$ tar xzf drozer-2.3.4.tar.gz
+$ easy_install drozer-2.3.4-py2.7.egg
+```
 
 **Installing the Agent:**
 
-Drozer agent is the component running on the device itself. It can be installed using Android Debug Bridge (adb).
-
-Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
+Drozer agent is the component running on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/), and install it with adb.
 
 `$ adb install drozer-agent-2.x.x.apk`
 
@@ -338,7 +382,7 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 **XMPP**
 
-The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[26]</sup>.
+The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[29]</sup>.
 
 * Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
 
@@ -363,7 +407,7 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[28]</sup> and Mitm-relay<sup>[27]</sup> that visualize XMPP traffic.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[31]</sup> and Mitm-relay<sup>[30]</sup> that visualize XMPP traffic.
 
 As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
@@ -422,6 +466,8 @@ In a typical mobile app security build, you'll usually want to test a debug buil
 - [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
 - [25] Drozer on GitHub - https://github.com/mwrlabs/drozer
 - [26] Drozer Website - https://labs.mwrinfosecurity.com/tools/drozer/
-- [27] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
-- [28] Mitm-relay - https://github.com/jrmdev/mitm_relay
-- [29] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
+- [27] ropnop Blog - Installing Drozer on OS X El Capitan - https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/
+- [28] pyenv - https://github.com/pyenv/pyenv
+- [29] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
+- [30] Mitm-relay - https://github.com/jrmdev/mitm_relay
+- [31] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
