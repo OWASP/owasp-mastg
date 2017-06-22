@@ -414,8 +414,26 @@ public static int e(...);
 public static int wtf(...);
 }
 ```
-Please note that the above example only ensures the logging calls will be stripped. Any code for dynamic log statement generation, might be left in the bytecode, making the log statements accessible with a debugger <sup>[3]</sup>. According to the ProGuard author, latest version of ProGuard implement some heuristics to improve on this issue, however there is no guarantee, that complex string builders will be removed.
-To avoid the issue, one may choose to remove logs on source level, instead of compiled bytecode. Bellow is a simple Gradle task which comments out all log statements including any inline string builder.
+Please note that the above example only ensures that calls to the logger methods will be removed. However, if the string to be logged is dynamically constructed, the code for constructing the string might remain in the bytecode <sup>[3]</sup>. For example, the following code issues an implicit StringBuilder to construct the log statement:
+```java
+Log.v("Private key [byte format]: " + key);
+```
+The compiled bytecode however, is equivalent to the bytecode of the following log statement, which has the string constructed explicitly:
+```java
+Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+```
+What ProGuard guarantees is the removal of the ```Log.v``` method call. Whether the rest of the code (```new StringBuilder ...```) will be removed depends on the complexity of the code and the ProGuard version used <sup>[4]</sup>.
+This is potentially a security risk, as the (now unused) string leaks plain text data in memory which can be accessed over a debugger or by memory dumping. 
+
+Unfortunately, there is no silver bullet against this issue, but there are few options available:
+
+* Implement a custom logging facility that takes simple arguments and does the construction of the log statements internally.
+```java
+SecureLog.v("Private key [byte format]: ", key);
+```
+Then configure ProGuard to strip its calls.
+
+* Remove logs on source level, instead of compiled bytecode level. Below is a simple Gradle task which comments out all log statements including any inline string builder.
 ```
 afterEvaluate {
   project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
@@ -450,6 +468,7 @@ afterEvaluate {
 * [1] Overview of Class Log - http://developer.android.com/reference/android/util/Log.html
 * [2] Debugging Logs with LogCat - http://developer.android.com/tools/debugging/debugging-log.html
 * [3] Removing logs with ProGuard may leak dynamic log statements - https://stackoverflow.com/questions/22713166/removing-log-calls-with-proguard-leaves-behind-stringbuilders
+* [4] Removing unused strings during ProGuard optimization - https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation
 
 ##### Tools
 * ProGuard - http://proguard.sourceforge.net/
