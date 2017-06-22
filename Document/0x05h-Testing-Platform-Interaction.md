@@ -82,7 +82,7 @@ throw new SecurityException();
 
 #### Dynamic Analysis
 
-Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the the custom permissions defined by the app:
+Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the custom permissions defined by the app:
 
 ```bash
 dz> run app.package.info  -a com.android.mms.service
@@ -179,7 +179,7 @@ An example for a vulnerable IPC mechanisms is listed below.
 </provider>
 ```
 
-The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. . In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function need to be inspected to detect if any sensitive information is leaked:
+The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function must be inspected to detect if any sensitive information is leaked:
 
 ```java
 @Override
@@ -357,7 +357,7 @@ Defining your own URL scheme and using it can become a risk in this case, if dat
 
 #### Remediation
 
-URL schemes can be used for deeplinking, which is a widespread and convenient methodology for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
+URL schemes can be used for deeplinking, which is a widespread and convenient method for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
 
 Nevertheless data coming in through URL schemes which is processed by the app should be validated, as described in the test case "Testing Input Validation and Sanitization".
 
@@ -692,7 +692,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 #### Overview
 
-In Web applications, JavaScript can be injected in many ways by leveraging reflected, stored or DOM based Cross-Site Scripting (XSS). Mobile Apps are executed in a sandboxed environment and when implemented natively do not possess this attack vector. Nevertheless, WebViews can be part of a native App to allow viewing of web pages. Every App has it's own cache for WebViews and doesn't share it with the native Browser or other Apps. WebViews in Android are using the WebKit rendering engine to display web pages but are stripped down to a minimum of functions, as for example no address bar is available. If the WebView is implemented too lax and allows the usage of JavaScript it can be used to to attack the App and gain access to it's data.
+In Web applications, JavaScript can be injected in many ways by leveraging reflected, stored or DOM based Cross-Site Scripting (XSS). Mobile Apps are executed in a sandboxed environment and when implemented natively do not possess this attack vector. Nevertheless, WebViews can be part of a native App to allow viewing of web pages. Every App has it's own cache for WebViews and doesn't share it with the native Browser or other Apps. WebViews in Android are using the WebKit rendering engine to display web pages but are stripped down to a minimum of functions, as for example no address bar is available. If the WebView is implemented too lax and allows the usage of JavaScript it can be used to attack the App and gain access to it's data.
 
 #### Static Analysis
 
@@ -1156,7 +1156,7 @@ Static analysis depends on the library being used. In case of the need to counte
 
 ##### ORM
 
-When using an ORM library, verify that the the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
+When using an ORM library, verify that the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
 
 **`OrmLite`** Search the source code for the following keywords: 
 

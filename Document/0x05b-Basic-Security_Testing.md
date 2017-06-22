@@ -193,7 +193,9 @@ Drozer<sup>[25]</sup> is an Android security assessment framework that allows yo
 
 ###### Installing Drozer
 
-**Building from Source:**
+**On Linux:**
+
+Pre-built packages for many Linux distributions are available on the Drozer website <sup>[26]</sup>. If your distribution is not listed, you can build Drozer from source as follows:
 
 ```
 git clone https://github.com/mwrlabs/drozer/
@@ -204,37 +206,13 @@ python setup.py build
 sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 ```
 
-**Installing .egg: **
+**On Mac:**
 
-```
-sudo easy_install drozer-2.x.x-py2.7.egg
-```
-
-**Building for Debian/Ubuntu:**
-
-```
-sudo apt-get install python-stdeb fakeroot
-git clone https://github.com/mwrlabs/drozer/
-cd drozer
-make apks
-source ENVIRONMENT
-python setup.py --command-packages=stdeb.command bdist_deb
-
-```
-
-**Installing .deb (Debian/Ubuntu):**
-
-```
-sudo dpkg -i deb_dist/drozer-2.x.x.deb
-```
-
-**Installing on Arch Linux:**
-
-`yaourt -S drozer`
+<!-- TODO: Mac Install instructions -->
 
 **Installing the Agent:**
 
-Drozer can be installed using Android Debug Bridge (adb).
+Drozer agent is the component running on the device itself. It can be installed using Android Debug Bridge (adb).
 
 Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/).
 
@@ -242,7 +220,7 @@ Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releas
 
 **Starting a Session:**
 
-You should now have the Drozer console installed on your PC, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
+You should now have the Drozer console installed on your host machine, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
 
 We will use the server embedded in the Drozer Agent to do this.
 
@@ -385,7 +363,7 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are two plugins available for Burp, which are Burp-non-HTTP-Extension<sup>[28]<sup> and Mitm-relay<sup>[27]<sup> that leverages Burp to visualize XMPP traffic.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[28]</sup> and Mitm-relay<sup>[27]</sup> that visualize XMPP traffic.
 
 As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
@@ -442,7 +420,8 @@ In a typical mobile app security build, you'll usually want to test a debug buil
 - [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
 - [23] Ettercap - https://ettercap.github.io
 - [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
-- [25] Drozer - https://github.com/mwrlabs/drozer
-- [26] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
-- [27] Mitm-relay - https://github.com/jrmdev/mitm_relay
-- [28] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
+- [25] Drozer on GitHub - https://github.com/mwrlabs/drozer
+- [26] Drozer Website - https://labs.mwrinfosecurity.com/tools/drozer/
+- [27] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
+- [28] Mitm-relay - https://github.com/jrmdev/mitm_relay
+- [29] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension

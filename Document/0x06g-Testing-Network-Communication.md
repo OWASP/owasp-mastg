@@ -1,6 +1,6 @@
 ## Testing Network Communication in iOS Apps
 
-Almost every every iOS app acts as a client to one or more remote services. As this network communcation usually takes place of the public Internet, and often over untrusted networks such as public Wifi, classical, network based-attacks become a potential issue.
+Almost every iOS app acts as a client to one or more remote services. As this network communcation usually takes place of the public Internet, and often over untrusted networks such as public Wifi, classical, network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of http-based (web-)services, as these protocols are well-documented and supported. On iOS, the <code>NSURLConnection</code> class provides convenience class methods to load URL requests asynchronously and synchronously.
 
