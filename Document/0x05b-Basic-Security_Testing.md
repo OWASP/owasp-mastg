@@ -214,7 +214,7 @@ On Mac, Drozer is a bit more difficult to install due to missing dependencies. S
 $ brew install openssl
 ```
 
-Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like pyenv <sup>[X]</sup> is even better, but setting this up is beyond the scope of this book).
+Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like pyenv <sup>[28]</sup> is even better, but setting this up is beyond the scope of this book).
 
 Install virtualenv via pip:
 
@@ -382,7 +382,7 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 **XMPP**
 
-The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[28]</sup>.
+The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[29]</sup>.
 
 * Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
 
@@ -407,7 +407,7 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[30]</sup> and Mitm-relay<sup>[29]</sup> that visualize XMPP traffic.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[31]</sup> and Mitm-relay<sup>[30]</sup> that visualize XMPP traffic.
 
 As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
@@ -468,6 +468,6 @@ In a typical mobile app security build, you'll usually want to test a debug buil
 - [26] Drozer Website - https://labs.mwrinfosecurity.com/tools/drozer/
 - [27] ropnop Blog - Installing Drozer on OS X El Capitan - https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/
 - [28] pyenv - https://github.com/pyenv/pyenv
-- [28] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
-- [29] Mitm-relay - https://github.com/jrmdev/mitm_relay
-- [30] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
+- [29] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
+- [30] Mitm-relay - https://github.com/jrmdev/mitm_relay
+- [31] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
