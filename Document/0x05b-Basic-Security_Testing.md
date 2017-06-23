@@ -218,7 +218,6 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by installing OpenSSL manually <sup>[27]</sup>. To install openSSL, run:
 
-<<<<<<< HEAD
 ```
 $ brew install openssl
 ```
