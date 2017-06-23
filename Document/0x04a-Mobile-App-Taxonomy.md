@@ -1,6 +1,6 @@
 ## Mobile App Taxonomy
 
-The term "mobile app" refers to self-contained computer programs that are designed to execute on mobile devices .Today, mobile Internet usage has surpassed desktop usage for the first time in history, and mobile apps are the ]most widespread kind of applications][id]. In this guide, we focus on mobile apps designed to run on the Android and iOS operating systems, which cumulatively take more than 99% of the mobile OS market share<sup>[2]</sup>. These apps don't necessarily always run only on mobile devices - they are increasingly used on other device types, such as smart watches, TVs, cars, and embedded systems. In this guide, we'll be using the term "app" to refer to any kinds of apps running on popular mobile OSes.
+The term "mobile app" refers to self-contained computer programs that are designed to execute on mobile devices .Today, mobile Internet usage has surpassed desktop usage for the first time in history, and mobile apps are the [most widespread kind of applications](http://www.idc.com/promo/smartphone-market-share/os "Worldwide Smartphone OS Market Share"). In this guide, we focus on mobile apps designed to run on the Android and iOS operating systems, which cumulatively take more than 99% of the mobile OS market share<sup>[2]</sup>. These apps don't necessarily always run only on mobile devices - they are increasingly used on other device types, such as smart watches, TVs, cars, and embedded systems. In this guide, we'll be using the term "app" to refer to any kinds of apps running on popular mobile OSes.
 
 ### Native App
 
@@ -39,7 +39,7 @@ Following is a non-exhaustive list of more popular frameworks for developing Hyb
 
 ### References
 
-* [1] Worldwide Smartphone OS Market Share - 
+* [1]  - 
 * [2] Mobile internet usage surpasses desktop usage for the first time in history - http://bgr.com/2016/11/02/internet-usage-desktop-vs-mobile
 * [3] Android Design Principles - https://developer.android.com/design/get-started/principles.html
 * [4] Apache Cordova - https://cordova.apache.org/
