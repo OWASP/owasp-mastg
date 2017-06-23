@@ -18,6 +18,14 @@ Of course, depending on the scope of the engagement, such approach may not be po
 
 For both types of testing engagements, the scope should be discussed during the preparation phase. For example, it should be decided whether the security controls should be adjusted. Additional topics to cover are discussed below.
 
+#### Software Needed on the Host PC or Mac
+
+On the laptop or PC you are testing on, you should install at least the following.
+
+1. JRE or JDK
+2. Android SDK
+3. Android device or emulator
+
 ##### OS Versions
 
 Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of Android OS installed on the testing device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS.
@@ -69,14 +77,6 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 * MobSF
 
 It is also possible to simply create an AVD and use this for testing.
-
-#### Software Needed on the Host:
-
-On the laptop or PC you are testing on, you should install at least the following.
-
-1. JRE or JDK
-2. Android SDK
-3. Android device or emulator
 
 ##### Setting Up a Web Proxy on Virtual Device
 
@@ -296,7 +296,7 @@ To show the list of all Drozer modules that can be executed in the current sessi
 dz>list
 ```
 
-**Basic Drozer Commands**
+**Basic Drozer Commands:**
  
 * To list out all the packages installed on the emulator, run the following command:
 
@@ -310,13 +310,9 @@ dz>list
 
        `dz> run app.package.info –a (package name)`
   
-   **Identifying the attack surface**
-
 * To identify the exported applications components,run the following command:
  
   `dz> run app.package.attacksurface (package name)`
-
-   **Attacks on exported Activities**
 
 * To identify the the list of Activities exported in the target application,execute the following command:
 
