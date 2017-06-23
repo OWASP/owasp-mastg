@@ -279,7 +279,7 @@ You should now have the Drozer console installed on your host machine, and the A
 
 Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
 
-<img src="Images/Android/drozer.png" width="300"/>
+![alt text](Images/Chapters/0x05b/server.png "Drozer")
 	   
 By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
 
@@ -288,13 +288,7 @@ $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
 ```	
 
-![alt text](Images/Chapters/0x05b/server.png "Drozer")
-
 To show the list of all Drozer modules that can be executed in the current session use the "list" command.
-
-```bash
-dz>list
-```
 
 **Basic Drozer Commands:**
  
@@ -312,15 +306,15 @@ dz>list
   
 * To identify the exported applications components,run the following command:
  
-  `dz> run app.package.attacksurface (package name)`
+  	`dz> run app.package.attacksurface (package name)`
 
 * To identify the the list of Activities exported in the target application,execute the following command:
 
-  `run app.activity.info -a (package name)`
+  	`run app.activity.info -a (package name)`
 
  * To launch the activities exported,run the following command:
 
-   `dz> run app.activity.start --component (package name) (component name)`
+   	`dz> run app.activity.start --component (package name) (component name)`
 
 **Using Modules:**
 
