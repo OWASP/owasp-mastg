@@ -70,6 +70,14 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 
 It is also possible to simply create an AVD and use this for testing.
 
+#### Software Needed on the Host:
+
+On the laptop or PC you are testing on, you should install at least the following.
+
+1. JRE or JDK
+2. Android SDK
+3. Android device or emulator
+
 ##### Setting Up a Web Proxy on Virtual Device
 
 To set up a HTTP proxy on the emulator follow the following procedure, which works on the Android emulator shipping with Android Studio 2.x:
@@ -191,15 +199,7 @@ When we talk about dynamic analysis of applications that rely on the HTTP(S) pro
 
 Drozer<sup>[25]</sup> is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
 
-Drozer is open source software, maintained by MWR InfoSecurity, and can be downloaded from: [Drozer](https://labs.mwrinfosecurity.com/tools/drozer).
-
 ###### Installing Drozer
-
-### Prerequisites:
-
-1. JRE or JDK
-2. Android SDK
-3. An Android emulator 
 
 **On Linux:**
 
@@ -487,7 +487,7 @@ In a typical mobile app security build, you'll usually want to test a debug buil
 - [11] SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - [12] Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
 - [13] Defeating SSL Pinning in Coin's Android Application -  http://rotlogix.com/2015/09/13/defeating-ssl-pinning-in-coin-for-android/
-- [14] RootBeet - https://github.com/scottyab/rootbeer
+- [14] RootBeer - https://github.com/scottyab/rootbeer
 - [15] Android Lint - https://sites.google.com/a/android.com/tools/tips/lint/
 - [16] devknox - https://devknox.io/
 - [17] Android application package - https://en.wikipedia.org/wiki/Android_application_package
