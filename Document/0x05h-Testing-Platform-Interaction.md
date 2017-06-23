@@ -236,7 +236,30 @@ The SQL injection can be exploited by using the following command. Instead of ge
 content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
-Even if the risk is only locally on the device itself, it is possible for malicious Apps to exploit this functionality through SQL injection. Also tools like Drozer can be used to automate such attacks to check for SQL Injection or Path Traversal, as described in section 3.5.4 of the Drozer User Guide<sup>[5]</sup>.
+##### With Drozer
+
+The "Sieve" application implements a vulnerable content provider.
+
+* To identify the the list of content providers exported execute the following command:
+
+  `run app.provider.finduri (package name)`
+
+* We can see that there are two similar URIS.
+* Open the first URI with the following command:
+
+  `run app.provider.query content://com.mwr.example.sieve.DBContentProvider/keys `
+
+This will ask for the custom permission "com.mwr.example.sieve.READ_KEYS".
+
+* Lets open second URI : <font face="verdana" color="Blue" font size="2">    content://com.mwr.example.sieve.DBContentProvider/keys/</font>
+  
+This content provider can be accessed without any permission.
+
+* Change the value of Password from amalammu0987654321 to ammuamal12345 by executing the fowllowing command:
+
+  `run app.provider.update (URI) --selection "pin=(pinno)" --string  Password "newpassword"`
+ 
+* Read the password to confirm that it has been changes successfully.
 
 #### Remediation
 
@@ -541,6 +564,8 @@ smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
 ```
 
 #### Dynamic Analysis
+
+<!-- TODO - Editing and improve examples -->
 
 IPC components can be enumerated using Drozer. To list all exported IPC components, the module `app.package.attacksurface` should be used:
 

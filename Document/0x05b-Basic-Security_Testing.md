@@ -18,6 +18,14 @@ Of course, depending on the scope of the engagement, such approach may not be po
 
 For both types of testing engagements, the scope should be discussed during the preparation phase. For example, it should be decided whether the security controls should be adjusted. Additional topics to cover are discussed below.
 
+#### Software Needed on the Host PC or Mac
+
+On the laptop or PC you are testing on, you should install at least the following.
+
+1. JRE or JDK
+2. Android SDK
+3. Android device or emulator
+
 ##### OS Versions
 
 Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of Android OS installed on the testing device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS.
@@ -210,6 +218,7 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by installing OpenSSL manually <sup>[27]</sup>. To install openSSL, run:
 
+<<<<<<< HEAD
 ```
 $ brew install openssl
 ```
@@ -260,44 +269,60 @@ $ easy_install drozer-2.3.4-py2.7.egg
 
 Drozer agent is the component running on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/), and install it with adb.
 
-`$ adb install drozer-agent-2.x.x.apk`
+```
+$ adb install drozer.apk
+```
 
 **Starting a Session:**
 
-You should now have the Drozer console installed on your host machine, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
+You should now have the Drozer console installed on your host machine, and the Agent running on your USB-connected device or emulator. Now, you need to connect the two and you’re ready to start exploring.
 
-We will use the server embedded in the Drozer Agent to do this.
+Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
 
-If using the Android emulator, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415:
+![alt text](Images/Chapters/0x05b/server.png "Drozer")
+	   
+By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
 
-`$ adb forward tcp:31415 tcp:31415`
+```bash
+$ adb forward tcp:31415 tcp:31415
+$ drozer console connect
+```	
 
-Now, launch the Agent, select the “Embedded Server” option and tap “Enable” to start the server. You should see a notification that the server has started.
+To show the list of all Drozer modules that can be executed in the current session use the "list" command.
 
-Then, on your PC, connect using the drozer Console:
+**Basic Drozer Commands:**
+ 
+* To list out all the packages installed on the emulator, run the following command:
 
-`$ drozer console connect`
+	`dz>run app.package.list`
+  
+ * To find out the package name of a specific app, pass  the “-f” along with a search string:
 
-If using a real device, the IP address of the device on the network must be specified:
+	`dz> run app.package.list –f (string to be searched)`
+  
+* To see some basic information about the package, use
 
-`$ drozer console connect --server 192.168.0.10`
+       `dz> run app.package.info –a (package name)`
+  
+* To identify the exported applications components,run the following command:
+ 
+  	`dz> run app.package.attacksurface (package name)`
 
-You should be presented with a Drozer command prompt:
+* To identify the the list of Activities exported in the target application,execute the following command:
 
-```
-selecting f75640f67144d9a3 (unknown sdk 4.1.1)  
-dz>
-```
+  	`run app.activity.info -a (package name)`
+
+ * To launch the activities exported,run the following command:
+
+   	`dz> run app.activity.start --component (package name) (component name)`
 
 **Using Modules:**
 
-Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few
-remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
+Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
 
 **Finding Modules:**
 
-The official Drozer module repository is hosted alongside the main project on Github. This is automatically set
-up in your copy of Drozer. You can search for modules using the `module` command:
+The official Drozer module repository is hosted alongside the main project on Github. This is automatically setup in your copy of Drozer. You can search for modules using the `module` command:
 
 ```bash
 dz> module search tool
@@ -452,7 +477,7 @@ In a typical mobile app security build, you'll usually want to test a debug buil
 - [11] SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - [12] Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
 - [13] Defeating SSL Pinning in Coin's Android Application -  http://rotlogix.com/2015/09/13/defeating-ssl-pinning-in-coin-for-android/
-- [14] RootBeet - https://github.com/scottyab/rootbeer
+- [14] RootBeer - https://github.com/scottyab/rootbeer
 - [15] Android Lint - https://sites.google.com/a/android.com/tools/tips/lint/
 - [16] devknox - https://devknox.io/
 - [17] Android application package - https://en.wikipedia.org/wiki/Android_application_package
