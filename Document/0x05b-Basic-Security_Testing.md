@@ -191,7 +191,15 @@ When we talk about dynamic analysis of applications that rely on the HTTP(S) pro
 
 Drozer<sup>[25]</sup> is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
 
+Drozer is open source software, maintained by MWR InfoSecurity, and can be downloaded from: [Drozer](https://labs.mwrinfosecurity.com/tools/drozer).
+
 ###### Installing Drozer
+
+### Prerequisites:
+
+1. JRE or JDK
+2. Android SDK
+3. An Android emulator 
 
 **On Linux:**
 
@@ -210,6 +218,7 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by installing OpenSSL manually <sup>[27]</sup>. To install openSSL, run:
 
+<<<<<<< HEAD
 ```
 $ brew install openssl
 ```
@@ -260,34 +269,161 @@ $ easy_install drozer-2.3.4-py2.7.egg
 
 Drozer agent is the component running on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/), and install it with adb.
 
-`$ adb install drozer-agent-2.x.x.apk`
+```
+$ adb install drozer.apk
+```
 
 **Starting a Session:**
 
-You should now have the Drozer console installed on your host machine, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
+You should now have the Drozer console installed on your host machine, and the Agent running on your USB-connected device or emulator. Now, you need to connect the two and you’re ready to start exploring.
 
-We will use the server embedded in the Drozer Agent to do this.
+Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
 
-If using the Android emulator, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415:
+<img src="Images/Android/drozer.png" width="300"/>
+	   
+By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
 
-`$ adb forward tcp:31415 tcp:31415`
+```bash
+$ adb forward tcp:31415 tcp:31415
+$ drozer console connect
+```	
 
-Now, launch the Agent, select the “Embedded Server” option and tap “Enable” to start the server. You should see a notification that the server has started.
+![alt text](Images/Android/server.png "Drozer")
+      
+![alt text](Images/Android/console.png "Drozer")
 
-Then, on your PC, connect using the drozer Console:
+To show the list of all Drozer modules that can be executed in the current session use the "list" command.
 
-`$ drozer console connect`
-
-If using a real device, the IP address of the device on the network must be specified:
-
-`$ drozer console connect --server 192.168.0.10`
-
-You should be presented with a Drozer command prompt:
-
+```bash
+dz>list
 ```
-selecting f75640f67144d9a3 (unknown sdk 4.1.1)  
-dz>
-```
+
+![alt text](Images/Android/list.png "Drozer")
+     
+**Basic Drozer Commands**
+ 
+* To list out all the packages installed on the emulator, run the following command:
+
+`dz>run app.package.list`
+  
+![alt text](Images/Android/plist.png "Drozer")
+  
+ * To find out the package name of a specific app, pass  the “-f” along with a search string:
+
+`dz> run app.package.list –f (string to be searched)`
+
+![alt text](Images/Android/string.png "Drozer")
+  
+* To see some basic information about the package, use
+
+       `dz> run app.package.info –a (package name)`
+
+       ![alt text](Images/Android/info.png "Drozer")
+  
+   **Identifying the attack surface**    
+
+* To identify the exported applications components,run the following command:
+ 
+  `dz> run app.package.attacksurface (package name)`
+
+   ![alt text](Images/Android/attacksurface.png "Drozer") 
+
+   **Attacks on exported Activities**
+
+* To identify the the list of Activities exported in the target application,execute the following command:
+
+  `run app.activity.info -a (package name)`
+
+  ![alt text](Images/Android/ainfo.png "Drozer") 
+
+ * To launch the activities exported,run the following command:
+
+   `dz> run app.activity.start --component (package name) (component name)`
+ 
+  ![alt text](Images/Android/comp.png "Drozer")
+
+   **Attacks on Broadcast Receivers**
+
+ * To get the list of exported Broadcast Receivers,run the following command:
+
+   `dz>run app.broadcast.info --package (package name)`
+
+ ![alt text](Images/Android/broadcast.png "Drozer")
+
+ * In the AndroidManifest.xml file of FourGoats application,find action name is org.owasp.goatdroid.fourgoats.SOCIAL_SMS and component name as org.owasp.goatdroid.fourgoats.broadcastreceivers.SendSMSNowReceiver 
+
+  ![alt text](Images/Android/action.png "Drozer") 
+
+ * While passing the intent we have to give two inputs “phoneNumber” and “message”
+
+   `adb shell am broadcast -a (action name)  -n (component name ) --es  phonenumber (phonenumber) (component name)  --es message (msg)`
+  
+  ![alt text](Images/Android/msg.png "Drozer") 
+
+  The above command will try to send the messgae to the number 123456789 with message Hi
+
+  ![alt text](Images/Android/msent.png "Drozer")
+
+   **Attacks on Content Providers**
+
+Here we have used Sieve Application for showcasing the attack on Content Providers:
+
+* To identify the the list of content providers exported in the application,execute the following command:
+
+  `run app.provider.finduri (package name)`
+
+   ![alt text](Images/Android/uri.png "Drozer")
+
+ * We can see that there are two similar URIS
+
+   content://com.mwr.example.sieve.DBContentProvider/keys
+
+	&
+
+   content://com.mwr.example.sieve.DBContentProvider/keys/  
+
+  * Lets open first URI  : content://com.mwr.example.sieve.DBContentProvider/keys ,run the following command:
+
+  `run app.provider.query (URI)`
+
+    ![alt text](Images/Android/1uri.png "Drozer") 
+
+Here upon accessing,it  need com.mwr.example.sieve.READ_KEYS permission 
+
+  * Lets open second URI : <font face="verdana" color="Blue" font size="2">    content://com.mwr.example.sieve.DBContentProvider/keys/</font>
+  
+     ![alt text](Images/Android/uri2.png "Drozer") 
+
+    Here it doesn’t need any permission.So now we have the master password and pin of the App which manages other Apps password.  
+
+  * Let’s try to change the value of Password from amalammu0987654321 to ammuamal12345 by executing the fowllowing command:
+
+    `run app.provider.update (URI) --selection "pin=(pinno)" --string  Password "newpassword"`
+ 
+     ![alt text](Images/Android/pswd.png "Drozer")
+
+  * After changing the password again try to read the value of password,
+
+     ![alt text](Images/Android/newp.png "Drozer") 
+
+   **Attacks on Services**
+
+* To identify the the list of services exported in the application,execute the following command:
+
+    `run app.service.info -a (package name)`
+
+    ![alt text](Images/Android/service.png "Drozer") 
+
+* To launch the services exported,run the following command: 
+
+    `run  app.service.start  --action (action name)  --component (package name) (component name)`
+
+    ![alt text](Images/Android/location.png "Drozer") 
+
+ *  After running the above command notify that the application got crashed
+
+     ![alt text](Images/Android/crash.png "Drozer")
+
 
 **Using Modules:**
 

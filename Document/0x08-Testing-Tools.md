@@ -2,8 +2,8 @@
 To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behavior of running Apps and other test cases and automate them.
 
 ### Mobile Application Security Testing Distributions
-* Appie - https://manifestsecurity.com/appie - A portable software package for Android Pentesting and an awesome alternative to existing Virtual machines.
-* Android Tamer - https://androidtamer.com/ - Android Tamer is a Virtual / Live Platform for Android Security professionals.
+* Appie - https://manifestsecurity.com/appie - Android Pentesting Portable Integrated Environment, It is an awesome alternative to existing Virtual machines for windows machine.
+* Android Tamer - https://androidtamer.com/ - Android Tamer is a Virtual / Live Platform based on Debian for Android Security professionals.
 * AppUse - https://appsec-labs.com/AppUse/ - AppUse is a VM (Virtual Machinedeveloped by AppSec Labs.
 * Androl4b - https://github.com/sh4hin/Androl4b - A Virtual Machine For Assessing Android applications, Reverse Engineering and Malware Analysis
 * Mobisec - http://sourceforge.net/projects/mobisec/ - Mobile security testing live environment.
@@ -13,7 +13,7 @@ To perform security testing different tools are available in order to be able to
 ### Static Source Code Analysis
 * Checkmarx - https://www.checkmarx.com/technology/static-code-analysis-sca/ - Static Source Code Scanner that also scans source code for Android and iOS.
 * Fortify - https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security - Static Source Code Scanner that also scans source code for Android and iOS.
-
+* Acccenture - https://digitalsecurity.accenture.com - Static Source Code Scanner that also scans source code for Android and iOS.
 
 ### All-in-One Mobile Security Frameworks
 * Mobile Security Framework - MobSF - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOSautomated pen-testing framework capable of performing static and dynamic analysis.
