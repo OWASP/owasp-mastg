@@ -288,9 +288,7 @@ $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
 ```	
 
-![alt text](Images/Android/server.png "Drozer")
-      
-![alt text](Images/Android/console.png "Drozer")
+![alt text](Images/Chapters/0x05b/server.png "Drozer")
 
 To show the list of all Drozer modules that can be executed in the current session use the "list" command.
 
@@ -298,35 +296,25 @@ To show the list of all Drozer modules that can be executed in the current sessi
 dz>list
 ```
 
-![alt text](Images/Android/list.png "Drozer")
-     
 **Basic Drozer Commands**
  
 * To list out all the packages installed on the emulator, run the following command:
 
-`dz>run app.package.list`
-  
-![alt text](Images/Android/plist.png "Drozer")
+	`dz>run app.package.list`
   
  * To find out the package name of a specific app, pass  the “-f” along with a search string:
 
-`dz> run app.package.list –f (string to be searched)`
-
-![alt text](Images/Android/string.png "Drozer")
+	`dz> run app.package.list –f (string to be searched)`
   
 * To see some basic information about the package, use
 
        `dz> run app.package.info –a (package name)`
-
-       ![alt text](Images/Android/info.png "Drozer")
   
-   **Identifying the attack surface**    
+   **Identifying the attack surface**
 
 * To identify the exported applications components,run the following command:
  
   `dz> run app.package.attacksurface (package name)`
-
-   ![alt text](Images/Android/attacksurface.png "Drozer") 
 
    **Attacks on exported Activities**
 
@@ -334,106 +322,17 @@ dz>list
 
   `run app.activity.info -a (package name)`
 
-  ![alt text](Images/Android/ainfo.png "Drozer") 
-
  * To launch the activities exported,run the following command:
 
    `dz> run app.activity.start --component (package name) (component name)`
- 
-  ![alt text](Images/Android/comp.png "Drozer")
-
-   **Attacks on Broadcast Receivers**
-
- * To get the list of exported Broadcast Receivers,run the following command:
-
-   `dz>run app.broadcast.info --package (package name)`
-
- ![alt text](Images/Android/broadcast.png "Drozer")
-
- * In the AndroidManifest.xml file of FourGoats application,find action name is org.owasp.goatdroid.fourgoats.SOCIAL_SMS and component name as org.owasp.goatdroid.fourgoats.broadcastreceivers.SendSMSNowReceiver 
-
-  ![alt text](Images/Android/action.png "Drozer") 
-
- * While passing the intent we have to give two inputs “phoneNumber” and “message”
-
-   `adb shell am broadcast -a (action name)  -n (component name ) --es  phonenumber (phonenumber) (component name)  --es message (msg)`
-  
-  ![alt text](Images/Android/msg.png "Drozer") 
-
-  The above command will try to send the messgae to the number 123456789 with message Hi
-
-  ![alt text](Images/Android/msent.png "Drozer")
-
-   **Attacks on Content Providers**
-
-Here we have used Sieve Application for showcasing the attack on Content Providers:
-
-* To identify the the list of content providers exported in the application,execute the following command:
-
-  `run app.provider.finduri (package name)`
-
-   ![alt text](Images/Android/uri.png "Drozer")
-
- * We can see that there are two similar URIS
-
-   content://com.mwr.example.sieve.DBContentProvider/keys
-
-	&
-
-   content://com.mwr.example.sieve.DBContentProvider/keys/  
-
-  * Lets open first URI  : content://com.mwr.example.sieve.DBContentProvider/keys ,run the following command:
-
-  `run app.provider.query (URI)`
-
-    ![alt text](Images/Android/1uri.png "Drozer") 
-
-Here upon accessing,it  need com.mwr.example.sieve.READ_KEYS permission 
-
-  * Lets open second URI : <font face="verdana" color="Blue" font size="2">    content://com.mwr.example.sieve.DBContentProvider/keys/</font>
-  
-     ![alt text](Images/Android/uri2.png "Drozer") 
-
-    Here it doesn’t need any permission.So now we have the master password and pin of the App which manages other Apps password.  
-
-  * Let’s try to change the value of Password from amalammu0987654321 to ammuamal12345 by executing the fowllowing command:
-
-    `run app.provider.update (URI) --selection "pin=(pinno)" --string  Password "newpassword"`
- 
-     ![alt text](Images/Android/pswd.png "Drozer")
-
-  * After changing the password again try to read the value of password,
-
-     ![alt text](Images/Android/newp.png "Drozer") 
-
-   **Attacks on Services**
-
-* To identify the the list of services exported in the application,execute the following command:
-
-    `run app.service.info -a (package name)`
-
-    ![alt text](Images/Android/service.png "Drozer") 
-
-* To launch the services exported,run the following command: 
-
-    `run  app.service.start  --action (action name)  --component (package name) (component name)`
-
-    ![alt text](Images/Android/location.png "Drozer") 
-
- *  After running the above command notify that the application got crashed
-
-     ![alt text](Images/Android/crash.png "Drozer")
-
 
 **Using Modules:**
 
-Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few
-remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
+Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
 
 **Finding Modules:**
 
-The official Drozer module repository is hosted alongside the main project on Github. This is automatically set
-up in your copy of Drozer. You can search for modules using the `module` command:
+The official Drozer module repository is hosted alongside the main project on Github. This is automatically setup in your copy of Drozer. You can search for modules using the `module` command:
 
 ```bash
 dz> module search tool
