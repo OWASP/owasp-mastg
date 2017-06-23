@@ -1,6 +1,6 @@
 ## Mobile App Taxonomy
 
-The term "mobile app" refers to self-contained computer programs that are designed to execute on mobile devices .Today, mobile Internet usage has surpassed desktop usage for the first time in history, and mobile apps are the [most widespread kind of applications][id]. In this guide, we focus on mobile apps designed to run on the Android and iOS operating systems, which cumulatively take more than 99% of the mobile OS market share<sup>[2]</sup>. These apps don't necessarily always run only on mobile devices - they are increasingly used on other device types, such as smart watches, TVs, cars, and embedded systems. In this guide, we'll be using the term "app" to refer to any kinds of apps running on popular mobile OSes.
+The term "mobile app" refers to self-contained computer programs that are designed to execute on mobile devices .Today, mobile Internet usage has surpassed desktop usage for the first time in history, and mobile apps are the most widespread kind of applications[^fn1]. In this guide, we focus on mobile apps designed to run on the Android and iOS operating systems, which cumulatively take more than 99% of the mobile OS market share<sup>[2]</sup>. These apps don't necessarily always run only on mobile devices - they are increasingly used on other device types, such as smart watches, TVs, cars, and embedded systems. In this guide, we'll be using the term "app" to refer to any kinds of apps running on popular mobile OSes.
 
 ### Native App
 
