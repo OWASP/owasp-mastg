@@ -34,12 +34,12 @@ Before starting to test any application, it is important to have all the require
 
 Different preparation steps need to be applied before a dynamic analysis of a mobile app can be started. Ideally the device is rooted, as otherwise some test cases cannot be tested properly. See "Rooting your device" for more information.
 
-The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or an ad-hoc wireless network is created<sup>[3]</sup>.
+The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or [an ad-hoc wireless network is created](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
 
 Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
 
-* The proxy in the network settings of the Android device need to be configured properly to point to the interception proxy in use<sup>[1]</sup>.
-* The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage <sup>[2]</sup> of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
+* The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
+* The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
 After finishing these steps and starting the app, the requests should show up in the interception proxy.
 
@@ -59,7 +59,7 @@ As a security tester, you may want to root your mobile device: while some tests 
 
 Virtually any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (who has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called `su` used for switching users.
 
-The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in XDA forums<sup>[21]</sup>.
+The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
 See also "Android Platform Overview" for further details.
 
@@ -71,7 +71,7 @@ Nevertheless, this highly depends on the restrictions and settings made in the a
 
 #### Testing on the Emulator
 
-All of the above steps to prepare a hardware testing device do also apply if an emulator is used<sup>[4]</sup>. For dynamic testing several tools or VMs are available that can be used to test an app within an emulator environment:
+All of the above steps to prepare a hardware testing device do also apply if an emulator is used. For dynamic testing several tools or VMs are available that can be used to test an app within an emulator environment:
 
 * AppUse
 * MobSF
@@ -119,7 +119,7 @@ You should now be prompted to confirm installation of the certificate (you'll al
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
-An Android Virtual Device (AVD) can be created by using the AVD manager, which is available within Android Studio<sup>[5]</sup>. The AVD manager can also be started separately from the command line by using the `android` command in the tools directory of the Android SDK:
+An Android Virtual Device (AVD) can be created by using the AVD manager, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices"). The AVD manager can also be started separately from the command line by using the `android` command in the tools directory of the Android SDK:
 
 ```bash
 $ ./android avd
@@ -140,7 +140,7 @@ Rooting of an emulator is therefore not needed as root access can be granted thr
 
 There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
 
-Nevertheless several hardware characteristics can be emulated, like GPS<sup>[6]</sup> or SMS<sup>[7]</sup> and many more.
+Nevertheless several hardware characteristics can be emulated, including [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and many more.
 
 ### Testing Methods
 
@@ -150,7 +150,7 @@ In principle, we talk about white-box testing when the source code (or even bett
 
 To accomplish the source code testing, you will want to have a setup similar to the developer. You will need a testing environment on your machine with the Android SDK and an IDE installed. It is also recommended to have access either to a physical device or an emulator, so you can debug the app.
 
-During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in Android .apk format<sup>[17]</sup>), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
+During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in [Android .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
 
 An easy way on the CLI to retrieve the source code of an APK is through `apkx`, which also packages `dex2jar` and CFR and automates the extracting, conversion and decompilation steps. Install it as follows:
 
@@ -185,9 +185,9 @@ One important thing to note is to configure the static analyzer properly in orde
 
 Automated tools for performing security analysis on an APK are:
 
-- QARK<sup>[18]</sup>,
-- Androbugs<sup>[19]</sup> and
-- JAADAS<sup>[20]</sup>.
+- [QARK](https://github.com/linkedin/qark/ "QARK")
+- [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
+- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
 
 #### Dynamic Analysis
 
@@ -197,13 +197,13 @@ When we talk about dynamic analysis of applications that rely on the HTTP(S) pro
 
 ##### Drozer
 
-Drozer<sup>[25]</sup> is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
+[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
 
 ###### Installing Drozer
 
 **On Linux:**
 
-Pre-built packages for many Linux distributions are available on the Drozer website <sup>[26]</sup>. If your distribution is not listed, you can build Drozer from source as follows:
+Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
 
 ```
 git clone https://github.com/mwrlabs/drozer/
@@ -216,13 +216,13 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 **On Mac:**
 
-On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by installing OpenSSL manually <sup>[27]</sup>. To install openSSL, run:
+On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by [installing OpenSSL manually]. To install openSSL, run:
 
 ```
 $ brew install openssl
 ```
 
-Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like pyenv <sup>[28]</sup> is even better, but setting this up is beyond the scope of this book).
+Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like [pyenv](https://github.com/pyenv/pyenv "pyenv") is even better, but setting this up is beyond the scope of this book).
 
 Install virtualenv via pip:
 
@@ -238,7 +238,8 @@ $ source drozer/bin/activate
 (drozer) $
 ```
 
-You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a blog post <sup>[27]</sup>. Run the following commands:
+You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan"). 
+Run the following commands:
 
 ```
 $ wget https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz
@@ -365,14 +366,14 @@ Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) 
 
 Downstream messages are sent from the application server to the client app (push notifications); upstream messages are sent from the client app to the server.
 
-FCM is available for Android and also for iOS and Chrome. FCM provides two connection server protocols at the moment: HTTP and XMPP and there are several differences in the implementation, as described in the official documentation<sup>[24]</sup>. The following example demonstrates how to intercept both protocols.
+FCM is available for Android and also for iOS and Chrome. FCM provides two connection server protocols at the moment: HTTP and XMPP and there are several differences in the implementation, as described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"). The following example demonstrates how to intercept both protocols.
 
 ##### Preparation
 
 For a full dynamic analysis of an Android app FCM should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
 
-* Install the CA certificate of your interception proxy into your Android phone<sup>[2]</sup>.
-* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like ettercap<sup>[24]</sup>. It can be installed by using brew on Mac OS X.
+* [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
+* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like [ettercap](https://ettercap.github.io). It can be installed by using brew on Mac OS X.
 
 ```bash
 $ brew install ettercap
@@ -392,7 +393,7 @@ FCM can use two different protocols to communicate with the Google backend, eith
 
 The ports used by FCM for HTTP are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 or 5230 is used.
 
-* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
+* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
 
 ```bash
 $ echo "
@@ -406,9 +407,9 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 **XMPP**
 
-The ports used by FCM over XMPP are 5235 (Production) and 5236 (Testing)<sup>[29]</sup>.
+The [ports used by FCM over XMPP](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") are 5235 (Production) and 5236 (Testing).
 
-* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X<sup>[23]</sup>:
+* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
 
 ```bash
 $ echo "
@@ -431,7 +432,7 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as Burp-non-HTTP-Extension<sup>[31]</sup> and Mitm-relay<sup>[30]</sup> that visualize XMPP traffic.
+Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay) that visualize XMPP traffic.
 
 As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
 
@@ -445,11 +446,11 @@ For the following security controls that might be implemented into the app you a
 
 SSL Pinning is a mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
 
-For a black box test, there are several ways to bypass SSL Pinning, for example SSLUnpinning<sup>[11]</sup> or Android-SSL-TrustKiller<sup>[12]</sup>. Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
+For a black box test, there are several ways to bypass SSL Pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
-* Dynamical Patching while running the App, by using Frida<sup>[9] [13]</sup> or ADBI<sup>[10]</sup>
-* Disassembling the APK, identify the SSL Pinning logic in smali code, patch it and reassemble the APK<sup>[7] [22]</sup>
+* Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI")
+* [Identify the SSL Pinning logic in smali code, patch it and reassemble the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
 
 Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
@@ -457,41 +458,6 @@ See also test case "Testing Custom Certificate Stores and SSL Pinning" for furth
 
 ##### Root Detection
 
-Root detection can be implemented using pre-made libraries like RootBeer<sup>[14]</sup> or custom checks. An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
+Root detection can be implemented using pre-made libraries like [RootBeer](https://github.com/scottyab/rootbeer "RootBeer") or custom checks. An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
 In a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, root detection can be disabled using a variety of methods which will be introduced later in this book.
-
-### References
-
-- [1] Configuring an Android Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html
-- [2] Installing Burp's CA Certificate in an Android Device - https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device
-- [3] Creating an Ad-hoc Wireless Network in OS X - https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html
-- [4] Android Application Security Testing Guide: Part 2 - http://resources.infosecinstitute.com/android-app-sec-test-guide-part-2/#gref
-- [5] Create and Manage Virtual Devices - https://developer.android.com/studio/run/managing-avds.html
-- [6] GPS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#geo
-- [7] SMS Emulation - https://developer.android.com/studio/run/emulator-commandline.html#sms
-- [8] Mobile Security Certificate Pinning -  http://blog.dewhurstsecurity.com/2015/11/10/mobile-security-certificate-pining.html
-- [9] Frida - https://www.frida.re/docs/android/
-- [10] ADBI - https://github.com/crmulliner/adbi
-- [11] SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
-- [12] Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
-- [13] Defeating SSL Pinning in Coin's Android Application -  http://rotlogix.com/2015/09/13/defeating-ssl-pinning-in-coin-for-android/
-- [14] RootBeer - https://github.com/scottyab/rootbeer
-- [15] Android Lint - https://sites.google.com/a/android.com/tools/tips/lint/
-- [16] devknox - https://devknox.io/
-- [17] Android application package - https://en.wikipedia.org/wiki/Android_application_package
-- [18] QARK - https://github.com/linkedin/qark/
-- [19] Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
-- [20] JAADAS - https://github.com/flankerhqd/JAADAS
-- [21] Guide to root mobile devices - https://www.xda-developers.com/root/
-- [22] Bypassing SSL Pinning in Android Applications - https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/
-- [23] Mac OS X Port Forwarding - https://salferrarello.com/mac-pfctl-port-forwarding/
-- [23] Ettercap - https://ettercap.github.io
-- [24] Differences of HTTP and XMPP in FCM: https://firebase.google.com/docs/cloud-messaging/server#choose
-- [25] Drozer on GitHub - https://github.com/mwrlabs/drozer
-- [26] Drozer Website - https://labs.mwrinfosecurity.com/tools/drozer/
-- [27] ropnop Blog - Installing Drozer on OS X El Capitan - https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/
-- [28] pyenv - https://github.com/pyenv/pyenv
-- [29] Firebase via XMPP - https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref
-- [30] Mitm-relay - https://github.com/jrmdev/mitm_relay
-- [31] Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
