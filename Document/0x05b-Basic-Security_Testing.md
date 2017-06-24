@@ -172,7 +172,7 @@ Decompiling to UnCrackable-Level1/src (cfr)
 
 If the application is based solely on Java and does not have any native library (code written in C/C++), the reverse engineering process is relatively easy and recovers almost the entire source code. Nevertheless, if the code is obfuscated, this process might become very time consuming and might not be productive. The same applies for applications that contain a native library. They can still be reverse engineered but require low level knowledge and the process is not automated.
 
-More details and tools about the Android reverse engineering topic can be found at [Tampering and Reverse Engineering on Android](0x05b-Reverse-Engineering-and-Tampering.md) section.
+More details and tools about the Android reverse engineering topic can be found in the "Tampering and Reverse Engineering on Android" section.
 
 #### Automated Static Analysis
 
