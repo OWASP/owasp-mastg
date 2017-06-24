@@ -36,6 +36,3 @@ Following is a non-exhaustive list of more popular frameworks for developing Hyb
 * [Onsen UI]( https://onsen.io/)
 * [React Native](http://www.reactnative.com/)
 * [Sencha Touch](https://www.sencha.com/products/touch/)
-
-### References
-
