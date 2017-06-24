@@ -86,26 +86,31 @@
 
 #### Overview
 
+iOS is light on IPC functionality compared to Android. This means less flexibility for developers, but is fortunate for security testers: Much less things to look out for.
+
+Custom URL schemes are the main IPC mechanism available on iOS. Apps can register custom protocol handlers (e.g. "myapp://") that are then available to other apps on the system. To communicate with the app that registered the custom scheme, the caller creates appropriately formatted URL and ask the system to open it. Arguments to the IPC call can be passed as URL parameters. Note that, once registered, custom URLs are also accessible through the web browser.
 
 Check: https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html
+
 https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers)
--- TODO [Provide a general description of the issue "Testing Custom URL Schemes".]
+
+<!-- TODO [Provide a general description of the issue "Testing Custom URL Schemes".] -->
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+<!-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] -->
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+<!-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] -->
 
--- TODO [Add content on static analysis for "Testing Custom URL Schemes" with source code] --
+<!-- TODO [Add content on static analysis for "Testing Custom URL Schemes" with source code] -->
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing Custom URL Schemes" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+<!-- TODO [Describe how to test for this issue "Testing Custom URL Schemes" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] -->
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Custom URL Schemes".] --
+<!-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Custom URL Schemes".] -->
 
 #### References
 
@@ -124,7 +129,6 @@ https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing Custom URL Schemes"] --
-
 
 
 ### Testing for Sensitive Functionality Exposed Through IPC
