@@ -129,6 +129,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 
 An app on Android is a file with the extension .apk. This file is a signed zip-file which contains all the application's resources, byte code, etc. When unzipped the following directory structure can usually be identified:
 
+```
 $ unzip base.apk
 $ ls -lah
 -rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
@@ -138,26 +139,22 @@ drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
 drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
 drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+```
 
-    AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
-    
-    META-INF: This folder contains metadata of the app:
-        MANIFEST.MF: Stores hashes of app resources.
-        CERT.RSA: The certificate(s) of the app.
-        CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
-    
-    assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-    
-    classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-    
-    lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-    
-    res: A directory containing resources not compiled into resources.arsc.
-    
-    resources.arsc: A file containing precompiled resources, such as XML files for the layout.
+- AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- META-INF: This folder contains metadata of the app:
+  - MANIFEST.MF: Stores hashes of app resources.
+  - CERT.RSA: The certificate(s) of the app.
+  - CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
+- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
+- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+- res: A directory containing resources not compiled into resources.arsc.
+- resources.arsc: A file containing precompiled resources, such as XML files for the layout.
 
 Some resources inside the APK are compressed using non-standard algorithms (e.g. the AndroidManifest.xml). This means that simply unzipping the file won't reveal all information. A better way is to use the tool 'apktool' to unpack and uncompress the files. The following is a list of the files contained in the apk:
 
+```bash
 $ apktool d base.apk
 I: Using Apktool 2.1.0 on base.apk
 I: Loading resource table...
@@ -182,14 +179,15 @@ drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
 drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
 drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
 
-    AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
-    apktool.yml : This file contains information about the output of apktool.
-    assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-    lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-    original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
-    res: A directory containing resources not compiled into resources.arsc.
-    smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+- AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
+- apktool.yml : This file contains information about the output of apktool.
+- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+- original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
+- res: A directory containing resources not compiled into resources.arsc.
+- smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
 #### Linux UID/GID of Normal Applications
 
