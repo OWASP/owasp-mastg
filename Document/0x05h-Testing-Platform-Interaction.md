@@ -72,7 +72,7 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 **Custom Permissions**
 
-Apart from enforcing custom permissions via application manifest file, it can also be enforced programmatically. This is not recommended as this can lead to permission leaking and perform an unauthorized operation. This can be verified by inspecting whether if all defined custom permissions were enforced in the android manifest file.
+Apart from enforcing custom permissions via application manifest file, they can also be checked programmatically. This is not recommended however, as it is more error prone and can be bypassed more easily, e.g. using runtime instrumentation. Whenever you see code like the following, you should also make sure that the same permissions are enforced in the manifest file.
 
 ```java
 int canProcess = checkCallingOrSelfPermission(“com.example.perm.READ_INCOMING_MSG”);
@@ -82,7 +82,7 @@ throw new SecurityException();
 
 #### Dynamic Analysis
 
-Permissions of applications installed on a device can be retrieved using the Android security assessment framework Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the custom permissions defined by the app:
+Permissions of applications installed on a device can be retrieved using Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the custom permissions defined by the app:
 
 ```bash
 dz> run app.package.info  -a com.android.mms.service
@@ -355,7 +355,7 @@ Defining your own URL scheme and using it can become a risk in this case, if dat
 
 #### Remediation
 
-URL schemes can be used for deeplinking, which is a widespread and convenient method for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
+URL schemes can be used for deep linking, which is a widespread and convenient method for launching a native mobile app via a link<sup>[3]</sup> and doesn't represent a risk by itself.
 
 Nevertheless data coming in through URL schemes which is processed by the app should be validated, as described in the test case "Testing Input Validation and Sanitization".
 

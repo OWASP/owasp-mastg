@@ -7,7 +7,7 @@ This chapter introduces Android from an architecture point of view. It covers fo
 3. Inter-process Communication (IPC)
 4. Android application publishing
 
-Visit the official Android developer documentation website <sup>[13]</sup> for more details on the Android platform. 
+Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details on the Android platform. 
 
 ## Android Security Architecture
 
@@ -47,15 +47,15 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead the Operating System offers libraries to interact with them. For example:
+As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead, apps interact with system services using the Android Framework, an abstraction layer that offers high-level API easily usable from Java. For the most part, these services are used via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples for system services include:
 
-    * connectivity (Wifi, Bluetooth, NFC, ...)
-    * files
-    * cameras
-    * geolocation (GPS)
-    * microphone
+    * Connectivity (Wifi, Bluetooth, NFC, ...)
+    * Giles
+    * Cameras
+    * Geolocation (GPS)
+    * Microphone
     
-The Android Framework is an abstraction layer, offering high-level API easily usable from Java, without the need of deeper understanding of system libraries. Among the rest, it offers common security functions like secure IPC and cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
+The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
 APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
 
@@ -216,13 +216,13 @@ An important aspect of Android security is that all apps have the same level of 
 
 ##### Zygote
 
-When booting Android, a process called `Zygote` starts up at init<sup>[10]</sup>. This is a system service used to launch apps. Zygote opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When the socket receives a request, a new app starts on Android by forking the Zygote process and the app specific code is loaded and executed.
+A process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. The Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
 
 #### The App Sandbox
 
 Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
+When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path <code>/data/data/<package name></code>. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
 
@@ -252,13 +252,13 @@ Android apps are made of several high-level components that make up their archit
 
 * Activities
 * Fragments
-* Iintents
+* Intents
 * Broadcast receivers
 * Content providers and services 
 
 All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
-##### Application Lifecycle
+##### Application Life Cycle
 
 Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
@@ -268,7 +268,7 @@ Apps implement several event managers to handle events: for example, the onCreat
 
 Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of storage it can be installed in (external or internal)<sup>[14]</sup>.
+A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -306,7 +306,7 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official Android documentation<sup>[12]</sup>.
+A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 ##### Activities
 
@@ -339,8 +339,8 @@ An app may not explicitly implement all event managers in which case default act
 
 Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.).  However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
-As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to Android specification for more details<sup>[15]</sup>.
+User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+As they have their own life cycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
 
@@ -363,12 +363,41 @@ Fragments do not necessarily have a user interface: they can be a convenient and
 
 ##### Inter-Process Communication
 
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
+As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
 
-In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+The term *Binder* stands for a lot of different things, including:
+
+- Binder Driver - The kernel-level driver
+- Binder Protocol - Low-level ioctl-based protocol used to communicate with the binder driver
+- IBinder Interface - well-defined behavior Binder objects implement
+- Binder object - Generic implementation of the IBinder interface
+- Binder service - Implementation of the Binder object. For example, location service, sensor service,...
+- Binder client - An object using the binder service
+
+In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently marshalls the call parameters into a *parcel* and send a transcation to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
 
 ![Binder Overview](Images/Chapters/0x05a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+
+Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface for use by clients. Developers write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+
+Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the <code>addService</code> and retrieved by name using the <code>getService</code> static method in <code>android.os.ServiceManager</code>:
+
+```
+  public static IBinder getService(String name)
+```
+
+The list of system services can be queried using the `service list` command.
+
+
+```
+$ adb shell service list
+Found 99 services:
+0 carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]
+1 phone: [com.android.internal.telephony.ITelephony]
+2 isms: [com.android.internal.telephony.ISms]
+3 iphonesubinfo: [com.android.internal.telephony.IPhoneSubInfo]
+```
 
 #### Intents
 
@@ -518,7 +547,7 @@ When an application  is installed onto an Android device, the Package Manager ve
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. Older platforms ignore v2 signatures and only verify v1 signatures <sup>[9]</sup>.
+Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 scheme):
 
@@ -570,21 +599,3 @@ The Android ecosystem is open, and, as such, it is possible to distribute apps f
 Whereas other vendors may review and approve apps before they are actually published, such things do not happen on Google Play; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 
 Publishing an app is quite straightforward, as the main operation is to make the signed .apk file itself downloadable. On Google Play, it starts with creating an account, and then delivering the app through a dedicated interface. Details are available on Android official documentation at https://developer.android.com/distribute/googleplay/start.html.
-
-### References
-
-* [1] Android Security - https://source.android.com/security/
-* [2] Android Developer: App Components - https://developer.android.com/guide/components/index.html
-* [3] HAL - https://source.android.com/devices/
-* [4] "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
-* [5] A Programmer Blog - https://pierrchen.blogspot.com.br
-* [6] keesj Android internals - https://github.com/keesj/gomo
-* [7] Android Versions - https://en.wikipedia.org/wiki/Android_version_history
-* [8] "Professional Android 4 Application Development" by Reto Meier
-* [9] APK Signing - https://source.android.com/security/apksigning/
-* [10] How Android Apps are run - https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run
-* [11] Zygote - https://serializethoughts.com/2016/04/15/android-zygote/
-* [12] Android Developer Guide for Manifest -  https://developer.android.com/guide/topics/manifest/manifest-intro.html
-* [13] Android Developer Guide - https://developer.android.com/index.html
-* [14] Define app install location - https://developer.android.com/guide/topics/data/install-location.html
-* [15] Fragment Class - https://developer.android.com/reference/android/app/Fragment.html

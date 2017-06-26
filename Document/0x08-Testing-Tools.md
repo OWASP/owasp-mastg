@@ -71,6 +71,7 @@ To perform security testing different tools are available in order to be able to
 * Clutch - http://cydia.radare.org/- Decrypted the application and dump specified bundleID into binary or .ipa file.
 * Dumpdecrypted] (https://github.com/stefanesser/dumpdecrypted - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 * class-dump - http://stevenygard.com/projects/class-dump/ - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
+* Flex2 - http://cydia.saurik.com/package/com.fuyuchi.flex2/ - Flex gives you the power to modify apps and change their behavior.
 * Weak Classdump] (https://github.com/limneos/weak_classdump - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
 * IDA Pro - https://www.hex-rays.com/products/ida/index.shtml - IDA is a Windows, Linux or Mac OS X hosted multi-processor disassembler and debugger that offers so many features it is hard to describe them all.
 * HopperApp - http://hopperapp.com/ - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
