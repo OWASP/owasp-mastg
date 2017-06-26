@@ -47,15 +47,15 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead the Operating System offers libraries to interact with them. For example:
+As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead, apps interact with system services using the Android Framework, an abstraction layer that offers high-level API easily usable from Java. For the most part, these services are used via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples for system services include:
 
-    * connectivity (Wifi, Bluetooth, NFC, ...)
-    * files
-    * cameras
-    * geolocation (GPS)
-    * microphone
+    * Connectivity (Wifi, Bluetooth, NFC, ...)
+    * Giles
+    * Cameras
+    * Geolocation (GPS)
+    * Microphone
     
-The Android Framework is an abstraction layer, offering high-level API easily usable from Java, without the need of deeper understanding of system libraries. Among the rest, it offers common security functions like secure IPC and cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
+The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
 APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
 
@@ -252,13 +252,13 @@ Android apps are made of several high-level components that make up their archit
 
 * Activities
 * Fragments
-* Iintents
+* Intents
 * Broadcast receivers
 * Content providers and services 
 
 All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
-##### Application Lifecycle
+##### Application Life Cycle
 
 Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
@@ -339,8 +339,8 @@ An app may not explicitly implement all event managers in which case default act
 
 Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.).  However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
-As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+As they have their own life cycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
 
