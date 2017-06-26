@@ -9,6 +9,7 @@ To perform security testing different tools are available in order to be able to
 * Mobisec - http://sourceforge.net/projects/mobisec/ - Mobile security testing live environment.
 * Santoku - https://santoku-linux.com/ - Santoku is an OS and can be run outside a VM as a standalone operating system.
 * Vezir Project - https://github.com/oguzhantopgul/Vezir-Project - Mobile Application Pentesting and Malware Analysis Environment.
+* ShadowOS - https://saas.hpe.com/en-us/home - Free Virtual OS for testing Android apps security.
 
 ### Static Source Code Analysis
 * Checkmarx - https://www.checkmarx.com/technology/static-code-analysis-sca/ - Static Source Code Scanner that also scans source code for Android and iOS.
