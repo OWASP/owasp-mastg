@@ -363,12 +363,41 @@ Fragments do not necessarily have a user interface: they can be a convenient and
 
 ##### Inter-Process Communication
 
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
+As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
 
-In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+The term *Binder* stands for a lot of different things, including:
+
+- Binder Driver - The kernel-level driver
+- Binder Protocol - Low-level ioctl-based protocol used to communicate with the binder driver
+- IBinder Interface - well-defined behavior Binder objects implement
+- Binder object - Generic implementation of the IBinder interface
+- Binder service - Implementation of the Binder object. For example, location service, sensor service,...
+- Binder client - An object using the binder service
+
+In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently marshalls the call parameters into a *parcel* and send a transcation to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
 
 ![Binder Overview](Images/Chapters/0x05a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+
+Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface for use by clients. Developers write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+
+Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the <code>addService</code> and retrieved by name using the <code>getService</code> static method in <code>android.os.ServiceManager</code>:
+
+```
+  public static IBinder getService(String name)
+```
+
+The list of system services can be queried using the `service list` command.
+
+
+```
+$ adb shell service list
+Found 99 services:
+0 carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]
+1 phone: [com.android.internal.telephony.ITelephony]
+2 isms: [com.android.internal.telephony.ISms]
+3 iphonesubinfo: [com.android.internal.telephony.IPhoneSubInfo]
+```
 
 #### Intents
 
