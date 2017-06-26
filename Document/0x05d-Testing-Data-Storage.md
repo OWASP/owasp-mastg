@@ -1,14 +1,14 @@
 ## Testing Data Storage on Android
 
-The protection of sensitive data, such as user credentials and private information, is a key focus in mobile security. In this chapter, you will learn about the APIs Android offers for local data storage, as well as best practices for using those APIs.
+The protection of sensitive data, such as credentials or private information, is a key focus in mobile security. In this chapter you will learn about the APIs Android offers for local data storage, as well as best practices for using them.
 
-Note that "sensitive data" needs to be identified in the context of each specific app. Data classification is described in detail in the chapter "Testing Processes and Techniques".
+Note that "sensitive data" need to be identified in the context of each specific app. Data classification is described in detail in the chapter "Testing Processes and Techniques".
 
 ### Testing for Sensitive Data in Local Storage
 
 #### Overview
 
-Common wisdom suggest to save as little sensitive data as possible on permanent local storage. However, in most practical scenarios, a least some types user-related data need to be stored. For example, asking the user to enter a highly complex password every time the app is started isn't a great idea from a usability perspective. As a result, most apps must locally cache some kind of session token. Other types of sensitive data, such as personally identifiable information, might also be saved if the particular scenario calls for it.
+Conventional wisdom suggests to save as little sensitive data as possible on permanent local storage. However, in most practical scenarios, a least some types of user-related data need to be stored. For example, asking the user to enter a highly complex password every time the app is started isn't a great idea from a usability perspective. As a result, most apps must locally cache some kind of authentication token. Other types of sensitive data, such as personally identifiable information (PII), might also be saved if the particular scenario calls for it.
 
 A vulnerability occurs when sensitive data is not properly protected by an app when persistently storing it. The app might be able to store it in different places, for example locally on the device or on an external SD card. When trying to exploit these kind of issues, consider that there might be a lot of information processed and stored in different locations. It is important to identify at the beginning what kind of information is processed by the mobile application and keyed in by the user and what might be interesting and valuable for an attacker (e.g. passwords, credit card information, PII).
 
@@ -423,7 +423,7 @@ The compiled bytecode however, is equivalent to the bytecode of the following lo
 Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 What ProGuard guarantees is the removal of the ```Log.v``` method call. Whether the rest of the code (```new StringBuilder ...```) will be removed depends on the complexity of the code and the ProGuard version used <sup>[4]</sup>.
-This is potentially a security risk, as the (now unused) string leaks plain text data in memory which can be accessed over a debugger or by memory dumping. 
+This is potentially a security risk, as the (now unused) string leaks plain text data in memory which can be accessed over a debugger or by memory dumping.
 
 Unfortunately, there is no silver bullet against this issue, but there are few options available:
 
@@ -439,7 +439,7 @@ afterEvaluate {
   project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
     task.dependsOn('removeLogs')
   }
- 
+
   task removeLogs() {
     doLast {
       fileTree(dir: project.file('src')).each { File file ->

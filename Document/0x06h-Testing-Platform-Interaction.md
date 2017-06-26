@@ -339,9 +339,46 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 
 
-### Testing Whether Java Objects Are Exposed Through WebViews
+### Testing Whether JavaScript Can Access Native Methods
 
-It is important to clarify that this control is only applicable on the Android Platform. Please look at "Testing Whether Java Objects Are Exposed Through WebViews" in Android for a detailed explanation of this test case.
+
+#### Overview
+
+-- TODO [Provide a general description of the issue .] --
+
+#### Static Analysis
+
+-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+
+-- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
+
+
+#### Dynamic Analysis
+
+-- TODO [Describe how to test for this issue "Testing for Local File Inclusion in WebViews" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+
+#### Remediation
+
+-- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Local File Inclusion in WebViews".] --
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+-- TODO
+
+##### CWE
+-- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
+
+##### Info
+- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
+
+##### Tools
+-- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
 
 
 
