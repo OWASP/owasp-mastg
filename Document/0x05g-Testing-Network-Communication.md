@@ -8,7 +8,7 @@ Using TLS for transporting sensitive information over the network is essential f
 
 #### Static Analysis
 
-The static analysis approach is to decompile an application, if the source code was not provided. There are 2 main issues related with validating TLS connection that should be verified in the code:
+The static analysis approach is to decompile an application, if the source code was not provided. There are two main issues related with validating TLS connection that should be verified in the code:
 * the first one is verification if a certificate comes from a trusted source and
 * the second one is to check whether the endpoint server presents the right certificate<sup>[3]</sup>.
 

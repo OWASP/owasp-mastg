@@ -12,7 +12,7 @@ Cookie-Based Authentication is the traditional authentication mechanism used in 
 
 OAuth2 is an authorization framework used to authorize an application to use a user account on an HTTP service for a limited time and, at the same time, preventing the client applications from having knowledge of any user credentials.
 
-OAuth2 defines 4 roles:
+OAuth2 defines four roles:
 
 * Resource Owner: the user owning the account.
 * Client: the application that wants to access the user's account using the access tokens.
@@ -192,7 +192,7 @@ When server source code is available, the tester should look for the place where
 A best practice is to crawl the application first, either manually or with an automated tool. The goal is to check if all parts of the application leading to privileged information or actions are protected and a valid session ID is required or not.
 
 Then, you can use the crawled requests within any intercepting proxy to try to manipulate session IDs:
-- by modifying them into illegitimate ones (for instance, add 1 to the valid session ID or delete parts of it).
+- by modifying them into illegitimate ones (for instance, add one to the valid session ID or delete parts of it).
 - by deleting a valid one in the request to test if the information and/or function of the application can still be accessed.
 - by trying to log out and re-log in again to check if the session ID has changed or not.
 - when changing privilege level (step-up authentication). Try to use the former one (hence with a lower authorization level) to access the privileged part of the application.
@@ -438,11 +438,11 @@ A good password policy should define the following requirements<sup>[2]</sup> in
 * Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
 
 **Password Complexity**
-* Password must meet at least 3 out of the following 4 complexity rules
-1. at least 1 uppercase character (A-Z)
-2. at least 1 lowercase character (a-z)
-3. at least 1 digit (0-9)
-4. at least 1 special character (punctuation)
+* Password must meet at least three out of the following four complexity rules
+1. at least one uppercase character (A-Z)
+2. at least one lowercase character (a-z)
+3. at least one digit (0-9)
+4. at least one special character (punctuation)
 
 For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A common library that can be used for estimating password strength is zxcvbn<sup>[3]</sup>, which is available for many programming languages.
 
@@ -484,7 +484,7 @@ It need to be checked that a validation method exists during logon that checks i
 #### Dynamic Analysis
 
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
-1.  Log in incorrectly for a number of times to trigger the lockout control (generally 3 to 15 incorrect attempts). This can be automated by using Burp Intruder<sup>[5]</sup>.
+1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using Burp Intruder<sup>[5]</sup>.
 2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
 If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
 
