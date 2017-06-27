@@ -1,20 +1,24 @@
 ## iOS Platform Overview
 
-iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. Apple also keeps tight control over which apps are allowed to run on iOS devices.
+iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. 
 
-In many ways, iOS is more "closed" than Android. Sideloading is only possible with jailbreak or complicated workarounds. There is hardly any IPC functionality to speak of.
+iOS is more "closed" than Android: Apple also keeps tight control over which apps are allowed to run on iOS devices, and side-loading of apps is only possible with jailbreak or complicated workarounds. 
+
+Apps are sandboxed just like in Android, but in contrast to Android's Binder IPC, iOS offers very little IPC functionality. This means more limited options for developers, but also less potential attack surface.
+
+The uniform hardware and tight integration between hardware and software creates another security advantage: For example, developers can rely on a hardware-backed keychain and file system encryption being available. Also, iOS updates are rolled out to a large percentage of users quickly, meaning less need to support older, less secure versions of iOS.
+
+All of this doesn't mean however that iOS app developers need not worry about security. Topics like Data protection and Keychain, TouchID authentication, and network security still leave plenty of margin for errors. In the following chapters, we document the iOS security architecture, followed by security testing and reverse engineering howtos. We'll then map the seven categories of the MASVS to iOS and outline test cases for each requirement.
 
 ### The iOS Security Architecture
 
-The core features of the iOS security architecture:
+The iOS security architecture consists of five core features.
 
 - Secure Boot
 - Sandbox
 - Code Signing
 - Encryption and Data Protection
 - General Exploit Mitigations
-
-A very good and detailed analysis of iOS security architecture has been done by Johnatan Levin in MacOS and iOS Internals Vol. 3 - http://www.newosxbook.com/2ndUpdate.html <sup>[4]</sup>
  
 #### Hardware Security
 
@@ -76,6 +80,10 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
+
+#### Further Reading
+
+A very good and detailed analysis of iOS security architecture has been done by Johathan Levin in MacOS and iOS Internals Vol. 3 - http://www.newosxbook.com/2ndUpdate.html <sup>[4]</sup>
 
 ### Software Development on iOS 
 
