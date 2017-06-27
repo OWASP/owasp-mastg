@@ -795,7 +795,7 @@ Take the following steps when you want to verify app-binding at a simulator:
 3.	Retrieve the data from the Simulator This has a few steps: 
   - As simulators use UUIDs to identify themselves, you could make it easer to locate the storage by creating a debug point and on that point execute `po NSHomeDirectory()`, which will reveal the location of where the simulator stores its contents. Otherwise you can do a `find ~/Library/Developer/CoreSimulator/Devices/ | grep <appname>` for the suspected plist file.
   - go to the directory printed with the given command
-  - copy all 3 folders found (Documents, Library, tmp)
+  - copy all three folders found (Documents, Library, tmp)
   - Copy the contents of the keychain, these can be found, since iOS 8, in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`. 
 4.	Start the application on another simulator & find its data location as described in step 3.
 5.	Stop the application on the second simulator, now overwrite the existing data with the data copied in step 3.
@@ -803,9 +803,9 @@ Take the following steps when you want to verify app-binding at a simulator:
 
 Please note that we are saying that the binding "might" not be working as not everything is unique in simulators.
 
-##### Dynamic Analysis using 2 jailbroken devices
+##### Dynamic Analysis using two jailbroken devices
 
-Take the following steps when you want to verify app-binding by using 2 jailbroken devices:
+Take the following steps when you want to verify app-binding by using two jailbroken devices:
 
 1.	Run the app on your jailbroken device
 2.	Make sure you can raise the trust in the instance of the application (e.g. authenticate)
@@ -819,7 +819,7 @@ Take the following steps when you want to verify app-binding by using 2 jailbrok
 
 #### Remediation
 
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding in iOS: 
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding in iOS:
 
 - You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C) or `UIDevice.current.identifierForVendor?.uuidString` (in swift3) and `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in swift2). Which might change upon reinstalling the application when no other applications from the same vendor are installed. 
 - You can store something in the keychain to identify the application its instance. One needs to make sure that this data is not backed up by using `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure it and properly enforce having a passcode or touch-id) or by using `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`. 

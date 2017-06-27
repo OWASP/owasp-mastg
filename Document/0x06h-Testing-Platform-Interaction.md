@@ -469,7 +469,7 @@ Again, you may want to pipe to a file and go through it for a promising sounding
 #### Remediation
 
 For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) could use Cycript's method swizzling to modify this function to always return true. Of course there are more complex implementations, but nearly all can be subverted - the idea is just to make it harder. As such the following is recommended:
-1. Use more than 1 of the above methods to check if a device is jailbroken.
+1. Use more than one of the above methods to check if a device is jailbroken.
 2. Call the class and method something that is not immediately obvious (but it well commented).
 3. Use Swift instead of Objective-C.
 
