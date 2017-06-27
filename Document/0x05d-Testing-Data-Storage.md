@@ -575,7 +575,7 @@ etxt.setCustomSelectionActionModeCallback(new Callback() {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 return false;
             }
-0
+
             public void onDestroyActionMode(ActionMode mode) {                  
             }
 
@@ -615,33 +615,38 @@ android:longClickable="false"
 
 #### Overview
 
-As part of the IPC mechanisms included on Android, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, they could lead to leackage of stored sensitive data.
+As part of the IPC mechanisms included on Android, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, they could lead to leakage of stored sensitive data.
 
 #### Static Analysis
 
-The first step is to look into the `AndroidManifest.xml` in order to detect and identify content providers exposed by the app and identified by the  `<provider>` element.
+The first step is to look into the `AndroidManifest.xml` in order to detect content providers exposed by the app. Content providers can be identified through the  `<provider>` element.
 
-Check if the provider has the export tag set to "true": `android:exported="true"`.
-Even if this is not the case, remember that if it has an `<intent-filter>` defined, the export tag will be automatically set to "true".
+Check if the provider has the export tag set to "true" (`android:exported="true"`). Even if this is not the case, remember that if it has an `<intent-filter>` defined, the export tag will be automatically set to "true".
 
-Finally, check if it is being protected by any permission tag (`android:permission`) which will also limit the exposure to other apps.
+Finally, check if it is being protected by any permission tag (`android:permission`). Permission tags allow to limit the exposure to other apps.
 
-Inspect the source code to further understand how the content provider is meant to be used.
+Inspect the source code to further understand how the content provider is meant to be used. Search for the following keywords:
+- `android.content.ContentProvider`
+- `android.database.Cursor`
+- `android.database.sqlite`
+- `.query(`
+- `.update(`
+- `.delete(`
 
-> Useful strings to search for: `android.content.ContentProvider`, `android.database.Cursor`, `android.database.sqlite`, `.query(`, `.update(`.  
+When exposing a content provider it should also be checked if parametrized [query methods](https://developer.android.com/reference/android/content/ContentProvider.html#query(android.net.Uri, java.lang.String[], java.lang.String, java.lang.String[], java.lang.String) "Query method in Content Provder Class") (`query()`, `update()`, and `delete()`) are being used to prevent SQL injection. If so, check if all inputs to them are properly sanitized.
 
-Check if parametrized query methods <sup>[1]</sup> (query(), update(), and delete()) are being used, and if so, check if all inputs to them are properly sanitized (especially the `selection` argument).
-
-As an example of a vulnerable content provider we will use the vulnerable password manager app "Sieve" <sup>[2]</sup>.
+As an example of a vulnerable content provider we will use the vulnerable password manager app [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve - Vulnerable Password Manager").
 
 ##### Inspect the AndroidManifest
 Identify all defined `<provider>` elements:
+
 ```xml
 <provider android:authorities="com.mwr.example.sieve.DBContentProvider" android:exported="true" android:multiprocess="true" android:name=".DBContentProvider">
     <path-permission android:path="/Keys" android:readPermission="com.mwr.example.sieve.READ_KEYS" android:writePermission="com.mwr.example.sieve.WRITE_KEYS"/>
 </provider>
 <provider android:authorities="com.mwr.example.sieve.FileBackupProvider" android:exported="true" android:multiprocess="true" android:name=".FileBackupProvider"/>
 ```
+
 As can be seen in the `AndroidManifest.xml` above, the application exports two content providers. Note that one path ("/Keys") is being protected by read and write permissions.
 
 ##### Inspect the source code
@@ -660,6 +665,7 @@ public Cursor query(final Uri uri, final String[] array, final String s, final S
     return sqLiteQueryBuilder.query(this.pwdb.getReadableDatabase(), array, s, array2, (String)null, (String)null, s2);
 }
 ```
+
 Here we see that there are actually two paths, "/Keys" and "/Passwords", being the latter not protected in the manifest and therefore vulnerable.
 
 The query statement would return all passwords when accessing an URI including this path `Passwords/`. We will address this in the dynamic analysis below and find out the exact URI required.
@@ -669,7 +675,7 @@ The query statement would return all passwords when accessing an URI including t
 
 ##### Testing Content Providers
 
-To begin dynamic analysis of an application's content providers, you should first enumerate the attack surface. This can be achieved using the Drozer module `app.provider.info`:
+To begin dynamic analysis of an application's content providers, you should first enumerate the attack surface. This can be achieved using the Drozer module `app.provider.info` and providing the package name of the app:
 
 ```
 dz> run app.provider.info -a com.mwr.example.sieve
@@ -700,8 +706,7 @@ To identify content provider URIs within the application, Drozer's `scanner.prov
 ```
 dz> run scanner.provider.finduris -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
-Unable to Query content://com.mwr.
-example.sieve.DBContentProvider/
+Unable to Query content://com.mwr.example.sieve.DBContentProvider/
 ...
 Unable to Query content://com.mwr.example.sieve.DBContentProvider/Keys
 Accessible content URIs:
@@ -717,9 +722,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 _id: 1
 service: Email
 username: incognitoguy50
-password: PSFjqXIMVa5NJFudgDuuLVgJYFD+8w== (Base64
--
-encoded)
+password: PSFjqXIMVa5NJFudgDuuLVgJYFD+8w== (Base64 - encoded)
 email: incognitoguy50@gmail.com
 ```
 
@@ -833,7 +836,7 @@ Protect the content provider with the `android:protectionLevel` attribute set to
 
 In order to avoid SQL injection attacks, use parameterized query methods such as `query()`, `update()`, and `delete()`. Be sure to properly sanitize all inputs to these methods because if, for instance, the `selection` argument is built out of user input concatenation, it could also lead to SQL injection.
 
-You may also want to provide more granular access to other apps by using the android:grantUriPermissions attribute in the manifest and limit the scope with the <grant-uri-permission> element.
+You may also want to provide more granular access to other apps by using the `android:grantUriPermissions` attribute in the manifest and limit the scope with the `<grant-uri-permission>` element.
 
 #### References
 
@@ -847,13 +850,8 @@ You may also want to provide more granular access to other apps by using the and
 ##### CWE
 - CWE-634 - Weaknesses that Affect System Processes
 
-##### Info
-- [1] ContentProvider query() - https://developer.android.com/reference/android/content/ContentProvider.html#query%28android.net.Uri,%20java.lang.String[],%20android.os.Bundle,%20android.os.CancellationSignal%29
-- [2] Sieve: Vulnerable Password Manager - https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk
-
 ##### Tools
 - Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
-- IntentSniffer - https://www.nccgroup.trust/us/about-us/resources/intent-sniffer/
 
 
 ### Testing for Sensitive Data Disclosure Through the User Interface
@@ -872,11 +870,13 @@ To verify if the application is masking sensitive information that is keyed in b
 android:inputType="textPassword"
 ```
 
+This will show dots in the text field instead of the keyed in characters.
+
 #### Dynamic Analysis
 
-To analyze if the application leaks any sensitive information to the user interface, run the application and identify parts of the app that either shows information or asks for information to be keyed in.
+To analyze if the application leaks any sensitive information to the user interface, run the application and identify parts of the app that either shows or asks for such information to be keyed in.
 
-If the information is masked, e.g. by replacing characters in the text field through asterisks the app is not leaking data to the user interface.
+If the information is masked, e.g. by replacing characters in the text field through asterisks or dots the app is not leaking data to the user interface.
 
 #### Remediation
 
@@ -902,15 +902,15 @@ Like other modern mobile operating systems Android offers auto-backup features. 
 
 Given its diverse ecosystem, Android has a lot of backup options to account for.
 
-- Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>abd backup</code> command when USB debugging is enabled.
+- Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>adb backup</code> command when USB debugging is enabled.
 
 - Google also provides a "Back Up My Data" feature that backs up all app data to Google's servers.
 
-- Multiple Backup APIs are available to app developers:
+- Two Backup APIs are available to app developers:
 
-  - Key/ Value Backup (Backup API or Android Backup Service) uploads selected data to the Android Backup Service.
+  - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads selected data to the Android Backup Service.
 
-  - Auto Backup for Apps: With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature". This feature automatically syncs up to 25MB of app data to the user's Google Drive account.
+  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature". This feature automatically syncs up to 25MB of app data to the user's Google Drive account.
 
 - OEMs may add additional options. For example, HTC devices have a "HTC Backup" option that, when activated, performs daily backups to the cloud.
 
@@ -918,7 +918,7 @@ Given its diverse ecosystem, Android has a lot of backup options to account for.
 
 ##### Local
 
-In order to backup all your application data Android provides an attribute called `allowBackup`<sup>[1]</sup>. This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) - `$ adb backup`.
+In order to backup all your application data Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute"). This attribute is set within the `AndroidManifest.xml` file. If the value of this attribute is set to **true**, then the device allows users to backup the application using Android Debug Bridge (ADB) via the command `$ adb backup`.
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
@@ -931,13 +931,13 @@ android:allowBackup="true"
 If the value is set to **true**, investigate whether the app saves any kind of sensitive data, check the test case "Testing for Sensitive Data in Local Storage".
 
 ##### Cloud
-Regardless of using either key/ value or auto backup, it needs to be identified:
+Regardless of using either key/value or auto backup, it needs to be identified:
 - what files are sent to the cloud (e.g. SharedPreferences),
-- if the files contain sensitive information,
+- if the files contain sensitive information and
 - if sensitive information is protected through encryption before sending it to the cloud.
 
--*Auto Backup**
-Auto Backup is configured through the boolean attribute `android:allowBackup` within the application's manifest file. If not explicitly set, applications targeting Android 6.0 (API Level 23) or higher enable Auto Backup by default<sup>[10]</sup>. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/ value backup instead.
+- *Auto Backup**
+Auto Backup is configured through the boolean attribute `android:allowBackup` within the application's manifest file. If not explicitly set, applications targeting Android 6.0 (API Level 23) or higher enable [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup "Enabling AutoBackup") by default. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
 
 ```xml
 android:fullBackupOnly
@@ -945,18 +945,18 @@ android:fullBackupOnly
 
 Auto backup includes almost all of the app files and stores them in the Google Drive account of the user, limited to 25MB per app. Only the most recent backup is stored, the previous backup is deleted.
 
--*Key/ Value Backup**
-To enable key/ value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+- *Key/Value Backup**
+To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
 ```
 
 To implement the key/ value backup, either one of the following classes needs to be extended:
-- BackupAgent
-- BackupAgentHelper
+- [BackupAgent](https://developer.android.com/reference/android/app/backup/BackupAgent.html "BackupAgent")
+-  [BackupAgentHelper](https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper")
 
-Look for these classes within the source code to check for implementations of key/ value backup.
+Look for these classes within the source code to check for implementations of key/value backup.
 
 
 #### Dynamic Analysis
@@ -964,7 +964,7 @@ Look for these classes within the source code to check for implementations of ke
 After executing all available functions when using the app, attempt to make a backup using `adb`. If successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
 ```bash
-$ adb backup -apk -nosystem packageNameOfTheDesiredAPK
+$ adb backup -apk -nosystem <package-name>
 ```
 
 Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, you will have a _.ab_ file in your current working directory.
@@ -974,7 +974,7 @@ Run the following command to convert the .ab file into a .tar file.
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
-Alternatively, use the _Android Backup Extractor_ for this task. For the tool to work, you also have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for JRE7<sup>[6]</sup> or JRE8<sup>[7]</sup>, and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+Alternatively, use the [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") for this task. For the tool to work, you also have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8"), and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
 java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
@@ -994,7 +994,7 @@ Sensitive information should not be sent in clear text to the cloud. It should e
 - avoided to store the information in the first place or
 - encrypt the information at rest, before sending it to the cloud.
 
-Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should not be shared with Google Cloud.
+Files can also be excluded from [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles "Exclude files from Auto Backup"), in case they should not be shared with the Google Cloud.
 
 
 #### References
@@ -1009,21 +1009,8 @@ Files can also be excluded from Auto Backup<sup>[2]</sup>, in case they should n
 ##### CWE
 - CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
 
-##### Info
-[1] Documentation for the application tag - https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup
-[2] IncludingFiles - https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles
-[3] Backing up App Data to the cloud - https://developer.android.com/guide/topics/data/backup.html
-[4] KeyValueBackup - https://developer.android.com/guide/topics/data/keyvaluebackup.html
-[5] BackupAgentHelper - https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html
-[6] BackupAgent - https://developer.android.com/reference/android/app/backup/BackupAgent.html
-[7] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7 - http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
-[8] Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8 - http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
-[9] AutoBackup - https://developer.android.com/guide/topics/data/autobackup.html
-[10] Enabling AutoBackup - https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup
-
-
 ##### Tools
-- Android Backup Extractor - https://sourceforge.net/projects/adbextractor/
+- Android Backup Extractor - https://github.com/nelenkov/android-backup-extractor
 
 
 
@@ -1037,9 +1024,9 @@ For example, capturing a screenshot of a banking application running on the devi
 
 #### Static Analysis
 
-In Android, when the app goes into background a screenshot of the current activity is taken and is used to give a pleasing effect when the app is next entered. However, this would leak sensitive information that is present within the app.
+In Android, when the app goes into background a screenshot of the current activity is taken and is used to give a pleasing effect when the app is entered again. However, this would leak sensitive information that is present within the app.
 
-To verify if the application may expose sensitive information via task switcher, detect if the `FLAG_SECURE`<sup>[1]</sup> option is set. You should be able to find something similar to the following code snippet.
+To verify if the application may expose sensitive information via app switcher, detect if the [`FLAG_SECURE`](https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE "FLAG_SECURE Option") option is set. You should be able to find something similar to the following code snippet.
 
 ```Java
 LayoutParams.FLAG_SECURE
@@ -1049,7 +1036,7 @@ If not, the application is vulnerable to screen capturing.
 
 #### Dynamic Analysis
 
-During black-box testing, open any screen within the app that contains sensitive information and click on the home button so that the app goes into background. Now press the task-switcher button, to see the snapshot. As shown below, if `FLAG_SECURE` is set (image on the right), the snapshot is empty, while if the `FLAG_SECURE` is not set (image on the left), information within the activity are shown:
+During black-box testing, open any screen within the app that contains sensitive information and click on the home button so that the app goes into background. Now press the app-switcher button, to see the snapshot. As shown below, if `FLAG_SECURE` is set (image on the right), the snapshot is empty, while if the `FLAG_SECURE` is not set (image on the left), information within the activity is shown:
 
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
@@ -1067,10 +1054,6 @@ getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
 setContentView(R.layout.activity_main);
 ```
 
-Moreover, the following suggestions can also be implemented to enhance your application security posture:
-- Quit the app entirely when backgrounded. This will destroy any retained GUI screens.
-- Nullify the data on a GUI screen before leaving the screen or logging out.
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -1082,9 +1065,6 @@ Moreover, the following suggestions can also be implemented to enhance your appl
 
 ##### CWE
 - CWE-200 - Information Exposure
-
-##### Info
-[1] FLAG_SECURE - https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE
 
 
 ### Testing for Sensitive Data in Memory
