@@ -1475,13 +1475,13 @@ There are a few ways to test device binding dynamically:
 
 The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <code>[1]</code>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <code>[2]</code>. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are 3 methods which allow for device binding:
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
 
 - augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
 - obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
 - Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
 
-The following 3 identifiers can be possibly used.
+The following three identifiers can be possibly used.
 
 #### References
 
@@ -1507,7 +1507,7 @@ N/A
 ##### Tools
 
 * ADB & DDMS
-* Android Emulator or 2 rooted devices.
+* Android Emulator or two rooted devices.
 
 ### Testing Obfuscation
 
