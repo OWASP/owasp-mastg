@@ -382,7 +382,7 @@ In the following section, we'll show how to solve UnCrackable App for Android Le
 
 ###### Repackaging
 
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets.  this thread is started only for apps that have the <code>android:debuggable="true"</code> tag set in their Manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the <code>android:debuggable="true"</code> tag set in their manifest file's <code>&lt;application&gt;</code> element. This is typically the configuration on Android devices shipped to end users.
 
 When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged - after all, that's what *debug builds* are for. If the system property <code>ro.debuggable</code> set to "0", Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
 
@@ -487,7 +487,7 @@ We are now attached to the suspended process and ready to go ahead with jdb comm
 
 Let's revisit the decompiled code of UnCrackable App Level 1 and think about possible solutions. A good approach would be to suspend the app at a state where the secret string is stored in a variable in plain text so we can retrieve it. Unfortunately, we won't get that far unless we deal with the root / tampering detection first.
 
-By reviewing the code, we can gather that the method <code>sg.vantagepoint.uncrackable1.MainActivity.a</code> is responsible for displaying the "This in unacceptable..." message box. This method hooks the "OK" button to a class that implements the <code>OnClickListener</code> interface. The <code>onClick</code> event handler on the "OK" button is what actually terminates the app. To prevent the user from simply cancelling the dialog, the <code>setCancelable</code> method is called.
+By reviewing the code, we can gather that the method <code>sg.vantagepoint.uncrackable1.MainActivity.a</code> is responsible for displaying the "This in unacceptable..." message box. This method hooks the "OK" button to a class that implements the <code>OnClickListener</code> interface. The <code>onClick</code> event handler on the "OK" button is what actually terminates the app. To prevent the user from simply canceling the dialog, the <code>setCancelable</code> method is called.
 
 ```java
   private void a(final String title) {
@@ -593,7 +593,7 @@ Once you "Force Step Into", the debugger will stop at the beginning of the next 
 
 <img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="700px" />
 
-This method searches for "su" binary within well known directories. Since we are running the app on a rooted device/emulator we need to defeat this check by manipulating variables and/or function return values.
+This method searches for "su" binary within well-known directories. Since we are running the app on a rooted device/emulator we need to defeat this check by manipulating variables and/or function return values.
 
 <img src="Images/Chapters/0x05c/variables.png" width="700px" />
 
@@ -603,7 +603,7 @@ You can see the directory names inside the "Variables" window by stepping into t
 
 Step into the <code>System.getenv</code> method call y using the "Force Step Into" functionality.
 
-After you get the colon separated directory names, the debugger cursor will return back to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Othervise, it might get complicated to identify which line will be executed next.
+After you get the colon separated directory names, the debugger cursor will return to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Otherwise, it might get complicated to identify which line will be executed next.
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
 
@@ -802,7 +802,7 @@ Moving down a level in the OS hierarchy, we arrive at privileged functions that 
 
 Strace is a standard Linux utility that is used to monitor interaction between processes and the kernel. The utility is not included with Android by default, but can be easily built from source using the Android NDK. This gives us a very convenient way of monitoring system calls of a process. Strace however depends on the <code>ptrace()</code> system call to attach to the target process, so it only works up to the point that anti-debugging measures kick in.
 
-As a side note, if the Android "stop application at startup: feature is unavailable we can use a shell script to make sure that strace attached immediately once the process is launched (not an elegant solution but it works):
+As a side note, if the Android "stop application at startup" feature is unavailable we can use a shell script to make sure that strace attached immediately once the process is launched (not an elegant solution but it works):
 
 ```bash
 $ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e “!read” -ff -p "$pid"; break; fi; done
@@ -882,11 +882,11 @@ Making small changes to the app Manifest or bytecode is often the quickest way t
 1. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest;
 2. You cannot intercept HTTPS traffic with a proxy because the app empoys SSL pinning.
 
-In most cases, both issues can be fixed by making minor changes and re-packaging and re-signing the app (the exception are apps that run additional integrity checks beyond default Android code signing - in theses cases, you also have to patch out those additional checks as well).
+In most cases, both issues can be fixed by making minor changes and re-packaging and re-signing the app (the exception are apps that run additional integrity checks beyond default Android code signing - in these cases, you also have to patch out those additional checks as well).
 
 ##### Example: Disabling SSL Pinning
 
-Certificate pinning is an issue for security testers who want to intercepts HTTPS communication for legitimate reasons. To help with this problem, the bytecode can be patched to deactivate SSL pinning. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
+Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. To help with this problem, the bytecode can be patched to deactivate SSL pinning. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
 
 The first step is to disassemble the APK with <code>apktool</code>:
 
@@ -898,7 +898,7 @@ You then need to locate the certificate pinning checks in the Smali source code.
 
 In our example, a search for "X509TrustManager" returns one class that implements a custom Trustmanager. The derived class implements methods named <code>checkClientTrusted</code>, <code>checkServerTrusted</code> and <code>getAcceptedIssuers</code>.
 
-Insert the <code>return-void</code> opcode was added to the first line of each of these methods to bypass execution. This causes each method to return immediately. return value. With this modification, no certificate checks are performed, and the application will accept all certificates.
+Insert the <code>return-void</code> opcode was added to the first line of each of these methods to bypass execution. This causes each method to return immediately. With this modification, no certificate checks are performed, and the application will accept all certificates.
 
 ```smali
 .method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
@@ -1937,4 +1937,4 @@ tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 
 Voilá! The file "nowyouseeme" is now somewhat hidden from the view of all usermode processes (note that there's a lot more you need to do to properly hide a file, including hooking stat(), access(), and other system calls, as well as hiding the file in directory listings).
 
-File hiding is of course only the tip of the iceberg: You can accomplish a whole lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [Bernhard Mueller's Hacking Soft Tokens Paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf).
+File hiding is of course only the tip of the iceberg: You can accomplish a lot of things, including bypassing many root detection measures, integrity checks, and anti-debugging tricks. You can find some additional examples in the "case studies" section in [Bernhard Mueller's Hacking Soft Tokens Paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf).
