@@ -936,8 +936,7 @@ Regardless of using either key/value or auto backup, it needs to be identified:
 - if the files contain sensitive information and
 - if sensitive information is protected through encryption before sending it to the cloud.
 
-- *Auto Backup**
-Auto Backup is configured through the boolean attribute `android:allowBackup` within the application's manifest file. If not explicitly set, applications targeting Android 6.0 (API Level 23) or higher enable [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup "Enabling AutoBackup") by default. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
+- **Auto Backup**: Auto Backup is configured through the boolean attribute `android:allowBackup` within the application's manifest file. If not explicitly set, applications targeting Android 6.0 (API Level 23) or higher enable [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup "Enabling AutoBackup") by default. The attribute `android:fullBackupOnly` can also be used to activate auto backup when implementing a backup agent, but this is only available from Android 6.0 onwards. Other Android versions will be using key/value backup instead.
 
 ```xml
 android:fullBackupOnly
@@ -945,8 +944,7 @@ android:fullBackupOnly
 
 Auto backup includes almost all of the app files and stores them in the Google Drive account of the user, limited to 25MB per app. Only the most recent backup is stored, the previous backup is deleted.
 
-- *Key/Value Backup**
-To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
+- **Key/Value Backup**: To enable key/value backup the backup agent needs to be defined in the manifest file. Look in `AndroidManifest.xml` for the following attribute:
 
 ```xml
 android:backupAgent
@@ -1073,7 +1071,7 @@ setContentView(R.layout.activity_main);
 
 Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
 
-To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile application is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
+To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile app is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
 Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
 
 #### Static Analysis
@@ -1083,23 +1081,22 @@ First, you need to identify which sensitive information is stored in memory. The
 - Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory.
 - Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared.
 
-
 -*NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
-Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see remediation for more details).
-Understand that an RSA keypair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
+Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see the remediation section for more details).
+Understand that an RSA key pair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
 Lastly, some of the ciphers do not properly clean up their byte-arrays, for instance: the AES `Cipher` in `BouncyCastle` does not always clean up its latest working key.
 
 #### Dynamic Analysis
 
-For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the “_Android Monitor_” tab to investigate the memory. Select the device and app you want to analyze in the "_Android Monitor_" tab and click on "_Dump Java Heap_" and a _.hprof_ file will be created.
+For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the _Android Monitor_ tab to investigate the memory. Select the device and app you want to analyze in the _Android Monitor_ tab and click on _Dump Java Heap_ and a _.hprof_ file will be created.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
 
-In the new tab that shows the _.hprof_ file, the Package Tree View should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
+In the new tab that shows the _.hprof_ file, the "Package Tree View" should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Package_Tree_View.png)
 
-For deeper analysis of the memory dump Eclipse Memory Analyser (MAT) should be used. The _.hprof_ file will be stored in the directory "captures", relative to the project path open within Android Studio.
+The _.hprof_ file will be stored in the directory "captures", relative to the project path open within Android Studio. For deeper analysis of the memory dump the tool Eclipse Memory Analyzer (MAT) should be used.
 
 Before the _.hprof_ file can be opened in MAT it needs to be converted. The tool _hprof-conf_ can be found in the Android SDK in the directory platform-tools.
 
@@ -1107,18 +1104,17 @@ Before the _.hprof_ file can be opened in MAT it needs to be converted. The tool
 ./hprof-conv file.hprof file-converted.hprof
 ```
 
-By using MAT, more functions are available like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes.
+By using MAT, more functions are available, like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes.
 
 To quickly discover potential sensitive data in the _.hprof_ file, it is also useful to run the `string` command against it. When doing a memory analysis, check for sensitive information like:
-- Password and/or Username
+- Password and/or usernames
 - Decrypted information
 - User or session related information
-- Session ID
 - Interaction with OS, e.g. reading file content
 
 #### Remediation
 
-In Java, no immutable structures should be used to carry secrets (E.g. `String`, `BigInteger`). Nullifying them will not be effective: the Garbage collector might collect them, but they might remain in the JVMs heap for a longer period of time.
+In Java, no immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the Garbage collector might collect them, but they might remain in the JVMs heap for a longer period of time.
 Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
 
 
@@ -1136,9 +1132,11 @@ try{
 }
 ```
 
+Also look into the best practices for [securely storing sensitive data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
+
 Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts:
-- A wrapperclass, called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convinience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
-- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets nullbytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
+- A wrapper class called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convenience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
+- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets null bytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
 
 
 ```java
@@ -1175,14 +1173,14 @@ public class ErasableSecretKey implements Serializable {
             //choose what you want to do now: so you could not destroy it, would you run on? Or rather inform the caller of the clean method informing him of the failure?
         }
     }
-	//convinience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
+	//convenience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
     public static void clearKey(ErasableSecretKey key) {
         if (key != null) {
             key.clean();
         }
     }
 
-	//internal key klass which represents the actual key.
+	//internal key class which represents the actual key.
     private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
         private byte[] key;
         private final String algorithm;
@@ -1243,9 +1241,6 @@ public class ErasableSecretKey implements Serializable {
 ##### CWE
 - CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
-##### Info
-- Securely stores sensitive data in RAM - https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/
-
 ##### Tools
 - Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
 - Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
@@ -1258,7 +1253,7 @@ public class ErasableSecretKey implements Serializable {
 
 #### Overview
 
-Apps that are processing or querying sensitive information should ensure that they are running in a trusted and secure environment. In order to be able to achieve this, the app can enforce the following local checks on the device:
+Apps that are processing or querying sensitive information should ensure that they are running in a trusted and secured environment. In order to be able to achieve this, the app can enforce the following local checks on the device:
 
 - PIN or password set to unlock the device
 - Usage of a minimum Android OS version
@@ -1268,18 +1263,17 @@ Apps that are processing or querying sensitive information should ensure that th
 
 #### Static Analysis
 
-In order to be able to test the device-access-security policy that is enforced by the app, a written copy of the policy needs to be provided. The policy should define what checks are available and how they are enforced. For example one check could require that the app only runs on Android Marshmallow (Android 6.0) or higher and the app is closing itself if the app is running on an Android version < 6.0.
+In order to be able to test the device-access-security policy that is enforced by the app, a written copy of the policy needs to be provided. The policy should define what checks are available and how they are enforced. For example one check could require that the app only runs on Android Marshmallow (Android 6.0) or higher and the app is closing itself or showing a warning if the app is running on an Android version < 6.0.
 
 The functions within the code that implement the policy need to be identified and checked if they can be bypassed.
 
 #### Dynamic Analysis
 
-The dynamic analysis depends on the checks that are enforced by app and their expected behavior and need to be checked if they can be bypassed.
+The dynamic analysis depends on the checks that are enforced by app and their expected behavior and need to be validated if they can be bypassed.
 
 #### Remediation
 
-Different checks on the Android device can be implemented by querying different system preferences from _Settings.Secure_<sup>[1]</sup>. The _Device Administration API_<sup>[2]</sup> offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
-
+Different checks on the Android device can be implemented by querying different system preferences from [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html "Settings.Secure"). The [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html "Device Administration API") offers different mechanisms to create security aware applications, that are able to enforce password policies or encryption of the device.
 
 #### References
 
@@ -1289,21 +1283,17 @@ Different checks on the Android device can be implemented by querying different 
 ##### OWASP MASVS
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
-##### Info
-- [1] Settings.Secure - https://developer.android.com/reference/android/provider/Settings.Secure.html
-- [2] Device Administration API - https://developer.android.com/guide/topics/admin/device-admin.html
-
 
 
 ### Verifying User Education Controls
 
 #### Overview
 
-Educating users is a crucial part in the usage of mobile apps. Even though many security controls are already in place, they might be circumvented or misused through the users.
+Educating users is a crucial part in the usage of mobile apps. Even though many security controls are already in place, they might be circumvented or misused through the user.
 
 The following list shows potential warnings or advises for a user when opening the app the first time and using it:
 - Showing a list of what kind of data is stored locally and remotely. This can also be a link to an external resource as the information might be quite extensive.
-- If a new user account is created within the app it should show the user if the password provided is considered secure and applies to the  password policy.
+- If a new user account is created within the app it should show the user if the password provided is considered secure and applies to the password policy.
 - If the user is installing the app on a rooted device a warning should be shown that this is dangerous and deactivates security controls at OS level and is more likely to be prone to malware. See also "Testing Root Detection" for more details.
 - If a user installed the app on an outdated Android version a warning should be shown. See also "Testing the Device-Access-Security Policy" for more details.
 
