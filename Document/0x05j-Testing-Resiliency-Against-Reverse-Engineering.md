@@ -208,8 +208,6 @@ If root detection is missing or too easily bypassed, make suggestions in line wi
 
 N/A
 
-
-
 ### Testing Anti-Debugging
 
 #### Overview
@@ -628,9 +626,10 @@ If anti-debugging is missing or too easily bypassed, make suggestions in line wi
 ### Testing File Integrity Checks
 
 #### Overview
+
 There are two file-integrity related topics:
 
- 1. _The application-source related integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
+ 1. _Code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
  2. _The file storage related integrity checks:_ When files are stored by the application using the SD-card or public storage, or when key-value pairs are stored in the `SharedPreferences`, then their integrity should be protected.
 
 ##### Sample Implementation - application-source
@@ -641,7 +640,7 @@ Integrity checks often calculate a checksum or hash over selected files. Files t
 - Class files *.dex
 - Native libraries (*.so)
 
-The following sample implementation from the Android Cracking Blog <sup>[1]</sup> calculates a CRC over classes.dex and compares is with the expected value.
+The following [sample implementation from the Android Cracking Blog](http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over classes.dex and compares is with the expected value.
 
 
 ```java
@@ -666,9 +665,9 @@ private void crcTest() throws IOException {
 ```
 ##### Sample Implementation - Storage
 
-When providing integrity on the storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the filesystem.
-When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on: There are a few steps to take care of.
-In case of the need for encryption. Please make sure that you encrypt and then HMAC as described in [2].
+When providing integrity on the storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the file system.
+
+When using an HMAC, you can [either use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](http://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 When generating an HMAC with BouncyCastle:
 
@@ -686,8 +685,9 @@ When verifying the HMAC with BouncyCastle:
 3. Repeat step 1-4 of generating an hmac on the data.
 4. Now compare the extracted hamcbytes to the result of step 3.
 
-When generating the HMAC based on the Android keystore, then it is best to only do this for Android 6 and higher. In that case you generate the key for hmacking as described in [3].
-A convinient HMAC implementation without the `AndroidKeyStore` can be found below:
+When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html), then it is best to only do this for Android 6 and higher.
+
+A convenient HMAC implementation without the `AndroidKeyStore` can be found below:
 
 ```java
 public enum HMACWrapper {
@@ -812,12 +812,6 @@ A similar approach holds here, but now answer the following questions:
 ##### CWE
 
 - N/A
-
-##### Info
-
-- [1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
-- [2] Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm - http://cseweb.ucsd.edu/~mihir/papers/oem.html
-- [3] Android Keystore System - https://developer.android.com/training/articles/keystore.html
 
 ### Testing Detection of Reverse Engineering Tools
 
