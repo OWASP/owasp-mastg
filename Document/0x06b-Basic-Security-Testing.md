@@ -432,27 +432,3 @@ Certificate pinning is a good security practice and should be used for all appli
 If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [#thiel]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
 To get more information on testing transport security, please refer to section 'Testing Network Communication'.
-
-### References
-
-<!-- [TODO: Clean up references] -->
-
-- [1] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits
-- [2] Can I Jailbreak? by IPSW Downloads - https://canijailbreak.com/
-- [3] IPSW Downloads - https://ipsw.me
-- [4] The iPhone Wiki - https://www.theiphonewiki.com/
-- [5] usbmuxd - https://github.com/libimobiledevice/usbmuxd
-- [6] The iPhone Wiki - https://www.theiphonewiki.com/wiki/Usbmux 
-- [7] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
-- [8] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
-- [9] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
-- [10] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
-- [11] Uncrackable Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1
-- [12] Optool - https://github.com/alexzielenski/optool
-- [13] Maintaining Certificates - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html
-- [14] Maintaining Provisioning Profiles - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html
-- [15] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
-- [16] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-- [17] EFF's Observatory - https://www.eff.org/pl/observatory
-- [18] Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft - https://www.eff.org/files/colour_map_of_CAs.pdf
-* [19] iOS Application Security - David Thiel
