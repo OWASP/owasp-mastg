@@ -277,10 +277,6 @@ sys.stdin.read()
 
 -- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
-##### With Source Code
-
--- TODO [Add content for static analysis of "Testing Jailbreak Detection" with source code] --
-
 #### Dynamic Analysis
 
 -- TODO [Describe how to test for this issue "Testing Jailbreak Detection" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
@@ -320,7 +316,7 @@ Debugging is a highly effective way of analyzing the runtime behavior of an app.
 
 -- TODO [Typical debugging defenses] --
 
-Detecting Mach Exception Ports <sup>[1]</sup>:
+[Detecting Mach Exception Ports](https://zgcoder.net/ramblings/osx-debugger-detection "Detecting the Debugger on OS X"):
 
 ```c
 #include <mach/task.h>
@@ -471,10 +467,6 @@ Note that some anti-debugging implementations respond in a stealthy way so that 
 
 -- TODO [Add relevant CWE for "Testing Anti-Debugging"] --
 
-##### Info
-
--	[1] Detecting the Debugger on OS X - https://zgcoder.net/ramblings/osx-debugger-detection
-
 ##### Tools
 
 -- TODO [Add tools for "Testing Anti-Debugging"] --
@@ -552,14 +544,14 @@ int xyz(char *dst) {
 ##### Sample Implementation - Storage
 
 When providing integrity on the application storage itself, you can either create an HMAC or a signature over a given key-value pair or over a file stored on the device. When you create an HMAC, it is best to use the CommonCrypto implementation.
-In case of the need for encryption: Please make sure that you encrypt and then HMAC as described in [1].
+In case of the need for encryption: Please make sure that you encrypt and then HMAC as described in  [Authenticated Encryption](http://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 When generating an HMAC with CC:
 
 1. get the data as `NSMutableData`.
 2. Get the data key (possibly from the keychain)
-3. Calculate the hashvalue
-4. Append the hashvalue to the actual data
+3. Calculate the hash value
+4. Append the hash value to the actual data
 5. Store the results of step 4.
 
 
@@ -627,19 +619,16 @@ A similar approach holds here, but now answer the following questions:
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
--- V8.3: "The app detects, and responds to, tampering with executable files and critical data".
+- V8.3: "The app detects, and responds to, tampering with executable files and critical data".
 
 ##### CWE
 
 - N/A
 
-##### Info
-
-- [1] Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm - http://cseweb.ucsd.edu/~mihir/papers/oem.html
 
 
 ### Testing Detection of Reverse Engineering Tools
@@ -676,11 +665,6 @@ A similar approach holds here, but now answer the following questions:
 ##### CWE
 
 -- TODO [Add relevant CWE for "Testing Detection of Reverse Engineering Tools"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
--	[1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
--	[2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
@@ -745,11 +729,6 @@ return 0; // good
 
 -- TODO [Add relevant CWE for "Testing Runtime Integrity Checks"] -- - CWE-312 - Cleartext Storage of Sensitive Information
 
-##### Info
-
--	[1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
--	[2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing Runtime Integrity Checks"] --* Enjarify - https://github.com/google/enjarify
@@ -761,11 +740,9 @@ return 0; // good
 
 The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
 
-Please note that since iOS 7.0 hardware identifiers, such as the MAC addresses are off-limits [1]. The possible ways to bind an application to a device are based on using `identifierForVendor`, storing something in the keychain or using Google its InstanceID for iOS [2]. See Remediation for more details.
+Please note that [since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes") hardware identifiers, such as the MAC addresses are off-limits. The possible ways to bind an application to a device are based on using `identifierForVendor`, storing something in the keychain or using Google its InstanceID for iOS [2]. See Remediation for more details.
 
 #### Static Analysis
-
-##### With Source Code
 
 When the source-code is available, then there are a few codes you can look for which are bad practices, such as:
 
@@ -804,7 +781,7 @@ Take the following steps when you want to verify app-binding by using two jailbr
 3.	Retrieve the data from the jailbroken device:
    - you can ssh to your device and then extract the data (just as with a similator, either use debugging or a `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`. The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`
   - go to the directory printed with the given command using SSH or copy the folders in there using SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`. You can use an FTP client like Filezilla as well.
-  - retrieve the data from the keychain, which is stored `/private/var/Keychains/keychain-2.db`, which you can retrieve using the keychain dumper[3]. For that you first need to make it world readable `chmod +r /private/var/Keychains/keychain-2.db` and then execute `./keychain_dumper -a`
+  - retrieve the data from the keychain, which is stored `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). For that you first need to make it world readable `chmod +r /private/var/Keychains/keychain-2.db` and then execute `./keychain_dumper -a`
 4.	Install the application on the second jailbroken device.
 5.	Overwrite the data of the application extracted from step 3. They keychain data will have to be manually added.
 6.	Can you continue in an authenticated state? If so, then binding might not be working properly.
@@ -815,7 +792,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C) or `UIDevice.current.identifierForVendor?.uuidString` (in swift3) and `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in swift2). Which might change upon reinstalling the application when no other applications from the same vendor are installed.
 - You can store something in the keychain to identify the application its instance. One needs to make sure that this data is not backed up by using `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure it and properly enforce having a passcode or touch-id) or by using `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
-- You can use Google its instanceID for iOS [2].
+- You can use Google and its instanceID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation instance-ID").
 
 Any scheme based on these variants will be more secure the moment passcode and/or touch-id has been enabled and the materials stored in the Keychain or filesystem have been protected with protectionclasses such as  `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` and the `SecAccessControlCreateFlags` is set with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or touchid), `kSecAccessControlTouchIDAny` (touchID), `kSecAccessControlTouchIDCurrentSet` (touchID: but current fingerprints only).
 
@@ -833,12 +810,6 @@ Any scheme based on these variants will be more secure the moment passcode and/o
 ##### CWE
 
 -- TODO [Add relevant CWE for "Testing Device Binding"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-- [1] iOS 7 release notes - https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html
-- [2] iOS implementation instance-ID - https://developers.google.com/instance-id/guides/ios-implementation
-- [3] Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper
-
 
 ##### Tools
 
@@ -880,11 +851,6 @@ Any scheme based on these variants will be more secure the moment passcode and/o
 
 -- TODO [Add relevant CWE for "Testing Obfuscation"] -- - CWE-312 - Cleartext Storage of Sensitive Information
 
-##### Info
-
--	[1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
--	[2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
 ##### Tools
 
--- TODO [Add relevant tools for "Testing Obfuscation"] --* Enjarify - https://github.com/google/enjarify
+-- TODO [Add relevant tools for "Testing Obfuscation"] --
