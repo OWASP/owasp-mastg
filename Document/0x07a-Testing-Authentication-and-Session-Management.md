@@ -62,12 +62,6 @@ For additional best practices and detailed information please refer to the sourc
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)") 
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
-##### References
-- [1] An Introduction into OAuth2 - https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
-- [2] RFC6749: The OAuth 2.0 Authorization Framework (October 2012) - https://tools.ietf.org/html/rfc6749
-- [3] draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017) - https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12
-- [4] RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013) - https://tools.ietf.org/html/rfc6819
-
 
 ### Testing OAuth2 implementation
 
@@ -104,11 +98,6 @@ For additional best practices and detailed information please refer to the sourc
 
 - CWE-285: Improper Authorization
 
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx 
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-- [3] Blackhat OAuth2 mobile attacks article - https://www.blackhat.com/docs/eu-16/materials/eu-16-Yang-Signing-Into-Billion-Mobile-Apps-Effortlessly-With-OAuth20-wp.pdf
 
 ##### Tools
 
@@ -120,7 +109,7 @@ For additional best practices and detailed information please refer to the sourc
 
 #### Overview
 
-Applications often have different areas with, on the one hand public and non-privileged information and functions, and on the other hand sensitive and privileged information and functions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information and functions are protected and accessible only to legitimate users, proper authentication has to be in place.  
+Applications often have different areas with, on the one hand public and non-privileged information and functions, and on the other hand sensitive and privileged information and functions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information and functions are protected and accessible only to legitimate users, proper authentication has to be in place.
 
 Authentication always need to be handled in the server side code and should never rely on client-side controls. Client-side controls can be used to improve the user workflow and only allow specific actions, but there always need to be the server-side counterpart that defines what a user is allowed to access.
 
@@ -164,12 +153,6 @@ If any of these two conditions raise an issue, reject the request and do not all
 ##### CWE
 
 - CWE-287: Improper Authentication
-
-##### Info
-
-* [1] OWASP JWT Cheat Sheet for Java: https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
-* [2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
-* [3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
 
 
 ### Testing Session Management
@@ -229,10 +212,6 @@ It is strongly advised to use session ID generators that are build-in within the
 ##### CWE
 
 - CWE-613: Insufficient Session Expiration
-
-##### Info
-
-[1] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
 
 ##### Tools
 
@@ -327,16 +306,6 @@ The following best practices should be considered, when implementing JWT:
 
 * CWE-287: Improper Authentication
 
-##### Info
-
-* [1] RFC 7519 JSON Web Token (JWT) - https://tools.ietf.org/html/rfc7519
-* [2] PHP JWT - https://github.com/firebase/php-jwt
-* [3] Java Spring with JWT - http://projects.spring.io/spring-security-oauth/docs/oauth2.html
-* [4] OWASP JWT Cheat Sheet - https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
-* [5] Sample of JWT Token - https://jwt.io/#debugger
-* [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
-* [7] JWT the right way - https://stormpath.com/blog/jwt-the-right-way
-* [8] Attacking JWT Authentication - https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/
 
 ##### Tools
 * jwtbrute - https://github.com/jmaxxz/jwtbrute
@@ -391,12 +360,6 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 ##### CWE
 
 * CWE-613: Insufficient Session Expiration
-
-##### Info
-
-* [1] JWT token blacklisting - https://auth0.com/blog/blacklist-json-web-token-api-keys/
-* [2] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
-* [3] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
 
@@ -461,11 +424,6 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 ##### CWE
 - CWE-521: Weak Password Requirements
 
-##### Info
-- [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
-- [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
-- [3] zxcvbn - https://github.com/dropbox/zxcvbn
-
 
 ### Testing Excessive Login Attempts
 
@@ -509,13 +467,6 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 ##### CWE
 
 - CWE-307: Improper Restriction of Excessive Authentication Attempts
-
-##### Info
-* [1] OTG-AUTHN-003 - https://www.owasp.org/index.php/Testing_for_Weak_lock_out_mechanism
-* [2] Brute Force Attacks - https://www.owasp.org/index.php/Brute_force_attack
-* [3] Blocking Brute Force Attacks - https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks
-* [4] OWASP Automated Threats to Web Applications - https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications
-* [5] Burp Intruder - https://portswigger.net/burp/help/intruder.html
 
 ##### Tools
 * Burp Suite Professional - https://portswigger.net/burp/
@@ -591,11 +542,6 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 ##### CWE
 - CWE-613: Insufficient Session Expiration
 
-##### Info
-* [1] OWASP Web Application Test Guide (OTG-SESS-007) - https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
-* [2] OWASP Session management cheatsheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
-* [3] RFC 7519 - https://tools.ietf.org/html/rfc7519#section-4.1.4
-* [4] Refresh tokens & access tokens - https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
 
 ### Testing 2-Factor Authentication and Step-up Authentication
@@ -670,14 +616,6 @@ An additional control to ensure that an authorized user is using the app on an a
 - CWE-287: Improper Authentication
 - CWE-308: Use of Single-factor Authentication
 
-##### Info
-
-* [1] Best Practices for Step-up Multi-factor Authentication  - http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf
-* [2] Google Authenticator - https://support.google.com/accounts/answer/1066447?hl=en
-* [3] Microsoft Authenticator - https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to
-* [4] Authy - https://authy.com/
-* [5] https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks
-
 
 ### Testing User Device Management
 
@@ -714,11 +652,6 @@ An additional control to ensure that an authorized user is using the app on an a
 
 -- TODO [Add relevant CWE for "Testing User Device Management"] --
 - CWE-312: Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
