@@ -6,7 +6,11 @@
 
 A general rule in app development is that one should never attempt to invent their own cryptography. In mobile apps in particular, any form of crypto should be implemented using existing, robust implementations. In 99% of cases, this simply means using the data storage APIs and cryptographic libraries that come with the mobile OS.
 
+<<<<<<< HEAD
+Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Provider") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
+=======
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
+>>>>>>> 4d8ae01f214e75e28560a62f56a507399fb2f887
 
 The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 You can list the set of existing providers as follows:
@@ -25,11 +29,10 @@ for (Provider provider : Security.getProviders()) {
 String providers = builder.toString();
 //now display the string on the screen or in the logs for debugging.
 ```
-Below you can find the output on the Emulator running Android 4.4 with Google Play APIs after the security provider has been patched:
 
+Below you can find the output of a running Android 4.4 in an emulator with Google Play APIs, after the security provider has been patched:
 
 ```
-
 provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
@@ -39,14 +42,18 @@ provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
 provider: AndroidKeyStore1.0 (Android KeyStore security provider)
 ```
 
+<<<<<<< HEAD
+For some applications that support older versions of Android, bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the legion of the Bouncy Castle. Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
+=======
 
 For some applications that support older versions of Android, bundling an up-to-date library may be the only option. SpongyCastle (a repackaged version of BouncyCastle) is a common choice in these situations. Repackaging is necessary because BouncyCastle is included in the Android SDK. The latest version of [SpongyCastle](https://rtyley.github.io/spongycastle/) likely fixes issues encountered in the earlier versions of [BouncyCastle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details: Bouncy Castle") that were included in Android. Note that the BouncyCastle libraries packed with Android are often not as complete as their counterparts from the Legion of the BouncyCastle. Lastly: bear in mind that packing large libraries such as SpongyCastle will often lead to a multidexed Android application.
+>>>>>>> 4d8ae01f214e75e28560a62f56a507399fb2f887
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
 Here's an example of using AES/CBC/PKCS7Padding on API 23+:
 
-```
+```Java
 String keyAlias = "MySecretKey";
 
 KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAlias,
@@ -71,7 +78,7 @@ Attempting to use the generated key in violation of the above spec would result 
 
 Here's an example of using that key to decrypt:
 
-```
+```Java
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
         + "/" + KeyProperties.BLOCK_MODE_CBC
         + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7;
@@ -138,12 +145,12 @@ This sample creates the RSA key pair with the 4096-bit key (i.e., modulus size).
 
 Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
 
-* `Cipher`
-* `Mac`
-* `MessageDigest`
-* `Signature`
-* `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
-* And a few others in the `java.security.*` and `javax.crypto.*` packages.
+- `Cipher`
+- `Mac`
+- `MessageDigest`
+- `Signature`
+- `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
+- And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
 Ensure that the best practices outlined in the Cryptography for Mobile Apps chapter are followed.
 
@@ -155,7 +162,7 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 ##### OWASP Mobile Top 10
 
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
@@ -163,18 +170,9 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 ##### CWE
 
-* CWE-326: Inadequate Encryption Strength
+- CWE-326: Inadequate Encryption Strength
 
-##### Info
 
-- [1] NIST recommendations (2016) - https://www.keylength.com/en/4/
-- [2] BSI recommendations (2017) - https://www.keylength.com/en/8/
-- [3] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
-- [4] Credential storage enhancements in Android 4.3 (August 21, 2013) - https://nelenkov.blogspot.co.uk/2013/08/credential-storage-enhancements-android-43.html
-- [5] Cipher documentation - https://developer.android.com/reference/javax/crypto/Cipher.html
-- [6] Spongy Castle - https://rtyley.github.io/spongycastle/
-- [7] CVE Details Bouncy Castle - https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html
-- [8] Provider - https://developer.android.com/reference/java/security/Provider.html
 
 ### Testing Random Number Generation
 
@@ -238,10 +236,10 @@ public static void main (String args[]) {
 - V3.6: "All random values are generated using a sufficiently secure random number generator"
 
 ##### OWASP Mobile Top 10 2016
-* M6 - Broken Cryptography
+- M6 - Broken Cryptography
 
 ##### CWE
-* CWE-330: Use of Insufficiently Random Values
+- CWE-330: Use of Insufficiently Random Values
 
 ##### Info
 

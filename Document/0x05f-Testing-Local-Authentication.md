@@ -118,11 +118,11 @@ For a full example, see the [blog article by Deivi Taka](https://www.sitepoint.c
 
 ##### OWASP Mobile Top 10 2016
 
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
