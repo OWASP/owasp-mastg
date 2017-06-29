@@ -49,8 +49,8 @@ Link to background information where necessary.
 
 ### Write so people will read with joy!
 
-- Use the following methods to increase scannability:
-- Use shorter (50–80 characters per line) rather than longer line lengths (100 characters per line)
+Use the following methods to increase scannability:
+
 - Use left alignment for headings, subheadings, and text
 - Link where appropriate
 - Use lists rather than paragraphs wherever possible
