@@ -10,7 +10,7 @@
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on Static analysis of "Testing App permissions" with source code] --
 
@@ -51,7 +51,7 @@
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content for static analysis of "Testing Input Validation and Sanitization" with source code] --
 
@@ -100,7 +100,7 @@ https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test
 
 <!-- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] -->
 
-<!-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] -->
+<!-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] -->
 
 <!-- TODO [Add content on static analysis for "Testing Custom URL Schemes" with source code] -->
 
@@ -141,7 +141,7 @@ https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Sensitive Functionality Exposed Through IPC" with source code] --
 
@@ -180,9 +180,9 @@ The WebView object is used to embed a web browser in your iOS application. It is
 
 #### Static Analysis
 
-Depending on your iOS version a WebView object can be implemented using UIWebView (for iOS versions 7.1.2 and older)<sup>[1]</sup> or WKWebView (for iOS in version 8.0 and later)<sup>[2]</sup>. WKWebView is recommended to be used.
+Depending on your iOS version a WebView object can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). WKWebView is recommended to be used.
 
-The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
+The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object [WKPreferences](https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled "WKPreferences"), like in the following example:
 
 ```
 #import "ViewController.h"
@@ -229,7 +229,7 @@ The UIWebView should be avoided and WKWebView used instead. JavaScript is enable
 
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
-* that all functions offered by the endpoint need to be free of XSS vulnerabilities<sup>[4]</sup>.
+* that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
 
 * that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
 
@@ -266,7 +266,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing WebView Protocol Handlers" with source code) --
 
@@ -307,7 +307,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
 
@@ -350,7 +350,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
 
@@ -392,7 +392,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing Object Serialization" with source code] --
 
@@ -446,7 +446,7 @@ Look for a function with a name like isJailBroken in the code. If none of these 
 
 #### Dynamic Analysis
 
-First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use Cycript<sup>[3]</sup> to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the nm<sub>[4]</sub> tool:
+First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use [Cycript](http://www.cycript.org/ "cycript") to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the nm<sub>[4]</sub> tool:
 
 ```
 nm <appname> | grep swift

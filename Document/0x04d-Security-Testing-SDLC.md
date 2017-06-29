@@ -20,7 +20,7 @@ DevOps refers to practices that focus on a close collaboration between all stake
 
 The term DevOps might be mistaken for only expressing collaboration between development and operations teams, however, as Gene Kim, a DevOps thought leader, puts it: “At first blush, it seems as though the problems are just between dev and ops," he says, "but test is in there, and you have information security objectives, and the need to protect systems and data. These are top-level concerns of management, and they have become part of the DevOps picture."
 
-In other words, when you hear "DevOps" today, you should probably be thinking DevOpsQATestInfoSec.”<sup>[16]</sup>
+In other words, when you hear "DevOps" today, you should probably be thinking [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery").”
 
 Security is just as important for the business success as the overall quality, performance and usability of an application. As development cycles are shortened and deployment frequencies increased it is elementary to ensure that quality and security is built in from the very beginning.
 

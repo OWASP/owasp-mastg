@@ -559,7 +559,7 @@ In the APK signature scheme, the complete APK is hashed and signed, and an APK S
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
 
-*APK signature verification process* <sup>[9]</sup>
+*[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")*
 
 ##### Creating Your Certificate
 
