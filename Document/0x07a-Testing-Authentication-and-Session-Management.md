@@ -682,8 +682,9 @@ An additional control to ensure that an authorized user is using the app on an a
 There are two forms of user device management:
 
 - Managing your data and sessions accross devices given your application. This is where this section is about.
-- Manage the actual device itself: how can an application influence the security state of the device and does it do this propperly according to best practices. 
+- Manage the actual device itself: an application can manage the security state of a device (e.g. require lockscreen, tracking, enable remote-wipe on a device level). This is dealt with at the platform specific device management sections.
 
+Session management / claim management, token management all boils down to the same thing: how can you be reassured that the session, tokens and/or claims are not stolen? And how do you make sure that, when 
 The claims that prove ones identity (e.g. a JWT token) or the authorization (e.g. the access and refresh tokens) are the ones that often need the most attention if it comes to managing data. 
 
 
