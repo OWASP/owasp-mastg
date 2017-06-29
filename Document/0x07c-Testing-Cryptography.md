@@ -174,7 +174,7 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 
 As the name implies, block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
 
-The ECB (Electronic Codebook) encryption mode should not be used, as it is basically divides the input into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>. For example, if an image is encrypted utilizing the ECB block mode, then the input image is split up into multiple smaller blocks. Each block might represent a small area of the original image. Each of which is encrypted using the same secret input key. If input blocks are similar, e.g., each input block is just a white background, the resulting encrypted output block will also be the same. While each block of the resulting encrypted image is encrypted, the overall structure of the image will still be recognizable within the resulting encrypted image.
+The [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29 "Electronic Codebook (ECB)") encryption mode should not be used, as it is basically divides the input into blocks of fixed size and each block is encrypted separately<sup>[6]</sup>. For example, if an image is encrypted utilizing the ECB block mode, then the input image is split up into multiple smaller blocks. Each block might represent a small area of the original image. Each of which is encrypted using the same secret input key. If input blocks are similar, e.g., each input block is just a white background, the resulting encrypted output block will also be the same. While each block of the resulting encrypted image is encrypted, the overall structure of the image will still be recognizable within the resulting encrypted image.
 
 ![Electronic Codebook (ECB mode encryption)](Images/Chapters/0x07c/ECB.png)
 
@@ -196,7 +196,7 @@ Test encrypted data for reoccurring patterns -- those can be an indication of EC
 
 Use an established block mode that provides a feedback mechanism for subsequent blocks, e.g. Counter Mode (CTR). For storing encrypted data it is often advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation -- thus being available on all modern platforms.
 
-Consult the NIST guidelines on block mode selection<sup>[1]</sup>.
+Consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
 #### References
 
@@ -210,10 +210,6 @@ Consult the NIST guidelines on block mode selection<sup>[1]</sup>.
 * CWE-326: Inadequate Encryption Strength
 * CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
-##### Info
-
-- [1] NIST Modes Development, Proposed Modes - http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html
-- [6] Electronic Codebook (ECB) - https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
 
 ##### Tools
 * QARK - https://github.com/linkedin/qark
