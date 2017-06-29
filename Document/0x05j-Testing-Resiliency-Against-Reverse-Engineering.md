@@ -208,8 +208,6 @@ If root detection is missing or too easily bypassed, make suggestions in line wi
 
 N/A
 
-
-
 ### Testing Anti-Debugging
 
 #### Overview
@@ -222,7 +220,7 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Anti-JDWP-Debugging Examples
 
-In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the ro.debuggable system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
+In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the <code>ro.debuggable</code> system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
 ###### Checking Debuggable Flag in ApplicationInfo
 
@@ -615,22 +613,15 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 #### Remediation
 
-If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
-
-#### References
-
-- [1] Matenaar et al. - Patent Application - MOBILE DEVICES WITH INHIBITED APPLICATION DEBUGGING AND METHODS OF OPERATION - https://www.google.com/patents/US8925077
-- [2] Bluebox Security - Android Reverse Engineering & Defenses - https://slides.night-labs.de/AndroidREnDefenses201305.pdf
-- [3] Tim Strazzere - Android Anti-Emulator - https://github.com/strazzere/anti-emulator/
-- [4] Anti-Debugging Fun with Android ART - https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art
-- [5] ptrace man page - http://man7.org/linux/man-pages/man2/ptrace.2.html
+If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
 
 ### Testing File Integrity Checks
 
 #### Overview
+
 There are two file-integrity related topics:
 
- 1. _The application-source related integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
+ 1. _Code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this process more involved, a protection scheme can be augmented with CRC checks on the app bytecode and native libraries as well as important data files. These checks can be implemented both on the Java and native layer. The idea is to have additional controls in place so that the only runs correctly in its unmodified state, even if the code signature is valid.
  2. _The file storage related integrity checks:_ When files are stored by the application using the SD-card or public storage, or when key-value pairs are stored in the `SharedPreferences`, then their integrity should be protected.
 
 ##### Sample Implementation - application-source
@@ -641,7 +632,7 @@ Integrity checks often calculate a checksum or hash over selected files. Files t
 - Class files *.dex
 - Native libraries (*.so)
 
-The following sample implementation from the Android Cracking Blog <sup>[1]</sup> calculates a CRC over classes.dex and compares is with the expected value.
+The following [sample implementation from the Android Cracking Blog](http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over classes.dex and compares is with the expected value.
 
 
 ```java
@@ -666,9 +657,9 @@ private void crcTest() throws IOException {
 ```
 ##### Sample Implementation - Storage
 
-When providing integrity on the storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the filesystem.
-When using an HMAC, you can either use a bouncy castle implementation to HMAC the given content or the AndroidKeyStore and then verify the HMAC later on: There are a few steps to take care of.
-In case of the need for encryption. Please make sure that you encrypt and then HMAC as described in [2].
+When providing integrity on the storage itself. You can either create an HMAC over a given key-value pair as for the Android `SharedPreferences` or you can create an HMAC over a complete file provided by the file system.
+
+When using an HMAC, you can [either use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](http://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 When generating an HMAC with BouncyCastle:
 
@@ -686,8 +677,9 @@ When verifying the HMAC with BouncyCastle:
 3. Repeat step 1-4 of generating an hmac on the data.
 4. Now compare the extracted hamcbytes to the result of step 3.
 
-When generating the HMAC based on the Android keystore, then it is best to only do this for Android 6 and higher. In that case you generate the key for hmacking as described in [3].
-A convinient HMAC implementation without the `AndroidKeyStore` can be found below:
+When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html), then it is best to only do this for Android 6 and higher.
+
+A convenient HMAC implementation without the `AndroidKeyStore` can be found below:
 
 ```java
 public enum HMACWrapper {
@@ -760,10 +752,9 @@ public enum HMACWrapper {
     }
 }
 
-
 ```
 
-Another way of providing integrity, is by signing the obtained byte-array. Please check [3] on how to generate a signature. Do not forget to add the signature to the original byte-array.
+Another way of providing integrity is by signing the obtained byte-array, and adding the signature to the original byte-array.
 
 ##### Bypassing File Integrity Checks
 
@@ -812,12 +803,6 @@ A similar approach holds here, but now answer the following questions:
 ##### CWE
 
 - N/A
-
-##### Info
-
-- [1] Android Cracking Blog - http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html
-- [2] Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm - http://cseweb.ucsd.edu/~mihir/papers/oem.html
-- [3] Android Keystore System - https://developer.android.com/training/articles/keystore.html
 
 ### Testing Detection of Reverse Engineering Tools
 
@@ -1052,10 +1037,6 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 N/A
 
-##### Info
-
-- [1] Netitude Blog - Who owns your runtime? - https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/
-
 ##### Tools
 
 * frida - https://www.frida.re/
@@ -1147,10 +1128,6 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 N/A
 
-##### Info
-
-- [1] Timothy Vidas & Nicolas Christin - Evading Android Runtime Analysis via Sandbox Detection - https://users.ece.cmu.edu/~tvidas/papers/ASIACCS14.pdf
-
 ##### Tools
 
 N/A
@@ -1159,7 +1136,7 @@ N/A
 
 #### Overview
 
-Controls in this category verify the integrity of the app's own memory space, with the goal of protecting against memory patches applied during runtime. This includes unwanted changes to binary code or bytecode, functions pointer tables, and important data structures, as well as rogue code loaded into process memory. Intergrity can be verified either by:
+Controls in this category verify the integrity of the app's own memory space, with the goal of protecting against memory patches applied during runtime. This includes unwanted changes to binary code or bytecode, functions pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified either by:
 
 1. Comparing the contents of memory, or a checksum over the contents, with known good values;
 2. Searching memory for signatures of unwanted modifications.
@@ -1170,7 +1147,7 @@ There is some overlap with the category "detecting reverse engineering tools and
 
 **Detecting tampering with the Java Runtime**
 
-Detection code from the dead && end blog <sup>[3]</sup>.
+Detection code from the [dead && end blog](http://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
 ```java
 try {
@@ -1237,12 +1214,6 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 N/A
 
-##### Info
-
-- [1] Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. "Detecting GOT Overwrites", p. 743.
-- [2] Netitude Blog - "Who owns your runtime?" - https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/
-- [3] dead && end blog - Android Anti-Hooking Techniques in Java - http://d3adend.org/blog/?p=589
-
 ### Testing Device Binding
 
 #### Overview
@@ -1251,8 +1222,10 @@ The goal of device binding is to impede an attacker when he tries to copy an app
 
 #### Static Analysis
 
-In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <sup>[1]</sup>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <sup>[2]</sup>.
+In the past, Android developers often relied on the Secure ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a new set of [recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in their SDK documentation regarding identifiers as well.
+
 When the source-code is available, then there are a few codes you can look for, such as:
+
 - The presence of unique identifiers that no longer work in the future
   - `Build.SERIAL` without the presence of `Build.getSerial()`
   - `htc.camera.sensor.front_SN` for HTC devices
@@ -1296,7 +1269,7 @@ There are a few ways to test the application binding:
 
 ##### Google InstanceID
 
-Google InstanceID <sup>[5]</sup> uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
+[Google InstanceID](https://developers.google.com/instance-id/ "Google InstanceID documentation") uses tokens to authenticate the application instance running on the device. The moment the application has been reset, uninstalled, etc., the instanceID is reset, meaning that you have a new "instance" of the app.
 You need to take the following steps into account for instanceID:
 0. Configure your instanceID at your Google Developer Console for the given application. This includes managing the PROJECT_ID.
 
@@ -1359,7 +1332,7 @@ Lastly register the service in your AndroidManifest:
 
 When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
 
-Please note that Firebase has support for InstanceID as well <sup>[4]</sup>.
+Please note that [Firebase has support for InstanceID as well](https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId "Firebase InstanceID documentation").
 <!-- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] -->
 
 ##### IMEI & Serial
@@ -1460,7 +1433,7 @@ There are a few ways to test device binding dynamically:
 
 #### Remediation
 
-The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have changed in Android N <code>[1]</code>. Google has set a new set of recommendations in their SDK documentation regarding identifiers as well <code>[2]</code>. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
+The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a [new set of recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") in their SDK documentation regarding identifiers as well.. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
 Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
 
@@ -1483,13 +1456,6 @@ The following three identifiers can be possibly used.
 ##### CWE
 
 N/A
-
-##### Info
-- [1] Changes in the Android device identifiers - https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html
-- [2] Developer Android documentation - https://developer.android.com/training/articles/user-data-ids.html
-- [3] Documentation on requesting runtime permissions - https://developer.android.com/training/permissions/requesting.html
-- [4] Firebase InstanceID documentation - https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId
-- [5] Google InstanceID documentation - https://developers.google.com/instance-id/
 
 ##### Tools
 
@@ -1527,10 +1493,6 @@ For a more detailed assessment, you need to have a detailed understanding of the
 - V8.12: "If the architecture requires sensitive computations be performed on the client-side, these computations are isolated from the operating system by using a hardware-based SE or TEE. Alternatively, the computations are protected using obfuscation. Considering current published research, the obfuscation type and parameters are sufficient to cause significant manual effort to reverse engineers seeking to comprehend the sensitive portions of the code and/or data."
 
 ##### CWE
-
-- N/A
-
-##### Info
 
 - N/A
 
