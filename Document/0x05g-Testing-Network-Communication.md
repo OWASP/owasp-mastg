@@ -4,33 +4,26 @@
 
 #### Overview
 
-Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decides for easier, but less secure (e.g. accepting any certificate) solutions to ease a development process what often is not fixed after going on production<sup>[1]</sup>, exposing at the same time an application to man-in-the-middle attacks<sup>[2]</sup>.
+Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decide for easier, but less secure (e.g. accepting any certificate) solutions to ease the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
 #### Static Analysis
 
 The static analysis approach is to decompile an application, if the source code was not provided. There are two main issues related with validating TLS connection that should be verified in the code:
-* the first one is verification if a certificate comes from a trusted source and
-* the second one is to check whether the endpoint server presents the right certificate<sup>[3]</sup>.
 
-Simply look in the code for TrustManager and HostnameVerifier usage. You can find insecure usage examples in the sections below.
+- the first one is verification if a certificate comes from a trusted source and
+- the second one is to check whether the endpoint server presents the right certificate
 
-Such checks of improper certificate verification, may be done automatically, using a tool called MalloDroid<sup>[4]</sup>. It simply decompiles an application and warns you if it finds something suspicious. To run it, simply type this command:
-
-```bash
-$ ./mallodroid.py -f ExampleApp.apk -d ./outputDir
-```
-
-Now, you should be warned if any suspicious code was found by MalloDroid and in `./outputDir` you will find decompiled application for further manual analysis.
+Search the code for usages of TrustManager and HostnameVerifier. You can find insecure usage examples in the sections below.
 
 ##### Verifying the Server Certificate
 
 A mechanism responsible for verifying conditions to establish a trusted connection in Android is called "TrustManager". Conditions to be checked at this point, are the following:
 
-* Is the certificate signed by a "trusted" CA?
-* Is the certificate expired?
-* Is the certificate self-signed?
+- Is the certificate signed by a "trusted" CA?
+- Is the certificate expired?
+- Is the certificate self-signed?
 
-You should look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
+Look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
 
 ```java
 TrustManager[] trustAllCerts = new TrustManager[] {
@@ -94,11 +87,10 @@ A dynamic analysis approach will require usage of intercept proxy. To test impro
 
   In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type in an invalid hostname, e.g. example.org. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any hostname.
 
-> **Note**, if you are interested in further MITM analysis or you face any problems with configuration of your intercept proxy, you may consider using Tapioca<sup>[6]</sup>. It's a CERT preconfigured VM appliance<sup>[7]</sup> for performing MITM analysis of software. All you have to do is deploy a tested application on emulator and start capturing traffic<sup>[8]</sup>.
-
+If you are interested in further MITM analysis or you face any problems with configuration of your intercept proxy, you may consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT preconfigured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for performing MITM analysis of software. All you have to do is [deploy a tested application on emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 #### Remediation
 
-Ensure, that the hostname and certificate is verified correctly. Examples and common pitfalls can be found in the official Android documentation<sup>[3]</sup>.
+Ensure that the host name and certificate are verified correctly. Examples and common pitfalls can be found in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL").
 
 #### References
 
@@ -112,17 +104,6 @@ Ensure, that the hostname and certificate is verified correctly. Examples and co
 * CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
 * CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 * CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
-
-#### Info
-* [1] Hunting Down Broken SSL in Android Apps -  https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf
-* [2] CWE-295 - https://cwe.mitre.org/data/definitions/295.html
-* [3] Android Official Documentation SSL - https://developer.android.com/training/articles/security-ssl.html
-* [4] MalloDroid - https://github.com/sfahl/mallodroid
-* [5] Configuring an Android device to work with Burp -  https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
-* [6] Announcing CERT Tapioca for MITM Analysis - https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html
-* [7] Downloading the CERT Tapioca Virtual Machine - http://www.cert.org/download/mitm/CERT_Tapioca.ova
-* [8] Finding Android SSL vulnerabilities with CERT Tapioca - https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html
-
 
 ### Testing Custom Certificate Stores and SSL Pinning
 

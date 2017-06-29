@@ -6,19 +6,19 @@
 
 #### XCode and iOS SDK
 
-XCode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is XCode 8 which can be downloaded from the official Apple website<sup>[1]</sup>.
+XCode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is XCode 8 which can be [downloaded from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
 
-The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be downloaded from the Official Apple website as well<sup>[2]</sup>.
+The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be [downloaded from the Official Apple website](https://developer.apple.com/ios/ "Apple iOS 10 SDK") as well.
 
 #### Utilities
 
-- Class-dump by Steve Nygard<sup>[3]</sup> is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/) is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
 
-- Class-dump-z<sup>[4]</sup> is re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
+- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) s re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
 
-- Class-dump-dyld by Elias Limneos<sup>[5]</sup> allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
+- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/) allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
-- MachoOView<sup>[6]</sup> is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+- [MachoOView]( https://sourceforge.net/projects/machoview/) is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
 
 - otool is a tool for  displays  specified  parts	of object files or libraries. It understands both Mach-O (Mach object) files and universal file formats.  
 
@@ -86,7 +86,7 @@ If the output contains cryptoff, cryptsize and cryptid fields, then the binary i
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 
-Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application <sup>[8]</sup>. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
+Class-dump tool can be used to get information about methods in the application. Example below uses [Damn Vulnerable iOS Application]( http://damnvulnerableiosapp.com/). As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
 
 ```
 $ unzip DamnVulnerableiOSApp.ipa
@@ -129,7 +129,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method returning BOOL type. 
 A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
 
-Alternatively, you can easily decompile the application with Hopper Disassembler <code>[9]</code>. All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
+Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/). All these steps will be performed automatically and you will be able to see disassembled binary and class information. 
 
 Your main focus while performing static analysis would be:
 * Identifying and understanding functions responsible for jailbreak detection and certificate pinning
@@ -159,7 +159,7 @@ Even though the XNU kernel implements the <code>ptrace()</code> system call as w
 
 ##### Using lldb
 
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode <sup>[10]</sup>.
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the [debugserver binary shipped with XCode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable mount the following DMG image:
 
@@ -289,18 +289,3 @@ Cycript tricks:
 http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 <!-- TODO [Develop section on Frida] -->
-
-### References
-
-<!-- TODO [Clean up References] -->
-
-- [1] Apple Xcode IDE - https://developer.apple.com/xcode/ide/
-- [2] Apple iOS 10 SDK - https://developer.apple.com/ios/
-- [3] Class-dump - http://stevenygard.com/projects/class-dump/
-- [4] Class-dump-z - https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki
-- [5] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
-- [6] MachOView - https://sourceforge.net/projects/machoview/
-- [7] IPA Installer 
-- [8] Damn Vulnerable iOS app - http://damnvulnerableiosapp.com/
-- [9] Hopper- https://www.hopperapp.com
-- [10] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver

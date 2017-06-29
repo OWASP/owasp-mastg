@@ -1,19 +1,41 @@
 ## Testing Local Authentication in iOS Apps
 
-Most of the authentication and session management requirements of the MASVS are generic ones, that do not rely on a specific implementation on iOS or Android.
+In local authentication, the app authenticates the user against credentials stored on the device itself. In other words, the user "unlocks" the app or some functionality within the app with a PIN, password or fingerprint that is verified only locally. This is sometimes done to allow users to more easily resume an existing session with the remote service, or as a means of step-up authentication to protect some critical functionality.
 
-As a result only requirement "4.6	Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore." is described in this chapter. All other test need to verify server side implementations and can be found in the Appendix "Testing Authentication".
-
-
-### Testing Biometric Authentication
+### Testing Local Authentication
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Biometric Authentication".]
+iOS offers multiple APIs for integrating local authentication into iOS apps. 
+
+The [Local Authentication Framework](https://developer.apple.com/documentation/localauthentication) provides facilities for requesting a passphrase or TouchID authentication from users. With local authentication, an authentication prompt is displayed to the user programmatically using the function <code>evaluatePolicy</code> of the <code>LAContext</code> object. The function returns a boolean value indicating whether the user has authenticated successfully.
+
+```
+let myContext = LAContext()
+let myLocalizedReasonString = <#String explaining why app needs authentication#>
+ 
+var authError: NSError? = nil
+if #available(iOS 8.0, OSX 10.12, *) {
+    if myContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &authError) {
+        myContext.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: myLocalizedReasonString) { (success, evaluateError) in
+            if (success) {
+                // User authenticated successfully, take appropriate action
+            } else {
+                // User did not authenticate successfully, look at error and take appropriate action
+            }
+        }
+    } else {
+        // Could not evaluate policy; look at authError and present an appropriate message to user
+    }
+} else {
+    // Fallback on earlier versions
+}
+```
+*TouchID authentication using the Local Authentication Framework (official Apple code sample).* 
+
+Additionally, the iOS Keychain APIs can be used to implement local authentication. In that case, some secret authentication token is stored securely in the Keychain. In other to authenticate to the remote service, the user then needs to unlock the Keychain using their passphrase or fingerprint and obtain the authentication token.
 
 #### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
 -- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
