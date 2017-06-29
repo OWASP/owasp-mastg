@@ -124,7 +124,7 @@ True
 
 ![The device is jailbroken](Images/Chapters/0x06j/deviceISjailbroken.png)
 
-Hence you now understand why it's important to have your application in a desired state. Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing the function implementation with cycript. Please note that this will actually replace the function under it's given name, so beware of side effects in case if the function modifies anything in the application:
+Hence you now understand why it's important to have your application in a desired state. Now bypassing jailbreak detection in this case with cycript is trivial. We can see that the function returns Boolean and we just need to replace the return value. We can do it by replacing the function implementation with cycript. Please note that this will actually replace the function under its given name, so beware of side effects in case if the function modifies anything in the application:
 
 ```
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
