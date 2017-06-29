@@ -679,6 +679,13 @@ An additional control to ensure that an authorized user is using the app on an a
 ### Testing User Device Management
 
 #### Overview
+There are two forms of user device management:
+
+- Managing your data and sessions accross devices given your application. This is where this section is about.
+- Manage the actual device itself: how can an application influence the security state of the device and does it do this propperly according to best practices. 
+
+The claims that prove ones identity (e.g. a JWT token) or the authorization (e.g. the access and refresh tokens) are the ones that often need the most attention if it comes to managing data. 
+
 
 -- TODO [Provide a general description of the issue "Testing User Device Management".] --
 
