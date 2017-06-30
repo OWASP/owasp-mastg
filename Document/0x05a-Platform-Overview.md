@@ -7,12 +7,12 @@ This chapter introduces Android from an architecture point of view. It covers fo
 3. Inter-process Communication (IPC)
 4. Android application publishing
 
-Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details on the Android platform. 
+Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details on the Android platform.
 
 ## Android Security Architecture
 
-Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces. 
- 
+Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+
 The software stack of Android comprises different layers. Each layer defines certain behavior and offers specific services to the layer above.
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
@@ -54,7 +54,7 @@ As already mentioned, Android apps are written in Java and compiled into a dex b
     * Cameras
     * Geolocation (GPS)
     * Microphone
-    
+
 The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
 APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
@@ -559,7 +559,7 @@ In the APK signature scheme, the complete APK is hashed and signed, and an APK S
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
 
-*APK signature verification process* <sup>[9]</sup>
+*[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")*
 
 ##### Creating Your Certificate
 
