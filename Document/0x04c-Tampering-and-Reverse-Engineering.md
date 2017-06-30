@@ -79,6 +79,7 @@ Like always in hacking, the anything-goes-rule applies: Simply use whatever brin
 Another useful method for dealing with native binaries is dynamic binary instrumentations (DBI). Instrumentation frameworks such as Valgrind and PIN support fine-grained instruction-level tracing of single processes. This is achieved by inserting dynamically generated code at runtime. Valgrind compiles fine on Android, and pre-built binaries are available for download.
 
 The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html "Valgrind README") contains specific compilation instructions for Android.
+
 #### Emulation-based Dynamic Analysis
 
 Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, as no emulator for iOS exists (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.

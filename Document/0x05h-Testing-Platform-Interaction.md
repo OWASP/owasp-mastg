@@ -383,6 +383,7 @@ N/A
 
 -	Drozer - https://github.com/mwrlabs/drozer
 
+
 ### Testing For Sensitive Functionality Exposure Through IPC
 
 #### Overview
@@ -415,9 +416,9 @@ For more information about the content providers, please refer to the test case 
 
 Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, content providers can be used to access database information, while services can be probed to see if they return data. Also broadcast receivers can leak sensitive information if probed or sniffed.
 
-In the following we will use two example apps and give examples on how to identify vulnerable IPC components: 
+In the following we will use two example apps and give examples on how to identify vulnerable IPC components:
 
-- "Sieve" <sup>[12]</sup> 
+- "Sieve" <sup>[12]</sup>
 - "Android Insecure Bank" <sup>[13]</sup>
 
 ##### Activities
@@ -762,9 +763,9 @@ A Dynamic Analysis depends on different surrounding conditions, as there are dif
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
 - All functions offered by the endpoint need to be free of stored XSS<sup>[4]</sup>.
-- The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means: 
-  - whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"), 
-  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or 
+- The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means:
+  - whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
+  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or
   - the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")
 - Only files within the App data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
@@ -1197,7 +1198,7 @@ Static analysis depends on the library being used. In case of the need to counte
 
 When using an ORM library, verify that the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
 
-**`OrmLite`** Search the source code for the following keywords: 
+**`OrmLite`** Search the source code for the following keywords:
 
 - `import com.j256.*`
 - `import com.j256.dao`

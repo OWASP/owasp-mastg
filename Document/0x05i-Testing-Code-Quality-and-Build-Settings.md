@@ -182,15 +182,13 @@ In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, a
 
 #### Overview
 
-<!-- TODO [Give an overview about the functionality and it's potential weaknesses] -->
-
 As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
 
-For native binaries, use a standard tool like nm or objdump to inspect the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unneeded dynamic symbols is also recommended.
+For native binaries, use a standard tool like `nm` or `objdump` to inspect the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unneeded dynamic symbols is also recommended.
 
 #### Static Analysis
 
-Symbols  are usually stripped during the build process, so you need the compiled byte-code and libraries to verify whether the any unnecessary metadata has been discarded.
+Symbols are usually stripped during the build process, so you need the compiled byte-code and libraries to verify whether the any unnecessary metadata has been discarded.
 
 To display debug symbols:
 
@@ -250,6 +248,7 @@ Add the following to build.gradle:
 ##### Tools
 
 - GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
+
 
 ### Testing for Debugging Code and Verbose Error Logging
 

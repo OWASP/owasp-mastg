@@ -382,7 +382,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 
 
-### Testing Object persistance
+### Testing Object Persistence
 
 #### Overview
 
