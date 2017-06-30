@@ -117,9 +117,14 @@ In case Token-Based authentication with JWT is used, please also look at the tes
 
 #### Static Analysis
 
-When server-side source code is available, first identify which authentication mechanism (Token or Cookie based) is used and enforced on server side. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user is really who he pretends to and that he is allowed to access the endpoint. Look for keywords in the server source code that are used to authenticate a user or to retrieve and check an existing session.
+To review the authentication architecture you need access to source code of the remote service. Identify which authentication mechanism (token or cookie based) is used and make sure that an appropriate form of authentication is performed. What's appropriate depends on the type and sensitivity level of the app. You may use the OWASP Mobile AppSec Verification Standard as a guideline:
 
-Authentication mechanisms shouldn't be implemented from scratch, instead they should be build on top of frameworks that offer this functionality. The framework used on the server side should be identified and the usage of the available authentication APIs/functions should be verified if they are used accordingly to best practices. Widely used frameworks on server side are for example:
+- Username/password authentication is recommended for level 1 (non-critical) apps.
+- 2-factor authentication is recommended for level 2 (sensitive) apps.
+
+Afterwards locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
+
+Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Examples for widely used frameworks on server side are:
 
 - Spring (Java) - https://projects.spring.io/spring-security/
 - Struts (Java) - https://struts.apache.org/docs/security.html
