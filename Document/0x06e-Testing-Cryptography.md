@@ -70,7 +70,7 @@ Mobile SDKs offer standard implementations of RNG algorithms that produce number
 
 Apple provides developers with the [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") application programming interface (API) that generates cryptographically secure random numbers.
 
-The [Randomisation Services API](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/RandomNumberGenerationAPIs/RandomNumberGenerationAPIs.html "Generating Random Numbers") uses the `SecRandomCopyBytes` function to perform the numbers generation. This is a wrapper function for the <code>/dev/random</code> device file, which provides cryptographically secure pseudorandom value from 0 to 255 and performs concatenation.
+The Randomisation Services API uses the `SecRandomCopyBytes` function to perform the numbers generation. This is a wrapper function for the <code>/dev/random</code> device file, which provides cryptographically secure pseudorandom value from 0 to 255 and performs concatenation.
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 ```
