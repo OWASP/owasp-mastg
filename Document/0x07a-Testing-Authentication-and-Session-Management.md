@@ -23,7 +23,7 @@ Note: The API fulfills both the resource and authorization server roles. Therefo
 
 <img src="Images/Chapters/0x07a/abstract_oath2_flow.png" width="350px"/>
 
-Here is a more detailed explanation of the steps in the diagram  :
+Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
 1. The application requests authorization to access service resources from the user.
 2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
@@ -59,7 +59,7 @@ Tokens:
 
 For additional best practices and detailed information please refer to the source documents:
 - [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
-- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)") 
+- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
 
@@ -130,7 +130,7 @@ Authentication mechanisms shouldn't be implemented from scratch, instead they sh
 
 To verify authentication, first all privileged endpoints a user can access within an app should be explored. For all requests sent to an endpoint, an interception proxy can be used to capture network traffic while being authenticated. Then, try to replay requests while removing the authentication information. If the endpoint is still sending back the requested data, that should only be available for authenticated users, authentication checks are not implemented properly on the endpoint.
 
-Further attacks methods can be found in the [OWASP Testing Guide V4](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004) "OWASP Testing Guide V4 (OTG-AUTHN-004)") (OTG-AUTHN-004) and also the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more authentication test cases.
+Further attack methods can be found in the test case OTG-AUTHN-004 of the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004) "OWASP Testing Guide V4 (OTG-AUTHN-004)"). The [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should also be consulted for more authentication test cases.
 
 #### Remediation
 
