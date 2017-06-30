@@ -6,9 +6,19 @@ In local authentication, the app authenticates the user against credentials stor
 
 #### Overview
 
-iOS offers multiple APIs for integrating local authentication into iOS apps. 
+On iOS, multiple possibilities exist for integrating local authentication into iOS apps. The [Local Authentication Framework](https://developer.apple.com/documentation/localauthentication) offers a set of APIs that display an authentication dialog to the user. In the context of connecting to a remote service, it is also possible (and recommended) to leverage the Keychain for implementing local authentication.
 
-The [Local Authentication Framework](https://developer.apple.com/documentation/localauthentication) provides facilities for requesting a passphrase or TouchID authentication from users. With local authentication, an authentication prompt is displayed to the user programmatically using the function <code>evaluatePolicy</code> of the <code>LAContext</code> object. The function returns a boolean value indicating whether the user has authenticated successfully.
+##### Local Authentication Framework
+
+The Local Authentication Framework provides facilities for requesting a passphrase or TouchID authentication from users. With local authentication, an authentication prompt is displayed to the user programmatically using the function <code>evaluatePolicy</code> of the <code>LAContext</code> object.
+
+Two policies are available that define the acceptable forms of authentication:
+
+- LAPolicyDeviceOwnerAuthentication: The user is asked to perform TouchID authentication if available. If TouchID is not activated, they are asked to enter the device passcode. If the device passcode is not enabled, policy evaluation fails.
+
+- LAPolicyDeviceOwnerAuthenticationWithBiometrics: The user is asked to perform TouchID authentication.
+
+The <code>evaluatePolicy</code> function returns a boolean value indicating whether the user has authenticated successfully.
 
 ```
 let myContext = LAContext()
@@ -33,7 +43,9 @@ if #available(iOS 8.0, OSX 10.12, *) {
 ```
 *TouchID authentication using the Local Authentication Framework (official Apple code sample).* 
 
-Additionally, the iOS Keychain APIs can be used to implement local authentication. In that case, some secret authentication token is stored securely in the Keychain. In other to authenticate to the remote service, the user then needs to unlock the Keychain using their passphrase or fingerprint and obtain the authentication token.
+#####  Using Keychain Services for Local Authentication
+
+The iOS Keychain APIs can be used to implement local authentication. In that case, some secret authentication token (or other piece of secret data identifying the user) is stored in the Keychain. This is commonly implemented by inserting the data into the Keychain using the <code>kSecAccessControlUserPresence</code> policy and a <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> protection class. In other to authenticate to the remote service, the user then needs to unlock the Keychain using their passphrase or fingerprint and obtain the secret data (the Keychain mechanism is explained in more detail in the chapter "Testing Data Storage").
 
 #### Static Analysis
 
