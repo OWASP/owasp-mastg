@@ -484,7 +484,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Compiler Settings"] --
+-- TODO [Add relevant CWE for "Verify That Free Security Features Are Activated"] --
 
 ##### Tools
 

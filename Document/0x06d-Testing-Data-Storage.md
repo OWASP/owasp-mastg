@@ -547,7 +547,7 @@ Keywords to look for:
 
 #### Dynamic Testing
 
-IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is availalbe on iOS to verify IPC usage.
+IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is available on iOS to verify IPC usage.
 
 
 #### Remediation

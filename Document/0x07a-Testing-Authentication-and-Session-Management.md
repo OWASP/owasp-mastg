@@ -6,7 +6,7 @@ For all of the test cases below, it need to be investigated first what kind of a
 * Cookie-Based Authentication using a session ID or
 * Token-Based Authentication.
 
-Cookie-Based Authentication is the traditional authentication mechanism used in web applications, which is stateful. In order to adopt to the different requirements of mobile apps, a shift to stateless authentication or Token-Based Authentication can be seen. A prominent example for this is JSON Web Token or JWT<sup>[1]</sup> which can be part of an OAuth2 authentication and authorization framework.
+Cookie-Based Authentication is the traditional authentication mechanism used in web applications, which is stateful. In order to adopt to the different requirements of mobile apps, a shift to stateless authentication or Token-Based Authentication can be seen. A prominent example for this is JSON Web Token or [JWT](https://tools.ietf.org/html/rfc7519 "RFC 7519 JSON Web Token (JWT)") which can be part of an OAuth2 authentication and authorization framework.
 
 #### OAuth2
 
@@ -23,7 +23,7 @@ Note: The API fulfills both the resource and authorization server roles. Therefo
 
 <img src="Images/Chapters/0x07a/abstract_oath2_flow.png" width="350px"/>
 
-Here is a more detailed explanation of the steps in the diagram <sup>[1]</sup> <sup>[2]</sup>:
+Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
 1. The application requests authorization to access service resources from the user.
 2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
@@ -57,13 +57,10 @@ Tokens:
 - Remember that if the app uses access tokens as bearer tokens and no additional mechanism is used to identify the client, the attacker can access all resources associated with the token and its scope after stealing the tokens.
 - Store refresh tokens in secure local storage as they are long-term credentials.
 
-For additional best practices and detailed information please refer to the source documents <sup>[2]</sup> <sup>[3]</sup> <sup>[4]</sup>.
-
-##### References
-- [1] An Introduction into OAuth2 - https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
-- [2] RFC6749: The OAuth 2.0 Authorization Framework (October 2012) - https://tools.ietf.org/html/rfc6749
-- [3] draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017) - https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12
-- [4] RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013) - https://tools.ietf.org/html/rfc6819
+For additional best practices and detailed information please refer to the source documents:
+- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
+- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
+- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
 
 ### Testing OAuth2 implementation
@@ -76,7 +73,7 @@ For additional best practices and detailed information please refer to the sourc
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup."] --
 
 --TODO [Develop content on Testing OAuth2 implementation with source code] --
 
@@ -101,11 +98,6 @@ For additional best practices and detailed information please refer to the sourc
 
 - CWE-285: Improper Authorization
 
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx 
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-- [3] Blackhat OAuth2 mobile attacks article - https://www.blackhat.com/docs/eu-16/materials/eu-16-Yang-Signing-Into-Billion-Mobile-Apps-Effortlessly-With-OAuth20-wp.pdf
 
 ##### Tools
 
@@ -117,7 +109,7 @@ For additional best practices and detailed information please refer to the sourc
 
 #### Overview
 
-Applications often have different areas with, on the one hand public and non-privileged information and functions, and on the other hand sensitive and privileged information and functions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information and functions are protected and accessible only to legitimate users, proper authentication has to be in place.  
+Applications often have different areas with, on the one hand public and non-privileged information and functions, and on the other hand sensitive and privileged information and functions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information and functions are protected and accessible only to legitimate users, proper authentication has to be in place.
 
 Authentication always need to be handled in the server side code and should never rely on client-side controls. Client-side controls can be used to improve the user workflow and only allow specific actions, but there always need to be the server-side counterpart that defines what a user is allowed to access.
 
@@ -138,7 +130,7 @@ Authentication mechanisms shouldn't be implemented from scratch, instead they sh
 
 To verify authentication, first all privileged endpoints a user can access within an app should be explored. For all requests sent to an endpoint, an interception proxy can be used to capture network traffic while being authenticated. Then, try to replay requests while removing the authentication information. If the endpoint is still sending back the requested data, that should only be available for authenticated users, authentication checks are not implemented properly on the endpoint.
 
-Further attacks methods can be found in the OWASP Testing Guide V4 (OTG-AUTHN-004)<sup>[3]</sup> and also the OWASP Testing Guide<sup>[2]</sup> should be consulted for more authentication test cases.
+Further attack methods can be found in the test case OTG-AUTHN-004 of the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004) "OWASP Testing Guide V4 (OTG-AUTHN-004)"). The [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should also be consulted for more authentication test cases.
 
 #### Remediation
 
@@ -161,12 +153,6 @@ If any of these two conditions raise an issue, reject the request and do not all
 ##### CWE
 
 - CWE-287: Improper Authentication
-
-##### Info
-
-* [1] OWASP JWT Cheat Sheet for Java: https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
-* [2] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
-* [3] OWASP Testing Guide V4 (OTG-AUTHN-004) - https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004)
 
 
 ### Testing Session Management
@@ -198,7 +184,7 @@ Then, you can use the crawled requests within any intercepting proxy to try to m
 - when changing privilege level (step-up authentication). Try to use the former one (hence with a lower authorization level) to access the privileged part of the application.
 - by trying to re-use a session ID after logging out.
 
-Also the OWASP Testing Guide<sup>[1]</sup> should be consulted for more session management test cases.
+Also the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more session management test cases.
 
 #### Remediation
 
@@ -227,10 +213,6 @@ It is strongly advised to use session ID generators that are build-in within the
 
 - CWE-613: Insufficient Session Expiration
 
-##### Info
-
-[1] OWASP Testing Guide V4 (Testing for Session Management) - https://www.owasp.org/index.php/Testing_for_Session_Management
-
 ##### Tools
 
 * OWASP ZAP (Zed Attack Proxy)
@@ -242,9 +224,9 @@ It is strongly advised to use session ID generators that are build-in within the
 
 #### Overview
 
-JSON Web Token (JWT) ensures the integrity of information within a JSON object between two parties and is defined in RFC 7519<sup>[1]</sup>. A cryptographic signature is created for the data within the token. This only allows the server to create and modify tokens and enables a stateless authentication. The server doesn't need to remember any session or any other authentication information, as everything is contained within JWT.
+JSON Web Token (JWT) ensures the integrity of information within a JSON object between two parties and is defined in [RFC 7519](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519"). A cryptographic signature is created for the data within the token. This only allows the server to create and modify tokens and enables a stateless authentication. The server doesn't need to remember any session or any other authentication information, as everything is contained within JWT.
 
-An example of an encoded JSON Web Token can be found below<sup>[5]</sup>.
+An [example of an encoded JSON Web Token](https://jwt.io/#debugger "Sample of JWT Token") can be found below.
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
@@ -269,13 +251,13 @@ HMACSHA256(
 )
 ```
 
-For mobile apps it's more and more used to authenticate both the message sender and receiver by using JWT. JWT implementations are available for all major programming languages, like PHP<sup>[2]</sup> or Java Spring<sup>[3]</sup>.
+For mobile apps it's more and more used to authenticate both the message sender and receiver by using JWT. JWT implementations are available for all major programming languages, like [PHP](https://github.com/firebase/php-jwt "PHP JWT") or [Java Spring](http://projects.spring.io/spring-security-oauth/docs/oauth2.html "Java Spring with JWT").
 
 #### Static Analysis
 
 Identify the JWT library that is used on server and client side. Check if there are any known vulnerabilities available for the JWT libraries in use.
 
-The following best practices should be checked in the JWT libraries<sup>[7]</sup>:
+The following [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way") should be checked in the JWT libraries:
 * Verify the signature or HMAC on server-side at all times for all incoming requests containing a token.
 * Verify where the private signing key or secret key for HMAC is located and stored. The key should always reside on the server side and never shared with the client. It should only be available for the issuer and verifier.
 * Verify if encryption is used to encrypt the data embedded into JWT.
@@ -285,18 +267,18 @@ The following best practices should be checked in the JWT libraries<sup>[7]</sup
 #### Dynamic Analysis
 
 Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
-* Hashing algorithm `none`<sup>[6]</sup>:
+* [Hashing algorithm `none`](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   * Modify the `alg` attribute in the token header and delete `HS256` and set it to `none` and use an empty signature (e.g. signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This would allow an attacker to create their own "signed" tokens.
-* Usage of asymmetric algorithms<sup>[6]</sup>:
+* Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   *  JWT offers several asymmetric algorithms as RSA or ECDSA. In this case the private key will be used to sign the tokens and the verification will be done through the public key. If a server is expecting a token signed with an asymmetric algorithm as RSA, but actually receives a token signed with HMAC, it will think the public key is actually an HMAC secret key. The public key can now be misused as HMAC secret key in order to sign the tokens.
 * Token Storage on client side:
-  * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device<sup>[5]</sup>.
+  * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device.
 * Cracking the signing key:
-  * Creating a signature of the token is done through a private key on server side. Once a JWT is obtained there are several tools available that can try to brute force the secret key offline<sup>[8]</sup>. See the tools section for details.
+  * Creating a signature of the token is done through a private key on server side. Once a JWT is obtained there are several tools available that can try to [brute force the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication"). See the tools section for details.
 * Information Disclosure:
   * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it and if it's encrypted or not.
 
-Please also follow the test cases in the OWASP JWT Cheat Sheet<sup>[4]</sup> and check the implementation of the logout as described in "Testing the Logout Functionality".
+Please also follow the test cases in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet") and check the implementation of the logout as described in "Testing the Logout Functionality".
 
 #### Remediation
 
@@ -307,7 +289,7 @@ The following best practices should be considered, when implementing JWT:
 * Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
 * The private signing key or secret key for HMAC should only be available on server side.
 * If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
-* Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the OWASP JWT Cheat Sheet<sup>[4]</sup>
+* Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet")
 * Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
 
 #### References
@@ -324,16 +306,6 @@ The following best practices should be considered, when implementing JWT:
 
 * CWE-287: Improper Authentication
 
-##### Info
-
-* [1] RFC 7519 JSON Web Token (JWT) - https://tools.ietf.org/html/rfc7519
-* [2] PHP JWT - https://github.com/firebase/php-jwt
-* [3] Java Spring with JWT - http://projects.spring.io/spring-security-oauth/docs/oauth2.html
-* [4] OWASP JWT Cheat Sheet - https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java
-* [5] Sample of JWT Token - https://jwt.io/#debugger
-* [6] Critical Vulnerabilities in JSON Web Token - https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/
-* [7] JWT the right way - https://stormpath.com/blog/jwt-the-right-way
-* [8] Attacking JWT Authentication - https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/
 
 ##### Tools
 * jwtbrute - https://github.com/jmaxxz/jwtbrute
@@ -357,7 +329,7 @@ If server side code is available, it should be reviewed that the session is bein
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 - PHP - http://php.net/manual/en/function.session-destroy.php
 
-For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the refresh token should be invalidated on server side<sup>[1]</sup>.
+For stateless authentication the access token and refresh token (if used) should be deleted from the mobile device and the [refresh token should be invalidated on server side](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
 
 #### Dynamic Analysis
 
@@ -368,11 +340,11 @@ For a dynamic analysis of the application an interception proxy should be used. 
 4.  Resend one of the operations detailed in step 2 using an interception proxy. For example, with Burp Repeater. The purpose of this is to send to the server a request with the session ID or token that has been invalidated in step 3.
  
 If the logout is correctly implemented on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then the token or session ID is still valid and has not been correctly terminated on the server side.
-A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide (OTG-SESS-006)<sup>[2]</sup>.
+A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")).
 
 #### Remediation 
 
-The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it<sup>[3]</sup>.
+The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it (see [Session Management Cheat Sheet](https://www.owasp.org/index.php/Session_Management_Cheat_Sheet "Session Management Cheat Sheet")).
 
 Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
 
@@ -388,12 +360,6 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 ##### CWE
 
 * CWE-613: Insufficient Session Expiration
-
-##### Info
-
-* [1] JWT token blacklisting - https://auth0.com/blog/blacklist-json-web-token-api-keys/
-* [2] OTG-SESS-006 - https://www.owasp.org/index.php/Testing_for_logout_functionality
-* [3] Session Management Cheat Sheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
 
 
 
@@ -426,12 +392,12 @@ All available functions that allow a user to set a password need to be verified,
 - Forgot Password function that allows a user to set a new password or
 - Change Password function that allows a logged in user to set a new password.
 
-An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide (OTG-AUTHN-007)<sup>[1]</sup>
+An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide ([OTG-AUTHN-007](https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) "OWASP Testing Guide (OTG-AUTHN-007)"))
 
 
 #### Remediation
 
-A good password policy should define the following requirements<sup>[2]</sup> in order to avoid password brute-forcing:
+A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
 
 **Password Length**
 * Minimum length of the passwords should be enforced, at least 10 characters.
@@ -444,7 +410,7 @@ A good password policy should define the following requirements<sup>[2]</sup> in
 3. at least one digit (0-9)
 4. at least one special character (punctuation)
 
-For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A common library that can be used for estimating password strength is zxcvbn<sup>[3]</sup>, which is available for many programming languages.
+For further details check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). A common library that can be used for estimating password strength is [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn"), which is available for many programming languages.
 
 
 #### References
@@ -457,11 +423,6 @@ For further details check the OWASP Authentication Cheat Sheet<sup>[2]</sup>. A 
 
 ##### CWE
 - CWE-521: Weak Password Requirements
-
-##### Info
-- [1] OWASP Testing Guide (OTG-AUTHN-007) - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)
-- [2] OWASP Authentication Cheat Sheet - https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls
-- [3] zxcvbn - https://github.com/dropbox/zxcvbn
 
 
 ### Testing Excessive Login Attempts
@@ -484,16 +445,16 @@ It need to be checked that a validation method exists during logon that checks i
 #### Dynamic Analysis
 
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
-1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using Burp Intruder<sup>[5]</sup>.
+1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
 2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
 If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
 
 #### Remediation
 
-Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in Blocking Brute Force Attacks<sup>[3]</sup>.
+Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
 
-Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the OWASP Automated Thread Handbook<sup>[4]</sup>.
+Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
 
 #### References
 
@@ -506,13 +467,6 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 ##### CWE
 
 - CWE-307: Improper Restriction of Excessive Authentication Attempts
-
-##### Info
-* [1] OTG-AUTHN-003 - https://www.owasp.org/index.php/Testing_for_Weak_lock_out_mechanism
-* [2] Brute Force Attacks - https://www.owasp.org/index.php/Brute_force_attack
-* [3] Blocking Brute Force Attacks - https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks
-* [4] OWASP Automated Threats to Web Applications - https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications
-* [5] Burp Intruder - https://portswigger.net/burp/help/intruder.html
 
 ##### Tools
 * Burp Suite Professional - https://portswigger.net/burp/
@@ -537,8 +491,8 @@ The check needed here will be different depending on the technology used. Here a
 * PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
 * ASP.Net - https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx
 
-In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed or expiration explicitly set. One could use "exp" expiration claim<sup>[3]</sup> to define the expiration time on or after which the JWT must not be accepted for processing.
-Speaking of tokens for stateless authentication, one should differentiate types of tokens, such as access tokens and refresh tokens<sup>[4]</sup>. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
+In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed or expiration explicitly set. One could use ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") to define the expiration time on or after which the JWT must not be accepted for processing.
+Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
 
 The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
 ```
@@ -571,7 +525,7 @@ The following steps can be applied to check if the session timeout is implemente
  
 Resend one of the operations executed in step 2 using an interception proxy, for example with Burp Repeater. The purpose of this is to send to the server a request with the session ID that has been invalidated when the session has expired.
 If session timeout has been correctly configured on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then, this session is still valid, which means that the session timeout is not configured correctly.
-More information can also be found in the OWASP Web Testing Guide (OTG-SESS-007)<sup>[1]</sup>.
+More information can also be found in the OWASP Web Testing Guide ([OTG-SESS-007](https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007) "OWASP Web Application Test Guide (OTG-SESS-007)")).
 
 #### Remediation
 
@@ -588,11 +542,6 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 ##### CWE
 - CWE-613: Insufficient Session Expiration
 
-##### Info
-* [1] OWASP Web Application Test Guide (OTG-SESS-007) - https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007)
-* [2] OWASP Session management cheatsheet - https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
-* [3] RFC 7519 - https://tools.ietf.org/html/rfc7519#section-4.1.4
-* [4] Refresh tokens & access tokens - https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
 
 ### Testing 2-Factor Authentication and Step-up Authentication
@@ -615,13 +564,13 @@ When server-side source code is available, first identify how a second factor or
 
 2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
 
-For example server side libraries like GoogleAuth<sup>[2]</sup> can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
+For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
 
 Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
 
-- Google Authenticator<sup>[2]</sup>
-- Microsoft Authenticator<sup>[3]</sup>
-- Authy<sup>[4]</sup>
+- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
+- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
+- [Authy](https://authy.com/ "Authy")
 
 Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
 
@@ -643,7 +592,7 @@ Step-up authentication should be optional for the majority of user scenarios and
 
 Account lockouts for the second factor should be implemented the same way as for non-2FA cases (see "Testing Excessive Login Attempts" and [5]).
 
-Regardless of 2FA or step-up authentication, additionally it should be supplemented with passive contextual authentication<sup>[1]</sup>, which can be:
+Regardless of 2FA or step-up authentication, additionally it should be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can be:
 
 * Geolocation
 * IP address
@@ -667,14 +616,6 @@ An additional control to ensure that an authorized user is using the app on an a
 - CWE-287: Improper Authentication
 - CWE-308: Use of Single-factor Authentication
 
-##### Info
-
-* [1] Best Practices for Step-up Multi-factor Authentication  - http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf
-* [2] Google Authenticator - https://support.google.com/accounts/answer/1066447?hl=en
-* [3] Microsoft Authenticator - https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to
-* [4] Authy - https://authy.com/
-* [5] https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks
-
 
 ### Testing User Device Management
 
@@ -686,7 +627,7 @@ An additional control to ensure that an authorized user is using the app on an a
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup."] --
 
 --TODO [Develop content on Testing User Device Management with source code] --
 
@@ -711,11 +652,6 @@ An additional control to ensure that an authorized user is using the app on an a
 
 -- TODO [Add relevant CWE for "Testing User Device Management"] --
 - CWE-312: Cleartext Storage of Sensitive Information
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
