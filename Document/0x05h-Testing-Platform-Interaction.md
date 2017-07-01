@@ -780,7 +780,7 @@ Several [schemas](https://developer.android.com/guide/appendix/g-app-intents.htm
 -	file://
 -	tel://
 
-When using the file schema in a link (e.g. `file:///storage/emulated/0/private.html`) the app can be triggered for example to access a local file on the external storage that is getting rendered in a WebView. An attacker can abuse this by injecting malicious content in the file in order to attack the app.
+When using the file schema in a link (e.g. `file:///storage/emulated/0/private.html`) the app can be triggered for example to access a local file on the external storage that is getting rendered in a WebView. An attacker can abuse this by injecting malicious content in the file in order to attack the app or could access sensitive information on the device stored in the filesystem.
 
 #### Static Analysis
 
@@ -981,7 +981,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### CWE
 
--	CWE-502 - Deserialization of Untrusted Data
+-	CWE-749 - Exposed Dangerous Method or Function
 
 
 
