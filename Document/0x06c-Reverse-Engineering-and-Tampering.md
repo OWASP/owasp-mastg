@@ -31,33 +31,53 @@ Radare2 is a complete framework for reverse-engineering and analyzing. It is bui
 IDA Pro can deal with iOS binaries and has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based, interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, Hopper offers similar static analysis features.
 
 ### Jailbreaking iOS
+iOS jailbreaking is often compared to Android rooting. Actually, we have three different things here and it is important to clearly distinguish them.
 
-In the iOS world, jailbreaking means disabling Apple's code code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
+On the Android side we have:
+
+- Rooting: this typically consists of installing the `su` binary within the existing system or replacing the whole system with an already rooted custom ROM. Normally, exploits are not required in order to obtain root access.
+
+- Flashing custom ROMs (that might be already rooted): allows to completely replace the OS running on the device after unlocking the bootloader (which might require an exploit). There is no such thing on iOS as it is closed-source and _thanks_ to the bootloader that only allows Apple-signed images to be booted and flashed (which is also the reason why downgrades/upgrades to not-signed-by-Apple iOS images are not possible).
+
+On iOS side we have:
+
+- Jailbreaking: it means using software exploits in order to disable Apple's code signing mechanisms so that apps and other programs not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the App Store.
 
 Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037) <sup>[4]</sup>.
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-Some of the benefits of jailbreaking an iOS Device includes the following:
+#### Benefits of Jailbreaking
+While a standard user will want to jailbreak in order to tweak the iOS system appearance, add new features or install _free_ third party apps. The benefits of jailbreaking an iOS Device for a security tester include but are not limited to the following:
 
-* Removing the security (and other) limitations on the OS imposed by Apple
+* Removing the part of the security (and other) limitations on the OS imposed by Apple
 * Providing root access to the operating system
-* Allowing important testing software tools to be installed
+* Allowing applications and tools not signed by Apple to be installed and run without any restrictions
+* Debugging and performing dynamic analysis
 * Providing access to the Objective-C Runtime
 
-iOS applications store data in the application sandbox which is not accessible to the public (but is available to root and the application itself). Without root access, it is not possible to assess the application sandbox, analyse the data that were stored in the device and how they were stored. 
+iOS applications store data in the application sandbox which is not accessible to the public (but is available to root and the application itself). Without root access, it is not possible to access the application sandbox and analyze the data that was stored in it.
 
 #### How to Jailbreak iOS?
 
-The iOS jailbreak scene is evolving so rapidly that it is difficult to provide-up-to-date instructions.
+Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system, patching the corresponding vulnerabilities that jailbreaks are based on and not signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). Therefore, jailbreaking has become a very time sensitive procedure.
 
-Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
+Our first recommendation is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it.
 
-Some reliable resources to read about content regarding jailbreak iOS.
+In order to check if there is a jailbreak for your iOS version/device, you can visit among others the following site: https://canijailbreak.com/
+
+Let's say you have a device running iOS 9.0, for this version you'll find a jailbreak (Pangu 1.3.0), at least for 64 bit devices. In the case that you have another version for which there's not a jailbreak available, you could still jailbreak it if you downgrade/upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this might not be possible if the required iOS version is not signed anymore by Apple.
+
+The iOS jailbreak scene evolves so rapidly that it is difficult to provide up-to-date instructions. However, we can point you to some, at the time of this writing, reliable sources:
 
 * The iPhone Wiki - https://www.theiphonewiki.com/wiki/Jailbreak
 * Redmond Pie - http://www.redmondpie.com/
 * Reddit Jailbreak - https://www.reddit.com/r/jailbreak/
+* Can I Jailbreak? - https://canijailbreak.com/
+* IPSW Downloads - https://ipsw.me/
+
+Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
+
 
 #### Dealing with Jailbreak Detection
 
@@ -67,7 +87,7 @@ The core dilemma with this approach is that, by definition, jailbreaking causes 
 
 ### Reverse Engineering iOS Apps
 
-iOS reverse engineering is a mixed bag. On the one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called through dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of this is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also has the effect that no direct cross-references between methods are available in the disassembler, and constructing a flow graph is challenging. 
+iOS reverse engineering is a mixed bag. On the one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called through dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of this is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also has the effect that no direct cross-references between methods are available in the disassembler, and constructing a flow graph is challenging.
 
 In this guide, we'll give an introduction on static and dynamic analysis and instrumentation. Throughtout this chapter, we'll be referring to the OWASP UnCrackable Apps for iOS, so download them from MSTG repository if you're planning to follow the examples.
 
@@ -162,7 +182,7 @@ cy#
 ```
 To inject into a running process, we need to first find out the process ID (PID). We can run “cycript -p” with the PID to inject cycript into the process. To illustrate we will inject into springboard.
 ```bash
-$ ps -ef | grep SpringBoard 
+$ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
@@ -186,7 +206,7 @@ Get the delegate class for the application using the command below:
 ```bash
 cy# [UIApplication sharedApplication].delegate
 ```
-The command [[UIApp keyWindow] recursiveDescription].toString() returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow will be shown and the indentation space reflects the relationships of each views. For an example UILabel, UITextField and UIButton are subviews of UIView. 
+The command [[UIApp keyWindow] recursiveDescription].toString() returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow will be shown and the indentation space reflects the relationships of each views. For an example UILabel, UITextField and UIButton are subviews of UIView.
 
 ```
 cy# [[UIApp keyWindow] recursiveDescription].toString()
