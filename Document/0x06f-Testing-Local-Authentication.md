@@ -71,9 +71,9 @@ The Local Authentication Framework makes it easy to add TouchID or similar authe
 * M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 * 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Biometric Authentication"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-287 - Improper Authentication
