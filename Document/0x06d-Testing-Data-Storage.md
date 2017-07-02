@@ -8,7 +8,7 @@ Note that "sensitive data" needs to be identified in the context of each specifi
 
 #### Overview
 
-As already mentioned many times in this guide, as little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the crypto hardware available in every iOS device. Provided that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
+As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the crypto hardware available in every iOS device. Provided that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
 
 ##### Data Protection API
 
@@ -70,7 +70,6 @@ iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to 
 
 Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
-
 #### Static Analysis
 
 When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
@@ -101,7 +100,7 @@ The `NSUserDefaults`<sup>[11]</sup> class provides a programmatic interface for 
 
 #### Dynamic Analysis
 
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyse the app data directory. It is important to trigger as much app functionality as possible before the data is analysed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger as much app functionality as possible before the data is analyzed, as the app might only store system credentials as specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
 
 The following steps can be used to identify how the application stores data locally on the iOS device.
 
@@ -215,7 +214,7 @@ Here is a sample in swift with which you can create the keys as follows (notice 
 ```
 
 
---- {TODO: add key generation for RSA encryption
+-- [TODO: add key generation for RSA encryption] --
 
 #### References
 
@@ -251,7 +250,6 @@ Here is a sample in swift with which you can create the keys as follows (notice 
 - [15] Keychain concepts - https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html
 - [16] Realm Objective-C - https://realm.io/docs/objc/latest/
 - [17] Realm Swift - https://realm.io/docs/swift/latest/
-
 
 ### Testing for Sensitive Data in Logs
 
@@ -324,7 +322,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 
 #### Overview
 
-Different 3rd party services are available that can be embedded into the app to implement different features. These features can vary from tracker services to monitor the user behaviour within the app, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
+Different 3rd party services are available that can be embedded into the app to implement different features. These features can vary from tracker services to monitor the user behavior within the app, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
 
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
 
@@ -549,7 +547,7 @@ Keywords to look for:
 
 #### Dynamic Testing
 
-IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is availalbe on iOS to verify IPC usage.
+IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is available on iOS to verify IPC usage.
 
 
 #### Remediation
@@ -584,19 +582,19 @@ NSFileCoordinator<sup>[6]</sup> methods run synchronously, so your code will blo
 
 ##### Overview
 
--- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Static Analysis
 
--- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Dynamic Analysis
 
--- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### Remediation
 
--- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] --
+<!-- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
 
 #### References
 
@@ -611,14 +609,14 @@ NSFileCoordinator<sup>[6]</sup> methods run synchronously, so your code will blo
 - CWE
 
 #### Info
--- TODO --
+<!-- TODO -->
 
 
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
+Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
 
@@ -796,23 +794,13 @@ This will cause the background image to be set to the "overlayImage.png" instead
 
 ### Testing for Sensitive Data in Memory
 
--- TODO [Add content for "Testing for Sensitive Data in Memory"] --
-
 #### Overview
-
--- TODO
 
 #### Static Analysis
 
--- TODO
-
 #### Dynamic Analysis
 
--- TODO
-
 #### Remediation
-
--- TODO
 
 #### References
 
@@ -826,27 +814,25 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - CWE: -- TODO [Add link to CWE issue] --
 
 #### Info
--- TODO
-
 
 
 ### Testing the Device-Access-Security Policy
 
 #### Overview
 
--- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] -->
 
 #### Static Analysis
 
--- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] -->
 
 #### Dynamic Analysis
 
--- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] -->
 
 #### Remediation
 
--- TODO [Add remediation of "Testing the Device-Access-Security Policy"] --
+<!-- TODO [Add remediation of "Testing the Device-Access-Security Policy"] -->
 
 #### References
 
@@ -860,7 +846,7 @@ This will cause the background image to be set to the "overlayImage.png" instead
 - CWE: -- TODO [Add link to CWE issue] --
 
 #### Info
--- TODO
+<!-- TODO -->
 
 
 ### Verifying User Education Controls
@@ -875,27 +861,27 @@ The following list shows potential warnings or advises for a user when opening t
 * If the user is installing the app on a rooted device a warning should be shown that this is dangerous and deactivates security controls on OS level and is more likely to be prone to Malware. See also OMTG-DATAST-011 for more details.
 * If a user installed the app on an outdated Android version a warning should be shown. See also OMTG-DATAST-010 for more details.
 
--- TODO [What else can be a warning on iOS?] --
+<!-- TODO [What else can be a warning on iOS?] -->
 
 #### Static Analysis
 
--- TODO [Add content for static analysis of "Verifying User Education Controls"] --
+<!-- TODO [Add content for static analysis of "Verifying User Education Controls"] -->
 
 #### Dynamic Analysis
 
 After installing the app and also while using it, it should be checked if any warnings are shown to the user, that have an education purpose.
 
--- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] --
+<!-- TODO [Further develop content of dynamic analysis of "Verifying User Education Controls"] -->
 
 #### Remediation
 
 Warnings should be implemented that address the key points listed in the overview section.
 
--- TODO [Further develop remediation of "Verifying User Education Controls"] --
+<!-- TODO [Further develop remediation of "Verifying User Education Controls"] -->
 
 #### References
 
--- TODO [Add references for "Verifying User Education Controls"] --
+<!-- TODO [Add references for "Verifying User Education Controls"] -->
 
 ##### OWASP MASVS
 
@@ -909,4 +895,4 @@ Warnings should be implemented that address the key points listed in the overvie
 - CWE: -- TODO [Add link to CWE issue for "Verifying User Education Controls"] --
 
 #### Info
--- TODO
+<!-- TODO -->

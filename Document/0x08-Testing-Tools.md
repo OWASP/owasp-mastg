@@ -1,9 +1,9 @@
 ## Testing Tools
-To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behaviour of running Apps and other test cases and automate them.
+To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behavior of running Apps and other test cases and automate them.
 
 ### Mobile Application Security Testing Distributions
-* Appie - https://manifestsecurity.com/appie - A portable software package for Android Pentesting and an awesome alternative to existing Virtual machines.
-* Android Tamer - https://androidtamer.com/ - Android Tamer is a Virtual / Live Platform for Android Security professionals.
+* Appie - https://manifestsecurity.com/appie - Android Pentesting Portable Integrated Environment. A portable software package for Android Pentesting and an awesome alternative to existing Virtual machines.
+* Android Tamer - https://androidtamer.com/ - Android Tamer is a Debian-based Virtual / Live Platform for Android Security professionals.
 * AppUse - https://appsec-labs.com/AppUse/ - AppUse is a VM (Virtual Machinedeveloped by AppSec Labs.
 * Androl4b - https://github.com/sh4hin/Androl4b - A Virtual Machine For Assessing Android applications, Reverse Engineering and Malware Analysis
 * Mobisec - http://sourceforge.net/projects/mobisec/ - Mobile security testing live environment.
@@ -12,8 +12,8 @@ To perform security testing different tools are available in order to be able to
 
 ### Static Source Code Analysis
 * Checkmarx - https://www.checkmarx.com/technology/static-code-analysis-sca/ - Static Source Code Scanner that also scans source code for Android and iOS.
-* Fortify - https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security - Static Source Code Scanner that also scans source code for Android and iOS.
-
+* Fortify - https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security - Static source code scanner that also scans source code for Android and iOS.
+* Acccenture - https://digitalsecurity.accenture.com - Static source code scanner that also scans source code for Android and iOS.
 
 ### All-in-One Mobile Security Frameworks
 * Mobile Security Framework - MobSF - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOSautomated pen-testing framework capable of performing static and dynamic analysis.
@@ -41,7 +41,7 @@ To perform security testing different tools are available in order to be able to
 
 #### Dynamic and Runtime Analysis
 * Cydia Substrate - http://www.cydiasubstrate.com/ - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
-* Xposed Framework - http://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053 - Xposed framework enables you to modify the system or application aspect and behaviour at runtime, without modifying any Android application package(APKor re-flashing.
+* Xposed Framework - http://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053 - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
 * logcat-color - https://github.com/marshall/logcat-color - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
 * Inspeckage - https://github.com/ac-pm/Inspeckage - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 * Frida - http://www.frida.re/ - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
@@ -71,6 +71,7 @@ To perform security testing different tools are available in order to be able to
 * Clutch - http://cydia.radare.org/- Decrypted the application and dump specified bundleID into binary or .ipa file.
 * Dumpdecrypted] (https://github.com/stefanesser/dumpdecrypted - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 * class-dump - http://stevenygard.com/projects/class-dump/ - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
+* Flex2 - http://cydia.saurik.com/package/com.fuyuchi.flex2/ - Flex gives you the power to modify apps and change their behavior.
 * Weak Classdump] (https://github.com/limneos/weak_classdump - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
 * IDA Pro - https://www.hex-rays.com/products/ida/index.shtml - IDA is a Windows, Linux or Mac OS X hosted multi-processor disassembler and debugger that offers so many features it is hard to describe them all.
 * HopperApp - http://hopperapp.com/ - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.

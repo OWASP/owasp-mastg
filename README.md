@@ -1,8 +1,8 @@
-<img width=200px align="right" style="float: right;" src="Document/Images/titlepage-small.jpg">
+<a href="https://leanpub.com/mobile-security-testing-guide-preview"><img width=180px align="right" style="float: right;" src="Document/Images/summit_preview.jpg"></a>
 
 # OWASP Mobile Security Testing Guide
 
-This is the official Github Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). The current master branch can also be [read on Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/).
+This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). You can also read the MSTG on [Gitbooks](https://b-mueller.gitbooks.io/the-owasp-mobile-security-testing-guide/content/) or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview).
 
 ## Table-of-Contents
 
@@ -57,11 +57,13 @@ This is the official Github Repository of the OWASP Mobile Security Testing Guid
 
 ## Reading the Mobile Security Testing Guide
 
-The MSTG hasn't been officially released yet. There are several options for converting it into an easily readable format:
+The MSTG is not complete yet. You can however get intermediate builds in multiple formats.
 
-1. Read it on [Gitbook](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
+1. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of the final release.
 
-2. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
+2. Read it on [Gitbook](https://b-mueller.gitbooks.io/the-owasp-mobile-security-testing-guide/content/). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats. Please note that we have disabled the ebook export features on gitbook.com for the time being - they will be enabled once the project reaches beta status.
+
+3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
@@ -73,7 +75,7 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 ## Contributions, feature requests and feedback
 
-**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks.
+**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://b-mueller.gitbooks.io/the-owasp-mobile-security-testing-guide/content/). Also, check the [project dashboard](https://github.com/OWASP/owasp-mstg/projects/1) for a list of open tasks.
 
 Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/) before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 

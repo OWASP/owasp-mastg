@@ -1,24 +1,24 @@
 ## Tampering and Reverse Engineering on iOS
 
-### Environment and Toolset
+<!-- ### Environment and Toolset -->
 
--- TODO [Environment Overview] --
+<!-- TODO [Environment Overview] -->
 
 #### XCode and iOS SDK
 
-Xcode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is Xcode 8 and it can be downloaded from the official Apple website<sup>[7]</sup>.
+XCode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is XCode 8 which can be [downloaded from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
 
-The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be downloaded from the Official Apple website as well<sup>[8]</sup>.
+The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a software development kit developed by Apple for developing native applications for iOS. The latest release as of the writing of this book is iOS 10 SDK and it can be [downloaded from the Official Apple website](https://developer.apple.com/ios/ "Apple iOS 10 SDK") as well.
 
 #### Utilities
 
-- Class-dump by Steve Nygard<sup>[1]</sup> is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/) is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
 
-- Class-dump-z<sup>[9]</sup> is re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
+- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) s re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
 
-- Class-dump-dyld by Elias Limneos<sup>[2]</sup> allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
+- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/) allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
-- MachoOView<sup>[3]</sup> is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+- [MachoOView]( https://sourceforge.net/projects/machoview/) is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
 
 - otool is a tool for  displays  specified  parts	of object files or libraries. It understands both Mach-O (Mach object) files and universal file formats.  
 
@@ -34,15 +34,124 @@ IDA Pro can deal with iOS binaries and has a built-in iOS debugger. IDA is widel
 
 iOS reverse engineering is a mixed bag. On the one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called through dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of this is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also has the effect that no direct cross-references between methods are available in the disassembler, and constructing a flow graph is challenging.
 
-In this guide, we'll give an introduction on static and dynamic analysis and instrumentation. Throughtout this chapter, we'll be referring to the OWASP UnCrackable Apps for iOS, so download them from MSTG repository if you're planning to follow the examples.
+In this guide, we'll give an introduction on static and dynamic analysis and instrumentation. Throughout this chapter, we'll be referring to the OWASP UnCrackable Apps for iOS, so download them from MSTG repository if you're planning to follow the examples.
 
 #### Static Analysis
 
--- TODO [iOS Static Analysis with examples] --
+##### Recovering an IPA File From an Installed App
+
+###### From Jailbroken Devices
+
+You can use Saurik's IPA Installer <sup>[7]</sup> to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
+
+~~~
+iPhone:~ root# ipainstaller -l
+com.apple.Pages
+com.example.targetapp
+com.google.ios.youtube
+com.spotify.client
+~~~
+
+Generate the IPA file for using the following command:
+
+~~~
+iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
+~~~
+
+###### From non-Jailbroken Devices
+
+If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps:
+
+- Download the app in itunes
+- Go to your itunes Apps Library
+- Right-click on the app and select show in finder
+
+<!-- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] -->
+
+#### Dumping Decrypted Executables
+
+On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
+
+~~~
+# Clutch -i
+~~~
+
+**NOTE:** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
+
+~~~
+# otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
+~~~
+
+If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
+
+#### Getting Basic Information with Class-dump and Hopper Disassembler
+
+Class-dump tool can be used to get information about methods in the application. Example below uses [Damn Vulnerable iOS Application]( http://damnvulnerableiosapp.com/). As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
+
+```
+$ unzip DamnVulnerableiOSApp.ipa
+
+$ cd Payload/DamnVulnerableIOSApp.app
+
+$ otool -hv DamnVulnerableIOSApp
+
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
+
+```
+
+Note architecture `armv7` which is 32 bit and `arm64`. This design permits to deploy the same application on all devices.
+In order to analyze the application with class-dump we must create so-called thin binary, which contains only one architecture:
+
+```
+iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
+```
+
+And then we can proceed to performing class-dump:
+
+```
+iOS8-jailbreak:~ root# class-dump DVIA32
+
+@interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
+{
+}
++ (BOOL)appIsCracked;
++ (BOOL)deviceIsJailbroken;
+```
+
+Note the plus sign, which means that this is a class method returning BOOL type.
+A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
+
+Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/). All these steps will be performed automatically and you will be able to see disassembled binary and class information.
+
+Your main focus while performing static analysis would be:
+* Identifying and understanding functions responsible for jailbreak detection and certificate pinning
+  * For jailbreak detection, look for methods or classes containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
+  * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
+* Understanding application logic and possible ways to bypass it
+* Any hardcoded credentials, certificates
+* Any methods that are used for obfuscation and in consequence may reveal sensitive information
+
+
+Other commands:
+
+Listing shared libraries:
+
+
+```bash
+$ otool -L <binary>
+```
 
 #### Debugging
 
--- TODO [iOS Debugging Overview] --
+<!-- TODO [iOS Debugging Overview] -->
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the <code>task_for_pid()</code> function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
@@ -50,7 +159,7 @@ Even though the XNU kernel implements the <code>ptrace()</code> system call as w
 
 ##### Using lldb
 
-iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the debugserver binary shipped with XCode <sup>[5]</sup>.
+iOS ships with a console app, debugserver, that allows for remote debugging using gdb or lldb. By default however, debugserver cannot be used to attach to arbitrary processes (it is usually only used for debugging self-developed apps deployed with XCode). To enable debugging of third-part apps, the task_for_pid entitlement must be added to the debugserver executable. An easy way to do this is adding the entitlement to the [debugserver binary shipped with XCode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable mount the following DMG image:
 
@@ -99,11 +208,11 @@ debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
 Attaching to process 2670...
 ~~~
 
--- TODO [Solving UnCrackable App with lldb] --
+<!-- TODO [Solving UnCrackable App with lldb] -->
 
 ##### Using Radare2
 
--- TODO [Write Radare2 tutorial] --
+<!-- TODO [Write Radare2 tutorial] -->
 
 ### Tampering and Instrumentation
 
@@ -113,7 +222,7 @@ Attaching to process 2670...
 
 Cydia Substrate (formerly called MobileSubstrate) is the de-facto standard framework for developing run-time patches (“Cydia Substrate extensions”) on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (saurik). Cycript injects a JavaScriptCore VM into the running process. Users can then manipulate the process using a hybrid of Objective-C++ and JavaScript syntax through the Cycript interactive console. It is also possible to access and instantiate Objective-C classes inside a running process. Some examples for the use of Cycript are listed in the iOS chapter.
 
-Firt the SDK need to be downloaded, unpacked and installed.
+First the SDK need to be downloaded, unpacked and installed.
 ```bash
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 #on iphone
@@ -125,14 +234,17 @@ To spawn the interactive cycript shell, you can run “./cyript” or just “cy
 $ cycyript
 cy#
 ```
-To inject into a running process, we need to first find out the process ID (PID). We can run “cycript -p” with the PID to inject cycript into the process. To illustrate we will inject into springboard.
+To inject into a running process, we need to first find out the process ID (PID). We can run "cycript -p" with the PID to inject cycript into the process. To illustrate we will inject into springboard.
+
 ```bash
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
 ```
+
 We have injected cycript into SpringBoard, lets try to trigger an alert message on SpringBoard with cycript. 		
+
 ```bash
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
@@ -167,44 +279,13 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
    |    | <_UILayoutGuide: 0x16d92c10; frame = (0 568; 0 0); hidden = YES; layer = <CALayer: 0x16d92cb0>>`
 ```
 
-Obtain references to existing objects
-
-TODO
-
-Instantiate objects from classes
-
-TODO
-
-Hooking native functions
-
-TODO
-
-Hooking objective-C methods
-
-TODO
+<!-- TODO Obtain references to existing objects -->
+<!-- TODO Instantiate objects from classes -->
+<!-- TODO Hooking native functions -->
+<!-- TODO Hooking objective-C methods -->
 
 Cycript tricks:
 
 http://iphonedevwiki.net/index.php/Cycript_Tricks
 
-#### Frida
-
--- TODO [Develop section on Frida] --
-
-### References
-
--- TODO [Clean up References] --
-
-* [1] Class-dump - http://stevenygard.com/projects/class-dump/
-* [2] Class-dump-dyld - https://github.com/limneos/classdump-dyld/
-* [3] MachOView - https://sourceforge.net/projects/machoview/
-* [3] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits#Pangu9_.289.0_.2F_9.0.1_.2F_9.0.2.29)
-* [4] Stack Overflow - http://stackoverflow.com/questions/413242/how-do-i-detect-that-an-ios-app-is-running-on-a-jailbroken-phone
-* [5] Debug Server on the iPhone Dev Wiki - http://iphonedevwiki.net/index.php/Debugserver
-* [6] Uninformed - Replacing ptrace() - http://uninformed.org/index.cgi?v=4&a=3&p=14
-* [7] Apple Xcode IDE - https://developer.apple.com/xcode/ide/
-* [8] Apple iOS 10 SDK - https://developer.apple.com/ios/
-* [9] Class-dump-z - https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki
-
-
-- [x] IDA Pro - https://www.hex-rays.com/products/ida/
+<!-- TODO [Develop section on Frida] -->

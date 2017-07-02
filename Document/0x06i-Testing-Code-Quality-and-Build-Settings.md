@@ -1,5 +1,4 @@
-Testing Code Quality and Build Settings of iOS Apps
----------------------------------------------------
+## Testing Code Quality and Build Settings of iOS Apps
 
 ### Verifying that the App is Properly Signed
 
@@ -33,13 +32,10 @@ Testing Code Quality and Build Settings of iOS Apps
 
 -- TODO [Add relevant CWE for "Verifying that the App is Properly Signed"] --
 
-##### Info
-
--	[1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
 ##### Tools
 
 -- TODO [Add tools for "Verifying that the App is Properly Signed"] --
+
 
 ### Testing If the App is Debuggable
 
@@ -75,13 +71,10 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 -- TODO [Add relevant CWE for "Testing Whether the App is Debuggable"] --
 
-##### Info
-
--	[1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
 ##### Tools
 
 -- TODO [Add tools for "Testing Whether the App is Debuggable"] --
+
 
 ### Testing for Debugging Symbols
 
@@ -89,7 +82,7 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
 
-These symbols can be saved either in "Stabs" format or the DWARF format. When using the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. With the DWARF format, debugging symbols are stored in a special "\_\_DWARF" segment within the the binary. DWARF debugging symbols can also be saved as a separate debug-information file. In this test case, you verify that no debug symbols are contained in the release binary itself (either in the symbol table, or the \_\_DWARF segment).
+These symbols can be saved either in "Stabs" format or the DWARF format. When using the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. With the DWARF format, debugging symbols are stored in a special "\_\_DWARF" segment within the binary. DWARF debugging symbols can also be saved as a separate debug-information file. In this test case, you verify that no debug symbols are contained in the release binary itself (either in the symbol table, or the \_\_DWARF segment).
 
 #### Static Analysis
 
@@ -105,7 +98,7 @@ armv5te:     file format mach-o-arm
 aarch64:     file format mach-o-arm64
 ```
 
-Gobjdump is part of binutils<sup>[1]</sup> and can be installed via Homebrew on Mac OS X.
+Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and can be installed via Homebrew on Mac OS X.
 
 #### Dynamic Analysis
 
@@ -129,9 +122,6 @@ Not applicable.
 
 -- TODO [Add relevant CWE for "Verifying that Debugging Symbols Have Been Removed"] --
 
-##### Info
-
--	[1] Binutils - https://www.gnu.org/s/binutils/
 
 ### Testing for Debugging Code and Verbose Error Logging
 
@@ -151,7 +141,7 @@ For static analysis, you can take the following approach regarding the logging s
 
 Whereas in Swift this has changed: there you need to set either environment-variables in your scheme or as custom flags in the Build settings of a target to make this work. Please note that the following functions, which allow to check on whether the app is build in release-configuration in Swift 2.1, should be recommended against (As Xcode 8 & Swift3 do not support them): `_isDebugAssertConfiguration()`, `_isReleaseAssertConfiguration()`, `_isFastAssertConfiguration()`.
 
-Please note that there are more logging functions, depending on the setup of the application, for instance, when CocoaLumberjack is used (https://github.com/CocoaLumberjack/CocoaLumberjack), then the static analysis is a bit different.
+Please note that there are more logging functions, depending on the setup of the application, for instance, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, then the static analysis is a bit different.
 
 On the "debug-management" code which is built in: inspect the storyboards to see if there are any flows and/or view-controllers that provide different functionality than the ones that should be supported by the application. This can be anything: from debug views, to error-messages printed. From having custom stub-response configurations to logging written to files on the application file system or to a remote-server.
 
@@ -181,7 +171,7 @@ In Swift 2, using xCode 7, one has to set custom compiler flags for every target
 #endif
 ```
 
-In swift 3, using xCode 8, one can set Active Compilation Conditions setting in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of conditional compilation blocks based on the conditions defined:
+In swift 3, using xCode 8, you can set Active Compilation Conditions in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the conditions defined:
 
 ```swift3
 #if DEBUG_LOGGING
@@ -203,11 +193,6 @@ In swift 3, using xCode 8, one can set Active Compilation Conditions setting in 
 
 -- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
 
-##### Info
-
--	[1] CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack\]
--	[2] Swift conditional compilation blocks - [https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34\]
-
 ##### Tools
 
 -	XCode & simulator
@@ -217,16 +202,16 @@ In swift 3, using xCode 8, one can set Active Compilation Conditions setting in 
 ### Testing Exception Handling
 
 #### Overview
-Exceptions can often occur when an application gets into a non-normal or erroneous state. 
+Exceptions can often occur when an application gets into a non-normal or erroneous state.
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
-However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic. 
+However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic.
 
 ##### Exception handling in Objective-C
 Objective-C has two types of errors :
 
 **NSException**
-`NSException` is used for handling programming or low-level errors (e.g. divided by 0, out-of-bounds array access). 
+`NSException` is used for handling programming or low-level errors (e.g. divided by 0, out-of-bounds array access).
 An `NSException` can either be raised by `raise()` or thrown with `@throw`, unless caught, will invoke the unhandled exception handler where you can log the statement and then the program will be halted, `@catch` allows you to recover from it if you are using a `@try`-`@catch`-block:
 ```obj-c
  @try {
@@ -241,16 +226,16 @@ An `NSException` can either be raised by `raise()` or thrown with `@throw`, unle
  	//cleanup
 ```
 
-Bear in mind that using NSException comes with pitfalls regarding memory management: you need to cleanup allocations from the try block in the finally block <sup>[1], [2]</sup>. Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
+Bear in mind that using NSException comes with pitfalls regarding memory management: you need to [cleanup allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF "Raising exceptions")  from the try block in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html "Handling Exceptions"). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
 
 **NSError**
-`NSError` is used for all other type of errors <sup>[3]</sup>. Some APIs of the Cocoa frameworks provide them as as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
- 
-##### Exception handling in Swift
-Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combinding Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the Apple documentation<sup>[4]</sup>
-Methods that can throw an error use the `throws` keyword. There are four ways to handle errors in Swift<sup>[5]</sup>:  
+`NSError` is used for all other type of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some APIs of the Cocoa frameworks provide them as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
 
-- You can propagate the error from a function to the code that calls that function: in this case there is no do-catch, there is only a `throw` throwing the acutal error or there is a `try` to execute the method that throws. The method containing the `try` will need the `throws` keyword as well:
+##### Exception handling in Swift
+Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combining Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
+Methods that can throw an error use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
+
+- You can propagate the error from a function to the code that calls that function: in this case there is no do-catch, there is only a `throw` throwing the actual error or there is a `try` to execute the method that throws. The method containing the `try` will need the `throws` keyword as well:
 
 ```swift
 func dosomething(argumentx:TypeX) throws {
@@ -273,7 +258,7 @@ do {
 }
 ```
 
-- Handle the error as an optional value: 
+- Handle the error as an optional value:
 
 ```
 	let x = try? functionThatThrows()
@@ -282,9 +267,7 @@ do {
 ```
 - Assert that the error will not occur: by using the `try!` expression.
 
-
-
-#### Static Analysis 
+#### Static Analysis
 Review the source code to understand/identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
 
 ##### Static Analysis in Objective-C
@@ -296,7 +279,7 @@ Here you can verify that:
 * For every `@throw` the calling method has a proper `@catch` on either the calling method level or at the level of the `NSApplication` / `UIApplication` objects in order to clean up any sensitive information and possibly try to recover from the issue.
 * That the application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
 * That any confidential information, such as keying material and/or authentication information is always wiped at the `@finally` blocks in case of a high risk application.
-* That `raise()` is only used in rare occassions when termination of the program without any further warning is required.
+* That `raise()` is only used in rare occasions when termination of the program without any further warning is required.
 * That `NSError` objects do not contain information that might leak any sensitive information.
 
 ##### Static Analysis in Swift
@@ -314,18 +297,18 @@ There are various methods for dynamic analysis:
 - Provide unexpected values to UI fields in the iOS application.
 - Test the custom url-schemes, pasteboard and other inter-app communication controls by providing values that are unexpected or could raise an exception.
 - Tamper the network communication and/or the files stored by the application.
-- In case of Objective-C, you can use Cycript to hook into methods and provide them with arguments that could possibly make the callee throw an exception.
+- In case of Objective-C, you can use cycript to hook into methods and provide them with arguments that could possibly make the callee throw an exception.
 
 In most cases, the application should not crash, but instead, it should:
 
 - Recover from the error or get into a state in which it can inform the user that it is not able to continue.
 - If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
-- Not provide any information in logging mechanims used by the application.
+- Not provide any information in logging mechanisms used by the application.
 
 #### Remediation
 There are a few things a developer can do:
 - Ensure that the application use a well-designed and unified scheme to handle errors.
-- Make sure that all logging is removed or guarded as described in ["Testing for Debugging Code and Verbose Error Logging" for iOS]{TODO: whatlinkshouldbehere?}.
+- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
 - For Objective-C, in case of a high-risk application: create your own exception handler which cleans out any secret that should not be easily retrieved. The handler that can be set through `NSSetUncaughtExceptionHandler`.
 - When using Swift, make sure that you do not use `try!` unless you have made sure that there really cannot be any error in the method the throwing method that is being called.
 - When using Swift, make sure that the error does not propagate too far off through intermediate methods.
@@ -345,18 +328,10 @@ There are a few things a developer can do:
 
 -- TODO [Add relevant CWE for "Testing Exception Handling"] --
 
-##### Info
-
--  [1] Raising exceptions - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF
--  [2] Handling Exceptions - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html
--  [3] Dealing with Errors - https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html
--  [4] Adopting Cocoa Design Patterns - https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html
--  [5] Error Handling - https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html
-
-
 ##### Tools
 
 -- CyCript
+
 
 ### Testing for Memory Bugs in Unmanaged Code
 
@@ -390,13 +365,10 @@ There are a few things a developer can do:
 
 -- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
 
-##### Info
-
--- TODO [Add info sor "Testing for Memory Management Bugs"] --
-
 ##### Tools
 
 -- TODO [Add tools for "Testing for Memory Management Bugs"] --
+
 
 ### Verify That Free Security Features Are Activated
 
@@ -468,7 +440,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 
 ##### With idb:
 
-IDB<sup>[2]</sup> automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
+IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
@@ -497,6 +469,9 @@ Steps for enabling ACR protection within an iOS application :
 1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
 2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
 
+See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
+
+
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -509,13 +484,8 @@ Steps for enabling ACR protection within an iOS application :
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Compiler Settings"] --
-
-##### Info
-
--	[1] Technical Q&A QA1788 Building a Position Independent Executable - https://developer.apple.com/library/mac/qa/qa1788/_index.html
--	[2] idb - https://github.com/dmayer/idb
+-- TODO [Add relevant CWE for "Verify That Free Security Features Are Activated"] --
 
 ##### Tools
 
--- TODO [Add tools for "Testing Compiler Settings"] --
+- idb - https://github.com/dmayer/idb

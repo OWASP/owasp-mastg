@@ -6,24 +6,27 @@ Vast majority of this tutorial is relevant to applications written mainly in Obj
 
 ### Setting Up Your Testing Environment
 
-**Requirements for iOS testing lab**
+In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device.  Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator completely useless for black-box-analysis and reverse engineering.
 
-Bare minimum is:
+Ideally you want to have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process easy. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a less smooth experience.
+
+For your mobile app testing setup you should have at least the following:
 
 - Laptop with admin rights, VirtualBox with Kali Linux
 - WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
-- Hopper Disassembler
 - At least one jailbroken iOS device (with desired iOS version)
-- Burp Suite tool
+- Burp Suite or other web proxy
 
-Recommended is:
+If you want to get serious with iOS security testing, you need a Mac, for the simple reason that XCode and the iOS SDK are only available for Mac OS. Many tasks that you can do effortlessly on Mac are a chore, or even impossible, on Windows and Linux. The following setup is recommended:
+
 - Macbook with XCode and Developer's Profile
 - WiFi network as previously
-- Hopper Disassembler or IDA Pro with Hex Rays
 - At least two iOS devices, one jailbroken, second non-jailbroken
-- Burp Suite tool
+- Burp Suite or other web proxy
+- Hopper or IDA Pro
 
-### Jailbreaking iOS
+#### Jailbreaking the iOS Device
+
 iOS jailbreaking is often compared to Android rooting. Actually, we have three different things here and it is important to clearly distinguish them.
 
 On the Android side we have:
@@ -34,9 +37,9 @@ On the Android side we have:
 
 On iOS side we have:
 
-- Jailbreaking: by using software exploit chains, the Apple's code signing mechanisms can be disabled so that apps and other programs not signed by Apple can be run, but will not install e.g. Cydia store for you. A jailbreak is a complete tool that will leverage exploit chain, disable system protections and typically install Cydia. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the App Store.
+- Jailbreaking: colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disable system protections (such as Apple's code signing mechanisms) and install the Cydia app store. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the App Store.
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037) <sup>[4]</sup>.
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
 #### Types of Jailbreaking Methods
 
@@ -45,11 +48,11 @@ In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. 
 #### Benefits of Jailbreaking
 While a standard user will want to jailbreak in order to tweak the iOS system appearance, add new features or install _free_ third party apps. The benefits of jailbreaking an iOS Device for a security tester include but are not limited to the following:
 
-* Removing the part of the security (and other) limitations on the OS imposed by Apple
-* Providing root access to the operating system
-* Allowing applications and tools not signed by Apple to be installed and run without any restrictions
-* Debugging and performing dynamic analysis
-* Providing access to the Objective-C Runtime
+- Removing the part of the security (and other) limitations on the OS imposed by Apple
+- Providing root access to the operating system
+- Allowing applications and tools not signed by Apple to be installed and run without any restrictions
+- Debugging and performing dynamic analysis
+- Providing access to the Objective-C Runtime
 
 iOS applications store data in the application sandbox which is not accessible to the public (but is available to root and the application itself). Without root access, it is not possible to access the application sandbox and analyze the data that was stored in it.
 
@@ -59,22 +62,20 @@ Jailbreaking iOS devices is becoming more and more complicated as Apple keeps ha
 
 A recommendation here is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it. Additionally you can think of having a second one, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
 
-The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from this site<sup>[30]</sup>.
+The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me).
 
 
 #### How to Jailbreak iOS?
 
-Jailbreaking methods vary across iOS versions. Best choice is to check if a public jailbreak is available for your iOS version<sup>[25]</sup>. Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+Jailbreaking methods vary across iOS versions. Best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
 
 Let's say you have a device running iOS 9.0, for this version you'll find a jailbreak (Pangu 1.3.0), at least for 64 bit devices. In the case that you have another version for which there's not a jailbreak available, you could still jailbreak it if you downgrade/upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this might not be possible if the required iOS version is not signed anymore by Apple.
 
 The iOS jailbreak scene evolves so rapidly that it is difficult to provide up-to-date instructions. However, we can point you to some, at the time of this writing, reliable sources:
 
-* The iPhone Wiki<sup>[26]</sup>
-* Can I Jailbreak?<sup>[25]</sup>
-* IPSW Downloads<sup>[30]</sup>
-* Redmond Pie<sup>[33]</sup>
-* Reddit Jailbreak<sup>[34]</sup>
+- [The iPhone Wiki](https://www.theiphonewiki.com/)
+- [Redmond Pie](http://www.redmondpie.com/)
+- [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/)
 
 Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
 
@@ -84,7 +85,7 @@ Some apps attempt to detect whether the iOS device they're installed on is jailb
 
 The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. We'll revisit this topic in the next chapter.
 
-### Preparing your test environment
+### Preparing the Test Environment
 
 ![Cydia Store](Images/Chapters/0x06b/cydia.png "Cydia Store")
 
@@ -122,7 +123,7 @@ $ sudo pip install frida
 
 As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device.
 
-The *usbmux* is handled by */System/Library/PrivateFrameworks/MobileDevice.framework/Resources/usbmuxd*, which is a socket daemon that watches for iPhone connections via USB<sup>[18]</sup>. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via */var/run/usbmuxd*<sup>[27]</sup>.
+[usbmuxd](https://github.com/libimobiledevice/usbmuxd) is a socket daemon that watches for iPhone connections via USB. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via /var/run/usbmuxd.
 
 On MacOS:
 
@@ -140,7 +141,6 @@ $ ./tcprelay.py -t 22:2222
 $ ssh -p 2222 root@localhost
 iPhone:~ root#
 ```
-See also iphonedevwiki <sup>[24]</sup>.
 
 ### Typical iOS Application Test Workflow
 
@@ -157,16 +157,15 @@ Typical workflow for iOS Application test is following:
 
 ### Static Analysis
 
-#### With Source Code
+<!-- #### With Source Code -->
 
--- TODO [Add content on security Static Analysis of an iOS app with source code] --
+<!-- TODO [Add content on security Static Analysis of an iOS app with source code] -->
 
 #### Without Source Code
 
-##### Folder structure
+##### Folder Structure
 
-System applications can be found in `/Applications`
-For all the rest you can use `installipa` to navigate to appropriate folders [14]:
+System applications can be found in "/Applications". For user-installed apps, you can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa) to navigate to the appropriate folders:
 
 ```
 iOS8-jailbreak:~ root# installipa -l
@@ -177,114 +176,12 @@ Application: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423
 Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB062C864E56
 ```
 
-As you can see, there are three main directories: Bundle, Application and Data. The Application directory is just a subdir of Bundle.
+As you can see, there are three main directories: <codde>Bundle</code>, <code>Application</code> and <code>Data</code>. The <code>Application</code> directory is simply a subdirectory of Bundle.
 The static installer files are located in Application, whereas all user data resides in the Data directory.
+
 The random string in the URI is application's GUID, which will be different from installation to installation.
 
-##### Recovering an IPA File From an Installed App
-
-###### From Jailbroken Devices
-
-You can use Saurik's IPA Installer to recover IPAs from apps installed on the device. To do this, install IPA installer console [1] via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
-
-~~~
-iPhone:~ root# ipainstaller -l
-com.apple.Pages
-com.example.targetapp
-com.google.ios.youtube
-com.spotify.client
-~~~
-
-Generate the IPA file for using the following command:
-
-~~~
-iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
-~~~
-
-###### From non-Jailbroken Devices
-
-If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps:
-
-- Download the app in itunes
-- Go to your itunes Apps Library
-- Right-click on the app and select show in finder
-
--- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] --
-
-#### Dumping Decrypted Executables
-
-On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
-
-~~~
-# Clutch -i
-~~~
-
-**NOTE:** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
-
-~~~
-# otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
-~~~
-
-If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
-
-#### Getting Basic Information with Class-dump and Hopper Disassembler
-
-Class-dump tool can be used to get information about methods in the application. Example below uses Damn Vulnerable iOS Application [12]. As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
-
-```
-$ unzip DamnVulnerableiOSApp.ipa
-
-$ cd Payload/DamnVulnerableIOSApp.app
-
-$ otool -hv DamnVulnerableIOSApp
-
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-   MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
-```
-
-Note architecture `armv7` which is 32 bit and `arm64`. This design permits to deploy the same application on all devices.
-In order to analyze the application with class-dump we must create so-called thin binary, which contains only one architecture:
-
-```
-iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
-```
-
-And then we can proceed to performing class-dump:
-
-```
-iOS8-jailbreak:~ root# class-dump DVIA32
-
-@interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
-{
-}
-+ (BOOL)appIsCracked;
-+ (BOOL)deviceIsJailbroken;
-```
-
-Note the plus sign, which means that this is a class method returning BOOL type.
-A minus sign would mean that this is an instance method. Please refer to further sections to understand the practical difference between both.
-
-Alternatively, you can easily decompile the application with Hopper Disassembler [13]. All these steps will be performed automatically and you will be able to see disassembled binary and class information.
-
-Your main focus while performing static analysis would be:
-* Identifying and undestanding functions responsible for jailbreak detection and certificate pinning
-  * For jailbreak detection, look for methods or classess containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
-  * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
-* Understanding application logic and possible ways to bypass it
-* Any hardcoded credentials, certificates
-* Any methods that are used for obfuscation and in consequence may reveal sensitive information
-
 ### Dynamic Analysis
-
--- TODO [Dynamic analysis - copying data files, logs, from device, etc.] --
 
 #### Monitoring Console Logs
 
@@ -301,6 +198,8 @@ window to expose the console log contents
 To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
 
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
+
+##### Setting up a Web Proxy
 
 #### Dynamic Analysis On Jailbroken Devices
 
@@ -336,7 +235,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 ##### Dumping KeyChain Data
 
-Keychain-Dumper [23] lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
+[Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
 
 ``` bash
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
@@ -366,13 +265,17 @@ Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
 
-Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the Github repository.
+Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
+
+<!--
 
 ##### Security Profiling with Introspy
 
 Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
--- TODO [Write an IntroSpy howto] --
+-->
+
+<!-- TODO [Write an IntroSpy howto] -->
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -380,9 +283,9 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than one would expect. iOS will refuse to run an app unless you get the provisioning profile and code signature header absolutely right. This requires you to learn about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be an daunting process.
 
-The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from Vincent Tan's Swizzler project [4]. An alternative way of repackaging using different tools was described by NCC group [5].
+The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/). An alternative way of repackaging using different tools was [described by NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") .
 
-To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo [6]. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
+To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -406,7 +309,7 @@ In the examples below I'm using my own signing identity which is associated with
 
 **With a regular iTunes account:**
 
-Mercifully, Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode using your regular Apple account - simply build an empty iOS project and extract embedded.mobileprovision from the app container. The NCC blog explains this process in great detail [5].
+Mercifully, Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode using your regular Apple account - simply build an empty iOS project and extract embedded.mobileprovision from the app container. The NCC blog post explains this process in great detail.
 
 Once you have obtained the provisioning profile, you can check its contents with the *security* tool. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those later for code signing, so extract them to a separate plist file as shown below. It is also worth having a look at the contents of the file to check if everything looks as expected.
 
@@ -432,11 +335,11 @@ $ cat entitlements.plist
 </plist>
 ~~~
 
-Note the application identitifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
+Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
 
 ##### Other Preparations
 
-To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. Optool [3] can be used to automate this process:
+To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. [Optool](https://github.com/alexzielenski/optool) can be used to automate this process:
 
 ~~~
 $ git clone https://github.com/alexzielenski/optool.git
@@ -523,13 +426,13 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works [7][8]. I also found Apple's entitlement troubleshooting page [9] to be a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
 
 ### Setting up Burp
 
-Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it should be possible to use usbmuxd [18] in order to connect to burp through USB.
+Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to burp through USB.
 
-The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good tutorial on setting an iOS Device and Burp [22].
+The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 
 ### Bypassing Certificate Pinning
 
@@ -551,46 +454,8 @@ The simplest method is to use `SSL Kill Switch` (can be installed via Cydia stor
 
 #### Recommendations
 
-Certificate pinning is a good security practice and should be used for all applications handling sensitive information.
-EFF's Observatory<sup>[28]</sup> provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft<sup>[29]</sup>. Use certificate pinning if you don't trust at least one of these CAs.
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
 
-If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [21]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
+If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [#thiel]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
-To get more information on testing transport security, please refer to section 'Testing Network Communication'
-
-### References
-
-* [1] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
-* [2] Clutch - https://github.com/KJCracks/Clutch
-* [3] Optool - https://github.com/alexzielenski/optool
-* [4] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
-* [5] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
-* [6] Uncrackable Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1
-* [7] Maintaining Certificates - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html
-* [8] Maintaining Provisioning Profiles - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html
-* [9] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
-* [10] iOS-deploy - https://github.com/phonegap/ios-deploy
-* [11] MacOS and iOS Internals, Volume III: Security & Insecurity - Johnathan Levin
-* [12] Damn Vulnerable iOS Application - http://damnvulnerableiosapp.com/
-* [13] Hopper Disassembler - https://www.hopperapp.com/
-* [14] Introduction to iOS Application Security Testing - Slawomir Kosowski
-* [15] The Mobile Application Hacker's Handbook -  Dominic Chell, Tyrone Erasmus, Shaun Colley
-* [16] Cydia Substrate  - http://www.cydiasubstrate.com
-* [17] Frida - http://frida.re
-* [18] usbmuxd - https://github.com/libimobiledevice/usbmuxd
-* [19] Jailbreak Detection Methods - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
-* [20] Bypassing OpenSSL Certificate Pinning -https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/
-* [21] iOS Application Security - David Thiel
-* [22] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-* [23] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
-* [24] iphonedevwiki - SSH over USB - http://iphonedevwiki.net/index.php/SSH_Over_USB
-* [25] Can I Jailbreak? by IPSW Downloads - https://canijailbreak.com/
-* [26] The iPhone Wiki - https://www.theiphonewiki.com/
-* [27] The iPhone Wiki - https://www.theiphonewiki.com/wiki/Usbmux
-* [28] EFF's Observatory - https://www.eff.org/pl/observatory
-* [29] Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft - https://www.eff.org/files/colour_map_of_CAs.pdf
-* [30] IPSW Downloads - https://ipsw.me
-* [31] IntroSpy - http://isecpartners.github.io/Introspy-iOS/
-* [32] IntroSpy Analyzer - https://github.com/iSECPartners/Introspy-Analyzer
-* [33] Redmond Pie - http://www.redmondpie.com/
-* [34] Reddit Jailbreak - https://www.reddit.com/r/jailbreak/
+To get more information on testing transport security, please refer to section 'Testing Network Communication'.

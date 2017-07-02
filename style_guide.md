@@ -49,8 +49,8 @@ Link to background information where necessary.
 
 ### Write so people will read with joy!
 
-- Use the following methods to increase scannability:
-- Use shorter (50–80 characters per line) rather than longer line lengths (100 characters per line)
+Use the following methods to increase scannability:
+
 - Use left alignment for headings, subheadings, and text
 - Link where appropriate
 - Use lists rather than paragraphs wherever possible
@@ -109,50 +109,55 @@ When in doubt, you can verify proper capitalization on [www.titlecapitalization.
 
 ## 3. External References
 
-External references are listed at the end of each chapter. Refer to them by number within the text, e.g.: &lt;sup&gt;[1]&lt;/sup&gt;. Remember that the MSTG is supposed to work as a printed document, so always include the full URL like in the examples below (hrefs that hide the URL will obviously be problematic in the print version).
+For web links, use the normal markdown inline link format:
 
-See the [test case template](Templates/testcase.md) for more examples.
-
-### Web Links
-
-Links to sources on the web look as follows:
-
-- [1] Reference Name - http://www.example.com/full-link-1.html
-- [2] Reference Name - http://www.example.com/full-link-2.html
+\[TEXT](URL "NAME")
 
 For example:
 
-- [1] NIST, the economic impacts of inadequate infrastructure for software testing - http://www.nist.gov/director/planning/upload/report02-3.pdf
+The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
 
-### Link to Books and Papers
+These links will be converted to numbered references in the print version.
+
+For books and papers, use the following format.
+
+\[#NAME]
+
+And include the full reference in the "references" section at the end of the markdown file manually. Example:
+
+An obfuscated encryption algorithm can generate its key (or part of the key) using data collected from the environment [#riordan].
+
+And under "references" at the end of the document:
+
+- [#riordan] -  James Riordan, Bruce Schneier. Environmental Key Generation towards Clueless Agents. Mobile Agents and Security, Springer Verlag, 1998
 
 __Papers:__ 
 The general form for citing technical reports is to place the name and location of the company or institution after the author and title and to give the report number and date at the end of the reference. 
 
 Basic Format: 
 
-- [1] J. K. Author, “Title of report,” Abbrev. Name of Co., City of Co., Abbrev. State, Rep. xxx, year
+- [shortname] J. K. Author, “Title of report,” Abbrev. Name of Co., City of Co., Abbrev. State, Rep. xxx, year
 
-- [1] \[Author(s)\], \[Title\] - Link
+- [shortname] \[Author(s)\], \[Title\] - Link
 
 __Books:__
 
-- [1] \[Author(s)\], \[Title\], \[Published\], \[Year\]
+- [shortname] \[Author(s)\], \[Title\], \[Published\], \[Year\]
 
-- [1] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx–xxx. 
+- [examplebook] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx–xxx. 
 
 NOTE: Use et al. when three or more names are given
 
 e.g. 
 
-- [1] B. Klaus and P. Horn, Robot Vision. Cambridge, MA: MIT Press, 1986. 
-- [2] L. Stein, “Random patterns,” in Computers and You, J. S. Brake, Ed. New York: Wiley, 1994, pp. 55-70. 
-- [3] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160. 
-- [4] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33. 
+- [klaus] B. Klaus and P. Horn, Robot Vision. Cambridge, MA: MIT Press, 1986. 
+- [stein] L. Stein, “Random patterns,” in Computers and You, J. S. Brake, Ed. New York: Wiley, 1994, pp. 55-70. 
+- [myer] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160. 
+- [abramowitz] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33. 
 
 ## References Within The Guide
 
-For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenenient to read as a printed book, so use internal references sparingly.
+For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly.
 
 ## Insert pictures
 

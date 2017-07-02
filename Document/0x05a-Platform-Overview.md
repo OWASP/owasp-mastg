@@ -7,12 +7,12 @@ This chapter introduces Android from an architecture point of view. It covers fo
 3. Inter-process Communication (IPC)
 4. Android application publishing
 
-Visit the official Android developer documentation website <sup>[13]</sup> for more details on the Android platform. 
+Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details on the Android platform.
 
 ## Android Security Architecture
 
-Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces. 
- 
+Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+
 The software stack of Android comprises different layers. Each layer defines certain behavior and offers specific services to the layer above.
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
@@ -21,7 +21,7 @@ On the lowest level, Android uses the Linux Kernel upon which the core operating
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-With Android 4.4 (KitKat) the successor of Dalvik VM was introduced, called Android Runtime (ART). The advent of Android 5.0 (Lollipop) in November 2014 truly enabled general use. In KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was taken to modify the normal behaviour of the mobile, Dalvik was used.
+With Android 4.4 (KitKat) the successor of Dalvik VM was introduced, called Android Runtime (ART). The advent of Android 5.0 (Lollipop) in November 2014 truly enabled general use. In KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was taken to modify the normal behavior of the mobile, Dalvik was used.
 
 In Android, apps are executed into their own environment in a Virtual Machine (VM) called Dalvik and located in the runtime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access. Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others. In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode is compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time an app is executed on a given mobile. As a consequence, Dalvik has been improved to compile an app only once, at installation time (the principle is called AOT, a.k.a. Ahead Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an app may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use the mobile device and its battery longer.
 
@@ -47,15 +47,15 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead the Operating System offers libraries to interact with them. For example:
+As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead, apps interact with system services using the Android Framework, an abstraction layer that offers high-level API easily usable from Java. For the most part, these services are used via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples for system services include:
 
-    * connectivity (Wifi, Bluetooth, NFC, ...)
-    * files
-    * cameras
-    * geolocation (GPS)
-    * microphone
-    
-The Android Framework is an abstraction layer, offering high-level API easily usable from Java, without the need of deeper understanding of system libraries. Among the rest, it offers common security functions like secure IPC and cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
+    * Connectivity (Wifi, Bluetooth, NFC, ...)
+    * Giles
+    * Cameras
+    * Geolocation (GPS)
+    * Microphone
+
+The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
 APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
 
@@ -129,6 +129,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 
 An app on Android is a file with the extension .apk. This file is a signed zip-file which contains all the application's resources, byte code, etc. When unzipped the following directory structure can usually be identified:
 
+```
 $ unzip base.apk
 $ ls -lah
 -rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
@@ -138,26 +139,22 @@ drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
 drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
 drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+```
 
-    AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
-    
-    META-INF: This folder contains metadata of the app:
-        MANIFEST.MF: Stores hashes of app resources.
-        CERT.RSA: The certificate(s) of the app.
-        CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
-    
-    assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-    
-    classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-    
-    lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-    
-    res: A directory containing resources not compiled into resources.arsc.
-    
-    resources.arsc: A file containing precompiled resources, such as XML files for the layout.
+- AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- META-INF: This folder contains metadata of the app:
+  - MANIFEST.MF: Stores hashes of app resources.
+  - CERT.RSA: The certificate(s) of the app.
+  - CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
+- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
+- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+- res: A directory containing resources not compiled into resources.arsc.
+- resources.arsc: A file containing precompiled resources, such as XML files for the layout.
 
 Some resources inside the APK are compressed using non-standard algorithms (e.g. the AndroidManifest.xml). This means that simply unzipping the file won't reveal all information. A better way is to use the tool 'apktool' to unpack and uncompress the files. The following is a list of the files contained in the apk:
 
+```bash
 $ apktool d base.apk
 I: Using Apktool 2.1.0 on base.apk
 I: Loading resource table...
@@ -182,14 +179,15 @@ drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
 drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
 drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
 
-    AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
-    apktool.yml : This file contains information about the output of apktool.
-    assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-    lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-    original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
-    res: A directory containing resources not compiled into resources.arsc.
-    smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+- AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
+- apktool.yml : This file contains information about the output of apktool.
+- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
+- original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
+- res: A directory containing resources not compiled into resources.arsc.
+- smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
 #### Linux UID/GID of Normal Applications
 
@@ -218,13 +216,13 @@ An important aspect of Android security is that all apps have the same level of 
 
 ##### Zygote
 
-When booting Android, a process called `Zygote` starts up at init<sup>[10]</sup>. This is a system service used to launch apps. Zygote opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. `Zygote` is an already initialized process and contains all the core libraries that are needed by any app. When the socket receives a request, a new app starts on Android by forking the Zygote process and the app specific code is loaded and executed.
+A process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. The Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
 
 #### The App Sandbox
 
 Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the filesystem in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
+When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path <code>/data/data/<package name></code>. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
 
@@ -254,13 +252,13 @@ Android apps are made of several high-level components that make up their archit
 
 * Activities
 * Fragments
-* Iintents
+* Intents
 * Broadcast receivers
 * Content providers and services 
 
 All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
-##### Application Lifecycle
+##### Application Life Cycle
 
 Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
@@ -270,7 +268,7 @@ Apps implement several event managers to handle events: for example, the onCreat
 
 Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the kind of storage it can be installed in (external or internal)<sup>[14]</sup>.
+A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -308,11 +306,11 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official Android documentation<sup>[12]</sup>.
+A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 ##### Activities
 
-Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with 3 different screens is implementing 3 different activities. This allows the user to interact with the system (get and enter information). Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
+Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with three different screens is implementing three different activities. This allows the user to interact with the system (get and enter information). Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
 
 Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
 
@@ -335,14 +333,14 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by app developers. This is the place where most user interface components are declared and initialised. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
 Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.).  However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own lifecycle, which is tied to the one of the activity that implements them.
-As they have their own lifecycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to Android specification for more details<sup>[15]</sup>.
+User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+As they have their own life cycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
 
@@ -363,32 +361,81 @@ FragmentManager fm = getFragmentManager();
 
 Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
 
-##### Intents
+##### Inter-Process Communication
+
+As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
+
+The term *Binder* stands for a lot of different things, including:
+
+- Binder Driver - The kernel-level driver
+- Binder Protocol - Low-level ioctl-based protocol used to communicate with the binder driver
+- IBinder Interface - well-defined behavior Binder objects implement
+- Binder object - Generic implementation of the IBinder interface
+- Binder service - Implementation of the Binder object. For example, location service, sensor service,...
+- Binder client - An object using the binder service
+
+In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently marshalls the call parameters into a *parcel* and send a transcation to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
+
+![Binder Overview](Images/Chapters/0x05a/binder.jpg)
+*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+
+Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface for use by clients. Developers write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
+
+Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the <code>addService</code> and retrieved by name using the <code>getService</code> static method in <code>android.os.ServiceManager</code>:
+
+```
+  public static IBinder getService(String name)
+```
+
+The list of system services can be queried using the `service list` command.
+
+
+```
+$ adb shell service list
+Found 99 services:
+0 carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]
+1 phone: [com.android.internal.telephony.ITelephony]
+2 isms: [com.android.internal.telephony.ISms]
+3 iphonesubinfo: [com.android.internal.telephony.IPhoneSubInfo]
+```
+
+#### Intents
+
+*Intent messaging* is a framework for asynchronous communication built on top of binder. This framework enables both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate communication between components in several ways, there are three fundamental use cases:
+
+- Starting an activity
+    - An Activity represents a single screen in an app. You can start a new instance of an Activity by passing an Intent to startActivity(). The Intent describes the activity to start and carries any necessary data.
+- Starting a Service
+    - A Service is a component that performs operations in the background without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
+- Delivering a broadcast
+    - A broadcast is a message that any app can receive. The system delivers various broadcasts for system events, such as when the system boots up or the device starts charging. You can deliver a broadcast to other apps by passing an Intent to sendBroadcast() or sendOrderedBroadcast().
 
 Intents are messaging components used between apps and components. They can be used by an app to send information to its own components (for instance, start inside the app a new activity) or to other apps, and may be received from other apps or from the operating system. Intents can be used to start activities or services, run an action on a given set of data, or broadcast a message to the whole system. They are a convenient way to decouple components.
 
-There are two kinds of intents: explicit and implicit.
-* Explicit intents launch a specific app component, like an activity in your app. For instance:
+There are two types of Intents. Explicit intents specify the component to start by name (the fully-qualified class name). For instance:
 
 ```Java
-	Intent intent = new Intent(this, myActivity.myClass);
+    Intent intent = new Intent(this, myActivity.myClass);
 ```
 
-* Implicit intents are sent to the system with a given action to perform on a given set of data ("http://www.example.com" in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
+Implicit intents are sent to the system with a given action to perform on a given set of data ("http://www.example.com" in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
 
 ```Java
-	Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("http://www.example.com"));
+    Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("http://www.example.com"));
 ```
+
+An *intent filter* is an expression in an app's manifest file that specifies the type of intents that the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, if you do not declare any intent filters for an activity, then it can be started only with an explicit intent.
 
 Android uses intents to broadcast messages to apps, like an incoming call or SMS, important information on power supply (low battery for example) or network changes (loss of connection for instance). Extra data may be added to intents (through putExtra / getExtras).
 
 Here is a short list of intents from the operating system. All constants are defined in the Intent class, and the whole list can be found in Android official documentation:
+
 - ACTION_CAMERA_BUTTON
 - ACTION_MEDIA_EJECT
 - ACTION_NEW_OUTGOING_CALL
 - ACTION_TIMEZONE_CHANGED
 
-In order to improve security and privacy, a Local Broadcast Manager exists and is used to send and receive intents inside an app, without having them sent to the outside world (other apps or operating system). This is very useful to guarantee sensitive or private data do not leave the app perimeter (geolocation data for instance).
+In order to improve security and privacy, a Local Broadcast Manager is used to send and receive intents within an app, without having them sent to the rest of the operating system. This is very useful to guarantee sensitive or private data do not leave the app perimeter (geolocation data for instance).
 
 ##### Broadcast Receivers
 
@@ -500,7 +547,7 @@ When an application  is installed onto an Android device, the Package Manager ve
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. Older platforms ignore v2 signatures and only verify v1 signatures <sup>[9]</sup>.
+Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 scheme):
 
@@ -512,7 +559,7 @@ In the APK signature scheme, the complete APK is hashed and signed, and an APK S
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
 
-*APK signature verification process* <sup>[9]</sup>
+*[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")*
 
 ##### Creating Your Certificate
 
@@ -525,7 +572,7 @@ Key pairs can be generated by the user with the keytool command (example for a k
 keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
 ```
 
-Safely storing a secret key and making sure it remains secret during its entire lifecycle is of paramount importance, as any other person who would get access to it would be able to publish updates to your apps with content that you would not control (therefore being able to create updates to you apps and add insecure features, access content that is shared using signature-based permissions, e.g. only with apps under your control originally). The trust a user places in an app and its developers is totally based on such certificates, hence its protection and secure management are vital for reputation and Customer retention. This is the reason why secret keys must never be shared with other individuals, and keys are stored in a binary file that can be protected using a password: such files are refered to as 'keystores'; passwords used to protect keystores should be strong and known only by the key creator (-storepass option in the command above, where a strong password shall be provided as an argument).
+Safely storing a secret key and making sure it remains secret during its entire lifecycle is of paramount importance, as any other person who would get access to it would be able to publish updates to your apps with content that you would not control (therefore being able to create updates to you apps and add insecure features, access content that is shared using signature-based permissions, e.g. only with apps under your control originally). The trust a user places in an app and its developers is totally based on such certificates, hence its protection and secure management are vital for reputation and Customer retention. This is the reason why secret keys must never be shared with other individuals, and keys are stored in a binary file that can be protected using a password: such files are referred to as 'keystores'; passwords used to protect keystores should be strong and known only by the key creator (-storepass option in the command above, where a strong password shall be provided as an argument).
 
 Android certificates must have a validity period longer than the one of the associated app (including its updates). For example, Google Play will require that the certificate remains valid till at least Oct 22nd, 2033.
 
@@ -552,64 +599,3 @@ The Android ecosystem is open, and, as such, it is possible to distribute apps f
 Whereas other vendors may review and approve apps before they are actually published, such things do not happen on Google Play; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 
 Publishing an app is quite straightforward, as the main operation is to make the signed .apk file itself downloadable. On Google Play, it starts with creating an account, and then delivering the app through a dedicated interface. Details are available on Android official documentation at https://developer.android.com/distribute/googleplay/start.html.
-
-
-### How Apps Communicate - Android IPC
-
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. A lot of Android system services, as well as all high-level IPC services, depend on Binder.
-
-In the Binder framework, a client-server communication model is used. IPC clients communicate through a client-side proxy. This proxy connects to the Binder server, which is implemented as a character driver (/dev/binder).The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. Developers  write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
-
-![Binder Overview](Images/Chapters/0x05a/binder.jpg)
-*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
-
-#### High-Level Abstractions
-
-*Intent messaging* is a framework for asynchronous communication built on top of binder. This framework enables both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate communication between components in several ways, there are three fundamental use cases:
-
-- Starting an activity
-	- An Activity represents a single screen in an app. You can start a new instance of an Activity by passing an Intent to startActivity(). The Intent describes the activity to start and carries any necessary data.
-- Starting a Service
-	- A Service is a component that performs operations in the background without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
-- Delivering a broadcast
-	- A broadcast is a message that any app can receive. The system delivers various broadcasts for system events, such as when the system boots up or the device starts charging. You can deliver a broadcast to other apps by passing an Intent to sendBroadcast() or sendOrderedBroadcast().
-
-There are two types of Intents:
-
-- Explicit intents specify the component to start by name (the fully-qualified class name).
-
-- Implicit intents do not name a specific component, but instead declare a general action to perform, which allows a component from another app to handle it. When you create an implicit intent, the Android system finds the appropriate component to start by comparing the contents of the intent to the intent filters declared in the manifest file of other apps on the device.
-
-An *intent filter* is an expression in an app's manifest file that specifies the type of intents that the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, if you do not declare any intent filters for an activity, then it can be started only with an explicit intent.
-
-For activities and broadcast receivers, intents are the preferred mechanism for asynchronous IPC in Android. Depending on your app requirements, you might use sendBroadcast(), sendOrderedBroadcast(), or an explicit intent to a specific app component.
-
-A BroadcastReceiver handles asynchronous requests initiated by an Intent.
-
-Using Binder or Messenger is the preferred mechanism for RPC-style IPC in Android. They provide a well-defined interface that enables mutual authentication of the endpoints, if required.
-
--- TODO [Explain what vulnerabilities can be created while using IPC mechanisms. Give short examples in the form of code snippets] --
-
-Android’s Messenger represents a reference to a Handler that can be sent to a remote process via an Intent
-
-A reference to the Messenger can be sent via an Intent using the previously mentioned IPC mechanism
-
-Messages sent by the remote process via the messenger are delivered to the local handler. Great for efficient call-backs from the service to the client
-
-### References
-
-* [1] Android Security - https://source.android.com/security/
-* [2] Android Developer: App Components - https://developer.android.com/guide/components/index.html
-* [3] HAL - https://source.android.com/devices/
-* [4] "Android Security: Attacks and Defenses" By Anmol Misra, Abhishek Dubey
-* [5] A Programmer Blog - https://pierrchen.blogspot.com.br
-* [6] keesj Android internals - https://github.com/keesj/gomo
-* [7] Android Versions - https://en.wikipedia.org/wiki/Android_version_history
-* [8] "Professional Android 4 Application Development" by Reto Meier
-* [9] APK Signing - https://source.android.com/security/apksigning/
-* [10] How Android Apps are run - https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run
-* [11] Zygote - https://serializethoughts.com/2016/04/15/android-zygote/
-* [12] Android Developer Guide for Manifest -  https://developer.android.com/guide/topics/manifest/manifest-intro.html
-* [13] Android Developer Guide - https://developer.android.com/index.html
-* [14] Define app install location - https://developer.android.com/guide/topics/data/install-location.html
-* [15] Fragment Class - https://developer.android.com/reference/android/app/Fragment.html
