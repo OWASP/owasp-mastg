@@ -170,6 +170,29 @@ In line with the "crystal prison" theme, sandboxing has been is a core security 
 - Isolation from other running processes, even if they are owned by the same UID;
 - Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
 
+#### App Permissions
+
+In contrast to Android, iOS apps do not have preassigned permissions. Instead, the user is asked to grant permission during runtime when an app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+
+Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription). 
+
+The following APIs [require permission from the user](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
+
+- Contacts
+- Microphone
+- Calendars
+- Camera
+- Reminders
+- HomeKit
+- Photos
+- Health
+- Motion activity and fitness
+- Speech recognition
+- Location Services
+- Bluetooth sharing
+- Media Library
+- Social media accounts
+
 ### References
 
 - [#levin] - Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
