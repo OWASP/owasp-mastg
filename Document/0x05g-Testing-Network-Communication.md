@@ -95,15 +95,15 @@ Ensure that the host name and certificate are verified correctly. Examples and c
 #### References
 
 #### OWASP Mobile Top 10 2016
-* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-* V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
 
 ##### CWE
-* CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-* CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-* CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 ### Testing Custom Certificate Stores and SSL Pinning
 
@@ -140,9 +140,9 @@ Create an SSLContext that uses the TrustManager
 sslContext.init(null, tmf.getTrustManagers(), null);
 ```
 
-The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain. 
+The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain.
 
-Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, okhttp<sup>[3]</sup> can be set up with the `CertificatePinner` as follows:
+Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, [okhttp](https://github.com/square/okhttp/wiki/HTTPS "okhttp library") can be set up with the `CertificatePinner` as follows:
 
 ```java
 OkHttpClient client = new OkHttpClient.Builder()
@@ -154,64 +154,61 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 #### Dynamic Analysis
 
-Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy<sup>[1]</sup>. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
+Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
 
 #### Remediation
 
-The SSL pinning process should be implemented as described on the static analysis section. For further information please check the OWASP certificate pinning guide [2].
+The SSL pinning process should be implemented as described on the static analysis section. For further information please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-* V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+- V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
 ##### CWE
-* CWE-295 - Improper Certificate Validation
+- CWE-295 - Improper Certificate Validation
 
-##### Info
-
-* [1] Setting Burp Suite as a proxy for Android Devices -  https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp)
-* [2] OWASP Certificate Pinning for Android - https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
-* [3] okhttp library - https://github.com/square/okhttp/wiki/HTTPS
 
 
 ### Testing the Security Provider
 
-#### Overview 
-Android relies on a security provider to provide SSL/TLS based connections. The problem with this security provider (for instance OpenSSL) which is packed with the device, is that it often has bugs and/or vulnerabilities<sup>[1]</sup>.
-Developers need to make sure that the application will install a proper security provider to make sure that there will be lesser bugs and vulnerabilities.
-Since July 11, 2016, Google rejects Play Store application submissions (both new applications and updates) if they are using vulnerable versions of OpenSSL<sup>[3]</sup>.
+#### Overview
+Android relies on a security provider to provide SSL/TLS based connections. The problem with this security provider (for instance [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")) which is packed with the device, is that it often has bugs and/or vulnerabilities.
+Developers need to make sure that the application will install a proper security provider to make sure that there will be no known vulnerabilities.
+Since July 11 2016, Google [rejects Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) if they are using vulnerable versions of OpenSSL.
 
 #### Static Analysis
-In case of an Android SDK based application. The application should have a dependency on the GooglePlayServices. (e.g. in a. gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block). Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()` is called as soon as possible. Exceptions that are thrown by these methods should be caught and handled correctly.
-If the application cannot patch its securityprovider then it can either inform the API on his lesser secure state or it can restrict the user in its possible actions as all https-traffic should now be deemed more risky. 
-See remediation for possible examples.
+
+In case of an Android SDK based application. The application should have a dependency on the GooglePlayServices. (e.g. in a. gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block). Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()`. Exceptions that are thrown by these methods should be caught and handled correctly.
+If the application cannot patch its security provider then it can either inform the API on his lesser secure state or it can restrict the user in its possible actions as all https-traffic should now be deemed more risky.
+See the remediation section for possible examples.
 
 In case of an NDK based application: make sure that the application does only bind to a recent and properly patched library that provides SSL/TLS functionality.
 
 
 #### Dynamic Analysis
-When you have the source-code: 
 
-- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the backend (e.g. do a call to the backend-services/server).
+When you have the source-code:
+- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the endpoint(s).
 - Right click at the code that is highlighted and select `Evaluate Expression`
 - Type `Security.getProviders()` and press enter
 - Check the providers and see if you can find `GmsCore_OpenSSL` which should be the new toplisted provider.
 
 When you do not have the source-code:
-- Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`. 
+- Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`.
 - Check if the first provider is `GmsCore_OpenSSL`.
 
 
 #### Remediation
+
 To make sure that the application is using a patched security provider, the application needs to use the `ProviderInstaller` class which comes with the Google Play services. The Google Play Services can be installed as a dependency in the build.gradle file by adding `compile 'com.google.android.gms:play-services-gcm:x.y.z'` (where x.y.z is a version number) in the dependencies block.
 Next, the `ProviderInstaller` needs to be called as early as possible by a component of the application. Here are two adjusted examples from Google on how this could work. In both cases, the developer needs to handle the exceptions properly and it might be wise to report to the backend when the application is working with an unpatched security provider. The first example shows how to do the installation synchronously, the second example shows how to do it asynchronously.
 
 ```java
-//this is a syncadapter that runs in the background, so you can run the synchronous patching.
+//this is a sync adapter that runs in the background, so you can run the synchronous patching.
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
   ...
@@ -341,20 +338,18 @@ public class MainActivity extends Activity
 
 ```
 
+The Android developer documentation also describes [how to update your security provider to protect against SSL exploits](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits").
+
+
 <!-- TODO: {What to do in case of the NDK?} -->
 
 #### References
+
 ##### OWASP Mobile Top 10 2016
+
 ##### OWASP MASVS
 
-* V5.6 "The app only depends on up-to-date connectivity and security libraries."
+- V5.6 "The app only depends on up-to-date connectivity and security libraries."
 
 ##### CWE
-
 <!-- {TODO: add CWE references } -->
-
-##### Info
-
-- [1] OpenSSL Vulnerabilities - https://www.openssl.org/news/vulnerabilities.html
-- [2] Updating Your Security Provider to Protect Against SSL Exploits - https://developer.android.com/training/articles/security-gms-provider.html
-- [3] How to address OpenSSL vulnerabilities in your apps - https://support.google.com/faqs/answer/6376725?hl=en
