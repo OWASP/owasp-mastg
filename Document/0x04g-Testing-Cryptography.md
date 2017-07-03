@@ -313,54 +313,6 @@ Pass the user-supplied password into a salted hash function or KDF; use its resu
 - hashID - https://pypi.python.org/pypi/hashID
 
 
-### Testing Sensitive Data Protection
-
-#### Overview
-
-The attack surface of an application is defined as the sum of all potential input paths. An often forgotten attack vector are files stored on insecure locations, e.g., cloud storage or local file storage.
-
-All data that is stored on potential insecure locations should be integrity protected, i.e., an attacker should not be able to change their content without the application detecting the change prior to the data being used.
-
-Most countermeasures work by calculating a checksum for the stored data, and then by comparing the checksum with the retrieved data prior to the data's import. If the checksum/hash is stored with the data on the insecure location, typical hash algorithms will not be sufficient. As they do not possess a secret key, an attacker that is able to change the stored data, can easily recalculate the hash and store the newly calculated hash.
-
-#### Static Analysis
-
--- TODO --
-
-check source code for used algorithm
-
-#### Remediation
-
-Two typical cryptographic counter-measures for integrity protection are:
-
-* MACs (Message Authentication Codes, also known as keyed hashes) combine hashes with a secret key. The MAC can only be calculated or verified if the secret key is known. In contrast to hashes this means, that an attacker cannot easily calculate a MAC after the original data was modified. This is well suited, if the application can store the secret key within its own storage and no other party needs to verify the authenticity of the data.
-* Digital Signatures are a public key-based scheme where, instead of a single secret key, a combination of a secret private key and a public key is used. The signature is created utilizing the secret key and can be verified utilizing the public key. Similar to MACs, an attacker cannot easily create a new signature. In contrast to MACs, signatures allow verification without needed to disclose the secret key. Why is not everyone using Signatures instead of MACs? Mostly for performance reasons.
-
-Another possibility is the usage of encryption using AEAD schemes (see "Test if encryption provides data integrity protection")
-
-#### References
-
-##### OWASP Mobile Top 10
-
-- M6 - Broken Cryptography
-
-##### OWASP MASVS
-
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-
-##### CWE
-
--- TODO --
-
-##### Info
-
--- TODO --
-
-##### Tools
-
--- TODO --
-
-
 ### Testing for Stored Passwords
 
 #### Overview

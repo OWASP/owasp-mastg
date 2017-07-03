@@ -1,3 +1,4 @@
+
 ## Remote Authentication and Authorization
 
 The following chapter outlines authentication and session management requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
@@ -14,10 +15,10 @@ OAuth2 is an authorization framework used to authorize an application to use a u
 
 OAuth2 defines four roles:
 
-* Resource Owner: the user owning the account.
-* Client: the application that wants to access the user's account using the access tokens.
-* Resource Server: hosts the user accounts.
-* Authorization Server: verifies the identity of the user and issues access tokens to the application.
+- Resource Owner: the user owning the account.
+- Client: the application that wants to access the user's account using the access tokens.
+- Resource Server: hosts the user accounts.
+- Authorization Server: verifies the identity of the user and issues access tokens to the application.
 
 Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
 
@@ -35,22 +36,27 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 These are some of the common best practices for OAuth2 on native apps:
 
 User-agent:
+
 - Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing (e.g. you do not want an app offering you a "Login with Facebook" to get your Facebook password). However, by using the browser, the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
 - The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, web site mechanisms).
 - The client should validate the fully qualified domain name of the server to the public key presented by the server during connection establishment to prevent man-in-the-middle attacks.
 
 Type of grant:
+
 - Use code grant instead of implicit grant on native apps.
 - When using code grant, implement PKCE (Proof Key for Code Exchange) to protect the code grant. Make sure that the server also implements it.
 - The auth "code" should be short-lived and only used immediately after receiving it. Make sure that they only reside on transient memory and are not stored or logged.
 
 Client secrets:
+
 - No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in secure local storage.
 
 End-User credentials:
+
 - The transmission of end-user credentials must be protected using transport-layer mechanisms such as TLS.
 
 Tokens:
+
 - Keep access tokens in transient memory.
 - Access tokens must be securely transmitted via TLS.
 - The scope and expiry time of access tokens should be reduced when end-to-end confidentiality cannot be guaranteed or when the token provides access to sensitive information or allows the execution of high risk actions.
@@ -58,6 +64,7 @@ Tokens:
 - Store refresh tokens in secure local storage as they are long-term credentials.
 
 For additional best practices and detailed information please refer to the source documents:
+
 - [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
@@ -117,9 +124,14 @@ In case Token-Based authentication with JWT is used, please also look at the tes
 
 #### Static Analysis
 
-When server-side source code is available, first identify which authentication mechanism (Token or Cookie based) is used and enforced on server side. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user is really who he pretends to and that he is allowed to access the endpoint. Look for keywords in the server source code that are used to authenticate a user or to retrieve and check an existing session.
+To review the authentication architecture you need access to source code of the remote service. Identify which authentication mechanism (token or cookie based) is used and make sure that an appropriate form of authentication is performed. What's appropriate depends on the type and sensitivity level of the app. You may use the OWASP Mobile AppSec Verification Standard as a guideline:
 
-Authentication mechanisms shouldn't be implemented from scratch, instead they should be build on top of frameworks that offer this functionality. The framework used on the server side should be identified and the usage of the available authentication APIs/functions should be verified if they are used accordingly to best practices. Widely used frameworks on server side are for example:
+- Username/password authentication is recommended for level 1 (non-critical) apps.
+- 2-factor authentication is recommended for level 2 (sensitive) apps.
+
+Afterwards locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
+
+Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Examples for widely used frameworks on server side are:
 
 - Spring (Java) - https://projects.spring.io/spring-security/
 - Struts (Java) - https://struts.apache.org/docs/security.html
@@ -178,6 +190,7 @@ When server source code is available, the tester should look for the place where
 A best practice is to crawl the application first, either manually or with an automated tool. The goal is to check if all parts of the application leading to privileged information or actions are protected and a valid session ID is required or not.
 
 Then, you can use the crawled requests within any intercepting proxy to try to manipulate session IDs:
+
 - by modifying them into illegitimate ones (for instance, add one to the valid session ID or delete parts of it).
 - by deleting a valid one in the request to test if the information and/or function of the application can still be accessed.
 - by trying to log out and re-log in again to check if the session ID has changed or not.
@@ -189,6 +202,7 @@ Also the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Sessi
 #### Remediation
 
 In order to offer proper protection against the attacks mentioned earlier, session IDs must:
+
 - always be created on the server side,
 - not be predictable (use proper length and entropy),
 - always be exchanged over secure connections (e.g. HTTPS),
