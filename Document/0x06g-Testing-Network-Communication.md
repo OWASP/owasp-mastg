@@ -172,15 +172,6 @@ Once the file is converted to a human readable format, the exceptions can analyz
 
 — TODO —
 
-##### Info
-
-* [1] Information Property List Key Reference: Cocoa Keys - https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html
-* [2] API Reference NSURLConnection - https://developer.apple.com/reference/foundation/nsurlconnection
-* [3] API Reference NSURLSession - https://developer.apple.com/reference/foundation/urlsession
-* [4] API Reference CFURL - https://developer.apple.com/reference/corefoundation/cfurl-rd7
-* [5] Apple Developer Portal Announcement - Supporting App Transport Security - https://developer.apple.com/news/?id=12212016b
-* [6] OS X Man Pages - Plutil - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html
-
 ##### Tools
 
 — TODO —
@@ -220,11 +211,6 @@ Once the file is converted to a human readable format, the exceptions can analyz
 * CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
 * CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 * CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
-
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
 
 ##### Tools
 
@@ -311,7 +297,3 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 * CWE-295 - Improper Certificate Validation
 
-##### Info
-
-* [1] Setting Burp Suite as a proxy for iOS Devices : https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-* [2] OWASP - Certificate Pinning for iOS : https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS
