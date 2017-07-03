@@ -367,8 +367,6 @@ To determine whether a particular obfuscation scheme is depends on the exact def
 
 ### Academic Research on Obfuscation Metrics
 
--- TODO [Insert and link references] --
-
 [Collberg et al.](https://researchspace.auckland.ac.nz/bitstream/handle/2292/3491/TR148.pdf "A taxonomy of obfuscating transformations") introduce potency as an estimate of the degree of reverse engineering difficulty. A potent obfuscating transformation is any transformation that increases program complexity. Additionally, they propose the concept of resilience which measures how well a transformation holds up under attack from an automatic de-obfuscator. The same paper also contains a useful taxonomy of obfuscating transformations.
 
 Potency can be estimated using a number of methods. [Anaeckart et al.](https://biblio.ugent.be/publication/416824/file/448118.pdf "Program Obfuscation: A Quantitative Approach") apply traditional software complexity metrics to a control flow graphs generated from executed code. The metrics applied are instruction count, cyclomatic number (i.e. number of decision points in the graph) and knot count (number of crossing in a function’s control flow graph). Simply put, the more instructions there are, and the more alternate paths and less expected structure the code has, the more complex it is.
