@@ -90,8 +90,6 @@ N/A
 ##### Tools
 - jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
 
-
-
 ### Testing If the App is Debuggable
 
 #### Overview
@@ -182,7 +180,6 @@ In the `AndroidManifest.xml` file, set the `android:debuggable` flag to false, a
 - Drozer - https://github.com/mwrlabs/drozer
 
 
-
 ### Testing for Debugging Symbols
 
 #### Overview
@@ -251,7 +248,6 @@ Add the following to build.gradle:
 ##### Tools
 
 - GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
-
 
 
 ### Testing for Debugging Code and Verbose Error Logging
@@ -335,6 +331,125 @@ Also have a look at the different [best practices](https://code.tutsplus.com/tut
 - CWE-215 - Information Exposure Through Debug Information
 - CWE-489 - Leftover Debug Code
 
+
+### Testing for Injection Flaws
+
+#### Overview
+
+Android apps can expose functionality to:
+
+- other apps via IPC mechanisms like Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers,
+- through custom URL schemes (which are part of Intents) and
+- the user via the user interface.
+
+All input that is coming from these different sources cannot be trusted and need to be validated and/or sanitized. Validation ensures that only data is processed that the app is expecting. If validation is not enforced any input can be sent to the app, which might allow an attacker or malicious app to exploit vulnerable functionalities within the app.
+
+
+The source code should be checked if any functionality of the app is exposed, through:
+
+- Custom URL schemes: check also the test case "Testing Custom URL Schemes"
+- IPC Mechanisms (Intents, Binders, Android Shared Memory (ASHMEM) or BroadcastReceivers): check also the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"
+- User interface
+
+An example for a vulnerable IPC mechanisms is listed below.
+
+*ContentProviders* can be used to access database information, while services can be probed to see if they return data. If data is not validated properly the content provider might be prone to SQL injection when others apps are interacting with it. See the following vulnerable implementation of a *ContentProvider*.
+
+```xml
+<provider
+    android:name=".OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation"
+    android:authorities="sg.vp.owasp_mobile.provider.College">
+</provider>
+```
+
+The `AndroidManifest.xml` above defines a content provider that is exported and therefore available for all other apps. In the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class the `query` function should be inspected.
+
+```java
+@Override
+public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
+    SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+    qb.setTables(STUDENTS_TABLE_NAME);
+
+    switch (uriMatcher.match(uri)) {
+        case STUDENTS:
+            qb.setProjectionMap(STUDENTS_PROJECTION_MAP);
+            break;
+
+        case STUDENT_ID:
+            // SQL Injection when providing an ID
+            qb.appendWhere( _ID + "=" + uri.getPathSegments().get(1));
+            Log.e("appendWhere",uri.getPathSegments().get(1).toString());
+            break;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+    }
+
+    if (sortOrder == null || sortOrder == ""){
+        /**
+         * By default sort on student names
+         */
+        sortOrder = NAME;
+    }
+    Cursor c = qb.query(db, projection, selection, selectionArgs,null, null, sortOrder);
+
+    /**
+     * register to watch a content URI for changes
+     */
+    c.setNotificationUri(getContext().getContentResolver(), uri);
+    return c;
+}
+```
+
+The query statement when providing a STUDENT_ID is prone to SQL injection, when accessing `content://sg.vp.owasp_mobile.provider.College/students`. Obviously [prepared statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet "OWASP SQL Injection Cheat Sheet") need to be used to avoid the SQL injection, but ideally also [input validation](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") should be applied to only process input that the app is expecting.
+
+#### Dynamic Analysis
+
+The tester should test manually the input fields with strings like "' OR 1=1--'" if for example a local SQL injection vulnerability can be identified.
+
+When being on a rooted device the command content can be used to query the data from a Content Provider. The following command is querying the vulnerable function described above.
+
+```
+content query --uri content://sg.vp.owasp_mobile.provider.College/students
+```
+
+The SQL injection can be exploited by using the following command. Instead of getting the record for Bob all data can be retrieved.
+
+```
+content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
+```
+
+For dynamic testing Drozer can also be used.
+
+#### Remediation
+
+All functions in the app that process data that is coming from external and through the UI should be validated.
+
+- For input coming from the user interface [Android Saripaar v2](https://github.com/ragunathjawahar/android-saripaar "Android Saripaar v2") can be used.
+- For input coming from IPC or URL schemes a validation function should be created. For example like the following that is checking if the [value is alphanumeric](https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric "Input Validation").
+
+```java
+public boolean isAlphaNumeric(String s){
+    String pattern= "^[a-zA-Z0-9]*$";
+    return s.matches(pattern);
+}
+```
+
+An alternative to validation functions are type conversion, like using `Integer.parseInt()` if only integer numbers are expected. The [OWASP Input Validation Cheat Sheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") contains more information about this topic.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+
+##### CWE
+- CWE-20 - Improper Input Validation
+
+##### Tools
+- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
 
 
 ### Testing Exception Handling
@@ -446,8 +561,7 @@ Now you need to call the initializer for the handler at your custom `Application
 - Xposed - http://repo.xposed.info/
 
 
-
-### Testing for Memory Bugs in Unmanaged Code
+### Testing for Memory Corruption Bugs
 
 #### Overview
 
