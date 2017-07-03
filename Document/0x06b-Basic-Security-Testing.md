@@ -46,7 +46,8 @@ Developing a jailbreak for any given version of iOS is not an easy endeavor. As 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
 #### Benefits of Jailbreaking
-While a standard user will want to jailbreak in order to tweak the iOS system appearance, add new features or install _free_ third party apps. The benefits of jailbreaking an iOS Device for a security tester include but are not limited to the following:
+
+A standard user will want to jailbreak in order to tweak the iOS system appearance, add new features or install _free_ third party apps. However, for a security tester the benefits of jailbreaking an iOS Device go far beyond simply tweaking the system. They include but are not limited to the following:
 
 - Removing the part of the security (and other) limitations on the OS imposed by Apple
 - Providing root access to the operating system
@@ -54,15 +55,13 @@ While a standard user will want to jailbreak in order to tweak the iOS system ap
 - Debugging and performing dynamic analysis
 - Providing access to the Objective-C Runtime
 
-iOS applications store data in the application sandbox which is not accessible to the public (but is available to root and the application itself). Without root access, it is not possible to access the application sandbox and analyze the data that was stored in it.
-
 #### Caveats and Considerations about Jailbreaking
 
-Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system, patching the corresponding vulnerabilities that jailbreaks are based on and not signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities), meaning that, contrary to Android, you can't downgrade iOS version with one exception explained below. Therefore, jailbreaking has become a very time sensitive procedure. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS.
+Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system and patching the corresponding vulnerabilities that jailbreaks are based on. Additionally, it has become a very time sensitive procedure as they stop signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that, contrary to Android, you can't downgrade iOS version with one exception explained below, which naturally creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS.
 
 A recommendation here is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it. Additionally you can think of having a second one, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
 
-The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me).
+The iOS upgrade process is performed online and is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me).
 
 
 #### How to Jailbreak iOS?
