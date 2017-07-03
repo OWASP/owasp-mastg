@@ -1283,6 +1283,8 @@ Different checks on the Android device can be implemented by querying different 
 ##### OWASP MASVS
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
+##### CWE
+- N/A
 
 
 ### Verifying User Education Controls
@@ -1316,3 +1318,6 @@ Warnings should be implemented that address the key points listed in the overvie
 
 ##### OWASP MASVS
 - V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
+
+##### CWE
+- N/A
