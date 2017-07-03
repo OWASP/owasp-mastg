@@ -8,11 +8,11 @@ Most modern mobile apps use variants of http-based (web-)services, as these prot
 
 #### Overview
 
-App Transport Security (ATS)<sup>[1]</sup> is a set of security checks that the operating system enforces when making connections with NSURLConnection <sup>[2]</sup>, NSURLSession and CFURL<sup>[3]</sup> to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
+[App Transport Security](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "Apple Documentation - NSAppTransportSecurity") (ATS) is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection "API Reference NSURLConnection") , [NSURLSession](https://developer.apple.com/reference/foundation/urlsession "API Reference NSURLSession") and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7 "API Reference CFURL") to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
 
 ATS is enforced only when making connections to public hostnames. Therefore any connection made to an IP address, unqualified domain names or TLD of .local is  not protected with ATS.
 
-The following is a summarized list of App Transport Security Requirements<sup>[1]</sup>:
+The following is a summarized list of [App Transport Security Requirements](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys"):
 
 - No HTTP connections are allowed
 - The X.509 Certificate has a SHA256 fingerprint and must be signed with at least 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key.
@@ -40,7 +40,7 @@ ATS restrictions can be disabled by configuring exceptions in the Info.plist fil
 * disable PFS or
 * allow connections to local domains
 
-ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `NSAppTransportSecurity` dictionary<sup>[1]</sup>.
+ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity")` dictionary.
 
 ```
 NSAppTransportSecurity : Dictionary {
@@ -59,7 +59,7 @@ NSAppTransportSecurity : Dictionary {
     }
 }
 ```
-Source: Apple Developer Documentation<sup>[1]</sup>.
+Source: [Apple Developer Documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys").
 
 The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to Table 2 in reference [1].
 
@@ -81,7 +81,7 @@ The following table summarizes the per-domain ATS exceptions. For more informati
 | `NSExceptionRequiresForwardSecrecy` | Disable perfect forward secrecy (PFS) |
 
 
-Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. However this decline is extended later by Apple stating “To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”<sup>[5]</sup>
+Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. However this decline is extended later by [Apple stating](https://developer.apple.com/news/?id=12212016b "Apple Developer Portal Announcement - Supporting App Transport Security") “To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”
 
 * `NSAllowsArbitraryLoads`
 * `NSAllowsArbitraryLoadsForMedia`
@@ -113,7 +113,7 @@ $ unzip app-name.ipa
 
 `Info.plist` file can be found in the `Payload/BundleName.app/` directory of the extract. It’s a binary encoded file and has to be converted to a human readable format for the analysis. 
 
-`plutil`<sup>[6]</sup> is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
+`[plutil](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html "OS X Man Pages - Plutil")` is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
 
 The following command shows how to convert the Info.plist file into XML format.
 ```
