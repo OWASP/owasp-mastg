@@ -19,6 +19,10 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
 - [Security Testing in the Software Development Lifecycle](Document/0x04d-Security-Testing-SDLC.md)
+- [Testing Authentication and Authorization](Document/0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](Document/0x04f-Testing-Network-Communication.md)
+- [Cryptography for Mobile Apps](Document/0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
 
@@ -48,9 +52,6 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 ### Appendix
 
-- [Remote Authentication and Authorization](Document/0x07a-Testing-Authentication-and-Session-Management.md)
-- [Testing Network Communication](Document/0x07b-Testing-Network-Communication.md)
-- [Cryptography for Mobile Apps](Document/0x07c-Testing-Cryptography.md)
 - [Assessing Software Protection Schemes](Document/0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 - [Testing Tools](Document/0x08-Testing-Tools.md)
 - [Suggested Reading](Document/0x09-Suggested-Reading.md)

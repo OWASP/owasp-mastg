@@ -42,7 +42,7 @@ In this guide, we'll give an introduction on static and dynamic analysis and ins
 
 ###### From Jailbroken Devices
 
-You can use Saurik's IPA Installer <sup>[7]</sup> to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
+You can use [Saurik's IPA Installer](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
 
 ~~~
 iPhone:~ root# ipainstaller -l
