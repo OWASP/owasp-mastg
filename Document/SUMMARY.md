@@ -11,7 +11,7 @@
 - [Remote Authentication and Authorization](0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](0x04f-Testing-Network-Communication.md)
 - [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
-- [Testing Code Quality](0x04h-Testing-Code_Quality.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
 
