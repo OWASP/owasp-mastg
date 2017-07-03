@@ -12,7 +12,7 @@ Most modern mobile apps use variants of HTTP based web-services, as these protoc
 
 ATS is enforced only when making connections to public hostnames. Therefore any connection made to an IP address, unqualified domain names or TLD of .local is not protected with ATS.
 
-The following is a summarized list of App Transport Security Requirements:
+The following is a summarized list of [App Transport Security Requirements](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys"):
 
 - No HTTP connections are allowed
 - The X.509 Certificate has a SHA256 fingerprint and must be signed with at least a 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key.
@@ -40,7 +40,7 @@ ATS restrictions can be disabled by configuring exceptions in the Info.plist fil
 - disable PFS or
 - allow connections to local domains.
 
-ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `NSAppTransportSecurity` dictionary.
+ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity")` dictionary.
 
 ```
 NSAppTransportSecurity : Dictionary {
@@ -59,6 +59,8 @@ NSAppTransportSecurity : Dictionary {
     }
 }
 ```
+
+Source: [Apple Developer Documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys").
 
 The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to [table 2 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW34 "App Transport Security dictionary primary keys").
 
@@ -80,6 +82,8 @@ The following table summarizes the per-domain ATS exceptions. For more informati
 | `NSExceptionRequiresForwardSecrecy` | Disable perfect forward secrecy (PFS) |
 
 Starting from January 1 2017, Apple App Store review requires justification if one of the following ATS exceptions are defined.
+
+Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. 
 
 - `NSAllowsArbitraryLoads`
 - `NSAllowsArbitraryLoadsForMedia`
@@ -173,8 +177,6 @@ ATS settings should be verified via static analysis in the iOS source code.
 - CWE-319 - Cleartext Transmission of Sensitive Information
 - CWE-326 - Inadequate Encryption Strength
 
-
-
 ### Testing Endpoint Identity Verification
 
 #### Overview
@@ -207,11 +209,9 @@ ATS settings should be verified via static analysis in the iOS source code.
 
 ##### CWE
 
-- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
-
-
+* CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+* CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+* CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 ### Testing Custom Certificate Stores and SSL Pinning
 
@@ -272,4 +272,4 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 ##### CWE
 
-- CWE-295 - Improper Certificate Validation
+* CWE-295 - Improper Certificate Validation
