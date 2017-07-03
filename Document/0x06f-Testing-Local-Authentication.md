@@ -9,19 +9,18 @@ As a result only requirement "4.6	Biometric authentication, if any, is not event
 
 #### Overview
 
-Biometric authentication on iOS is represented by Touch ID fingerprint sensing system. Touch ID sensor is operated by SecureEnclave<sup>[1]</sup> security coprocessor and do not expose fingerprint data to any other systems. With Touch ID set up, password is required only in certain cases (after 5 unsuccessful attempts, if device has been rebooted or was not unlocked in last 48 hours, etc), which encourages user to use longer and more complex passwords<sup>[2]</sup>.
+Biometric authentication on iOS is represented by the Touch ID fingerprint sensing system. Touch ID sensor is operated by the SecureEnclave<sup>[1]</sup> security coprocessor and do not expose fingerprint data to any other parts of the system. With Touch ID set up, password is required only in certain cases (after 5 unsuccessful attempts, if device has been rebooted or was not unlocked in last 48 hours, etc), which encourages the user to set longer and more complex passwords<sup>[2]</sup>.
 
 Third-party apps have two ways to incorporate system-provided Touch ID authentication:
-* `LocalAuthentication.framework`<sup>[3]</sup> can be used to ask user to authenticate via Touch ID. The app can’t access the any data associated with the enrolled fingerprint and is notified only whether authentication was successful or not.
-* `Security.framwork`<sup>[4]</sup> gives access to Keychain Services, whose Access Control mechanism allows to protect Keychain items with Touch ID. This framework has C API, but there are dozens of 3rd party wrappers who makes work with Keychain as simple as with NSUserDefaults<sup>[5]</sup>. `Security.framework` is lower level API than  `LocalAuthentication.framework`, and is not always the most convenient option to use.
+- `LocalAuthentication.framework`<sup>[3]</sup> is a higher level API that can be used to authenticate user via Touch ID. The app can’t access any data associated with the enrolled fingerprint and is notified only whether authentication passed successfully or not. Altho authentication is managed by system, make that your code is written in a hard-to-bypass way.
+- `Security.framework`<sup>[4]</sup> is a lower level API to access Keychain Services. When saving the item to Keychain, `SecAccessControlCreateFlags` can be included into request to define when the item can be retrieved back: after `.devicePasscode` (`kSecAccessControlDevicePasscode`) will be entered, authentication via `.touchIDAny` (`kSecAccessControlTouchIDAny`) passed, `.userPresence` (`kSecAccessControlUserPresence`) verified via TouchID with possible fallback to device passcode, etc. This is a perfect option if your app needs to associate some secret data with biometric authentication, since access control is managed on a system-level and can not be bypassed to get stored data. `Security.framework` has C API, but there are dozens of open source wrappers making access to Keychain as simple as to NSUserDefaults<sup>[5]</sup>. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
 
 #### Static Analysis
-#### With Source Code
 ##### LocalAuthentication.framework
 From developer's point of view, work with `LocalAuthentication.framework` is pretty straightforward: create instance of `LAContext`, ensure that OS and device support biometric authentication policy, evaluate policy with completion handler and title string explaining to user why she is requested to pass authentication right now.
 `LAPolicy` has two options:
-	* `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C) - using Touch ID or the device password
-	* `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C) - use Touch ID only
+	- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C) - using Touch ID or the device password
+	- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C) - use Touch ID only
 
 Appropriate error will be returned to completion handler in following cases: authentication failed, user cancelled authentication, user have chosen fallback, system cancelled authentication, passcode is not set on device, TouchID is not available, TouchID is not enrolled.
 
@@ -34,7 +33,7 @@ guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else 
 	// Could not evaluate policy; look at error and present an appropriate message to user
 }
 
-context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pass authorisation to enter this area") { success, evaluationError in
+context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pass authorization to enter this area") { success, evaluationError in
 	guard success else {
 		// User did not authenticate successfully, look at evaluationError and take appropriate action
 	}
@@ -173,8 +172,9 @@ if (status == noErr){
     NSLog(@"Something went wrong");
 }
 ```
-#### Without Source Code
-Usage of frameworks in app can be detected by analyzing app binary's list of shared dynamic libraries by running:
+
+
+Usage of frameworks in app can also be detected by analyzing app binary's list of shared dynamic libraries by running:
  `$ otool -L <AppName>.app/<AppName>`
 
 If `LocalAuhentication.framework` was used in app, output will contain both of following lines (remember that `LocalAuhentication.framework` uses `Security.framework` under the hood), if `Security.framework` - only second one:
@@ -193,11 +193,11 @@ On a jailbroken device contents of Keychain can be dumped and items' parameters 
 -- TODO [Will items saved via `Security.framework` Access Control API have any specific parameter in Keychain db?]
 
 #### References
-* [1] Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang - http://mista.nu/research/sep-paper.pdf
-* [2] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
-* [3] Local Authentication API Reference - https://developer.apple.com/reference/localauthentication
-* [4] Security API Reference - https://developer.apple.com/documentation/security
-* [5] How To Secure iOS User Data: The Keychain and Touch ID Tutorial - https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id
+- [1] Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang - http://mista.nu/research/sep-paper.pdf
+- [2] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+- [3] Local Authentication API Reference - https://developer.apple.com/reference/localauthentication
+- [4] Security API Reference - https://developer.apple.com/documentation/security
+- [5] How To Secure iOS User Data: The Keychain and Touch ID Tutorial - https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id
 
 
 ##### OWASP Mobile Top 10 2016
