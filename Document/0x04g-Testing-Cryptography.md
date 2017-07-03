@@ -20,10 +20,6 @@ Two uses of cryptography are covered in other chapters:
 * Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
 * Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
 
-#### References
-- [1] Password Hashing Competition - https://password-hashing.net/
--- TODO - list references to sources of algorithm definitions (RFCs, NIST SP, etc)
-
 
 ### Testing for Custom Implementations of Cryptography
 
@@ -50,10 +46,6 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 ##### CWE
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
-##### Info
-- [1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
-
-
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
@@ -66,10 +58,10 @@ The source code should be checked that cryptographic algorithms are up to date a
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
 
-* DES, 3DES<sup>[6]</sup>
+* [DES, 3DES](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
 * RC2
 * RC4
-* BLOWFISH<sup>[6]</sup>
+* [BLOWFISH](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
 * MD4
 * MD5
 * SHA1 and others.
@@ -89,7 +81,7 @@ Other uses of cryptography require careful adherence to best practices:
 
 #### Remediation
 
-Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms<sup>[1], [2]</sup>:
+Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms ([NSA](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ"), [NIST](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf "NIST Special Publication 800-57")), :
 
 * Confidentiality: AES-GCM-256 or ChaCha20-Poly1305
 * Integrity: SHA-256, SHA-384, SHA-512, Blake2
@@ -108,13 +100,6 @@ Periodically ensure that the cryptography has not become obsolete. Some older al
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-- [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
-- [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
-- [6] Sweet32 attack -- https://sweet32.info/
 
 ##### Tools
 - QARK - https://github.com/linkedin/qark
@@ -139,7 +124,7 @@ Through source code analysis the following non-exhausting configuration options 
 
 #### Remediation
 
-Periodically ensure that used key length fulfill accepted industry standards<sup>[6]</sup>.
+Periodically ensure that used key length fulfill [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014").
 
 #### References
 
@@ -153,14 +138,6 @@ Periodically ensure that used key length fulfill accepted industry standards<sup
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-- [1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-- [2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-- [3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
-- [4] NIST recommendations (2016) - https://www.keylength.com/en/4/
-- [5] BSI recommendations (2017) - https://www.keylength.com/en/8/
-- [6] ENISA Algorithms, key size and parameters report 2014 - https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014
 
 ##### Tools
 - QARK - https://github.com/linkedin/qark
@@ -256,12 +233,6 @@ Mobile operating systems provide a specially protected storage area for secret k
 
 - CWE-321 - Use of Hard-coded Cryptographic Key
 
-##### Info
-
-- [1] iOS: Managing Keys, Certificates, and Passwords - https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html
-- [2] Android: The Android Keystore System - https://developer.android.com/training/articles/keystore.html
-- [3] Android: Hardware-backed Keystore - https://source.android.com/security/keystore/
-
 ##### Tools
 
 -- TODO --
@@ -317,7 +288,7 @@ Pass the user-supplied password into a salted hash function or KDF; use its resu
 
 #### Overview
 
-Normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. For example, when the insecure MD5 hash has been used, an attacker with access to eight high-level graphics cards can test 200.3 Giga-Hashes per Second<sup>[1]</sup>.
+Normal hashes are optimized for speed, e.g., optimized to verify large media in short time. For password storage this property is not desirable as it implies that an attacker can crack retrieved password hashes (using rainbow tables or through brute-force attacks) in a short time. For example, when the insecure MD5 hash has been used, an attacker with access to eight high-level graphics cards can test [200.3 Giga-Hashes per Second](https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40 "8x Nvidia GTX 1080 Hashcat Benchmarks").
 A solution to this are Key-Derivation Functions (KDFs) that have a configurable calculation time. While this imposes a larger performance overhead this is negligible during normal operation but prevents brute-force attacks. Recently developed key derivation functions such as Argon2 or scrypt have been hardened against GPU-based password cracking.
 
 #### Static Analysis
@@ -326,7 +297,7 @@ Use the source code to determine how the hash is calculated.
 
 #### Remediation
 
-Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup>), Argon2<sup>[4]</sup>, bcrypt<sup>[3]</sup> or scrypt (RFC 7914<sup>[2]</sup>).
+Use an established key derivation function such as PBKDF2 ([RFC 2898](https://www.ietf.org/rfc/rfc2898.txt "RFC 2898")), [Argon2](https://github.com/p-h-c/phc-winner-argon2 "PHC Winner Argon2"), [bcrypt](https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html "A Future-adaptable password scheme") or scrypt ([RFC 7914](https://tools.ietf.org/html/rfc7914 "The scrypt Password-Based Key Derivation Function")).
 
 #### References
 
@@ -342,14 +313,6 @@ Use an established key derivation function such as PBKDF2 (RFC 2898<sup>[5]</sup
 ##### CWE
 
 -- TODO --
-
-##### Info
-
-- [1] 8x Nvidia GTX 1080 Hashcat Benchmarks -- https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
-- [2] The scrypt Password-Based Key Derivation Function -- https://tools.ietf.org/html/rfc7914
-- [3] A Future-Adaptable Password Scheme -- https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html
-- [4] https://github.com/p-h-c/phc-winner-argon2
-- [5] PKCS #5: Password-Based Cryptographic Specification Version 2.0 -- https://tools.ietf.org/html/rfc2898
 
 ##### Tools
 
