@@ -272,9 +272,7 @@ Unfortunately, researchers don't agree on whether obfuscation effectiveness can 
 
 The [MASVS](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x15-V8-Resiliency_Against_Reverse_Engineering_Requirements.md "V8: Resilience Requirements") lists only two requirements that deal with obfuscation. The first requirement is V8.12:
 
-```
-"8.12 All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-```
+> 8.12 All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data.
 
 This requirement simply says that the code should be made to look fairly incomprehensible to someone inspecting it in a common disassembler or decompiler. This can be achieved by doing a combination of the following.
 
