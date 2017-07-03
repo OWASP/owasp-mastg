@@ -8,10 +8,10 @@
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Remote Authentication and Authorization](0x04d-Testing-Authentication-and-Session-Management.md)
-- [Testing Network Communication](0x04e-Testing-Network-Communication.md)
-- [Cryptography for Mobile Apps](0x04f-Testing-Cryptography.md)
-- [Testing Code Quality](0x04g-Testing-Cryptography.md)
+- [Remote Authentication and Authorization](0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
+- [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](0x04h-Testing-Cryptography.md)
 
 ### Android Testing Guide
 
