@@ -287,7 +287,7 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 * Run the application and make it sure the app is in foreground (should not be in paused state).
 * Find the PID of the app using the command: `ps ax | grep App`.
 * Hook into the running process by using the command: `cycript -p PID`.
-* Cycript interpreter will be provided, on successful hooking. You can get the instance of the application by using the Objective-C syntax `[UIApplictaion shared Application]`.
+* Cycript interpreter will be provided, on successful hooking. You can get the instance of the application by using the Objective-C syntax `[UIApplictaion sharedApplication]`.
 
 ```
 cy# [UIApplication sharedApplication]
