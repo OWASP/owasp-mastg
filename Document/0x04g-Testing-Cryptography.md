@@ -17,8 +17,8 @@ The primary goal of cryptography is to provide confidentiality, data integrity, 
 
 Two uses of cryptography are covered in other chapters:
 
-- Secure communication: TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
-- Secure storage: Тhe "Testing Data Storage" chapters for iOS and Android include high-level considerations for using cryptography for secure data storage and OS-specific content for secure data storage capabilities.
+* Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
+* Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
 
 
 ### Testing for Custom Implementations of Cryptography
@@ -50,7 +50,6 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 
-
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
 #### Overview
@@ -63,13 +62,13 @@ The source code should be checked that cryptographic algorithms are up to date a
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
 
-- [DES, 3DES](https://sweet32.info/ "Sweet32 attack")
-- RC2
-- RC4
-- [BLOWFISH](https://sweet32.info/ "Sweet32 attack")
-- MD4
-- MD5
-- SHA1 and others.
+* [DES, 3DES](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
+* RC2
+* RC4
+* [BLOWFISH](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
+* MD4
+* MD5
+* SHA1 and others.
 
 On Android (via Java Cryptography APIs), selecting an algorithm is done by requesting an instance of the `Cipher` (or other primitive) by passing a string containing the algorithm name. For example, `Cipher cipher = Cipher.getInstance("DES");`. On iOS, algorithms are typically selected using predefined constants defined in CommonCryptor.h, e.g., `kCCAlgorithmDES`. Thus, searching the source code for the presence of these algorithm names would indicate that they are used. Note that since the constants on iOS are numeric, an additional check needs to be performed to check whether the algorithm values sent to CCCrypt function map to one of the deprecated/insecure algorithms.
 
@@ -115,7 +114,6 @@ See also the following best practice documents for recommendations:
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
 
-
 ### Testing for Insecure Cryptographic Algorithm Configuration and Misuse
 
 #### Overview
@@ -148,7 +146,6 @@ Periodically ensure that used key length fulfill [accepted industry standards](h
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
 
 
 ### Testing for Usage of ECB Mode
@@ -234,7 +231,6 @@ The secure and protected storage mechanisms provided by the OS should be used to
 - CWE-321 - Use of Hard-coded Cryptographic Key
 
 
-
 ### Testing Key Generation Techniques
 
 #### Overview
@@ -282,7 +278,7 @@ Use the source code to determine how the hash is calculated.
 
 #### Remediation
 
-Use an established key derivation function such as PBKDF2 ([RFC 2898](https://tools.ietf.org/html/rfc2898 "PKCS #5: Password-Based Cryptographic Specification Version 2.0")), [Argon2](https://github.com/p-h-c/phc-winner-argon2 "Argon2"), [bcrypt](https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html "A Future-Adaptable Password Scheme") or scrypt ([RFC 7914](https://tools.ietf.org/html/rfc7914 "The scrypt Password-Based Key Derivation Function")).
+Use an established key derivation function such as PBKDF2 ([RFC 2898](https://www.ietf.org/rfc/rfc2898.txt "RFC 2898")), [Argon2](https://github.com/p-h-c/phc-winner-argon2 "PHC Winner Argon2"), [bcrypt](https://www.usenix.org/legacy/events/usenix99/provos/provos_html/node1.html "A Future-adaptable password scheme") or scrypt ([RFC 7914](https://tools.ietf.org/html/rfc7914 "The scrypt Password-Based Key Derivation Function")).
 
 #### References
 
