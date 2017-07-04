@@ -1,28 +1,32 @@
 ## iOS Platform Overview
 
-iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. Apple also keeps tight control over which apps are allowed to run on iOS devices.
+iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. 
 
-In many ways, iOS is more "closed" than Android. Sideloading is only possible with jailbreak or complicated workarounds. There is hardly any IPC functionality to speak of.
+iOS is more "closed" than Android: Apple also keeps tight control over which apps are allowed to run on iOS devices, and side-loading of apps is only possible with jailbreak or complicated workarounds. 
+
+Apps are sandboxed just like in Android, but in contrast to Android's Binder IPC, iOS offers very little IPC functionality. This means more limited options for developers, but also less potential attack surface.
+
+The uniform hardware and tight integration between hardware and software creates another security advantage: For example, developers can rely on a hardware-backed keychain and file system encryption being available. Also, iOS updates are rolled out to a large percentage of users quickly, meaning less need to support older, less secure versions of iOS.
+
+All of this doesn't mean however that iOS app developers need not worry about security. Topics like Data protection and Keychain, TouchID authentication, and network security still leave plenty of margin for errors. In the following chapters, we document the iOS security architecture, followed by security testing and reverse engineering howtos. We'll then map the seven categories of the MASVS to iOS and outline test cases for each requirement.
 
 ### The iOS Security Architecture
 
-The core features of the iOS security architecture:
+The iOS security architecture consists of five core features.
 
 - Secure Boot
 - Sandbox
 - Code Signing
 - Encryption and Data Protection
 - General Exploit Mitigations
-
-A very good and detailed analysis of iOS security architecture has been done by Johnatan Levin in MacOS and iOS Internals Vol. 3 - http://www.newosxbook.com/2ndUpdate.html <sup>[4]</sup>
  
 #### Hardware Security
 
 The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys. 
 
-The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encrytion. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
+The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encryption. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
-To enable secure deletion of sensitive data on flash memory, iOS devices include a feature called Effaceable Storage. This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks <sup>[6]</sup>.
+To enable secure deletion of sensitive data on flash memory, iOS devices include a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
 
 #### Secure Boot
 
@@ -77,6 +81,11 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 ![iOS Security Architecture (iOS Security Guide)](http://bb-conservation.de/sven/iOS_Security_Architecture.png)
 *iOS Security Architecture (iOS Security Guide)*
 
+#### Further Reading
+
+- [Apple iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
+- Jonathan Levin, Mac OS X and iOS Internals [#levin]
+
 ### Software Development on iOS 
 
 As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
@@ -115,7 +124,7 @@ A language.lproj folder is defined for each language that the application suppor
 
 ![iOS App Folder Structure](http://bb-conservation.de/sven/iOS_project_folder.png)
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using IPA Installer (see also [Testing Processes and Techniques](Document/0x05b-Testing-Process-and-Techniques-iOS.md)). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. HockeyApp<sup>[12]</sup> or Testflight<sup>[13]</sup>.
+On a jailbroken device, you can recover the IPA for an installed iOS app using IPA Installer (see also [Testing Processes and Techniques](Document/0x05b-Testing-Process-and-Techniques-iOS.md)). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/) or [Testflight](https://developer.apple.com/testflight/).
 
 #### App Structure on the iOS File System
 
@@ -132,13 +141,13 @@ The following figure represents the application’s folder structure:
 
 #### The Installation Process
 
-Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. ITunes Packages exist for OS X as well as for Windows. iTunes allows you to download applications through the App Store, after which you can synchronise them to an iOS device. The App store is the official application distribution platform from Apple. You can also use iTunes to load an ipa to a device. This can be done by adding “dragging” it into the Apps section, after which we can then add it to a device.
+Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. ITunes Packages exist for OS X as well as for Windows. iTunes allows you to download applications through the App Store, after which you can synchronize them to an iOS device. The App store is the official application distribution platform from Apple. You can also use iTunes to load an ipa to a device. This can be done by adding “dragging” it into the Apps section, after which we can then add it to a device.
 
-On Linux we can make use of libimobiledevice, a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Through ideviceinstaller we can install packages over an USB connection. The connection is implemented using USB multiplexing daemon usbmuxd<sup>[8]</sup> which provides a TCP tunnel over USB. During normal operations, iTunes communicates with the iPhone using this usbmux, multiplexing several “connections” over the one USB pipe. Processes on the host machine open up connections to specific, numbered ports on the mobile device<sup>[9]</sup>.
+On Linux we can make use of [libimobiledevice](http://www.libimobiledevice.org/), a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Through ideviceinstaller we can install packages over an USB connection. The connection is implemented using USB multiplexing daemon usbmuxd which provides a TCP tunnel over USB. During normal operations, iTunes communicates with the iPhone using this usbmux, multiplexing several “connections” over the one USB pipe. Processes on the host machine open up connections to specific, numbered ports on the mobile device.
 
-On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install it. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. This means that we can only install it after the code signature is valid. On a jailbroken phone this can however be circumvented using AppSync <sup>[10]</sup>, a package made available on the Cydia store. This is an alternate app store containing a lot of useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow for the installation of fake-signed IPA packages.
+On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install it. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. This means that we can only install it after the code signature is valid. On a jailbroken phone this can however be circumvented using [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified), a package made available on the Cydia store. This is an alternate app store containing a lot of useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow for the installation of fake-signed IPA packages.
 
-The IPA can also be installed directly from command line by using ipainstaller <sup>[11]</sup>. After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
+The IPA can also be installed directly from command line by using [ipainstaller](https://github.com/autopear/ipainstaller). After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
 
 ```bash
 $ ipainstaller App_in_scope.ipa
@@ -146,7 +155,7 @@ $ ipainstaller App_in_scope.ipa
 
 #### Code Signing and Encryption
 
-Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been compared to a crystal prison <sup>[1]</sup>.
+Apple has implemented an intricate DRM system to make sure that only valid & approved code runs on Apple devices. In other words, on a non-jailbroken device, you won't be able to run any code unless Apple explicitly allows you to. You can't even opt to run code on your own device unless you enroll with the Apple developer program and obtain a provisioning profile and signing certificate. For this and other reasons, iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms")
 
 <!-- TODO [Develop section on iOS Code Signing and Encryption] -->
 
@@ -154,25 +163,37 @@ In addition to code signing, *FairPlay Code Encryption* is applied to apps downl
 
 #### The App Sandbox
 
-In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releases of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include <sup>[3]</sup>:
+In line with the "crystal prison" theme, sandboxing has been is a core security feature since the first releases of iOS. Regular apps on iOS are confined to a "container" that restrict access to the app's own files and a very limited amount of system APIs. Restrictions include [#levin]:
 
 - The app process is restricted to it's own directory(below /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism.
 - The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable, preventing processes  from executing dynamically generated code. In combination with code signing and FairPlay, this places strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
 - Isolation from other running processes, even if they are owned by the same UID;
 - Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
 
+#### App Permissions
+
+In contrast to Android, iOS apps do not have preassigned permissions. Instead, the user is asked to grant permission during runtime when an app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+
+Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription). 
+
+The following APIs [require permission from the user](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
+
+- Contacts
+- Microphone
+- Calendars
+- Camera
+- Reminders
+- HomeKit
+- Photos
+- Health
+- Motion activity and fitness
+- Speech recognition
+- Location Services
+- Bluetooth sharing
+- Media Library
+- Social media accounts
+
 ### References
 
-- [1] Apple's Crystal Prison and the Future of Open Platforms - https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms
-- [2] Decrypting iOS binaries - https://mandalorian.com/2013/05/03/decrypting-ios-binaries/
-- [3] Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
-- [4] Johnatan Levin, MacOS and iOS Internals, Volume III: Security & Insecurity
-- [5] iOS Technology Overview - https://developer.apple.com/library/content/documentation/Miscellaneous/Conceptual/iPhoneOSTechOverview/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007898-CH1-SW1
-- [6] iOS Security Guide - https://www.apple.com/business/docs/iOS_Security_Guide.pdf
-- [7] How iOS Security Really Works - https://developer.apple.com/videos/play/wwdc2016/705/
-- [8] libimobiledevice - http://www.libimobiledevice.org/
-- [9] USB Layered Communications - http://wikee.iphwn.org/usb:usbmux
-- [10] AppSync - https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified
-- [11] ipainstaller - https://github.com/autopear/ipainstaller
-- [12] Hockey Flight - https://hockeyapp.net/
-- [13] Testflight - https://developer.apple.com/testflight/
+- [#levin] - Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
+

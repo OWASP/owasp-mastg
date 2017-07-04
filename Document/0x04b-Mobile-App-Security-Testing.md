@@ -1,12 +1,12 @@
 ## Mobile App Security Testing
 
-Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app.
 
 In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
 
 ### Security Testing the Old-School Way
 
-The classical approach is to perform all-around security testing of the mobile app and its environment on the final or near-final build of the app. In that case, we recommend using the Mobile App Security Verification Standard (MASVS) and checklist as a reference. A typical security test is structured as follows.
+The classical approach is to perform all-around security testing of the mobile app and its environment on the final or near-final build of the app. In that case, we recommend using the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "OWASP MASVS") and checklist as a reference. A typical security test is structured as follows.
 
 * **Preparation** - defining the scope of security testing, such as which security controls are applicable, what goals the development team/organization have for the testing, and what counts as sensitive data in the context of the test.
 * **Intelligence Gathering** - involves analyzing the **environmental** and **architectural** context of the app, to gain a general contextual understanding of the app.
@@ -15,7 +15,7 @@ The classical approach is to perform all-around security testing of the mobile a
 
 ### Preparation
 
-Before conducting a test, an agreement must be reached as to what security level of the MASVS<sup>[1]</sup> to test against. The security requirements should ideally have been decided at the beginning of the SDLC, but this may not always be the case. In addition, different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
+Before conducting a test, an agreement must be reached as to what security level of the to test against. The security requirements should ideally have been decided at the beginning of the SDLC, but this may not always be the case. In addition, different organizations have different security needs, and different amounts of resources to invest in test activity. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree an appropriate level of test coverage.
 
 Organizations/applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor-authentication (2FA) may be obligatory for a financial app, as enforced by the respective country's central bank and/or financial regulatory authority.
 
@@ -58,14 +58,14 @@ Environmental information concerns understanding:
 - The goals the organization has for the app. What the app is supposed to do shapes the ways users are likely to interact with it, and may make some surfaces more likely to be targeted than others by attackers.   
 - The industry in which they operates. Specific industries may have differing risk profiles, and may be more or less exposed to particular attack vectors.
 - Stakeholders and investors. Understanding who is interested in and responsible for the app.
-- Internal processes, workflows and organizational structures. Organization-specific internal processes and workflows may create opportunities for business logic exploits<sup>[2]</sup>.
+- Internal processes, workflows and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic exploits](https://www.owasp.org/index.php/Testing_for_business_logic "Testing business logic").
 
 #### Architectural Information
 
 Architectural information concerns understanding:
 
 - The mobile app: How the app accesses data and manages it in-process, how it communicates with other resources, manages user sessions, and whether it detects and reacts to running on jailbroken or rooted phones.
-- The Operating System: What operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with Mobile Device Management (MDM<sup>[3]</sup>) controls, and what OS vulnerabilities might be relevant to the app.
+- The Operating System: What operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with Mobile Device Management (MDM) controls, and what OS vulnerabilities might be relevant to the app.
 - Network: Are secure transport protocols used (e.g. TLS), is network traffic encryption secured with strong keys and cryptographic algorithms (e.g. SHA-2), is certificate pinning used to verify the endpoint, etc.
 - Remote Services: What remote services does the app consume? If they were compromised, could the client by compromised?
 
@@ -73,7 +73,7 @@ Architectural information concerns understanding:
 
 Threat Modeling involves using the results of the information gathering phase to determine what threats are likely or severe, producing test cases that may be executed at later stages. Threat modeling should be a key part of the software development life cycle, and ideally be performed at an earlier stage.
 
-The threat modeling guidelines defined by OWASP<sup>[3]</sup> are generally applicable to mobile apps.
+The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
 
 ### Vulnerability Analysis
 
@@ -87,7 +87,7 @@ When executing static analysis, the source code of the mobile app is analyzed to
 
 #### Automatic Code Analysis
 
-Automated analysis tools check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE)<sup>[4]</sup>.
+Automated analysis tools check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
 
 While some static code analysis tools do encapsulate a deep knowledge of the underlying rules and semantics required to perform analysis of mobile apps, they can produce a high number of false positives, particularly if the tool is not configured properly for the target environment. The results must therefore always be reviewed by a security professional.
 
@@ -131,8 +131,27 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 * Configuring an iOS Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
 
 In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
-* Mallory - https://github.com/intrepidusgroup/mallory
-* Wireshark - https://www.wireshark.org/
+* [Mallory](https://github.com/intrepidusgroup/mallory)
+* [Wireshark](https://www.wireshark.org/)
+
+#### Reporting
+
+<!--TODO -->
+
+##### Avoiding False Positives
+
+A common pitfall for security testers is reporting issues that would be exploitable in a web browser, but aren't relevant in the context of the mobile app. The reason for this is that automated tools used to scan the backend service assume a regular, browser based web application. Issues such as CSRF, missing security headers and others are reported accordingly.
+
+For example, a successful CSRF attack requires the following:
+
+1. It must be possible to entice the logged-in user to open a malicious link in the same web browser used to access the vulnerable site;
+2. The client (browser) must automatically add the session cookie or other authentication token to the request.
+
+Mobile apps don't fulfill these requirements: Even if Webviews and cookie-based session management were used, any malicious link clicked by the user would open in the default browser which has its own, separate cookie store.
+
+Stored cross-site Scripting can be an issue when the app uses Webviews, and potentially even lead to command execution if the app exports JavaScript interfaces. However, reflected cross-site scripting is rarely an issue for the same reasons stated above (even though one could argue that they shouldn't exist either way - escaping output is simply a best practice that should always be followed).
+
+In any case, think about the actual exploit scenarios and impacts of the vulnerability when performing the risk assessment - don't blindly trust the output of your scanning tool.
 
 #### Input Fuzzing
 
@@ -145,19 +164,10 @@ Fuzzing, is a method for testing software input validation by feeding it intenti
 * Test case delivery
 * Crash monitoring
 
-Also refer to the OWASP Fuzzing guide<sup>[5]</sup>
+Input fuzzing will not be discussed in great detail in this guide. Refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing) for more information.
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
 
 * **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
 
-* **Fuzz Vectors**<sup>[6]</sup> - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
-
-#### References
-
-* [1] MASVS - https://github.com/OWASP/owasp-masvs
-* [2] Testing for Business Logic - https://www.owasp.org/index.php/Testing_for_business_logic
-* [3] OWASP Application Threat Modeling - https://www.owasp.org/index.php/Application_Threat_Modeling
-* [4] SecureAssist - https://www.synopsys.com/software-integrity/resources/datasheets/secureassist.html
-* [5] OWASP Fuzzing Guide - https://www.owasp.org/index.php/Fuzzing
-* [6] OWASP Testing Guide Fuzzing - https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors
+* [**Fuzz Vectors**](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors "OWASP Testing Guide: Fuzzing") - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.

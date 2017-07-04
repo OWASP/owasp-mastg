@@ -5,13 +5,13 @@
 ### Overview
 
 - [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
-
-### General Testing Guide
-
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Security Testing in the SDLC](0x04d-Security-Testing-SDLC.md)
+- [Remote Authentication and Authorization](0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
+- [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
 
@@ -41,8 +41,5 @@
 
 ### Appendix
 
-* [Remote Authentication and Authorization](0x07a-Testing-Authentication-and-Session-Management.md)
-* [Testing Network Communication](0x07b-Testing-Network-Communication.md)
-* [Cryptography for Mobile Apps](0x07c-Testing-Cryptography.md)
 * [Assessing Software Protection Schemes](0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 * [Testing Tools](0x08-Testing-Tools.md)

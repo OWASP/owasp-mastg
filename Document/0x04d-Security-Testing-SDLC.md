@@ -20,7 +20,7 @@ DevOps refers to practices that focus on a close collaboration between all stake
 
 The term DevOps might be mistaken for only expressing collaboration between development and operations teams, however, as Gene Kim, a DevOps thought leader, puts it: “At first blush, it seems as though the problems are just between dev and ops," he says, "but test is in there, and you have information security objectives, and the need to protect systems and data. These are top-level concerns of management, and they have become part of the DevOps picture."
 
-In other words, when you hear "DevOps" today, you should probably be thinking DevOpsQATestInfoSec.”<sup>[16]</sup>
+In other words, when you hear "DevOps" today, you should probably be thinking [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery").”
 
 Security is just as important for the business success as the overall quality, performance and usability of an application. As development cycles are shortened and deployment frequencies increased it is elementary to ensure that quality and security is built in from the very beginning.
 
@@ -131,26 +131,11 @@ As the frequency of deployments to production increases, and DevOps high-perform
 
 Depending on the maturity of the organisation, or development team, the deployment pipeline can be very sophisticated. In it's simplest form, the deployment pipeline consists of a commit phase. The commit phase commonly runs simple compiler checks, the unit tests suite, as well as creates a deployable artefact of the application which is called release candidate. A release candidate is the latest version of changes that has been checked into the trunk of the versioning control system and will be evaluated by the deployment pipeline to verify if it is in-line with the established standards to be potentially deployed to production.
 
-The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exists. Typically, the commit phase should run within 5 minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time<sup>[14][15]</sup>.
+The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exists. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#manoranjan, #mcgraw).
 
 Todo: Automating security tools in Jenkins,...
 
 ### References
 
-* [1] OWASP Mobile Application Security Verification Standard - https://www.owasp.org/images/f/f2/OWASP_Mobile_AppSec_Verification_Standard_v0.9.2.pdf
-* [2] The Importance of Manual Secure Code Review - https://www.mitre.org/capabilities/cybersecurity/overview/cybersecurity-blog/the-importance-of-manual-secure-code-review
-* [3] OWASP Code Review Introduction - https://www.owasp.org/index.php/Code_Review_Introduction
-* [4] Radare2 - https://github.com/radare/radare2
-* [5] Angr - http://angr.io
-* [6] https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf
-* [7] HP DevInspect - https://saas.hpe.com/en-us/software/agile-secure-code-development
-* [8] Codiscope SecureAssist - https://codiscope.com/products/secureassist/
-* [9] Crawling Code - https://www.owasp.org/index.php/Crawling_Code
-* [10] Mobile internet usage surpasses desktop usage for the first time in history - http://bgr.com/2016/11/02/internet-usage-desktop-vs-mobile
-* [12] Worldwide Smartphone OS Market Share - http://www.idc.com/promo/smartphone-market-share/os
-* [13] Android Design Principles - https://developer.android.com/design/get-started/principles.html
-* [14] Official (ISC)2 Guide to the CSSLP (ISC2 Press), Mano Paul - https://www.amazon.com/Official-Guide-CSSLP-Second-Press/dp/1466571276/
-* [15] Software Security: Building Security In (Addison-Wesley Professional), Gary McGraw - https://www.amazon.com/Software-Security-Building-Gary-McGraw/dp/0321356705/
-* [16] The evolution of DevOps: Gene Kim on getting to continuous delivery - https://techbeacon.com/evolution-devops-new-thinking-gene-kim
-* [17] Cycript fork powered by Frida - https://github.com/nowsecure/frida-cycript
-* [18] Cycript on steroids: Pumping up portability and performance with Frida - https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/
+* [manoranjan] - P. Manoranjan. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press) 2nd Edition, 2013
+* [mcgraw] - G McGraw. Software Security: Building Security In, 2006

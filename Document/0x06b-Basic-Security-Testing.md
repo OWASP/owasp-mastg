@@ -2,7 +2,7 @@
 
 ### Foreword on Swift and Objective-C
 
-Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods. 
+Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods.
 
 ### Setting Up Your Testing Environment
 
@@ -27,36 +27,61 @@ If you want to get serious with iOS security testing, you need a Mac, for the si
 
 #### Jailbreaking the iOS Device
 
-In the iOS world, jailbreaking means among others disabling Apple's code signing mechanisms so that apps not signed by Apple can be run. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the app store.
+iOS jailbreaking is often compared to Android rooting. Actually, we have three different things here and it is important to clearly distinguish them.
 
-Some of the benefits of jailbreaking an iOS Device includes the following:
+On the Android side we have:
 
-* Removing the security (and other) limitations on the OS imposed by Apple
-* Providing root access to the operating system
-* Allowing important testing software tools to be installed
-* Providing access to the Objective-C Runtime
+- Rooting: this typically consists of installing the `su` binary within the existing system or replacing the whole system with an already rooted custom ROM. Normally, exploits are not required in order to obtain root access.
+- Flashing custom ROMs (that might be already rooted): allows to completely replace the OS running on the device after unlocking the bootloader (which might require an exploit). There is no such thing on iOS as it is closed-source and _thanks_ to the bootloader that only allows Apple-signed images to be booted and flashed (which is also the reason why downgrades/upgrades to not-signed-by-Apple iOS images are not possible).
 
-Colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disabling system protections and installing the Cydia app store. 
+On iOS side we have:
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x exploited at least five vulnerabilities, including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037) <sup>[1]</sup>.
+- Jailbreaking: colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disable system protections (such as Apple's code signing mechanisms) and install the Cydia app store. If you're planning to do any form of dynamic security testing on an iOS device, you'll have a much easier time on a jailbroken device, as most useful testing tools are only available outside the App Store.
+
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
+
+#### Types of Jailbreaking Methods
 
 In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. In the "tethered" scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. "Untethered" jailbreaks need only be applied once, making them the most popular choice for end users.
 
-Jailbreaking methods vary across iOS versions. Best choice is to check if a public jailbreak is available for your iOS version<sup>[2]</sup>. Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+#### Benefits of Jailbreaking
 
-An important caveat regarding jailbreaking iOS is that you can't downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
+A standard user will want to jailbreak in order to tweak the iOS system appearance, add new features or install _free_ third party apps. However, for a security tester the benefits of jailbreaking an iOS Device go far beyond simply tweaking the system. They include but are not limited to the following:
 
-The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from this site<sup>[3]</sup>. More information on jailbreaking is available on The iPhone Wiki<sup>[4]</sup>.
+- Removing the part of the security (and other) limitations on the OS imposed by Apple
+- Providing root access to the operating system
+- Allowing applications and tools not signed by Apple to be installed and run without any restrictions
+- Debugging and performing dynamic analysis
+- Providing access to the Objective-C Runtime
 
-#### What's the Latest Jailbreak?
+#### Caveats and Considerations about Jailbreaking
 
-The iOS jailbreak scene is evolving so rapidly that it is difficult to provide-up-to-date instructions. Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
+Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system and patching the corresponding vulnerabilities that jailbreaks are based on. Additionally, it has become a very time sensitive procedure as they stop signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that, contrary to Android, you can't downgrade iOS version with one exception explained below, which naturally creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS.
 
-Some reliable resources to read about content regarding jailbreak iOS:
+A recommendation here is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it. Additionally you can think of having a second one, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
 
-* The iPhone Wiki - https://www.theiphonewiki.com/wiki/Jailbreak
-* Redmond Pie - http://www.redmondpie.com/
-* Reddit Jailbreak - https://www.reddit.com/r/jailbreak/
+The iOS upgrade process is performed online and is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me).
+
+
+#### How to Jailbreak iOS?
+
+Jailbreaking methods vary across iOS versions. Best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+
+Let's say you have a device running iOS 9.0, for this version you'll find a jailbreak (Pangu 1.3.0), at least for 64 bit devices. In the case that you have another version for which there's not a jailbreak available, you could still jailbreak it if you downgrade/upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this might not be possible if the required iOS version is not signed anymore by Apple.
+
+The iOS jailbreak scene evolves so rapidly that it is difficult to provide up-to-date instructions. However, we can point you to some, at the time of this writing, reliable sources:
+
+- [The iPhone Wiki](https://www.theiphonewiki.com/)
+- [Redmond Pie](http://www.redmondpie.com/)
+- [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/)
+
+Note that obviously OWASP and the MSTG will not be responsible if you end up bricking your iOS device!
+
+#### Dealing with Jailbreak Detection
+
+Some apps attempt to detect whether the iOS device they're installed on is jailbroken. The reason for this jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment.
+
+The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. We'll revisit this topic in the next chapter.
 
 ### Preparing the Test Environment
 
@@ -69,20 +94,20 @@ Once you have your iOS device jailbroken and Cydia is installed (as per screensh
   * Two users are `root` and `mobile`
   * Default password is `alpine`
 3. Add the following repository to Cydia: `https://build.frida.re`
-4. Install Frida from Cydia 
+4. Install Frida from Cydia
 5. Install following packages with aptitude
 
 ```
-inetutils 
-syslogd 
-less 
-com.autopear.installipa 
-class-dump 
-com.ericasadun.utilities 
+inetutils
+syslogd
+less
+com.autopear.installipa
+class-dump
+com.ericasadun.utilities
 odcctools
-cycript 
-sqlite3 
-adv-cmds 
+cycript
+sqlite3
+adv-cmds
 bigbosshackertools
 ```
 
@@ -94,9 +119,9 @@ $ sudo pip install frida
 
 #### SSH Connection via USB
 
-As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device. 
+As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device.
 
-The *usbmux* is handled by */System/Library/PrivateFrameworks/MobileDevice.framework/Resources/usbmuxd*, which is a socket daemon that watches for iPhone connections via USB<sup>[5]</sup>. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via */var/run/usbmuxd*<sup>[6]</sup>.
+[usbmuxd](https://github.com/libimobiledevice/usbmuxd) is a socket daemon that watches for iPhone connections via USB. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via /var/run/usbmuxd.
 
 On MacOS:
 
@@ -104,7 +129,7 @@ On MacOS:
 $ brew install libimobiledevice
 $ iproxy 2222 22
 $ ssh -p 2222 root@localhost
-iPhone:~ root# 
+iPhone:~ root#
 ```
 
 Python client:
@@ -112,7 +137,7 @@ Python client:
 ```bash
 $ ./tcprelay.py -t 22:2222
 $ ssh -p 2222 root@localhost
-iPhone:~ root# 
+iPhone:~ root#
 ```
 
 ### Typical iOS Application Test Workflow
@@ -138,7 +163,7 @@ Typical workflow for iOS Application test is following:
 
 ##### Folder Structure
 
-System applications can be found in "/Applications". For user-installed apps, you can use installipa <sup>[7]</sup> to navigate to the appropriate folders:
+System applications can be found in "/Applications". For user-installed apps, you can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa) to navigate to the appropriate folders:
 
 ```
 iOS8-jailbreak:~ root# installipa -l
@@ -183,7 +208,7 @@ Life is easy with a jailbroken device: Not only do you gain easy access to the a
 Files belonging to an app are stored app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
 
 ```bash
-iPhone:~ root# ipainstaller -l 
+iPhone:~ root# ipainstaller -l
 sg.vp.UnCrackable-2
 sg.vp.UnCrackable1
 
@@ -208,14 +233,14 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 ##### Dumping KeyChain Data
 
-Keychain-Dumper <sup>[8]</sup> lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
+[Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
 
 ``` bash
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
 $ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
 $ ssh -p 2222 root@localhost
 iPhone:~ root# chmod +x /tmp/keychain_dumper
-iPhone:~ root# /tmp/keychain_dumper 
+iPhone:~ root# /tmp/keychain_dumper
 
 (...)
 
@@ -244,7 +269,7 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 ##### Security Profiling with Introspy
 
-Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
+Intospy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
 -->
 
@@ -256,9 +281,9 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than one would expect. iOS will refuse to run an app unless you get the provisioning profile and code signature header absolutely right. This requires you to learn about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be an daunting process.
 
-The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from Vincent Tan's Swizzler project <sup>[9]</sup>. An alternative way of repackaging using different tools was described by NCC group <sup>[10]</sup>.
+The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/). An alternative way of repackaging using different tools was [described by NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") .
 
-To reproduce the steps listed below, download "UnCrackable iOS App Level 1" from the OWASP Mobile Testing Guide repo <sup>[11]</sup>. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida. 
+To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -282,7 +307,7 @@ In the examples below I'm using my own signing identity which is associated with
 
 **With a regular iTunes account:**
 
-Mercifully, Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode using your regular Apple account - simply build an empty iOS project and extract embedded.mobileprovision from the app container. The NCC blog explains this process in great detail <sup>[10]</sup>.
+Mercifully, Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode using your regular Apple account - simply build an empty iOS project and extract embedded.mobileprovision from the app container. The NCC blog post explains this process in great detail.
 
 Once you have obtained the provisioning profile, you can check its contents with the *security* tool. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those later for code signing, so extract them to a separate plist file as shown below. It is also worth having a look at the contents of the file to check if everything looks as expected.
 
@@ -312,7 +337,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 ##### Other Preparations
 
-To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. Optool <sup>[12]</sup> can be used to automate this process:
+To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. [Optool](https://github.com/alexzielenski/optool) can be used to automate this process:
 
 ~~~
 $ git clone https://github.com/alexzielenski/optool.git
@@ -387,7 +412,7 @@ $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
 If everything went well, the app should launch on the device in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the frida-ps command:
- 
+
 ~~~
 $ frida-ps -U
 PID  Name
@@ -399,19 +424,19 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the official documentation and gaining an understanding of how the whole system works <sup>[13][14]</sup>. I also found Apple's entitlement troubleshooting page <sup>[15]</sup> to be a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
 
 ### Setting up Burp
 
-Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd <code>[5]</code> in order to connect to burp through USB. 
+Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to burp through USB.
 
-The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good tutorial on setting an iOS Device and Burp <sup>[16]</sup>.
+The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 
 ### Bypassing Certificate Pinning
 
 Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
 
-Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code. 
+Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
 This protects against two main attack scenarios:
 
 * Compromised CA issuing certificate for our domain to a third-party
@@ -421,38 +446,14 @@ The simplest method is to use `SSL Kill Switch` (can be installed via Cydia stor
 
 - following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
 - during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
-- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
+- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this.
 - some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
 - sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 
 #### Recommendations
 
-Certificate pinning is a good security practice and should be used for all applications handling sensitive information. EFF's Observatory <sup>[17]</sup> provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft<sup>[18]</sup>. Use certificate pinning if you don't trust at least one of these CAs.
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
 
-If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel <sup>[19]</sup>. It contains description and code snippets of most-common techniques used to perform certificate pinning.
+If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [#thiel]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
-To get more information on testing transport security, please refer to section 'Testing Network Communication' 
-
-### References
-
-<!-- [TODO: Clean up references] -->
-
-- [1] Jailbreak Exploits on the iPhone Dev Wiki - https://www.theiphonewiki.com/wiki/Jailbreak_Exploits
-- [2] Can I Jailbreak? by IPSW Downloads - https://canijailbreak.com/
-- [3] IPSW Downloads - https://ipsw.me
-- [4] The iPhone Wiki - https://www.theiphonewiki.com/
-- [5] usbmuxd - https://github.com/libimobiledevice/usbmuxd
-- [6] The iPhone Wiki - https://www.theiphonewiki.com/wiki/Usbmux 
-- [7] IPA Installer Console - http://cydia.saurik.com/package/com.autopear.installipa
-- [8] KeyChain-Dumper - https://github.com/ptoomey3/Keychain-Dumper/
-- [9] Swizzler 2 - https://github.com/vtky/Swizzler2/wiki
-- [10] iOS instrumentation without jailbreak - https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/
-- [11] Uncrackable Level 1 - https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1
-- [12] Optool - https://github.com/alexzielenski/optool
-- [13] Maintaining Certificates - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html
-- [14] Maintaining Provisioning Profiles - https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html
-- [15] Entitlements Troubleshooting - https://developer.apple.com/library/content/technotes/tn2415/_index.html
-- [16] Configuring an iOS Device to Work With Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-- [17] EFF's Observatory - https://www.eff.org/pl/observatory
-- [18] Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft - https://www.eff.org/files/colour_map_of_CAs.pdf
-* [19] iOS Application Security - David Thiel
+To get more information on testing transport security, please refer to section 'Testing Network Communication'.
