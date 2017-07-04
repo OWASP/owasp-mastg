@@ -25,7 +25,7 @@ Bernhard is a cyber security specialist with a talent in hacking all kinds of sy
 
 #### Sven Schleier
 
-Sven is an experienced penetration tester and security architect who specialized in implementing secure SDLC for web application, iOS and Android apps. He is a project leader for the OWASP Mobile Security Testing Guide and the creator of OWASP Mobile Hacking Playground. Sven also supports the community with free hands-on workshops on web and mobile app security testing. He has published several security advisories and a white papers about a range of security topics.
+Sven is an experienced penetration tester and security architect who specialized in implementing secure SDLC for web application, iOS and Android apps. He is a project leader for the OWASP Mobile Security Testing Guide and the creator of OWASP Mobile Hacking Playground. Sven also supports the community with free hands-on workshops on web and mobile app security testing. He has published several security advisories and a white papers about HSTS.
 
 ### Co-Authors
 
@@ -57,7 +57,7 @@ Top contributors have consistently contributed quality content with at least 500
 
 Contributors have made a quality contribution with at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Gerhard Wagner, Andreas Happe, Wen Bin Kong, Michael Helwig, Jeroen Willemsen, Denis Pilipchuk, Ryan Teoh,  Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha
+Jin Kung Ong, Gerhard Wagner, Andreas Happe, Michael Helwig, Denis Pilipchuk, Ryan Teoh,  Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani and Anuruddha.
 
 ### Reviewers
 
