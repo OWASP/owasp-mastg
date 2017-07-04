@@ -4,8 +4,8 @@
 The following chapter outlines authentication and session management requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
 
 For all of the test cases below, it need to be investigated first what kind of authentication mechanism is used. There are different mechanisms available, to implement server side authentication, either:
-* Cookie-Based Authentication using a session ID or
-* Token-Based Authentication.
+- Cookie-Based Authentication using a session ID or
+- Token-Based Authentication.
 
 Cookie-Based Authentication is the traditional authentication mechanism used in web applications, which is stateful. In order to adopt to the different requirements of mobile apps, a shift to stateless authentication or Token-Based Authentication can be seen. A prominent example for this is JSON Web Token or [JWT](https://tools.ietf.org/html/rfc7519 "RFC 7519 JSON Web Token (JWT)") which can be part of an OAuth2 authentication and authorization framework.
 
@@ -96,10 +96,12 @@ For additional best practices and detailed information please refer to the sourc
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M6 - Insecure Authorization - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
+
+- M6 - Insecure Authorization - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
 
 ##### OWASP MASVS
-* --TODO [Propose adding verification of OAuth2 implementation to MASVS] --
+
+- --TODO [Propose adding verification of OAuth2 implementation to MASVS] --
 
 ##### CWE
 
@@ -109,7 +111,7 @@ For additional best practices and detailed information please refer to the sourc
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing OAuth2 implementation"] --
-* OWASP ZAP - https://github.com/zaproxy/zaproxy
+- OWASP ZAP - https://github.com/zaproxy/zaproxy
 
 
 ### Verifying that Users Are Properly Authenticated
@@ -133,10 +135,10 @@ Afterwards locate all APIs that provide sensitive information and functions, and
 
 Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Examples for widely used frameworks on server side are:
 
-- Spring (Java) - https://projects.spring.io/spring-security/
-- Struts (Java) - https://struts.apache.org/docs/security.html
-- Laravel (PHP) - https://laravel.com/docs/5.4/authentication
-- Ruby on Rails -  http://guides.rubyonrails.org/security.html
+- [Spring (Java)](https://projects.spring.io/spring-security)
+- [Struts (Java)](https://struts.apache.org/docs/security.html)
+- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html)
 
 #### Dynamic Analysis
 
@@ -156,7 +158,7 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 ##### OWASP Mobile Top 10 2016
 
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
@@ -181,9 +183,9 @@ As such, the scope of this test is to validate that sessions are securely manage
 
 When server source code is available, the tester should look for the place where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. For those matters, automated tools or manual search can be used to look for relevant keywords in the target programming language. Sample frameworks on server side are:
 
-- Spring (Java) - http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-session-mgmt
-- PHP - http://php.net/manual/en/book.session.php
-- Ruby on Rails -  http://guides.rubyonrails.org/security.html
+- [Spring (Java)](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-session-mgmt)
+- [PHP](http://php.net/manual/en/book.session.php)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html)
 
 #### Dynamic Analysis
 
@@ -217,11 +219,11 @@ It is strongly advised to use session ID generators that are build-in within the
 
 ##### OWASP Mobile Top 10 2016
 
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
+- 4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -229,8 +231,8 @@ It is strongly advised to use session ID generators that are build-in within the
 
 ##### Tools
 
-* OWASP ZAP (Zed Attack Proxy)
-* Burp Suite
+- OWASP ZAP (Zed Attack Proxy)
+- Burp Suite
 
 
 
@@ -248,15 +250,15 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
 JWTs are Base-64 encoded and are divided into three parts:
 
-* **Header** Algorithm and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
+- **Header** Algorithm and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
 ```JSON
 {"alg":"HS256","typ":"JWT"}
 ```
-* **Claims** Data  (eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9):
+- **Claims** Data  (eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9):
 ```JSON
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
-* **JSON Web Signature (JWS)** (TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ):
+- **JSON Web Signature (JWS)** (TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ):
 ```JSON
 HMACSHA256(
   base64UrlEncode(header) + "." +
@@ -272,59 +274,58 @@ For mobile apps it's more and more used to authenticate both the message sender 
 Identify the JWT library that is used on server and client side. Check if there are any known vulnerabilities available for the JWT libraries in use.
 
 The following [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way") should be checked in the JWT libraries:
-* Verify the signature or HMAC on server-side at all times for all incoming requests containing a token.
-* Verify where the private signing key or secret key for HMAC is located and stored. The key should always reside on the server side and never shared with the client. It should only be available for the issuer and verifier.
-* Verify if encryption is used to encrypt the data embedded into JWT.
-* Verify if replay attacks are addressed by using `jti` (JWT ID) claim, which provides a unique identifier for JWT.
+- Verify the signature or HMAC on server-side at all times for all incoming requests containing a token.
+- Verify where the private signing key or secret key for HMAC is located and stored. The key should always reside on the server side and never shared with the client. It should only be available for the issuer and verifier.
+- Verify if encryption is used to encrypt the data embedded into JWT.
+- Verify if replay attacks are addressed by using `jti` (JWT ID) claim, which provides a unique identifier for JWT.
 
 
 #### Dynamic Analysis
 
 Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
-* [Hashing algorithm `none`](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
+- [Hashing algorithm `none`](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   * Modify the `alg` attribute in the token header and delete `HS256` and set it to `none` and use an empty signature (e.g. signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This would allow an attacker to create their own "signed" tokens.
-* Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
+- Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   *  JWT offers several asymmetric algorithms as RSA or ECDSA. In this case the private key will be used to sign the tokens and the verification will be done through the public key. If a server is expecting a token signed with an asymmetric algorithm as RSA, but actually receives a token signed with HMAC, it will think the public key is actually an HMAC secret key. The public key can now be misused as HMAC secret key in order to sign the tokens.
-* Token Storage on client side:
+- Token Storage on client side:
   * When using a mobile app that uses JWT it should be verified where the token is stored locally on the device.
-* Cracking the signing key:
+- Cracking the signing key:
   * Creating a signature of the token is done through a private key on server side. Once a JWT is obtained there are several tools available that can try to [brute force the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication"). See the tools section for details.
-* Information Disclosure:
+- Information Disclosure:
   * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it and if it's encrypted or not.
 
-Please also follow the test cases in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet") and check the implementation of the logout as described in "Testing the Logout Functionality".
+Please also follow the test cases in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet") and check the implementation of the logout as described in "Testing the Logout Functionality".
 
 #### Remediation
 
 The following best practices should be considered, when implementing JWT:
 
-* The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
-* Make sure that tokens with a different signature type are guaranteed to be rejected.
-* Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
-* The private signing key or secret key for HMAC should only be available on server side.
-* If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
-* Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet")
-* Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
+- The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+- Make sure that tokens with a different signature type are guaranteed to be rejected.
+- Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
+- The private signing key or secret key for HMAC should only be available on server side.
+- If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
+- Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet")
+- Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
+- 4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
-* CWE-287: Improper Authentication
-
+- CWE-287: Improper Authentication
 
 ##### Tools
-* jwtbrute - https://github.com/jmaxxz/jwtbrute
-* crackjwt - https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py
-* John the ripper - https://github.com/magnumripper/JohnTheRipper
+- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
+- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
+- [John the ripper](https://github.com/magnumripper/JohnTheRipper)
 
 
 
@@ -365,15 +366,15 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.4: "The remote endpoint terminates the existing session or server side signed tokens when the user logs out."
+- 4.4: "The remote endpoint terminates the existing session or server side signed tokens when the user logs out."
 
 ##### CWE
 
-* CWE-613: Insufficient Session Expiration
+- CWE-613: Insufficient Session Expiration
 
 
 
@@ -392,9 +393,9 @@ Passwords can be set when registering accounts, changing the password or when re
 
 Here are different examples on how a validation can be implemented server-side:
 
-* Spring (Java) -  https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html
-* Ruby on Rails -  http://guides.rubyonrails.org/active_record_validations.html
-* PHP - http://php.net/manual/en/filter.filters.validate.php
+- [Spring (Java)](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html)
+- [Ruby on Rails](http://guides.rubyonrails.org/active_record_validations.html)
+- [PHP](http://php.net/manual/en/filter.filters.validate.php)
 
 If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
 
@@ -414,11 +415,11 @@ An interception proxy should be used, to bypass client passwords checks within t
 A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
 
 **Password Length**
-* Minimum length of the passwords should be enforced, at least 10 characters.
-* Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
+- Minimum length of the passwords should be enforced, at least 10 characters.
+- Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
 
 **Password Complexity**
-* Password must meet at least three out of the following four complexity rules
+- Password must meet at least three out of the following four complexity rules
 1. at least one uppercase character (A-Z)
 2. at least one lowercase character (a-z)
 3. at least one digit (0-9)
@@ -473,18 +474,18 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-* 4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times ."
+- 4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times ."
 
 ##### CWE
 
 - CWE-307: Improper Restriction of Excessive Authentication Attempts
 
 ##### Tools
-* Burp Suite Professional - https://portswigger.net/burp/
-* OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- Burp Suite Professional - https://portswigger.net/burp/
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
 
@@ -500,16 +501,17 @@ We will explain here how to check that this control is implemented correctly, bo
 
 If server side code is available, it should be reviewed that the session timeout or token invalidation functionality is correctly configured and a timeout is triggered after a defined period of time.  
 The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-* Spring (Java) - http://docs.spring.io/spring-session/docs/current/reference/html5/
-* Ruby on Rails - http://guides.rubyonrails.org/security.html#session-expiry
-* PHP - http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime
-* ASP.Net - https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx
+- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
 
 In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed or expiration explicitly set. One could use ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") to define the expiration time on or after which the JWT must not be accepted for processing.
 Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
 
 The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
-```
+
+```Java
  app.post('/refresh_token', function (req, res) {
   // verify the existing token
   var profile = jwt.verify(req.body.token, secret);
@@ -548,10 +550,10 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-* 4.8: "Sessions and server side signed tokens are terminated at the remote endpoint after a predefined period of inactivity."
+- 4.8: "Sessions and server side signed tokens are terminated at the remote endpoint after a predefined period of inactivity."
 
 ##### CWE
 - CWE-613: Insufficient Session Expiration
@@ -563,9 +565,9 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 #### Overview
 
 Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
-* Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
-* Something you know: this can be a secret only known to the user like a password.
-* Something you are: this can be biometric characteristics that identify the users like TouchID.
+- Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
+- Something you know: this can be a secret only known to the user like a password.
+- Something you are: this can be biometric characteristics that identify the users like TouchID.
 
 Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
 
@@ -608,9 +610,9 @@ Account lockouts for the second factor should be implemented the same way as for
 
 Regardless of 2FA or step-up authentication, additionally it should be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can be:
 
-* Geolocation
-* IP address
-* Time of day
+- Geolocation
+- IP address
+- Time of day
 
 Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
 
@@ -619,14 +621,16 @@ An additional control to ensure that an authorized user is using the app on an a
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-* 4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
+- 4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- 4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
 
 ##### CWE
+
 - CWE-287: Improper Authentication
 - CWE-308: Use of Single-factor Authentication
 
@@ -657,17 +661,17 @@ An additional control to ensure that an authorized user is using the app on an a
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-* 4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
+
+- 4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
 
 ##### CWE
 
 -- TODO [Add relevant CWE for "Testing User Device Management"] --
-- CWE-312: Cleartext Storage of Sensitive Information
 
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing User Device Management"] --
-* Enjarify - https://github.com/google/enjarify
