@@ -27,9 +27,7 @@
 
 - [Platform Overview](0x06a-Platform-Overview.md)
 - [iOS Security Testing Basics](0x06b-Basic-Security-Testing.md)
-- [Testing Cryptography in iOS Apps](0x06e-Testing-Cryptography.md)
 - [Testing Local Authentication in iOS Apps](0x06f-Testing-Local-Authentication.md)
-- [Testing Network Communication in iOS Apps](0x06g-Testing-Network-Communication.md)
 
 ### Appendix
 
