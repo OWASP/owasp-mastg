@@ -424,13 +424,13 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
 
 ### Setting up Burp
 
-Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to burp through USB.
+Setting up Burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to Burp through USB.
 
-The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
+The first step is to configure proxy of your Burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides a good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 
 ### Bypassing Certificate Pinning
 
@@ -448,7 +448,7 @@ The simplest method is to use `SSL Kill Switch` (can be installed via Cydia stor
 - during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
 - sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this.
 - some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
-- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
+- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with Burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 
 #### Recommendations
 
