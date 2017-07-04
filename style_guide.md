@@ -59,7 +59,6 @@ Use the following methods to increase scannability:
 - Put the most important information at the top
 - Start the page with the conclusion as well as a short summary of the remaining content
 - Use headings where applicable
-- Use capitalization (CAPS) for emphasis, however use it sparingly as it interferes with scannability
 - Use short, simple words that are to the point
 - Be concise and focused 
 
