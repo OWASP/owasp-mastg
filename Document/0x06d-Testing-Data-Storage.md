@@ -142,6 +142,10 @@ Important filesystem locations are:
   * Not visible to users and users cannot write to this directory
   * Content in this directory is being backed up
   * App can disable paths by setting `NSURLIsExcludedFromBackupKey`
+* Library/Preferences
+  * Used for storing properties, objects that can persist even after an application restart.
+  * Information is saved unencrypted inside the application sandbox in a plist file with the name [BUNDLE_ID].plist.
+  * All the key/value pairs stored using NSUserDefaults can be found in this file.
 * tmp/
   * Use this directory to write temporary files that do not need to persist between launches of your app
   * Non-persistent cached files
