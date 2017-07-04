@@ -18,9 +18,9 @@ Many mobile app pen testers have a background in network and web app penetration
 
 The protection of sensitive data, such as user credentials and private information, is a key focus in mobile security. Firstly, sensitive data can be unintentionally exposed to other apps running on the same device if operating system mechanisms like IPC are used improperly. Data may also unintentionally leak to cloud storage, backups, or the keyboard cache. Additionally, mobile devices can be lost or stolen more easily compared to other types of devices, so an adversary gaining physical access is a more likely scenario.
 
-From the view of a mobile app, this extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. 
+From the view of a mobile app, this extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available.
 
-On Android in particular, one has to deal with the problem of fragmentation. Not every Android device offers hardware-backed secure storage. Additionally, a large percentage of devices run outdated versions of Android with older API versions. If those versions are to be supported, apps must restrict themselves to older API versions that may lack important security features. When the choice is between better security and locking out a good percentage of the potential user base, odds are in favor of better security. 
+On Android in particular, one has to deal with the problem of fragmentation. Not every Android device offers hardware-backed secure storage. Additionally, a large percentage of devices run outdated versions of Android with older API versions. If those versions are to be supported, apps must restrict themselves to older API versions that may lack important security features. When the choice is between better security and locking out a good percentage of the potential user base, odds are in favor of better security.
 
 ### Communication with Trusted Endpoints
 
@@ -30,7 +30,7 @@ It is crucial to maintain confidentiality and integrity of information exchanged
 
 ### Authentication and Authorization
 
-In most cases, user login to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. In contrast to web apps, mobile apps often store long-time session tokens that are then unlocked via user-to-device authentication features such as fingerprint scan. While this allows for a better user experience (nobody likes to enter a complex password every time they start an app), it also introduces additional complexity and the concrete implementation has a lot of room for errors. 
+In most cases, user login to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. In contrast to web apps, mobile apps often store long-time session tokens that are then unlocked via user-to-device authentication features such as fingerprint scan. While this allows for a better user experience (nobody likes to enter a complex password every time they start an app), it also introduces additional complexity and the concrete implementation has a lot of room for errors.
 
 Mobile app architectures also increasingly incorporate authorization frameworks such as OAuth2, delegating authentication to a separate service or outsourcing the authentication process to an authentication provider. Using OAuth2, even the client-side authentication logic can be "outsourced" to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of the different possible architectures.
 
@@ -58,7 +58,7 @@ This guide belongs to a set of three closely related mobile application security
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
-For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during of after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
+For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
 
 ## Organization of the Mobile Security Testing Guide
 
@@ -66,7 +66,7 @@ All requirements specified in the MASVS are described in technical detail in the
 
 The guide is organized as follows:
 
-- In the general testing guide (the following few chapters), we present the mobile app security testing methodology, and talk about general vulnerability analysis techniques as they apply to mobile application security. 
+- In the general testing guide (the following few chapters), we present the mobile app security testing methodology, and talk about general vulnerability analysis techniques as they apply to mobile application security.
 
 - The Android Testing Guide covers the everything specific to the Android platform, including security basics, security test cases, and reverse engineering and tampering techniques and preventions.
 
