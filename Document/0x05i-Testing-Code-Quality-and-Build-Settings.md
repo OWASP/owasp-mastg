@@ -560,7 +560,7 @@ Now you need to call the initializer for the handler at your custom `Application
 
 - Xposed - http://repo.xposed.info/
 
-
+<!--
 ### Testing for Memory Corruption Bugs
 
 #### Overview
@@ -594,8 +594,7 @@ Now you need to call the initializer for the handler at your custom `Application
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Memory Management Bugs"] --
 - Enjarify - https://github.com/google/enjarify
-
-
+-->
 
 ### Verify That Free Security Features Are Activated
 

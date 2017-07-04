@@ -119,7 +119,7 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 * Limited scope of coverage because the mobile application must be foot-printed to identify the specific test area
 * No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses
 
-#### Runtime Analysis
+<!-- #### Runtime Analysis -->
 
 <!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
 
@@ -133,6 +133,25 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
+
+#### Reporting
+
+<!--TODO -->
+
+##### Avoiding False Positives
+
+A common pitfall for security testers is reporting issues that would be exploitable in a web browser, but aren't relevant in the context of the mobile app. The reason for this is that automated tools used to scan the backend service assume a regular, browser based web application. Issues such as CSRF, missing security headers and others are reported accordingly.
+
+For example, a successful CSRF attack requires the following:
+
+1. It must be possible to entice the logged-in user to open a malicious link in the same web browser used to access the vulnerable site;
+2. The client (browser) must automatically add the session cookie or other authentication token to the request.
+
+Mobile apps don't fulfill these requirements: Even if Webviews and cookie-based session management were used, any malicious link clicked by the user would open in the default browser which has its own, separate cookie store.
+
+Stored cross-site Scripting can be an issue when the app uses Webviews, and potentially even lead to command execution if the app exports JavaScript interfaces. However, reflected cross-site scripting is rarely an issue for the same reasons stated above (even though one could argue that they shouldn't exist either way - escaping output is simply a best practice that should always be followed).
+
+In any case, think about the actual exploit scenarios and impacts of the vulnerability when performing the risk assessment - don't blindly trust the output of your scanning tool.
 
 #### Input Fuzzing
 
