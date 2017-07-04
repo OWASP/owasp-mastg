@@ -59,7 +59,6 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 * [**Fuzz Vectors**](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors "OWASP Testing Guide: Fuzzing") - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
 
-
 #### Remediation
 
 #### References
