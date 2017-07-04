@@ -59,7 +59,6 @@ Use the following methods to increase scannability:
 - Put the most important information at the top
 - Start the page with the conclusion as well as a short summary of the remaining content
 - Use headings where applicable
-- Use capitalization (CAPS) for emphasis, however use it sparingly as it interferes with scannability
 - Use short, simple words that are to the point
 - Be concise and focused 
 
@@ -171,6 +170,13 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 ## Lowercase or capital letter after a colon
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
+
+
+## Comments 
+
+Markdown blockquotes can be used for comments in the documents by using ">"/
+
+> This is a blockquote
 
 
 ## Code and Shell Commands
