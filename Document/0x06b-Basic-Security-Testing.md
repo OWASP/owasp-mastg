@@ -2,7 +2,7 @@
 
 ### Foreword on Swift and Objective-C
 
-Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods. 
+Vast majority of this tutorial is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by Cycript will not work with Swift methods. At the time of writing of this testing guide, Frida does not support instrumentation of Swift methods.
 
 ### Setting Up Your Testing Environment
 
@@ -36,7 +36,7 @@ Some of the benefits of jailbreaking an iOS Device includes the following:
 * Allowing important testing software tools to be installed
 * Providing access to the Objective-C Runtime
 
-Colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disabling system protections and installing the Cydia app store. 
+Colloquially, the word "jailbreak" if often used to refer to all-in-one tools that automate the complete jailbreaking progress, from executing the exploit(s) to disabling system protections and installing the Cydia app store.
 
 Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits on the iPhone Dev Wiki"), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
@@ -44,7 +44,7 @@ In jailbreak lingo, we talk about tethered and untethered jailbreaking methods. 
 
 Jailbreaking methods vary across iOS versions. Best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/ "Can I Jailbreak? by IPSW Downloads"). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
 
-An important caveat regarding jailbreaking iOS is that you can't downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary). 
+An important caveat regarding jailbreaking iOS is that you can't downgrade iOS version with one exception explained below. Naturally, this creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS. One possible solution is to have at least two iOS devices: one that will be jailbroken and have all necessary tools for testing and second, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
 
 The iOS upgrade process is performed online and is based on challenge-response process. The device will perform OS installation if and only if the response to challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me). More information on jailbreaking is available on the [iPhone Wiki]( https://www.theiphonewiki.com/).
 
@@ -69,20 +69,20 @@ Once you have your iOS device jailbroken and Cydia is installed (as per screensh
   * Two users are `root` and `mobile`
   * Default password is `alpine`
 3. Add the following repository to Cydia: `https://build.frida.re`
-4. Install Frida from Cydia 
+4. Install Frida from Cydia
 5. Install following packages with aptitude
 
 ```
-inetutils 
-syslogd 
-less 
-com.autopear.installipa 
-class-dump 
-com.ericasadun.utilities 
+inetutils
+syslogd
+less
+com.autopear.installipa
+class-dump
+com.ericasadun.utilities
 odcctools
-cycript 
-sqlite3 
-adv-cmds 
+cycript
+sqlite3
+adv-cmds
 bigbosshackertools
 ```
 
@@ -94,7 +94,7 @@ $ sudo pip install frida
 
 #### SSH Connection via USB
 
-As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device. 
+As per the normal behavior, iTunes communicates with the iPhone via the <code>usbmux</code>, which is a system for multiplexing several "connections" over one USB pipe. This system provides a TCP-like system where multiple processes on the host machine open up connections to specific, numbered ports on the mobile device.
 
 [usbmuxd](https://github.com/libimobiledevice/usbmuxd) is a socket daemon that watches for iPhone connections via USB. You can use it to map listening localhost sockets from the mobile device to TCP ports on your host machine. This conveniently allows you to SSH into your device independent of network settings. When it detects an iPhone running in normal mode, it will connect to it and then start relaying requests that it receives via /var/run/usbmuxd.
 
@@ -104,7 +104,7 @@ On MacOS:
 $ brew install libimobiledevice
 $ iproxy 2222 22
 $ ssh -p 2222 root@localhost
-iPhone:~ root# 
+iPhone:~ root#
 ```
 
 Python client:
@@ -112,7 +112,7 @@ Python client:
 ```bash
 $ ./tcprelay.py -t 22:2222
 $ ssh -p 2222 root@localhost
-iPhone:~ root# 
+iPhone:~ root#
 ```
 
 ### Typical iOS Application Test Workflow
@@ -183,7 +183,7 @@ Life is easy with a jailbroken device: Not only do you gain easy access to the a
 Files belonging to an app are stored app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
 
 ```bash
-iPhone:~ root# ipainstaller -l 
+iPhone:~ root# ipainstaller -l
 sg.vp.UnCrackable-2
 sg.vp.UnCrackable1
 
@@ -215,7 +215,7 @@ $ git clone https://github.com/ptoomey3/Keychain-Dumper
 $ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
 $ ssh -p 2222 root@localhost
 iPhone:~ root# chmod +x /tmp/keychain_dumper
-iPhone:~ root# /tmp/keychain_dumper 
+iPhone:~ root# /tmp/keychain_dumper
 
 (...)
 
@@ -244,7 +244,7 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 ##### Security Profiling with Introspy
 
-Intospy <sup>[31]</sup> is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
+Intospy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
 -->
 
@@ -258,7 +258,7 @@ Thanks to Apple's confusing provisioning and code signing system, re-signing an 
 
 The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/). An alternative way of repackaging using different tools was [described by NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") .
 
-To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida. 
+To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -387,7 +387,7 @@ $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ~~~
 
 If everything went well, the app should launch on the device in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the frida-ps command:
- 
+
 ~~~
 $ frida-ps -U
 PID  Name
@@ -403,7 +403,7 @@ If something goes wrong (which it usually does), mismatches between the provisio
 
 ### Setting up Burp
 
-Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to burp through USB. 
+Setting up burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to burp through USB.
 
 The first step is to configure proxy of your burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 
@@ -411,7 +411,7 @@ The first step is to configure proxy of your burp to listen on all interfaces (a
 
 Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
 
-Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code. 
+Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
 This protects against two main attack scenarios:
 
 * Compromised CA issuing certificate for our domain to a third-party
@@ -421,7 +421,7 @@ The simplest method is to use `SSL Kill Switch` (can be installed via Cydia stor
 
 - following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
 - during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
-- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this. 
+- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this.
 - some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
 - sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
 

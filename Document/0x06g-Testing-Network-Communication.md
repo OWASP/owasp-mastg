@@ -83,7 +83,7 @@ The following table summarizes the per-domain ATS exceptions. For more informati
 
 Starting from January 1 2017, Apple App Store review requires justification if one of the following ATS exceptions are defined.
 
-Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined. 
+Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined.
 
 - `NSAllowsArbitraryLoads`
 - `NSAllowsArbitraryLoadsForMedia`
@@ -213,6 +213,7 @@ ATS settings should be verified via static analysis in the iOS source code.
 * CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 * CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
+
 ### Testing Custom Certificate Stores and SSL Pinning
 
 #### Overview
@@ -245,11 +246,31 @@ else {
 
 #### Dynamic Analysis
 
+##### Server certificate validation
+
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
 1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
 2. Now, install Burp certificate, as explained in [the portswigger user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed.
 3. If executing instructions from previous step doesn't lead to traffic being proxied through burp, it means that certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to section "Basic Security Testing" for more information on this.
+
+##### Client certificate validation
+
+Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
+
+There is a couple of things worth noting:
+
+1. The client certificate contains a private key that will be used for the key exchange.
+2. Usually the certificate would also need a password to use (decrypt) it.
+3. The certificate can be stored in the binary itself, data directory or in the keychain.
+
+Most common and improper way of doing two-way handshake is to store the client certificate within the application bundle and hardcode the password. This obviously does not bring much security, because all clients will share the same certificate.
+
+Second way of storing the certificate (and possibly password) is to use the keychain. Upon first login, the application should download the personal certificate and store it securely in the keychain.
+
+Sometimes applications have one certificate that is hardcoded and use it for the first login and then the personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server.
+
+Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
 
 #### Remediation
