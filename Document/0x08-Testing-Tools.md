@@ -16,8 +16,10 @@ To perform security testing different tools are available in order to be able to
 * Acccenture - https://digitalsecurity.accenture.com - Static source code scanner that also scans source code for Android and iOS.
 
 ### All-in-One Mobile Security Frameworks
-* Mobile Security Framework - MobSF - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOSautomated pen-testing framework capable of performing static and dynamic analysis.
-* Needle - https://github.com/mwrlabs/needle - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
+* [Mobile Security Framework - MobSF](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF) - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOS) automated pen-testing framework capable of performing static and dynamic analysis.
+* [Needle](https://github.com/mwrlabs/needle) - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
+* [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps. 
+
 
 ### Tools for Android
 #### Reverse Engineering and Static Analysis
@@ -67,28 +69,30 @@ To perform security testing different tools are available in order to be able to
 * iFunbox - http://www.i-funbox.com - The File and App Management Tool for iPhone, iPad & iPod Touch.
 
 #### Reverse Engineering and Static Analysis
-* otool - http://www.unix.com/man-page/osx/1/otool/ - The otool command displays specified parts of object files or libraries.
-* Clutch - http://cydia.radare.org/- Decrypted the application and dump specified bundleID into binary or .ipa file.
-* Dumpdecrypted] (https://github.com/stefanesser/dumpdecrypted - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
-* class-dump - http://stevenygard.com/projects/class-dump/ - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
-* Flex2 - http://cydia.saurik.com/package/com.fuyuchi.flex2/ - Flex gives you the power to modify apps and change their behavior.
-* Weak Classdump] (https://github.com/limneos/weak_classdump - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
-* IDA Pro - https://www.hex-rays.com/products/ida/index.shtml - IDA is a Windows, Linux or Mac OS X hosted multi-processor disassembler and debugger that offers so many features it is hard to describe them all.
-* HopperApp - http://hopperapp.com/ - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
-* Radare2 - http://www.radare.org/ - Radare2 is a unix-like reverse engineering framework and command line tools.
-* iRET - https://www.veracode.com/iret-ios-reverse-engineering-toolkit - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
-* Agnitio - https://sourceforge.net/projects/agnitiotool/ - Tool for static scanning of Objective-C, C# and Java source code.
 
+* [otool](http://www.unix.com/man-page/osx/1/otool/) - The otool command displays specified parts of object files or libraries.
+* [Clutch](http://cydia.radare.org/) - Decrypted the application and dump specified bundleID into binary or .ipa file. 
+* [Dumpdecrypted] (https://github.com/stefanesser/dumpdecrypted) - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
+* [class-dump](http://stevenygard.com/projects/class-dump/) - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
+* [Flex2](http://cydia.saurik.com/package/com.fuyuchi.flex2/) - Flex gives you the power to modify apps and change their behavior.
+* [Weak Classdump] (https://github.com/limneos/weak_classdump) - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
+* [IDA Pro](https://www.hex-rays.com/products/ida/index.shtml) - IDA is a Windows, Linux or Mac OS X hosted multi-processor disassembler and debugger that offers so many features it is hard to describe them all.
+* [HopperApp](http://hopperapp.com/) - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
+* [Radare2](http://www.radare.org/) - Radare2 is a unix-like reverse engineering framework and commandline tools.
+* [iRET](https://www.veracode.com/iret-ios-reverse-engineering-toolkit) - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
+* [Plutil](https://www.theiphonewiki.com/wiki/Plutil) - plutil is a program that can convert .plist files between a binary version and an XML version.
+ 
 #### Dynamic and Runtime Analysis
-* cycript - http://www.cycript.org - Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
-* iNalyzer - https://appsec-labs.com/cydia/ - AppSec Labs iNalyzer is a framework for manipulating iOS applications, tampering with parameters and method.
-* idb - https://github.com/dmayer/idb - idb is a tool to simplify some common tasks for iOS pentesting and research.
-* snoop-it - http://cydia.radare.org/ - A tool to assist security assessments and dynamic analysis of iOS Apps.
-* Introspy-iOS - https://github.com/iSECPartners/Introspy-iOS - Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues.
-* gdb - http://cydia.radare.org/ - A tool to perform runtime analysis of IOS applications.
-* keychaindumper - http://cydia.radare.org/ - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
-* BinaryCookieReader - http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py - A tool to dump all the cookies from the binary Cookies.binarycookies file.
-* Burp Suite Mobile Assistant - https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html - A tool to bypass certificate pinning and is able to inject into apps.
+* [cycript](http://www.cycript.org) - Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
+* [iNalyzer](https://appsec-labs.com/cydia/) - AppSec Labs iNalyzer is a framework for manipulating iOS applications, tampering with parameters and method.
+* [idb](https://github.com/dmayer/idb) - idb is a tool to simplify some common tasks for iOS pentesting and research.
+* [snoop-it](http://cydia.radare.org/) - A tool to assist security assessments and dynamic analysis of iOS Apps.
+* [Introspy-iOS](https://github.com/iSECPartners/Introspy-iOS) - Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues.
+* [gdb](http://cydia.radare.org/) - A tool to perform runtime analysis of IOS applications.
+* [lldb](https://lldb.llvm.org/) - LLDB debugger by Apple’s Xcode is used for debugging iOS applications.
+* [keychaindumper](http://cydia.radare.org/) - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
+* [BinaryCookieReader](http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py) - A tool to dump all the cookies from the binary Cookies.binarycookies file.
+* [Burp Suite Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html) - A tool to bypass certificate pinning and is able to inject into apps.
 
 #### Bypassing Root Detection and SSL Pinning
 * SSL Kill Switch 2 - https://github.com/nabla-c0d3/ssl-kill-switch2 - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
@@ -107,7 +111,6 @@ To perform security testing different tools are available in order to be able to
 * OWASP ZAP - https://github.com/zaproxy/zaproxy - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
 * Fiddler - http://www.telerik.com/fiddler - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
 * Charles Proxy - http://www.charlesproxy.com - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
-
 
 ### IDEs
 * IntelliJ - https://www.jetbrains.com/idea/download/ - IntelliJ IDEA is a Java integrated development environment (IDEfor developing computer software.
