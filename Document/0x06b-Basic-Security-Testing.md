@@ -197,9 +197,13 @@ To save the console output to a text file, click the circle with a downward-poin
 
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
 
-##### Setting up a Web Proxy using BurpSuite
+#### Setting up a Web Proxy using BurpSuite
 
-Burp Suite is an integrated platform for performing security testing of Mobile and Web Applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and destination web servers. It allows the interception, inspection and modification of the raw traffic passing in both directions.
+Burp Suite is an integrated platform for performing security testing of mobile and web applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and web server(s). It allows the interception, inspection and modification of the raw HTTP traffic passing in both directions.
+
+Setting up Burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to Burp through USB.
+
+Portswigger also provides a good [tutorial on setting up an iOS Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 
 ###### Configure the Burp Proxy Listener
 - In Burp, go to the “Proxy” tab and then the “Options” tab.
@@ -222,12 +226,40 @@ Burp Suite is an integrated platform for performing security testing of Mobile a
 - The request should be intercepted in Burp.
 
 ###### Installing Burp's CA Certificate in an iOS Device:
-- With Burp running, visit http://burp in your browser and click the “CA Certificate” link to download and install your Burp CA certificate. 
+- With Burp running, visit http://burp in your browser and click the “CA Certificate” link to download and install your Burp CA certificate.
 
 ###### Test the Burp configuration for HTTPS Requests
 - In Burp, go to the "Proxy Intercept" tab, and ensure that intercept is “on”.
 - Open the browser on your iOS device and go to an HTTPs web page. 
 - The request should be intercepted in Burp.
+
+#### Setting up a Web Proxy using OWASP ZAP
+
+-- TODO
+
+#### Bypassing Certificate Pinning
+
+When you try to intercept the mobile app and server communication you might fail due to certificate pinning. Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+
+Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
+This protects against two main attack scenarios:
+
+* Compromised CA issuing certificate for our domain to a third-party
+* Phishing attacks that would add a third-party root CA to device's trust store
+
+The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
+
+- following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
+- during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
+- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this.
+- some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
+- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with Burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
+
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
+
+If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel. It contains description and code snippets of most-common techniques used to perform certificate pinning.
+
+To get more information on testing transport security, please refer to section "Testing Network Communication".
 
 #### Dynamic Analysis On Jailbroken Devices
 
@@ -455,35 +487,3 @@ PID  Name
 ##### Troubleshooting.
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
-
-### Setting up Burp
-
-Setting up Burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iDevice and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to Burp through USB.
-
-The first step is to configure proxy of your Burp to listen on all interfaces (alternatively only on the WiFi interface). Then we can configure our iDevice to use our proxy in advanced wifi settings. Portswigger provides a good [tutorial on setting an iOS Device and Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
-
-### Bypassing Certificate Pinning
-
-Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
-
-Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
-This protects against two main attack scenarios:
-
-* Compromised CA issuing certificate for our domain to a third-party
-* Phishing attacks that would add a third-party root CA to device's trust store
-
-The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
-
-- following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
-- during static analysis, try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
-- sometimes, more low-level verification can be done using e.g. openssl. There are tutorials [20] on how to bypass this.
-- some dual-stack applications written using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript
-- sometimes the certificate resides as a file within application bundle. It might be sufficient to replace it with Burp's certificate, but beware of certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
-
-#### Recommendations
-
-Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
-
-If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [#thiel]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
-
-To get more information on testing transport security, please refer to section 'Testing Network Communication'.
