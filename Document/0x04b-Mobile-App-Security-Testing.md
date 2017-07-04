@@ -119,7 +119,7 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 * Limited scope of coverage because the mobile application must be foot-printed to identify the specific test area
 * No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses
 
-#### Runtime Analysis
+<!-- #### Runtime Analysis -->
 
 <!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
 
