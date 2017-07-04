@@ -394,8 +394,7 @@ Passwords can be set when registering accounts, changing the password or when re
 Here are different examples on how a validation can be implemented server-side:
 
 - [Spring (Java)](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html)
-- [Ruby on Rails](http://guides.rubyonrails.org/active_record_validations.html)
-- [PHP](http://php.net/manual/en/filter.filters.validate.php)
+- [PHP](https://github.com/Respect/Validation)
 
 If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
 
