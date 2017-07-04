@@ -281,8 +281,36 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 
 <!-- TODO Obtain references to existing objects -->
 <!-- TODO Instantiate objects from classes -->
-<!-- TODO Hooking native functions -->
-<!-- TODO Hooking objective-C methods -->
+
+##### Hooking native functions & objective-C methods
+* Install the application to be hooked.
+* Run the application and make it sure the app is in foreground (should not be in paused state).
+* Find the PID of the app using the command: `ps ax | grep App`.
+* Hook into the running process by using the command: `cycript -p PID`.
+* Cycript interpreter will be provided, on successful hooking. You can get the instance of the application by using the Objective-C syntax `[UIApplication sharedApplication]`.
+
+```
+cy# [UIApplication sharedApplication]
+cy# var a = [UIApplication sharedApplication]
+```
+* To find the delegate class of this application:
+```
+cy# a.delegate
+```
+* Let’s print out the methods for AppDelegate class: 
+```
+cy# printMethods (“AppDelegate”)
+```
+
+##### Bypassing the Jailbreak Detection using Cycript
+Use of cycript to overwrite the method implementation to bypass the `JailbreakDetection`.
+
+![Cycript_Jailbreak](Images/Chapters/0x06c/Cycript_Jailbreak.png)
+
+![Cycript_bypass_Jailbreak](Images/Chapters/0x06c/Cycript_bypass_Jailbreak.png)
+
+![Cycript_Jailbreak_Passed](Images/Chapters/0x06c/Cycript_Jailbreak_Passed.png)
+
 
 Cycript tricks:
 
