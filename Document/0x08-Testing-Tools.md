@@ -90,6 +90,7 @@ To perform security testing different tools are available in order to be able to
 * [snoop-it](http://cydia.radare.org/) - A tool to assist security assessments and dynamic analysis of iOS Apps.
 * [Introspy-iOS](https://github.com/iSECPartners/Introspy-iOS) - Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues.
 * [gdb](http://cydia.radare.org/) - A tool to perform runtime analysis of IOS applications.
+* [lldb](https://lldb.llvm.org/) - LLDB debugger by Apple’s Xcode is used for debugging iOS applications.
 * [keychaindumper](http://cydia.radare.org/) - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
 * [BinaryCookieReader](http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py) - A tool to dump all the cookies from the binary Cookies.binarycookies file.
 
