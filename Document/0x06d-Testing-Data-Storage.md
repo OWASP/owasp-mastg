@@ -86,6 +86,15 @@ When looking for instances of insecure data storage in an iOS app you should con
 ##### Realm databases
 The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
 
+##### Couchbase Lite Databases
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS. 
+
+##### YapDatabase 
+[YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is comprised of 2 main features:
+
+- A collection/key/value store built atop sqlite for iOS & Mac (the foundation).
+- A plugin architecture that provides for advanced functionality such as Views, Secondary Indexes, Full Text Search, etc.
+
 ##### NSUserDefaults
 
 The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
@@ -137,6 +146,10 @@ Important filesystem locations are:
   - Not visible to users and users cannot write to this directory
   - Content in this directory is being backed up
   - App can disable paths by setting `NSURLIsExcludedFromBackupKey`
+- Library/Preferences/
+  - Used for storing properties, objects that can persist even after an application restart.
+  - Information is saved unencrypted inside the application sandbox in a plist file with the name [BUNDLE_ID].plist.
+  - All the key/value pairs stored using NSUserDefaults can be found in this file.
 - tmp/
   - Use this directory to write temporary files that do not need to persist between launches of your app
   - Non-persistent cached files

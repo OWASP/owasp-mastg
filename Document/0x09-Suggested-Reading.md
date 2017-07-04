@@ -1,8 +1,10 @@
 ## Suggested Reading
 
+<!--
 ### Basic Knowledge
 
 -- TODO [Add suggested reading on Basic Knowledge ] --
+-->
 
 ### Mobile App Security
 
