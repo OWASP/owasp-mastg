@@ -131,7 +131,7 @@ Developers often include debugging code, such as verbose logging statements (usi
 
 #### Static Analysis
 
-For static analysis, you can take the following approach regarding the logging statements: 1. Import the code of the application into Xcode. 2. Do a search over the code on the following printing functions:`NSLog`, `println`, `print`, `dump`, `debugPrint`. 3. When one of them is found, please check whether the developers used a wrapping function around the logging function for better markup of the to be logged statements, start adding that function to your search. 4. For every ocurence found in step 2 and 3, verify whether Macro's or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how objective-C can make use of pre-processor macro's:
+For static analysis, you can take the following approach regarding the logging statements: 1. Import the code of the application into Xcode. 2. Do a search over the code on the following printing functions:`NSLog`, `println`, `print`, `dump`, `debugPrint`. 3. When one of them is found, please check whether the developers used a wrapping function around the logging function for better markup of the to be logged statements, start adding that function to your search. 4. For every occurrence found in step 2 and 3, verify whether Macro's or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how objective-C can make use of pre-processor macro's:
 
 ```objc
 #ifdef DEBUG
@@ -197,6 +197,43 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
 
 -	XCode & simulator
 -	A standard iPhone/iPad
+
+
+### Testing for Injection Flaws
+
+#### Overview
+
+-- TODO [Give an overview about the functionality and it's potential weaknesses] --
+
+#### Static Analysis
+
+-- TODO [Add content on white-box testing of "Verifying that the App is Properly Signed"] --
+
+#### Dynamic Analysis
+
+-- TODO [Add content on black-box testing of "Verifying that the App is Properly Signed"] --
+
+#### Remediation
+
+-- TODO [Add remediation for "Verifying that the App is Properly Signed"] --
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+-   M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+
+-   V7.1: "The app is signed and provisioned with valid certificate."
+
+##### CWE
+
+-- TODO [Add relevant CWE for "Verifying that the App is Properly Signed"] --
+
+##### Tools
+
+-- TODO [Add tools for "Verifying that the App is Properly Signed"] --
 
 
 ### Testing Exception Handling
@@ -333,43 +370,6 @@ There are a few things a developer can do:
 -- CyCript
 
 
-### Testing for Memory Bugs in Unmanaged Code
-
-#### Overview
-
--- TODO [Give an overview about the functionality "Testing for Memory Management Bugs" and it's potential weaknesses] --
-
-#### Static Analysis
-
--- TODO [Add content for white-box testing of "Testing for Memory Management Bugs"] --
-
-#### Dynamic Analysis
-
--- TODO [Add content for black-box testing of "Testing for Memory Management Bugs"] --
-
-#### Remediation
-
--- TODO
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
--	V7.7: "In unmanaged code, memory is allocated, freed and used securely."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
-
-##### Tools
-
--- TODO [Add tools for "Testing for Memory Management Bugs"] --
-
-
 ### Verify That Free Security Features Are Activated
 
 #### Overview
@@ -484,7 +484,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Testing Compiler Settings"] --
+-- TODO [Add relevant CWE for "Verify That Free Security Features Are Activated"] --
 
 ##### Tools
 

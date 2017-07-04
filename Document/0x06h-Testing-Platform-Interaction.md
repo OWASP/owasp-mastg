@@ -1,87 +1,5 @@
 ## Testing Platform Interaction on iOS
 
-### Testing App permissions
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing App permissions".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Add content on Static analysis of "Testing App permissions" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing App permissions" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing App permissions".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-* V6.1: "The app only requires the minimum set of permissions necessary."
-
-##### CWE
-* CWE-250 - Execution with Unnecessary Privileges
-
-##### Info
-* [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-##### Tools
--- TODO [Add tools for "Testing App permissions"] --
-
-
-
-### Testing Input Validation and Sanitization
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Input Validation and Sanitization".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Add content for static analysis of "Testing Input Validation and Sanitization" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Input Validation and Sanitization".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-* V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-* CWE-20 - Improper Input Validation
-
-##### Info
-* [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-##### Tools
--- TODO [Add relevant tools for "Testing Input Validation and Sanitization"] --
-
-
-
 ### Testing Custom URL Schemes
 
 
@@ -142,7 +60,7 @@ You should carefully validate any URL, before calling it. You can whitelist appl
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Sensitive Functionality Exposed Through IPC" with source code] --
 
@@ -181,9 +99,9 @@ The WebView object is used to embed a web browser in your iOS application. It is
 
 #### Static Analysis
 
-Depending on your iOS version a WebView object can be implemented using UIWebView (for iOS versions 7.1.2 and older)<sup>[1]</sup> or WKWebView (for iOS in version 8.0 and later)<sup>[2]</sup>. WKWebView is recommended to be used.
+Depending on your iOS version a WebView object can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). WKWebView is recommended to be used.
 
-The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
+The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object [WKPreferences](https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled "WKPreferences"), like in the following example:
 
 ```
 #import "ViewController.h"
@@ -230,7 +148,7 @@ The UIWebView should be avoided and WKWebView used instead. JavaScript is enable
 
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
-* that all functions offered by the endpoint need to be free of XSS vulnerabilities<sup>[4]</sup>.
+* that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
 
 * that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
 
@@ -307,7 +225,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
 
@@ -350,7 +268,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
 
@@ -382,7 +300,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 
 
-### Testing Object persistance
+### Testing Object Persistence
 
 #### Overview
 
@@ -392,7 +310,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing Object Serialization" with source code] --
 
@@ -446,7 +364,7 @@ Look for a function with a name like isJailBroken in the code. If none of these 
 
 #### Dynamic Analysis
 
-First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use Cycript<sup>[3]</sup> to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the nm<sub>[4]</sub> tool:
+First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use [Cycript](http://www.cycript.org/ "cycript") to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the [nm tool](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html "nm tool"):
 
 ```
 nm <appname> | grep swift
@@ -485,9 +403,6 @@ For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) c
 ##### CWE
 Not covered.
 
-##### Info
-[4] - nm tool (part of XCode) - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html
-
 ##### Tools
 
-[3] cycript - http://www.cycript.org/
+* cycript - http://www.cycript.org/

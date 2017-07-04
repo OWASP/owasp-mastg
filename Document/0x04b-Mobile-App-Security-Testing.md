@@ -1,6 +1,6 @@
 ## Mobile App Security Testing
 
-Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app. 
+Throughout the guide, use "mobile app security testing" as an catch-all phrase for evaluating the security of mobile apps using static and/or dynamic analysis. In practice you'll find that various terms such as "Mobile App Penetration Testing", "Mobile App Security Review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is this is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app.
 
 In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes an (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
 
@@ -65,7 +65,7 @@ Environmental information concerns understanding:
 Architectural information concerns understanding:
 
 - The mobile app: How the app accesses data and manages it in-process, how it communicates with other resources, manages user sessions, and whether it detects and reacts to running on jailbroken or rooted phones.
-- The Operating System: What operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with Mobile Device Management (MDM<sup>[3]</sup>) controls, and what OS vulnerabilities might be relevant to the app.
+- The Operating System: What operating systems and versions does the app run on (e.g. is it restricted to only newer Android or iOS, and do we need to be concerned about vulnerabilities in earlier OS versions), is it expected to run on devices with Mobile Device Management (MDM) controls, and what OS vulnerabilities might be relevant to the app.
 - Network: Are secure transport protocols used (e.g. TLS), is network traffic encryption secured with strong keys and cryptographic algorithms (e.g. SHA-2), is certificate pinning used to verify the endpoint, etc.
 - Remote Services: What remote services does the app consume? If they were compromised, could the client by compromised?
 
@@ -119,7 +119,7 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 * Limited scope of coverage because the mobile application must be foot-printed to identify the specific test area
 * No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses
 
-#### Runtime Analysis
+<!-- #### Runtime Analysis -->
 
 <!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
 
@@ -133,6 +133,25 @@ Dynamic analysis of the traffic exchanged between client and server can be perfo
 In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
 * [Mallory](https://github.com/intrepidusgroup/mallory)
 * [Wireshark](https://www.wireshark.org/)
+
+#### Reporting
+
+<!--TODO -->
+
+##### Avoiding False Positives
+
+A common pitfall for security testers is reporting issues that would be exploitable in a web browser, but aren't relevant in the context of the mobile app. The reason for this is that automated tools used to scan the backend service assume a regular, browser based web application. Issues such as CSRF, missing security headers and others are reported accordingly.
+
+For example, a successful CSRF attack requires the following:
+
+1. It must be possible to entice the logged-in user to open a malicious link in the same web browser used to access the vulnerable site;
+2. The client (browser) must automatically add the session cookie or other authentication token to the request.
+
+Mobile apps don't fulfill these requirements: Even if Webviews and cookie-based session management were used, any malicious link clicked by the user would open in the default browser which has its own, separate cookie store.
+
+Stored cross-site Scripting can be an issue when the app uses Webviews, and potentially even lead to command execution if the app exports JavaScript interfaces. However, reflected cross-site scripting is rarely an issue for the same reasons stated above (even though one could argue that they shouldn't exist either way - escaping output is simply a best practice that should always be followed).
+
+In any case, think about the actual exploit scenarios and impacts of the vulnerability when performing the risk assessment - don't blindly trust the output of your scanning tool.
 
 #### Input Fuzzing
 
