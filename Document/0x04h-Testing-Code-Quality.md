@@ -40,6 +40,26 @@ Android apps are for the most part implemented in Java, which is inherently safe
 
 #### Dynamic Analysis
 
+##### Input Fuzzing
+
+The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occasions when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
+
+Fuzzing, is a method for testing software input validation by feeding it intentionally malformed input. Below are the steps in performing the fuzzing:
+
+* Identifying a target
+* Generating malicious inputs
+* Test case delivery
+* Crash monitoring
+
+Input fuzzing will not be discussed in great detail in this guide. Refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing) for more information.
+
+Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
+
+* **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
+
+* [**Fuzz Vectors**](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors "OWASP Testing Guide: Fuzzing") - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
+
+
 #### Remediation
 
 #### References
