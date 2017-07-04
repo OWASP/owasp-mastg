@@ -265,15 +265,40 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
-<!--
-
 ##### Security Profiling with Introspy
 
-Intospy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
+Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
 
--->
+After successful installation of IntroSpy, respring the iOS device and follow the below steps: 
 
-<!-- TODO [Write an IntroSpy howto] -->
+* Go to Settings and you will see a section for Introspy.
+* There should be two new menus in the device Settings. 
+	* Instrospy - Apps: The Apps menu allows you to select which applications will be profiled 
+	* Instrospy - Settings: The Settings menu defines which API groups are being hooked
+* Now, kill and restart the app you want to monitor 
+* Go to General > Settings > Introspy - Apps > Select the target app
+
+Once the target app has been selected, make sure it is running. If it is running, quit it and restart the app again. Make sure that your device is connected to your computer as we want to see the device logs that the Introspy analyzer will be logging. Also, open Xcode on your machine, go to Window -> Devices. Choose your device from the menu on the left and select Console. You will now be able to see the device logs, browsing the application(analyzer will work in the background and collect as much of information)
+
+###### Generating HTML Reports with Introspy 
+
+* The tracer will store data about API calls made by applications in a database stored on the device (actually one in each folder). This database can be fed to a Python script call Introspy-Analyzer in order to generate HTML reports that make it a lot easier to review the data collected by the tracer. The script will also analyze and flag dangerous API calls in order to facilitate the process of identifying vulnerabilities within iOS applications. 
+
+* Apart from displaying the runtime  information about the app in the Console, Introspy also saves it in a sqlite database file on your device. Introspy consists of 2 modules, the Tracer and the Analyzer.
+
+* We can use the Tracer to perform runtime analysis of the application. The tracer can then store the results in a sqlite file which can be later  used by the analyzer for analysis, or it can also just log all the data to the device console. The Analyzer can also generate a well detailed HTML report from the database file.
+
+To generate HTML report, follow the below steps: 
+
+1. Install Introspy analyzer on computer:
+	1. As a package ```pip install git+https://github.com/iSECPartners/Introspy-Analyzer.git```
+	2. Or locally, ```git clone https://github.com/iSECPartners/Introspy-Analyzer.git```
+2. Databases can be fetched directly by Introspy-Analyzer over SSH by running following command: 
+
+	`python -m introspy -p ios -o output_dir -f <iOSDEVICE_IP>`
+3. Introspy will ask you to select a database file. These database files are created for each application that we had selected from the Settings. Select the database for the target app 
+4. The database file will be saved in the present directory as well as a folder with the name Target-Report will be created
+5. Navigate to output folder and open report.html. Introspy displays the complete information in a much more presentable format. We can see the list of traced calls along with the arguments that were passed. 
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -457,3 +482,4 @@ Certificate pinning is a good security practice and should be used for all appli
 If you want to get more details on white-box testing and usual code patters, refer to iOS Application Security by David Thiel [#thiel]. It contains description and code snippets of most-common techniques used to perform certificate pinning.
 
 To get more information on testing transport security, please refer to section 'Testing Network Communication'.
+
