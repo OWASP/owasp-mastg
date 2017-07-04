@@ -27,6 +27,7 @@ To perform security testing different tools are available in order to be able to
 ### All-in-One Mobile Security Frameworks
 * [Mobile Security Framework - MobSF](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF) - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOS) automated pen-testing framework capable of performing static and dynamic analysis.
 * [Needle](https://github.com/mwrlabs/needle) - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
+* [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps. 
 
 ### Tools for Android
 #### Reverse Engineering and Static Analysis
@@ -82,6 +83,7 @@ To perform security testing different tools are available in order to be able to
 * [HopperApp](http://hopperapp.com/) - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
 * [Radare2](http://www.radare.org/) - Radare2 is a unix-like reverse engineering framework and commandline tools.
 * [iRET](https://www.veracode.com/iret-ios-reverse-engineering-toolkit) - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
+* [Plutil](https://www.theiphonewiki.com/wiki/Plutil) - plutil is a program that can convert .plist files between a binary version and an XML version.
  
 #### Dynamic and Runtime Analysis
 * [cycript](http://www.cycript.org) - Cycript allows developers to explore and modify running applications on either iOS or Mac OS X using a hybrid of Objective-C++ and JavaScript syntax through an interactive console that features syntax highlighting and tab completion.
