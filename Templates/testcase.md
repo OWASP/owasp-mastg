@@ -1,4 +1,4 @@
-### <a name="[Anchor, e.g.: OMTG-DATAST-001]"></a>OMTG-[IDENTIFIER]:[Name]
+### OMTG-[IDENTIFIER]:[Name]
 
 #### Overview
 
@@ -7,12 +7,6 @@
 #### Static Analysis
 
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
-
-[Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>.]
-
-##### With Source Code
-
-##### Without Source Code
 
 #### Dynamic Analysis
 
@@ -24,7 +18,7 @@
 
 #### References
 
-##### OWASP Mobile Top 10 2014
+##### OWASP Mobile Top 10 2016
 
 * MX - Title - Link
 * M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
@@ -38,12 +32,7 @@
 - CWE-XXX - Title
 - CWE-312 - Cleartext Storage of Sensitive Information
 
-##### Info
-
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-- [2] Another Informational Article - http://www.securityfans.com/informational_article.html
-
 ##### Tools
 
 * Tool - Link
-* Enjarify - https://github.com/google/enjarify
+* [Enjarify](https://github.com/google/enjarify "Enjarify")
