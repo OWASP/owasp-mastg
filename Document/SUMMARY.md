@@ -41,5 +41,7 @@
 
 ### Appendix
 
-* [Assessing Software Protection Schemes](0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
-* [Testing Tools](0x08-Testing-Tools.md)
+- [Assessing Software Protection Schemes](0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
+- [Testing Tools](0x08-Testing-Tools.md)
+- [Suggested Reading](0x09-Suggested-Reading.md)
+
