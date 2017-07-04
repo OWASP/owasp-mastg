@@ -267,7 +267,7 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 ##### Security Profiling with Introspy
 
-Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
+Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of Substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
 
 After successful installation of IntroSpy, respring the iOS device and follow the below steps: 
 
@@ -278,7 +278,7 @@ After successful installation of IntroSpy, respring the iOS device and follow th
 * Now, kill and restart the app you want to monitor 
 * Go to General > Settings > Introspy - Apps > Select the target app
 
-Once the target app has been selected, make sure it is running. If it is running, quit it and restart the app again. Make sure that your device is connected to your computer as we want to see the device logs that the Introspy analyzer will be logging. Also, open Xcode on your machine, go to Window -> Devices. Choose your device from the menu on the left and select Console. You will now be able to see the device logs, browsing the application(analyzer will work in the background and collect as much of information)
+Once the target app has been selected, make sure it is running. If it is running, quit it and restart the app again. Make sure that your device is connected to your computer as we want to see the device logs that the Introspy analyzer will be logging. Also, open Xcode on your machine, go to Window -> Devices. Choose your device from the menu on the left and select Console. You will now be able to see the device logs while browsing the application. Please note that analyzer will work in the background to collect the information.
 
 ###### Generating HTML Reports with Introspy 
 
