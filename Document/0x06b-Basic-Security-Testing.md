@@ -197,7 +197,37 @@ To save the console output to a text file, click the circle with a downward-poin
 
 ![Console logs](Images/Chapters/0x06b/device_console.jpg "Monitoring console logs through XCode")
 
-##### Setting up a Web Proxy
+##### Setting up a Web Proxy using BurpSuite
+
+Burp Suite is an integrated platform for performing security testing of Mobile and Web Applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, through to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and destination web servers. It allows the interception, inspection and modification of the raw traffic passing in both directions.
+
+###### Configure the Burp Proxy Listener
+* In Burp, go to the “Proxy” tab and then the “Options” tab.
+* In the “Proxy Listeners" section, click the “Add” button.
+* In the "Binding" tab, in the “Bind to port:” box, enter a port number that is not currently in use, e.g. “8082”.
+* Then select the “All interfaces” option, and click "OK".
+* The Proxy listener should now be configured and running.
+
+###### Configure Your Device to Use the Proxy
+* In your iOS device, go to the “Settings” menu.
+* Tap the “Wi-Fi” option from the "Settings" menu.
+* Tap the “i” (information) option next to the name of your network.
+* Under the "HTTP PROXY" title, tap the “Manual” tab.
+* In the "Server" field, enter the IP address of the computer that is running Burp.
+* In the “Port” field, enter the port number configured in the “Proxy Listeners” section earlier, in this example “8082”.
+
+###### Test the Burp configuration for HTTP Requests
+* In Burp, go to the "Proxy Intercept" tab, and ensure that intercept is “on”.
+* Open the browser on your iOS device and go to an HTTP web page. 
+* The request should be intercepted in Burp.
+
+###### Installing Burp's CA Certificate in an iOS Device:
+* With Burp running, visit http://burp in your browser and click the “CA Certificate” link to download and install your Burp CA certificate. 
+
+###### Test the Burp configuration for HTTPS Requests
+* In Burp, go to the "Proxy Intercept" tab, and ensure that intercept is “on”.
+* Open the browser on your iOS device and go to an HTTPs web page. 
+* The request should be intercepted in Burp.
 
 #### Dynamic Analysis On Jailbroken Devices
 
