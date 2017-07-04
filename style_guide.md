@@ -172,6 +172,13 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
 
+## Comments 
+
+Markdown blockquotes can be used for comments in the documents by using ">"/
+
+> This is a blockquote
+
+
 ## Code and Shell Commands
 
 Use code tags when including sample code and shell commands. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
