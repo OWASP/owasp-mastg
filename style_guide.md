@@ -91,6 +91,7 @@ Use American spelling and terminology.
 Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "color" (US) vs "colour" (UK), "flashlight" (US) vs "torch" (UK), etc.
 
 ### Plurals
+
 Adhere to standard grammar and punctuation rules when it comes to pluralization of typical words.
 
 The plural of calendar years does not take the apostrophe before the “s.” For example, the plural form of 1990 is 1990s
@@ -105,6 +106,13 @@ We follow the title case rules from the "Chicago Manual of Style":
 - Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
+
+### Standardisation 
+
+This is a list of words/abbrevations that are used inconsistent at the moment in the MSTG and need standardisation:
+
+- man-in-the-middle attack (MITM)
+
 
 ## 3. External References
 
