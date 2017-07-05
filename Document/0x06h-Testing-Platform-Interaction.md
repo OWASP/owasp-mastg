@@ -202,45 +202,6 @@ In order to address these attack vectors, the outcome of the following checks sh
 -- TODO [Add relevant tools for "Testing WebView Protocol Handlers"] --
 
 
-### Testing for Local File Inclusion in WebViews
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing for Local File Inclusion in WebViews".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
-
--- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
-
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing for Local File Inclusion in WebViews" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Local File Inclusion in WebViews".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V6.7: "The app does not load user-supplied local resources into WebViews."
-
-##### CWE
--- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
-
-##### Tools
--- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
-
-
-
 ### Testing Whether JavaScript Can Access Native Methods
 
 
@@ -268,15 +229,19 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 - M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
--- TODO
+
+- V6.7 - "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
 ##### CWE
+
 -- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
 
 ##### Tools
+
 -- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
 
 
@@ -304,15 +269,19 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 - M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-- V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+
+- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
+
 -- TODO [Add relevant CWE for "Testing Object Serialization"] --
 
 ##### Tools
+
 -- TODO [Add relevant tools for "Testing Object Serialization"] --
 
 
@@ -374,10 +343,11 @@ For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) c
 - M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
-- V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
-Not covered.
+
+N/A
 
 ##### Tools
 
