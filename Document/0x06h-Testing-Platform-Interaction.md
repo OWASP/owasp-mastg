@@ -5,27 +5,27 @@
 
 #### Overview
 
-Protocol handler is a basic form of [IPC] (https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) in iOS system. Basically, it allows invoking arbitrary applications, by calling a URL scheme with specified parameters. There are some [default handlers] (https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899), however a developer is allowed to register his own [custom URL scheme] (https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10). Unfortunately, this brings a serious security concern, that [developers of the Skype application found out] (http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html). The Skype application registered `skype://` protocol handler, which allows for making a call to arbitrary number without asking for a user's permission. Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype's user who visited malicious website unconsciously was forced to call to a premium number.
+Protocol handler is a basic form of [IPC](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) in iOS system. Basically, it allows invoking arbitrary applications, by calling a URL scheme with specified parameters. There are some [default handlers](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899), however a developer is allowed to register his own [custom URL scheme](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10). Unfortunately, this brings a serious security concern, that [developers of the Skype application found out](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html). The Skype application registered the `skype://` protocol handler, which allows for making a call to arbitrary numbers without asking for a user's permission. Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website unconsciously was forced to call to a premium number.
 
 #### Static Analysis
 
-A security concern related with protocol handlers should arise, when the URL is not validated or the user is not prompted for confirmation in the application before making a particular action. 
+A security concern related with protocol handlers should arise, when the URL is not validated or the user is not prompted for confirmation in the application before making a particular action.
 The first step is to find out if an application registers any protocol handlers. This information can be found in `info.plist` file in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to `Info` tab and open `URL Types` section, as it is presented on a below screenshot.
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
-Then, you should verify how an URL path is built and validated. A method responsible for handling user's URLs is called [`openURL`] (https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc). Look for implemented controls - how an URL is validated (what input it accepts) and does performing action requires user's acceptance? 
+Then, you should verify how an URL path is built and validated. A method responsible for handling user's URLs is called [`openURL`] (https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc). Look for implemented controls - how an URL is validated (what input it accepts) and does it need the permission of the user when using the custom URL schema?
 
-#### Dynamic Analysis
-
-In a compiled application, you can find registered protocol handlers in a `Info.plist` file under the `CFBundleURLTypes` and then under `CFBundleURLSchemes` key. To find out an URL structure, you can simply use `strings` or `Hooper` program, e.g.
+In a compiled application, you can find registered protocol handlers in a `Info.plist` file under the `CFBundleURLTypes` and then under `CFBundleURLSchemes` key. To find out an URL structure, you can simply use `strings` or `Hooper`:
 
 ```sh
 $ strings <yourapp> | grep "myURLscheme://"
 ```
 > Please note that you should firstly decrypt an application (e.g. using [Clutch] (https://github.com/KJCracks/Clutch) if you want to read a binary.
 
-Once you know, what an URL structure is, you should try fuzzing an URL to force an application to perform some malicious action. 
+#### Dynamic Analysis
+
+Once you know, what an URL structure is, you should try fuzzing an URL to force an application to perform some malicious action.
 
 -- TODO [Add instruction of using dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers in Needle: https://labs.mwrinfosecurity.com/blog/needle-how-to/] --
 
@@ -37,7 +37,7 @@ You should carefully validate any URL, before calling it. You can whitelist appl
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
@@ -45,9 +45,9 @@ You should carefully validate any URL, before calling it. You can whitelist appl
 ##### CWE
 - CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
-
 ##### Tools
--- Needle - https://labs.mwrinfosecurity.com/tools/needle/
+- Needle - https://labs.mwrinfosecurity.com/tools/needle/
+
 
 
 ### Testing for Sensitive Functionality Exposed Through IPC
@@ -75,16 +75,13 @@ You should carefully validate any URL, before calling it. You can whitelist appl
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 
 ##### OWASP MASVS
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing for Sensitive Functionality Exposed Through IPC"] --
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Sensitive Functionality Exposed Through IPC"] --
@@ -139,8 +136,8 @@ If there is no explicitly disabled JavaScript execution via WKPreferences object
 
 A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
 
-* Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
-* Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
+- Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
+- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
 
 #### Remediation
 
@@ -148,16 +145,16 @@ The UIWebView should be avoided and WKWebView used instead. JavaScript is enable
 
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
-* that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
+- that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
 
-* that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
+- that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
 
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
-* M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 
@@ -166,13 +163,6 @@ In order to address these attack vectors, the outcome of the following checks sh
 ##### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-
-##### Info
-
-- [1] UIWebView reference documentation - https://developer.apple.com/reference/uikit/uiwebview
-- [2] WKWebView reference documentation - https://developer.apple.com/reference/webkit/wkwebview
-- [3] WKPreferences - https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled
-- [4] XSS (Cross Site Scripting) Prevention Cheat Sheet - https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
 
 
 ### Testing WebView Protocol Handlers
@@ -200,16 +190,13 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing WebView Protocol Handlers"] --
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing WebView Protocol Handlers"] --
@@ -241,16 +228,13 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 - V6.7: "The app does not load user-supplied local resources into WebViews."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
@@ -284,16 +268,13 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 -- TODO
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
@@ -310,8 +291,6 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
-
 -- TODO [Add content on static analysis of "Testing Object Serialization" with source code] --
 
 #### Dynamic Analysis
@@ -325,16 +304,13 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-* V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+- V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing Object Serialization"] --
-
-##### Info
-* [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing Object Serialization"] --
@@ -394,15 +370,15 @@ For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) c
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
-* V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
 Not covered.
 
 ##### Tools
 
-* cycript - http://www.cycript.org/
+- cycript - http://www.cycript.org/
