@@ -316,27 +316,11 @@ Cycript tricks:
 
 http://iphonedevwiki.net/index.php/Cycript_Tricks
 
-#### Frida
+#### [Frida](https://www.frida.re/docs/home/) 
 
-It’s Greasemonkey for native apps, or, put in more technical terms, it’s a dynamic code instrumentation toolkit. It lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX. Frida also provides you with some simple tools built on top of the Frida API. These can be used as-is, tweaked to your needs, or serve as examples of how to use the API.
+##### The documentation of Frida describes[how to install and verify the installation](https://www.frida.re/docs/installation/)
 
-##### Installation
-
-*Requirements for Python bindings*
-
-Installing Frida is easy and straight-forward, but there are a few requirements you’ll need to make sure your system has before you start.
-	* Python – latest 3.x is highly recommended
-	* Windows, macOS, or Linux
-	
-###### Install with pip
-
-The best way to install Frida’s Python bindings is via PyPI. At the terminal prompt, simply run the following command to install Frida:
-
-`$ sudo pip install frida` 
-
-Frida supports two modes of operation, depending on whether your iOS device is jailbroken or not.
-
-###### With Jailbreak
+###### Without Jailbreak
 This is the most powerful setup, as it lets you instrument system services and apps with very little effort.
 
 ###### Setting up your iOS device
