@@ -493,7 +493,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - CWE-359 - Exposure of Private Information ('Privacy Violation')
 
 ##### Info
-- [1] Bulletproof Android, Godfrey Nolan - Chapter 7, Third-Party Library Integration
+- [#nolan] Bulletproof Android, Godfrey Nolan - Chapter 7, Third-Party Library Integration
 
 ##### Tools
 - Burp Suite Professional - https://portswigger.net/burp/
