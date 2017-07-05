@@ -316,12 +316,10 @@ Cycript tricks:
 
 http://iphonedevwiki.net/index.php/Cycript_Tricks
 
-#### [Frida](https://www.frida.re/docs/home/) 
+#### Frida
 
-##### The documentation of Frida describes [how to install and verify the installation](https://www.frida.re/docs/installation/)
+The documentation of [Frida](https://www.frida.re/docs/home/)  describes [very detailed on how to install and verify the installation](https://www.frida.re/docs/installation/).
 
 ###### Setting up your iOS device
 
 Frida supports two modes of operation, depending on whether your iOS device is jailbroken or not. [Refer here](https://github.com/frida/frida-website/blob/master/_docs/ios.md) for more detailed information.
-
-
