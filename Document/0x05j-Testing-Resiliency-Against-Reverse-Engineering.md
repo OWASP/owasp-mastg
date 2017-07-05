@@ -192,7 +192,7 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 #### Remediation
 
-If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechansims, or better integrating existing mechanisms with other defenses.
+If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
 
 #### References
 
@@ -202,11 +202,12 @@ If root detection is missing or too easily bypassed, make suggestions in line wi
 
 ##### OWASP MASVS
 
-- V8.3: "The app implements two or more functionally independent methods of root detection and responds to the presence of a rooted device either by alerting the user or terminating the app."
+- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 
 ##### CWE
 
 N/A
+
 
 ### Testing Anti-Debugging
 
@@ -798,11 +799,12 @@ A similar approach holds here, but now answer the following questions:
 
 ##### OWASP MASVS
 
--- V8.3: "The app detects, and responds to, tampering with executable files and critical data".
+- V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
 
 ##### CWE
 
 - N/A
+
 
 ### Testing Detection of Reverse Engineering Tools
 
@@ -1031,7 +1033,7 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 ##### OWASP MASVS
 
-- V8.4: "The app detects the presence of widely used reverse engineering tools, such as code injection tools, hooking frameworks and debugging servers."
+- V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
 
 ##### CWE
 
@@ -1122,7 +1124,7 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 ##### OWASP MASVS
 
-- V8.5: "The app detects, and response to, being run in an emulator using any method."
+- V8.5: "The app detects, and responds to, being run in an emulator."
 
 ##### CWE
 
@@ -1131,6 +1133,7 @@ N/A
 ##### Tools
 
 N/A
+
 
 ### Testing Runtime Integrity Checks
 
@@ -1451,7 +1454,7 @@ The following three identifiers can be possibly used.
 
 ##### OWASP MASVS
 
-- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 
 ##### CWE
 
@@ -1461,6 +1464,7 @@ N/A
 
 - ADB & DDMS
 - Android Emulator or two rooted devices.
+
 
 ### Testing Obfuscation
 
@@ -1488,9 +1492,9 @@ For a more detailed assessment, you need to have a detailed understanding of the
 
 ##### OWASP MASVS
 
-- V8.8: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- v8.9: "Obfuscating transformations and functional defenses are interdependent and well-integrated throughout the app."
-- V8.12: "If the architecture requires sensitive computations be performed on the client-side, these computations are isolated from the operating system by using a hardware-based SE or TEE. Alternatively, the computations are protected using obfuscation. Considering current published research, the obfuscation type and parameters are sufficient to cause significant manual effort to reverse engineers seeking to comprehend the sensitive portions of the code and/or data."
+- V8.9 - "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- v8.10 - "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.13 - "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
 ##### CWE
 
