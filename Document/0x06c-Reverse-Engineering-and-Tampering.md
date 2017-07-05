@@ -318,75 +318,10 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 #### [Frida](https://www.frida.re/docs/home/) 
 
-##### The documentation of Frida describes[how to install and verify the installation](https://www.frida.re/docs/installation/)
-
-###### Without Jailbreak
-This is the most powerful setup, as it lets you instrument system services and apps with very little effort.
+##### The documentation of Frida describes [how to install and verify the installation](https://www.frida.re/docs/installation/)
 
 ###### Setting up your iOS device
 
-Start Cydia and add Frida’s repository by going to **Manage -> Sources -> Edit -> Add and enter https://build.frida.re**. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
+Frida supports two modes of operation, depending on whether your iOS device is jailbroken or not. [Refer here](https://github.com/frida/frida-website/blob/master/_docs/ios.md) for more detailed information.
 
-Now, back on your Windows or macOS system it’s time to make sure the basics are working. Run:
-`$ frida-ps -U`
-Unless you already plugged in your device, you should see the following message:
-
-###### Waiting for USB device to appear...
-
-Plug in your device, and you should see a process list along the lines of:
-```
- PID NAME
- 488 Clock
- 116 Facebook
- 312 IRCCloud
-1711 LinkedIn
-…
-```
-
-Great, we’re good to go then!
-
-###### Without Jailbreak
-
-In order to instrument an app with Frida you will need to make it load a .dylib that we’ll refer to as a “gadget”.
-In this tutorial, we will show you how to change your Xcode build configuration so you can start instrumenting your app with Frida. Note that it is also possible to perform this on an existing binary by using insert_dylib or a similar tool.
-
-Customizing your Xcode project
-
-Download the latest FridaGadget.dylib for iOS and sign it:
-
-`$ mkdir Frameworks
-$ cd Frameworks
-$ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
-$ security find-identity -p codesigning -v
-  1) A30E15XXXXXXXXXXXXXXXXXXXXX… "Developer ID Application: …"
-  2) E18BAXXXXXXXXXXXXXXXXXXXXX… "iPhone Developer: …"
-     2 valid identities found
-$ codesign -f -s E18BAXXXXXXXXXXXXXXXXXXXXX… FridaGadget.dylib
-FridaGadget.dylib: replacing existing signature`
-
-Open your project in Xcode and drag the “Frameworks” directory from the previous step into the Project Navigator view, dropping it right next to your “AppDelegate” source file. It’s important that you drag the directory and not the file. Xcode will then prompt you “Choose options for adding these files:”, and you should then enable the “Copy items if needed” option, and make sure that “Create folder references” is selected. Hit Finish. Select the project itself at the top of the Project Navigator view and switch to its “Build Phases” tab. Expand the “Frameworks” directory in the Project Navigator and drag and drop FridaGadget.dylib into the “Link Binary With Libraries” section. Verify that the Frameworks directory with this .dylib also got added to the “Copy Bundle Resources” section.
-
-Launch your app with Xcode, and you should see a message getting logged:
-
-###### Frida: Listening on TCP port 27042
-
-Note that the app will appear to “hang” during startup. This is normal and caused by Frida waiting for you to instrument any APIs you’re interested in, or just tell it to go ahead and finish launching the app.
-Now that Frida is waiting for us, and its gadget exposes the same interface as, we should be able to get a process listing:
-
-```
-$ frida-ps -U
- PID NAME
- 892 Gadget 
- ```
- 
-However, unlike frida-server, there’s only a single process we can attach to, which is the app itself.
-Let’s also check which apps can be spawned:
-
-```
-$ frida-ps -Uai  
-PID  Name    Identifier  
-892  Gadget  re.frida.Gadget  
-$
-```  
-Looking good. If we now attach() to this process it will cause the app to finish launching. However, if we first spawn(["re.frida.Gadget"]) we will be able to attach() and apply our instrumentation, and the app will not carry on launching until we call resume(). This means we can attach() right away for late instrumentation, or we can spawn() to perform early instrumentation.
 
