@@ -318,7 +318,7 @@ http://iphonedevwiki.net/index.php/Cycript_Tricks
 
 #### Frida
 
-The documentation of [Frida](https://www.frida.re/docs/home/)  describes [very detailed on how to install and verify the installation](https://www.frida.re/docs/installation/).
+The documentation of [Frida](https://www.frida.re/docs/home/) describes [very detailed on how to install and verify the installation](https://www.frida.re/docs/installation/).
 
 ###### Setting up your iOS device
 
