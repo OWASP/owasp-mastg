@@ -32,7 +32,7 @@ Mobile apps on Android and iOS both use SQLite databases as a means of local dat
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
 
-In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. Hoever, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
+In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
 
 ###### Local File Inclusion
 
