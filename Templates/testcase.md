@@ -20,8 +20,8 @@
 
 ##### OWASP Mobile Top 10 2016
 
-* MX - Title - Link
-* M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+- MX - Title - Link
+- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
 
@@ -34,5 +34,5 @@
 
 ##### Tools
 
-* Tool - Link
-* [Enjarify](https://github.com/google/enjarify "Enjarify")
+- Tool - Link
+- [Enjarify](https://github.com/google/enjarify "Enjarify")

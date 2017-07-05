@@ -310,22 +310,22 @@ Review the source code to understand/identify how the application handles variou
 ##### Static Analysis in Objective-C
 Here you can verify that:
 
-* The application uses a well-designed and unified scheme to handle exceptions and errors.
-* The exceptions from the Cocoa frameworks are handled correctly.
-* The allocated memory in the `@try` blocks are released in the `@finally` blocks.
-* For every `@throw` the calling method has a proper `@catch` on either the calling method level or at the level of the `NSApplication` / `UIApplication` objects in order to clean up any sensitive information and possibly try to recover from the issue.
-* That the application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
-* That any confidential information, such as keying material and/or authentication information is always wiped at the `@finally` blocks in case of a high risk application.
-* That `raise()` is only used in rare occasions when termination of the program without any further warning is required.
-* That `NSError` objects do not contain information that might leak any sensitive information.
+- The application uses a well-designed and unified scheme to handle exceptions and errors.
+- The exceptions from the Cocoa frameworks are handled correctly.
+- The allocated memory in the `@try` blocks are released in the `@finally` blocks.
+- For every `@throw` the calling method has a proper `@catch` on either the calling method level or at the level of the `NSApplication` / `UIApplication` objects in order to clean up any sensitive information and possibly try to recover from the issue.
+- That the application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+- That any confidential information, such as keying material and/or authentication information is always wiped at the `@finally` blocks in case of a high risk application.
+- That `raise()` is only used in rare occasions when termination of the program without any further warning is required.
+- That `NSError` objects do not contain information that might leak any sensitive information.
 
 ##### Static Analysis in Swift
 Here you can verify that:
 
-* The application uses a well-designed and unified scheme to handle errors.
-* The application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
-* That any confidential information, such as keying material and/or authentication information is always wiped at the `defer` blocks in case of a high risk application.
-* That `try!` is only used with proper guarding up front, so it is programmatically verified that indeed no error can be thrown by the method that is called using `try!`.
+- The application uses a well-designed and unified scheme to handle errors.
+- The application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
+- That any confidential information, such as keying material and/or authentication information is always wiped at the `defer` blocks in case of a high risk application.
+- That `try!` is only used with proper guarding up front, so it is programmatically verified that indeed no error can be thrown by the method that is called using `try!`.
 
 #### Dynamic Testing
 

@@ -244,8 +244,8 @@ When you try to intercept the mobile app and server communication you might fail
 Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
 This protects against two main attack scenarios:
 
-* Compromised CA issuing certificate for our domain to a third-party
-* Phishing attacks that would add a third-party root CA to device's trust store
+- Compromised CA issuing certificate for our domain to a third-party
+- Phishing attacks that would add a third-party root CA to device's trust store
 
 The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
 

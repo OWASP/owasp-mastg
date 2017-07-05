@@ -11,9 +11,9 @@ For dynamic testing, more useful is native C API, for instance CommonCryptor, th
 
 The main goal of static analysis is to ensure the following:
 
-* Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
-* Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison").
-* Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
+- Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
+- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison").
+- Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
 If the app is using standard cryptographic implementations provided by Apple, the easiest way is to decompile the application and check for calls to functions from `CommonCryptor`, such as `CCCrypt`, `CCCryptorCreate`, etc. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains signatures of all functions.
 For instance, `CCCryptorCreate` has following signature:
@@ -42,11 +42,11 @@ Obviously, there are other non-standard libraries that your application might be
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+- M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
 
 ##### OWASP MASVS
-* V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-* V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
@@ -55,7 +55,7 @@ Obviously, there are other non-standard libraries that your application might be
 ##### Tools
 
 -- TODO [Add links to relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
-* Enjarify - https://github.com/google/enjarify
+- Enjarify - https://github.com/google/enjarify
 
 
 ### Testing Random Number Generation
@@ -74,8 +74,8 @@ The Randomisation Services API uses the `SecRandomCopyBytes` function to perform
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 ```
-func SecRandomCopyBytes(_ rnd: SecRandomRef?, 
-                      _ count: Int, 
+func SecRandomCopyBytes(_ rnd: SecRandomRef?,
+                      _ count: Int,
                       _ bytes: UnsafeMutablePointer<UInt8>) -> Int32
 ```
 
@@ -97,16 +97,16 @@ int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 
 #### Remediation
 
-The recommended remediation to fix this issue is to always use the Randomisation Services API for any random number generation purposes. 
-Avoid implementing custom cryptography algorithms and standards. Also, only supply cryptographically strong random numbers to cryptographic functions. 
+The recommended remediation to fix this issue is to always use the Randomisation Services API for any random number generation purposes.
+Avoid implementing custom cryptography algorithms and standards. Also, only supply cryptographically strong random numbers to cryptographic functions.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+- M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
 
 ##### OWASP MASVS
-* V3.6: "All random values are generated using a sufficiently secure random number generator."
+- V3.6: "All random values are generated using a sufficiently secure random number generator."
 
 ##### CWE
 - CWE-337 - Predictable Seed in PRNG
@@ -114,4 +114,4 @@ Avoid implementing custom cryptography algorithms and standards. Also, only supp
 
 ##### Tools
 -- TODO [Add links to relevant tools for "Testing Random Number Generation"] --
-* Enjarify - https://github.com/google/enjarify
+- Enjarify - https://github.com/google/enjarify
