@@ -8,13 +8,41 @@ Injection flaws are a class of security vulnerability that occurs when user inpu
 
 This vulnerability class is very prevalent in web services (including the endpoints connected to by mobile apps). They may also occur in the mobile app itself, but exploitable instances are much less common, as mobile apps usually act as clients and simply don't offer the attack surface necessary for viable attacks. For example, while a mobile app might query a local database, such mobile databases hardly store data that could usefully be extracted through SQL injection. 
 
-Nevertheless, client-side injection flaws can still be exploitable in some cases, and following best practices doesn't hurt anyway.
+Nevertheless, viable attack scenarios are at least conceivable, and proper input validation should generally performed as practice.
+
+##### Entry Points
+
+Input from any untrusted source should be validated. Possible input vectors include the following:
+
+- User interface
+- URL schemes
+- Input Files received via Bluetooth, AirDrop or other means
+- Pasteboards
+- Application extensions
+
+##### Common Injection Types
+
+###### SQL Injection
+
+SQL injection involves "injecting" SQL command characters into the input data, affecting the execution of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
+
+Mobile apps on Android and iOS both use SQLite databases as a means of local data storage. SQL injection vulnerabilities occur when user input is concatenated into dynamic SQL statements without prior sanitization. 
+
+###### XML Injection
+
+In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content. 
+
+In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. Hoever, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
+
+###### Local File Inclusion
 
 #### Static Analysis
 
 #### Dynamic Analysis
 
 #### Remediation
+
+- Verify that File System Access is disabled for any WebViews.
 
 #### References
 
@@ -35,6 +63,10 @@ Nevertheless, client-side injection flaws can still be exploitable in some cases
 #### Overview
 
 Android apps are for the most part implemented in Java, which is inherently safe from all kinds of memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug.
+
+###### Buffer Overflows
+
+###### Format String Vulnerabilities
 
 #### Static Analysis
 
@@ -61,6 +93,9 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 #### Remediation
 
+- Avoid using unsafe string functions such as strcpy, strcat, strncat, strncpy, sprint, vsprintf, gets, and so on.
+- User input or other untrusted data should never be used as part of format strings.
+
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -74,7 +109,6 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 ##### CWE
 
 * CWE-20 - Improper Input Validation
-
 
 ### Testing for Cross-Site Scripting Flaws
 
