@@ -107,7 +107,6 @@ For additional best practices and detailed information please refer to the sourc
 
 - CWE-285: Improper Authorization
 
-
 ##### Tools
 
 -- TODO [Add relevant tools for "Testing OAuth2 implementation"] --
@@ -473,9 +472,11 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 - 4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times ."
 
 ##### CWE
@@ -483,6 +484,7 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 - CWE-307: Improper Restriction of Excessive Authentication Attempts
 
 ##### Tools
+
 - Burp Suite Professional - https://portswigger.net/burp/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
