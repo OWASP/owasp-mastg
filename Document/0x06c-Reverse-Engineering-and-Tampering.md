@@ -132,12 +132,12 @@ A minus sign would mean that this is an instance method. Please refer to further
 Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/). All these steps will be performed automatically and you will be able to see disassembled binary and class information.
 
 Your main focus while performing static analysis would be:
-* Identifying and understanding functions responsible for jailbreak detection and certificate pinning
+- Identifying and understanding functions responsible for jailbreak detection and certificate pinning
   * For jailbreak detection, look for methods or classes containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
   * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
-* Understanding application logic and possible ways to bypass it
-* Any hardcoded credentials, certificates
-* Any methods that are used for obfuscation and in consequence may reveal sensitive information
+- Understanding application logic and possible ways to bypass it
+- Any hardcoded credentials, certificates
+- Any methods that are used for obfuscation and in consequence may reveal sensitive information
 
 
 Other commands:
@@ -283,21 +283,21 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 <!-- TODO Instantiate objects from classes -->
 
 ##### Hooking native functions & objective-C methods
-* Install the application to be hooked.
-* Run the application and make it sure the app is in foreground (should not be in paused state).
-* Find the PID of the app using the command: `ps ax | grep App`.
-* Hook into the running process by using the command: `cycript -p PID`.
-* Cycript interpreter will be provided, on successful hooking. You can get the instance of the application by using the Objective-C syntax `[UIApplication sharedApplication]`.
+- Install the application to be hooked.
+- Run the application and make it sure the app is in foreground (should not be in paused state).
+- Find the PID of the app using the command: `ps ax | grep App`.
+- Hook into the running process by using the command: `cycript -p PID`.
+- Cycript interpreter will be provided, on successful hooking. You can get the instance of the application by using the Objective-C syntax `[UIApplication sharedApplication]`.
 
 ```
 cy# [UIApplication sharedApplication]
 cy# var a = [UIApplication sharedApplication]
 ```
-* To find the delegate class of this application:
+- To find the delegate class of this application:
 ```
 cy# a.delegate
 ```
-* Let’s print out the methods for AppDelegate class: 
+- Let’s print out the methods for AppDelegate class:
 ```
 cy# printMethods (“AppDelegate”)
 ```

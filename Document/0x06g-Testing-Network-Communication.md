@@ -209,9 +209,9 @@ ATS settings should be verified via static analysis in the iOS source code.
 
 ##### CWE
 
-* CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-* CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-* CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 
 ### Testing Custom Certificate Stores and SSL Pinning
@@ -293,4 +293,4 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 ##### CWE
 
-* CWE-295 - Improper Certificate Validation
+- CWE-295 - Improper Certificate Validation

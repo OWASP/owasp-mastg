@@ -38,8 +38,8 @@ The available setup options for the network need to be evaluated first. The mobi
 
 Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
 
-* The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-* The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
+- The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
+- The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store a CA might differ.
 
 After finishing these steps and starting the app, the requests should show up in the interception proxy.
 
@@ -49,9 +49,9 @@ After finishing these steps and starting the app, the requests should show up in
 
 As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed: rooting
 
-* Usually voids the device warranty (always check the manufacturer policy before taking any action),
-* May "brick" the device, i.e., render it inoperable and unusable.
-* Brings additional security risks as built-in exploit mitigations are often removed.
+- Usually voids the device warranty (always check the manufacturer policy before taking any action),
+- May "brick" the device, i.e., render it inoperable and unusable.
+- Brings additional security risks as built-in exploit mitigations are often removed.
 
 **You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be held responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process.**
 
@@ -73,8 +73,8 @@ Nevertheless, this highly depends on the restrictions and settings made in the a
 
 All of the above steps to prepare a hardware testing device do also apply if an emulator is used. For dynamic testing several tools or VMs are available that can be used to test an app within an emulator environment:
 
-* AppUse
-* MobSF
+- AppUse
+- MobSF
 
 It is also possible to simply create an AVD and use this for testing.
 
@@ -230,7 +230,7 @@ Install virtualenv via pip:
 $ pip install virtualenv
 ```
 
-Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command <code>virtualenv drozer</code>. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library. 
+Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command <code>virtualenv drozer</code>. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
 
 ```
 $ virtualenv drozer
@@ -238,7 +238,7 @@ $ source drozer/bin/activate
 (drozer) $
 ```
 
-You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan"). 
+You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
 Run the following commands:
 
 ```
@@ -280,35 +280,35 @@ You should now have the Drozer console installed on your host machine, and the A
 Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
 
 ![alt text](Images/Chapters/0x05b/server.png "Drozer")
-	   
+
 By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
 
 ```bash
 $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
-```	
+```
 
 To show the list of all Drozer modules that can be executed in the current session use the "list" command.
 
 **Basic Drozer Commands:**
- 
-* To list out all the packages installed on the emulator, run the following command:
+
+- To list out all the packages installed on the emulator, run the following command:
 
 	`dz>run app.package.list`
-  
+
  * To find out the package name of a specific app, pass  the “-f” along with a search string:
 
 	`dz> run app.package.list –f (string to be searched)`
-  
-* To see some basic information about the package, use
+
+- To see some basic information about the package, use
 
        `dz> run app.package.info –a (package name)`
-  
-* To identify the exported applications components,run the following command:
- 
+
+- To identify the exported applications components,run the following command:
+
   	`dz> run app.package.attacksurface (package name)`
 
-* To identify the the list of Activities exported in the target application,execute the following command:
+- To identify the the list of Activities exported in the target application,execute the following command:
 
   	`run app.activity.info -a (package name)`
 
@@ -372,8 +372,8 @@ FCM is available for Android and also for iOS and Chrome. FCM provides two conne
 
 For a full dynamic analysis of an Android app FCM should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
 
-* [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
-* A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like [ettercap](https://ettercap.github.io). It can be installed by using brew on Mac OS X.
+- [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
+- A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like [ettercap](https://ettercap.github.io). It can be installed by using brew on Mac OS X.
 
 ```bash
 $ brew install ettercap
@@ -393,7 +393,7 @@ FCM can use two different protocols to communicate with the Google backend, eith
 
 The ports used by FCM for HTTP are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 or 5230 is used.
 
-* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
+- Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
 
 ```bash
 $ echo "
@@ -403,13 +403,13 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-* The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+- The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
 **XMPP**
 
 The [ports used by FCM over XMPP](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") are 5235 (Production) and 5236 (Testing).
 
-* Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
+- Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
 
 ```bash
 $ echo "
@@ -418,7 +418,7 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-* The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+- The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
 ##### Intercepting Messages
 
@@ -449,8 +449,8 @@ SSL Pinning is a mechanism to make dynamic analysis harder. Certificates provide
 For a black box test, there are several ways to bypass SSL Pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
-* Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI")
-* [Identify the SSL Pinning logic in smali code, patch it and reassemble the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+- Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI")
+- [Identify the SSL Pinning logic in smali code, patch it and reassemble the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
 
 Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 

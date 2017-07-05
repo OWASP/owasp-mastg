@@ -23,7 +23,7 @@ The <code>evaluatePolicy</code> function returns a boolean value indicating whet
 ```
 let myContext = LAContext()
 let myLocalizedReasonString = <#String explaining why app needs authentication#>
- 
+
 var authError: NSError? = nil
 if #available(iOS 8.0, OSX 10.12, *) {
     if myContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &authError) {
@@ -41,7 +41,7 @@ if #available(iOS 8.0, OSX 10.12, *) {
     // Fallback on earlier versions
 }
 ```
-*TouchID authentication using the Local Authentication Framework (official Apple code sample).* 
+*TouchID authentication using the Local Authentication Framework (official Apple code sample).*
 
 #####  Using Keychain Services for Local Authentication
 
@@ -68,11 +68,11 @@ The Local Authentication Framework makes it easy to add TouchID or similar authe
 
 ##### OWASP Mobile Top 10 2016
 
-* M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
 
-* 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- 4.6: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
