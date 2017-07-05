@@ -329,26 +329,26 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 ##### Security Profiling with Introspy
 
-Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of Substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
+Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of Substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls are sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
 
 After successful installation of IntroSpy, respring the iOS device and follow the below steps: 
 
-* Go to Settings and you will see a section for Introspy.
-* There should be two new menus in the device Settings. 
-	* Instrospy - Apps: The Apps menu allows you to select which applications will be profiled 
-	* Instrospy - Settings: The Settings menu defines which API groups are being hooked
-* Now, kill and restart the app you want to monitor 
-* Go to General > Settings > Introspy - Apps > Select the target app
+- Go to Settings and you will see a section for Introspy.
+- There should be two new menus in the device Settings. 
+	- Introspy - Apps: The Apps menu allows you to select which applications will be profiled 
+	- Introspy - Settings: The Settings menu defines which API groups are being hooked
+- Now, kill and restart the app you want to monitor 
+- Go to General > Settings > Introspy - Apps > Select the target app
 
 Once the target app has been selected, make sure it is running. If it is running, quit it and restart the app again. Make sure that your device is connected to your computer as we want to see the device logs that the Introspy analyzer will be logging. Also, open Xcode on your machine, go to Window -> Devices. Choose your device from the menu on the left and select Console. You will now be able to see the device logs while browsing the application. Please note that analyzer will work in the background to collect the information.
 
 ###### Generating HTML Reports with Introspy 
 
-* The tracer will store data about API calls made by applications in a database stored on the device (actually one in each folder). This database can be fed to a Python script call Introspy-Analyzer in order to generate HTML reports that make it a lot easier to review the data collected by the tracer. The script will also analyze and flag dangerous API calls in order to facilitate the process of identifying vulnerabilities within iOS applications. 
+- The tracer will store data about API calls made by applications in a database stored on the device (actually one in each folder). This database can be fed to a Python script called Introspy-Analyzer in order to generate HTML reports that make it a lot easier to review the data collected by the tracer. The script will also analyze and flag dangerous API calls in order to facilitate the process of identifying vulnerabilities within iOS applications. 
 
-* Apart from displaying the runtime  information about the app in the Console, Introspy also saves it in a sqlite database file on your device. Introspy consists of 2 modules, the Tracer and the Analyzer.
+- Apart from displaying the runtime  information about the app in the Console, Introspy also saves it in a sqlite database file on your device. Introspy consists of 2 modules, the Tracer and the Analyzer.
 
-* We can use the Tracer to perform runtime analysis of the application. The tracer can then store the results in a sqlite file which can be later  used by the analyzer for analysis, or it can also just log all the data to the device console. The Analyzer can also generate a well detailed HTML report from the database file.
+- We can use the Tracer to perform runtime analysis of the application. The tracer can then store the results in a sqlite file which can be later  used by the analyzer for analysis, or it can also just log all the data to the device console. The Analyzer can also generate a well detailed HTML report from the database file.
 
 To generate HTML report, follow the below steps: 
 
@@ -361,6 +361,10 @@ To generate HTML report, follow the below steps:
 3. Introspy will ask you to select a database file. These database files are created for each application that we had selected from the Settings. Select the database for the target app 
 4. The database file will be saved in the present directory as well as a folder with the name Target-Report will be created
 5. Navigate to output folder and open report.html. Introspy displays the complete information in a much more presentable format. We can see the list of traced calls along with the arguments that were passed. 
+
+- References 
+	1. [Introspy](https://github.com/iSECPartners/Introspy-iOS)
+	2. [Introspy Analyzer](https://github.com/iSECPartners/Introspy-Analyzer)
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -511,4 +515,4 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is also a useful resource.
