@@ -32,7 +32,11 @@ Mobile apps on Android and iOS both use SQLite databases as a means of local dat
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
 
+<<<<<<< HEAD
 In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
+=======
+In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
+>>>>>>> e8fcbda5cf8eeb77d8b1e7cbb8e9564de4224cce
 
 ###### Local File Inclusion
 
@@ -74,16 +78,18 @@ Android apps are for the most part implemented in Java, which is inherently safe
 
 ##### Input Fuzzing
 
-The process of fuzzing is to repeatedly feeding an application with various combinations of input value, with the goal of finding security vulnerabilities in the input-parsing code. There were instances when the application simply crashes, but also were also occasions when it did not crash but behave in a manner which the developers did not expect them to be, which may potentially lead to exploitation by attackers.  
+Input fuzzing is a black-box software testing technique in which malformed data is repeatedly sent to an application injection, usually in an automated fashion. At the same time, the application is monitored for malfunctions and crashes. If and when crashes occur, the hope (at least for security testers) is that the conditions leading to the crash point to an exploitable security flaw.
 
-Fuzzing, is a method for testing software input validation by feeding it intentionally malformed input. Below are the steps in performing the fuzzing:
+Fuzzers typically are used to generate structured inputs in a semi-correct fashion. The idea is to create inputs that are at least partially accepted by the target application, while at the same time containing invalid elements that potentially trigger input processing flaws and unexpected program behaviors. A good fuzzer creates inputs that triggers a large percentage of possible program execution paths (high coverage). Inputs are generated either from scratch ("Generation-based") or by mutation known, valid input data ("mutation-based").
+
+The fuzzing process involves the following steps:
 
 - Identifying a target
 - Generating malicious inputs
 - Test case delivery
 - Crash monitoring
 
-Input fuzzing will not be discussed in great detail in this guide. Refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing) for more information.
+For more information, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
 
 Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
 
