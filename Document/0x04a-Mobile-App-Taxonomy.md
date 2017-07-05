@@ -28,11 +28,11 @@ A web-to-native abstraction layer enables access to device capabilities for hybr
 
 Following is a non-exhaustive list of more popular frameworks for developing Hybrid Apps:
 
-* [Apache Cordova](https://cordova.apache.org/)
-* [Framework 7](http://framework7.io/)
-* [Ionic](https://ionicframework.com/)
-* [jQuery Mobile](https://jquerymobile.com/)
-* [Native Script](https://www.nativescript.org/)
-* [Onsen UI]( https://onsen.io/)
-* [React Native](http://www.reactnative.com/)
-* [Sencha Touch](https://www.sencha.com/products/touch/)
+- [Apache Cordova](https://cordova.apache.org/)
+- [Framework 7](http://framework7.io/)
+- [Ionic](https://ionicframework.com/)
+- [jQuery Mobile](https://jquerymobile.com/)
+- [Native Script](https://www.nativescript.org/)
+- [Onsen UI]( https://onsen.io/)
+- [React Native](http://www.reactnative.com/)
+- [Sencha Touch](https://www.sencha.com/products/touch/)

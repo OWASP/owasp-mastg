@@ -1,8 +1,8 @@
 ## iOS Platform Overview
 
-iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access. 
+iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad, and iPod Touch. It is a derivate of Mac OS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their Desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access.
 
-iOS is more "closed" than Android: Apple also keeps tight control over which apps are allowed to run on iOS devices, and side-loading of apps is only possible with jailbreak or complicated workarounds. 
+iOS is more "closed" than Android: Apple also keeps tight control over which apps are allowed to run on iOS devices, and side-loading of apps is only possible with jailbreak or complicated workarounds.
 
 Apps are sandboxed just like in Android, but in contrast to Android's Binder IPC, iOS offers very little IPC functionality. This means more limited options for developers, but also less potential attack surface.
 
@@ -19,10 +19,10 @@ The iOS security architecture consists of five core features.
 - Code Signing
 - Encryption and Data Protection
 - General Exploit Mitigations
- 
+
 #### Hardware Security
 
-The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys. 
+The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys.
 
 The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encryption. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
@@ -30,30 +30,30 @@ To enable secure deletion of sensitive data on flash memory, iOS devices include
 
 #### Secure Boot
 
-When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating root of trust. In the next step, the Boot ROM code checks if signature of iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of next boot stage, which is iOS kernel. If any of these step failed, the boot process is immediately terminated and the devices enters recovery mode and displays "Connect to iTunes" screen. If, however, the Boot ROM fails to load, the device enters special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to original state. There will be no sign of activity of the device, i.e. the screen will not display anything. 
+When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating root of trust. In the next step, the Boot ROM code checks if signature of iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of next boot stage, which is iOS kernel. If any of these step failed, the boot process is immediately terminated and the devices enters recovery mode and displays "Connect to iTunes" screen. If, however, the Boot ROM fails to load, the device enters special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to original state. There will be no sign of activity of the device, i.e. the screen will not display anything.
 
-The entire process is called "Secure Boot Chain" and ensures that it is running only on Apple-manufactured devices. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware. 
-All new devices that have Secure Enclave coprocessor, i.e. starting from iPhone 5s also use secure boot process to ensure that the firmware within Secure Enclave is trusted. 
+The entire process is called "Secure Boot Chain" and ensures that it is running only on Apple-manufactured devices. The Secure Boot chain consists of kernel, bootloaders, kernel extensions and baseband firmware.
+All new devices that have Secure Enclave coprocessor, i.e. starting from iPhone 5s also use secure boot process to ensure that the firmware within Secure Enclave is trusted.
 
 #### Sandbox
 
 The sandbox is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
 
-The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'. 
-iPhone Dev Wiki (http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox. 
+The iOS Sandbox is derived from TrustedBSD MAC framework implemented as kernel extension 'Seatbelt'.
+iPhone Dev Wiki (http://iphonedevwiki.net/index.php/Seatbelt) provides some (a bit outdated) information about the sandbox.
 
 As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox.
 
 #### Code Signing
 
-Application code signing is different than in Android. In the latter you can sign with self-signed key and main purpose would be to establish root of trust for future application updates. In other words, to make sure that only the original developer of a given application would be able to update it. In Android, applications can be distributed freely as APK files or from Google Play. 
+Application code signing is different than in Android. In the latter you can sign with self-signed key and main purpose would be to establish root of trust for future application updates. In other words, to make sure that only the original developer of a given application would be able to update it. In Android, applications can be distributed freely as APK files or from Google Play.
 On the contrary, Apple allows app distribution only via App Store.
 
 There exist at least two scenarios where you can install an application without App Store:
 1. via Enterprise Mobile Device Management. This requires the company to have company-wise certificate signed by Apple
 2. via sideloading - i.e. by signing the app with developer's certificate and installing it on one device. There is an upper limit of number of devices that can be used with the same certificate
 
-Developer Profile and Apple-signed certificate is required in order to deploy and run an application. 
+Developer Profile and Apple-signed certificate is required in order to deploy and run an application.
 Developers need to register with Apple and join the Apple Developer Program and pay subscription fee (https://developer.apple.com/support/compare-memberships/) to get full range of development and deployment possibilites. Free account still allows you to compile and deploy an application via sideload.  
 
 #### Encryption and Data Protection
@@ -74,7 +74,7 @@ iOS currently implements two specific security mechanisms, namely address space 
 
 ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked.
 
-Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions. 
+Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions.
 
 <!-- TODO [Further develop section on iOS General Exploit Mitigation] -->
 
@@ -86,7 +86,7 @@ Thus, this makes the specific memory addresses of functions and libraries hard t
 - [Apple iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 - Jonathan Levin, Mac OS X and iOS Internals [#levin]
 
-### Software Development on iOS 
+### Software Development on iOS
 
 As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. XCode Integrated Development Environment (IDE) is used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
 
@@ -100,27 +100,27 @@ iOS applications are distributed in IPA (iOS App Store Package) archives. This I
 
 An IPA has a built-in structure for iTunes and App Store to recognize, The example below shows the high level structure of an IPA.
 
-* /Payload/ folder contains all the application data. We will come back to the content of this folder in more detail.
-* /Payload/Application.app contains the application data itself (ARM compiled code) and associated static resources
-* /iTunesArtwork is a 512x512 pixel PNG images used as the application’s icon
-* /iTunesMetadata.plist contains various bits of information, ranging from the developer's name and ID, the bundle identifier, copyright information, genre, the name of the app, release date, purchase date, etc.
-* /WatchKitSupport/WK is an example of an extension bundle. This specific bundle contains the extension delegate and the controllers for managing the interfaces and for responding to user interactions on an Apple watch.
+- /Payload/ folder contains all the application data. We will come back to the content of this folder in more detail.
+- /Payload/Application.app contains the application data itself (ARM compiled code) and associated static resources
+- /iTunesArtwork is a 512x512 pixel PNG images used as the application’s icon
+- /iTunesMetadata.plist contains various bits of information, ranging from the developer's name and ID, the bundle identifier, copyright information, genre, the name of the app, release date, purchase date, etc.
+- /WatchKitSupport/WK is an example of an extension bundle. This specific bundle contains the extension delegate and the controllers for managing the interfaces and for responding to user interactions on an Apple watch.
 
 #### IPA Payloads - A Closer Look
 
 Let’s take a closer look now at the different files that are to be found in the ZIP compressed IPA container. It is necessary to understand that this is the raw architecture of the bundle container and not the definitive form after installation on the device. It uses a relatively flat structure with few extraneous directories in an effort to save disk space and simplify access to the files. The bundle contains the application executable and any resources used by the application (for instance, the application icon, other images, and localized content) in the top-level bundle directory.
 
-* **MyApp**: The executable containing the application’s code, which is compiled and not in a ‘readable’ format.
-* **Application**: Icons used at specific times to represent the application.
-* **Info.plist**: Containing configuration information, such as its bundle ID, version number, and display name.
-* **Launch images**: Images showing the initial interface of the application in a specific orientation. The system uses one of the provided launch images as a temporary background until the application is fully loaded.
-* **MainWindow.nib**: Contains the default interface objects to load at application launch time. Other interface objects are then either loaded from additional nib files or created programmatically by the application.
-* **Settings.bundle**: Contains any application-specific preferences using property lists and other resource files to configure and display them.
-* **Custom resource files**: Non-localized resources are placed at the top level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources consist of nib files, images, sound files, configuration files, strings files, and any other custom data files you need for your application.
+- **MyApp**: The executable containing the application’s code, which is compiled and not in a ‘readable’ format.
+- **Application**: Icons used at specific times to represent the application.
+- **Info.plist**: Containing configuration information, such as its bundle ID, version number, and display name.
+- **Launch images**: Images showing the initial interface of the application in a specific orientation. The system uses one of the provided launch images as a temporary background until the application is fully loaded.
+- **MainWindow.nib**: Contains the default interface objects to load at application launch time. Other interface objects are then either loaded from additional nib files or created programmatically by the application.
+- **Settings.bundle**: Contains any application-specific preferences using property lists and other resource files to configure and display them.
+- **Custom resource files**: Non-localized resources are placed at the top level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources consist of nib files, images, sound files, configuration files, strings files, and any other custom data files you need for your application.
 
 A language.lproj folder is defined for each language that the application supports. It contains the a storyboard and strings files.
-* A storyboard is a visual representation of the user interface of an iOS application, showing screens of content and the connections between those screens.
-* The strings file format consists of one or more key-value pairs along with optional comments.
+- A storyboard is a visual representation of the user interface of an iOS application, showing screens of content and the connections between those screens.
+- The strings file format consists of one or more key-value pairs along with optional comments.
 
 ![iOS App Folder Structure](http://bb-conservation.de/sven/iOS_project_folder.png)
 
@@ -130,10 +130,10 @@ On a jailbroken device, you can recover the IPA for an installed iOS app using I
 
 Since iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/ folder. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since iOS 8 this has changed however, so we will see that the static bundle and the application data folders are now stored in different locations on the filesystem. These folders contain information that we will need to closely examine during application security assessments.
 
-* /var/mobile/Containers/Bundle/Application/[UUID]/Application.app contains the previously mentioned application.app data and stores the static content as well as the ARM compiled binary of the application. The content of this folder will be used to validate the code signature.
-* /var/mobile/Containers/Data/Application/[UUID]/Documents contains all the data stored for the application itself. The creation of this data is initiated by the application’s end user.
-* /var/mobile/Containers/Data/Application/[UUID]/Library contains files necessary for the application e.g. caches, preferences, cookies, property list (plist) configuration files, etc.
-* /var/mobile/Containers/Data/Application/[UUID]/Temp contains temporary files which do not need persistence in between application launches.
+- /var/mobile/Containers/Bundle/Application/[UUID]/Application.app contains the previously mentioned application.app data and stores the static content as well as the ARM compiled binary of the application. The content of this folder will be used to validate the code signature.
+- /var/mobile/Containers/Data/Application/[UUID]/Documents contains all the data stored for the application itself. The creation of this data is initiated by the application’s end user.
+- /var/mobile/Containers/Data/Application/[UUID]/Library contains files necessary for the application e.g. caches, preferences, cookies, property list (plist) configuration files, etc.
+- /var/mobile/Containers/Data/Application/[UUID]/Temp contains temporary files which do not need persistence in between application launches.
 
 The following figure represents the application’s folder structure:
 
@@ -174,7 +174,7 @@ In line with the "crystal prison" theme, sandboxing has been is a core security 
 
 In contrast to Android, iOS apps do not have preassigned permissions. Instead, the user is asked to grant permission during runtime when an app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
 
-Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription). 
+Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
 
 The following APIs [require permission from the user](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
 
@@ -196,4 +196,3 @@ The following APIs [require permission from the user](https://www.apple.com/busi
 ### References
 
 - [#levin] - Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
-

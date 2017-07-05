@@ -17,8 +17,8 @@ The primary goal of cryptography is to provide confidentiality, data integrity, 
 
 Two uses of cryptography are covered in other chapters:
 
-* Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
-* Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
+- Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
+- Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
 
 
 ### Testing for Custom Implementations of Cryptography
@@ -62,13 +62,13 @@ The source code should be checked that cryptographic algorithms are up to date a
 
 Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as:
 
-* [DES, 3DES](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
-* RC2
-* RC4
-* [BLOWFISH](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
-* MD4
-* MD5
-* SHA1 and others.
+- [DES, 3DES](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
+- RC2
+- RC4
+- [BLOWFISH](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014")
+- MD4
+- MD5
+- SHA1 and others.
 
 On Android (via Java Cryptography APIs), selecting an algorithm is done by requesting an instance of the `Cipher` (or other primitive) by passing a string containing the algorithm name. For example, `Cipher cipher = Cipher.getInstance("DES");`. On iOS, algorithms are typically selected using predefined constants defined in CommonCryptor.h, e.g., `kCCAlgorithmDES`. Thus, searching the source code for the presence of these algorithm names would indicate that they are used. Note that since the constants on iOS are numeric, an additional check needs to be performed to check whether the algorithm values sent to CCCrypt function map to one of the deprecated/insecure algorithms.
 

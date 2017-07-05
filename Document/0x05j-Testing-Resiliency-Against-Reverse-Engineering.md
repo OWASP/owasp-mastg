@@ -198,7 +198,7 @@ If root detection is missing or too easily bypassed, make suggestions in line wi
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -758,7 +758,7 @@ Another way of providing integrity is by signing the obtained byte-array, and ad
 
 ##### Bypassing File Integrity Checks
 
-*When trying to bypass the application-source integrity checks* 
+*When trying to bypass the application-source integrity checks*
 
 1. Patch out the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the respective bytecode or native code it with NOP instructions.
 2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
@@ -794,7 +794,7 @@ A similar approach holds here, but now answer the following questions:
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -1027,7 +1027,7 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -1039,7 +1039,7 @@ N/A
 
 ##### Tools
 
-* frida - https://www.frida.re/
+- frida - https://www.frida.re/
 
 ### Testing Emulator Detection
 
@@ -1103,7 +1103,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 #### Effectiveness Assessment
 
-Install and run the app in the emulator. The app should detect this and terminate, or refuse to run the functionality that is meant to be protected. 
+Install and run the app in the emulator. The app should detect this and terminate, or refuse to run the functionality that is meant to be protected.
 
 Work on bypassing the defenses and answer the following questions:
 
@@ -1118,7 +1118,7 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -1196,7 +1196,7 @@ Make sure that all file-based detection of reverse engineering tools is disabled
 Work on bypassing the checks using the following techniques:
 
 1. Patch out the integrity checks. Disable the unwanted behavior by overwriting the respective bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook APIs to hook the APIs used for detection and return fake values. 
+2. Use Frida or Xposed to hook APIs to hook the APIs used for detection and return fake values.
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
@@ -1204,7 +1204,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -1447,7 +1447,7 @@ The following three identifiers can be possibly used.
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
@@ -1459,8 +1459,8 @@ N/A
 
 ##### Tools
 
-* ADB & DDMS
-* Android Emulator or two rooted devices.
+- ADB & DDMS
+- Android Emulator or two rooted devices.
 
 ### Testing Obfuscation
 
@@ -1472,7 +1472,7 @@ In this test case, we describe a few basic obfuscation techniques that are commo
 
 #### Effectiveness Assessment
 
-Attempt to decompile the bytecode and disassemble any included libary files, and make a reasonable effort to perform static analysis. At the very least, you should not be able to easily discern the app's core functionality (i.e., the functionality meant to be obfuscated). Verify that: 
+Attempt to decompile the bytecode and disassemble any included libary files, and make a reasonable effort to perform static analysis. At the very least, you should not be able to easily discern the app's core functionality (i.e., the functionality meant to be obfuscated). Verify that:
 
 - Meaningful identifiers such as class names, method names and variable names have been discarded;
 - String resources and strings in binaries are encrypted;
@@ -1484,7 +1484,7 @@ For a more detailed assessment, you need to have a detailed understanding of the
 
 ##### OWASP Mobile Top 10 2016
 
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
 
