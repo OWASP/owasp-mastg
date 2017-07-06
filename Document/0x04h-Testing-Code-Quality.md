@@ -4,21 +4,17 @@
 
 #### Overview
 
-Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could be able to retrieve arbitrary database records or manipulate the content of the database.
+Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services (including the endpoints connected to by mobile apps). They may also occur in the mobile app itself, but exploitable instances are much less common, as mobile apps usually act as clients and simply don't offer the attack surface necessary for viable attacks. For example, while a mobile app might query a local database, such mobile databases hardly store data that could usefully be extracted through SQL injection.
+This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is . For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
 
-Nevertheless, viable attack scenarios are at least conceivable, and proper input validation should generally performed as practice.
+Injection attacks in mobile apps are more likely to occur through IPC interfaces (i.e. a malicious app targeting a vulnerable app) than being performed through the user interface or network services. Possible entry points include:
 
-##### Entry Points
-
-Input from any untrusted source should be validated. Possible input vectors include the following:
-
-- User interface
-- URL schemes
-- Input files received via Bluetooth, AirDrop or other means
+- IPC calls
+- Custom URL schemes
+- Input files received via Bluetooth, NFC, or other means
 - Pasteboards
-- Application extensions
+- User interface
 
 ##### Common Injection Types
 
@@ -32,13 +28,7 @@ Mobile apps on Android and iOS both use SQLite databases as a means of local dat
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
 
-<<<<<<< HEAD
 In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
-=======
-In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
->>>>>>> e8fcbda5cf8eeb77d8b1e7cbb8e9564de4224cce
-
-###### Local File Inclusion
 
 #### Static Analysis
 
