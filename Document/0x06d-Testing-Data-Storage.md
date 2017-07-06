@@ -122,6 +122,15 @@ The following steps can be used to identify how the application stores data loca
 3. Perform a grep command of the data that you have stored, such as: `grep -iRn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
+
+It is also possible to analyze the app data directory on a non-jailbroken iOS device using third party applications such as [iMazing](https://imazing.com "iMazing").
+
+1. Proceed to trigger functionality that stores potential sensitive data.
+2. Connect the iOS device to your workstation and launch the iMazing application.
+3. Select "Apps" and right-click on the desired iOS application, select "Extract App".
+4. Browse to the output directory and locate the $APP_NAME.imazingapp. Rename it to $APP_NAME.zip.
+5. Unpack the renamed .zip file and the application data can now be analyzed.
+
 Important filesystem locations are:
 
 - AppName.app
@@ -166,11 +175,6 @@ The keychain file is located at:
 ```
 /private/var/Keychains/keychain-2.db
 ```
-
-##### Non-Jailbroken iOS device
-
--- TODO, add methods on how to analyse the data directory without a jailbreak 
-
 
 #### Remediation
 
