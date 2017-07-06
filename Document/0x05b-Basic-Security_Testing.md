@@ -358,6 +358,89 @@ Successfully installed 1 modules, 0 already installed
 This will install any module that matches your query. Newly installed modules are dynamically loaded into the
 console and are available for immediate use.
 
+#### Network Monitoring/Sniffing
+
+Dynamic analysis by using an interception proxy can be straight forward if standard libraries in Android are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like [Xamarin](https://developer.xamarin.com/guides/android/ "Xamarin.Android guides")) are used, where the produced apps do not use the local proxy settings of your Android phone? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
+
+On Android it is possible to [remotely sniff all traffic in real-time by using tcpdump, netcat (nc) and Wireshark](http://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First ensure you have the latest version of [Android tcpdump](http://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+
+```
+# adb root
+# adb remount
+# adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
+```
+
+When executing `adb root` you might get an error saying `adbd cannot run as root in production builds`. If that's the case install tcpdump like this:
+
+```
+# adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
+# adb shell
+# su
+$ mount -o rw,remount /system;
+$ cp /data/local/tmp/tcpdump /system/xbin/
+```
+
+> Remember: In order to use `tcpdump` you need root privileges on the phone!
+
+`tcpdump` should now be working, so execute it once to see if it does. Once a few packets are coming in you can stop it by pressing CTRL+c.
+
+```
+# tcpdump
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
+04:54:06.590751 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+04:54:09.659658 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+04:54:10.579795 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+^C
+3 packets captured
+3 packets received by filter
+0 packets dropped by kernel
+```
+
+The first step in order to do remote sniffing of the network traffic on the Android phone by is executing `tcpdump` and pipe its output to netcat (nc):
+
+```
+$ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
+```
+
+Usually you want to monitor the wlan0 interface, in case you need another interface just list the available ones with `$ ip addr`.
+
+In order to access port 11111 opened by netcat, we need to forward the port via adb to your machine.
+
+```
+$ adb forward tcp:11111 tcp:11111
+```
+
+With the following command you are connecting to the forwarded port available on your local machine via netcat and piping it to Wireshark.
+
+```
+$ nc localhost 11111 | wireshark -k -S -i -
+```
+
+Wireshark should start and you should see the traffic from the wlan0 interface from the Android phone.
+
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="350px"/>
+
+#### Xamarin
+
+Xamarin is a mobile application development platform that is capable of producing [native Android apps](https://developer.xamarin.com/guides/android/getting_started/ "Getting Started with Android") by using Visual Studio and C# as programming language.
+
+When testing a Xamarin app and when you are trying to set the system proxy in the wifi settings you won't be able to see any requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your Android phone. There are two ways to resolve this:
+
+1. Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate()` or `Main()` method and re-create the app:
+
+```
+WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
+```
+
+2. Use ettercap in order to get a man-in-the-middle position (MITM). When being MITM we only need to redirect port 443 to our interception proxy. See the next section about "Firebase/Google Cloud Messaging (FCM/GCM)" for the setup. The only difference is, that only port 443 need to be redirected to your interception proxy running on localhost.
+
+```bash
+$ echo "
+rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
 Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) and is a free service offered by Google and allows to send messages between an application server and client apps. The server and client app are communicating via the FCM/GCM connection server that is handling the downstream and upstream messages.
@@ -425,7 +508,7 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
 
 ```bash
-$ ettercap -T -i eth0 -M arp:remote /192.168.0.1// /192.168.0.105//
+$ ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
 Start using the app and trigger a function that uses FCM. You should see HTTP messages showing up in your interception proxy.
