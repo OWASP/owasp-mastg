@@ -207,7 +207,20 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
 
 #### Static Analysis
 
--- TODO [Add content on white-box testing of "Verifying that the App is Properly Signed"] --
+##### XML Injection
+
+The iPhone SDK comes with two libraries for XML parsing.
+
+- <code>NSXMLParser</code> - an objective-C class provides a SAX parser; 
+- libxml2 - an XML API written in C.
+
+Besides these two, a number of open source libraries is available. Examples include [BXML, TouchXML, KissXML, TinyXML, and GDataXML](https://www.raywenderlich.com/553/xml-tutorial-for-ios-how-to-choose-the-best-xml-parser-for-your-iphone-project "Ray Wenderlich Blog - How To Choose The Best XML Parser for Your iPhone Project").
+
+```objective-c
+NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
+```
+
+External entity resolution is disabled by default in both parsers. In NSXMLParser, it can be activated explicitly by setting the <code>setShouldResolveExternalEntities</code> option.
 
 #### Dynamic Analysis
 
