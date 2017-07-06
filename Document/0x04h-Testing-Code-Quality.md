@@ -8,14 +8,6 @@ Injection flaws are a class of security vulnerability that occurs when user inpu
 
 This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is . For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
 
-Injection attacks in mobile apps are more likely to occur through IPC interfaces (i.e. a malicious app targeting a vulnerable app) than being performed through the user interface or network services. Possible entry points include:
-
-- IPC calls
-- Custom URL schemes
-- Input files received via Bluetooth, NFC, or other means
-- Pasteboards
-- User interface
-
 ##### Common Injection Types
 
 ###### SQL Injection
@@ -30,13 +22,31 @@ In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Inj
 
 In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
 
-#### Static Analysis
+#### Finding Injection Flaws
 
-#### Dynamic Analysis
+Injection attacks in mobile apps are more likely to occur through IPC interfaces (i.e. a malicious app targeting a vulnerable app) than being performed through the user interface or network services. The analysis starts either by:
+
+- Identifying possible entry points for untrusted input, and then tracing those inputs to see whether potentially vulnerable functions are reached, or
+- Identifying known dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input reaches the queries.
+
+In a manual security review, you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
+
+- IPC calls
+- Custom URL schemes
+- Input files received via Bluetooth, NFC, or other means
+- Pasteboards
+- User interface
+
+Entry points and vulnerable APIs are operating system specific, so we'll describe them in more detail in the OS-specific testing guides.
 
 #### Remediation
 
-- Verify that File System Access is disabled for any WebViews.
+In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values.
+
+Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
+
+- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate.
+
 
 #### References
 
