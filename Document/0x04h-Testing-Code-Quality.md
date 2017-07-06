@@ -47,7 +47,6 @@ Besides that, in many cases vulnerabilities can be prevented by following certai
 
 - Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate.
 
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -66,11 +65,17 @@ Besides that, in many cases vulnerabilities can be prevented by following certai
 
 #### Overview
 
-Android apps are for the most part implemented in Java, which is inherently safe from all kinds of memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug.
+Memory corruption bugs are a popular mainstay with hackers. In this class of bugs, some programming error leads to a condition where contents of a unintended memory location are modified. Under the right conditions, this unintended behavior can be intentionally exploited to hijack the execution flow and execute code injected by the attacker. This kind of vulnerability can be caused in a number of ways.
 
-###### Buffer Overflows
+- Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, of course they haven't completely vanished.
 
-###### Format String Vulnerabilities
+- Out-of-bounds-access: 
+
+- Using freed memory and null pointers: 
+
+- Format string vulnerabilities:
+
+Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
 
 #### Static Analysis
 
