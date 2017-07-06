@@ -29,7 +29,7 @@ Injection attacks in mobile apps are more likely to occur through IPC interfaces
 - Identifying possible entry points for untrusted input, and then tracing those inputs to see whether potentially vulnerable functions are reached, or
 - Identifying known dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input reaches the queries.
 
-In a manual security review, you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
+In a manual security review you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
 
 - IPC calls
 - Custom URL schemes
@@ -69,13 +69,17 @@ Memory corruption bugs are a popular mainstay with hackers. In this class of bug
 
 - Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, they haven't completely vanished, and are still worth testing for.
 
-- Out-of-bounds-access: In this type of issue, buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
+- Out-of-bounds-access: Buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
+
+- Dangling pointers: These occur when an object that has an incoming reference is deleted or deallocated, but the the pointer still points to the memory location of the deallocated object. If the program later uses the pointer to call a virtual function, of the (already deallocated) object, it is possible to hijack execution by setting up memory such that the original vtable pointer is overwritten. Alternatively, if the dangling pointer is used to read or write object variables, 
 
 - Use-after-free: 
 
 - Format string vulnerabilities:
 
 Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
+
+On iOS, data execution prevention (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then call <code>mprotect</code> to change memory protection settings on the shellcode.
 
 #### Static Analysis
 
