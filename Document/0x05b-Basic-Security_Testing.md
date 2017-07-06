@@ -360,7 +360,7 @@ console and are available for immediate use.
 
 #### Network Monitoring/Sniffing
 
-Dynamic analysis by using an interception proxy can be straight forward if standard libraries in Android are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like [Xamarin](https://developer.xamarin.com/guides/android/ "Xamarin.Android guides")) are used, where the produced apps do not use the local proxy settings of your Android phone? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
+Dynamic analysis by using an interception proxy can be straight forward if standard libraries in Android are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like [Xamarin](https://developer.xamarin.com/guides/android/ "Xamarin.Android guides") are used, where the produced apps do not use the local proxy settings of your Android phone? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
 
 On Android it is possible to [remotely sniff all traffic in real-time by using tcpdump, netcat (nc) and Wireshark](http://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First ensure you have the latest version of [Android tcpdump](http://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
@@ -508,12 +508,14 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
 
 ```bash
-$ ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
+$ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
 Start using the app and trigger a function that uses FCM. You should see HTTP messages showing up in your interception proxy.
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
+
+> When using ettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
 Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay) that visualize XMPP traffic.
 
