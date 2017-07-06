@@ -486,4 +486,20 @@ PID  Name
 
 ##### Troubleshooting.
 
+<<<<<<< HEAD
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
+=======
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is also a useful resource.
+
+##### Network Monitoring/Sniffing on Non-Jailbroken Devices
+
+Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
+
+On iOS it is possible to remotely sniff all traffic in real-time by using Wireshark and creating a Remote Virtual Interface for your iOS device. First ensure you have the Wireshark installed on your OSX workstation.
+
+1. Connect your iOS device to your OSX workstation via a USB cable.
+2. Ensure that both your iOS device and your OSX workstation are connected to the same network.
+3. Open up "Terminal" on your OSX and enter the following command: rvictl -s x where x is the UDID of your iOS device. You can find the UDID of your iOS device via iTunes
+4. Launch Wireshark and select "rvi0" as the Capture Interface.
+5. Filter the traffic accordingly to display what you want to monitor. (ip.addr == $IP_ADDR && $PROTOCOL)
+>>>>>>> 3285282dcf042f5757f9597882ab9ce01a0a3bd0
