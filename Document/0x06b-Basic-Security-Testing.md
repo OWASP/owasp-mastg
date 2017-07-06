@@ -239,13 +239,13 @@ Portswigger also provides a good [tutorial on setting up an iOS Device to work w
 
 #### Bypassing Certificate Pinning
 
-When you try to intercept the mobile app and server communication you might fail due to certificate pinning. Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+When you try to intercept the mobile app and server communication you might fail due to certificate pinning. the Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
 
 Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
 This protects against two main attack scenarios:
 
-- Compromised CA issuing certificate for our domain to a third-party
-- Phishing attacks that would add a third-party root CA to device's trust store
+* Compromised CA issuing certificate for our domain to a third-party
+* Phishing attacks that would add a third-party root CA to device's trust store
 
 The simplest method is to use `SSL Kill Switch` (can be installed via Cydia store), which will hook on all high-level API calls and bypass certificate pinning. There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning are:
 
@@ -327,44 +327,15 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
+<!--
+
 ##### Security Profiling with Introspy
 
-Introspy is an open-source security profiler for iOS released by iSecPartners. Built on top of Substrate, it can be used to log security-sensitive API calls on a jailbroken device. The recorded API calls are sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer. 
+Intospy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer <code>[32]</code>.
 
-After successful installation of IntroSpy, respring the iOS device and follow the below steps: 
+-->
 
-- Go to Settings and you will see a section for Introspy.
-- There should be two new menus in the device Settings. 
-	- Introspy - Apps: The Apps menu allows you to select which applications will be profiled 
-	- Introspy - Settings: The Settings menu defines which API groups are being hooked
-- Now, kill and restart the app you want to monitor 
-- Go to General > Settings > Introspy - Apps > Select the target app
-
-Once the target app has been selected, make sure it is running. If it is running, quit it and restart the app again. Make sure that your device is connected to your computer as we want to see the device logs that the Introspy analyzer will be logging. Also, open Xcode on your machine, go to Window -> Devices. Choose your device from the menu on the left and select Console. You will now be able to see the device logs while browsing the application. Please note that analyzer will work in the background to collect the information.
-
-###### Generating HTML Reports with Introspy 
-
-- The tracer will store data about API calls made by applications in a database stored on the device (actually one in each folder). This database can be fed to a Python script called Introspy-Analyzer in order to generate HTML reports that make it a lot easier to review the data collected by the tracer. The script will also analyze and flag dangerous API calls in order to facilitate the process of identifying vulnerabilities within iOS applications. 
-
-- Apart from displaying the runtime  information about the app in the Console, Introspy also saves it in a sqlite database file on your device. Introspy consists of 2 modules, the Tracer and the Analyzer.
-
-- We can use the Tracer to perform runtime analysis of the application. The tracer can then store the results in a sqlite file which can be later  used by the analyzer for analysis, or it can also just log all the data to the device console. The Analyzer can also generate a well detailed HTML report from the database file.
-
-To generate HTML report, follow the below steps: 
-
-1. Install Introspy analyzer on computer:
-	1. As a package ```pip install git+https://github.com/iSECPartners/Introspy-Analyzer.git```
-	2. Or locally, ```git clone https://github.com/iSECPartners/Introspy-Analyzer.git```
-2. Databases can be fetched directly by Introspy-Analyzer over SSH by running following command: 
-
-	`python -m introspy -p ios -o output_dir -f <iOSDEVICE_IP>`
-3. Introspy will ask you to select a database file. These database files are created for each application that we had selected from the Settings. Select the database for the target app 
-4. The database file will be saved in the present directory as well as a folder with the name Target-Report will be created
-5. Navigate to output folder and open report.html. Introspy displays the complete information in a much more presentable format. We can see the list of traced calls along with the arguments that were passed. 
-
-- References 
-	1. [Introspy](https://github.com/iSECPartners/Introspy-iOS)
-	2. [Introspy Analyzer](https://github.com/iSECPartners/Introspy-Analyzer)
+<!-- TODO [Write an IntroSpy howto] -->
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -515,4 +486,17 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/contehttps://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burpnt/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is also a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
+
+
+##### Network Monitoring/Sniffing
+
+Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
+
+On iOS it is possible to remotely sniff all traffic in real-time by using Wireshark and [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS workstation.
+
+1. Connect your iOS device to your macOS workstation via a USB cable.
+2. Ensure that both your iOS device and your macOS workstation are connected to the same network.
+3. Open up "Terminal" on your macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device.  You can find the UDID of your iOS device via iTunes.
+4. Launch Wireshark and select "rvi0" as the capture interface.
+5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example `ip.addr == 192.168.1.1 && http`.

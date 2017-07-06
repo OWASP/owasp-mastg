@@ -65,13 +65,13 @@ Besides that, in many cases vulnerabilities can be prevented by following certai
 
 #### Overview
 
-Memory corruption bugs are a popular mainstay with hackers. In this class of bugs, some programming error leads to a condition where contents of a unintended memory location are modified. Under the right conditions, this unintended behavior can be intentionally exploited to hijack the execution flow and execute code injected by the attacker. This kind of vulnerability can be caused in a number of ways.
+Memory corruption bugs are a popular mainstay with hackers. In this class of bugs, some programming error leads to a condition where contents of a unintended memory location are modified. Under the right conditions, attackers can exploit this behavior to hijack the execution flow  of the vulnerable program and execute arbitrary code. This kind of vulnerability can occur in a number of ways.
 
-- Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, of course they haven't completely vanished.
+- Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, they haven't completely vanished, and are still worth testing for.
 
-- Out-of-bounds-access: 
+- Out-of-bounds-access: In this type of issue, buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
 
-- Using freed memory and null pointers: 
+- Use-after-free: 
 
 - Format string vulnerabilities:
 
