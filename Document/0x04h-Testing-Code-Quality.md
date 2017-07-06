@@ -4,21 +4,9 @@
 
 #### Overview
 
-Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could be able to retrieve arbitrary database records or manipulate the contents of the database.
+Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services (including the endpoints connected to by mobile apps). They may also occur in the mobile app itself, but exploitable instances are much less common, as mobile apps usually act as clients and simply don't offer the attack surface necessary for viable attacks. For example, while a mobile app might query a local database, such mobile databases hardly store data that could usefully be extracted through SQL injection.
-
-Nevertheless, viable attack scenarios are at least conceivable, and proper input validation should generally performed as practice.
-
-##### Entry Points
-
-Input from any untrusted source should be validated. Possible input vectors include the following:
-
-- User interface
-- URL schemes
-- Input Files received via Bluetooth, AirDrop or other means
-- Pasteboards
-- Application extensions
+This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is . For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
 
 ##### Common Injection Types
 
@@ -32,17 +20,32 @@ Mobile apps on Android and iOS both use SQLite databases as a means of local dat
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
 
-In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and  on Android, the input should be validated and escaped.
+In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
 
-###### Local File Inclusion
+#### Finding Injection Flaws
 
-#### Static Analysis
+Injection attacks in mobile apps are more likely to occur through IPC interfaces (i.e. a malicious app targeting a vulnerable app) than being performed through the user interface or network services. The analysis starts either by:
 
-#### Dynamic Analysis
+- Identifying possible entry points for untrusted input, and then tracing those inputs to see whether potentially vulnerable functions are reached, or
+- Identifying known dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input reaches the queries.
+
+In a manual security review, you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
+
+- IPC calls
+- Custom URL schemes
+- Input files received via Bluetooth, NFC, or other means
+- Pasteboards
+- User interface
+
+Entry points and vulnerable APIs are operating system specific, so we'll describe them in more detail in the OS-specific testing guides.
 
 #### Remediation
 
-- Verify that File System Access is disabled for any WebViews.
+In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values.
+
+Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
+
+- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate.
 
 #### References
 
@@ -62,11 +65,17 @@ In mobile apps, the trend goes towards REST/JSON-based services, so you won't se
 
 #### Overview
 
-Android apps are for the most part implemented in Java, which is inherently safe from all kinds of memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug.
+Memory corruption bugs are a popular mainstay with hackers. In this class of bugs, some programming error leads to a condition where contents of a unintended memory location are modified. Under the right conditions, this unintended behavior can be intentionally exploited to hijack the execution flow and execute code injected by the attacker. This kind of vulnerability can be caused in a number of ways.
 
-###### Buffer Overflows
+- Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, of course they haven't completely vanished.
 
-###### Format String Vulnerabilities
+- Out-of-bounds-access: 
+
+- Using freed memory and null pointers: 
+
+- Format string vulnerabilities:
+
+Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
 
 #### Static Analysis
 

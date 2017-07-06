@@ -658,11 +658,11 @@ Several [schemas](https://developer.android.com/guide/appendix/g-app-intents.htm
 -	file://
 -	tel://
 
-When using the file schema in a link (e.g. `file:///storage/emulated/0/private.html`) the app can be triggered for example to access a local file on the external storage that is getting rendered in a WebView. An attacker can abuse this by injecting malicious content in the file in order to attack the app or could access sensitive information on the device stored in the filesystem.
+WebViews can load content remotely, but can also load it locally from the app data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
 
 #### Static Analysis
 
-The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") are available to control access to different resources:
+Check the source code for the usage of WebViews. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") are available to control access to different resources:
 
 -	`setAllowContentAccess()`: Content URL access allows WebView to load content from a content provider installed in the system. The default is enabled.
 -	`setAllowFileAccess()`: Enables or disables file access within a WebView. File access is enabled by default.
@@ -670,6 +670,23 @@ The following [WebView settings](https://developer.android.com/reference/android
 -	`setAllowUniversalAccessFromFileURLs()`: Sets whether JavaScript running in the context of a file scheme URL should be allowed to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below, and false for API level 16 (Jelly Bean) and above.
 
 If one or all of the methods above can be identified and they are activated it should be verified if it is really needed for the app to work properly.
+
+If a WebView instance can be identified check if local files are loaded through the method [`loadURL()`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String\) "loadURL() in WebView").
+
+```Java
+WebView webview = new WebView(this);
+webView.loadUrl("file:///android_asset/filename.html");
+```
+
+It needs to be verified where the HTML file is loaded from. For example if it's loaded from the external storage the file is read and writable by everybody and considered a bad practice.
+
+```java
+webview.loadUrl("file:///" +
+Environment.getExternalStorageDirectory().getPath() +
+"filename.html");
+```
+
+The URL specified in `loadURL()` should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
 
 #### Dynamic Analysis
 
@@ -692,6 +709,10 @@ webView.getSettings().setAllowContentAccess(false);
 
 Access to files in the file system can be enabled and disabled for a WebView with `setAllowFileAccess()`. File access is enabled by default and should be deactivated if not needed. Note that this enables or disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Assets and resources are still accessible using `file:///android_asset` and `file:///android_res`.
 
+Create a white-list that defines the web pages and it's protocols that are allowed to be loaded locally and remotely. Loading web pages from the external storage should be avoided as they are read and writable for all users in Android. Instead they should be placed in the assets directory of the App.
+
+Create checksums of the local HTML/JavaScript files and check it during start up of the App. Minify JavaScript files in order to make it harder to read them.
+
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -705,58 +726,6 @@ Access to files in the file system can be enabled and disabled for a WebView wit
 ##### CWE
 
 N/A
-
-
-
-### Testing for Local File Inclusion in WebViews
-
-#### Overview
-
-WebViews can load content remotely, but can also load it locally from the app data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
-
-#### Static Analysis
-
-Check the source code for the usage of WebViews. If a WebView instance can be identified check if local files are loaded through the method [`loadURL()`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String\) "loadURL() in WebView").
-
-```Java
-WebView webview = new WebView(this);
-webView.loadUrl("file:///android_asset/filename.html");
-```
-
-It needs to be verified where the HTML file is loaded from. For example if it's loaded from the external storage the file is read and writable by everybody and considered a bad practice.
-
-```java
-webview.loadUrl("file:///" +
-Environment.getExternalStorageDirectory().getPath() +
-"filename.html");
-```
-
-The URL specified in `loadURL()` should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
-
-#### Dynamic Analysis
-
-This test case should be verified through static analysis.
-
-#### Remediation
-
-Create a white-list that defines the web pages and it's protocols (HTTP or HTTPS) that are allowed to be loaded locally and remotely. Loading web pages from the external storage should be avoided as they are read and writable for all users in Android. Instead they should be placed in the assets directory of the App.
-
-Create checksums of the local HTML/JavaScript files and check it during start up of the App. Minify JavaScript files in order to make it harder to read them.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
--	V6.7: "The app does not load user-supplied local resources into WebViews."
-
-##### CWE
-
-N/A
-
 
 
 ### Testing Whether Java Objects Are Exposed Through WebViews
@@ -855,7 +824,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### OWASP MASVS
 
--	V6.8: "If Java objects are exposed in a WebView, verify that the WebView only renders JavaScript contained within the app package."
+-	V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
 ##### CWE
 
@@ -1075,7 +1044,7 @@ See the anti-reverse-engineering chapter for more details.
 
 ##### OWASP MASVS
 
--	V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+-	V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
 
@@ -1146,7 +1115,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### OWASP MASVS
 
--	V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+-	V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
 

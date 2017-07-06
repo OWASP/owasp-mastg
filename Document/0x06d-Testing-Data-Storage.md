@@ -87,9 +87,9 @@ When looking for instances of insecure data storage in an iOS app you should con
 The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
 
 ##### Couchbase Lite Databases
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS. 
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS.
 
-##### YapDatabase 
+##### YapDatabase
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is comprised of 2 main features:
 
 - A collection/key/value store built atop sqlite for iOS & Mac (the foundation).
@@ -121,6 +121,15 @@ The following steps can be used to identify how the application stores data loca
 2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
 3. Perform a grep command of the data that you have stored, such as: `grep -iRn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
+
+
+It is also possible to analyze the app data directory on a non-jailbroken iOS device using third party applications such as [iMazing](https://imazing.com "iMazing").
+
+1. Proceed to trigger functionality that stores potential sensitive data.
+2. Connect the iOS device to your workstation and launch the iMazing application.
+3. Select "Apps" and right-click on the desired iOS application, select "Extract App".
+4. Browse to the output directory and locate the $APP_NAME.imazingapp. Rename it to $APP_NAME.zip.
+5. Unpack the renamed .zip file and the application data can now be analyzed.
 
 Important filesystem locations are:
 
