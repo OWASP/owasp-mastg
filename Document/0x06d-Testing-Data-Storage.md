@@ -87,9 +87,9 @@ When looking for instances of insecure data storage in an iOS app you should con
 The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
 
 ##### Couchbase Lite Databases
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS. 
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS.
 
-##### YapDatabase 
+##### YapDatabase
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is comprised of 2 main features:
 
 - A collection/key/value store built atop sqlite for iOS & Mac (the foundation).
@@ -166,6 +166,11 @@ The keychain file is located at:
 ```
 /private/var/Keychains/keychain-2.db
 ```
+
+##### Non-Jailbroken iOS device
+
+-- TODO, add methods on how to analyse the data directory without a jailbreak 
+
 
 #### Remediation
 
