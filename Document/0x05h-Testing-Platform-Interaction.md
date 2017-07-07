@@ -646,8 +646,6 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 
 -	CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 
-
-
 ### Testing WebView Protocol Handlers
 
 #### Overview

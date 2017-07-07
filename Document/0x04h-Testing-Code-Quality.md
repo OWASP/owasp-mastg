@@ -103,7 +103,6 @@ Look for uses of the following string functions:
 - vasprintf
 - gets
 
-
 #### Dynamic Analysis
 
 ##### Input Fuzzing
@@ -154,9 +153,19 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 Cross-site scripting (XSS) flaws enable attackers to inject client-side scripts into web pages viewed by users. This type of flaw is very common in the web applications. If the user views the injected script in their browser, the attacker can bypass the same origin policy and do pretty much everything in the context of vulnerable website (e.g. stealing session cookies, logging key presses, or performing arbitrary actions).
 
-In the context of mobile apps, XSS risks are far less prevalent for the simple reason that mobile apps aren't web browsers. However, apps that use WebView components such as <code>UIWebView</code>on iOS and <code>WebView</code> on Android are potentially vulnerable to attacks. An older, but well-known example is the [local XSS issue in the Skype app for iOS identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "Superevr.com - XSS in Skype for iOS").
+In the context of mobile apps, XSS risks are far less prevalent for the simple reason that mobile apps aren't web browsers. However, apps that use WebView components such as <code>UIWebView</code>on iOS and <code>WebView</code> on Android are potentially vulnerable to attacks.
+
+An older, but well-known example is the [local XSS issue in the Skype app for iOS identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "Superevr.com - XSS in Skype for iOS"). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript that would be executed when the user viewed the message. In his proof-of-concept, Phil showed how to exploit the issue to steal the the user's address book.
 
 #### Static Analysis
+
+The following example is from an XSS issue in the Zoho Web Service [reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
+
+```java
+webView.loadUrl("javascript:initialize(" + myNumber + ");");
+```
+
+XSS may also be exploitable of a WebView is used the to display a remote website, and that website does not encode user inputs. 
 
 #### Dynamic Analysis
 
