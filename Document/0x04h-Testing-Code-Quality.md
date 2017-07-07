@@ -71,17 +71,38 @@ Memory corruption bugs are a popular mainstay with hackers. In this class of bug
 
 - Out-of-bounds-access: Buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
 
-- Dangling pointers: These occur when an object that has an incoming reference is deleted or deallocated, but the the pointer still points to the memory location of the deallocated object. If the program later uses the pointer to call a virtual function, of the (already deallocated) object, it is possible to hijack execution by setting up memory such that the original vtable pointer is overwritten. Alternatively, if the dangling pointer is used to read or write object variables, 
+- Dangling pointers: These occur when an object that has an incoming reference is deleted or deallocated, but the the pointer still points to the memory location of the deallocated object. If the program later uses the pointer to call a virtual function, of the (already deallocated) object, it is possible to hijack execution by setting up memory such that the original vtable pointer is overwritten. Alternatively, it is possible to read or write object variables or other memory structures referenced by the dangling pointers.
 
-- Use-after-free: 
+- Use-after-free: A special case of dangling pointers that point to freed (deallocated) memory. When at some point the same memory is re-allocated, accessing the original pointer will read or write the data contained in the newly allocated memory. When this happens unintentionally, it usually leads to data corruption and undefined behavior, but of course, crafty attackers are able to set up memory in just the right ways leverage to gain control of the instruction pointer.
 
-- Format string vulnerabilities:
+- Integer overflows: When the result of an arithmetic operation exceeds the maximum size of the integer type chosen by the programmer, the resulting value will "wrap around" the maximum value and end up being much smaller than expected. On the other end of the spectrum, when the result of an arithmetic operation is smaller than the minimum value of the integer type, an integer *underflow* occurs and the result is much larger than expected. Whether a particular integer overflow/underflow bug is exploitable depends on how the integer is used: For example, if the integer represents the length of buffer length being allocated, an overflow can result in a buffer that is too small to hold the data to be copied into it, causing buffer overflow vulnerability.
+
+- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of printf()-family C functions, attackers may inject format tokens such as %c and %n to access memory. Format string bugs are convenient to exploit due to their flexibility: If the program outputs the result of the string formatting operation, the attacker can read and write memory arbitrarily, thus bypassing protection features such as ASLR.
 
 Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
 
 On iOS, data execution prevention (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then call <code>mprotect</code> to change memory protection settings on the shellcode.
 
 #### Static Analysis
+
+Look for uses of the following string functions:
+
+- strcat
+- strlcat
+- strcpy
+- strlcpy
+- strncat
+- strlcat
+- strncpy
+- strlcpy
+- sprintf
+- snprintf
+- asprintf
+- vsprintf
+- vsnprintf
+- vasprintf
+- gets
+
 
 #### Dynamic Analysis
 
@@ -109,7 +130,9 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 #### Remediation
 
 - Avoid using unsafe string functions such as strcpy, strcat, strncat, strncpy, sprint, vsprintf, gets, and so on.
-- User input or other untrusted data should never be used as part of format strings.
+- If you are using C++, use the ANSI C++ string class.
+- If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you can use CFString, the Core Foundation representation of a string.
+- Do not concatenate untrusted data into format strings.
 
 #### References
 
