@@ -6,13 +6,13 @@
 
 Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is . For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
+This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
 
 ##### Common Injection Types
 
 ###### SQL Injection
 
-SQL injection involves "injecting" SQL command characters into the input data, affecting the execution of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
+SQL injection involves "injecting" SQL command characters into the input data, affecting the semantics of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
 
 Mobile apps on Android and iOS both use SQLite databases as a means of local data storage. SQL injection vulnerabilities occur when user input is concatenated into dynamic SQL statements without prior sanitization.
 
@@ -45,7 +45,8 @@ In general, untrusted inputs should always be type-checked and/or validated usin
 
 Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
 
-- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate.
+- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate;
+- When parsing XML, make sure that the parser is configured to disallow resolution of external entities.
 
 #### References
 
@@ -105,26 +106,11 @@ Look for uses of the following string functions:
 
 #### Dynamic Analysis
 
-##### Input Fuzzing
-
-Input fuzzing is a black-box software testing technique in which malformed data is repeatedly sent to an application injection, usually in an automated fashion. At the same time, the application is monitored for malfunctions and crashes. If and when crashes occur, the hope (at least for security testers) is that the conditions leading to the crash point to an exploitable security flaw.
+This kind of bug is best discovered using input fuzzing, a black-box software testing technique in which malformed data is repeatedly sent to an application injection, usually in an automated fashion. At the same time, the application is monitored for malfunctions and crashes. If and when crashes occur, the hope (at least for security testers) is that the conditions leading to the crash point to an exploitable security flaw.
 
 Fuzzers typically are used to generate structured inputs in a semi-correct fashion. The idea is to create inputs that are at least partially accepted by the target application, while at the same time containing invalid elements that potentially trigger input processing flaws and unexpected program behaviors. A good fuzzer creates inputs that triggers a large percentage of possible program execution paths (high coverage). Inputs are generated either from scratch ("Generation-based") or by mutation known, valid input data ("mutation-based").
 
-The fuzzing process involves the following steps:
-
-- Identifying a target
-- Generating malicious inputs
-- Test case delivery
-- Crash monitoring
-
-For more information, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
-
-Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
-
-- **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
-
-- [**Fuzz Vectors**](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors "OWASP Testing Guide: Fuzzing") - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
+For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
 
 #### Remediation
 
@@ -177,7 +163,7 @@ At least for reflected XSS, automated black-box testing works quite well. For ex
 
 #### Remediation
 
-As a proof-of-concept, it is common to render the famous JavaScript message box using the alert() command.
+Security testers commonly use the infamous JavaScript message box to demonstrate exploitation of XSS.  Inadvertently, developers sometimes assume that blacklisting the alert() command is an acceptable solution.
 
 #### References
 
