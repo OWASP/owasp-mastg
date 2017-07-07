@@ -26,11 +26,6 @@ Security is just as important for the business success as the overall quality, p
 
 From the human aspect, this is achieved by creating cross functional teams that work together on achieving business outcomes. This section is going to focus on the interaction with and integration of security into the development life cycle, from the inception of requirements, all the way until the value of the change is made available to users.
 
-### General Considerations
-
-- Release time for Apple store
-- What are black listed, and how to avoid it
-- Common gotchas: Ensure that the app is always fully removed and re-installed. Otherwise there might be issues that are hard to reproduce
 
 ### SDLC Overview
 
