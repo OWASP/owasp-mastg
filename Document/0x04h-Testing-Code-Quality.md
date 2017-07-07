@@ -159,17 +159,25 @@ An older, but well-known example is the [local XSS issue in the Skype app for iO
 
 #### Static Analysis
 
-The following example is from an XSS issue in the Zoho Web Service [reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
+Take a close look at any Webviews used by an app, and investigate whether any kind of untrusted input is rendered. 
+
+XSS issues may exist if the URL opened by the Webview can be fully or partially controlled. The following example is from an XSS issue in the Zoho Web Service [reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
 
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
 
-XSS may also be exploitable of a WebView is used the to display a remote website, and that website does not encode user inputs. 
+If a Webview is used the to display a remote website, the burden of escaping HTML shifts to the server side. If a server-side stored XSS exists, it can be used to execute script in the context of the Webview. In such a case, it of course makes sense to also perform static analysis of the web application source code.
 
 #### Dynamic Analysis
 
+XSS issues are best tested for using a combination of manual and automatic input fuzzing, i.e. injecting HTML tags and special characters into all available input fields and verifying that the web application either denies the invalid inputs or escapes the HTML meta-characters in its output.
+
+At least for reflected XSS, automated black-box testing works quite well. For example, the [BURP Scanner]() is very effective in identifying those issues. However, as always in automated analysis, you need make sure that all input vectors are covered.
+
 #### Remediation
+
+As a proof-of-concept, it is common to render the famous JavaScript message box using the alert() command.
 
 #### References
 
