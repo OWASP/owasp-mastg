@@ -73,25 +73,23 @@ Memory corruption bugs are a popular mainstay with hackers. In this class of bug
 
 - Dangling pointers: These occur when an object that has an incoming reference is deleted or deallocated, but the the pointer still points to the memory location of the deallocated object. If the program later uses the pointer to call a virtual function, of the (already deallocated) object, it is possible to hijack execution by setting up memory such that the original vtable pointer is overwritten. Alternatively, it is possible to read or write object variables or other memory structures referenced by the dangling pointers.
 
-- Use-after-free: A special case of dangling pointers that point to freed (deallocated) memory. When at some point the same memory is re-allocated, accessing the original pointer will read or write the data contained in the newly allocated memory. When this happens unintentionally, it usually leads to data corruption and undefined behavior, but of course, crafty attackers are able to set up memory in just the right ways leverage to gain control of the instruction pointer.
+- Use-after-free: A special case of dangling pointers that point to freed (deallocated) memory. When memory is freed, all pointers into it become invalid, and the memory manager returns it to the pool of available memory. When at some point the same memory is re-allocated, accessing the original pointer will read or write the data contained in the newly allocated memory. When this happens unintentionally, it usually leads to data corruption and undefined behavior, but crafty attackers can to set up memory in just the right ways leverage to gain control of the instruction pointer.
 
 - Integer overflows: When the result of an arithmetic operation exceeds the maximum size of the integer type chosen by the programmer, the resulting value will "wrap around" the maximum value and end up being much smaller than expected. On the other end of the spectrum, when the result of an arithmetic operation is smaller than the minimum value of the integer type, an integer *underflow* occurs and the result is much larger than expected. Whether a particular integer overflow/underflow bug is exploitable depends on how the integer is used: For example, if the integer represents the length of buffer length being allocated, an overflow can result in a buffer that is too small to hold the data to be copied into it, causing buffer overflow vulnerability.
 
 - Format string vulnerabilities: When unchecked user input is passed to the format string parameter of printf()-family C functions, attackers may inject format tokens such as %c and %n to access memory. Format string bugs are convenient to exploit due to their flexibility: If the program outputs the result of the string formatting operation, the attacker can read and write memory arbitrarily, thus bypassing protection features such as ASLR.
 
-In most cases, the goal in exploiting memory corruption is modifying redirecting the program flow to a location where the attacker has placed assembled machine instructions referred to as shellcode. 
+In most cases, the goal in exploiting memory corruption is modifying redirecting the program flow to a location where the attacker has placed assembled machine instructions referred to as shellcode. On iOS, the data execution prevention feature (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then execute functionality useful to the attacker, or call <code>mprotect</code> to change memory protection settings on the location of the shellcode.
 
-On iOS, data execution prevention (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then call <code>mprotect</code> to change memory protection settings on the shellcode.
-
-Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
+Android apps are for the most part implemented in Java which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. 
 
 #### Static Analysis
 
 Static code analysis of low-level code is a complex topic that could easily fill its own book. Automated tools such as [RATS](https://code.google.com/archive/p/rough-auditing-tool-for-security/downloads "RATS - Rough auditing tool for security") combined with a brief manual inspection are sufficient to identify the low-hanging fruits. However, memory corruption conditions can have complex causes. For example, an use-after-free bugs might be caused by an intricate, counter-intuitive race condition that is not immediately apparent. These bugs are discovered either using dynamic analysis, or by testers that take the time to gain a deep understanding of the program.
 
-##### Buffer overflows and other memory management issues
+##### Buffer and Integer Overflows
 
-To identify buffer overflows, look for uses of unsafe string functions and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"):
+The following code snippet shows a simple example for a buffer overflow vulnerability.
 
 ```c
  void copyData(char *userId) {  
@@ -100,24 +98,24 @@ To identify buffer overflows, look for uses of unsafe string functions and poten
  }  
 ```
 
-The following are problematic C functions:
-
-- strcat
-- strlcat
-- strcpy
-- strlcpy
-- strncat
-- strlcat
-- strncpy
-- strlcpy
-- sprintf
-- snprintf
-- asprintf
-- vsprintf
-- vsnprintf
-- vasprintf
-- gets
-
+- To identify buffer overflows, look for uses of unsafe string functions and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"). The following are unsafe string functions:
+-- strcat
+-- strlcat
+-- strcpy
+-- strlcpy
+-- strncat
+-- strlcat
+-- strncpy
+-- strlcpy
+-- sprintf
+-- snprintf
+-- asprintf
+-- vsprintf
+-- vsnprintf
+-- vasprintf
+-- gets
+- Look for instances of copy operations implemented as for- and while loops, and verify that length checks are performed correctly;
+- When integer variables are used for array indexing, buffer length calculations, or any other security-critical operations, ensure that unsigned integer types are used and precondition tests are performed to prevent the possibility of integer wrapping.
 
 #### Dynamic Analysis
 
