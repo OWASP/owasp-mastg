@@ -182,16 +182,18 @@ Security testers commonly use the infamous JavaScript message box to demonstrate
 
 - Don't put untrusted data into your HTML document unless it is necessary, and when you do, be aware of the context in which the data is rendered. Note that escaping rules can get complicated in nested contexts, such as rendering an URL inside a JavaScript block.
 
-- Escape characters with an appropriate encoding, such as HTML entity encoding, to prevent switching into any execution context, such as script, style, or event handlers. For example, there are six control characters in HTML that need escaping.
+- Escape characters with an appropriate encoding, such as HTML entity encoding, to prevent switching into any execution context, such as script, style, or event handlers. 
+
+Make sure that you escape adequately depending on how the data is rendered in the response. For example, there are six control characters in HTML that need escaping:
 
 | Character  | Escaped      |
 | ------------- |:-------------:|
-| & | &ampamp;| 
-| < | &amplt; | 
-| > | &ampgt;| 
-| " | &ampquot;| 
-| ' | &amp#x27;| 
-| / | &amp#x2F;| 
+| & | &amp;amp;| 
+| < | &amp;lt; | 
+| > | &amp;gt;| 
+| " | &amp;quot;| 
+| ' | &amp;#x27;| 
+| / | &amp;#x2F;| 
 
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "OWASP XSS Prevention Cheat Sheet").
 
