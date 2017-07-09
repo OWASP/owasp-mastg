@@ -187,7 +187,7 @@ Security testers commonly use the infamous JavaScript message box to demonstrate
 Make sure that you escape adequately depending on how the data is rendered in the response. For example, there are six control characters in HTML that need escaping:
 
 | Character  | Escaped      |
-| ------------- |:-------------:|
+| :-------------: |:-------------:|
 | & | &amp;amp;| 
 | < | &amp;lt; | 
 | > | &amp;gt;| 
