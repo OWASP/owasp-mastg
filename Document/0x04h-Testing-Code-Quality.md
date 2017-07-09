@@ -186,12 +186,12 @@ Security testers commonly use the infamous JavaScript message box to demonstrate
 
 | Character  | Escaped      |
 | ------------- |:-------------:|
-| & | &amp;| 
-| < | &lt; | 
-| > | &gt;| 
-| " | &quot;| 
-| ' | &#x27;| 
-| / | &#x2F;| 
+| & | &ampamp;| 
+| < | &amplt; | 
+| > | &ampgt;| 
+| " | &ampquot;| 
+| ' | &amp#x27;| 
+| / | &amp#x2F;| 
 
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "OWASP XSS Prevention Cheat Sheet").
 
