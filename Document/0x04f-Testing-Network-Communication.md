@@ -2,6 +2,161 @@
 
 The following chapter outlines network communication requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
 
+### Man-in-the-middle (MITM) attacks
+
+Instead of a specific test case we will first talk about a generic attack pattern that is also applicable for mobile applications when executing a security test against them: man-in-the-middle (MITM) attacks.
+
+Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is no working:
+- What if XMPP or other protocols are used that are not recognized by your interception proxy?
+- What if mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used, where the produced apps do not use the local proxy settings of your Android or iOS phone and you are not able to redirect the requests to your interception proxy?
+- What if you want to intercept push notifications, like for example GCM/FCM on Android (see also "Firebase/Google Cloud Messaging (FCM/GCM)" in basic security testing on Android)?
+
+In these cases we need to monitor and analyze the network traffic first in order to decide what to do next.
+
+> Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
+
+#### Preparation
+
+[Ettercap](https://ettercap.github.io/ettercap/ "Ettercap") can be used during network penetration tests in order to simulate a man-in-the-middle attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target machines. When such an attack is successful, all packets between two machines are redirected to a third machine that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
+
+For a full dynamic analysis of a mobile app, all network traffic should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
+
+**Ettercap Installation**
+
+Ettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your machine that will act as the MITM. On macOS it can be installed by using brew.
+
+```bash
+$ brew install ettercap
+```
+
+Ettercap can also be installed through `apt-get` on Debian based linux distributions.
+
+```bash
+sudo apt-get install zlib1g zlib1g-dev
+sudo apt-get install build-essential
+sudo apt-get install ettercap
+```
+
+**Network Analyzer Tool**
+
+Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
+
+- [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [tshark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark")) and
+- [tcpdump](http://www.tcpdump.org/tcpdump_man.html "tcpdump")
+
+Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
+
+**Network Setup**
+
+To be able to get a man-in-the-middle position your machine should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the following information:
+
+- IP address of mobile phone
+- IP address of gateway
+
+#### Man-in-the-middle attack
+
+Start ettercap with the following command and replace the first IP addresses with the network gateway in the wireless network and the second one with the one of your mobile device.
+
+```bash
+$ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
+```
+
+On the mobile phone start the browser and navigate to example.com, you should see output like the following:
+
+```bash
+ettercap 0.8.2 copyright 2001-2015 Ettercap Development Team
+
+Listening on:
+   en0 -> AC:BC:32:81:45:05
+	  192.168.0.105/255.255.255.0
+	  fe80::c2a:e80c:5108:f4d3/64
+
+SSL dissection needs a valid 'redir_command_on' script in the etter.conf file
+Privileges dropped to EUID 65534 EGID 65534...
+
+  33 plugins
+  42 protocol dissectors
+  57 ports monitored
+20388 mac vendor fingerprint
+1766 tcp OS fingerprint
+2182 known services
+
+Scanning for merged targets (2 hosts)...
+
+* |==================================================>| 100.00 %
+
+2 hosts added to the hosts list...
+
+ARP poisoning victims:
+
+ GROUP 1 : 192.168.0.1 F8:E9:03:C7:D5:10
+
+ GROUP 2 : 192.168.0.102 20:82:C0:DE:8F:09
+Starting Unified sniffing...
+
+Text only Interface activated...
+Hit 'h' for inline help
+
+Sun Jul  9 22:23:05 2017 [855399]
+  :::0 --> ff02::1:ff11:998b:0 | SFR (0)
+
+
+Sun Jul  9 22:23:10 2017 [736653]
+TCP  172.217.26.78:443 --> 192.168.0.102:34127 | R (0)
+
+Sun Jul  9 22:23:10 2017 [737483]
+TCP  74.125.68.95:443 --> 192.168.0.102:35354 | R (0)
+```
+
+If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
+
+As an example we will now redirect all requests from a Xamarin app to our interception proxy in the next section.
+
+#### Xamarin
+
+Xamarin is a mobile application development platform that is capable of producing [native Android](https://developer.xamarin.com/guides/android/getting_started/ "Getting Started with Android") and [iOS apps](https://developer.xamarin.com/guides/ios/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
+
+When testing a Xamarin app and when you are trying to set the system proxy in the WiFi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are two ways to resolve this:
+
+1. Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate()` or `Main()` method and re-create the app:
+
+```
+WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
+```
+
+2. Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+
+```bash
+$ echo "
+rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080
+
+**CA Certificates**
+
+If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
+
+- [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
+- [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
+
+**Intercepting Traffic**
+
+Start using the app and trigger it's functions. You should see HTTP messages showing up in your interception proxy.
+
+> When using ettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
+
+
+#### Span Port / Port Forwarding
+
+As an alternative to a MITM attack with ettercap, a Wifi Access Point (AP) or router can also be used instead. The setup requires access to the configuration of the AP and this should be clarified prior to the engagement. If it's possible to reconfigure you should check first if the AP supports either:
+- port forwarding or
+- has a span or mirror port.
+
+In both scenarios the AP needs to be configured to point to your machines IP. Tools like Wireshark can then again be used to monitor and record the traffic for further investigation.
+
+
 ### Testing for Unencrypted Sensitive Data on the Network
 
 #### Overview
