@@ -6,7 +6,7 @@
 
 Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
+This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios may exist in some scenarios, and proper input validation should generally performed as best practice.
 
 ##### Common Injection Types
 
@@ -33,6 +33,7 @@ In a manual security review you'll normally use a combination of both techniques
 
 - IPC calls
 - Custom URL schemes
+- QR codes
 - Input files received via Bluetooth, NFC, or other means
 - Pasteboards
 - User interface
@@ -41,9 +42,7 @@ Entry points and vulnerable APIs are operating system specific, so we'll describ
 
 #### Remediation
 
-In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values.
-
-Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
+In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
 
 - Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate;
 - When parsing XML, make sure that the parser is configured to disallow resolution of external entities.
@@ -80,13 +79,28 @@ Memory corruption bugs are a popular mainstay with hackers. In this class of bug
 
 - Format string vulnerabilities: When unchecked user input is passed to the format string parameter of printf()-family C functions, attackers may inject format tokens such as %c and %n to access memory. Format string bugs are convenient to exploit due to their flexibility: If the program outputs the result of the string formatting operation, the attacker can read and write memory arbitrarily, thus bypassing protection features such as ASLR.
 
-Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
+In most cases, the goal in exploiting memory corruption is modifying redirecting the program flow to a location where the attacker has placed assembled machine instructions referred to as shellcode. 
 
 On iOS, data execution prevention (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then call <code>mprotect</code> to change memory protection settings on the shellcode.
 
+Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
+
 #### Static Analysis
 
-Look for uses of the following string functions:
+Static code analysis of low-level code is a complex topic that could easily fill its own book. Automated tools such as [RATS](https://code.google.com/archive/p/rough-auditing-tool-for-security/downloads "RATS - Rough auditing tool for security") combined with a brief manual inspection are sufficient to identify the low-hanging fruits. However, memory corruption conditions can have complex causes. For example, an use-after-free bugs might be caused by an intricate, counter-intuitive race condition that is not immediately apparent. These bugs are discovered either using dynamic analysis, or by testers that take the time to gain a deep understanding of the program.
+
+##### Buffer overflows and other memory management issues
+
+To identify buffer overflows, look for uses of unsafe string functions and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"):
+
+```c
+ void copyData(char *userId) {  
+    char  smallBuffer[10]; // size of 10  
+    strcpy(smallBuffer, userId);
+ }  
+```
+
+The following are problematic C functions:
 
 - strcat
 - strlcat
@@ -103,6 +117,7 @@ Look for uses of the following string functions:
 - vsnprintf
 - vasprintf
 - gets
+
 
 #### Dynamic Analysis
 
@@ -163,7 +178,22 @@ At least for reflected XSS, automated black-box testing works quite well. For ex
 
 #### Remediation
 
-Security testers commonly use the infamous JavaScript message box to demonstrate exploitation of XSS.  Inadvertently, developers sometimes assume that blacklisting the alert() command is an acceptable solution.
+Security testers commonly use the infamous JavaScript message box to demonstrate exploitation of XSS. Inadvertently, developers sometimes assume that blacklisting the alert() command is an acceptable solution. This couldn't be farther from the truth! Instead, XSS is best prevented by following general programming best practices.
+
+- Don't put untrusted data into your HTML document unless it is necessary, and when you do, be aware of the context in which the data is rendered. Note that escaping rules can get complicated in nested contexts, such as rendering an URL inside a JavaScript block.
+
+- Escape characters with an appropriate encoding, such as HTML entity encoding, to prevent switching into any execution context, such as script, style, or event handlers. For example, there are six control characters in HTML that need escaping.
+
+| Character  | Escaped      |
+| ------------- |:-------------:|
+| & | &amp;| 
+| < | &lt; | 
+| > | &gt;| 
+| " | &quot;| 
+| ' | &#x27;| 
+| / | &#x2F;| 
+
+For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "OWASP XSS Prevention Cheat Sheet").
 
 #### References
 
