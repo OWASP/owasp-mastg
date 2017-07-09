@@ -6,13 +6,13 @@
 
 Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is . For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios can exist in some scenarios, and proper input validation should generally performed as practice.
+This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios may exist in some scenarios, and proper input validation should generally performed as best practice.
 
 ##### Common Injection Types
 
 ###### SQL Injection
 
-SQL injection involves "injecting" SQL command characters into the input data, affecting the execution of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
+SQL injection involves "injecting" SQL command characters into the input data, affecting the semantics of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
 
 Mobile apps on Android and iOS both use SQLite databases as a means of local data storage. SQL injection vulnerabilities occur when user input is concatenated into dynamic SQL statements without prior sanitization.
 
@@ -29,10 +29,11 @@ Injection attacks in mobile apps are more likely to occur through IPC interfaces
 - Identifying possible entry points for untrusted input, and then tracing those inputs to see whether potentially vulnerable functions are reached, or
 - Identifying known dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input reaches the queries.
 
-In a manual security review, you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
+In a manual security review you'll normally use a combination of both techniques. In general, untrusted inputs enter mobile apps through the following channels:
 
 - IPC calls
 - Custom URL schemes
+- QR codes
 - Input files received via Bluetooth, NFC, or other means
 - Pasteboards
 - User interface
@@ -41,11 +42,10 @@ Entry points and vulnerable APIs are operating system specific, so we'll describ
 
 #### Remediation
 
-In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values.
+In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
 
-Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
-
-- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate.
+- Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate;
+- When parsing XML, make sure that the parser is configured to disallow resolution of external entities.
 
 #### References
 
@@ -69,43 +69,70 @@ Memory corruption bugs are a popular mainstay with hackers. In this class of bug
 
 - Buffer Overflows: The app writes beyond the memory allocated for a particular operation. This allows the attacker to overwrite important control data located in adjacent memory, such as function pointers. Buffer overflows used to be the most common type of memory corruption flaw, but have become less prevalent over the years due to a number of factors. Notably, most developers have become aware of the risks in using unsafe C library functions, and catching buffer overflow bugs is comparably easy. Nevertheless, they haven't completely vanished, and are still worth testing for.
 
-- Out-of-bounds-access: In this type of issue, buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
+- Out-of-bounds-access: Buggy pointer arithmetic causes a pointer or index to point to a position beyond the bounds of the intended memory structure (e.g. buffer or list). Attempts to write the out-of-bounds address will cause a crash or unintended behavior. If the attacker can control the target offset and content being written to some extent, [code execution exploit is likely possible](http://www.zerodayinitiative.com/advisories/ZDI-17-110/).
 
-- Use-after-free: 
+- Dangling pointers: These occur when an object that has an incoming reference is deleted or deallocated, but the the pointer still points to the memory location of the deallocated object. If the program later uses the pointer to call a virtual function, of the (already deallocated) object, it is possible to hijack execution by setting up memory such that the original vtable pointer is overwritten. Alternatively, it is possible to read or write object variables or other memory structures referenced by the dangling pointers.
 
-- Format string vulnerabilities:
+- Use-after-free: A special case of dangling pointers that point to freed (deallocated) memory. When at some point the same memory is re-allocated, accessing the original pointer will read or write the data contained in the newly allocated memory. When this happens unintentionally, it usually leads to data corruption and undefined behavior, but of course, crafty attackers are able to set up memory in just the right ways leverage to gain control of the instruction pointer.
+
+- Integer overflows: When the result of an arithmetic operation exceeds the maximum size of the integer type chosen by the programmer, the resulting value will "wrap around" the maximum value and end up being much smaller than expected. On the other end of the spectrum, when the result of an arithmetic operation is smaller than the minimum value of the integer type, an integer *underflow* occurs and the result is much larger than expected. Whether a particular integer overflow/underflow bug is exploitable depends on how the integer is used: For example, if the integer represents the length of buffer length being allocated, an overflow can result in a buffer that is too small to hold the data to be copied into it, causing buffer overflow vulnerability.
+
+- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of printf()-family C functions, attackers may inject format tokens such as %c and %n to access memory. Format string bugs are convenient to exploit due to their flexibility: If the program outputs the result of the string formatting operation, the attacker can read and write memory arbitrarily, thus bypassing protection features such as ASLR.
+
+In most cases, the goal in exploiting memory corruption is modifying redirecting the program flow to a location where the attacker has placed assembled machine instructions referred to as shellcode. 
+
+On iOS, data execution prevention (as the name implies) prevents memory in data segments from being executed. To bypass this protection, attackers leverage return-oriented programming (ROP), which involves chaining together small, pre-existing code chunks ("gadgets") in the text segment. These gadgets may then call <code>mprotect</code> to change memory protection settings on the shellcode.
 
 Android apps are for the most part implemented in Java, which is inherently safe from memory corruption issues. However, apps that come with native JNI libraries are susceptible to this kind of bug. On iOS, 
 
 #### Static Analysis
 
+Static code analysis of low-level code is a complex topic that could easily fill its own book. Automated tools such as [RATS](https://code.google.com/archive/p/rough-auditing-tool-for-security/downloads "RATS - Rough auditing tool for security") combined with a brief manual inspection are sufficient to identify the low-hanging fruits. However, memory corruption conditions can have complex causes. For example, an use-after-free bugs might be caused by an intricate, counter-intuitive race condition that is not immediately apparent. These bugs are discovered either using dynamic analysis, or by testers that take the time to gain a deep understanding of the program.
+
+##### Buffer overflows and other memory management issues
+
+To identify buffer overflows, look for uses of unsafe string functions and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"):
+
+```c
+ void copyData(char *userId) {  
+    char  smallBuffer[10]; // size of 10  
+    strcpy(smallBuffer, userId);
+ }  
+```
+
+The following are problematic C functions:
+
+- strcat
+- strlcat
+- strcpy
+- strlcpy
+- strncat
+- strlcat
+- strncpy
+- strlcpy
+- sprintf
+- snprintf
+- asprintf
+- vsprintf
+- vsnprintf
+- vasprintf
+- gets
+
+
 #### Dynamic Analysis
 
-##### Input Fuzzing
-
-Input fuzzing is a black-box software testing technique in which malformed data is repeatedly sent to an application injection, usually in an automated fashion. At the same time, the application is monitored for malfunctions and crashes. If and when crashes occur, the hope (at least for security testers) is that the conditions leading to the crash point to an exploitable security flaw.
+This kind of bug is best discovered using input fuzzing, a black-box software testing technique in which malformed data is repeatedly sent to an application injection, usually in an automated fashion. At the same time, the application is monitored for malfunctions and crashes. If and when crashes occur, the hope (at least for security testers) is that the conditions leading to the crash point to an exploitable security flaw.
 
 Fuzzers typically are used to generate structured inputs in a semi-correct fashion. The idea is to create inputs that are at least partially accepted by the target application, while at the same time containing invalid elements that potentially trigger input processing flaws and unexpected program behaviors. A good fuzzer creates inputs that triggers a large percentage of possible program execution paths (high coverage). Inputs are generated either from scratch ("Generation-based") or by mutation known, valid input data ("mutation-based").
 
-The fuzzing process involves the following steps:
-
-- Identifying a target
-- Generating malicious inputs
-- Test case delivery
-- Crash monitoring
-
-For more information, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
-
-Note: Fuzzing only detects software bugs. Classifying this issue as a security flaw requires further analysis by the researcher.
-
-- **Protocol adherence** - for data to be handled at all by an application, it may need to adhere relatively closely to a given protocol (e.g. HTTP) or format (e.g. file headers). The greater the adherence to the structure of a given protocol or format, the more likely it is that meaningful errors will be detected in a short time frame. However, it comes at the cost of decreasing the test surface, potentially missing low level bugs in the protocol or format.
-
-- [**Fuzz Vectors**](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors "OWASP Testing Guide: Fuzzing") - fuzz vectors may be used to provide a list of known risky values likely to cause undefined or dangerous behavior in an app. Using such a list focuses tests more closely on likely problems, reducing the number of false positives and decreasing the test execution time.
+For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
 
 #### Remediation
 
 - Avoid using unsafe string functions such as strcpy, strcat, strncat, strncpy, sprint, vsprintf, gets, and so on.
-- User input or other untrusted data should never be used as part of format strings.
+- If you are using C++, use the ANSI C++ string class.
+- If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you can use CFString, the Core Foundation representation of a string.
+- Do not concatenate untrusted data into format strings.
 
 #### References
 
@@ -127,13 +154,48 @@ Note: Fuzzing only detects software bugs. Classifying this issue as a security f
 
 Cross-site scripting (XSS) flaws enable attackers to inject client-side scripts into web pages viewed by users. This type of flaw is very common in the web applications. If the user views the injected script in their browser, the attacker can bypass the same origin policy and do pretty much everything in the context of vulnerable website (e.g. stealing session cookies, logging key presses, or performing arbitrary actions).
 
-In the context of mobile apps, XSS risks are far less prevalent for the simple reason that mobile apps aren't web browsers. However, apps that use WebView components such as <code>UIWebView</code>on iOS and <code>WebView</code> on Android are potentially vulnerable to attacks. An older, but well-known example is the [local XSS issue in the Skype app for iOS identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "Superevr.com - XSS in Skype for iOS").
+In the context of mobile apps, XSS risks are far less prevalent for the simple reason that mobile apps aren't web browsers. However, apps that use WebView components such as <code>UIWebView</code>on iOS and <code>WebView</code> on Android are potentially vulnerable to attacks.
+
+An older, but well-known example is the [local XSS issue in the Skype app for iOS identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "Superevr.com - XSS in Skype for iOS"). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript that would be executed when the user viewed the message. In his proof-of-concept, Phil showed how to exploit the issue to steal the the user's address book.
 
 #### Static Analysis
 
+Take a close look at any Webviews used by an app, and investigate whether any kind of untrusted input is rendered. 
+
+XSS issues may exist if the URL opened by the Webview can be fully or partially controlled. The following example is from an XSS issue in the Zoho Web Service [reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
+
+```java
+webView.loadUrl("javascript:initialize(" + myNumber + ");");
+```
+
+If a Webview is used the to display a remote website, the burden of escaping HTML shifts to the server side. If a server-side stored XSS exists, it can be used to execute script in the context of the Webview. In such a case, it of course makes sense to also perform static analysis of the web application source code.
+
 #### Dynamic Analysis
 
+XSS issues are best tested for using a combination of manual and automatic input fuzzing, i.e. injecting HTML tags and special characters into all available input fields and verifying that the web application either denies the invalid inputs or escapes the HTML meta-characters in its output.
+
+At least for reflected XSS, automated black-box testing works quite well. For example, the [BURP Scanner]() is very effective in identifying those issues. However, as always in automated analysis, you need make sure that all input vectors are covered.
+
 #### Remediation
+
+Security testers commonly use the infamous JavaScript message box to demonstrate exploitation of XSS. Inadvertently, developers sometimes assume that blacklisting the alert() command is an acceptable solution. This couldn't be farther from the truth! Instead, XSS is best prevented by following general programming best practices.
+
+- Don't put untrusted data into your HTML document unless it is necessary, and when you do, be aware of the context in which the data is rendered. Note that escaping rules can get complicated in nested contexts, such as rendering an URL inside a JavaScript block.
+
+- Escape characters with an appropriate encoding, such as HTML entity encoding, to prevent switching into any execution context, such as script, style, or event handlers. 
+
+Make sure that you escape adequately depending on how the data is rendered in the response. For example, there are six control characters in HTML that need escaping:
+
+| Character  | Escaped      |
+| :-------------: |:-------------:|
+| & | &amp;amp;| 
+| < | &amp;lt; | 
+| > | &amp;gt;| 
+| " | &amp;quot;| 
+| ' | &amp;#x27;| 
+| / | &amp;#x2F;| 
+
+For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "OWASP XSS Prevention Cheat Sheet").
 
 #### References
 

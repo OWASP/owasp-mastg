@@ -101,7 +101,7 @@ For additional best practices and detailed information please refer to the sourc
 
 ##### OWASP MASVS
 
-- --TODO [Propose adding verification of OAuth2 implementation to MASVS] --
+- V4.3 - "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
