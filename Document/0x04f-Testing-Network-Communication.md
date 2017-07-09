@@ -165,9 +165,7 @@ One of the core functionalities of mobile apps is sending and/or receiving data 
 
 #### Static Analysis
 
-Identify all external endpoints (backend APIs, third-party web services), the app communicates with and ensure that all those communication channels are encrypted.
-
--- ToDo How can communication be established on Android?
+Identify all external endpoints (backend APIs, third-party web services), the app communicates with and ensure that all those communication channels are encrypted. Look for HTTP or other URL schemas the app might be using. 
 
 #### Dynamic Analysis
 
