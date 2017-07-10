@@ -98,21 +98,16 @@ The following code snippet shows a simple example for a buffer overflow vulnerab
  }  
 ```
 
-- To identify buffer overflows, look for uses of unsafe string functions (strcpy, strcat, str...) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows").
+- To identify buffer overflows, look for uses of unsafe string functions (strcpy, strcat, str...) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"). The following are examples for unsafe string functions:
     - strcat
     - strlcat
     - strcpy
-    - strlcpy
     - strncat
     - strlcat
     - strncpy
     - strlcpy
     - sprintf
     - snprintf
-    - asprintf
-    - vsprintf
-    - vsnprintf
-    - vasprintf
     - gets
 - Look for instances of copy operations implemented as for- and while loops, and verify that length checks are performed correctly;
 - When integer variables are used for array indexing, buffer length calculations, or any other security-critical operations, ensure that unsigned integer types are used and precondition tests are performed to prevent the possibility of integer wrapping.
