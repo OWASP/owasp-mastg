@@ -6,15 +6,43 @@
 
 Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios may exist in some scenarios, and proper input validation should generally performed as best practice.
+Vulnerability of this class are prevalent in web services, including the endpoints connected to by mobile apps. They also exist in mobile apps, but exploitable instances are less common, and the attack surface is smaller. For example, while a mobile app might query a local SQLite database, such databases usually don't store sensitive data that would make SQL injection a viable attack vector (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, exploitable injection vulnerabilities do sometimes occur, and proper input validation should generally performed as best practice.
 
 ##### Common Injection Types
 
 ###### SQL Injection
 
-SQL injection involves "injecting" SQL command characters into the input data, affecting the semantics of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
+SQL injection involves "injecting" SQL command characters into input data, affecting the semantics of a predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
 
 Mobile apps on Android and iOS both use SQLite databases as a means of local data storage. SQL injection vulnerabilities occur when user input is concatenated into dynamic SQL statements without prior sanitization.
+
+Assume an Android app that implements local user authentication by storing the user credentials in a local database (this isn't a good idea anyway, but let's ignore that for the sake of this example). Upon login, the app queries the database to search for a record with the user name and password entered by the user:
+
+```java=
+SQLiteDatabase db;
+
+String sql = "SELECT * FROM users WHERE username = '" +  username + "' AND password = '" + password +"'";
+
+Cursor c = db.rawQuery( sql, null );
+
+return c.getCount() != 0;
+```
+
+Let's further assume an attacker enters the following values into the "username" and "password" fields:
+
+
+```
+username = 1' or '1' = '1
+password = 1' or '1' = '1
+```
+
+This results in the following query:
+
+```
+SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1' 
+```
+
+This query return all records in the database, causing the login code to return "true" and effectively bypassing the authentication.
 
 ###### XML Injection
 
