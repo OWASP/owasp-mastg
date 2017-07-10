@@ -124,7 +124,9 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
 ```
 
-2. Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+2. --TODO What about Inspeckage to set a proxy within the app? https://github.com/ac-pm/Inspeckage
+
+3. Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
 ```bash
 $ echo "
@@ -165,7 +167,7 @@ One of the core functionalities of mobile apps is sending and/or receiving data 
 
 #### Static Analysis
 
-Identify all external endpoints (backend APIs, third-party web services), the app communicates with and ensure that all those communication channels are encrypted. Look for HTTP or other URL schemas the app might be using. 
+Identify all external endpoints (backend APIs, third-party web services), the app communicates with and ensure that all those communication channels are encrypted. Look for HTTP or other URL schemas the app might be using.
 
 #### Dynamic Analysis
 
