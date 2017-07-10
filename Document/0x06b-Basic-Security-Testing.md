@@ -174,7 +174,7 @@ Application: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423
 Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB062C864E56
 ```
 
-As you can see, there are three main directories: <codde>Bundle</code>, <code>Application</code> and <code>Data</code>. The <code>Application</code> directory is simply a subdirectory of Bundle.
+As you can see, there are three main directories: <code>Bundle</code>, <code>Application</code> and <code>Data</code>. The <code>Application</code> directory is simply a subdirectory of Bundle.
 The static installer files are located in Application, whereas all user data resides in the Data directory.
 
 The random string in the URI is application's GUID, which will be different from installation to installation.
