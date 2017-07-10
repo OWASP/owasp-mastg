@@ -594,8 +594,8 @@ The <code>zipalign</code> tool should always be used to align an APK file before
 
 #### Publishing Process
 
-The Android ecosystem is open, and, as such, it is possible to distribute apps from anywhere (your own site, any store, ...). However, Google Play is the more famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. A user must explicitly allow 3rd party apps to be installed on their device from unknown source.
+The Android ecosystem is open, and, as such, it is possible to distribute apps from anywhere (your own site, any store, ...). However, Google Play is the more famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. If a user wants to install third-party apps from a non-trusted source they must explicitly allow this from the security settings on their device.
 
-Whereas other vendors may review and approve apps before they are actually published, such things do not happen on Google Play (besides scanning for known malware signatures); this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
+Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 
 Publishing an app is quite straightforward, as the main operation is to make the signed .apk file itself downloadable. On Google Play, it starts with creating an account, and then delivering the app through a dedicated interface. Details are available on Android official documentation at https://developer.android.com/distribute/googleplay/start.html.
