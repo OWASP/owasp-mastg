@@ -68,7 +68,7 @@ The guide is organized as follows:
 
 - In the general testing guide (the following few chapters), we present the mobile app security testing methodology, and talk about general vulnerability analysis techniques as they apply to mobile application security.
 
-- The Android Testing Guide covers the everything specific to the Android platform, including security basics, security test cases, and reverse engineering and tampering techniques and preventions.
+- The Android Testing Guide covers everything specific to the Android platform, including security basics, security test cases, and reverse engineering and tampering techniques and preventions.
 
 - The iOS Testing Guide Testing Guide covers everything specific to iOS, including an overview of the iOS OS, security testing, reverse engineering and anti-reversing.
 
