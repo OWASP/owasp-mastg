@@ -33,7 +33,7 @@ Co-authors have consistently contributed quality content, and have at least 2,00
 
 #### Romuald Szkudlarek
 
-Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the Web, Mobile, IoT and Cloud domains. During his career, he has been dedicating spare time to a variery of projects with the goal of advancing the sectors of software and security. He is regularly teaches at various institutions. He holds CISSP, CSSLP and CEH credentials.
+Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the Web, Mobile, IoT and Cloud domains. During his career, he has been dedicating spare time to a variery of projects with the goal of advancing the sectors of software and security. He is regularly teaching at various institutions. He holds CISSP, CSSLP and CEH credentials.
 
 #### Jeroen Willemsen
 
