@@ -58,14 +58,14 @@ A standard user will want to jailbreak in order to tweak the iOS system appearan
 
 Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system and patching the corresponding vulnerabilities that jailbreaks are based on. Additionally, it has become a very time sensitive procedure as they stop signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that, contrary to Android, you can't downgrade iOS version with one exception explained below, which naturally creates a problem, when there is a major bump in iOS version (e.g. from 9 to 10) and there is no public jailbreak for the new OS.
 
-A recommendation here is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it. Additionally you can think of having a second one, which will be updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
+A recommendation here is: if you have a jailbroken device that you use for security testing, keep it as is, unless you are 100% sure that you can perform a newer jailbreak to it. Additionally you can think of having a second one, which is updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is quite fast in releasing a patch, hence you have only a couple of days to upgrade to the newest iOS version and jailbreak it (if upgrade is necessary).
 
-The iOS upgrade process is performed online and is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can possibly downgrade iOS version. You can check current signing window and download OTA Firmwares from the [IPSW Downloads website](https://ipsw.me).
+The iOS upgrade process is performed online and is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can downgrade the iOS version. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me).
 
 
 #### How to Jailbreak iOS?
 
-Jailbreaking methods vary across iOS versions. Best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
+Jailbreaking methods vary across iOS versions. The best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
 
 Let's say you have a device running iOS 9.0, for this version you'll find a jailbreak (Pangu 1.3.0), at least for 64 bit devices. In the case that you have another version for which there's not a jailbreak available, you could still jailbreak it if you downgrade/upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this might not be possible if the required iOS version is not signed anymore by Apple.
 
@@ -177,7 +177,7 @@ Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB
 As you can see, there are three main directories: <code>Bundle</code>, <code>Application</code> and <code>Data</code>. The <code>Application</code> directory is simply a subdirectory of Bundle.
 The static installer files are located in Application, whereas all user data resides in the Data directory.
 
-The random string in the URI is application's GUID, which will be different from installation to installation.
+The random string in the URI is the application's GUID, which is different from installation to installation.
 
 ### Dynamic Analysis
 
@@ -239,9 +239,9 @@ Portswigger also provides a good [tutorial on setting up an iOS Device to work w
 
 #### Bypassing Certificate Pinning
 
-When you try to intercept the mobile app and server communication you might fail due to certificate pinning. the Certificate Pinning is a practice used to tighten security of TLS connection. When an application is connecting to the server using TLS, it checks if the server's certificate is signed with trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
+When you try to intercept the communication between the mobile app and the server, you might fail due to certificate pinning. Certificate pinning is a practice used to tighten the security of the TLS connection. When an application connects to the server using TLS, it checks if the server's certificate is signed with a trusted CA's private key. The verification is based on checking the signature with public key that is within device's key store. This in turn contains public keys of all trusted root CAs.
 
-Certificate pinning means that our application will have server's certificate or hash of the certificate hardcoded into the source code.
+Certificate pinning means that our application has the server's certificate or hash of the certificate hardcoded into the source code.
 This protects against two main attack scenarios:
 
 * Compromised CA issuing certificate for our domain to a third-party
@@ -341,9 +341,9 @@ Intospy is an open-source security profiler for iOS released by iSecPartners. Bu
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
 
-Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than one would expect. iOS will refuse to run an app unless you get the provisioning profile and code signature header absolutely right. This requires you to learn about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be an daunting process.
+Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than one would expect. iOS refuses to run an app unless you get the provisioning profile and code signature header absolutely right. This requires you to learn about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (XCode) can be a daunting process.
 
-The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/). An alternative way of repackaging using different tools was [described by NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") .
+The toolset we're going to use consists of optool, Apple's build tools and some shell commands. Our method is inspired by the resign script from [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/). An alternative way of repackaging using different tools was [described by NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak").
 
 To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/02_iOS/UnCrackable_Level1) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
 
@@ -407,7 +407,7 @@ $ cd optool/
 $ git submodule update --init --recursive
 ~~~
 
-We'll also use ios-deploy [10], a tools that enables deploying and debugging of iOS apps without using Xcode:
+We'll also use ios-deploy [10], a tool that enables deploying and debugging of iOS apps without using Xcode:
 
 ~~~
 git clone https://github.com/alexzielenski/optool.git
