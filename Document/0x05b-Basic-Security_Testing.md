@@ -360,8 +360,6 @@ console and are available for immediate use.
 
 #### Network Monitoring/Sniffing
 
-Dynamic analysis by using an interception proxy can be straight forward if standard libraries in Android are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like [Xamarin](https://developer.xamarin.com/guides/android/ "Xamarin.Android guides") are used, where the produced apps do not use the local proxy settings of your Android phone? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
-
 On Android it is possible to [remotely sniff all traffic in real-time by using tcpdump, netcat (nc) and Wireshark](http://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First ensure you have the latest version of [Android tcpdump](http://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```
@@ -397,15 +395,20 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 0 packets dropped by kernel
 ```
 
-The first step in order to do remote sniffing of the network traffic on the Android phone by is executing `tcpdump` and pipe its output to netcat (nc):
+The first step in order to do remote sniffing of the network traffic on the Android phone is by executing `tcpdump` and pipe its output to netcat (nc):
 
 ```
 $ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
-Usually you want to monitor the wlan0 interface, in case you need another interface just list the available ones with `$ ip addr`.
+The tcpdump command above is
+- listening on the interface wlan0,
+- defines the size (snaplength) of the capture in bytes to get everything (-s0) and is
+- writing to a file (-w), but instead of a filename we provide `-` which will make tcpdump to write to stdout.
 
-In order to access port 11111 opened by netcat, we need to forward the port via adb to your machine.
+With the pipe (`|`) we sent all output from tcpdump to netcat that opens a listener on port 11111. Usually you want to monitor the wlan0 interface, in case you need another interface just list the available ones with `$ ip addr`.
+
+In order to access port 11111 on the Android phone opened by netcat, we need to forward the port via adb to your machine.
 
 ```
 $ adb forward tcp:11111 tcp:11111
@@ -417,29 +420,10 @@ With the following command you are connecting to the forwarded port available on
 $ nc localhost 11111 | wireshark -k -S -i -
 ```
 
-Wireshark should start and you should see the traffic from the wlan0 interface from the Android phone.
+Wireshark should start now immediately (-k) and get's all data from stdin (-i -) via netcat that is connecting to the forwarded port. You should see now all the traffic from the wlan0 interface from the Android phone.
 
 <img src="Images/Chapters/0x05b/Android_Wireshark.png" width="350px"/>
 
-#### Xamarin
-
-Xamarin is a mobile application development platform that is capable of producing [native Android apps](https://developer.xamarin.com/guides/android/getting_started/ "Getting Started with Android") by using Visual Studio and C# as programming language.
-
-When testing a Xamarin app and when you are trying to set the system proxy in the wifi settings you won't be able to see any requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your Android phone. There are two ways to resolve this:
-
-1. Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate()` or `Main()` method and re-create the app:
-
-```
-WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
-```
-
-2. Use ettercap in order to get a man-in-the-middle position (MITM). When being MITM we only need to redirect port 443 to our interception proxy. See the next section about "Firebase/Google Cloud Messaging (FCM/GCM)" for the setup. The only difference is, that only port 443 need to be redirected to your interception proxy running on localhost.
-
-```bash
-$ echo "
-rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
-" | sudo pfctl -ef -
-```
 
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -452,23 +436,6 @@ Downstream messages are sent from the application server to the client app (push
 FCM is available for Android and also for iOS and Chrome. FCM provides two connection server protocols at the moment: HTTP and XMPP and there are several differences in the implementation, as described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"). The following example demonstrates how to intercept both protocols.
 
 ##### Preparation
-
-For a full dynamic analysis of an Android app FCM should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
-
-- [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
-- A Man-in-the-middle attack should be executed so all traffic from the mobile device is redirected to your testing machine. This can be done by using a tool like [ettercap](https://ettercap.github.io). It can be installed by using brew on Mac OS X.
-
-```bash
-$ brew install ettercap
-```
-
-Ettercap can also be installed through `apt-get` on Debian based linux distributions.
-
-```bash
-sudo apt-get install zlib1g zlib1g-dev
-sudo apt-get install build-essential
-sudo apt-get install ettercap
-```
 
 FCM can use two different protocols to communicate with the Google backend, either XMPP or HTTP.
 
@@ -505,6 +472,8 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 
 ##### Intercepting Messages
 
+Look also into the chapter "Testing Network Communication" and the test case "Man-in-the-middle (MITM) attacks" for further preparation steps and to get ettercap running.
+
 Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
 
 ```bash
@@ -519,9 +488,6 @@ Start using the app and trigger a function that uses FCM. You should see HTTP me
 
 Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay) that visualize XMPP traffic.
 
-As an alternative to a MITM attack executed on your machine, a Wifi Access Point (AP) or router can also be used instead. The setup would become a little bit more complicated, as port forwarding needs to be configured on the AP or router and need to point to your interception proxy that need to listen on the external interface of your machine. For this test setup tools like ettercap are not needed anymore.
-
-Tools like Wireshark can be used to monitor and record the traffic for further investigation either locally on your machine or through a span port, if the router or Wifi AP offers this functionality.
 
 #### Potential Obstacles
 

@@ -340,16 +340,18 @@ public class MainActivity extends Activity
 
 The Android developer documentation also describes [how to update your security provider to protect against SSL exploits](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits").
 
-
 <!-- TODO: {What to do in case of the NDK?} -->
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
+- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
 ##### OWASP MASVS
 
 - V5.6 "The app only depends on up-to-date connectivity and security libraries."
 
 ##### CWE
-<!-- {TODO: add CWE references } -->
+
+N/A
