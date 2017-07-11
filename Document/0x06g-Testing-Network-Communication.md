@@ -289,7 +289,7 @@ As a best practice, the certificate should be pinned. This can be done in severa
 
 ##### OWASP MASVS
 
-- V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+- V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
 ##### CWE
 

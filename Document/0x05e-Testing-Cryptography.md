@@ -156,7 +156,7 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 ##### OWASP MASVS
 
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 
 ##### CWE
 
@@ -223,7 +223,7 @@ public static void main (String args[]) {
 #### References
 
 ##### OWASP MASVS
-- V3.6: "All random values are generated using a sufficiently secure random number generator"
+- V3.6: "All random values are generated using a sufficiently secure random number generator."
 
 ##### OWASP Mobile Top 10 2016
 - M6 - Broken Cryptography

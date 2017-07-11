@@ -72,7 +72,7 @@ The Local Authentication Framework makes it easy to add TouchID or similar authe
 
 ##### OWASP MASVS
 
-- 4.7 - "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 
