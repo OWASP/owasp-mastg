@@ -122,7 +122,7 @@ For a full example, see the [blog article by Deivi Taka](https://www.sitepoint.c
 
 ##### OWASP MASVS
 
-- 4.7 - "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
 ##### CWE
 

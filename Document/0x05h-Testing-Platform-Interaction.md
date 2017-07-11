@@ -130,7 +130,7 @@ Developers should take care to secure sensitive IPC components with the `signatu
 
 ##### OWASP MASVS
 
--	V6.1: "The app only requires the minimum set of permissions necessary."
+- V6.1: "The app only requests the minimum set of permissions necessary."
 
 ##### CWE
 
@@ -238,7 +238,7 @@ Nevertheless data coming in through URL schemes which is processed by the app sh
 
 ##### OWASP MASVS
 
--	V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 
 ##### CWE
 
@@ -568,7 +568,7 @@ If your IPC is intended to be accessible to other applications, you can apply a 
 
 ##### OWASP MASVS
 
--	V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 
 ##### CWE
 
@@ -640,7 +640,7 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 
 ##### OWASP MASVS
 
--	V6.5: "JavaScript is disabled in WebViews unless explicitly required."
+- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 
 ##### CWE
 
@@ -719,7 +719,7 @@ Create checksums of the local HTML/JavaScript files and check it during start up
 
 ##### OWASP MASVS
 
--	V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 
 ##### CWE
 
@@ -822,7 +822,7 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 ##### OWASP MASVS
 
--	V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
 ##### CWE
 
@@ -1042,7 +1042,7 @@ See the anti-reverse-engineering chapter for more details.
 
 ##### OWASP MASVS
 
--	V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
+- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
 
@@ -1113,7 +1113,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### OWASP MASVS
 
--	V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
 

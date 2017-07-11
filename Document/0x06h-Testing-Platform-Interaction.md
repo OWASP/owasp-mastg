@@ -234,7 +234,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 ##### OWASP MASVS
 
-- V6.7 - "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
 ##### CWE
 

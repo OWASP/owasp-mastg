@@ -101,7 +101,7 @@ For additional best practices and detailed information please refer to the sourc
 
 ##### OWASP MASVS
 
-- V4.3 - "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
+- V4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -161,7 +161,7 @@ If any of these two conditions raise an issue, reject the request and do not all
 
 ##### OWASP MASVS
 
-- 4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
+- V4.1: "If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint."
 
 ##### CWE
 
@@ -222,7 +222,7 @@ It is strongly advised to use session ID generators that are build-in within the
 
 ##### OWASP MASVS
 
-- 4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
+- V4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -315,7 +315,7 @@ The following best practices should be considered, when implementing JWT:
 
 ##### OWASP MASVS
 
-- 4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
+- V4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -369,7 +369,7 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 ##### OWASP MASVS
 
-- 4.4: "The remote endpoint terminates the existing session or server side signed tokens when the user logs out."
+- V4.4: "The remote endpoint terminates the existing session or server side signed tokens when the user logs out."
 
 ##### CWE
 
@@ -432,7 +432,7 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-- 4.5: "A password policy exists and is enforced at the remote endpoint."
+- V4.5: "A password policy exists and is enforced at the remote endpoint."
 
 ##### CWE
 - CWE-521: Weak Password Requirements
@@ -477,7 +477,7 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 
 ##### OWASP MASVS
 
-- 4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times ."
+- V4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times."
 
 ##### CWE
 
@@ -554,7 +554,7 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-- 4.8: "Sessions and server side signed tokens are terminated at the remote endpoint after a predefined period of inactivity."
+- V4.8: "Sessions and server side signed tokens are terminated at the remote endpoint after a predefined period of inactivity."
 
 ##### CWE
 - CWE-613: Insufficient Session Expiration
@@ -627,8 +627,8 @@ An additional control to ensure that an authorized user is using the app on an a
 
 ##### OWASP MASVS
 
-- 4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-- 4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
+- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- V4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
 
 ##### CWE
 
@@ -667,7 +667,7 @@ An additional control to ensure that an authorized user is using the app on an a
 
 ##### OWASP MASVS
 
-- 4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
+- V4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
 
 ##### CWE
 

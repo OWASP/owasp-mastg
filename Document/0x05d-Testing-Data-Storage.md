@@ -888,7 +888,7 @@ In order to prevent leaking of passwords or pins, sensitive information should b
 - M4 - Unintended Data Leakage
 
 ##### OWASP MASVS
-- V2.7: "No sensitive data, such as passwords and pins, is exposed through the user interface."
+- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
 
 ##### CWE
 - CWE-200 - Information Exposure

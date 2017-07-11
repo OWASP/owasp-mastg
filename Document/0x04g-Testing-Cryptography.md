@@ -43,7 +43,7 @@ Do not develop custom cryptographic algorithms, as it is likely they are prone t
 
 ##### OWASP MASVS
 
-- V3.2: "The app uses proven implementations of cryptographic primitives"
+- V3.2: "The app uses proven implementations of cryptographic primitives."
 
 ##### CWE
 
@@ -105,8 +105,8 @@ See also the following best practice documents for recommendations:
 
 ##### OWASP MASVS
 
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 
@@ -140,8 +140,8 @@ Periodically ensure that used key length fulfill [accepted industry standards](h
 - M6 - Broken Cryptography
 
 ##### OWASP MASVS
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
@@ -180,7 +180,7 @@ Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/
 - M6 - Broken Cryptography
 
 ##### OWASP MASVS
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
@@ -257,7 +257,7 @@ Pass the user-supplied password into a salted hash function or KDF; use its resu
 
 ##### OWASP MASVS
 
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 
 ##### CWE
 
@@ -288,8 +288,8 @@ Use an established key derivation function such as PBKDF2 ([RFC 2898](https://ww
 
 ##### OWASP MASVS
 
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 

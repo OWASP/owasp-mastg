@@ -166,7 +166,7 @@ The SSL pinning process should be implemented as described on the static analysi
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-- V5.4 "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+- V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
 ##### CWE
 - CWE-295 - Improper Certificate Validation
@@ -350,7 +350,7 @@ The Android developer documentation also describes [how to update your security 
 
 ##### OWASP MASVS
 
-- V5.6 "The app only depends on up-to-date connectivity and security libraries."
+- V5.6: "The app only depends on up-to-date connectivity and security libraries."
 
 ##### CWE
 
