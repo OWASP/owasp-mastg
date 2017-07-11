@@ -1,6 +1,6 @@
 # Android Platform Overview
 
-This chapter introduces Android from an architecture point of view. It covers four key areas:
+This section introduces the Android platform from an architectural point of view. In the following chapter, four key areas are discussed:
 
 1. Android security architecture
 2. Android application structure
@@ -11,13 +11,15 @@ Visit the official [Android developer documentation website](https://developer.a
 
 ## Android Security Architecture
 
-Android is a Linux-based open source platform build by Google. Is is found on many commonly used devices including mobile phones and tablets, wearables, and "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+Android is a Linux-based open source platform, initially developed by Google as a mobile operating system (OS) solution. Today, the platform is a foundation for a wide variety of modern technology such as mobile phones and tablets, wearable tech, and other "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
-The software stack of Android comprises different layers. Each layer defines certain behavior and offers specific services to the layer above.
+The software stack of Android is composed of several different layers. Each layer defines certain behavior and offers specific services. Further, these layers interact with OS portions above, below, and other instances paralleling the respective layer’s position within the system architecture.
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
-On the lowest level, Android uses the Linux Kernel upon which the core operating system is built. The hardware abstraction layer defines a standard interface for hardware vendors. HAL (Hardware Abstraction Layer) implementations are packaged into shared library modules (.so files). These modules will be loaded by the Android system at the appropriate time. The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files. However since Android integrates a Dalvik VM, not JVM, the Java class files are then compiled again into the dex format. The dex files are packed into APK (a ZIP archive containing all resources, including the executable) and then unpacked and executed within the Dalvik VM. In the following image you can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
+At the lowest level, Android utilizes a variation of the Linux Kernel which serves as the foundation for other elements composing the OS. Just above this level, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with hardware components built into a device. Several HAL implementations are packaged into shared library modules (generally, .SO files) called on by the Android system when required. This is basis for allowing applications to interact with a device’s internal hardware – for example, it grants a stock phone application the ability to use the microphone and speaker.
+
+The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files. However since Android integrates a Dalvik VM, not JVM, the Java class files are then compiled again into the dex format. The dex files are packed into APK (a ZIP archive containing all resources, including the executable) and then unpacked and executed within the Dalvik VM. In the following image you can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
