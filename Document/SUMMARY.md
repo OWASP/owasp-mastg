@@ -9,6 +9,7 @@
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
 - [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
 
