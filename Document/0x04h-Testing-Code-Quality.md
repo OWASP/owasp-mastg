@@ -1,5 +1,7 @@
 ## Testing Code Quality
 
+Mobile app developers use a wide variety of programming languages and frameworks. Many classical vulnerabilities, such as SQL injection, buffer overflows and cross-site scripting, can occur in mobile apps if secure programming practices are followed. In the following chapter, we'll give an overview of some common vulnerability classes. OS-specific details and exploit mitigation features will be discussed in later sections.
+
 ### Testing for Injection Flaws
 
 #### Overview
@@ -150,6 +152,7 @@ The following code snippet shows a simple example for a buffer overflow vulnerab
     - sprintf
     - snprintf
     - gets
+
 - Look for instances of copy operations implemented as for- and while loops, and verify that length checks are performed correctly;
 - When integer variables are used for array indexing, buffer length calculations, or any other security-critical operations, ensure that unsigned integer types are used and precondition tests are performed to prevent the possibility of integer wrapping.
 
