@@ -202,7 +202,7 @@ Please be aware that `SSLSocket` **does not** verify the hostname. The hostname 
 
 ##### OWASP MASVS
 
-- V5.1: "Sensitive data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
+- V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 
 ##### CWE
 
@@ -350,7 +350,7 @@ Ensure that critical operations require at least one additional channel to confi
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-- V5.5 "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
+- V5.5: "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
 ##### CWE
 - CWE-308 - Use of Single-factor Authentication

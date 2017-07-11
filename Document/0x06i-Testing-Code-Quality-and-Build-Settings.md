@@ -26,7 +26,7 @@
 
 ##### OWASP MASVS
 
--	V7.1: "The app is signed and provisioned with valid certificate."
+- V7.1: "The app is signed and provisioned with valid certificate."
 
 ##### CWE
 
@@ -65,7 +65,7 @@ Once you have deployed an iOS application, either through the App Store or as an
 
 ##### OWASP MASVS
 
--	V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
 
 ##### CWE
 
@@ -116,7 +116,7 @@ Not applicable.
 
 ##### OWASP MASVS
 
--	V7.3: "Debugging symbols have been removed from native binaries."
+- V7.3: "Debugging symbols have been removed from native binaries."
 
 ##### CWE
 
@@ -187,7 +187,7 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
 
 ##### OWASP MASVS
 
--	V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 
 ##### CWE
 
@@ -238,7 +238,7 @@ External entity resolution is disabled by default in both parsers. In NSXMLParse
 
 ##### OWASP MASVS
 
--   V7.1: "The app is signed and provisioned with valid certificate."
+- V7.1: "The app is signed and provisioned with valid certificate."
 
 ##### CWE
 
@@ -371,8 +371,8 @@ There are a few things a developer can do:
 
 ##### OWASP MASVS
 
--	V7.5: "The app catches and handles possible exceptions."
--	V7.6: "Error handling logic in security controls denies access by default."
+- V7.5: "The app catches and handles possible exceptions."
+- V7.6: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 
@@ -493,7 +493,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### OWASP MASVS
 
--	V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
 

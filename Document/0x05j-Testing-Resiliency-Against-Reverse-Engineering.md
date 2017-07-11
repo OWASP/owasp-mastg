@@ -1211,7 +1211,7 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 ##### OWASP MASVS
 
-- v8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
+- V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
 
 ##### CWE
 
@@ -1492,9 +1492,9 @@ For a more detailed assessment, you need to have a detailed understanding of the
 
 ##### OWASP MASVS
 
-- V8.9 - "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- v8.10 - "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.13 - "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
+- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
 ##### CWE
 
