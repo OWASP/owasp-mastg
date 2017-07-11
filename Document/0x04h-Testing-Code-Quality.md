@@ -42,11 +42,24 @@ This results in the following query:
 SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1' 
 ```
 
-This query return all records in the database, causing the login code to return "true" and effectively bypassing the authentication.
+Because the condition <code>'1' = '1'</code> always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
+
+One real-world instance of client-side SQL injection was found by Mark Woods in the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps implemented content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - "QNAP Android: Don't Over Provide").
 
 ###### XML Injection
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
+
+A popular variant of variant of this attack is XML Entity Injection (XXE). In this variant, the attacker injects an external entity definition containing an URI into the input XML. During parsing the input, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The attacker can use this to gain access to local files, trigger http requests to arbitrary hosts and ports, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
+
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ <!DOCTYPE foo [  
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "file:///dev/random" >]><foo>&xxe;</foo>
+```
+
+In this example, the local file `/dev/random` is opened. This file returns an endless stream of bytes, potentially causing a denial-of-service.
 
 In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
 
@@ -66,11 +79,11 @@ In a manual security review you'll normally use a combination of both techniques
 - Pasteboards
 - User interface
 
-Entry points and vulnerable APIs are operating system specific, so we'll describe them in more detail in the OS-specific testing guides.
+You'll find more details on input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
 #### Remediation
 
-In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
+Untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following programming best practices, such as:
 
 - Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate;
 - When parsing XML, make sure that the parser is configured to disallow resolution of external entities.
