@@ -6,19 +6,60 @@
 
 Injection flaws are a class of security vulnerability that occurs when user input is concatenated into backend queries or commands. By injecting meta characters, an attacker can inject malicious code which is then inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-This vulnerability class is very prevalent in web services, including the endpoints connected to by mobile apps. In the mobile app itself, but exploitable instances are much less common, and the attack surface is smaller. For example, while a mobile app might query a local database, such mobile databases don't store sensitive data that could usefully be extracted through SQL injection (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, viable attack scenarios may exist in some scenarios, and proper input validation should generally performed as best practice.
+Vulnerability of this class are prevalent in web services, including the endpoints connected to by mobile apps. They also exist in mobile apps, but exploitable instances are less common, and the attack surface is smaller. For example, while a mobile app might query a local SQLite database, such databases usually don't store sensitive data that would make SQL injection a viable attack vector (or at least they shouldn't - if they do, it's a sign of broken design). Nevertheless, exploitable injection vulnerabilities do sometimes occur, and proper input validation should generally performed as best practice.
 
 ##### Common Injection Types
 
 ###### SQL Injection
 
-SQL injection involves "injecting" SQL command characters into the input data, affecting the semantics of the predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
+SQL injection involves "injecting" SQL command characters into input data, affecting the semantics of a predefined SQL command. A successful SQL injection exploit can read and modify database data or (depending on the database server used) execute administrative commands.
 
 Mobile apps on Android and iOS both use SQLite databases as a means of local data storage. SQL injection vulnerabilities occur when user input is concatenated into dynamic SQL statements without prior sanitization.
+
+Assume an Android app that implements local user authentication by storing the user credentials in a local database (this isn't a good idea anyway, but let's ignore that for the sake of this example). Upon login, the app queries the database to search for a record with the user name and password entered by the user:
+
+```java=
+SQLiteDatabase db;
+
+String sql = "SELECT * FROM users WHERE username = '" +  username + "' AND password = '" + password +"'";
+
+Cursor c = db.rawQuery( sql, null );
+
+return c.getCount() != 0;
+```
+
+Let's further assume an attacker enters the following values into the "username" and "password" fields:
+
+
+```
+username = 1' or '1' = '1
+password = 1' or '1' = '1
+```
+
+This results in the following query:
+
+```
+SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1' 
+```
+
+Because the condition <code>'1' = '1'</code> always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
+
+One real-world instance of client-side SQL injection was found by Mark Woods in the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps implemented content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - "QNAP Android: Don't Over Provide").
 
 ###### XML Injection
 
 In an [XML injection attack](https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29 "XML Injection in the OWASP Testing Guide"), the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, or to exploit features of the XML parser processing the content.
+
+A popular variant of variant of this attack is XML Entity Injection (XXE). In this variant, the attacker injects an external entity definition containing an URI into the input XML. During parsing the input, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The attacker can use this to gain access to local files, trigger http requests to arbitrary hosts and ports, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
+
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ <!DOCTYPE foo [  
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "file:///dev/random" >]><foo>&xxe;</foo>
+```
+
+In this example, the local file `/dev/random` is opened. This file returns an endless stream of bytes, potentially causing a denial-of-service.
 
 In mobile apps, the trend goes towards REST/JSON-based services, so you won't see XML used that often. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries and passed to local XML parsers, such as NSXMLParser on iOS and on Android, the input should be validated and escaped.
 
@@ -38,11 +79,11 @@ In a manual security review you'll normally use a combination of both techniques
 - Pasteboards
 - User interface
 
-Entry points and vulnerable APIs are operating system specific, so we'll describe them in more detail in the OS-specific testing guides.
+You'll find more details on input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
 #### Remediation
 
-In general, untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following certain best practices, e.g.:
+Untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. Besides that, in many cases vulnerabilities can be prevented by following programming best practices, such as:
 
 - Use prepared statements with variable binding (aka parameterized queries) when doing database queries. If prepared statements are used, user-supplied data and SQL code are automatically kept separate;
 - When parsing XML, make sure that the parser is configured to disallow resolution of external entities.
@@ -98,22 +139,17 @@ The following code snippet shows a simple example for a buffer overflow vulnerab
  }  
 ```
 
-- To identify buffer overflows, look for uses of unsafe string functions and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"). The following are unsafe string functions:
--- strcat
--- strlcat
--- strcpy
--- strlcpy
--- strncat
--- strlcat
--- strncpy
--- strlcpy
--- sprintf
--- snprintf
--- asprintf
--- vsprintf
--- vsnprintf
--- vasprintf
--- gets
+- To identify buffer overflows, look for uses of unsafe string functions (strcpy, strcat, str...) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. A ['vanilla' buffer overflow might look as follows](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows "OWASP - Reviewing code for buffer overruns and overflows"). The following are examples for unsafe string functions:
+    - strcat
+    - strlcat
+    - strcpy
+    - strncat
+    - strlcat
+    - strncpy
+    - strlcpy
+    - sprintf
+    - snprintf
+    - gets
 - Look for instances of copy operations implemented as for- and while loops, and verify that length checks are performed correctly;
 - When integer variables are used for array indexing, buffer length calculations, or any other security-critical operations, ensure that unsigned integer types are used and precondition tests are performed to prevent the possibility of integer wrapping.
 
