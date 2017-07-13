@@ -16,6 +16,7 @@ To perform security testing different tools are available in order to be able to
 - [Checkmarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) - Static Source Code Scanner that also scans source code for Android and iOS.
 - [Fortify](https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security) - Static source code scanner that also scans source code for Android and iOS.
 - [Acccenture](https://digitalsecurity.accenture.com) - Static source code scanner that also scans source code for Android and iOS.
+- [Veracode](https://www.veracode.com/products/binary-static-analysis-sast "Veracode Static Analysis") - Static Analysis of iOS and Android binary
 
 ### All-in-One Mobile Security Frameworks
 

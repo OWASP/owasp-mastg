@@ -80,7 +80,11 @@ The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.ph
 
 #### White-box versus Black-box
 
-As far as the mobile app itself is concerned, there isn't really a difference between white-box and black-box testing. The tester has access to at least the compiled app, and with a good decompiler and disassembler that's pretty much equivalent to having the source code.
+In order to spent the time you have for a mobile security test as efficient as possible, you should request for the source code to support your testing. Obviously this does not really represent the scenario of an external attacker but this so called white-box testing will make it much easier to identify vulnerabilities, as every anomaly or suspicious behaviour you identify can be verified on the code level. Especially if the app is tested the first time a white-box test should be the way to go.
+
+Even though decompiling is straightforward on Android, the source code might be obfuscated, which will be time consuming or even not possible to de-obfuscate in the time you have. Therefore again the source code should be provided to be able to focus on the overall security of the app.
+
+Black-box testing might still be requested by the client, but it should be made clear that an external attacker always has as much time as he wants and not only a limited time frame as you. Therefore black-box testing might be a good choice if the app is already mature from a security point of view and if the client wants to test the implemented security controls and their effectiveness.
 
 #### Static Analysis
 
@@ -123,17 +127,6 @@ Usually, dynamic analysis is performed to check whether there are sufficient sec
 #### Runtime Analysis
 
 <!-- TODO [Describe Runtime Analysis : goal, how it works, kind of issues that can be found] -->
-
-#### Traffic Analysis
-
-Dynamic analysis of the traffic exchanged between client and server can be performed by launching a Man-in-the-middle (MITM) attack. This can be achieved by using an interception proxy like Burp Suite or OWASP ZAP for HTTP traffic.  
-
-- Configuring an Android Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp
-- Configuring an iOS Device to work with Burp - https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp
-
-In case another (proprietary) protocol is used in a mobile app that is not HTTP, the following tools can be used to try to intercept or analyze the traffic:
-- [Mallory](https://github.com/intrepidusgroup/mallory)
-- [Wireshark](https://www.wireshark.org/)
 
 #### Reporting
 
