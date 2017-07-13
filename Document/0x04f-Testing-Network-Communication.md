@@ -11,7 +11,7 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 - What if mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used, where the produced apps do not use the local proxy settings of your Android or iOS phone and you are not able to redirect the requests to your interception proxy?
 - What if you want to intercept push notifications, like for example GCM/FCM on Android (see also "Firebase/Google Cloud Messaging (FCM/GCM)" in basic security testing on Android)?
 
-In these cases we need to monitor and analyze the network traffic first in order to decide what to do next.
+In these cases we need to monitor and analyze the network traffic first in order to decide what to do next. When you don't have a rooted Android device and you need to get all network traffic, tools like ettercap can be a good solution to achieve this task. On iOS you can create a "Remote Virtual Interface" instead, which is described in the chapter "Basic Security Testing" for iOS. 
 
 > Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
