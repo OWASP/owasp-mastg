@@ -483,8 +483,3 @@ On iOS it is possible to remotely sniff all traffic in real-time by using Wiresh
 3. Open up "Terminal" on your macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device.  You can find the UDID of your iOS device via iTunes.
 4. Launch Wireshark and select "rvi0" as the capture interface.
 5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example `ip.addr == 192.168.1.1 && http`.
-
-
-### References
-
-- [#thiel] - David Thiel, iOS Application Security, No Starch Press, 2016

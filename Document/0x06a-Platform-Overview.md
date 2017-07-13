@@ -181,7 +181,3 @@ The following APIs [require permission from the user](https://www.apple.com/busi
 - Bluetooth sharing
 - Media Library
 - Social media accounts
-
-### References
-
-- [#levin] - Jonathan Levin, Mac OS X and iOS Internals, Wiley, 2013
