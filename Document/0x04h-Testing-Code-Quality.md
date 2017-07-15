@@ -1,28 +1,26 @@
 ## Testing Code Quality
 
-Mobile app developers use a wide variety of programming languages and frameworks, beyond those recognized by core APIs. As such, common vulnerabilities such as SQL injection, buffer overflows, and cross-site scripting (XSS), may manifest in apps when neglecting secure programming practices.
+Mobile app developers use a wide variety of programming languages and frameworks. As such, common vulnerabilities such as SQL injection, buffer overflows, and cross-site scripting (XSS), may manifest in apps when neglecting secure programming practices.
  
-In the following chapter, we'll provide an overview of the most common vulnerability cases frequently surfacing in mobile apps. In later sections, we will cover OS-specific instances and exploit mitigation features.
+In the following chapter, we'll provide an overview of the most common vulnerability classes frequently surfacing in mobile apps. In later sections, we will cover OS-specific instances and exploit mitigation features.
 
 ### Testing for Injection Flaws
 
 #### Overview
 
-An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta characters, an attacker can execute malicious code as it is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
+An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta characters, an attacker can execute malicious code as is is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
-Vulnerabilities of this class are most prevalent in web services, including certain endpoints where an app connects. Exploitable instances also exist within *native apps*, but occurrences are less common plus, the attack surface is smaller.
+Vulnerabilities of this class are most prevalent in server-side web services. Exploitable instances also exist within mobile apps, but occurrences are less common, plus the attack surface is smaller.
  
-For example, while an app might query a local SQLite database, such databases usually do not store sensitive data. This makes *SQL injection* an unviable attack vector, assuming the developer followed basic security principals. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
+For example, while an app might query a local SQLite database, such databases usually do not store sensitive data (assuming the developer followed basic security practices). This makes SQL injection an non-viable attack vector. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
 
 ##### Common Injection Types
 
 ###### SQL Injection
 
-A *SQL injection* attack involves integrating SQL commands into input data, mimicking the syntax of a predefined SQL command. A successful SQL injection could read or write to the database and possibly execute administrative commands, depending on permissions granted by the server.
+A *SQL injection* attack involves integrating SQL commands into input data, mimicking the syntax of a predefined SQL command. A successful SQL injection attack allows the attacker to read or write to the database and possibly execute administrative commands, depending on the permissions granted by the server.
 
-Apps on both Android and iOS use SQLite databases as a means to control and organize local data storage. A *SQL injection* vulnerability is considered present when user input can successfully assimilate characters to alter dynamic SQL statements without proper sanitization. 
-
-Assume an Android app handles local user authentication by storing the user credentials in a local database (a poor programming practice we’ll overlook for the sake of this example). Upon login, the app queries the database to search for a record with the user name and password entered by the user:
+Apps on both Android and iOS use SQLite databases as a means to control and organize local data storage. Assume an Android app handles local user authentication by storing the user credentials in a local database (a poor programming practice we’ll overlook for the sake of this example). Upon login, the app queries the database to search for a record with the user name and password entered by the user:
 
 ```java=
 SQLiteDatabase db;
@@ -50,13 +48,13 @@ SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1
 
 Because the condition <code>'1' = '1'</code> always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
-One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps rendered content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog] (http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - "QNAP Android: Don't Over Provide").
+One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog] (http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - "QNAP Android: Don't Over Provide").
 
 ###### XML Injection
 
 In an *XML injection* attack, the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, as well as possibly allow an attacker to exploit the operation of the XML parser processing the content.
 
-A popular variant of this attack is [XML Entity Injection (XXE)] (https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSFR)] (https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)), and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE] (https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
+A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSFR)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -65,15 +63,15 @@ A popular variant of this attack is [XML Entity Injection (XXE)] (https://www.ow
   <!ENTITY xxe SYSTEM "file:///dev/random" >]><foo>&xxe;</foo>
 ```
 
-In this example, the local file ‘/dev/random’ is opened where an endless stream of bytes is returned, potentially causing a denial-of-service.
+In this example, the local file `/dev/random` is opened where an endless stream of bytes is returned, potentially causing a denial-of-service.
 
-The current trend in app development focuses mostly on REST/JSON-based services as XML is becoming less common. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries, it could be interpreted by local XML parsers, such as NSXMLParser on iOS and Android Parser on Android. As such, said input should be validated and escaped if an abnormal command is detected.
+The current trend in app development focuses mostly on REST/JSON-based services as XML is becoming less common. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries, it could be interpreted by local XML parsers, such as NSXMLParser on iOS. As such, said input should always be validated and meta-characters should be escaped.
 
 #### Finding Injection Flaws
 
-Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app collects shared data for applications on an OS. This means it is highly improbably an attack is executed through the user interface or network services.
+Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services ar less common.
 
-In this regard, locating a potential exploit initiative begins by either:
+Locating a potential vulnerabilities begins by either:
 
 - Identifying possible entry points for untrusted input then tracing from those locations to see if the destination contains potentially vulnerable functions.
 - Identifying known, dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input successfully interfaces with respective queries.
@@ -87,14 +85,15 @@ During a manual security review, you should employ a combination of both techniq
 - Pasteboards
 - User interface
 
-In later sections, we will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
+We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
 #### Remediation
 
-Untrusted inputs should always be type-checked and/or validated using a white-list of acceptable values. In most other cases, vulnerabilities can be prevented by following programming best practices, such as:
+In most other cases, vulnerabilities can be prevented by following programming best practices, such as:
 
+- Always be type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
 - Use prepared statements with variable binding (i.e. parameterized queries) when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
-- Regarding XML parsing, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attacks, among other exploits.
+- When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
 
 #### References
 
