@@ -206,7 +206,7 @@ An older but well-known example is the [local XSS issue in the Skype app for iOS
 
 Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
 
-XSS issues may exist if the URL opened by WebView can be exploited, where an attacker may gain full or partial control. The following example is from an XSS issue in the [Zoho Web Service, reported by Linus Särud]( https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
+XSS issues may exist if the URL opened by WebView is partially determined by user input. The following example is from an XSS issue in the [Zoho Web Service, reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
 
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
@@ -218,17 +218,17 @@ If WebView is used to display a remote website, the burden of escaping HTML shif
 
 The best method to test for XSS issues requires using a combination of manual and automatic input fuzzing – injecting HTML tags and special characters into all available input fields to verify the web application denies invalid inputs or escapes the HTML meta-characters in its output.
 
-A [reflected XSS attack]( https://www.owasp.org/index.php/Testing_for_Reflected_Cross_site_scripting_(OTG-INPVAL-001)) refers to an exploit where malicious code is injected into a HTTP response. To test for these attacks, automated input fuzzing is considered to be the best method. For example, the [BURP Scanner](https://portswigger.net/burp/)is highly effective in identifying vulnerabilities for such exploits. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
+A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_Cross_site_scripting_(OTG-INPVAL-001)) refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be ab effective method. For example, the [BURP Scanner](https://portswigger.net/burp/) is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
 #### Remediation
 
-Security testers commonly use the infamous JavaScript message box to demonstrate exploitation via XSS. Inadvertently, developers sometimes assume by blacklisting the <code>alert()</code> command, this serves as an acceptable solution but this is not the case. Instead, preventing XSS is best accomplished by following general programming best practices.
+Security testers commonly use the infamous JavaScript message box to demonstrate exploitation via XSS. Inadvertently, developers sometimes assume by blacklisting the string "<code>alert()</code>" serves as an acceptable solution but this is not the case. Instead, preventing XSS is best accomplished by following general programming best practices:
 
 - Avoid placing untrusted data in an HTML document unless it is absolutely necessary. If you do, be aware of the context in which the data is rendered. Note: escaping rules become complicated when HTML is nested within other code, for example, rendering a URL located inside a JavaScript block.
 
 - Utilize appropriate encoding for escape characters, such as HTML entity encoding. This will prevent switching into a context where execution becomes a possibility, such as for script, style, or event handlers.
 
-Make to consider how data will be rendered in a response for escapes. For example, there are six HTML control characters that must be escaped to remove vulnerability situations:
+Consider how data will be rendered in a response. For example, there are six HTML control characters that must be escaped to remove vulnerability situations:
 
 | Character  | Escaped      |
 | :-------------: |:-------------:|
