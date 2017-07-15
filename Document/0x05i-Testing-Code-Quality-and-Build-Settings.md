@@ -560,41 +560,6 @@ Now you need to call the initializer for the handler at your custom `Application
 
 - Xposed - http://repo.xposed.info/
 
-<!--
-### Testing for Memory Corruption Bugs
-
-#### Overview
-
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
-
-#### Static Analysis
-
--- TODO [Add content for white-box testing "Testing for Memory Management Bugs"] --
-
-#### Dynamic Analysis
-
--- TODO [Add content for black-box testing "Testing for Memory Management Bugs"] --
-
-#### Remediation
-
--- TODO [Add remediations for "Testing for Memory Management Bugs"] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V7.7: "In unmanaged code, memory is allocated, freed and used securely."
-
-##### CWE
--- TODO [Add relevant CWE for "Testing for Memory Management Bugs"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
--- TODO [Add relevant tools for "Testing for Memory Management Bugs"] --
-- Enjarify - https://github.com/google/enjarify
--->
 
 ### Verify That Free Security Features Are Activated
 
