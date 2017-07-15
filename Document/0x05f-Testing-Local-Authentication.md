@@ -18,7 +18,7 @@ Begin by searching for `FingerprintManager.authenticate()` calls. The first para
 
 The creation of the key used to initialize the cipher wrapper can be traced back to the `CryptoObject`. Verify the key was both created using the `KeyGenerator` class in addition to `setUserAuthenticationRequired(true)` being called during creation of the `KeyGenParameterSpec` object (see code samples below).
 
-Make sure to verify authentication logic. For the authentication to be successful, the remote endpoint **must** require the client to present the secret retrieved from the Keystore or an accepted value derived from this secret. 
+Make sure to verify authentication logic. For the authentication to be successful, the remote endpoint **must** require the client to present the secret retrieved from the Keystore, a value derived from the secret, or a value signed with the client private key (see above).
 
 #### Dynamic Analysis
 
@@ -57,7 +57,23 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 If any one of the above checks fail, the option for fingerprint authentication should not be offered.
 
-Should all the above checks pass, fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
+It is important to remember that not every Android device offers hardware-backed key storage. The `KeyInfo` class can be used to find out whether the key resides inside secure hardware such as a Trusted Execution Environment (TEE) or Secure Element (SE).
+
+```java
+SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
+                KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
+secetkeyInfo.isInsideSecureHardware()
+```
+
+On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
+
+```java
+	keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+```
+
+##### Fingerprint Authentication using a Symmetric Key
+
+Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
 ```java
 	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
@@ -72,8 +88,6 @@ Should all the above checks pass, fingerprint authentication may be implemented 
 
 	generator.generateKey();
 ```
-
-Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to "true" (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 
 To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
 
@@ -101,21 +115,56 @@ public void authenticationSucceeded(FingerprintManager.AuthenticationResult resu
 }
 ```
 
-It is important to remember that not every Android device offers hardware-backed key storage. The `KeyInfo` class can be used to find out whether the key resides inside secure hardware such as a Trusted Execution Environment (TEE) or Secure Element (SE).
+##### Fingerprint Authentication using an Asymmetric Key Pair
 
-```java
-SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
-                KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
-secetkeyInfo.isInsideSecureHardware()
+To implement fingerprint authentication using asymmetic cryptography, first create a signing key using the `KeyPairGenerator` class, and enroll the public key with the server. You can then authenticate pieces of data by signing them on the client and verifying the signature on the server. Takeshi Hagikura and Yuichi Araki provide a detailed example for transaction signing in the [Android Developers Blog](https://android-developers.googleblog.com/2015/10/new-in-android-samples-authenticating.html).
+
+A key pair is generated as follows:
+
+```
+KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore");
+keyPairGenerator.initialize(
+        new KeyGenParameterSpec.Builder(MY_KEY,
+                KeyProperties.PURPOSE_SIGN)
+                .setDigests(KeyProperties.DIGEST_SHA256)
+                .setAlgorithmParameterSpec(new ECGenParameterSpec("secp256r1"))
+                .setUserAuthenticationRequired(true)
+                .build());
+keyPairGenerator.generateKeyPair();
 ```
 
-On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
+To use the key for signing, you need to instantiate a CryptoObject and authenticate it through `FingerprintManager`.
 
-```java
-	keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+
+```
+Signature.getInstance("SHA256withECDSA");
+KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+keyStore.load(null);
+PrivateKey key = (PrivateKey) keyStore.getKey(MY_KEY, null);
+signature.initSign(key);
+CryptoObject cryptObject = new FingerprintManager.CryptoObject(signature);
+
+CancellationSignal cancellationSignal = new CancellationSignal();
+FingerprintManager fingerprintManager =
+        context.getSystemService(FingerprintManager.class);
+fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
 ```
 
-For a more in-depth example, refer to this [article by Deivi Taka](https://www.sitepoint.com/securing-your-android-apps-with-the-fingerprint-api/#savingcredentials "Securing Your Android Apps with the Fingerprint API").
+You can now sign the contents of a byte array `inputBytes` as follows.
+
+```
+Signature signature = cryptoObject.getSignature();
+signature.update(inputBytes);
+byte[] signed = signature.sign();
+```
+
+- Note that in cases where transactions are signed, a random nonce should be generated and added to the signed data. Otherwise, an attacker could replay the transaction.
+
+- To implement authentication using symmetric fingerprint authentication, use a challenge-response protocol.
+
+##### Additional Security Features
+
+Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to "true" (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 
 #### References
 
