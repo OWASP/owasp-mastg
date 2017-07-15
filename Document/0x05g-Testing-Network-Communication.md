@@ -25,7 +25,7 @@ A mechanism responsible for verifying conditions to establish a trusted connecti
 
 Look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
 
-```java
+```
 TrustManager[] trustAllCerts = new TrustManager[] {
     new X509TrustManager() {
         @Override
@@ -43,7 +43,7 @@ TrustManager[] trustAllCerts = new TrustManager[] {
             throws CertificateException {
         }
     }
-};
+ };
 
 // SSLContext context
 context.init(null, trustAllCerts, new SecureRandom());
@@ -51,9 +51,9 @@ context.init(null, trustAllCerts, new SecureRandom());
 
 ##### WebView Server Certificate Verification
 
-Sometimes application uses the WebView UI component to render the website associated with the application. It is also the case for HTML/JavaScript based framework, like for example Apache Cordova, that internally use a WebView to perform application interaction. When a WebView is used, it is the mobile browser that performs the server certificate validation. A possible bad usage of the WebView is to ignore any TLS error that occurs when the WebView (the mobile browser underneath) try to establish the connection with the remote website.
+Sometimes applications use the WebView UI component to render the website associated with the application. This is also the case for HTML/JavaScript based frameworks, like for example Apache Cordova, that internally uses a WebView to perform application interaction. When a WebView is used, it is the mobile browser that performs the server certificate validation. A bad practice would be to ignore any TLS error that occurs when the WebView tries to establish the connection with the remote website.
 
-The following code is responsible for ignoring any TLS issue, precisely the custom implementation of the WebViewClient provided to the WebView:
+The following code would ignore any TLS issues, precisely the custom implementation of the WebViewClient provided to the WebView:
 
 ```java
 WebView myWebView = (WebView) findViewById(R.id.webview);
