@@ -1,6 +1,6 @@
 ## Testing Local Authentication in Android Apps
 
-During local authentication, an app authenticates by referencing user input against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
+During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
 
 ### Testing Biometric Authentication
 
@@ -20,24 +20,25 @@ Make sure to verify authentication logic. For the authentication to be successfu
 
 #### Dynamic Analysis
 
-Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call on the <code>onAuthenticationSucceeded</code> and directly inject the callback to circumvent fingerprint authentication. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
+Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 #### Remediation
 
-Safely implementing fingerprint authentication requires following a few simple principals, starting by first checking it is actually possible. On the most basic front, the device must run Android 6.0 or higher (SDK 23+). Four other prerequisites must also be verified:
+Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
 
-- The user must have a protected lockscreen:
-
-```java
-	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();
-```
 - Fingerprint hardware must be available:
 
 ```java
 	 FingerprintManager fingerprintManager = (FingerprintManager)
                     context.getSystemService(Context.FINGERPRINT_SERVICE);
     fingerprintManager.isHardwareDetected();                
+```
+
+- The user must have a protected lockscreen:
+
+```java
+	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+	 keyguardManager.isKeyguardSecure();
 ```
 
 - At least one finger should be registered:
@@ -70,7 +71,7 @@ Should all the above checks pass, fingerprint authentication may be implemented 
 	generator.generateKey();
 ```
 
-Note that in Android Nougat (7.0), it is possible to use <code>setInvalidatedByBiometricEnrollment(boolean)</code> as a method to implement fingerprint authentication. When the value is set to “true,” an existing fingerprint will not be invalidated when new fingerprints are enrolled. Though this provides a degree of convenience for a user, it creates vulnerability by offering an opportunity where an attacker could add their fingerprint.
+Note that in Android Nougat (7.0), it is possible to use `setInvalidatedByBiometricEnrollment(boolean)` as a method to implement fingerprint authentication. When the value is set to "true", an existing fingerprint will not be invalidated when new fingerprints are enrolled. Though this provides a degree of convenience for a user, it creates vulnerability by offering an opportunity where an attacker could add their fingerprint.
 
 To perform encryption or decryption, create a <code>Cipher</code> object and initialize it with the AES key.
 
@@ -81,14 +82,14 @@ To perform encryption or decryption, create a <code>Cipher</code> object and ini
         cipher.init(mode, keyspec);
 ```
 
-Keep in mind, a new key cannot be used immediately - it has to be authenticated through the <code>FingerprintManager</code> first. This involves wrapping the <code>Cipher</code> object into <code>FingerprintManager.CryptoObject</code> which is passed to <code>FingerprintManager.authenticate()</code> before it will be recognized.
+Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate()` before it will be recognized.
 
 ```java
 	cryptoObject = new FingerprintManager.CryptoObject(cipher);
 	fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
 ```
 
-When authentication succeeds, the callback method <code>onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)</code> is called at which point, the authenticated <code>CryptoObject</code> can be retrieved from the result.
+When authentication succeeds, the callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called at which point, the authenticated `CryptoObject` can be retrieved from the result.
 
 ```java
 public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
@@ -98,7 +99,7 @@ public void authenticationSucceeded(FingerprintManager.AuthenticationResult resu
 }
 ```
 
-It is important to remember that keys stored on hardware may not be secure so the following method for validating the integrity of the data is critical:
+It is important to remember that not every Android device offers hardware-backed key storage. The `KeyInfo` class can be used to find out whether the key resides inside secure hardware such as a Trusted Execution Environment (TEE) or Secure Element (SE).
 
 ```java
 SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
