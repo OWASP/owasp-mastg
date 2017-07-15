@@ -55,7 +55,7 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 If any one of the above checks fail, the option for fingerprint authentication should not be offered.
 
-Should all the above checks pass, fingerprint authentication may be implemented by creating a new AES key using the <code>KeyGenerator</code> class by adding <code>setUserAuthenticationRequired(true)</code> in <code>KeyGenParameterSpec.Builder</code>.
+Should all the above checks pass, fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
 ```java
 	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
@@ -71,9 +71,9 @@ Should all the above checks pass, fingerprint authentication may be implemented 
 	generator.generateKey();
 ```
 
-Note that in Android Nougat (7.0), it is possible to use `setInvalidatedByBiometricEnrollment(boolean)` as a method to implement fingerprint authentication. When the value is set to "true", an existing fingerprint will not be invalidated when new fingerprints are enrolled. Though this provides a degree of convenience for a user, it creates vulnerability by offering an opportunity where an attacker could add their fingerprint.
+Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to "true" (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 
-To perform encryption or decryption, create a <code>Cipher</code> object and initialize it with the AES key.
+To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
 
 ```java
 	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
