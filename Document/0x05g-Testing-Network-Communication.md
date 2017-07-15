@@ -49,6 +49,23 @@ TrustManager[] trustAllCerts = new TrustManager[] {
 context.init(null, trustAllCerts, new SecureRandom());
 ```
 
+##### WebView Server Certificate Verification
+
+Sometimes application uses the WebView UI component to render the website associated with the application. It is also the case for HTML/JavaScript based framework, like for example Apache Cordova, that internally use a WebView to perform application interaction. When a WebView is used, it is the mobile browser that performs the server certificate validation. A possible bad usage of the WebView is to ignore any TLS error that occurs when the WebView (the mobile browser underneath) try to establish the connection with the remote website.
+
+The following code is responsible for ignoring any TLS issue, precisely the custom implementation of the WebViewClient provided to the WebView:
+
+```java
+WebView myWebView = (WebView) findViewById(R.id.webview);
+myWebView.setWebViewClient(new WebViewClient(){
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        //Ignore TLS certificate errors and instruct the WebViewClient to load the website
+        handler.proceed();
+    }
+});
+```
+
 ##### Hostname Verification
 
 Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
