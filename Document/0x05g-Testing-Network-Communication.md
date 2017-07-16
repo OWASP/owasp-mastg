@@ -169,6 +169,74 @@ OkHttpClient client = new OkHttpClient.Builder()
         .build();
 ```
 
+Applications that use WebView component may utilize event handler of the WebViewClient in order to perform some kind of "certificate pinning" on each request before that the target resource will be loaded. Verification code seems like the following:
+
+```java
+WebView myWebView = (WebView) findViewById(R.id.webview);
+myWebView.setWebViewClient(new WebViewClient(){
+    private String expectedIssuerDN = "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US;";
+
+    @Override
+    public void onLoadResource(WebView view, String url)  {
+        //From Android API documentation about "WebView.getCertificate()":
+        //Gets the SSL certificate for the main top-level page or null if there is no certificate (the site is not secure).
+        //
+        //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
+        SslCertificate serverCert = view.getCertificate();
+        if(serverCert != null){
+            //Apply check on Issuer DN against expected one
+            SslCertificate.DName issuerDN = serverCert.getIssuedBy();
+            if(!this.expectedIssuerDN.equals(issuerDN.toString())){
+                //Throw exception to cancel resource loading...
+            }
+        }
+    }
+});
+```
+
+Applications can decide to use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) feature provided by Android from version 7.0.
+From Android documentation:
+"The Network Security Configuration feature lets apps customize their network security settings in a safe, declarative configuration file without modifying app code".
+
+Network Security Configuration (NSC) feature can also be used to perform [declarative certificate pinning](https://developer.android.com/training/articles/security-config.html#CertificatePinning) on specific domains. If an application uses the NSC feature then there 2 points to check in order to identify the defined configuration:
+
+1. Specification of the NSC file reference in the Android application manifest using the "android:networkSecurityConfig" attribute on the application tag:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="owasp.com.app">
+    <application android:networkSecurityConfig="@xml/network_security_config">
+        ...
+    </application>
+</manifest>
+```
+
+2. Content the NSC file stored in location "res/xml/network_security_config.xml" of the module:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <!-- Use certificate pinning for OWASP website access including sub domains -->
+        <domain includeSubdomains="true">owasp.org</domain>
+        <pin-set>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of the Intermediate CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of the Root CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+```
+
+If a NSC configuration is in place then the following event can be visible in Log:
+```
+D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
+```
+
+If a certification pinning validation fail then the following event can be visible in Log:
+```
+I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
+```
+
 #### Dynamic Analysis
 
 Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
