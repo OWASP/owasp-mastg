@@ -169,7 +169,7 @@ OkHttpClient client = new OkHttpClient.Builder()
         .build();
 ```
 
-Applications that use WebView component may utilize event handler of the WebViewClient in order to perform some kind of "certificate pinning" on each request before that the target resource will be loaded. Verification code seems like the following:
+Applications that use a WebView component may utilize the event handler of the WebViewClient in order to perform some kind of "certificate pinning" on each request before the target resource will be loaded. The following code shows an example for verifying the Issuer DN of the certificate sent by the server:
 
 ```java
 WebView myWebView = (WebView) findViewById(R.id.webview);
@@ -179,7 +179,8 @@ myWebView.setWebViewClient(new WebViewClient(){
     @Override
     public void onLoadResource(WebView view, String url)  {
         //From Android API documentation about "WebView.getCertificate()":
-        //Gets the SSL certificate for the main top-level page or null if there is no certificate (the site is not secure).
+        //Gets the SSL certificate for the main top-level page
+        //or null if there is no certificate (the site is not secure).
         //
         //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
         SslCertificate serverCert = view.getCertificate();
@@ -194,11 +195,9 @@ myWebView.setWebViewClient(new WebViewClient(){
 });
 ```
 
-Applications can decide to use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) feature provided by Android from version 7.0.
-From Android documentation:
-"The Network Security Configuration feature lets apps customize their network security settings in a safe, declarative configuration file without modifying app code".
+Applications can decide to use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") feature provided by Android from version 7.0 onwards, to customize their network security settings in a safe, declarative configuration file without modifying app code.
 
-Network Security Configuration (NSC) feature can also be used to perform [declarative certificate pinning](https://developer.android.com/training/articles/security-config.html#CertificatePinning) on specific domains. If an application uses the NSC feature then there 2 points to check in order to identify the defined configuration:
+Network Security Configuration (NSC) feature can also be used to perform [declarative certificate pinning](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") on specific domains. If an application uses the NSC feature then there two points to check in order to identify the defined configuration:
 
 1. Specification of the NSC file reference in the Android application manifest using the "android:networkSecurityConfig" attribute on the application tag:
 ```xml
@@ -218,21 +217,23 @@ Network Security Configuration (NSC) feature can also be used to perform [declar
         <!-- Use certificate pinning for OWASP website access including sub domains -->
         <domain includeSubdomains="true">owasp.org</domain>
         <pin-set>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of the Intermediate CA of the OWASP website server certificate -->
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Intermediate CA of the OWASP website server certificate -->
             <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of the Root CA of the OWASP website server certificate -->
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Root CA of the OWASP website server certificate -->
             <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
         </pin-set>
     </domain-config>
 </network-security-config>
 ```
 
-If a NSC configuration is in place then the following event can be visible in Log:
+If a NSC configuration is in place then the following event can be visible in log:
 ```
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
 ```
 
-If a certification pinning validation fail then the following event can be visible in Log:
+If a certificate pinning validation check is failing then the following event will be logged:
 ```
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
