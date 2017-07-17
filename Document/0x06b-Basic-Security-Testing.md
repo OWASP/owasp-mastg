@@ -335,7 +335,7 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 ##### Get the IPA file
 
-One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, but not the IPA directly:
+One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
 
 ```
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
@@ -511,16 +511,35 @@ If something goes wrong (which it usually does), mismatches between the provisio
 
 #### Objection
 
+The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
+
+> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
+
+The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
+
+- the installation of `objection`,
+- the process of patching an iOS application and
+- running patches iOS applications.
+
+A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
+
+- listing and downloading of files of the App sandbox,
+- SSL Pinning bypasses or
+- dump the iOS keychain, and export it to a file.
 
 
 #### Network Monitoring/Sniffing
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
 
-On iOS it is possible to remotely sniff all traffic in real-time by using Wireshark and [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS workstation.
+On iOS it is possible to remotely sniff all traffic in real-time by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS machine.
 
-1. Connect your iOS device to your macOS workstation via a USB cable.
-2. Ensure that both your iOS device and your macOS workstation are connected to the same network.
-3. Open up "Terminal" on your macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device.  You can find the UDID of your iOS device via iTunes.
+1. Connect your iOS device to your macOS machine via a USB cable.
+2. Ensure that both your iOS device and your macOS machine are connected to the same network.
+3. Open up "Terminal" on macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID").
 4. Launch Wireshark and select "rvi0" as the capture interface.
-5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example `ip.addr == 192.168.1.1 && http`.
+5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example all HTTP traffic of the IP address 192.168.1.1
+
+```
+ip.addr == 192.168.1.1 && http
+```
