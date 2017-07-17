@@ -1,12 +1,12 @@
 ## Testing Network Communication
 
-The following chapter outlines network communication requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
+Practically all network-connected mobile apps use HTTP(S) to send and receive data from and to a remote endpoint. Consequently, network-based attacks such as packet sniffing and man-in-the-middle-attacks are a potential issue. In this chapter, we discuss potential vulnerabilities, testing techniques and best practices concerning the network communication between a mobile app and its endpoint(s).
 
 ### Testing for Unencrypted Sensitive Data on the Network
 
 #### Overview
 
-One of the core functionalities of mobile apps is sending and/or receiving data from endpoints, over untrusted networks like the internet. It is possible for an attacker to sniff or even modify trough Man-in-the-middle (Mitm) attacks unencrypted information if he controls any part of the network infrastructure (e.g. an WiFi access point). This puts data in transit on risk and provides additional attack surface. For this reason, developers should make a general rule, that all communication should be [encrypted by using HTTPS](https://developer.android.com/training/articles/security-tips.html#Networking "Security Tips - Networking").
+One of the core functionalities of mobile apps is sending and/or receiving data from endpoints, over untrusted networks like the Internet. It is possible for an attacker to sniff or even modify trough Man-in-the-middle (Mitm) attacks unencrypted information if he controls any part of the network infrastructure (e.g. an WiFi access point). This puts data in transit on risk and provides additional attack surface. For this reason, developers should make a general rule, that all communication should be [encrypted by using HTTPS](https://developer.android.com/training/articles/security-tips.html#Networking "Security Tips - Networking").
 
 #### Static Analysis
 
