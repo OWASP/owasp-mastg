@@ -283,7 +283,7 @@ When going through the source code it should be analyzed if native mechanisms th
 
 #### Dynamic Analysis
 
-Install and use the app as it is intended and execute all functions at least once. Data can be generated when entered by the user, sent by the endpoint or it is already shipped within the app when installing it. Afterwards check the following items:
+Install and use the app as it is intended and execute all functions at least once. Data can be generated when  entered by the user, sent by the endpoint or it is already shipped within the app when installing it. Afterwards check the following items:
 
 - Check the files that are shipped with the mobile application once installed in `/data/data/<package-name>/` in order to identify development, backup or simply old files that shouldn’t be in a production release.
 - Check if SQLite databases are available and if they contain sensitive information (usernames, passwords, keys etc.). SQLite databases are stored in `/data/data/<package-name>/databases`.

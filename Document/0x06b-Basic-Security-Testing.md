@@ -332,6 +332,29 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 > Please note that all of the following steps are applicable for macOS only. Also Xcode is only available for macOS.
 
+
+##### Get the IPA file
+
+One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
+
+```
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
+
+```
+npm install -g itms-services
+```
+
+With the following command you can get the IPA and write the output to a file locally.
+
+```
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
+During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to  create the basis for dynamic analysis.
+
 ##### Getting a Developer Provisioning Profile and Certificate
 
 The *provisioning profile* is a plist file signed by Apple that whitelists your code signing certificate on one or multiple devices. In other words, this is Apple explicitly allowing your app to run in certain contexts, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to do the actual signing.
@@ -450,7 +473,7 @@ $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage"
 Finally, we use the codesign tool to re-sign both binaries. You need to use your signing identity instead of the value "8004380F331DCA22CC1B47FB1A805890AE41C938" which you can get by executing the command `security find-identity -p codesigning -v`.
 
 ```
-$ rm -rf Payload/F/_CodeSignature
+$ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
 Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
 ```
@@ -483,17 +506,40 @@ PID  Name
 
 ##### Troubleshooting.
 
-If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. I also found Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") to be a useful resource.
+If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Also Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is a useful resource.
 
 
-##### Network Monitoring/Sniffing
+#### Objection
+
+The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
+
+> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
+
+The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
+
+- the installation of `objection`,
+- the process of patching an iOS application and
+- running patches iOS applications.
+
+A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
+
+- listing and downloading of files of the App sandbox,
+- SSL Pinning bypasses or
+- dump the iOS keychain, and export it to a file.
+
+
+#### Network Monitoring/Sniffing
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
 
-On iOS it is possible to remotely sniff all traffic in real-time by using Wireshark and [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS workstation.
+On iOS it is possible to remotely sniff all traffic in real-time by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS machine.
 
-1. Connect your iOS device to your macOS workstation via a USB cable.
-2. Ensure that both your iOS device and your macOS workstation are connected to the same network.
-3. Open up "Terminal" on your macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device.  You can find the UDID of your iOS device via iTunes.
+1. Connect your iOS device to your macOS machine via a USB cable.
+2. Ensure that both your iOS device and your macOS machine are connected to the same network.
+3. Open up "Terminal" on macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID").
 4. Launch Wireshark and select "rvi0" as the capture interface.
-5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example `ip.addr == 192.168.1.1 && http`.
+5. Filter the traffic accordingly in Wireshark to display what you want to monitor, for example all HTTP traffic of the IP address 192.168.1.1
+
+```
+ip.addr == 192.168.1.1 && http
+```
