@@ -85,7 +85,7 @@ Other uses of cryptography require careful adherence to best practices:
 
 #### Dynamic Analysis
 
-If passwords are hashed with an insecure algorithm with known collisions an attacker can utilize this to [gain knowledge about the used hash algorithm](https://www.netsparker.com/blog/web-security/collision-based-hashing-algorithm-disclosure/). For example, the pair `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa200a8284bf36e8e4b55b35f427593d849676da0d1555d8360fb5f07fea2` and `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa202a8284bf36e8e4b55b35f427593d849676da0d1d55d8360fb5f07fea2` both produce the same MD5 sum. If an attacker can set his password to the former and is then able to login using the latter as a password, usage of the insecure MD5 algorithm as hash algorithm has been confirmed.
+If passwords are hashed with an insecure algorithm with known collisions an attacker can utilize this to [gain knowledge about the used hash algorithm](https://www.netsparker.com/blog/web-security/collision-based-hashing-algorithm-disclosure/). For example, the pair `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa**200**a8284bf36e8e4b55b35f427593d849676da0d1**555**d8360fb5f07fea2` and `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa**202**a8284bf36e8e4b55b35f427593d849676da0d1**d55**d8360fb5f07fea2` both produce the same MD5 sum. If an attacker can set his password to the former and is then able to login using the latter as a password, usage of the insecure MD5 algorithm as hash algorithm has been confirmed.
 
 #### Remediation
 
@@ -136,11 +136,11 @@ Through source code analysis the following non-exhausting configuration options 
 
 #### Dynamic Analysis
 
-Various weaknesses can be detected within out access to the source code:
+Various weaknesses can be detected without access to the source code:
 
-- if access to encrypted files or to generated hashes is possible (e.g., through stored files) the same file can be encrypted by two users. If this results in the same encrypted file, a static encryption key has been used.
+- Let two users encrypt a file. If this results in the same encrypted file, the app uses a static encryption key. Access to the encrypted file is necessary to confirm this weakness.
 - if two different users are able to generate the same hash for the same file, then no (or an indequate) salt has been used.
-- IVs are usually stored in plain-text at the beginning of a file; compare differnt encrypted filesand check if their encrypted representation does not contain an identical salt.
+- IVs are usually stored in plain-text at the beginning of a file; compare different encrypted files and check if their encrypted representation does not contain an identical IVs.
 
 #### Remediation
 
