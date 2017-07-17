@@ -115,7 +115,7 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger as much app functionality as possible before the data is analyzed, as the app might only store system credentials when specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
 
-The following steps can be used to identify how the application stores data locally on the iOS device.
+The following steps can be used on a jailbroken device to identify how the application stores data locally on the iOS device.
 
 1. Proceed to trigger functionality that stores potential sensitive data.
 2. Connect to the iOS device and browse to the following directory (this is applicable to iOS version 8.0 and higher): `/var/mobile/Containers/Data/Application/$APP_ID/`
