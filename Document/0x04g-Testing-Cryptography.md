@@ -85,7 +85,7 @@ Other uses of cryptography require careful adherence to best practices:
 
 #### Dynamic Analysis
 
-If passwords are hashed with an insecure algorithm with known collisions an attacker can utilize this to [gain knowledge about the used hash algorithm](https://www.netsparker.com/blog/web-security/collision-based-hashing-algorithm-disclosure/). For example, the pair `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa**200**a8284bf36e8e4b55b35f427593d849676da0d1**555**d8360fb5f07fea2` and `4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa**202**a8284bf36e8e4b55b35f427593d849676da0d1**d55**d8360fb5f07fea2` both produce the same MD5 sum. If an attacker can set his password to the former and is then able to login using the latter as a password, usage of the insecure MD5 algorithm as hash algorithm has been confirmed.
+If passwords are hashed with an insecure algorithm with known collisions an attacker can utilize this to [gain knowledge about the used hash algorithm](https://www.netsparker.com/blog/web-security/collision-based-hashing-algorithm-disclosure/). For example, the pair <tt>4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa<b>200</b>a8284bf36e8e4b55b35f427593d849676da0d1<b>555</b>d8360fb5f07fea2</tt> and <tt>4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa<b>202</b>a8284bf36e8e4b55b35f427593d849676da0d1<b>d55</b>d8360fb5f07fea2</tt> both produce the same MD5 sum. If an attacker can set his password to the former and is then able to login using the latter as a password, usage of the insecure MD5 algorithm as hash algorithm has been confirmed.
 
 #### Remediation
 
