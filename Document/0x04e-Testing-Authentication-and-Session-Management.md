@@ -4,15 +4,17 @@ Most mobile apps implement some kind of user authentication. Even though part of
 
 In most cases, you'll find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so once a user logs in, some means is needed to associate subsequent HTTP request with that user - otherwise, the user's credentials would have to be sent with every request. Also, server and client need to keep track of data associated with the user (e.g. the user's privileges or role). This is can be done in two different ways:
 
-- In *stateful* authentication, a unique session id is generated when the user authenticates. In subsequent requests, this session ID serves as a reference to the user details stored on the server-side. The session ID itself is *opaque*, meaning that it does not contain any user data. The disadvantage of stateful authentication is that it doesn't scale well.
+- With *stateful* authentication, a unique session id is generated when the user authenticates. In subsequent requests, this session ID serves as a reference to the user details stored on the server-side. The session ID itself is *opaque*, meaning that it does not contain any user data. The disadvantage of stateful authentication is that it doesn't scale well.
 
-- In *stateless* authentication, no session data is stored on the server side. Instead, all information for identifying the user is stored in a client-side token, which can be passed to any server or microservice. 
+- With *stateless* authentication, all information for identifying the user is stored in a client-side token, which can be passed to any server or micro service, eliminating the need for maintaining session state on the server-side. In that case, authentication is usually factored out to an authorization server, which produces, signs and optionally encrypts the token upon user login.
+
+Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches, in particular OAuth2, are increasingly popular, but "traditional" server-side sessions are also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of a particular mobile OS. Security considerations for each mobile operating system follow in the respective OS-specific chapters.
 
 ### Testing OAuth2 implementation
 
 #### Overview
 
-OAuth2 is an authorization framework used to authorize an application to use a user account on an HTTP service for a limited time and, at the same time, preventing the client applications from having knowledge of any user credentials.
+OAuth2 is an authorization protocol that provides a centralized approach to identity management. In OAuth2, a mobile app seeking to access a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token allowing the app to act on behalf of the user.
 
 OAuth2 defines four roles:
 
