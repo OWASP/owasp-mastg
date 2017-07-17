@@ -762,23 +762,94 @@ This will cause the background image to be set to the "overlayImage.png" instead
 
 #### Overview
 
+Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
+
+To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile app is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
+Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
+
 #### Static Analysis
+
+-- ToDo
+
 
 #### Dynamic Analysis
 
+In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
+
+To take advantage of Fridump and objection the iOS app need to be repackaged with FridaGadget.dylib and signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
+
+##### Fridump (No Jailbreak needed)
+
+-- ToDo
+
+##### Objection (No Jailbreak needed)
+
+With objection it is possible to dump all memory of the running processes on the iPhone.
+
+```
+(virtual-python3) ➜ objection explore
+
+     _     _         _   _
+ ___| |_  |_|___ ___| |_|_|___ ___
+| . | . | | | -_|  _|  _| | . |   |
+|___|___|_| |___|___|_| |_|___|_|_|
+        |___|(object)inject(ion) v0.1.0
+
+     Runtime Mobile Exploration
+        by: @leonjza from @sensepost
+
+[tab] for command suggestions
+iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
+Dumping 768.0 KiB from base: 0x1ad200000  [####################################]  100%
+Memory dumped to file: /Users/foo/memory_iOS/memory
+```
+
+The loaded modules of the current process can also be shown.
+
+```
+iPhone on (iPhone: 10.3.1) [usb] # memory list modules
+Name                              Base         Size                 Path
+--------------------------------  -----------  -------------------  ---------------------------------------------------------------------------------
+foobar                            0x1000d0000  11010048 (10.5 MiB)  /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
+FridaGadget.dylib                 0x100ec8000  3883008 (3.7 MiB)    /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
+libsqlite3.dylib                  0x187290000  1118208 (1.1 MiB)    /usr/lib/libsqlite3.dylib
+libSystem.B.dylib                 0x18577c000  8192 (8.0 KiB)       /usr/lib/libSystem.B.dylib
+libcache.dylib                    0x185bd2000  20480 (20.0 KiB)     /usr/lib/system/libcache.dylib
+libsystem_pthread.dylib           0x185e5a000  40960 (40.0 KiB)     /usr/lib/system/libsystem_pthread.dylib
+libsystem_kernel.dylib            0x185d76000  151552 (148.0 KiB)   /usr/lib/system/libsystem_kernel.dylib
+libsystem_platform.dylib          0x185e53000  28672 (28.0 KiB)     /usr/lib/system/libsystem_platform.dylib
+libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/system/libdyld.dylib
+```
+
+
+##### Needle (Jailbreak needed)
+
+
+
 #### Remediation
+
+-- ToDo
 
 #### References
 
+##### OWASP Mobile Top 10 2016
+
+- M1 - Improper Platform Usage
+- M2 - Insecure Data Storage
+
 ##### OWASP MASVS
+
 - V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-
 ##### CWE
+
 - CWE-316 - Cleartext Storage of Sensitive Information in Memory
 
+##### Tools
+
+- [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
+- [objection](https://github.com/sensepost/objection "objection")
+- [Needle](https://github.com/mwrlabs/needle/ "Needle")
 
 
 ### Testing the Device-Access-Security Policy
