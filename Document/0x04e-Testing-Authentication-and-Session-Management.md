@@ -1,8 +1,8 @@
 ## Remote Authentication and Authorization
 
-Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is an integral part of most mobile app architectures, so it is important for mobile app pentesters to understand common methods.
+Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
-In most cases, you'll find that the mobile app uses HTTP as a transport layer. The HTTP protocol itself is stateless, so once a user logs in, some means is needed to associate subsequent HTTP request with that user - otherwise, the user's credentials would have to be sent with every request. Also, server and client need to keep track of data associated with the user (e.g. the user's privileges or role). This is can be done in two different ways:
+In most cases, you'll find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so once a user logs in, some means is needed to associate subsequent HTTP request with that user - otherwise, the user's credentials would have to be sent with every request. Also, server and client need to keep track of data associated with the user (e.g. the user's privileges or role). This is can be done in two different ways:
 
 - In *stateful* authentication, a unique session id is generated when the user authenticates. In subsequent requests, this session ID serves as a reference to the user details stored on the server-side. The session ID itself is *opaque*, meaning that it does not contain any user data. The disadvantage of stateful authentication is that it doesn't scale well.
 
