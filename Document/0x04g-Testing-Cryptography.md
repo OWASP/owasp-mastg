@@ -140,7 +140,7 @@ Various weaknesses can be detected without access to the source code:
 
 - Let two users encrypt a file. If this results in the same encrypted file, the app uses a static encryption key. Access to the encrypted file is necessary to confirm this weakness.
 - if two different users are able to generate the same hash for the same file, then no (or an indequate) salt has been used.
-- IVs are usually stored in plain-text at the beginning of a file; compare different encrypted files and check if their encrypted representation does not contain an identical IVs.
+- IVs are usually stored in plain-text at the beginning of a file; compare different encrypted files and check if their encrypted representation does not contain identical IVs.
 
 #### Remediation
 
