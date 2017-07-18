@@ -83,6 +83,10 @@ Other uses of cryptography require careful adherence to best practices:
 - RSA with 768-bit and weaker keys can be broken. Older PKCS#1 padding leaks information.
 - Rely on secure hardware, if available, for storing encryption keys, performing cryptographic operations, etc.
 
+#### Dynamic Analysis
+
+If passwords are hashed with an insecure algorithm with known collisions an attacker can utilize this to [gain knowledge about the used hash algorithm](https://www.netsparker.com/blog/web-security/collision-based-hashing-algorithm-disclosure/). For example, the pair <tt>4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa<b>200</b>a8284bf36e8e4b55b35f427593d849676da0d1<b>555</b>d8360fb5f07fea2</tt> and <tt>4dc968ff0ee35c209572d4777b721587d36fa7b21bdc56b74a3dc0783e7b9518afbfa<b>202</b>a8284bf36e8e4b55b35f427593d849676da0d1<b>d55</b>d8360fb5f07fea2</tt> both produce the same MD5 sum. If an attacker can set his password to the former and is then able to login using the latter as a password, usage of the insecure MD5 algorithm as hash algorithm has been confirmed.
+
 #### Remediation
 
 Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of [currently recommended algorithms](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf "NIST Special Publication 800-57")
@@ -130,6 +134,14 @@ Through source code analysis the following non-exhausting configuration options 
 - Fit-for-purpose block encryption modes
 - Key management being done properly
 
+#### Dynamic Analysis
+
+Various weaknesses can be detected without access to the source code:
+
+- Let two users encrypt a file. If this results in the same encrypted file, the app uses a static encryption key. Access to the encrypted file is necessary to confirm this weakness.
+- if two different users are able to generate the same hash for the same file, then no (or an indequate) salt has been used.
+- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors) are usually stored in plain-text at the beginning of a file; compare different encrypted files and check if their encrypted representation does not contain identical IVs.
+
 #### Remediation
 
 Periodically ensure that used key length fulfill [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014"). Also verify the used [security "Crypto" provider on the Android platform](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security Crypto provider on the Android platform deprecated in Android N").
@@ -146,7 +158,7 @@ Periodically ensure that used key length fulfill [accepted industry standards](h
 ##### CWE
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
+- CWE-329: Not Using a Random IV with CBC Mode
 
 ### Testing for Usage of ECB Mode
 

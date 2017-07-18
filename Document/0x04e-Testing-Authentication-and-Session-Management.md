@@ -8,15 +8,15 @@ In most cases, you'll find that the mobile app uses HTTP as the transport layer.
 
 - With *stateless* authentication, all information for identifying the user is stored in a client-side token, which can be passed to any server or micro service, eliminating the need for maintaining session state on the server-side. In that case, authentication is usually factored out to an authorization server, which produces, signs and optionally encrypts the token upon user login.
 
-Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches, in particular OAuth2, are increasingly popular, but "traditional" server-side sessions are also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of a particular mobile OS. Security considerations for each mobile operating system follow in the respective OS-specific chapters.
+Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems follow in the respective OS-specific chapters.
 
-### Testing OAuth2 implementation
+#### OAuth 2.0
 
-#### Overview
+[The OAuth 2.0 specification defines a delegation protocol for conveying authorization decisions across a network of web-enabled applications and APIs](https://oauth.net/articles/authentication/). It is used in a variety of applications, including providing mechanisms for user authentication.
 
-OAuth2 is an authorization protocol that provides a centralized approach to identity management. In OAuth2, a mobile app seeking to access a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token allowing the app to act on behalf of the user.
+With OAuth 2.0, a mobile client seeking to access a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token allowing the app to act on behalf of the user. Note that the OAuth2 specification does not define any particular kind of authentication, nor a specific format for the access token.
 
-OAuth2 defines four roles:
+OAuth 2.0 defines four roles:
 
 - Resource Owner: the user owning the account.
 - Client: the application that wants to access the user's account using the access tokens.
@@ -25,7 +25,7 @@ OAuth2 defines four roles:
 
 Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
 
-<img src="Images/Chapters/0x07a/abstract_oath2_flow.png" width="350px"/>
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -36,7 +36,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token).
 6. If the access token is valid, the resource server (API) serves the resource to the application.
 
-These are some of the common best practices for OAuth2 on native apps:
+##### Best Practices for OAuth 2.0 in Mobile Apps
 
 User-agent:
 
@@ -72,41 +72,9 @@ For additional best practices and detailed information please refer to the sourc
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
-#### Static Analysis
+#### OpenID Connect
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup."] --
-
---TODO [Develop content on Testing OAuth2 implementation with source code] --
-
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing OAuth2 implementation" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing OAuth2 implementation".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M6 - Insecure Authorization - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
-
-##### OWASP MASVS
-
-- V4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
-
-##### CWE
-
-- CWE-285: Improper Authorization
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing OAuth2 implementation"] --
-- OWASP ZAP - https://github.com/zaproxy/zaproxy
+[OpenID Connect](http://openid.net/specs/openid-connect-core-1_0.html) specifies an identity layer built on top OAuth 2.0. It specifies authentication flows as well as different types of tokens (Access Token, ID Token, and Refresh Token).
 
 
 ### Verifying that Users Are Properly Authenticated
@@ -228,7 +196,6 @@ It is strongly advised to use session ID generators that are build-in within the
 
 - OWASP ZAP (Zed Attack Proxy)
 - Burp Suite
-
 
 
 ### Testing JSON Web Token (JWT)
