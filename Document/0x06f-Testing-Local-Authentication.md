@@ -1,22 +1,22 @@
 ## Testing Local Authentication in iOS Apps
 
-In local authentication, the app authenticates the user against credentials stored on the device itself. In other words, the user "unlocks" the app or some functionality within the app with a PIN, password or fingerprint that is verified only locally. This is sometimes done to allow users to more easily resume an existing session with the remote service, or as a means of step-up authentication to protect some critical functionality.
+During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
 
 ### Testing Local Authentication
 
 #### Overview
 
-On iOS, multiple possibilities exist for integrating local authentication into iOS apps. The [Local Authentication Framework](https://developer.apple.com/documentation/localauthentication) offers a set of APIs that display an authentication dialog to the user. In the context of connecting to a remote service, it is also possible (and recommended) to leverage the Keychain for implementing local authentication.
+On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication) provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html) for implementing local authentication.
 
 ##### Local Authentication Framework
 
-The Local Authentication Framework provides facilities for requesting a passphrase or TouchID authentication from users. With local authentication, an authentication prompt is displayed to the user programmatically using the function <code>evaluatePolicy</code> of the <code>LAContext</code> object.
+The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. This enables developers to display and utilize an authentication prompt by utilizing the function <code>evaluatePolicy</code> of the <code>LAContext</code> object. 
 
-Two policies are available that define the acceptable forms of authentication:
+Two available policies define acceptable forms of authentication:
 
-- LAPolicyDeviceOwnerAuthentication: The user is asked to perform TouchID authentication if available. If TouchID is not activated, they are asked to enter the device passcode. If the device passcode is not enabled, policy evaluation fails.
+- LAPolicyDeviceOwnerAuthentication: When available, the user is prompted to perform TouchID authentication. If TouchID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
 
-- LAPolicyDeviceOwnerAuthenticationWithBiometrics: The user is asked to perform TouchID authentication.
+- LAPolicyDeviceOwnerAuthenticationWithBiometrics: Authentication is restricted to biometrics where user the is prompted for TouchID.
 
 The <code>evaluatePolicy</code> function returns a boolean value indicating whether the user has authenticated successfully.
 
@@ -45,24 +45,27 @@ if #available(iOS 8.0, OSX 10.12, *) {
 
 #####  Using Keychain Services for Local Authentication
 
-The iOS Keychain APIs can be used to implement local authentication. In that case, some secret authentication token (or other piece of secret data identifying the user) is stored in the Keychain. In other to authenticate to the remote service, the user then needs to unlock the Keychain using their passphrase or fingerprint and obtain the secret data (the Keychain mechanism is explained in more detail in the chapter "Testing Data Storage").
+The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data identifying the user stored by the Keychain. In order to authenticate a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
+
+The Keychain mechanism is explained in greater detail within an earlier chapter, "Testing Data Storage".
 
 #### Static Analysis
 
-A common mistake when using local authentication is putting to much trust into the purely event-based (Local Authentication Framework) implementation. This type of authentication is effective on the user interface level, but can easily be bypassed through patching or instrumentation.
+It is important to remember Local Authentication framework is an event-based procedure and as such, should not the sole method for determining valid authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
 
-If the app you are testing implements local authentication, make sure that sensitive flows are protected using the Keychain services method. For example, in some apps an existing user session can be resumed using TouchID authentication. In that case, make sure that the session credentials or tokens (e.g. refresh token) are stored securely in the Keychain as described above and "locked" with local authentication.
+When testing local authentication on iOS, ensure sensitive flows are protected using the Keychain services method. For example, some apps resume an existing user session with TouchID authentication. In these cases, session credentials or tokens (e.g. refresh tokens) should be securely stored in the Keychain (as described above) as well as "locked" with local authentication.
 
 #### Dynamic Analysis
 
-If you identify a potential local authentication bypass issue, you can exploit by patching the app or using Cycript to instrument it. We'll explain how to do this in the "Reverse Engineering and Tampering" chapter.
+If a potential local authentication bypass issue is discovered, it is likely exploitable by patching the app or using <code>Cycript</code> as an instrument to modify the process. How to do this is explained in greater detail during the "Reverse Engineering and Tampering" chapter.
 
 #### Remediation
 
-The Local Authentication Framework makes it easy to add TouchID or similar authentication. For sensitive applications however, such as re-authenticating a user on a remote payment service, using the Local Authentication Framework is not recommended. Instead, the local authentication should be implemented by storing a user secret (e.g. refresh token) into the Keychain. This is done as follows:
+The Local Authentication framework makes adding either TouchID or similar authentication a simple procedure. More sensitive processes, such as re-authenticating a user using a remote payment service with this method, is strongly discouraged. Instead, the best approach for handling local authentication in these scenarios involves utilizing Keychain to store a user secret (e.g. refresh token). This task may be accomplished as follows:
 
-- Use the <code>SecAccessControlCreateWithFlags()</code> API to obtain a security access control reference. Specify the <code>kSecAccessControlUserPresence</code> policy and <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> protection class.
-- Inserting the data using the returned SecAccessControlRef in the attributes dictionary.
+- Use the <code>SecAccessControlCreateWithFlags()</code> to call a security access control reference. Specify the <code>kSecAccessControlUserPresence</code> policy and <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> protection class.
+
+- Insert the data using the returned <code>SecAccessControlRef</code> value into the attributes dictionary.
 
 #### References
 
