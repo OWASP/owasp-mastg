@@ -776,11 +776,7 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
 
-To take advantage of Fridump and objection the iOS app need to be repackaged with FridaGadget.dylib and signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
-
-##### Fridump (No Jailbreak needed)
-
--- ToDo
+To take advantage of objection the iOS app need to be repackaged with FridaGadget.dylib and signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
 
 ##### Objection (No Jailbreak needed)
 
@@ -804,6 +800,14 @@ Dumping 768.0 KiB from base: 0x1ad200000  [####################################]
 Memory dumped to file: /Users/foo/memory_iOS/memory
 ```
 
+Afterwards the command `strings` can be executed on the dump to extract the strings.
+
+```
+$ strings memory > strings.txt
+```
+
+Open strings.txt in your favourite editor and dig through it to identify sensitive information.
+
 The loaded modules of the current process can also be shown.
 
 ```
@@ -821,10 +825,13 @@ libsystem_platform.dylib          0x185e53000  28672 (28.0 KiB)     /usr/lib/sys
 libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/system/libdyld.dylib
 ```
 
-
 ##### Needle (Jailbreak needed)
 
+-- ToDo
 
+##### Fridump (No Jailbreak needed)
+
+-- ToDo
 
 #### Remediation
 
