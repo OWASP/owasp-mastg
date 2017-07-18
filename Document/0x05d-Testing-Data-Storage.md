@@ -1069,22 +1069,35 @@ setContentView(R.layout.activity_main);
 
 #### Overview
 
-Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
+Analyzing memory can help developers to identify root causes of different problems, like for example application crashes, etc. However, it can also be used to gain access to sensitive data. This section describes how to check for disclosure of data within the process' memory.
+
+First, you need to identify which sensitive information is stored in memory. Basically, if you have a sensitive asset it's very likely that at some point it is loaded in memory. The objective is to verify that these info has as short exposure as possible. 
 
 To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile app is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
 Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
 
 #### Static Analysis
 
-First, you need to identify which sensitive information is stored in memory. Then there are a few checks that must be executed:
+Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where a certain data might be exposed. For example, a sensitive data received from backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
 
-- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory.
-- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared.
+Additionally, understanding application's architecture and its role in the overall system will help you identify sensitive information that does not have to be exposed in memory at all. For example, assume your app receives some data from one server and transfers it to another without the need of any additional computation over it. Then that data can be received and handled encrypted, which prevents exposure in memory.
 
--*NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
-Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see the remediation section for more details).
-Understand that an RSA key pair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
-Lastly, some ciphers do not properly clean up their byte-arrays. For instance, the AES `Cipher` in `BouncyCastle` does not always clean up its latest working key.
+However, if sensitive data do need to be exposed in memory, then you should make sure the app is designed in a way that enables for as short exposure as possible, with as fewer copies as possible. In other words, you want a centralized handling of sensitive data (as few components as possible), based on primitive and mutable data structures.
+
+The reason for the later requirement is that it enables developers direct access to memory. You should verify that this access is then used to overwrite the sensitive data with dummy data (typically with zeroes). Examples of preferable data types would include `byte []` or `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String` you actually create a copy and apply the change on it.
+
+Usage of non-primitive mutable types, like `StringBuffer` or `StringBuilder` might be acceptable, but it's indicative and requires closer examination. Namely, `StringBuffer` and similar are used in situations when you have a content that you want to modify (which is what we want). But in order to access it's value, one either need to refer to the primitive byte array, or to get a non-mutable copy (e.g. `String`). The later is obviously not what we want, and if you intend to access the data over it's primitive type, there are only few reasons way would you not start with the primitive data type in the first pace. One of them might be the safe memory management that these data types offer over primitive ones, but this can be a two-edged sword. If you try to modify, for example a `StringBuffer`, and the new data exceeds the buffer capacity, the buffer will automatically be extended. To do so, the content of the buffer might be copied to a different location, leaving the existing content behind without any reference you can use to overwrite it.
+
+Unfortunately, not many libraries and frameworks are designed to allow overwriting of sensitive data. For example, destroying a key as shown below, does not really removes the key from memory:
+
+```java
+SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
+secret.destroy();
+```
+
+Neither does overwriting the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array. Take a look in the remediation section below on how to properly remove a `SecretKey` from memory.
+
+Next, RSA key pair is based on `BigInteger` and therefore reside in memory after first use outside of the `AndroidKeyStore`. And some ciphers (such as the AES `Cipher` in `BouncyCastle`) does not properly clean up their byte-arrays.
 
 #### Dynamic Analysis
 
