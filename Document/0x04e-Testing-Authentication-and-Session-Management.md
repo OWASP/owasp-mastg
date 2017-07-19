@@ -1,4 +1,4 @@
-## Remote Authentication and Authorization
+## Testing Backend Authentication
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
@@ -10,74 +10,8 @@ In most cases, you'll find that the mobile app uses HTTP as the transport layer.
 
 Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems follow in the respective OS-specific chapters.
 
-#### OAuth 2.0
 
-[The OAuth 2.0 specification defines a delegation protocol for conveying authorization decisions across a network of web-enabled applications and APIs](https://oauth.net/articles/authentication/). It is used in a variety of applications, including providing mechanisms for user authentication.
-
-With OAuth 2.0, a mobile client seeking to access a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token allowing the app to act on behalf of the user. Note that the OAuth2 specification does not define any particular kind of authentication, nor a specific format for the access token.
-
-OAuth 2.0 defines four roles:
-
-- Resource Owner: the user owning the account.
-- Client: the application that wants to access the user's account using the access tokens.
-- Resource Server: hosts the user accounts.
-- Authorization Server: verifies the identity of the user and issues access tokens to the application.
-
-Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
-
-<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
-
-Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
-
-1. The application requests authorization to access service resources from the user.
-2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
-3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant.
-4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. The access token might have a companion refresh token. Authorization is complete.
-5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token).
-6. If the access token is valid, the resource server (API) serves the resource to the application.
-
-##### Best Practices for OAuth 2.0 in Mobile Apps
-
-User-agent:
-
-- Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing (e.g. you do not want an app offering you a "Login with Facebook" to get your Facebook password). However, by using the browser, the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
-- The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, web site mechanisms).
-- The client should validate the fully qualified domain name of the server to the public key presented by the server during connection establishment to prevent man-in-the-middle attacks.
-
-Type of grant:
-
-- Use code grant instead of implicit grant on native apps.
-- When using code grant, implement PKCE (Proof Key for Code Exchange) to protect the code grant. Make sure that the server also implements it.
-- The auth "code" should be short-lived and only used immediately after receiving it. Make sure that they only reside on transient memory and are not stored or logged.
-
-Client secrets:
-
-- No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in secure local storage.
-
-End-User credentials:
-
-- The transmission of end-user credentials must be protected using transport-layer mechanisms such as TLS.
-
-Tokens:
-
-- Keep access tokens in transient memory.
-- Access tokens must be securely transmitted via TLS.
-- The scope and expiry time of access tokens should be reduced when end-to-end confidentiality cannot be guaranteed or when the token provides access to sensitive information or allows the execution of high risk actions.
-- Remember that if the app uses access tokens as bearer tokens and no additional mechanism is used to identify the client, the attacker can access all resources associated with the token and its scope after stealing the tokens.
-- Store refresh tokens in secure local storage as they are long-term credentials.
-
-For additional best practices and detailed information please refer to the source documents:
-
-- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
-- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
-- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
-
-#### OpenID Connect
-
-[OpenID Connect](http://openid.net/specs/openid-connect-core-1_0.html) specifies an identity layer built on top OAuth 2.0. It specifies authentication flows as well as different types of tokens (Access Token, ID Token, and Refresh Token).
-
-
-### Verifying that Users Are Properly Authenticated
+### Verifying that Appropriate Authentication is in Place
 
 #### Overview
 
@@ -132,7 +66,191 @@ If any of these two conditions raise an issue, reject the request and do not all
 - CWE-287: Improper Authentication
 
 
-### Testing Session Management
+### Testing the Password Policy
+
+#### Overview
+
+Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. Password length, password complexity and password topologies should properly be included in the password policy. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
+
+#### Static Analysis
+
+Regular Expressions are often used to validate passwords. The password verification check against a defined password policy need to be reviewed if it rejects passwords that violate the password policy.
+
+Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process. All of the available functions in the application that are able to change or set a password need to be identified in the source code. They should all be using the same password verification check, that is aligned with the password policy.
+
+Here are different examples on how a validation can be implemented server-side:
+
+- [Spring (Java)](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html)
+- [PHP](https://github.com/Respect/Validation)
+
+If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
+
+#### Dynamic Analysis
+
+All available functions that allow a user to set a password need to be verified, if passwords can be used that violate the password policy specifications. This can be:
+
+- Self-registration function for new users that allows to specify a password,
+- Forgot Password function that allows a user to set a new password or
+- Change Password function that allows a logged in user to set a new password.
+
+An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide ([OTG-AUTHN-007](https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) "OWASP Testing Guide (OTG-AUTHN-007)"))
+
+
+#### Remediation
+
+A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
+
+**Password Length**
+- Minimum length of the passwords should be enforced, at least 10 characters.
+- Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
+
+**Password Complexity**
+- Password must meet at least three out of the following four complexity rules
+1. at least one uppercase character (A-Z)
+2. at least one lowercase character (a-z)
+3. at least one digit (0-9)
+4. at least one special character (punctuation)
+
+For further details check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). A common library that can be used for estimating password strength is [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn"), which is available for many programming languages.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+##### OWASP MASVS
+- V4.5: "A password policy exists and is enforced at the remote endpoint."
+
+##### CWE
+- CWE-521: Weak Password Requirements
+
+
+### Testing Excessive Login Attempts
+
+#### Overview
+
+We all have heard about brute force attacks. This is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of username and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be taken over.
+ 
+To be protected against these kind of attacks, applications need to implement a control to block the access after a defined number of incorrect login attempts.
+ 
+Depending on the application that you want to protect, the number of incorrect attempts allowed may vary. For example, in a banking application it should be around three to five attempts, but, in a app that doesn't handle sensitive information it could be a higher number. Once this threshold is reached it also needs to be decided if the account gets locked permanently or temporarily. Locking the account temporarily is also called login throttling.
+ 
+The test consists by entering the password incorrectly for the defined number of attempts to trigger the account lockout. At that point, the anti-brute force control should be activated and your logon should be rejected when the correct credentials are entered.
+
+#### Static Analysis
+
+It need to be checked that a validation method exists during logon that checks if the number of attempts for a username equals to the maximum number of attempts set. In that case, no logon should be granted once this threshold is meet. After a correct attempt, there should also be a mechanism in place to set the error counter to zero.
+
+#### Dynamic Analysis
+
+For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
+1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
+2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
+If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
+
+#### Remediation
+
+Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
+
+Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+##### OWASP MASVS
+
+- V4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times."
+
+##### CWE
+
+- CWE-307: Improper Restriction of Excessive Authentication Attempts
+
+##### Tools
+
+- Burp Suite Professional - https://portswigger.net/burp/
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+
+
+### Testing 2-Factor Authentication and Step-up Authentication
+
+#### Overview
+
+Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
+- Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
+- Something you know: this can be a secret only known to the user like a password.
+- Something you are: this can be biometric characteristics that identify the users like TouchID.
+
+Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
+
+A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
+
+
+#### Static Analysis
+
+When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
+
+2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
+
+For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
+
+Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
+
+- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
+- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
+- [Authy](https://authy.com/ "Authy")
+
+Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
+
+For local biometric authentication as an additional factor, please verify the test case "Testing Biometric Authentication".
+
+#### Dynamic Analysis
+
+First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
+
+The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
+
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
+
+#### Remediation
+
+The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If cloud solutions are in place, they should be implemented accordingly to best practices.
+
+Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data.
+
+Account lockouts for the second factor should be implemented the same way as for non-2FA cases (see "Testing Excessive Login Attempts" and [5]).
+
+Regardless of 2FA or step-up authentication, additionally it should be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can be:
+
+- Geolocation
+- IP address
+- Time of day
+
+Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
+
+An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+##### OWASP MASVS
+
+- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- V4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
+
+##### CWE
+
+- CWE-287: Improper Authentication
+- CWE-308: Use of Single-factor Authentication
+
+
+### Testing Session-based Authentication
 
 #### Overview
 
@@ -198,7 +316,8 @@ It is strongly advised to use session ID generators that are build-in within the
 - Burp Suite
 
 
-### Testing JSON Web Token (JWT)
+
+### Testing Token-Based Authentication
 
 #### Overview
 
@@ -291,6 +410,74 @@ The following best practices should be considered, when implementing JWT:
 
 
 
+#### Testing OAuth 2.0 Flows
+
+[The OAuth 2.0 specification defines a delegation protocol for conveying authorization decisions across a network of web-enabled applications and APIs](https://oauth.net/articles/authentication/). It is used in a variety of applications, including providing mechanisms for user authentication.
+
+With OAuth 2.0, a mobile client seeking to access a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token allowing the app to act on behalf of the user. Note that the OAuth2 specification does not define any particular kind of authentication, nor a specific format for the access token.
+
+OAuth 2.0 defines four roles:
+
+- Resource Owner: the user owning the account.
+- Client: the application that wants to access the user's account using the access tokens.
+- Resource Server: hosts the user accounts.
+- Authorization Server: verifies the identity of the user and issues access tokens to the application.
+
+Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
+
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
+
+Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
+
+1. The application requests authorization to access service resources from the user.
+2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
+3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant.
+4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. The access token might have a companion refresh token. Authorization is complete.
+5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token).
+6. If the access token is valid, the resource server (API) serves the resource to the application.
+
+###### OpenID Connect
+
+[OpenID Connect](http://openid.net/specs/openid-connect-core-1_0.html) specifies an identity layer built on top OAuth 2.0. It specifies authentication flows as well as different types of tokens (Access Token, ID Token, and Refresh Token).
+
+##### Best Practices for OAuth 2.0 in Mobile Apps
+
+User-agent:
+
+- Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing (e.g. you do not want an app offering you a "Login with Facebook" to get your Facebook password). However, by using the browser, the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
+- The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, web site mechanisms).
+- The client should validate the fully qualified domain name of the server to the public key presented by the server during connection establishment to prevent man-in-the-middle attacks.
+
+Type of grant:
+
+- Use code grant instead of implicit grant on native apps.
+- When using code grant, implement PKCE (Proof Key for Code Exchange) to protect the code grant. Make sure that the server also implements it.
+- The auth "code" should be short-lived and only used immediately after receiving it. Make sure that they only reside on transient memory and are not stored or logged.
+
+Client secrets:
+
+- No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in secure local storage.
+
+End-User credentials:
+
+- The transmission of end-user credentials must be protected using transport-layer mechanisms such as TLS.
+
+Tokens:
+
+- Keep access tokens in transient memory.
+- Access tokens must be securely transmitted via TLS.
+- The scope and expiry time of access tokens should be reduced when end-to-end confidentiality cannot be guaranteed or when the token provides access to sensitive information or allows the execution of high risk actions.
+- Remember that if the app uses access tokens as bearer tokens and no additional mechanism is used to identify the client, the attacker can access all resources associated with the token and its scope after stealing the tokens.
+- Store refresh tokens in secure local storage as they are long-term credentials.
+
+For additional best practices and detailed information please refer to the source documents:
+
+- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
+- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
+- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
+
+
+
 ### Testing the Logout Functionality
 
 #### Overview
@@ -337,120 +524,6 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 ##### CWE
 
 - CWE-613: Insufficient Session Expiration
-
-
-
-### Testing the Password Policy
-
-#### Overview
-
-Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. Password length, password complexity and password topologies should properly be included in the password policy. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
-
-
-#### Static Analysis
-
-Regular Expressions are often used to validate passwords. The password verification check against a defined password policy need to be reviewed if it rejects passwords that violate the password policy.
-
-Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process. All of the available functions in the application that are able to change or set a password need to be identified in the source code. They should all be using the same password verification check, that is aligned with the password policy.
-
-Here are different examples on how a validation can be implemented server-side:
-
-- [Spring (Java)](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/validation/Validator.html)
-- [PHP](https://github.com/Respect/Validation)
-
-If a framework is used that offers the possibility to create and enforce a password policy for all users of the application, the configuration should be checked.
-
-#### Dynamic Analysis
-
-All available functions that allow a user to set a password need to be verified, if passwords can be used that violate the password policy specifications. This can be:
-
-- Self-registration function for new users that allows to specify a password,
-- Forgot Password function that allows a user to set a new password or
-- Change Password function that allows a logged in user to set a new password.
-
-An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide ([OTG-AUTHN-007](https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) "OWASP Testing Guide (OTG-AUTHN-007)"))
-
-
-#### Remediation
-
-A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
-
-**Password Length**
-- Minimum length of the passwords should be enforced, at least 10 characters.
-- Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
-
-**Password Complexity**
-- Password must meet at least three out of the following four complexity rules
-1. at least one uppercase character (A-Z)
-2. at least one lowercase character (a-z)
-3. at least one digit (0-9)
-4. at least one special character (punctuation)
-
-For further details check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). A common library that can be used for estimating password strength is [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn"), which is available for many programming languages.
-
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-- V4.5: "A password policy exists and is enforced at the remote endpoint."
-
-##### CWE
-- CWE-521: Weak Password Requirements
-
-
-### Testing Excessive Login Attempts
-
-#### Overview
-
-We all have heard about brute force attacks. This is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of username and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be taken over.
- 
-To be protected against these kind of attacks, applications need to implement a control to block the access after a defined number of incorrect login attempts.
- 
-Depending on the application that you want to protect, the number of incorrect attempts allowed may vary. For example, in a banking application it should be around three to five attempts, but, in a app that doesn't handle sensitive information it could be a higher number. Once this threshold is reached it also needs to be decided if the account gets locked permanently or temporarily. Locking the account temporarily is also called login throttling.
- 
-The test consists by entering the password incorrectly for the defined number of attempts to trigger the account lockout. At that point, the anti-brute force control should be activated and your logon should be rejected when the correct credentials are entered.
-
-#### Static Analysis
-
-It need to be checked that a validation method exists during logon that checks if the number of attempts for a username equals to the maximum number of attempts set. In that case, no logon should be granted once this threshold is meet. After a correct attempt, there should also be a mechanism in place to set the error counter to zero.
-
-
-#### Dynamic Analysis
-
-For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
-1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
-2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
-If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
-
-#### Remediation
-
-Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
-It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
-
-Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.6: "The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times."
-
-##### CWE
-
-- CWE-307: Improper Restriction of Excessive Authentication Attempts
-
-##### Tools
-
-- Burp Suite Professional - https://portswigger.net/burp/
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-
 
 
 ### Testing the Session Timeout
@@ -521,82 +594,6 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 
 ##### CWE
 - CWE-613: Insufficient Session Expiration
-
-
-
-### Testing 2-Factor Authentication and Step-up Authentication
-
-#### Overview
-
-Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
-- Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
-- Something you know: this can be a secret only known to the user like a password.
-- Something you are: this can be biometric characteristics that identify the users like TouchID.
-
-Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
-
-A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
-
-
-#### Static Analysis
-
-When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
-
-2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
-
-For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
-
-Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
-
-- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
-- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
-- [Authy](https://authy.com/ "Authy")
-
-Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
-
-For local biometric authentication as an additional factor, please verify the test case "Testing Biometric Authentication".
-
-#### Dynamic Analysis
-
-First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
-
-The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
-
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
-
-#### Remediation
-
-The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If cloud solutions are in place, they should be implemented accordingly to best practices.
-
-Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data.
-
-Account lockouts for the second factor should be implemented the same way as for non-2FA cases (see "Testing Excessive Login Attempts" and [5]).
-
-Regardless of 2FA or step-up authentication, additionally it should be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can be:
-
-- Geolocation
-- IP address
-- Time of day
-
-Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
-
-An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-- V4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-- CWE-308: Use of Single-factor Authentication
 
 
 ### Testing User Device Management
