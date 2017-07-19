@@ -10,16 +10,19 @@ In most cases, you'll find that the mobile app uses HTTP as the transport layer.
 
 Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems follow in the respective OS-specific chapters.
 
-
 ### Verifying that Appropriate Authentication is in Place
 
 #### Overview
 
-Applications often have different areas with, on the one hand public and non-privileged information and functions, and on the other hand sensitive and privileged information and functions. Users can legitimately access the first ones without any restriction; however, in order to make sure sensitive and privileged information and functions are protected and accessible only to legitimate users, proper authentication has to be in place.
+There is no one-size-fits-all when it comes to authentication. The appropriate type(s) of authentication must be chosen based on the sensitivity of the data the app processes. In general, authentication can be implemented based one or more of the following:
 
-Authentication always need to be handled in the server side code and should never rely on client-side controls. Client-side controls can be used to improve the user workflow and only allow specific actions, but there always need to be the server-side counterpart that defines what a user is allowed to access.
+- Something the user knows (password, PIN, pattern, ...)
+- Something the user has (SIM card, one-time password generator, or hardware token)
+- A biometric property of the user (fingerprint, retina, voice)
 
-In case Token-Based authentication with JWT is used, please also look at the test case "Testing JSON Web Token (JWT)".
+Consider industry best practices when assessing authentication of a particular mobile app. For "normal" apps that have user login, but aren't considered highly sensitive, username/password authentication is sufficient. For example, this form of authentication is used by most social apps. Many of these apps even store access tokens that never time out - a practice that is usually discouraged in the web world, but quite common in mobile apps.
+
+For sensitive applications, adding a second authentication factor and stricter session management might be appropriate. Consider for example apps that enable access to highly sensitive information like credit card numbers, personal information, or allow users to move funds. In some industries, there are also compliance considerations. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
 
 #### Static Analysis
 
@@ -50,6 +53,8 @@ For every endpoint that needs to be protected, implement a mechanism that checks
 - if a session ID or token exists, make sure that it is valid and that it grants the user with sufficient privileges to allow the user to access the endpoint.
 
 If any of these two conditions raise an issue, reject the request and do not allow the user to access the endpoint.
+
+Authentication always need to be handled in the server side code and should never rely on client-side controls only. Client-side controls can be used to improve the user workflow and only allow specific actions, but there always need to be the server-side counterpart that defines what a user is allowed to access.
 
 #### References
 
