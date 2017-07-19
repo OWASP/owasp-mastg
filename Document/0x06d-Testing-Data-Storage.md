@@ -776,7 +776,7 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
 
-To take advantage of objection the iOS app need to be repackaged with FridaGadget.dylib and signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
+It is possible to dump the process memory of the app with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump") on a non-jailbroken device. To take advantage of this the iOS app need to be repackaged with FridaGadget.dylib and re-signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
 
 ##### Objection (No Jailbreak needed)
 
@@ -825,13 +825,66 @@ libsystem_platform.dylib          0x185e53000  28672 (28.0 KiB)     /usr/lib/sys
 libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/system/libdyld.dylib
 ```
 
+
+##### Fridump (No Jailbreak needed)
+
+The original version of Fridump is not maintained anymore and is only working with Python2. Frida is nowadays highly suggesting to use the latest Python 3.x and therefore Fridump is not working out of the box.
+
+If you are getting the following error message, even though your iOS device is connected via USB, you should checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
+
+```
+➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
+
+        ______    _     _
+        |  ___|  (_)   | |
+        | |_ _ __ _  __| |_   _ _ __ ___  _ __
+        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
+        | | | |  | | (_| | |_| | | | | | | |_) |
+        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
+                                         | |
+                                         |_|
+
+Can't connect to App. Have you connected the device?
+```
+
+Once Fridump is working, you need to get the Name of the app you want to dump, which can be done by using `frida-ps`. Afterwards you just specify the app name in fridump.
+
+```
+➜  fridump git:(master) ✗ frida-ps -U
+ PID  Name
+----  ------
+1026  Gadget
+
+➜  fridump git:(master) python3 fridump.py -u Gadget -s
+
+        ______    _     _
+        |  ___|  (_)   | |
+        | |_ _ __ _  __| |_   _ _ __ ___  _ __
+        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
+        | | | |  | | (_| | |_| | | | | | | |_) |
+        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
+                                         | |
+                                         |_|
+
+Current Directory: /Users/foo/PentestTools/iOS/fridump
+Output directory is set to: /Users/foo/PentestTools/iOS/fridump/dump
+Creating directory...
+Starting Memory dump...
+Progress: [##################################################] 100.0% Complete
+
+Running strings on all files:
+Progress: [##################################################] 100.0% Complete
+
+Finished! Press Ctrl+C
+```
+
+When you add the flag `-s` all strings are extracted from the dumped raw memory files into the file `strings.txt` and is stored in the directory `dump` of Fridump. 
+
+
 ##### Needle (Jailbreak needed)
 
 -- ToDo
 
-##### Fridump (No Jailbreak needed)
-
--- ToDo
 
 #### Remediation
 
