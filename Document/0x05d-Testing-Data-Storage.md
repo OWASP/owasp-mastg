@@ -1079,11 +1079,11 @@ Therefore you are better off starting with static analysis.
 
 #### Static Analysis
 
-Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where a certain data might be exposed. For example, a sensitive data received from backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
+Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where certain data might be exposed. For example, sensitive data received from backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
 
 Additionally, understanding application's architecture and its role in the overall system will help you identify sensitive information that does not have to be exposed in memory at all. For example, assume your app receives some data from one server and transfers it to another without the need of any additional computation over it. Then that data can be received and handled encrypted, which prevents exposure in memory.
 
-However, if sensitive data do need to be exposed in memory, then you should make sure the app is designed in a way that enables for as short exposure as possible, with as fewer copies as possible. In other words, you want a centralized handling of sensitive data (as few components as possible), based on primitive and mutable data structures.
+However, if sensitive data does need to be exposed in memory, then you should make sure your app is designed in a way that exposes this data as briefly as possible, with as fewer copies as possible. In other words, you want a centralized handling of sensitive data (as few components as possible), based on primitive and mutable data structures.
 
 The reason for the later requirement is that it enables developers direct access to memory. You should verify that this access is then used to overwrite the sensitive data with dummy data (typically with zeroes). Examples of preferable data types would include `byte []` or `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String` you actually create a copy and apply the change on it.
 
@@ -1099,6 +1099,17 @@ secret.destroy();
 Neither does overwriting the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array. Take a look in the remediation section below on how to properly remove a `SecretKey` from memory.
 
 Next, RSA key pair is based on `BigInteger` and therefore reside in memory after first use outside of the `AndroidKeyStore`. And some ciphers (such as the AES `Cipher` in `BouncyCastle`) does not properly clean up their byte-arrays.
+
+One other case, where you would typically find sensitive information exposed in memory, is user-provided data (credentials, social security numbers, credit card info, etc.). Regardless of whether you flag the `EditText` as a password field or not, it uses the same mechanism for delivering the content to the app - over the `Editable` interface. If your app does not provide an `Editable.Factory` in order for the `EditText` to instantiate your own `Editable` implementation, then it's very likely that the data provided by the user is exposed in memory longer than necessary. Default `Editable` implementation, the `SpannableStringBuilder`, suffers from the same issues as regular Java `StringBuilder` or `StringBuffer`, discussed above.
+
+To summarize, when performing static analysis for sensitive data exposed in memory, you should:
+- Try to identify application components and make a map of where certain data is used.
+- Verify that sensitive data is handled in as few components as possible.
+- Verify that sensitive data is overwritten as soon as it is no longer needed.
+  - Such data must not be passed over immutable data types such as `String` or `BigInteger`.
+  - Non-primitive data types, such as `StringBuilder` are indicative and should be avoided.
+  - Pay attention to third-party components (libraries and frameworks).
+    Good indicator is their public API. Is the sensitive data passing the public API handled as proposed in this chapter ? 
 
 #### Dynamic Analysis
 
