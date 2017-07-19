@@ -245,11 +245,11 @@ When testing an Android application on correct usage of cryptography it is there
 
 The most secure way of handling key material, is simply never storing them on the filesystem. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view, it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored. The encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDFv2). This cryptographic protocol is designed to generate secure and non brute-forceable keys.
 
-Now, it is clear that regularly promting the user for its passphrase is not something that fits in every application. In that case make sure you use the [Android KeyStore API]("Android KeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generated. Starting from Android 6.0 it is also enforced that the KeyStore is hardware-backed. This means a dedicated cryptography chip is being used to secure the key material.
+Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API]("Android KeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the KeyStore is hardware-backed. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
 A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html"Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE, the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys. 
 
-The last two options are to use hardcoded encryption keys in the source code and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker only should do the work once to extract the key from the source code and it can decrypt any other data that it can obtain that was encrypted by the application. Lastly, storing encryption keys publicly also is not highly discouraged as other applications can have permission to read the public partition and steal the keys.
+The last two options are to use hardcoded encryption keys in the source code and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code . Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
 
 #### Static Analysis
 
@@ -263,7 +263,7 @@ Locate uses of the cryptographic primitives in reverse engineered or disassemble
 - `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-Trace and assess how key material is generated and stored before or after they are used.
+Trace and assess how key material is generated and stored before or after it is used.
 
 #### Dynamic Analysis
 
