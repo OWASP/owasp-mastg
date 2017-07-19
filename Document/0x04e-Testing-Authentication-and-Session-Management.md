@@ -409,8 +409,7 @@ The following best practices should be considered, when implementing JWT:
 - [John the ripper](https://github.com/magnumripper/JohnTheRipper)
 
 
-
-#### Testing OAuth 2.0 Flows
+### Testing OAuth 2.0 Flows
 
 [The OAuth 2.0 specification defines a delegation protocol for conveying authorization decisions across a network of web-enabled applications and APIs](https://oauth.net/articles/authentication/). It is used in a variety of applications, including providing mechanisms for user authentication.
 
@@ -436,11 +435,11 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token).
 6. If the access token is valid, the resource server (API) serves the resource to the application.
 
-###### OpenID Connect
+#### Static Analysis
 
-[OpenID Connect](http://openid.net/specs/openid-connect-core-1_0.html) specifies an identity layer built on top OAuth 2.0. It specifies authentication flows as well as different types of tokens (Access Token, ID Token, and Refresh Token).
 
-##### Best Practices for OAuth 2.0 in Mobile Apps
+
+#### Remediation
 
 User-agent:
 
@@ -476,6 +475,24 @@ For additional best practices and detailed information please refer to the sourc
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+##### OWASP MASVS
+
+- V4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
+
+##### CWE
+
+- CWE-613: Insufficient Session Expiration
+
+##### Tools
+
+- OWASP ZAP (Zed Attack Proxy)
+- Burp Suite
 
 
 ### Testing the Logout Functionality
