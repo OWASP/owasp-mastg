@@ -1113,32 +1113,70 @@ To summarize, when performing static analysis for sensitive data exposed in memo
 
 #### Dynamic Analysis
 
-For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the _Android Monitor_ tab to investigate the memory. Select the device and app you want to analyze in the _Android Monitor_ tab and click on _Dump Java Heap_ and a _.hprof_ file will be created.
+Static analysis will help you identify potential problems, but it can not provide you with statistics on how long certain data is exposed in memory, nor it can help you identify problems in closed-source dependencies. This is where dynamic analysis comes into play.
+
+There are basically two ways to analyze the memory of a process: live analysis over a debugger or by analyzing one or more memory dumps. As the first approach is more of a general debugging issue, we concentrate on the second one here.
+
+For rudimentary analysis you can use the built-in tools of Android Studio. They are included under the _Android Monitor_ tab. To make a memory dump, select the device and app you want to analyze and click on _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory relative to the project path of the app.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
 
-In the new tab that shows the _.hprof_ file, the "Package Tree View" should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
+To navigate trough class instances saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Package_Tree_View.png)
 
-The _.hprof_ file will be stored in the directory "captures", relative to the project path open within Android Studio. For deeper analysis of the memory dump the tool Eclipse Memory Analyzer (MAT) should be used.
+For more advanced analysis over the memory dump, Eclipse Memory Analyzer (MAT) can be used. It is available either as an Eclipse plugin or as a standalone application.
 
-Before the _.hprof_ file can be opened in MAT it needs to be converted. The tool _hprof-conf_ can be found in the Android SDK in the directory platform-tools.
+In order to be able to analyze the dump in MAT you need to use the _hprof-conv_ platform tool, provided with the Android SDK. 
 
 ```bash
-./hprof-conv file.hprof file-converted.hprof
+./hprof-conv memory.hprof memory-mat.hprof
 ```
 
-By using MAT, more functions are available, like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes.
+MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain class, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. (**TO BE CONFIRMED OR REMOVED:** The _Dominator Tree_ is also the only tool containing the information for static classes). You can use regular expressions to filter out the results in all of these tools.
 
-To quickly discover potential sensitive data in the _.hprof_ file, it is also useful to run the `string` command against it. When doing a memory analysis, check for sensitive information like:
-- Password and/or usernames
-- Decrypted information
-- User or session related information
-- Interaction with OS, e.g. reading file content
+_Object Query Language_ studio is a MAT tool that enables you to use an SQL-like language for querying objects from the memory dump. It supports simple object transformation trough invocation of Java methods for the particular object, as well as API to build sophisticated tools on top of MAT.
+
+```sql
+SELECT * FROM java.lang.String
+```
+The example above will select all `String` objects present in the memory dump. The results will show the class, memory address, value as well as retain count for the object. To filter out all these info and only see the value of each string, you can do:
+
+
+```sql
+SELECT toString(object) FROM java.lang.String object
+
+/* or */
+SELECT object.toString() FROM java.lang.String object
+```
+
+OQL supports primitive data types as well, so to get the content of all `char` arrays you can do something like:
+
+```sql
+SELECT toString(arr) FROM char[] arr 
+```
+
+Don't be surprised if you get similar results as before as, after all, `String` and other Java data types are just wrappers around the primitive ones. Now let's filter out some results. The following example will select all byte arrays which contain the ASN.1 OID of a RSA key. Now, this doesn't necessarily means that the byte array actually contains a RSA key in it, as it might happen that same sequence of bytes are part of something else, but the chances are pretty high.
+
+```sql
+SELECT * FROM byte[] b WHERE toString(b).matches(".*1\.2\.840\.113549\.1\.1\.1.*")
+```
+
+Finally, you don't have to always select whole objects. If we compare OQL to SQL, then classes are considered as tables, objects as rows and fields as columns. So, if you like to find all objects that have field named "password", you can do something like:
+
+```sql
+SELECT password FROM ".*" WHERE (null != password)
+```
+
+During your analysis try to search for:
+- Indicative field names like: "password", "pass", "pin", "secret", "private", etc.
+- Indicative patterns (e.g. RSA footprints) in strings, char arrays, byte arrays, etc.
+- Presence of known secrets (e.g. credit card number that you have entered, or authentication token provided by the backend).
+- etc.
+
+Obtaining multiple memory dumps and repeating the testing several times will help you draw some statistics on how long certain asset is exposed. Further, observing how one particular memory segment (e.g. byte array) changes over time may lead you to some, otherwise unrecognizable, sensitive data (more on this in the _Remediation_ section below). 
 
 #### Remediation
-
 In Java, no immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the garbage collector might collect them, but they might remain in the JVM's heap for a longer period.
 Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
 
