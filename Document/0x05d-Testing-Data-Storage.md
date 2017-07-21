@@ -1093,7 +1093,7 @@ Unfortunately, not many libraries and frameworks are designed to allow overwriti
 
 ```java
 SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
-secret.destroy();
+secretKey.destroy();
 ```
 
 Neither does overwriting the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array. Take a look in the remediation section below on how to properly remove a `SecretKey` from memory.
@@ -1229,100 +1229,83 @@ try{
 
 For some additional info on the topic take a look at [Securely Storing Sensitive Data in RAM.](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
 
-Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts:
-- A wrapper class called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convenience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
-- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets null bytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
+In the _Static Analysis_ section above, we have also mentioned the issue of properly handling cryptographic keys when using `AndroidKeyStore` or `SecretKey`.
 
+For a better implementation of `SecretKey` please check the `SecureSecretKey` class below. The implementation is probably missing some boilerplate code to make this class compatible with `SecretKey`, but addresses the main security concerns:
+- No cross-context handling of sensitive data. Each copy of the key can be cleared within the scope where it was created.
+- Local copy is cleared according to the recommendations given above.
 
 ```java
-public class ErasableSecretKey implements Serializable {
+public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
+    private byte[] key;
+    private final String algorithm;
 
-    public static final int KEY_LENGTH = 256;
-
-    private java.security.Key secKey;
-
-	// Do not try to instantiate it: use the static methods.
-	// The static construction methods only use mutable structures or create a new key directly.
-    protected ErasableSecretKey(final java.security.Key key) {
-        this.secKey = key;
+    /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
+      * The caller is responsible of clearing the key array provided as input.
+      * The internal copy of the key can be claered by calling the destroy() method.
+      */
+    public SecureSecretKey(final byte[] key, final String algorithm) {
+        this.key = key.clone();
+        this.algorithm = algorithm;
     }
 
-	//Create a new `ErasableSecretKey` from a byte-array.
-	//Don't forget to clean the byte-array when you are done with the key.
-    public static ErasableSecretKey fromByte(byte[] key) {
-        return new ErasableSecretKey(new SecretKey.InternalKey(key, "AES"));
-    }
-	//Create a new key. Do not forget to implement your own 'Helper.getRandomKeyBytes()'.
-    public static ErasableSecretKey newKey() {
-        return fromByte(Helper.getRandomKeyBytes());
+    public String getAlgorithm() {
+        return this.algorithm;
     }
 
-	//clean the internal key, but only do so if it is not destroyed yet.
-    public void clean() {
-        try {
-            if (this.getKey() instanceof Destroyable) {
-                ((Destroyable) this.getKey()).destroy();
-            }
-
-        } catch (DestroyFailedException e) {
-            //choose what you want to do now: so you could not destroy it, would you run on? Or rather inform the caller of the clean method informing him of the failure?
-        }
-    }
-	//convenience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
-    public static void clearKey(ErasableSecretKey key) {
-        if (key != null) {
-            key.clean();
-        }
+    public String getFormat() {
+        return "RAW";
     }
 
-	//internal key class which represents the actual key.
-    private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
-        private byte[] key;
-        private final String algorithm;
-
-        public InternalKey(final byte[] key, final String algorithm) {
-            this.key = key;
-            this.algorithm = algorithm;
+    /** Returns a copy of the key.
+      * Make sure to clear the returned byte array when no longer needed.
+      */
+    public byte[] getEncoded() {
+        if(null == key){
+            throw new NullPointerException();
         }
 
-        public String getAlgorithm() {
-            return this.algorithm;
-        }
-
-        public String getFormat() {
-            return "RAW";
-        }
-
-		//Do not return a copy of the byte-array but the byte-array itself. Be careful: clearing this byte-array, will clear the key.
-        public byte[] getEncoded() {
-            if(null == this.key){
-               throw new NullPointerException();
-            }
-            return this.key;
-        }
-
-		//destroy the key.
-        public void destroy() throws DestroyFailedException {
-            if (this.key != null) {
-                Arrays.fill(this.key, (byte) 0);
-            }
-
-            this.key = null;
-        }
-
-        public boolean isDestroyed() {
-            return this.key == null;
-        }
+        return key.clone();
     }
 
+    /** Overwrites the key with dummy data to ensure this copy is no longer present in memory.*/
+    public void destroy() {
+        if (isDestroyed()) {
+            return;
+        }
 
-    public final java.security.Key getKey() {
-        return this.secKey;
+        byte[] nonSecret = new String("RuntimeException").getBytes("ISO-8859-1");
+        for (int i = 0; i < key.length; i++) {
+          key[i] = nonSecret[i % nonSecret.length];
+        }
+
+        FileOutputStream out = new FileOutputStream("/dev/null");
+        out.write(key);
+        out.flush();
+        out.close(); 
+
+        this.key = null;
+        System.gc();
     }
 
+    public boolean isDestroyed() {
+        return this.key == null;
+    }
 }
 
 ```
+
+Last case where you would typically find secure information in memory, mentioned in the _Static Analysis_ section above, is secure data provided by the user. Often this case is handled by implementing a custom input method, in which case you should follow the recommendations given so far. However, _Android_ allows for information to be securely erased from `EditText` buffers by providing a custom `Editable.Factory`.
+
+```java
+EditText editText = ...; //  point your variable to your EditText instance
+EditText.setEditableFactory(new Editable.Factory() {
+  public Editable newEditable(CharSequence source) {
+  ... // return a new instance of a secure implementation of Editable.
+  }
+});
+```
+Refer to the `SecureSecretKey` example above for some inspiration on how to implement your editable. Also note that by providing your factory, you are only able to handle securely all copies made by `editText.getText()`. You can try to also overwrite the internal `EditText` buffer by calling `editText.setText()`, but there is no guarantee that the buffer has not been copied. Also by choosing to relay on the default input method and `EditText` you have no control over the keyboard used, etc. Therfore use this approach only for semi-confidential information.
 
 #### References
 
