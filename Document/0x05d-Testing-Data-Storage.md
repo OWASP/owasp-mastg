@@ -1087,7 +1087,7 @@ However, if sensitive data does need to be exposed in memory, then you should ma
 
 The reason for the later requirement is that it enables developers direct access to memory. You should verify that this access is then used to overwrite the sensitive data with dummy data (typically with zeroes). Examples of preferable data types would include `byte []` or `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String` you actually create a copy and apply the change on it.
 
-Usage of non-primitive mutable types, like `StringBuffer` or `StringBuilder` might be acceptable, but it's indicative and requires closer examination. Namely, `StringBuffer` and similar are used in situations when you have a content that you want to modify (which is what we want). But in order to access it's value, one either need to refer to the primitive byte array, or to get a non-mutable copy (e.g. `String`). The later is obviously not what we want, and if you intend to access the data over it's primitive type, there are only few reasons way would you not start with the primitive data type in the first pace. One of them might be the safe memory management that these data types offer over primitive ones, but this can be a two-edged sword. If you try to modify, for example a `StringBuffer`, and the new data exceeds the buffer capacity, the buffer will automatically be extended. To do so, the content of the buffer might be copied to a different location, leaving the existing content behind without any reference you can use to overwrite it.
+Usage of non-primitive mutable types, like `StringBuffer` or `StringBuilder` might be acceptable, but it's indicative and requires closer examination. Namely, `StringBuffer` and similar are used in situations when you have a content that you want to modify (which is what we want). But in order to access it's value, one would typically use the `toString()` method which would create a immutable copy of the data. There are few ways in which you can use these data types such that no immutable copy is made, but the effort to do that is grater than simply using a primitive array. One benefit that you get when using `StringBuffer` and similar is the safe memory management that such data types provide, but this can be a two-edged sword. If you try to modify their content and the new one exceeds the buffer capacity, the buffer will automatically be extended. To do so, the content of the buffer might be copied to a different location, leaving the existing content behind without any reference you can use to overwrite it.
 
 Unfortunately, not many libraries and frameworks are designed to allow overwriting of sensitive data. For example, destroying a key as shown below, does not really removes the key from memory:
 
@@ -1105,9 +1105,12 @@ One other case, where you would typically find sensitive information exposed in 
 To summarize, when performing static analysis for sensitive data exposed in memory, you should:
 - Try to identify application components and make a map of where certain data is used.
 - Verify that sensitive data is handled in as few components as possible.
-- Verify that sensitive data is overwritten as soon as it is no longer needed.
+- Verify that object references are properly removed, once the object containing sensitive data is no longer needed.
+- Preferably, verify garbage collection is requested upon removing references.
+- For highly sensitive information, verify data is overwritten as soon as it is no longer needed.
   - Such data must not be passed over immutable data types such as `String` or `BigInteger`.
   - Non-primitive data types, such as `StringBuilder` are indicative and should be avoided.
+  - Overwriting should be done before removing references, and outside of the `finalize()` method.
   - Pay attention to third-party components (libraries and frameworks).
     Good indicator is their public API. Is the sensitive data passing the public API handled as proposed in this chapter ? 
 
