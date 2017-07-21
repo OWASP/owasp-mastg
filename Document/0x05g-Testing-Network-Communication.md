@@ -66,7 +66,9 @@ myWebView.setWebViewClient(new WebViewClient(){
 });
 ```
 
-About the Apache Cordova framework, the internal usage of the WebView is implemented in a way that [any TLS error is ignored](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest.
+##### Apache Cordova Certificate Verification
+
+The internal usage of the WebView in the Apache Cordova framework is implemented in a way that [any TLS error is ignored](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest.
 
 ##### Hostname Verification
 
