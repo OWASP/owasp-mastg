@@ -1186,7 +1186,7 @@ No immutable structures should be used to carry secrets (e.g. `String`, `BigInte
 
 In order to properly clean sensitive information from memory, best practice is to use primitive data types such as byte-arrays (`byte[]`) or char-arrays (`char[]`) for storing the information. As described in the _Static Analyzes_ section above, usage of mutable non-primitive data types, such as `StringBuffer`, should be avoided.
 
-Make sure to overwrite the content of the critical object, once it is no longer needed. One simple and very popular way is to overwrite the content with zeroes:
+Make sure to overwrite the content of the critical object once it is no longer needed. One simple and very popular way is to overwrite the content with zeroes:
 
 ```java
 byte[] secret = null;
@@ -1200,9 +1200,9 @@ try{
 ```
 This however, does not truly guarantee that the content will be overwritten in run time. In order to optimize the byte code, the compiler will do analysis in which it can decide not to execute the overwriting of data, as it is no longer used afterwards (unnecessary operation). Even if you verify that the code is present in the compiled DEX, the optimization can still happen during just-in-time or ahead-of-time compilation in the VM.
 
-There is no silver bullet against this problem, as different solutions have different consequences. For example, one may choose to perform some additional calculation (e.g. XOR the data into some other dummy buffer), but there is no guarantee on how deep will the compiler do it's optimization analysis. On the other hand, using the overwritten data outside of compiler's scope (e.g. serializing it in a temp file) guarantees the overwriting to be performed, but has obvious performance and maintenance impact.
+There is no silver bullet against this problem, as different solutions have different consequences. For example, one may choose to perform some additional calculation (e.g. XOR the data into some other dummy buffer), but there is no guarantee on how deep will the compiler perform it's optimization analysis. On the other hand, using the overwritten data outside of compiler's scope (e.g. serializing it in a temp file) guarantees the overwriting to be performed, but has obvious performance and maintenance impact.
 
-Then, using `Arrays.fill()` methods to overwrite the data is a bad practice, as they are an obvious target to be hooked (see _Tampering and Reverse Engineering on Android_ chapter for more details).
+Then, using `Arrays.fill()` method to overwrite the data is a bad practice, as it is an obvious target to be hooked (see _Tampering and Reverse Engineering on Android_ chapter for more details).
 
 Finally, one additional issue with the example above is that the content is overwritten with all zeroes. If the case allows, one should try to overwrite critical objects with random data, or ideally content from other non-critical objects. This will make really hard to construct scanners that can identify sensitive data based on the way such data is managed.
 
@@ -1289,13 +1289,13 @@ public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
     }
 
     public boolean isDestroyed() {
-        return this.key == null;
+        return key == null;
     }
 }
 
 ```
 
-Last case where you would typically find secure information in memory, mentioned in the _Static Analysis_ section above, is secure data provided by the user. Often this case is handled by implementing a custom input method, in which case you should follow the recommendations given so far. However, _Android_ allows for information to be securely erased from `EditText` buffers by providing a custom `Editable.Factory`.
+Last case where you would typically find secure information in memory, mentioned in the _Static Analysis_ section, is secure data provided by the user. Often this case is handled by implementing a custom input method, in which case you should follow the recommendations given so far. However, _Android_ allows for information to be partially erased from `EditText` buffers by providing a custom `Editable.Factory`.
 
 ```java
 EditText editText = ...; //  point your variable to your EditText instance
@@ -1305,7 +1305,7 @@ EditText.setEditableFactory(new Editable.Factory() {
   }
 });
 ```
-Refer to the `SecureSecretKey` example above for some inspiration on how to implement your editable. Also note that by providing your factory, you are only able to handle securely all copies made by `editText.getText()`. You can try to also overwrite the internal `EditText` buffer by calling `editText.setText()`, but there is no guarantee that the buffer has not been copied. Also by choosing to relay on the default input method and `EditText` you have no control over the keyboard used, etc. Therfore use this approach only for semi-confidential information.
+Refer to the `SecureSecretKey` example above for some inspiration on how to implement your `Editable`. Also note that by providing your factory, you are only able to handle securely all copies made by `editText.getText()`. You can also try to overwrite the internal `EditText` buffer by calling `editText.setText()`, but there is no guarantee that the buffer has not been copied before. Also by choosing to relay on the default input method and `EditText` you have no control over the keyboard being used, etc. Therefore use this approach only for semi-confidential information.
 
 #### References
 
