@@ -1182,25 +1182,52 @@ During your analysis try to search for:
 Obtaining multiple memory dumps and repeating the testing several times will help you draw some statistics on how long certain asset is exposed. Further, observing how one particular memory segment (e.g. byte array) changes over time may lead you to some, otherwise unrecognizable, sensitive data (more on this in the _Remediation_ section below). 
 
 #### Remediation
-In Java, no immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the garbage collector might collect them, but they might remain in the JVM's heap for a longer period.
-Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
+No immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the garbage collector might collect them, but they might remain in the heap for a longer period. Nevertheless, you should try to ask for garbage collection after every critical operation (encryption, parsing server response containing sensitive information, etc.). In case some copies of the information are not properly cleaned (explained below) this will help to reduce the time these copies are available in memory.
 
+In order to properly clean sensitive information from memory, best practice is to use primitive data types such as byte-arrays (`byte[]`) or char-arrays (`char[]`) for storing the information. As described in the _Static Analyzes_ section above, usage of mutable non-primitive data types, such as `StringBuffer`, should be avoided.
+
+Make sure to overwrite the content of the critical object, once it is no longer needed. One simple and very popular way is to overwrite the content with zeroes:
 
 ```java
-
 byte[] secret = null;
 try{
-	//get or generate the secret, do work with it, make sure you make no local copies
+    //get or generate the secret, do work with it, make sure you make no local copies
 } finally {
-	if (null != secret && secret.length > 0) {
-		for (int i = 0; i < secret; i++) {
-			array[i] = (byte) 0;
-		}
-	}
+    if (null != secret) {
+        Arrays.fill(secret, (byte) 0);
+    }
+}
+```
+This however, does not truly guarantee that the content will be overwritten in run time. In order to optimize the byte code, the compiler will do analysis in which it can decide not to execute the overwriting of data, as it is no longer used afterwards (unnecessary operation). Even if you verify that the code is present in the compiled DEX, the optimization can still happen during just-in-time or ahead-of-time compilation in the VM.
+
+There is no silver bullet against this problem, as different solutions have different consequences. For example, one may choose to perform some additional calculation (e.g. XOR the data into some other dummy buffer), but there is no guarantee on how deep will the compiler do it's optimization analysis. On the other hand, using the overwritten data outside of compiler's scope (e.g. serializing it in a temp file) guarantees the overwriting to be performed, but has obvious performance and maintenance impact.
+
+Then, using `Arrays.fill()` methods to overwrite the data is a bad practice, as they are an obvious target to be hooked (see _Tampering and Reverse Engineering on Android_ chapter for more details).
+
+Finally, one additional issue with the example above is that the content is overwritten with all zeroes. If the case allows, one should try to overwrite critical objects with random data, or ideally content from other non-critical objects. This will make really hard to construct scanners that can identify sensitive data based on the way such data is managed.
+
+Below is an improved version of the previous example:
+
+```java
+byte[] nonSecret = somePublicString.getBytes("ISO-8859-1");
+byte[] secret = null;
+try{
+    //get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+    if (null != secret) {
+        for (int i = 0; i < secret.length; i++) {
+            secret[i] = nonSecret[i % nonSecret.length];
+        }
+        
+        FileOutputStream out = new FileOutputStream("/dev/null");
+        out.write(secret);
+        out.flush();
+        out.close(); 
+    }
 }
 ```
 
-Also look into the best practices for [securely storing sensitive data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
+For some additional info on the topic take a look at [Securely Storing Sensitive Data in RAM.](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
 
 Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts:
 - A wrapper class called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convenience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
