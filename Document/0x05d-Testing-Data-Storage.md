@@ -1136,20 +1136,22 @@ In order to be able to analyze the dump in MAT you need to use the _hprof-conv_ 
 ./hprof-conv memory.hprof memory-mat.hprof
 ```
 
-MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain class, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. (**TO BE CONFIRMED OR REMOVED:** The _Dominator Tree_ is also the only tool containing the information for static classes). You can use regular expressions to filter out the results in all of these tools.
+MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain type, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. (**TO BE CONFIRMED OR REMOVED:** The _Dominator Tree_ is also the only tool containing the information for static classes). You can use regular expressions to filter out the results in all of these tools.
 
-_Object Query Language_ studio is a MAT tool that enables you to use an SQL-like language for querying objects from the memory dump. It supports simple object transformation trough invocation of Java methods for the particular object, as well as API to build sophisticated tools on top of MAT.
+_Object Query Language_ studio is a MAT tool that enables you to use an SQL-like language for querying objects from the memory dump. It supports simple object transformation trough invocation of Java methods on the particular object, as well as API to build sophisticated tools on top of MAT.
 
 ```sql
 SELECT * FROM java.lang.String
 ```
 The example above will select all `String` objects present in the memory dump. The results will show the class, memory address, value as well as retain count for the object. To filter out all these info and only see the value of each string, you can do:
 
-
 ```sql
 SELECT toString(object) FROM java.lang.String object
+```
 
-/* or */
+Or
+
+```sql
 SELECT object.toString() FROM java.lang.String object
 ```
 
@@ -1165,7 +1167,7 @@ Don't be surprised if you get similar results as before as, after all, `String` 
 SELECT * FROM byte[] b WHERE toString(b).matches(".*1\.2\.840\.113549\.1\.1\.1.*")
 ```
 
-Finally, you don't have to always select whole objects. If we compare OQL to SQL, then classes are considered as tables, objects as rows and fields as columns. So, if you like to find all objects that have field named "password", you can do something like:
+Finally, you don't have to always select whole objects. If we make an analogy to SQL, then classes would be the tables, objects would be the rows and fields would be the columns. So, if you like to find all objects that have field named "password", you can do something like:
 
 ```sql
 SELECT password FROM ".*" WHERE (null != password)
