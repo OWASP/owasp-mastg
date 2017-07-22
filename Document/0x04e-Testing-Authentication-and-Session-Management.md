@@ -20,13 +20,15 @@ There is no one-size-fits-all when it comes to authentication. The appropriate t
 - Something the user has (SIM card, one-time password generator, or hardware token)
 - A biometric property of the user (fingerprint, retina, voice)
 
-Consider industry best practices when assessing authentication of a particular mobile app. For "normal" apps that have user login, but aren't considered highly sensitive, username/password authentication is sufficient. For example, this form of authentication is used by most social apps. Many of these apps even store access tokens that never time out - a practice that is usually discouraged in the web world, but quite common in mobile apps.
+#### Static Analysis
+
+For a static analysis of the implementation you need access to the source code of the backend service. Identify the type of authentication used and make sure that appropriate form of authentication is performed. What's "appropriate" must be assessed on a per-app basis.
+
+Consider industry best practices when assessing authentication of a particular mobile app. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication is sufficient. For example, this form of authentication is used by most social apps. 
 
 For sensitive applications, adding a second authentication factor and stricter session management might be appropriate. Consider for example apps that enable access to highly sensitive information like credit card numbers, personal information, or allow users to move funds. In some industries, there are also compliance considerations. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
 
-#### Static Analysis
-
-To review the authentication architecture you need access to source code of the remote service. Identify which authentication mechanism (token or cookie based) is used and make sure that an appropriate form of authentication is performed. What's appropriate depends on the type and sensitivity level of the app. You may use the OWASP Mobile AppSec Verification Standard as a guideline:
+What's appropriate depends on the type and sensitivity level of the app. You may use the OWASP Mobile AppSec Verification Standard as a guideline:
 
 - Username/password authentication is recommended for level 1 (non-critical) apps.
 - 2-factor authentication is recommended for level 2 (sensitive) apps.
@@ -99,7 +101,6 @@ All available functions that allow a user to set a password need to be verified,
 - Change Password function that allows a logged in user to set a new password.
 
 An interception proxy should be used, to bypass client passwords checks within the app in order to be able verify the password policy implemented on server side. More information about testing methods can be found in the OWASP Testing Guide ([OTG-AUTHN-007](https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) "OWASP Testing Guide (OTG-AUTHN-007)"))
-
 
 #### Remediation
 
@@ -192,7 +193,6 @@ Two-factor authentication (2FA) is becoming a standard when logging into mobile 
 Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
 
 A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
-
 
 #### Static Analysis
 
@@ -321,8 +321,7 @@ It is strongly advised to use session ID generators that are build-in within the
 - Burp Suite
 
 
-
-### Testing Token-Based Authentication
+### Testing Stateless (Token-Based) Authentication
 
 #### Overview
 
@@ -353,22 +352,23 @@ HMACSHA256(
 )
 ```
 
-For mobile apps it's more and more used to authenticate both the message sender and receiver by using JWT. JWT implementations are available for all major programming languages, like [PHP](https://github.com/firebase/php-jwt "PHP JWT") or [Java Spring](http://projects.spring.io/spring-security-oauth/docs/oauth2.html "Java Spring with JWT").
+JWT implementations are available for all major programming languages, like [PHP](https://github.com/firebase/php-jwt "PHP JWT") or [Java Spring](http://projects.spring.io/spring-security-oauth/docs/oauth2.html "Java Spring with JWT")
 
 #### Static Analysis
 
 Identify the JWT library that is used on server and client side. Check if there are any known vulnerabilities available for the JWT libraries in use.
 
 The following [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way") should be checked in the JWT libraries:
+
 - Verify the signature or HMAC on server-side at all times for all incoming requests containing a token.
 - Verify where the private signing key or secret key for HMAC is located and stored. The key should always reside on the server side and never shared with the client. It should only be available for the issuer and verifier.
 - Verify if encryption is used to encrypt the data embedded into JWT.
 - Verify if replay attacks are addressed by using `jti` (JWT ID) claim, which provides a unique identifier for JWT.
 
-
 #### Dynamic Analysis
 
 Several known vulnerabilities in JWT should be checked while executing a dynamic analysis:
+
 - [Hashing algorithm `none`](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   * Modify the `alg` attribute in the token header and delete `HS256` and set it to `none` and use an empty signature (e.g. signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This would allow an attacker to create their own "signed" tokens.
 - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
@@ -552,20 +552,16 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 #### Overview
 
-Compared to web applications most mobile applications don’t have a visible timeout mechanism that terminates the session ID or token after some period of inactivity and force the user to login again. For most mobile applications users need to enter the credentials once and use a stateless authentication mechanism. Mobile apps that handle sensitive data like patient data or critical functions like financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period of time.
- 
-We will explain here how to check that this control is implemented correctly, both in the client and server side.
+In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, the a stateless access tokens is stored that never times out. his results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session. 
+
+Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period of time.
 
 #### Static Analysis
 
-If server side code is available, it should be reviewed that the session timeout or token invalidation functionality is correctly configured and a timeout is triggered after a defined period of time.  
-The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
-- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
-- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
+Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the backend source code.   
 
-In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed or expiration explicitly set. One could use ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") to define the expiration time on or after which the JWT must not be accepted for processing.
+In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the backend does not accepted expired tokens for processing.
+
 Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
 
 The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
@@ -588,6 +584,13 @@ The exact values for token expiration depend on the application requirements and
   res.json({ token: refreshed_token });
 });
 ```
+
+The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
+
+- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
 
 #### Dynamic Analysis
 
