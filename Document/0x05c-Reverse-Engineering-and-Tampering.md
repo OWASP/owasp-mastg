@@ -47,7 +47,7 @@ MacOS:
 /Users/<username>/Library/Android/sdk
 ```
 
-Note: On Linux, you'll need pick your own SDK location. Common locations are <code>/opt</code>, <code>/srv</code>, and <code>/usr/local</code>.
+Note: On Linux, you'll need to pick your own SDK location. Common locations are <code>/opt</code>, <code>/srv</code>, and <code>/usr/local</code>.
 
 #### Setting up the Android NDK
 
@@ -62,7 +62,7 @@ The Android NDK contains prebuilt versions of the native compiler and toolchain.
 |X86-64-based|x86_64-&lt;gcc-version&gt;|
 |MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
 
-In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under <code>$NDK/platforms/</code>, each API-level directory contains subdirectories for the various CPUs and architectures.
+In addition to picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under <code>$NDK/platforms/</code>, each API-level directory contains subdirectories for the various CPUs and architectures.
 
 One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings.
 
@@ -289,7 +289,7 @@ Note the declaration of <code>public native String stringFromJNI</code> at the b
 JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
 ```
 
-So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of this directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
+So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
 
 <img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
@@ -304,7 +304,7 @@ This is the native function that gets eventually executed when the <code>stringF
 
 To disassemble the code, you can load <code>libnative-lib.so</code> into any disassembler that understands ELF binaries (i.e. every disassembler in existence). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as the disassembler knows how to deal with it. Each version is compiled from the same source and implements exactly the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
 
-To support both older and newer ARM processors, Android apps ship with multple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported:
+To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported:
 
 - armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set.
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
@@ -342,7 +342,7 @@ This instruction loads the pc-relative offset of the string "Hello from C++" int
 LDR.W  R2, [R2, #0x29C]
 ```
 
-This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks as follows:
+This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look at the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks as follows:
 
 ```
 jstring     (*NewStringUTF)(JNIEnv*, const char*);
@@ -386,7 +386,7 @@ Every debugger-enabled process runs an extra thread for handling JDWP protocol p
 
 When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged - after all, that's what *debug builds* are for. If the system property <code>ro.debuggable</code> set to "0", Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
 
-To "convert" a release build release into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the altered APK archive.
+To "convert" a release build into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the altered APK archive.
 
 To do this, you first need a code signing certificate. If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in <code>$HOME/.android/debug.keystore</code>. The default password for this keystore is "android" and the key is named "androiddebugkey".
 
@@ -398,7 +398,7 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory. Repackage UnCrackable-Level1.apk as follows:
 
-1. Use apktool to unpack the app and decode AndroidManifest.xml:
+1. Use <code>apktool</code> to unpack the app and decode AndroidManifest.xml:
 
 ```bash
 $ apktool d --no-src UnCrackable-Level1.apk
@@ -409,6 +409,8 @@ $ apktool d --no-src UnCrackable-Level1.apk
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ```
+
+Note: You can also instruct <code>apktool</code> to automatically do this for you. To do this, use the <code>-d</code> or <code>--debug</code> flag while building the APK in order add <code>debuggable="true"</code> to the AndroidManifest file.
 
 3. Repackage and sign the APK.
 
@@ -469,7 +471,6 @@ We're now ready to attach JDB. Attaching the debugger however causes the app to 
 
 ```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
-
 Initializing jdb ...
 > All threads suspended.
 >
@@ -540,7 +541,7 @@ main[1] resume
 
 Repeat this process, setting <code>flag</code> to <code>true</code> each time the breakpoint is hit, until the alert box is finally displayed (the breakpoint will hit five or six times). The alert box should now be cancelable! Tap anywhere next to the box and it will close without terminating the app.
 
-Now that the anti-tampering is out of the way we're ready to extract the secret string! In the "static analysis" section, we saw that the string is decrypted using AES, and then compared with the string entered into the messagebox. The method <code>equals</code> of the <code>java.lang.String</code> class is used to compare the input string with the secret. Set a method breakpoint on <code>java.lang.String.equals</code>, enter any text into the edit field, and tap the "verify" button. Once the breakpoint hits, you can read the method argument with the using the <code>locals</code> command.
+Now that the anti-tampering is out of the way we're ready to extract the secret string! In the "static analysis" section, we saw that the string is decrypted using AES, and then compared with the string entered into the messagebox. The method <code>equals</code> of the <code>java.lang.String</code> class is used to compare the input string with the secret. Set a method breakpoint on <code>java.lang.String.equals</code>, enter any text into the edit field, and tap the "verify" button. Once the breakpoint hits, you can read the method argument by using the <code>locals</code> command.
 
 ```
 > stop in java.lang.String.equals
@@ -601,11 +602,11 @@ You can see the directory names inside the "Variables" window by stepping into t
 
 <img src="Images/Chapters/0x05c/step_over.png" width="700px" />
 
-Step into the <code>System.getenv</code> method call y using the "Force Step Into" functionality.
+Step into the <code>System.getenv</code> method using the "Force Step Into" functionality.
 
 After you get the colon separated directory names, the debugger cursor will return to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Otherwise, it might get complicated to identify which line will be executed next.
 
-If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
+If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping an eye on the return values of the core class functions.
 
 <img src="Images/Chapters/0x05c/step_out.png" width="700px" />
 
