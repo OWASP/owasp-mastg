@@ -6,9 +6,13 @@
 
 - [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
+
+### General Mobile App Testing Guide
+
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Authenticaton with the Backend](0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
 
 ### Android Testing Guide
 
