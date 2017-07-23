@@ -1,4 +1,4 @@
-## Testing Backend Authentication
+## Testing Authentication with the Backend
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
