@@ -10,6 +10,30 @@ In most cases, you'll find that the mobile app uses HTTP as the transport layer.
 
 Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems follow in the respective OS-specific chapters.
 
+### Common Issues
+
+#### Authentication Bypass
+
+The backend service must consistently enforce authorization checks on all endpoints. This involves verifying that the user is logged in and that they are authorized to access the resource requested. Authentication bypass vulnerabilities exist if authentication state is not consistently verified, or if the state can be tampered with by the client.
+
+Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through an URL, and the authentication state is passed through a GET parameter:
+
+```
+http://www.site.com/page.asp?authenticated=no
+```
+
+Nothing prevents the client from simply changing the value of the <code>authenticated</code> parameter to "yes", effectively bypassing authentication. 
+
+While this is a simplistic example that you won't find in the wild all too often, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. The assumption is that these parameters can't be tampered with. As an example, consider the following [classical vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on a Cookie named "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access simply by setting the cookie value as follows:
+
+```
+isAdmin=True
+```
+
+As a simple example, a certain API might not verify the users' identity or role before granting access to a resource. 
+
+#### Tampering with Client-Side Tokens
+
 ### Verifying that Appropriate Authentication is in Place
 
 #### Overview
@@ -22,18 +46,24 @@ There is no one-size-fits-all when it comes to authentication. The appropriate t
 
 #### Static Analysis
 
-For a static analysis of the implementation you need access to the source code of the backend service. Identify the type of authentication used and make sure that appropriate form of authentication is performed. What's "appropriate" must be assessed on a per-app basis.
+For a static analysis of the authentication logic you need access to the source code of the backend service. Inspect the client-side and server-side source code to verify that appropriate types of authentication are used. 
 
-Consider industry best practices when assessing authentication of a particular mobile app. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication is sufficient. For example, this form of authentication is used by most social apps. 
+Consider industry best practices in your review. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication (combined with a reasonable password policy) is sufficient. For example, this form of authentication is used by most social apps. 
 
-For sensitive applications, adding a second authentication factor and stricter session management might be appropriate. Consider for example apps that enable access to highly sensitive information like credit card numbers, personal information, or allow users to move funds. In some industries, there are also compliance considerations. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
+For sensitive apps, adding a second authentication factor is usually appropriate. Consider for example apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, there are also compliance considerations. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
 
-What's appropriate depends on the type and sensitivity level of the app. You may use the OWASP Mobile AppSec Verification Standard as a guideline:
+You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("level 1"), the MASVS lists the following requirements pertaining to authentication:
 
-- Username/password authentication is recommended for level 1 (non-critical) apps.
-- 2-factor authentication is recommended for level 2 (sensitive) apps.
+- If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
+- A password policy exists and is enforced at the remote endpoint.
+- The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times.
 
-Afterwards locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
+For sensitive apps ("Level 2"), the MASVS adds the following:
+
+- A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
+- Step-up authentication is required to enable actions that deal with sensitive data or transactions.
+
+Locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
 
 Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Examples for widely used frameworks on server side are:
 
@@ -353,6 +383,29 @@ HMACSHA256(
 ```
 
 JWT implementations are available for all major programming languages, like [PHP](https://github.com/firebase/php-jwt "PHP JWT") or [Java Spring](http://projects.spring.io/spring-security-oauth/docs/oauth2.html "Java Spring with JWT")
+
+##### Common Issues
+
+###### NONE Hashing Algorithm
+
+This attack, described here occur when a attacker alter the token and change the hashing algorithm to indicate, through, the none keyword, that the integrity of the token has already been verified. As explained in the link above some libraries treated tokens signed with the none algorithm as a valid token with a verified signature, so an attacker can alter the token claims and tkey will be trusted by the application.
+
+How to prevent[edit | edit source]
+First, use a JWT library that is not exposed to this vulnerability.
+
+Last, during token validation, explicitly request that the expected algorithm was used.
+
+Implementation example[edit | edit source]
+// HMAC key - Block serialization and storage as String in JVM memory
+private transient byte[] keyHMAC = ...;
+
+...
+
+//Create a verification context for the token requesting explicitly the use of the HMAC-256 hashing algorithm
+JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
+
+//Verify the token, if the verification fail then a exception is throwed
+DecodedJWT decodedToken = verifier.verify(token);
 
 #### Static Analysis
 
