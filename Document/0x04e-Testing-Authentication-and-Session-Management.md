@@ -12,9 +12,11 @@ Developers can choose from a variety of authorization standards and frameworks. 
 
 ### Common Issues
 
+Authentication and authorization problems are a prevalent type of security vulnerability. In fact, they consistently make number two in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project"). Before diving into concrete testing instructions, let's have a look at some of the most common issues.
+
 #### Authentication Bypass
 
-The backend service must consistently enforce authorization checks on all endpoints. This involves verifying that the user is logged in and that they are authorized to access the resource requested. Authentication bypass vulnerabilities exist if authentication state is not consistently verified, or if the state can be tampered with by the client.
+When processing requests from the mobile client, the backend service must consistently enforce authorization checks on all endpoints. This involves verifying that the user is logged in and that they are authorized to access the resource requested. Authentication bypass vulnerabilities exist if authentication state is not consistently verified, or if the state can be tampered with by the client.
 
 Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through an URL, and the authentication state is passed through a GET parameter:
 
@@ -32,7 +34,7 @@ isAdmin=True
 
 Traditionally, the default recommendation by security experts was to simply use session-based authentication and maintain session data only on the server-side. This would automatically prevent any form of tampering with the sessions state, as only the opaque session ID is visible to the client. However, even though session-based authentication is still a valid option for mobile apps, scaling considerations have made stateless variants increasingly popular. 
 
-The whole point of stateless authentication is *not* to have any session state on the server (therefore decreasing load on the backend). Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. Cryptographic signatures are added to prevent the client from tampering with the state. Of course, where there's potential for things to go wrong, they usually do, and popular implementations of stateless authentication have [suffered from vulnerabilities](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/).
+The whole point of stateless authentication is *not* to have any session state on the server (therefore decreasing load on the backend). Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. To prevent tampering, cryptographic signatures are added to the client-side tokens. Of course, there is some potential here for things to go wrong, and popular implementations of stateless authentication sometimes [suffer from vulnerabilities](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/).
 
 In the following sections, we will discuss testing methods for session-based and stateless authentication, as well as best practices for various aspects of authentication.
 
