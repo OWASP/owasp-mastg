@@ -1,14 +1,14 @@
-## Testing Backend Authentication
+## Testing Authentication with the Backend
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
 In most cases, you'll find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so once a user logs in, some means is needed to associate subsequent HTTP request with that user - otherwise, the user's credentials would have to be sent with every request. Also, server and client need to keep track of data associated with the user (e.g. the user's privileges or role). This is can be done in two different ways:
 
-- With *stateful* authentication, a unique session id is generated when the user authenticates. In subsequent requests, this session ID serves as a reference to the user details stored on the server-side. The session ID itself is *opaque*, meaning that it does not contain any user data. The disadvantage of stateful authentication is that it doesn't scale well.
+- With *stateful* authentication, a unique session id is generated when the user logs in. In subsequent requests, this session ID serves as a reference to the user details stored on the server-side. The session ID itself is *opaque*, meaning that it does not contain any user data. A disadvantage of stateful authentication is that it doesn't scale well.
 
 - With *stateless* authentication, all information for identifying the user is stored in a client-side token, which can be passed to any server or micro service, eliminating the need for maintaining session state on the server-side. In that case, authentication is usually factored out to an authorization server, which produces, signs and optionally encrypts the token upon user login.
 
-Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems follow in the respective OS-specific chapters.
+Developers can choose from a variety of authorization standards and frameworks. While stateless token-based approaches are becoming increasingly popular, "traditional" server-side sessions are still also commonly used. In this chapter, we discuss authentication and authorization on a high level independent of mobile OS. Security considerations for particular mobile operating systems - in particular, local and biometric authentication - follow in the respective OS-specific chapters.
 
 ### Common Issues
 
@@ -30,23 +30,23 @@ While this is a simplistic example that you won't find in the wild all too often
 isAdmin=True
 ```
 
-As a simple example, a certain API might not verify the users' identity or role before granting access to a resource. 
+Traditionally, the default recommendation by security experts was to simply use session-based authentication and maintain session data only on the server-side. This would automatically prevent any form of tampering with the sessions state, as only the opaque session ID is visible to the client. However, even though session-based authentication is still a valid option for mobile apps, scaling considerations have made stateless variants increasingly popular. 
 
-#### Tampering with Client-Side Tokens
+The whole point of stateless authentication is *not* to have any session state on the server (therefore decreasing load on the backend). Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. Cryptographic signatures are added to prevent the client from tampering with the state. Of course, where there's potential for things to go wrong, they usually do, and popular implementations of stateless authentication have [suffered from vulnerabilities](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/).
+
+In the following sections, we will discuss testing methods for session-based and stateless authentication, as well as best practices for various aspects of authentication.
 
 ### Verifying that Appropriate Authentication is in Place
 
 #### Overview
 
-There is no one-size-fits-all when it comes to authentication. The appropriate type(s) of authentication must be chosen based on the sensitivity of the data the app processes. In general, authentication can be implemented based one or more of the following:
+There is no one-size-fits-all when it comes to authentication, so the first thing you should be concerned about is whether the type(s) of authentication used are appropriate for the particular app. In general, authentication can be implemented based one or more of the following:
 
 - Something the user knows (password, PIN, pattern, ...)
 - Something the user has (SIM card, one-time password generator, or hardware token)
 - A biometric property of the user (fingerprint, retina, voice)
 
-#### Static Analysis
-
-For a static analysis of the authentication logic you need access to the source code of the backend service. Inspect the client-side and server-side source code to verify that appropriate types of authentication are used. 
+Mobile apps combine one or more authentication mechanisms based on the sensitivity of the functions or resources accessed. 
 
 Consider industry best practices in your review. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication (combined with a reasonable password policy) is sufficient. For example, this form of authentication is used by most social apps. 
 
@@ -62,6 +62,10 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
+
+#### Static Analysis
+
+For a static analysis of the authentication logic you need access to the source code of the backend service. Inspect the client-side and server-side source code to verify that appropriate types of authentication are used. 
 
 Locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
 
@@ -672,45 +676,3 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 
 ##### CWE
 - CWE-613: Insufficient Session Expiration
-
-
-### Testing User Device Management
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing User Device Management".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm remark on "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup."] --
-
---TODO [Develop content on Testing User Device Management with source code] --
-
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing User Device Management" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing User Device Management".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing User Device Management"] --
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing User Device Management"] --
