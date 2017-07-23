@@ -1,129 +1,52 @@
 ## Testing Platform Interaction on iOS
 
-### Testing App permissions
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing App permissions".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Add content on Static analysis of "Testing App permissions" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing App permissions" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing App permissions".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-* V6.1: "The app only requires the minimum set of permissions necessary."
-
-##### CWE
-* CWE-250 - Execution with Unnecessary Privileges
-
-##### Info
-* [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-##### Tools
--- TODO [Add tools for "Testing App permissions"] --
-
-
-
-### Testing Input Validation and Sanitization
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Input Validation and Sanitization".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
-
--- TODO [Add content for static analysis of "Testing Input Validation and Sanitization" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Input Validation and Sanitization".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-* V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-* CWE-20 - Improper Input Validation
-
-##### Info
-* [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
-##### Tools
--- TODO [Add relevant tools for "Testing Input Validation and Sanitization"] --
-
-
-
 ### Testing Custom URL Schemes
 
+
 #### Overview
 
-
-Check: https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html
-https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers)
--- TODO [Provide a general description of the issue "Testing Custom URL Schemes".]
+Protocol handler is a basic form of [IPC](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) in iOS system. Basically, it allows invoking arbitrary applications, by calling a URL scheme with specified parameters. There are some [default handlers](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899), however a developer is allowed to register his own [custom URL scheme](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10). Unfortunately, this brings a serious security concern, that [developers of the Skype application found out](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html). The Skype application registered the `skype://` protocol handler, which allows for making a call to arbitrary numbers without asking for a user's permission. Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website unconsciously was forced to call to a premium number.
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+A security concern related with protocol handlers should arise, when the URL is not validated or the user is not prompted for confirmation in the application before making a particular action.
+The first step is to find out if an application registers any protocol handlers. This information can be found in `info.plist` file in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to `Info` tab and open `URL Types` section, as it is presented on a below screenshot.
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
--- TODO [Add content on static analysis for "Testing Custom URL Schemes" with source code] --
+Then, you should verify how an URL path is built and validated. A method responsible for handling user's URLs is called [`openURL`] (https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc). Look for implemented controls - how an URL is validated (what input it accepts) and does it need the permission of the user when using the custom URL schema?
+
+In a compiled application, you can find registered protocol handlers in a `Info.plist` file under the `CFBundleURLTypes` and then under `CFBundleURLSchemes` key. To find out an URL structure, you can simply use `strings` or `Hooper`:
+
+```sh
+$ strings <yourapp> | grep "myURLscheme://"
+```
+> Please note that you should firstly decrypt an application (e.g. using [Clutch] (https://github.com/KJCracks/Clutch) if you want to read a binary.
 
 #### Dynamic Analysis
 
--- TODO [Describe how to test for this issue "Testing Custom URL Schemes" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
+Once you know, what an URL structure is, you should try fuzzing an URL to force an application to perform some malicious action.
+
+-- TODO [Add instruction of using dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers in Needle: https://labs.mwrinfosecurity.com/blog/needle-how-to/] --
+
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Custom URL Schemes".] --
+You should carefully validate any URL, before calling it. You can whitelist applications which may be opened via the registered protocol handler. Another helpful control is prompting a user for confirming the action, invoked by an URL.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-* V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 
 ##### CWE
--- TODO [Add relevant CWE for "Testing Custom URL Schemes"] --
-
-##### Info
-* [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
+- CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
 ##### Tools
--- TODO [Add relevant tools for "Testing Custom URL Schemes"] --
+- Needle - https://labs.mwrinfosecurity.com/tools/needle/
 
 
 
@@ -137,7 +60,7 @@ https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Sensitive Functionality Exposed Through IPC" with source code] --
 
@@ -152,16 +75,13 @@ https://labs.mwrinfosecurity.com/blog/needle-how-to/ (dynamic/ipc/open_uri: Test
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 
 ##### OWASP MASVS
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 
 ##### CWE
 -- TODO [Add relevant CWE for "Testing for Sensitive Functionality Exposed Through IPC"] --
-
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
 
 ##### Tools
 -- TODO [Add relevant tools for "Testing for Sensitive Functionality Exposed Through IPC"] --
@@ -176,9 +96,9 @@ The WebView object is used to embed a web browser in your iOS application. It is
 
 #### Static Analysis
 
-Depending on your iOS version a WebView object can be implemented using UIWebView (for iOS versions 7.1.2 and older)<sup>[1]</sup> or WKWebView (for iOS in version 8.0 and later)<sup>[2]</sup>. WKWebView is recommended to be used.
+Depending on your iOS version a WebView object can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). WKWebView is recommended to be used.
 
-The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object WKPreferences<sup>[3]</sup>, like in the following example:
+The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object [WKPreferences](https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled "WKPreferences"), like in the following example:
 
 ```
 #import "ViewController.h"
@@ -216,8 +136,8 @@ If there is no explicitly disabled JavaScript execution via WKPreferences object
 
 A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
 
-* Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
-* Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
+- Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
+- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
 
 #### Remediation
 
@@ -225,16 +145,16 @@ The UIWebView should be avoided and WKWebView used instead. JavaScript is enable
 
 In order to address these attack vectors, the outcome of the following checks should be verified:
 
-* that all functions offered by the endpoint need to be free of XSS vulnerabilities<sup>[4]</sup>.
+- that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
 
-* that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
+- that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
 
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
-* M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 
@@ -243,13 +163,6 @@ In order to address these attack vectors, the outcome of the following checks sh
 ##### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-
-##### Info
-
-- [1] UIWebView reference documentation - https://developer.apple.com/reference/uikit/uiwebview
-- [2] WKWebView reference documentation - https://developer.apple.com/reference/webkit/wkwebview
-- [3] WKPreferences - https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled
-- [4] XSS (Cross Site Scripting) Prevention Cheat Sheet - https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
 
 
 ### Testing WebView Protocol Handlers
@@ -262,7 +175,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing WebView Protocol Handlers" with source code) --
 
@@ -277,7 +190,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
@@ -285,25 +198,22 @@ In order to address these attack vectors, the outcome of the following checks sh
 ##### CWE
 -- TODO [Add relevant CWE for "Testing WebView Protocol Handlers"] --
 
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
 ##### Tools
 -- TODO [Add relevant tools for "Testing WebView Protocol Handlers"] --
 
 
+### Testing Whether JavaScript Can Access Native Methods
 
-### Testing for Local File Inclusion in WebViews
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing for Local File Inclusion in WebViews".] --
+-- TODO [Provide a general description of the issue .] --
 
 #### Static Analysis
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
 
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
+-- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
 
 -- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
 
@@ -319,29 +229,24 @@ In order to address these attack vectors, the outcome of the following checks sh
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-- V6.7: "The app does not load user-supplied local resources into WebViews."
+
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
 ##### CWE
+
 -- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
 
-##### Info
-- [1] Meyer's Recipe for Tomato Soup - http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx
-
 ##### Tools
+
 -- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
 
 
 
-### Testing Whether Java Objects Are Exposed Through WebViews
-
-It is important to clarify that this control is only applicable on the Android Platform. Please look at "Testing Whether Java Objects Are Exposed Through WebViews" in Android for a detailed explanation of this test case.
-
-
-
-### Testing Object persistance
+### Testing Object Persistence
 
 #### Overview
 
@@ -350,8 +255,6 @@ It is important to clarify that this control is only applicable on the Android P
 #### Static Analysis
 
 -- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. Meyer's recipe for tomato soup<sup>[1]</sup>."] --
 
 -- TODO [Add content on static analysis of "Testing Object Serialization" with source code] --
 
@@ -366,18 +269,19 @@ It is important to clarify that this control is only applicable on the Android P
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-* V6.9: "Object serialization, if any, is implemented using safe serialization APIs."
+
+- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 ##### CWE
+
 -- TODO [Add relevant CWE for "Testing Object Serialization"] --
 
-##### Info
-* [1] Update Security Provider - https://developer.android.com/training/articles/security-gms-provider.html
-
 ##### Tools
+
 -- TODO [Add relevant tools for "Testing Object Serialization"] --
 
 
@@ -394,7 +298,7 @@ The risk of malicious code running as root is higher on jailbroken devices, as m
 
 Look for a function with a name like isJailBroken in the code. If none of these are available, look for code checking for the following:
 1. Existence of files (such as anything with cydia or substrate in the name (such as `/private/var/lib/cydia or /Library/MobileSubstrate/MobileSubstrate.dylib`), `/var/lib/apt, /bin/bash, /usr/sbin/sshd, sftp`, etc). In swift this is done with the `FileManager.default.fileExists(atPath: filePath)` function and objective-c uses `[NSFileManager defaultManager] fileExistsAtPath:filePath`, so grepping for fileExists should show you a good list.
-2. Changes of directory permissions (ie being able to write to a file outside the the apps own directory - common examples are `/, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc`). /private and / seem to be the most commonly used for testing.
+2. Changes of directory permissions (ie being able to write to a file outside the apps own directory - common examples are `/, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc`). /private and / seem to be the most commonly used for testing.
 
 	2.1 Check actual permissions themselves: Swift uses `NSFilePosixPermissions` and objective-c uses `directoryAttributes`, so grep for these.
 
@@ -405,7 +309,7 @@ Look for a function with a name like isJailBroken in the code. If none of these 
 
 #### Dynamic Analysis
 
-First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use Cycript<sup>[3]</sup> to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the nm<sub>[4]</sub> tool:
+First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use [Cycript](http://www.cycript.org/ "cycript") to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the [nm tool](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html "nm tool"):
 
 ```
 nm <appname> | grep swift
@@ -428,25 +332,23 @@ Again, you may want to pipe to a file and go through it for a promising sounding
 #### Remediation
 
 For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) could use Cycript's method swizzling to modify this function to always return true. Of course there are more complex implementations, but nearly all can be subverted - the idea is just to make it harder. As such the following is recommended:
-1. Use more than 1 of the above methods to check if a device is jailbroken.
+1. Use more than one of the above methods to check if a device is jailbroken.
 2. Call the class and method something that is not immediately obvious (but it well commented).
 3. Use Swift instead of Objective-C.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-* M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
-* M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
-* V6.10: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
 
 ##### CWE
-Not covered.
 
-##### Info
-[4] - nm tool (part of XCode) - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html
+N/A
 
 ##### Tools
 
-[3] cycript - http://www.cycript.org/
+- cycript - http://www.cycript.org/
