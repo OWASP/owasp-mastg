@@ -730,7 +730,7 @@ N/A
 
 #### Overview
 
-Android offers a way that enables JavaScript executed in a WebView to call and use native functions within an Android App, called [`addJavascriptInterface()`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String) "Method addJavascriptInterface()").
+Android offers a way that enables JavaScript executed in a WebView to call and use native functions within an Android App called [`addJavascriptInterface()`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()").
 
 The `addJavascriptInterface()` method allows to expose Java Objects to WebViews. When using this method in an Android app it is possible for JavaScript code in a WebView to invoke native methods of the Android App.
 

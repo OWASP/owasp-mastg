@@ -205,7 +205,7 @@ ATS settings should be verified via static analysis in the iOS source code.
 
 ##### OWASP MASVS
 
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 
 ##### CWE
 
