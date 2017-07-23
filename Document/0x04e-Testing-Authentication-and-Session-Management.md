@@ -34,7 +34,7 @@ isAdmin=True
 
 Traditionally, the default recommendation by security experts was to simply use session-based authentication and maintain session data only on the server-side. This would automatically prevent any form of tampering with the sessions state, as only the opaque session ID is visible to the client. However, even though session-based authentication is still a valid option for mobile apps, scaling considerations have made stateless variants increasingly popular. 
 
-The whole point of stateless authentication is *not* to have any session state on the server (therefore decreasing load on the backend). Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. To prevent tampering, cryptographic signatures are added to the client-side tokens. Of course, there is some potential here for things to go wrong, and popular implementations of stateless authentication sometimes [suffer from vulnerabilities](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/).
+The whole point of stateless authentication is *not* to have any session state on the server (therefore decreasing load on the backend). Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. To prevent tampering, cryptographic signatures are added to the client-side tokens. Of course, there is some potential here for things to go wrong, and popular implementations of stateless authentication sometimes suffer from vulnerabilities. For example, in some implementations of JWT it was possible to set deactivate signature verification by [setting the signature type to "None"](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
 In the following sections, we will discuss testing methods for session-based and stateless authentication, as well as best practices for various aspects of authentication.
 
@@ -50,11 +50,11 @@ There is no one-size-fits-all when it comes to authentication, so the first thin
 
 Mobile apps combine one or more authentication mechanisms based on the sensitivity of the functions or resources accessed. 
 
-Consider industry best practices in your review. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication (combined with a reasonable password policy) is sufficient. For example, this form of authentication is used by most social apps. 
+Refer to industry best practices as the basis for your review. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication (combined with a reasonable password policy) is general considered sufficient. For example, this form of authentication is used by most social apps. 
 
-For sensitive apps, adding a second authentication factor is usually appropriate. Consider for example apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, there are also compliance considerations. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
+For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, there apps must also comply to certain standards. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
 
-You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("level 1"), the MASVS lists the following requirements pertaining to authentication:
+You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following requirements pertaining to authentication:
 
 - If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
 - A password policy exists and is enforced at the remote endpoint.
@@ -67,11 +67,9 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 #### Static Analysis
 
-For a static analysis of the authentication logic you need access to the source code of the backend service. Inspect the client-side and server-side source code to verify that appropriate types of authentication are used. 
+For a static analysis of the authentication logic you need access to the source code of the backend service. Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints.
 
-Locate all APIs that provide sensitive information and functions, and verify that authorization is consistently enforced.
-
-Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Examples for widely used frameworks on server side are:
+Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
 
 - [Spring (Java)](https://projects.spring.io/spring-security)
 - [Struts (Java)](https://struts.apache.org/docs/security.html)
@@ -80,15 +78,16 @@ Ideally, authentication mechanisms shouldn't be implemented from scratch but bui
 
 #### Dynamic Analysis
 
-To verify authentication, first all privileged endpoints a user can access within an app should be explored. For all requests sent to an endpoint, an interception proxy can be used to capture network traffic while being authenticated. Then, try to replay requests while removing the authentication information. If the endpoint is still sending back the requested data, that should only be available for authenticated users, authentication checks are not implemented properly on the endpoint.
+Enumerate privileged endpoints by using the app and monitoring requests in your interception proxy. Then, replay the requests while removing the session ID or token. If the endpoint is still sending back the requested data that should only be available for authenticated users, authentication checks are not implemented properly on the endpoint.
 
-Further attack methods can be found in the test case OTG-AUTHN-004 of the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004) "OWASP Testing Guide V4 (OTG-AUTHN-004)"). The [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should also be consulted for more authentication test cases.
+Further attack methods can be found in the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_(OTG-AUTHN-004) "OWASP Testing Guide V4 (OTG-AUTHN-004)"). The [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should also be consulted for more authentication test cases.
 
 #### Remediation
 
 For every endpoint that needs to be protected, implement a mechanism that checks the session ID or token of the user:
-- if there is no session ID or token, the user may not have been authenticated before;
-- if a session ID or token exists, make sure that it is valid and that it grants the user with sufficient privileges to allow the user to access the endpoint.
+
+- If there is no session ID or token, the user may not have been authenticated before;
+- If a session ID or token exists, make sure that it is valid and that it grants the user with sufficient privileges to allow the user to access the endpoint.
 
 If any of these two conditions raise an issue, reject the request and do not allow the user to access the endpoint.
 
@@ -143,11 +142,14 @@ An interception proxy should be used, to bypass client passwords checks within t
 A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
 
 **Password Length**
+
 - Minimum length of the passwords should be enforced, at least 10 characters.
 - Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
 
 **Password Complexity**
+
 - Password must meet at least three out of the following four complexity rules
+
 1. at least one uppercase character (A-Z)
 2. at least one lowercase character (a-z)
 3. at least one digit (0-9)
@@ -158,12 +160,15 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
+
 - V4.5: "A password policy exists and is enforced at the remote endpoint."
 
 ##### CWE
+
 - CWE-521: Weak Password Requirements
 
 
@@ -171,7 +176,7 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 
 #### Overview
 
-We all have heard about brute force attacks. This is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of username and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be taken over.
+We all have heard about brute force attacks. This is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of user name and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be taken over.
  
 To be protected against these kind of attacks, applications need to implement a control to block the access after a defined number of incorrect login attempts.
  
