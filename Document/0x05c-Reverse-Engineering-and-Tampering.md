@@ -398,7 +398,7 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory. Repackage UnCrackable-Level1.apk as follows:
 
-1. Use apktool to unpack the app and decode AndroidManifest.xml:
+1. Use <code>apktool</code> to unpack the app and decode AndroidManifest.xml:
 
 ```bash
 $ apktool d --no-src UnCrackable-Level1.apk
@@ -409,6 +409,8 @@ $ apktool d --no-src UnCrackable-Level1.apk
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ```
+
+Note: You can also instruct <code>apktool</code> to automatically do this for you. To do this, use the <code>-d</code> or <code>--debug</code> flag while building the APK in order add <code>debuggable="true"</code> to the AndroidManifest file.
 
 3. Repackage and sign the APK.
 
@@ -469,7 +471,6 @@ We're now ready to attach JDB. Attaching the debugger however causes the app to 
 
 ```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
-/
 Initializing jdb ...
 > All threads suspended.
 >
