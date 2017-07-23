@@ -309,7 +309,7 @@ It is strongly advised to use session ID generators that are build-in within the
 
 ##### OWASP MASVS
 
-- V4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
+- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -402,7 +402,7 @@ The following best practices should be considered, when implementing JWT:
 
 ##### OWASP MASVS
 
-- V4.3: "The remote endpoint uses server side signed tokens, if stateless authentication is used, to authenticate client requests without sending the user's credentials."
+- V4.3: "If stateless token-based authentication is used, the server provides a token signed using a secure algorithm."
 
 ##### CWE
 
@@ -488,7 +488,7 @@ For additional best practices and detailed information please refer to the sourc
 
 ##### OWASP MASVS
 
-- V4.2: "The remote endpoint uses randomly generated session identifiers, if classical server side session management is used, to authenticate client requests without sending the user's credentials."
+- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
 
 ##### CWE
 
@@ -541,7 +541,7 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 ##### OWASP MASVS
 
-- V4.4: "The remote endpoint terminates the existing session or server side signed tokens when the user logs out."
+- V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
 
 ##### CWE
 
@@ -615,7 +615,7 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
-- V4.8: "Sessions and server side signed tokens are terminated at the remote endpoint after a predefined period of inactivity."
+- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
 
 ##### CWE
 - CWE-613: Insufficient Session Expiration
@@ -652,7 +652,7 @@ Most of the frameworks have a parameter to configure the session timeout. This p
 
 ##### OWASP MASVS
 
-- V4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
+- V4.11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
 
 ##### CWE
 

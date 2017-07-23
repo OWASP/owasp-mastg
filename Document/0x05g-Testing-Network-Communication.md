@@ -66,6 +66,10 @@ myWebView.setWebViewClient(new WebViewClient(){
 });
 ```
 
+##### Apache Cordova Certificate Verification
+
+The internal usage of the WebView in the Apache Cordova framework is implemented in a way that [any TLS error is ignored](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest.
+
 ##### Hostname Verification
 
 Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
@@ -115,7 +119,7 @@ Ensure that the host name and certificate are verified correctly. Examples and c
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 
 ##### CWE
 - CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
