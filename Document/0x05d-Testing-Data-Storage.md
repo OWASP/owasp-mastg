@@ -1079,7 +1079,7 @@ Therefore you are better off starting with static analysis.
 
 #### Static Analysis
 
-Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where certain data might be exposed. For example, sensitive data received from backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
+Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where certain data might be exposed. For example, sensitive data received from a backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
 
 Additionally, understanding application's architecture and its role in the overall system will help you identify sensitive information that does not have to be exposed in memory at all. For example, assume your app receives some data from one server and transfers it to another without the need of any additional computation over it. Then that data can be received and handled encrypted, which prevents exposure in memory.
 
@@ -1136,7 +1136,7 @@ In order to be able to analyze the dump in MAT you need to use the _hprof-conv_ 
 ./hprof-conv memory.hprof memory-mat.hprof
 ```
 
-MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain type, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. (**TO BE CONFIRMED OR REMOVED:** The _Dominator Tree_ is also the only tool containing the information for static classes). You can use regular expressions to filter out the results in all of these tools.
+MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain type, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. You can use regular expressions to filter out the results in all of these tools.
 
 _Object Query Language_ studio is a MAT tool that enables you to use an SQL-like language for querying objects from the memory dump. It supports simple object transformation trough invocation of Java methods on the particular object, as well as API to build sophisticated tools on top of MAT.
 
