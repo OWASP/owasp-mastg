@@ -13,6 +13,7 @@
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
 - [Testing Authenticaton with the Backend](0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
 
