@@ -86,14 +86,9 @@ Enumerate privileged endpoints by using the app and monitoring requests in your 
 
 #### Remediation
 
-For every endpoint that needs to be protected, implement a mechanism that checks the session ID or token of the user:
+For every endpoint that needs to be protected, implement a mechanism that checks the session ID or token of the user. If a session ID or token exists, make sure that it is valid and that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, reject the request and do not allow the user to access the endpoint.
 
-- If there is no session ID or token, the user may not have been authenticated before;
-- If a session ID or token exists, make sure that it is valid and that it grants the user with sufficient privileges to allow the user to access the endpoint.
-
-If any of these two conditions raise an issue, reject the request and do not allow the user to access the endpoint.
-
-Authentication always need to be handled in the server side code and should never rely on client-side controls only. Client-side controls can be used to improve the user workflow and only allow specific actions, but there always need to be the server-side counterpart that defines what a user is allowed to access.
+Authorization must always be performed in server side code and should never rely on client-side controls only. 
 
 Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
 
@@ -173,7 +168,7 @@ function(password) {
 },
 ```
 
-If a ready-made framework feature or library function is used to verify password complexity, verify the configuraion against the OWASP password complexity requirements (see "remediation" below).
+If a ready-made framework feature or library function is used to verify password complexity, verify the configuration against the OWASP password complexity requirements (see "remediation" below).
 
 #### Dynamic Analysis
 
@@ -187,7 +182,7 @@ Use an interception proxy to verify the that the password policy is enforced on 
 
 #### Remediation
 
-A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet") in order to avoid password brute-forcing:
+A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"):
 
 **Password Length**
 
@@ -224,13 +219,9 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 
 #### Overview
 
-We all have heard about brute force attacks. This is one of the simplest attack types, as already many tools are available that work out of the box. It also doesn’t require a deep technical understanding of the target, as only a list of user name and password combinations is sufficient to execute the attack. Once a valid combination of credentials is identified access to the application is possible and the account can be taken over.
- 
-To be protected against these kind of attacks, applications need to implement a control to block the access after a defined number of incorrect login attempts.
- 
-Depending on the application that you want to protect, the number of incorrect attempts allowed may vary. For example, in a banking application it should be around three to five attempts, but, in a app that doesn't handle sensitive information it could be a higher number. Once this threshold is reached it also needs to be decided if the account gets locked permanently or temporarily. Locking the account temporarily is also called login throttling.
- 
-The test consists by entering the password incorrectly for the defined number of attempts to trigger the account lockout. At that point, the anti-brute force control should be activated and your logon should be rejected when the correct credentials are entered.
+Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try and guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize wordlists and smart rulesets to automatically generate the required requests.
+
+The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
 
 #### Static Analysis
 
@@ -238,7 +229,10 @@ It need to be checked that a validation method exists during logon that checks i
 
 #### Dynamic Analysis
 
+Simply attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your logon should be rejected when the correct credentials are entered.
+
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
+
 1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
 2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
 If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
