@@ -225,11 +225,11 @@ The default way of blocking this type of attack is locking accounts after a defi
 
 #### Static Analysis
 
-It need to be checked that a validation method exists during logon that checks if the number of attempts for a username equals to the maximum number of attempts set. In that case, no logon should be granted once this threshold is meet. After a correct attempt, there should also be a mechanism in place to set the error counter to zero.
+Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a username within a short timeframe, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
 
 #### Dynamic Analysis
 
-Simply attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your logon should be rejected when the correct credentials are entered.
+Attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your logon should be rejected when the correct credentials are entered.
 
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
 
@@ -240,6 +240,7 @@ If this is correctly implemented logon should be denied when the right password 
 #### Remediation
 
 Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+
 It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
 
 Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
@@ -661,9 +662,9 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 #### Overview
 
-In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, the a stateless access tokens is stored that never times out. his results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session. 
+In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, the a stateless access tokens is stored that never times out. This results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session. 
 
-Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period of time.
+Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period of time. 
 
 #### Static Analysis
 
@@ -703,12 +704,12 @@ The check needed here will be different depending on the technology used. Here a
 
 #### Dynamic Analysis
 
-Dynamic analysis is an efficient option, as it is easy to validate if the session timeout is working or not at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application in idle for the period of time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
+Dynamic analysis is an efficient option, as it is easy to validate if the session timeout is working or not at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application idle for the period of time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
 
 The following steps can be applied to check if the session timeout is implemented properly.  
 1. Log into the application.
-2. Do a couple of operations that require authentication inside the application.
-3. Leave the application in idle until the session expires (for testing purposes, a reasonable timeout can be configured, and amended later in the final version)
+2. Perform a couple of operations that require authentication inside the application.
+3. Leave the application idle until the session expires (for testing purposes, a reasonable timeout can be configured, and amended later in the final version)
  
 Resend one of the operations executed in step 2 using an interception proxy, for example with Burp Repeater. The purpose of this is to send to the server a request with the session ID that has been invalidated when the session has expired.
 If session timeout has been correctly configured on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then, this session is still valid, which means that the session timeout is not configured correctly.
