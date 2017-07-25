@@ -430,6 +430,13 @@ $ ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-de
 
 The last line in optool and ios-deploy creates a symbolic link and makes the executable available system-wide.
 
+Reload your shell, so the new commands are also available:
+
+```
+zsh: # . ~/.zshrc
+bash: # . ~/.bashrc
+```
+
 To follow the examples below, you also need FridaGadget.dylib:
 
 ```
