@@ -91,7 +91,7 @@ We will cover details related to input sources and potentially vulnerable APIs f
 
 In most other cases, vulnerabilities can be prevented by following programming best practices, such as:
 
-- Always be type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
+- Always type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
 - Use prepared statements with variable binding (i.e. parameterized queries) when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
 - When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
 
