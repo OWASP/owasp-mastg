@@ -37,7 +37,7 @@ For digital content - create shorter pages that are cross-linked. If your conten
 
 ### Audience
 
-Write for an international audience with a *basic* level of technical understanding i.e. they have a mobile phone and know how to install an app.
+Write for an international audience with a *basic* level of technical understanding i.e. they have a mobile phone and know how to install an app. Avoid hard-to-translate slang words/phrases to ensure content is accessible to readers who aren't native English speakers.
 
 ### Context and orientation
 
@@ -113,6 +113,28 @@ This is a list of words/abbrevations that are used inconsistent at the moment in
 
 - man-in-the-middle attack (MITM)
 
+### Contractions
+
+Use the following common contractions:
+
+are not -> aren't  
+cannot -> can't  
+could not -> couldn't  
+did not -> didn't  
+do not -> don't  
+does not -> doesn't  
+has not -> hasn't  
+had not -> hadn't  
+have not -> haven't  
+that is -> that's  
+there is -> there's  
+was not -> wasn't  
+were not -> weren't  
+will not -> wont  
+would not -> wouldn't  
+you are -> you're  
+you have -> you've  
+you will -> you'll  
 
 ## 3. External References
 
@@ -175,9 +197,17 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 - *iOS Data Protection Key Hierarchy*
 ```
 
-## Lowercase or capital letter after a colon
+## Punctuation conventions
+
+**Lowercase or capital letter after a colon**
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
+
+**Serial comma use**
+
+Use a serial comma before "and" for the last item in a run-in list of items. For example:
+
+We bought apples, oranges, and tomatoes from the store.
 
 
 ## Comments
