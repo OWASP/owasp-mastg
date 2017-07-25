@@ -124,6 +124,9 @@ Developers should take care to secure sensitive IPC components with the `signatu
 
 #### References
 
+- [#JeffSix] - Jeff Six, An In-Depth Introduction to
+the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
+
 ##### OWASP Mobile Top 10 2016
 
 -	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
@@ -135,11 +138,6 @@ Developers should take care to secure sensitive IPC components with the `signatu
 ##### CWE
 
 -	CWE-250 - Execution with Unnecessary Privileges
-
-##### Info
-
-- [#JeffSix] - Jeff Six, An In-Depth Introduction to
-the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
 
 ##### Tools
 

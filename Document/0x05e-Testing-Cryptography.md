@@ -222,6 +222,8 @@ public static void main (String args[]) {
 
 #### References
 
+- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
+
 ##### OWASP MASVS
 - V3.6: "All random values are generated using a sufficiently secure random number generator."
 
@@ -230,6 +232,3 @@ public static void main (String args[]) {
 
 ##### CWE
 - CWE-330: Use of Insufficiently Random Values
-
-##### Info
-- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
