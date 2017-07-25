@@ -1,6 +1,6 @@
-## Testing Authentication with the Backend
+## Testing Authentication with the Back end
 
-Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the backend service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
+Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the back-end service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
 In most cases, you'll find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so once a user logs in, some means is needed to associate subsequent HTTP request with that user - otherwise, the user's credentials would have to be sent with every request. Also, server and client need to keep track of data associated with the user (e.g. the user's privileges or role). This is can be done in two different ways:
 
@@ -23,7 +23,7 @@ Authentication and authorization problems are a prevalent type of security vulne
 
 #### Authentication Bypass
 
-When processing requests from the mobile client, the backend service must consistently enforce authorization checks. This involves verifying that the user is logged in and that they are authorized every time a resource is requested. Authentication bypass vulnerabilities exist if authentication state is not consistently enforced on the server, or if the state can be tampered with by the client.
+When processing requests from the mobile client, the back-end service must consistently enforce authorization checks. This involves verifying that the user is logged in and that they are authorized every time a resource is requested. Authentication bypass vulnerabilities exist if authentication state is not consistently enforced on the server, or if the state can be tampered with by the client.
 
 Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through an URL, and the authentication state is passed through a GET parameter:
 
@@ -31,7 +31,7 @@ Consider the following example from the [OWASP Web Testing Guide](https://www.ow
 http://www.site.com/page.asp?authenticated=no
 ```
 
-The GET parameters sent with the requrest can be changed arbitrarily by the client. Nothing prevents the client from simply changing the value of the <code>authenticated</code> parameter to "yes", effectively bypassing authentication. 
+The GET parameters sent with the request can be changed arbitrarily by the client. Nothing prevents the client from simply changing the value of the <code>authenticated</code> parameter to "yes", effectively bypassing authentication.
 
 While this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. The assumption is that these parameters can't be tampered with. As an example, consider the following [classical vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on a Cookie named "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access simply by setting the cookie value as follows:
 
@@ -39,7 +39,7 @@ While this is a simplistic example that you probably won't find in the wild, pro
 isAdmin=True
 ```
 
-Traditionally, security experts used to recommend using session-based authentication and maintaining session data only on the server-side. This prevents any form of client-side tampering with the session state. However, when stateless authentication is used instead of session-based authentication, the whole point is *not* to have any session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing. 
+Traditionally, security experts used to recommend using session-based authentication and maintaining session data only on the server-side. This prevents any form of client-side tampering with the session state. However, when stateless authentication is used instead of session-based authentication, the whole point is to *not* have any session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing.
 
 To prevent tampering with the client-side token, cryptographic signatures are added. Of course, there is some potential here for things to go wrong, and popular implementations of stateless authentication have suffered from vulnerabilities. For example, in some implementations of JWT it was possible to deactivate signature verification by [setting the signature type to "None"](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
@@ -55,11 +55,11 @@ There is no one-size-fits-all when it comes to authentication. The first thing y
 - Something the user has (SIM card, one-time password generator, or hardware token)
 - A biometric property of the user (fingerprint, retina, voice)
 
-Mobile apps combine one or more authentication mechanisms based on the sensitivity of the functions or resources accessed. 
+Mobile apps combine one or more authentication mechanisms based on the sensitivity of the functions or resources accessed.
 
-Refer to industry best practices as the basis for your review. For apps that have user login, but aren't considered highly sensitive (say, a social app), username/password authentication (combined with a reasonable password policy) is general considered sufficient. For example, this form of authentication is used by most social apps. 
+Refer to industry best practices as the basis for your review. For apps that have user login, but aren't considered highly sensitive, username/password authentication (combined with a reasonable password policy) is general considered sufficient. This form of authentication is used by most social apps, for example.
 
-For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, there apps must also comply to certain standards. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US healthcare sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
+For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, these apps must also comply to certain standards. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US health care sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
 
 You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following requirements pertaining to authentication:
 
@@ -72,13 +72,13 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 
-Besides verifying that appropriate authentication is used, you should also verify that API endpoints consistently authorize incoming requests, i.e. that sensitive and/or user-specific resources and functions can only be accessed with a valid session ID or access token. 
+Besides verifying that appropriate authentication is used, you should also verify that API endpoints consistently authorize incoming requests, i.e. that sensitive and/or user-specific resources and functions can only be accessed with a valid session ID or access token.
 
 #### Static Analysis
 
-For a static analysis of the authentication logic you need access to the source code of the backend service. Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints.
+For a static analysis of the authentication logic you need access to the source code of the back-end service. Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints.
 
-A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters. 
+A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
 #### Dynamic Analysis
 
@@ -88,7 +88,7 @@ Enumerate privileged endpoints by using the app and monitoring requests in your 
 
 For every endpoint that needs to be protected, implement a mechanism that checks the session ID or token of the user. If a session ID or token exists, make sure that it is valid and that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, reject the request and do not allow the user to access the endpoint.
 
-Authorization must always be performed in server side code and should never rely on client-side controls only. 
+Authorization must always be performed in server side code and should never rely on client-side controls only.
 
 Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
 
@@ -116,11 +116,11 @@ Ideally, authentication mechanisms shouldn't be implemented from scratch but bui
 
 #### Overview
 
-Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. Password length, password complexity and password topologies should properly be included in the password policy. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
+Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. A password policy typically specifies password length, password complexity and password topologies. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
 
 #### Static Analysis
 
-Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process. 
+Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process.
 
 Verify that a password policy exists and that passwords are required to be sufficiently complex. Identify all related functions in the source code, and make sure that a common verification check is applied. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
@@ -191,7 +191,7 @@ A good password policy should define the following [requirements](https://www.ow
 
 **Password Complexity**
 
-- Password must meet at least three out of the following four complexity rules
+The password must meet at least three out of the following four complexity rules
 
 1. at least one uppercase character (A-Z)
 2. at least one lowercase character (a-z)
@@ -219,23 +219,23 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 
 #### Overview
 
-Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try and guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize wordlists and smart rulesets to automatically generate the required requests.
+Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try to guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize word lists and smart rule sets to automatically generate the required requests.
 
 The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
 
 #### Static Analysis
 
-Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a username within a short timeframe, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
+Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a username within a short time frame, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
 
 #### Dynamic Analysis
 
-Attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your logon should be rejected when the correct credentials are entered.
+Attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your login should be rejected when the correct credentials are entered.
 
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
 
 1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
-2.  Once you have locked out the account, enter the correct logon details to verify if login is not possible anymore.
-If this is correctly implemented logon should be denied when the right password is entered, as the account has already been blocked.
+2.  Once you have locked out the account, enter the correct login details to verify that login is not possible anymore.
+If this is correctly implemented, login should be denied when the right password is entered, as the account has already been blocked.
 
 #### Remediation
 
@@ -243,7 +243,7 @@ Lockout controls have to be implemented on server side to prevent brute force at
 
 It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
 
-Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAS. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
+Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAs. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
 
 #### References
 
@@ -269,13 +269,13 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 
 #### Overview
 
-Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically the first factor might be credentials (username/password), followed by a second factor which could be an One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
+Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically, the first factor might be credentials (username/password), followed by a second factor which could be a One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
 
 - Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
 - Something you know: this can be a secret only known to the user like a password.
-- Something you are: this can be biometric characteristics that identify the users like TouchID.
+- Something you are: this can be biometric characteristics that identify the users like Touch ID.
 
-Applications that offer access to sensitive data or critical functions, might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. TouchID) into a banking app, a user might need to do a so called "Step-up Authentication" again through OTP in order to execute a bank transfer.
+Applications that offer access to sensitive data or critical functions might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. Touch ID) into a banking app, a user might need to do a so called "step-up authentication" through OTP in order to execute a bank transfer.
 
 A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
 
@@ -303,7 +303,7 @@ First, all privileged endpoints a user can only access with step-up authenticati
 
 The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
 
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
 
 #### Remediation
 
@@ -360,7 +360,7 @@ When server source code is available, the tester should look for the place where
 
 #### Dynamic Analysis
 
-A best practice is to crawl the application first, either manually or with an automated tool. The goal is to check if all parts of the application leading to privileged information or actions are protected and a valid session ID is required or not.
+Crawl the application first, either manually or with an automated tool. The goal is to check if all parts of the application leading to privileged information or actions are protected and a valid session ID is required or not.
 
 Then, you can use the crawled requests within any intercepting proxy to try to manipulate session IDs:
 
@@ -370,7 +370,7 @@ Then, you can use the crawled requests within any intercepting proxy to try to m
 - when changing privilege level (step-up authentication). Try to use the former one (hence with a lower authorization level) to access the privileged part of the application.
 - by trying to re-use a session ID after logging out.
 
-Also the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more session management test cases.
+Also, the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more session management test cases.
 
 #### Remediation
 
@@ -443,7 +443,7 @@ JWT implementations are available for all major programming languages, like [PHP
 
 ###### NONE Hashing Algorithm
 
-This attack, described here occur when a attacker alter the token and change the hashing algorithm to indicate, through, the none keyword, that the integrity of the token has already been verified. As explained in the link above some libraries treated tokens signed with the none algorithm as a valid token with a verified signature, so an attacker can alter the token claims and they will be trusted by the application.
+The attack described here occurs when an attacker alters the token and changes the hashing algorithm to indicate that the integrity of the token has already been verified, by using the "none" keyword. As explained in the link above some libraries treated tokens signed with the none algorithm as a valid token with a verified signature, so an attacker can alter the token claims and they will be trusted by the application.
 
 
 
@@ -460,7 +460,7 @@ private transient byte[] keyHMAC = ...;
 
 JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 
-//Verify the token, if the verification fail then a exception is thrown
+//Verify the token, if the verification fail then an exception is thrown
 
 DecodedJWT decodedToken = verifier.verify(token);
 
@@ -537,7 +537,7 @@ OAuth 2.0 defines four roles:
 - Resource Server: hosts the user accounts.
 - Authorization Server: verifies the identity of the user and issues access tokens to the application.
 
-Note: The API fulfills both the resource and authorization server roles. Therefore we will refer to both as the API.
+Note: The API fulfills both the resource and authorization server roles. Therefore, we will refer to both as the API.
 
 <img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
 
@@ -559,7 +559,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 User-agent:
 
 - Use an external user-agent (the browser) instead of an embedded user-agent (e.g. WebView or internal client user interface) to prevent End-User Credentials Phishing (e.g. you do not want an app offering you a "Login with Facebook" to get your Facebook password). However, by using the browser, the app relies on the OS Keychain for server trust. This way it will not be possible to implement certificate pinning. A solution for this would be to restrict the embedded user-agent to only the relevant domain.
-- The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, web site mechanisms).
+- The user should have a way to verify visual trust mechanisms (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
 - The client should validate the fully qualified domain name of the server to the public key presented by the server during connection establishment to prevent man-in-the-middle attacks.
 
 Type of grant:
@@ -616,7 +616,7 @@ For additional best practices and detailed information please refer to the sourc
 
 Reducing the lifetime of session identifiers and tokens to a minimum decreases the likelihood of a successful account hijacking attack. The scope for this test case is to validate that the application has a logout functionality and it effectively terminates the session on client and server side or invalidates a stateless token.
 
-One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker get’s in possession of valid authentication information he can continue using it and hijack a user account.
+One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
 
 ##### Static Analysis 
 
@@ -662,15 +662,15 @@ Many mobile apps do not automatically logout a user, because of customer conveni
 
 #### Overview
 
-In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, the a stateless access tokens is stored that never times out. This results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session. 
+In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, a stateless access tokens is stored that never times out. This results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session.
 
-Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period of time. 
+Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period.
 
 #### Static Analysis
 
-Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the backend source code.   
+Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
 
-In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the backend does not accepted expired tokens for processing.
+In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
 
 Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
 
@@ -704,7 +704,7 @@ The check needed here will be different depending on the technology used. Here a
 
 #### Dynamic Analysis
 
-Dynamic analysis is an efficient option, as it is easy to validate if the session timeout is working or not at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application idle for the period of time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
+Dynamic analysis is an efficient option, as it is easy to validate whether the session timeout is working at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application idle for the time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
 
 The following steps can be applied to check if the session timeout is implemented properly.  
 1. Log into the application.
