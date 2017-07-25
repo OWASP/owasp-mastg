@@ -6,15 +6,21 @@ During local authentication, an app authenticates the user against credentials s
 
 #### Overview
 
+<<<<<<< HEAD
 On iOS, two methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication API Reference") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain Services](https://developer.apple.com/library/content/samplecode/KeychainTouchID/Introduction/Intro.html "") for implementing local authentication.
 
 The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function <code>evaluatePolicy</code> of the <code>LAContext</code> class.
+=======
+On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication) provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html) for implementing local authentication.
+
+The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt with the function <code>evaluatePolicy</code> of the <code>LAContext</code> class.
+>>>>>>> 4a5eebe508588938469d1de36ed7a733599c2329
 
 Two available policies define acceptable forms of authentication:
 
-- LAPolicyDeviceOwnerAuthentication: When available, the user is prompted to perform TouchID authentication. If TouchID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
+- LAPolicyDeviceOwnerAuthentication: when available, the user is prompted to perform Touch ID authentication. If Touch ID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
 
-- LAPolicyDeviceOwnerAuthenticationWithBiometrics: Authentication is restricted to biometrics where user the is prompted for TouchID.
+- LAPolicyDeviceOwnerAuthenticationWithBiometrics: authentication is restricted to biometrics where the user is prompted for Touch ID.
 
 The <code>evaluatePolicy</code> function returns a boolean value indicating whether the user has authenticated successfully.
 
@@ -36,10 +42,10 @@ if #available(iOS 8.0, OSX 10.12, *) {
         // Could not evaluate policy; look at authError and present an appropriate message to user
     }
 } else {
-    // Fallback on earlier versions
+    // Fall back on earlier versions
 }
 ```
-*TouchID authentication using the Local Authentication Framework (official code sample from Apple).*
+*Touch ID authentication using the Local Authentication Framework (official code sample from Apple).*
 
 #####  Using Keychain Services for Local Authentication
 
@@ -54,14 +60,14 @@ The Keychain mechanism is explained in greater detail in an earlier chapter, "Te
 Biometric authentication on iOS is represented by the Touch ID fingerprint sensing system. Touch ID sensor is operated by the SecureEnclave<sup>[1]</sup> security coprocessor and do not expose fingerprint data to any other parts of the system. With Touch ID set up, password is required only in certain cases (after 5 unsuccessful attempts, if device has been rebooted or was not unlocked in last 48 hours, etc), which encourages the user to set longer and more complex passwords<sup>[2]</sup>.
 
 Third-party apps have two ways to incorporate system-provided Touch ID authentication:
-- `LocalAuthentication.framework`<sup>[3]</sup> is a higher level API that can be used to authenticate user via Touch ID. The app can’t access any data associated with the enrolled fingerprint and is notified only whether authentication passed successfully or not. Altho authentication is managed by system, make that your code is written in a hard-to-bypass way.
-- `Security.framework`<sup>[4]</sup> is a lower level API to access Keychain Services. When saving the item to Keychain, `SecAccessControlCreateFlags` can be included into request to define when the item can be retrieved back: after `.devicePasscode` (`kSecAccessControlDevicePasscode`) will be entered, authentication via `.touchIDAny` (`kSecAccessControlTouchIDAny`) passed, `.userPresence` (`kSecAccessControlUserPresence`) verified via TouchID with possible fallback to device passcode, etc. This is a perfect option if your app needs to associate some secret data with biometric authentication, since access control is managed on a system-level and can not be bypassed to get stored data. `Security.framework` has C API, but there are dozens of open source wrappers making access to Keychain as simple as to NSUserDefaults<sup>[5]</sup>. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
+- `LocalAuthentication.framework`<sup>[3]</sup> is a higher level API that can be used to authenticate the user via Touch ID. The app can't access any data associated with the enrolled fingerprint and is notified only whether authentication was successful. Although authentication is managed by the system, make sure that your code hard to bypass.
+- `Security.framework`<sup>[4]</sup> is a lower level API to access Keychain Services. When saving the item to Keychain, `SecAccessControlCreateFlags` can be included into request to define when the item can be retrieved back: after `.devicePasscode` (`kSecAccessControlDevicePasscode`) will be entered, authentication via `.touchIDAny` (`kSecAccessControlTouchIDAny`) passed, `.userPresence` (`kSecAccessControlUserPresence`) verified via Touch ID with possible fallback to device passcode, etc. This is a perfect option if your app needs to associate some secret data with biometric authentication, since access control is managed on a system-level and can not be bypassed to get stored data. `Security.framework` has C API, but there are dozens of open source wrappers making access to Keychain as simple as to NSUserDefaults<sup>[5]</sup>. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
 
 #### Static Analysis
 
 It is important to remember that Local Authentication framework is an event-based procedure and as such, should not the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
 
-When testing local authentication on iOS, ensure sensitive flows are protected using the Keychain services method. For example, some apps resume an existing user session with TouchID authentication. In these cases, session credentials or tokens (e.g. refresh tokens) should be securely stored in the Keychain (as described above) as well as "locked" with local authentication.
+When testing local authentication on iOS, ensure sensitive flows are protected using the Keychain services method. For example, some apps resume an existing user session with Touch ID authentication. In these cases, session credentials or tokens (e.g. refresh tokens) should be securely stored in the Keychain (as described above) as well as "locked" with local authentication.
 
 
 ##### LocalAuthentication.framework
@@ -70,7 +76,14 @@ From developer's point of view, work with `LocalAuthentication.framework` is pre
 	- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C) - using Touch ID or the device password
 	- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C) - use Touch ID only
 
-Appropriate error will be returned to completion handler in following cases: authentication failed, user cancelled authentication, user have chosen fallback, system cancelled authentication, passcode is not set on device, TouchID is not available, TouchID is not enrolled.
+An appropriate error will be returned to the completion handler in the following cases:
+    - the authentication failed,
+    - the user canceled authentication,
+    - the user has chosen fallback,
+    - the system canceled authentication,
+    - a passcode is not set on the device,
+    - Touch ID is not available,
+    - Touch ID is not enrolled.
 
 ###### Swift
 ```
@@ -111,9 +124,8 @@ if ([myContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 ```
 
 ##### Security.framework
-Keychain allows to save items with special SecAccessControl attribute, which will allow to get item from Keychain only after user will pass Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
 
-
+The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user will pass Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
 
 In following example we will save "S00p3r_haCk3r_strong_password" string to Keychain which can be accessed only on current device while passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) after Touch ID authentication for currently enrolled fingers only (`.touchIDCurrentSet parameter`):
 ###### Swift
@@ -233,9 +245,9 @@ If `LocalAuhentication.framework` was used in app, output will contain both of f
 
 #### Dynamic Analysis
 
-On a running app usage of TouchID authentication is quite obvious: at appropriate moment system-style alert asks user to put her finger on sensor or fallback to password (if allowed):
-![TouchID authentication UI](/Images/Chapters/0x6f/biometric_auth_try_again.jpg)
-![TouchID authentication UI with fallback to passcode](/Images/Chapters/0x6f/biometric_auth_try_again.jpg)
+On a running app usage of Touch ID authentication is quite obvious: at appropriate moment system-style alert asks user to put her finger on sensor or fall back to password (if allowed):
+![Touch ID authentication UI](/Images/Chapters/0x6f/biometric_auth_try_again.jpg)
+![Touch ID authentication UI with fallback to passcode](/Images/Chapters/0x6f/biometric_auth_try_again.jpg)
 
 On a jailbroken device contents of Keychain can be dumped and items' parameters inspected.
 -- TODO [Will items saved via `Security.framework` Access Control API have any specific parameter in Keychain db?]
@@ -246,7 +258,7 @@ If a potential local authentication bypass issue is discovered, it is likely exp
 
 #### Remediation
 
-The Local Authentication framework makes adding either TouchID or similar authentication a simple procedure. More sensitive processes, such as re-authenticating a user using a remote payment service with this method, is strongly discouraged. Instead, the best approach for handling local authentication in these scenarios involves utilizing Keychain to store a user secret (e.g. refresh token). This may be accomplished as follows:
+The Local Authentication framework makes adding either Touch ID or similar authentication a simple procedure. More sensitive processes, such as re-authenticating a user using a remote payment service with this method, is strongly discouraged. Instead, the best approach for handling local authentication in these scenarios involves utilizing Keychain to store a user secret (e.g. refresh token). This may be accomplished as follows:
 
 - Use the <code>SecAccessControlCreateWithFlags()</code> to call a security access control reference. Specify the <code>kSecAccessControlUserPresence</code> policy and <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> protection class.
 
