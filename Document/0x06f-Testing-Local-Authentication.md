@@ -8,7 +8,7 @@ During local authentication, an app authenticates the user against credentials s
 
 On iOS, several methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain ](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/iPhoneTasks/iPhoneTasks.html "KeyChain") for implementing local authentication.
 
-Biometric authentication on iOS is represented by the Touch ID fingerprint sensing system. The Touch ID sensor is operated by the [SecureEnclave security coprocessor](Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang - http://mista.nu/research/sep-paper.pdf "") and does not expose fingerprint data to any other parts of the system. With activated Touch ID a password is required only in certain cases (after 5 unsuccessful attempts, if the device has been rebooted or was not unlocked in last 48 hours, etc), which should encourage the user to [set longer and more complex passwords](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Touch ID and passcodes").
+Biometric authentication on iOS is represented by the Touch ID fingerprint sensing system. The Touch ID sensor is operated by the [SecureEnclave security coprocessor](http://mista.nu/research/sep-paper.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system. With activated Touch ID a password is required only in certain cases (after 5 unsuccessful attempts, if the device has been rebooted or was not unlocked in last 48 hours, etc), which should encourage the user to [set longer and more complex passwords](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Touch ID and passcodes").
 
 Third-party apps have two ways to incorporate system-provided Touch ID authentication:
 - `LocalAuthentication.framework` is a higher level API that can be used to authenticate the user via Touch ID. The app can't access any data associated with the enrolled fingerprint and is notified only whether authentication was successful.
@@ -32,7 +32,7 @@ An [example for Touch ID authentication using the Local Authentication Framework
 
 The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data stored in the Keychain to identify the user. In order to authenticate a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. A sample implementation can be found in the [official Apple documentation](https://developer.apple.com/library/content/samplecode/KeychainTouchID/Introduction/Intro.html "KeychainTouchID: Using Touch ID with Keychain and LocalAuthentication").
 
-The Keychain mechanism is explained in greater detail in an earlier chapter, "Testing Data Storage".
+The Keychain mechanism is explained in greater detail in the chapter "Testing Data Storage".
 
 #### Static Analysis
 
