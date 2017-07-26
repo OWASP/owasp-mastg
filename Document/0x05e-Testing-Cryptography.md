@@ -257,14 +257,17 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
     byte[] salt = new byte[saltLength];
     randomb.nextBytes(salt);
     
-    KeySpec keySpec =new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
+    KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
     SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
     byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
-    return new SecretKeySpec(keyBytes, "AES");   
+    return new SecretKeySpec(keyBytes, "AES");
 }
 ```
+The above method requires a character array containing the password and the needed keylength in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10000 rounds which will be used by the PBKDFv2 algorithm. This significantly increases the workload for a bruteforce attack. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the ```SecureRandom``` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Storing the salt does not need any additional security measures, this can be publicly stored in the ```SharedPreferences``` without the need of any encryption. Afterwards the Password-based Encryption (PBE) key is generated using the recommended ```PBKDF2WithHmacSHA1``` algorithm.
 
 Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API]("Android KeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the KeyStore is hardware-backed. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
+
+However, be aware that the ```KeyStore``` API has been changed significantly throughout various versions of Android. In earlier versions the ```KeyStore``` API only supported storing public\private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the ```KeyStore```. The encrypted symmetric key can now be safely stored in the ```SharedPreferences```. Whenever we need the symmetric key, the application retrieves the private key from the ```KeyStore``` and decrypts the symmetric key.
 
 A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html"Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE, the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys. 
 
