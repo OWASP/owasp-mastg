@@ -776,7 +776,7 @@ Once sensitive functions are identified, like decryption of data, the investigat
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
 
-It is possible to dump the process memory of the app with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump") on a non-jailbroken device. To take advantage of this the iOS app need to be repackaged with FridaGadget.dylib and re-signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
+It is possible to dump the process memory of the app with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump") on a non-jailbroken device. To take advantage of this the iOS app need to be repackaged with FridaGadget.dylib and re-signed. A detailed explanation on how to do this is in the section "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
 
 ##### Objection (No Jailbreak needed)
 
@@ -878,7 +878,7 @@ Progress: [##################################################] 100.0% Complete
 Finished! Press Ctrl+C
 ```
 
-When you add the flag `-s` all strings are extracted from the dumped raw memory files into the file `strings.txt` and is stored in the directory `dump` of Fridump. 
+When you add the flag `-s` all strings are extracted from the dumped raw memory files into the file `strings.txt` and is stored in the directory `dump` of Fridump.
 
 
 ##### Needle (Jailbreak needed)
@@ -909,7 +909,6 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 - [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
 - [objection](https://github.com/sensepost/objection "objection")
-- [Needle](https://github.com/mwrlabs/needle/ "Needle")
 
 
 ### Testing the Device-Access-Security Policy
