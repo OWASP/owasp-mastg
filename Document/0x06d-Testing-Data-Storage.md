@@ -761,16 +761,53 @@ This will cause the background image to be set to the "overlayImage.png" instead
 ### Testing for Sensitive Data in Memory
 
 #### Overview
+Analyzing memory can help developers to identify root causes of several problems, such as application crashes. However, it can also be used to gain access to sensitive data. This section describes how to check for disclosure of data within the process' memory.
 
-Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
+First, you need to identify which sensitive information is stored in memory. Basically, if you have a sensitive asset it's very likely that at some point it is loaded in memory. The objective is to verify that this info is exposed as briefly as possible.
 
-To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile app is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
-Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
+To be able to investigate the memory of an application a memory dump needs to be created first. Alternatively it can be analyzed in real-time, e.g. over a debugger. No matter the approach, this is a very error prone process from a verification point of view, as what you will get in a certain dump is the data left by the functions that were executed. You might miss executing critical scenarios. Additionally, unless you know the footprint of the data you are looking for (either the exact value, or its format), it is quite easy not to identify it during analysis. For example, if the app performs encryption based on a randomly generated symmetric key, unless you get to know the value of the key by other means, it is very unlikely that you will be able to spot it in memory.
+
+Therefore you are better off starting with static analysis.
 
 #### Static Analysis
 
--- ToDo
+Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where certain data might be exposed. For example, sensitive data received from a backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
 
+Additionally, understanding application's architecture and its role in the overall system will help you identify sensitive information that does not have to be exposed in memory at all. For example, assume your app receives some data from one server and transfers it to another without the need of any additional computation over it. Then that data can be received and handled encrypted, which prevents exposure in memory.
+
+However, if sensitive data does need to be exposed in memory, then you should make sure your app is designed in a way that exposes this data as briefly as possible, with as fewer copies as possible. In other words, you want a centralized handling of sensitive data (as few components as possible), based on primitive and mutable data structures.
+
+The reason for the later requirement is that it enables developers direct access to memory. You should verify that this access is then used to overwrite the sensitive data with dummy data (typically with zeroes). Examples of preferable data types would include `char []` and `int []`, but not `NSString` and `String`. Whenever you try to modify an immutable object like `String` you actually create a copy and apply the change on it.
+
+_Swift_ data types, other than collections should strictly be avoided, regardless of whether they are considered mutable or not. Many data types in _Swift_ hold their data by value, not reference. While for simple types like `char` or `int` this allows us to modify their actual memory, having a complex type like `String` handled by value implies a hidden layer of objects, structures, or primitive arrays whose memory can not be directly accessed and modified. Certain usage may appear, and even be documented, to result in mutable data object, but it actually results in a mutable identifier (variable) as opposite to an immutable identifier (constant). For example, many consider the following to result in a mutable `String` in _Swift_, but actually it is an example of a variable whose complex value can be changed (replaced, not modified in place):
+
+```swift
+var str1 = "Goodby"              // "Goodby", base adress:             0x0001039e8dd0
+str1.append(" ")                 // "Goodby ", base adress:            0x608000064ae0
+str1.append("cruel world!")      // "Goodby cruel world", base adress: 0x6080000338a0
+str1.removeAll()                 // "", base adress                    0x00010bd66180
+```
+
+Notice how the base address of the underlying value changes with each modification. The problem here is that in order to securely erase the sensitive information from memory we don't want to simply change the value of the variable, but the actual content of the memory that the current value uses. _Swift_ does not offer such API.
+
+_Swift_ collections (`Array`, `Set` and `Dictionary`), on another hand, might be acceptable as long as they collect primitive data types such as `char` or `int` and are defined as mutable (variables instead of constants), in which case they are more or less equivalent to a primitive array (like `char []`). Still, these collections provide safe memory management, which can result in unidentified copies of the sensitive data in memory, in case the collection needs to copy the underlying buffer to a different location in order to extend it.
+
+Usage of _Objective-C_ mutable data types, such as `NSMutableString` might also be acceptable, but suffer from the same "safe memory" issue as _Swift_ collections. Additionally, attention should be payed when using _Objective-C_ collections as they hold data by reference and only _Objective-C_ data types are allowed. Therefore, we are not looking for a mutable collection, but a collection that references mutable objects.
+
+As we've seen so far usage of _Swift_ or _Objective-C_ data types require deep understanding of the language implementation itself. Further, we have witnessed some core re-factoring between mayor _Swift_ versions, resulting in incompatible behavior of many data types. In order to avoid these issues we recommend usage of primitive data types whenever certain data needs to be securely erased from memory.
+
+Unfortunately, not many libraries and frameworks are designed to allow overwriting of sensitive data. Even Apple does not consider this issue in the official API of the iOS SDK. For example, most of the APIs for data transformation (passers, serializes, etc.) operate on non-primitive data types. Similarly, regardless of weather you flag certain `UITextField` as _Secure Text Entry_ or not, it always return data as `String` or `NSString`.
+
+To summarize, when performing static analysis for sensitive data exposed in memory, you should:
+- Try to identify application components and make a map of where certain data is used.
+- Verify that sensitive data is handled in as few components as possible.
+- Verify that object references are properly removed, once the object containing sensitive data is no longer needed.
+- For highly sensitive information, verify data is overwritten as soon as it is no longer needed.
+  - Such data must not be passed over immutable data types such as `String` or `NSString`.
+  - Non-primitive data types are in general indicative and should be avoided.
+  - Overwriting should be done before removing references.
+  - Pay attention to third-party components (libraries and frameworks).
+    Good indicator is their public API. Is the sensitive data passing the public API handled as proposed in this chapter ? 
 
 #### Dynamic Analysis
 
