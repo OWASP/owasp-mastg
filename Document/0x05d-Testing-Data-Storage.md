@@ -482,20 +482,23 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 #### References
 
+- [#nolan] Bulletproof Android, Godfrey Nolan - Chapter 7, Third-Party Library Integration
+
 ##### OWASP Mobile Top 10 2016
+
 - M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 - M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
 
 ##### OWASP MASVS
+
 - V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 
 ##### CWE
+
 - CWE-359 - Exposure of Private Information ('Privacy Violation')
 
-##### Info
-- [#nolan] Bulletproof Android, Godfrey Nolan - Chapter 7, Third-Party Library Integration
-
 ##### Tools
+
 - Burp Suite Professional - https://portswigger.net/burp/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 

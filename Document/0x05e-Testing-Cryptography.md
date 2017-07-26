@@ -222,6 +222,8 @@ public static void main (String args[]) {
 
 #### References
 
+- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
+
 ##### OWASP MASVS
 - V3.6: "All random values are generated using a sufficiently secure random number generator."
 
@@ -230,9 +232,6 @@ public static void main (String args[]) {
 
 ##### CWE
 - CWE-330: Use of Insufficiently Random Values
-
-##### Info
-- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
 
 ### Testing Key Management
@@ -305,13 +304,14 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 #### References
 
 ##### OWASP MASVS
+
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - V3.5: "The app doesn't reuse the same cryptographic key for multiple purposes."
+
 ##### OWASP Mobile Top 10 2016
+
 - M6 - Broken Cryptography
 
 ##### CWE
-- CWE-321: Use of Hard-coded Cryptographic Key
 
-##### Info
-- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
+- CWE-321: Use of Hard-coded Cryptographic Key

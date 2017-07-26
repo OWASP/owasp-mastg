@@ -47,7 +47,7 @@ MacOS:
 /Users/<username>/Library/Android/sdk
 ```
 
-Note: On Linux, you'll need pick your own SDK location. Common locations are <code>/opt</code>, <code>/srv</code>, and <code>/usr/local</code>.
+Note: On Linux, you'll need to pick your own SDK location. Common locations are <code>/opt</code>, <code>/srv</code>, and <code>/usr/local</code>.
 
 #### Setting up the Android NDK
 
@@ -62,7 +62,7 @@ The Android NDK contains prebuilt versions of the native compiler and toolchain.
 |X86-64-based|x86_64-&lt;gcc-version&gt;|
 |MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
 
-In addition to the picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under <code>$NDK/platforms/</code>, each API-level directory contains subdirectories for the various CPUs and architectures.
+In addition to picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Available native APIs vary by Android API level. Possible sysroots for respective Android API levels reside under <code>$NDK/platforms/</code>, each API-level directory contains subdirectories for the various CPUs and architectures.
 
 One possibility to set up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier however, the NDK allows you to create a so-called standalone toolchain - a "temporary" toolchain that incorporates the required settings.
 
@@ -289,7 +289,7 @@ Note the declaration of <code>public native String stringFromJNI</code> at the b
 JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
 ```
 
-So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of this directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
+So where is the native implementation of this function? If you look into the <code>lib</code> directory of the APK archive, you'll see a total of eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library <code>libnative-lib.so</code>, compiled for the processor architecture in question. When <code>System.loadLibrary</code> is called, the loader selects the correct version based on what device the app is running on.
 
 <img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
@@ -304,7 +304,7 @@ This is the native function that gets eventually executed when the <code>stringF
 
 To disassemble the code, you can load <code>libnative-lib.so</code> into any disassembler that understands ELF binaries (i.e. every disassembler in existence). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as the disassembler knows how to deal with it. Each version is compiled from the same source and implements exactly the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
 
-To support both older and newer ARM processors, Android apps ship with multple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported:
+To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported:
 
 - armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set.
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
@@ -342,7 +342,7 @@ This instruction loads the pc-relative offset of the string "Hello from C++" int
 LDR.W  R2, [R2, #0x29C]
 ```
 
-This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks as follows:
+This instruction loads the function pointer from offset 0x29C into the JNI function pointer table into R2. This happens to be the <code>NewStringUTF</code> function. You can look at the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks as follows:
 
 ```
 jstring     (*NewStringUTF)(JNIEnv*, const char*);
@@ -386,7 +386,7 @@ Every debugger-enabled process runs an extra thread for handling JDWP protocol p
 
 When reverse engineering apps, you'll often only have access to the release build of the target app. Release builds are not meant to be debugged - after all, that's what *debug builds* are for. If the system property <code>ro.debuggable</code> set to "0", Android disallows both JDWP and native debugging of release builds, and although this is easy to bypass, you'll still likely encounter some limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool - being able to inspect the runtime state of a program makes it *a lot* easier to understand what's going on.
 
-To "convert" a release build release into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the altered APK archive.
+To "convert" a release build into a debuggable build, you need to modify a flag in the app's Manifest file. This modification breaks the code signature, so you'll also have to re-sign the altered APK archive.
 
 To do this, you first need a code signing certificate. If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in <code>$HOME/.android/debug.keystore</code>. The default password for this keystore is "android" and the key is named "androiddebugkey".
 
@@ -398,7 +398,7 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 With a certificate available, you can now repackage the app using the following steps. Note that the Android Studio build tools directory must be in path for this to work - it is located at <code>[SDK-Path]/build-tools/[version]</code>. The <code>zipalign</code> and <code>apksigner</code> tools are found in this directory. Repackage UnCrackable-Level1.apk as follows:
 
-1. Use apktool to unpack the app and decode AndroidManifest.xml:
+1. Use <code>apktool</code> to unpack the app and decode AndroidManifest.xml:
 
 ```bash
 $ apktool d --no-src UnCrackable-Level1.apk
@@ -409,6 +409,8 @@ $ apktool d --no-src UnCrackable-Level1.apk
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ```
+
+Note: You can also instruct <code>apktool</code> to automatically do this for you. To do this, use the <code>-d</code> or <code>--debug</code> flag while building the APK in order add <code>debuggable="true"</code> to the AndroidManifest file.
 
 3. Repackage and sign the APK.
 
@@ -469,7 +471,6 @@ We're now ready to attach JDB. Attaching the debugger however causes the app to 
 
 ```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
-
 Initializing jdb ...
 > All threads suspended.
 >
@@ -540,7 +541,7 @@ main[1] resume
 
 Repeat this process, setting <code>flag</code> to <code>true</code> each time the breakpoint is hit, until the alert box is finally displayed (the breakpoint will hit five or six times). The alert box should now be cancelable! Tap anywhere next to the box and it will close without terminating the app.
 
-Now that the anti-tampering is out of the way we're ready to extract the secret string! In the "static analysis" section, we saw that the string is decrypted using AES, and then compared with the string entered into the messagebox. The method <code>equals</code> of the <code>java.lang.String</code> class is used to compare the input string with the secret. Set a method breakpoint on <code>java.lang.String.equals</code>, enter any text into the edit field, and tap the "verify" button. Once the breakpoint hits, you can read the method argument with the using the <code>locals</code> command.
+Now that the anti-tampering is out of the way we're ready to extract the secret string! In the "static analysis" section, we saw that the string is decrypted using AES, and then compared with the string entered into the messagebox. The method <code>equals</code> of the <code>java.lang.String</code> class is used to compare the input string with the secret. Set a method breakpoint on <code>java.lang.String.equals</code>, enter any text into the edit field, and tap the "verify" button. Once the breakpoint hits, you can read the method argument by using the <code>locals</code> command.
 
 ```
 > stop in java.lang.String.equals
@@ -601,11 +602,11 @@ You can see the directory names inside the "Variables" window by stepping into t
 
 <img src="Images/Chapters/0x05c/step_over.png" width="700px" />
 
-Step into the <code>System.getenv</code> method call y using the "Force Step Into" functionality.
+Step into the <code>System.getenv</code> method using the "Force Step Into" functionality.
 
 After you get the colon separated directory names, the debugger cursor will return to the beginning of <code>a()</code> method; not to the next executable line. This is just because we are working on the decompiled code insted of the original source code. So it is crucial for the analyst to follow the code flow while debugging decompiled applications. Otherwise, it might get complicated to identify which line will be executed next.
 
-If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping eye on the return values of the core class functions.
+If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" button in the Debugger view. It might be a good approach to "Force Step Into" once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help you to speed up your debugging while keeping an eye on the return values of the core class functions.
 
 <img src="Images/Chapters/0x05c/step_out.png" width="700px" />
 
@@ -784,13 +785,13 @@ main[1] resume
 Method entered: All threads resumed.
 ```
 
-The Dalvik Debug Monitor Server (DDMS) a GUI tool included with Android Studio. At first glance it might not look like much, but make no mistake: Its Java method tracer is one of the most awesome tools you can have in your arsenal, and is indispensable for analyzing obfuscated bytecode.
+The Dalvik Debug Monitor Server (DDMS) is a GUI tool included with Android Studio. At first glance it might not look like much, but make no mistake: Its Java method tracer is one of the most awesome tools you can have in your arsenal, and is indispensable for analyzing obfuscated bytecode.
 
-Using DDMS is a bit confusing however: It can be launched in several ways, and different trace viewers will be launched depending on how the trace was obtained. There’s a standalone tool called "Traceview" as well as a built-in viewer in Android Studio, both of which offer different ways of navigating the trace. You’ll usually want to use the viewer built into Android studio which gives you a nice, zoom-able hierarchical timeline of all method calls. The standalone tool however is also useful, as it has a profile panel that shows the time spent in each method, as well as the parents and children of each method.
+Using DDMS is a bit confusing however: It can be launched in several ways, and different trace viewers will be launched depending on how the trace was obtained. There’s a standalone tool called "Traceview" as well as a built-in viewer in Android Studio, both of which offer different ways of navigating the trace. You’ll usually want to use the viewer built into Android Studio which gives you a nice, zoom-able hierarchical timeline of all method calls. The standalone tool however is also useful, as it has a profile panel that shows the time spent in each method, as well as the parents and children of each method.
 
-To record an execution trace in Android studio, open the "Android" tab at the bottom of the GUI. Select the target process in the list and the click the little “stop watch” button on the left. This starts the recording. Once you are done, click the same button to stop the recording. The integrated trace view will open showing the recorded trace. You can scroll and zoom the timeline view using the mouse or trackpad.
+To record an execution trace in Android Studio, open the "Android" tab at the bottom of the GUI. Select the target process in the list and then click the little “stop watch” button on the left. This starts the recording. Once you are done, click the same button to stop the recording. The integrated trace view will open showing the recorded trace. You can scroll and zoom the timeline view using the mouse or trackpad.
 
-Alternatively, execution traces can also be recorded in the standalone Android Device Monitor. The Device Monitor can be started from within Android Studo (Tools -> Android -> Android Device Monitor) or from the shell with the <code>ddms</code> command.
+Alternatively, execution traces can also be recorded in the standalone Android Device Monitor. The Device Monitor can be started from within Android Studio (Tools -> Android -> Android Device Monitor) or from the shell with the <code>ddms</code> command.
 
 To start recording tracing information, select the target process in the "Devices" tab and click the “Start Method Profiling” button. Click the stop button to stop recording, after which the Traceview tool will open showing the recorded trace. An interesting feature of the standalone tool is the "profile" panel on the bottom, which shows an overview of the time spent in each method, as well as each method’s parents and children. Clicking any of the methods in the profile panel highlights the selected method in the timeline panel.
 
@@ -802,7 +803,7 @@ Moving down a level in the OS hierarchy, we arrive at privileged functions that 
 
 Strace is a standard Linux utility that is used to monitor interaction between processes and the kernel. The utility is not included with Android by default, but can be easily built from source using the Android NDK. This gives us a very convenient way of monitoring system calls of a process. Strace however depends on the <code>ptrace()</code> system call to attach to the target process, so it only works up to the point that anti-debugging measures kick in.
 
-As a side note, if the Android "stop application at startup" feature is unavailable we can use a shell script to make sure that strace attached immediately once the process is launched (not an elegant solution but it works):
+As a side note, if the Android "stop application at startup" feature is unavailable we can use a shell script to make sure that strace will attach immediately once the process is launched (not an elegant solution but it works):
 
 ```bash
 $ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e “!read” -ff -p "$pid"; break; fi; done
@@ -818,7 +819,7 @@ Conveniently, ftrace functionality is found in the stock Android kernel on both 
 $ echo 1 > /proc/sys/kernel/ftrace_enabled
 ```
 
-The <code>/sys/kernel/debug/tracing</code> directory holds all control and output files and related to ftrace. The following files are found in this directory:
+The <code>/sys/kernel/debug/tracing</code> directory holds all control and output files related to ftrace. The following files are found in this directory:
 
 - available_tracers: This file lists the available tracers compiled into the kernel.
 - current_tracer: This file is used to set or display the current tracer.
@@ -844,7 +845,7 @@ $ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-
 
 Unfortunately, it is not possible to generate a complete guest instruction trace with QEMU, because code blocks are written to the log only at the time they are translated – not when they’re taken from the cache. For example, if a block is repeatedly executed in a loop, only the first iteration will be printed to the log. There’s no way to disable TB caching in QEMU (save for hacking the source code). Even so, the functionality is sufficient for basic tasks, such as reconstructing the disassembly of a natively executed cryptographic algorithm.
 
-Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to provide more complete tracing functionality. PANDA/PANDROID is your best if you’re going for a CPU-trace based analysis, as it allows you to easily record and replay a full trace, and is relatively easy to set up if you follow the build instructions for Ubuntu.
+Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU to provide more complete tracing functionality. PANDA/PANDROID is your best option if you’re going for a CPU-trace based analysis, as it allows you to easily record and replay a full trace, and is relatively easy to set up if you follow the build instructions for Ubuntu.
 
 ###### DroidScope
 
@@ -856,13 +857,14 @@ All of this makes it possible to build tracers that are practically transparent 
 
 ###### PANDA
 
-[PANDA](https://github.com/moyix/panda/blob/master/docs/) is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of some the target app (or some part of it) and then replays it over and over again, refining his analysis plugins with each iteration.
+[PANDA](https://github.com/moyix/panda/blob/master/docs/) is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered upon certain QEMU events. The twist PANDA adds is its record/replay feature. This allows for an iterative workflow: The reverse engineer records an execution trace of the target app (or some part of it) and then replays it over and over again, refining his or her analysis plugins with each iteration.
 
 PANDA comes with some pre-made plugins, such as a stringsearch tool and a syscall tracer. Most importantly, it also supports Android guests and some of the DroidScope code has even been ported over. Building and running PANDA for Android (“PANDROID”) is relatively straightforward. To test it, clone Moiyx’s git repository and build PANDA as follows:
 
 ~~~
 $ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android $ makee
+$ ./configure --target-list=arm-softmmu --enable-android
+$ make
 ~~~
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won’t boot. Also, the Java level introspection code only works on the specific Dalvik runtime of Android 2.3. Anyways, older versions of Android seem to run much faster in the emulator, so if you plan on using PANDA sticking with Gingerbread is probably best. For more information, check out the extensive documentation in the PANDA git repo.
@@ -880,13 +882,13 @@ First, we'll look at some simple ways of modifying and instrumenting mobile apps
 Making small changes to the app Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular pop up regularly:
 
 1. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest;
-2. You cannot intercept HTTPS traffic with a proxy because the app empoys SSL pinning.
+2. You cannot intercept HTTPS traffic with a proxy because the app employs SSL pinning.
 
 In most cases, both issues can be fixed by making minor changes and re-packaging and re-signing the app (the exception are apps that run additional integrity checks beyond default Android code signing - in these cases, you also have to patch out those additional checks as well).
 
 ##### Example: Disabling SSL Pinning
 
-Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. To help with this problem, the bytecode can be patched to deactivate SSL pinning. To demonstrate how Certificate Pinning can be bypassed, we will walk through the necessary steps to bypass Certificate Pinning implemented in an example application.
+Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. To help with this problem, the bytecode can be patched to deactivate SSL pinning. To demonstrate how certificate pinning can be bypassed, we will walk through the necessary steps to bypass certificate pinning implemented in an example application.
 
 The first step is to disassemble the APK with <code>apktool</code>:
 
@@ -898,7 +900,7 @@ You then need to locate the certificate pinning checks in the Smali source code.
 
 In our example, a search for "X509TrustManager" returns one class that implements a custom Trustmanager. The derived class implements methods named <code>checkClientTrusted</code>, <code>checkServerTrusted</code> and <code>getAcceptedIssuers</code>.
 
-Insert the <code>return-void</code> opcode was added to the first line of each of these methods to bypass execution. This causes each method to return immediately. With this modification, no certificate checks are performed, and the application will accept all certificates.
+Insert the <code>return-void</code> opcode to the first line of each of these methods to bypass execution. This causes each method to return immediately. With this modification, no certificate checks are performed, and the application will accept all certificates.
 
 ```smali
 .method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
@@ -952,9 +954,9 @@ public static boolean c() {
 }
 ```
 
-This method iterates through a list of directories, and returns "true" (device rooted) if the <code>su</code> binary is found in any of them. Checks like this are easy to deactivate - all you have to do is to replace the code with something that returns "false". Methok hooking using an Xposed module is one way to do this.
+This method iterates through a list of directories, and returns "true" (device rooted) if the <code>su</code> binary is found in any of them. Checks like this are easy to deactivate - all you have to do is to replace the code with something that returns "false". Method hooking using an Xposed module is one way to do this.
 
-This method  <code>XposedHelpers.findAndHookMethodfindAndHookMethod</code> allows you to override existing class methods. From the decompiled code, we know that the method performing the check is called <code>c()</code> and located in the class <code>com.example.a.b</code>. An Xposed module that overrides the function to always return "false" looks as follows.
+This method  <code>XposedHelpers.findAndHookMethodfindAndHookMethod</code> allows you to override existing class methods. From the decompiled code, we know that the method performing the check is called <code>c()</code> and is located in the class <code>com.example.a.b</code>. An Xposed module that overrides the function to always return "false" looks as follows:
 
 ```java
 package com.awesome.pentestcompany;
@@ -1084,7 +1086,7 @@ Java.perform(function () {
 });
 ~~~
 
-The script above calls Java.perform to make sure that our code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function outputs a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
+The script above calls `Java.perform` to make sure that our code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function outputs a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
 Frida also lets you search for instantiated objects on the heap and work with them. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
@@ -1192,9 +1194,9 @@ extends Activity {
 }
 ```
 
-Notice the `Root detected` message in the `onCreate` method and the various methods called in the `if`-statement before which perform the actual root checks. Also note the `This is unacceptable...` message from the first method of the class, `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener` callback set in the `setButton` method call which is responsible for closing the application via `System.exit(0)` after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
+Notice the `Root detected` message in the `onCreate` method and the various methods called in the `if`-statement before, which perform the actual root checks. Also note the `This is unacceptable...` message from the first method of the class `private void a`. Obviously, this is where the dialog box gets displayed. There is a `alertDialog.onClickListener` callback set in the `setButton` method call which is responsible for closing the application via `System.exit(0)` after successful root detection. Using Frida, we can prevent the app from exiting by hooking the callback.
 
-The onClickListener implementation for the dialog button doesn't to much:
+The `onClickListener` implementation for the dialog button doesn't do much:
 
 ```
 package sg.vantagepoint.uncrackable1;
@@ -1233,7 +1235,7 @@ setImmediate(function() { //prevent timeout
 })
 ```
 
-We wrap our code in a setImmediate function to prevent timeouts (you may or may not need this), then call Java.perform to make use of Frida’s methods for dealing with Java. Afterwards we retrieve a wrapper for the class that implements the `OnClickListener` interface and overwrite its `onClick` method. Unlike the original, our new version of `onClick` just writes some console output and *does not exit the app*. If we inject our version of this method via Frida, the app should not exit anymore when we click the `OK` button of the dialog.
+We wrap our code in a `setImmediate` function to prevent timeouts (you may or may not need this), then call `Java.perform` to make use of Frida’s methods for dealing with Java. Afterwards we retrieve a wrapper for the class that implements the `OnClickListener` interface and overwrite its `onClick` method. Unlike the original, our new version of `onClick` just writes some console output and *does not exit the app*. If we inject our version of this method via Frida, the app should not exit anymore when we click the `OK` button of the dialog.
 
 Save the above script as `uncrackable1.js` and load it:
 
@@ -1280,7 +1282,7 @@ public class a {
 }
 ```
 
-Notice the string.equals comparison at the end of the a method and the creation of the string `arrby2` in the `try` block above. `arrby2` is the return value of the function `sg.vantagepoint.a.a.a`. The `string.equals` comparison compares our input to `arrby2`. So what we are after is the return value of `sg.vantagepoint.a.a.a.`
+Notice the `string.equals` comparison at the end of the a method and the creation of the string `arrby2` in the `try` block above. `arrby2` is the return value of the function `sg.vantagepoint.a.a.a`. The `string.equals` comparison compares our input to `arrby2`. So what we are after is the return value of `sg.vantagepoint.a.a.a.`
 
 Instead of reversing the decryption routines to reconstruct the secret key, we can simply ignore all the decryption logic in the app and hook the `sg.vantagepoint.a.a.a` function to catch its return value.
 Here is the complete script that prevents the exiting on root and intercepts the decryption of the secret string:
@@ -1345,7 +1347,7 @@ In the remaining sections, we'll introduce a few advanced subjects including ker
 
 ### Binary Analysis Frameworks
 
-Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In the section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+Binary analysis frameworks provide you powerful ways of automating tasks that would be almost impossible to complete manually. In this section, we'll have a look at the Angr framework, a python framework for analyzing binaries that is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language, and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
 Our target program is a simple license key validation program. Granted, you won't usually find a license key validator like this in the wild, but it should be useful enough to demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries, precisely to make de-obfuscation more difficult).
 
