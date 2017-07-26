@@ -243,7 +243,26 @@ Symmetric cryptography provides confidentiality and integrity of data because it
 
 When testing an Android application on correct usage of cryptography it is thereby also important to make sure that key material is securely generated and stored. In this section we will discuss different ways to manage cryptographic keys and how to test for them. We discuss the most secure way, down to the less secure way of generating and storing key material.
 
-The most secure way of handling key material, is simply never storing them on the filesystem. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view, it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored. The encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDFv2). This cryptographic protocol is designed to generate secure and non brute-forceable keys.
+The most secure way of handling key material, is simply never storing them on the filesystem. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view, it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored. The encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDFv2). This cryptographic protocol is designed to generate secure and non brute-forceable keys. The code listing below illustrates how to generate a strong encryption key based on a password.
+
+```Java
+public static SecretKey generateStrongAESKey(char[] password, int keyLength)
+{
+    //Initiliaze objects and variables for later use
+    int iterationCount = 10000;
+    int saltLength     = keyLength / 8;
+    SecureRandom random = new SecureRandom();
+    
+    //Generate the salt
+    byte[] salt = new byte[saltLength];
+    randomb.nextBytes(salt);
+    
+    KeySpec keySpec =new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
+    SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+    byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+    return new SecretKeySpec(keyBytes, "AES");   
+}
+```
 
 Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API]("Android KeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the KeyStore is hardware-backed. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
