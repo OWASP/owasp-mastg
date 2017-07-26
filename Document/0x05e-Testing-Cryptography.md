@@ -282,11 +282,20 @@ Locate uses of the cryptographic primitives in reverse engineered or disassemble
 - `MessageDigest`
 - `Signature`
 - `KeyStore`
-- `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
+- `Key`, `PrivateKey`, `PublicKey`, `SecretKeySpec`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-Trace and assess how key material is generated and stored before or after it is used.
+As an example we illustrate how to locate the use of a hardcoded encryption key. First disassmble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
+```Bash
+$ baksmali d file.apk -o smali_output/
+```
+Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
+```Bash
+$ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
+```
+This will highlight all the classes that use the ```SecretKeySpec``` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array ```Encrypt.keyBytes```.
 
+![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png)
 #### Dynamic Analysis
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
