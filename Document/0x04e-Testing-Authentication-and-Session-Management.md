@@ -229,21 +229,16 @@ Check the source code for the presence of a throttling mechanism. Verify that th
 
 #### Dynamic Analysis
 
-Attempt to log in with an incorrect password multiple times. After multiple attempts, the anti-brute force control should be triggered and your login should be rejected when the correct credentials are entered.
-
-For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the lockout mechanism is implemented properly.  
-
-1.  Log in incorrectly for a number of times to trigger the lockout control (generally three to 15 incorrect attempts). This can be automated by using [Burp Intruder](https://portswigger.net/burp/help/intruder.html "Burp Intruder").
-2.  Once you have locked out the account, enter the correct login details to verify that login is not possible anymore.
-If this is correctly implemented, login should be denied when the right password is entered, as the account has already been blocked.
+Attempt to log in with an incorrect password multiple times. After three to five attempts, your login should be (at least temporarily) rejected even when correct credentials are entered.
 
 #### Remediation
 
-Lockout controls have to be implemented on server side to prevent brute force attacks. Further mitigation techniques are described by OWASP in [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+The following best practices should be followed when implementing anti-brute-force controls:
 
-It is interesting to clarify that incorrect login attempts should be cumulative and not linked to a session. If you implement a control to block the credential in your 3rd attempt in the same session, it can be easily bypassed by entering the details wrong two times and get a new session. This will then give another two free attempts.
+- Implement the controls on the server-side, as client-side controls are easily bypassed.
+- Make sure that incorrect login attempts are cumulative for a user account and not linked to a particular session.  
 
-Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for all accounts or the usage of CAPTCHAs. See also Credential Cracking OAT-007 in the [OWASP Automated Thread Handbook](https://www.owasp.org/index.php/OWASP_Automated_Threats_to_Web_Applications "OWASP Automated Threats to Web Applications").
+Further brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
 #### References
 
@@ -269,15 +264,15 @@ Alternatives to locking accounts are enforcing 2-Factor-Authentication (2FA) for
 
 #### Overview
 
-Two-factor authentication (2FA) is becoming a standard when logging into mobile apps. Typically, the first factor might be credentials (username/password), followed by a second factor which could be a One Time Password (OTP) sent via SMS. The key aspect of 2FA is to use two different factors out of the following categories:
+Two-factor authentication (2FA) is standard for apps that allow access to sensitive personal data. 2FA combines two different authentication factors out of the following categories:
 
 - Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
 - Something you know: this can be a secret only known to the user like a password.
 - Something you are: this can be biometric characteristics that identify the users like Touch ID.
 
-Applications that offer access to sensitive data or critical functions might require users additionally to re-authenticate with a stronger authentication mechanism. For example, after logging in via biometric authentication (e.g. Touch ID) into a banking app, a user might need to do a so called "step-up authentication" through OTP in order to execute a bank transfer.
+Most implementations use a password or biometric authentication (e.g. TouchID) as the first factor, combined with SMS-OTP, hardware or software token as the second factor. 
 
-A key advantage of step-up authentication is improved usability for the user. A user is asked to authenticate with the additional factor only when necessary.
+The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via biometric authentication (e.g. Touch ID) into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
 
 #### Static Analysis
 
