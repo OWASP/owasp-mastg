@@ -1,4 +1,4 @@
-## Testing Authentication with the Back-end
+## Testing Authentication with the Back End
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic takes place in the back-end service, authentication is such an integral part of most mobile app architectures that it is important to understand common implementations.
 
@@ -123,7 +123,7 @@ The secondary authentication step can be performed upon login, or at a later poi
 
 ##### Transaction Signing Using Push Notifications and PKI
 
-The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the backend. To authorize a transaction, the backend sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PInNor fingerprint) and the data is signed with user's private key. Send the signed data to the server to confirm the transaction.
+The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the back end. To authorize a transaction, the back end sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PInNor fingerprint) and the data is signed with user's private key. Send the signed data to the server to confirm the transaction.
 
 ##### Supplementary Mechanisms
 
