@@ -152,9 +152,9 @@ The recorded requests should also be replayed without providing any authenticati
 
 Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
 
-##### Performing a Dictionary Attack with BURP
-
-[-- TODO --]
+<!--
+[ TODO: Performing a Dictionary Attack with BURP ]
+-->
 
 #### References
 
