@@ -1072,165 +1072,243 @@ setContentView(R.layout.activity_main);
 
 #### Overview
 
-Analyzing the memory can help to identify the root cause of different problems, like for example why an application is crashing, but can also be used to identify sensitive data. This section describes how to check for sensitive data and disclosure of data in general within the process memory.
+Analyzing memory can help developers to identify root causes of several problems, such as application crashes. However, it can also be used to gain access to sensitive data. This section describes how to check for disclosure of data within the process' memory.
 
-To be able to investigate the memory of an application a memory dump needs to be created first or the memory needs to be viewed with real-time updates. This is also already the problem, as the application only stores certain information in memory if certain functions are triggered within the application. Memory investigation can of course be executed randomly in every stage of the application, but it is much more beneficial to understand first what the mobile app is doing and what kind of functionalities it offers and also make a deep dive into the (decompiled) source code before making any memory analysis.
-Once sensitive functions are identified, like decryption of data, the investigation of a memory dump might be beneficial in order to identify sensitive data like a key or the decrypted information itself.
+First, you need to identify which sensitive information is stored in memory. Basically, if you have a sensitive asset it's very likely that at some point it is loaded in memory. The objective is to verify that this info is exposed as briefly as possible.
+
+To be able to investigate the memory of an application a memory dump needs to be created first. Alternatively it can be analyzed in real-time, e.g. over a debugger. No matter the approach, this is a very error prone process from a verification point of view, as what you will get in a certain dump is the data left by the functions that were executed. You might miss executing critical scenarios. Additionally, unless you know the footprint of the data you are looking for (either the exact value, or its format), it is quite easy not to identify it during analysis. For example, if the app performs encryption based on a randomly generated symmetric key, unless you get to know the value of the key by other means, it is very unlikely that you will be able to spot it in memory.
+
+Therefore you are better off starting with static analysis.
 
 #### Static Analysis
 
-First, you need to identify which sensitive information is stored in memory. Then there are a few checks that must be executed:
+Before looking into the source code, it is beneficial to check documentation (if available) and identify application components so that you get the big picture of where certain data might be exposed. For example, sensitive data received from a backend does not only exist in the final model object, but also might have multiple copies in the HTTP client, the XML parser, etc. Ideally you want all of these copies to be removed from memory as soon as possible.
 
-- Verify that no sensitive information is stored in an immutable structure. Immutable structures are not really overwritten in the heap, even after nullification or changing them. Instead, by changing the immutable structure, a copy is created on the heap. `BigInteger` and `String` are two of the most used examples when storing secrets in memory.
-- Verify that, when mutable structures are used, such as `byte[]` and `char[]` that all copies of the structure are cleared.
+Additionally, understanding application's architecture and its role in the overall system will help you identify sensitive information that does not have to be exposed in memory at all. For example, assume your app receives some data from one server and transfers it to another without the need of any additional computation over it. Then that data can be received and handled encrypted, which prevents exposure in memory.
 
--*NOTICE**: Destroying a key (e.g. `SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES"); secret.destroy();`) does *not* work, nor nullifying the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array.
-Therefore the developer should, in case of not using the `AndroidKeyStore` make sure that the key is wrapped and properly protected (see the remediation section for more details).
-Understand that an RSA key pair is based on `BigInteger` as well and therefore reside in memory after first use outside of the `AndroidKeyStore`.
-Lastly, some ciphers do not properly clean up their byte-arrays. For instance, the AES `Cipher` in `BouncyCastle` does not always clean up its latest working key.
+However, if sensitive data does need to be exposed in memory, then you should make sure your app is designed in a way that exposes this data as briefly as possible, with as fewer copies as possible. In other words, you want a centralized handling of sensitive data (as few components as possible), based on primitive and mutable data structures.
+
+The reason for the later requirement is that it enables developers direct access to memory. You should verify that this access is then used to overwrite the sensitive data with dummy data (typically with zeroes). Examples of preferable data types would include `byte []` or `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String` you actually create a copy and apply the change on it.
+
+Usage of non-primitive mutable types, like `StringBuffer` or `StringBuilder` might be acceptable, but it's indicative and requires closer examination. Namely, `StringBuffer` and similar are used in situations when you have a content that you want to modify (which is what we want). But in order to access it's value, one would typically use the `toString()` method which would create a immutable copy of the data. There are few ways in which you can use these data types such that no immutable copy is made, but the effort to do that is grater than simply using a primitive array. One benefit that you get when using `StringBuffer` and similar is the safe memory management that such data types provide, but this can be a two-edged sword. If you try to modify their content and the new one exceeds the buffer capacity, the buffer will automatically be extended. To do so, the content of the buffer might be copied to a different location, leaving the existing content behind without any reference you can use to overwrite it.
+
+Unfortunately, not many libraries and frameworks are designed to allow overwriting of sensitive data. For example, destroying a key as shown below, does not really removes the key from memory:
+
+```java
+SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
+secretKey.destroy();
+```
+
+Neither does overwriting the backing byte-array from `secretKey.getEncoded()` as the SecretKeySpec based key returns a copy of the backing byte-array. Take a look in the remediation section below on how to properly remove a `SecretKey` from memory.
+
+Next, RSA key pair is based on `BigInteger` and therefore reside in memory after first use outside of the `AndroidKeyStore`. And some ciphers (such as the AES `Cipher` in `BouncyCastle`) does not properly clean up their byte-arrays.
+
+One other case, where you would typically find sensitive information exposed in memory, is user-provided data (credentials, social security numbers, credit card info, etc.). Regardless of whether you flag the `EditText` as a password field or not, it uses the same mechanism for delivering the content to the app - over the `Editable` interface. If your app does not provide an `Editable.Factory` in order for the `EditText` to instantiate your own `Editable` implementation, then it's very likely that the data provided by the user is exposed in memory longer than necessary. Default `Editable` implementation, the `SpannableStringBuilder`, suffers from the same issues as regular Java `StringBuilder` or `StringBuffer`, discussed above.
+
+To summarize, when performing static analysis for sensitive data exposed in memory, you should:
+- Try to identify application components and make a map of where certain data is used.
+- Verify that sensitive data is handled in as few components as possible.
+- Verify that object references are properly removed, once the object containing sensitive data is no longer needed.
+- Preferably, verify garbage collection is requested upon removing references.
+- For highly sensitive information, verify data is overwritten as soon as it is no longer needed.
+  - Such data must not be passed over immutable data types such as `String` or `BigInteger`.
+  - Non-primitive data types, such as `StringBuilder` are indicative and should be avoided.
+  - Overwriting should be done before removing references, and outside of the `finalize()` method.
+  - Pay attention to third-party components (libraries and frameworks).
+    Good indicator is their public API. Is the sensitive data passing the public API handled as proposed in this chapter ? 
 
 #### Dynamic Analysis
 
-For rudimentary analysis Android Studio built-in tools can be used. Android Studio includes tools in the _Android Monitor_ tab to investigate the memory. Select the device and app you want to analyze in the _Android Monitor_ tab and click on _Dump Java Heap_ and a _.hprof_ file will be created.
+Static analysis will help you identify potential problems, but it can not provide you with statistics on how long certain data is exposed in memory, nor it can help you identify problems in closed-source dependencies. This is where dynamic analysis comes into play.
+
+There are basically two ways to analyze the memory of a process: live analysis over a debugger or by analyzing one or more memory dumps. As the first approach is more of a general debugging issue, we concentrate on the second one here.
+
+For rudimentary analysis you can use the built-in tools of Android Studio. They are included under the _Android Monitor_ tab. To make a memory dump, select the device and app you want to analyze and click on _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory relative to the project path of the app.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
 
-In the new tab that shows the _.hprof_ file, the "Package Tree View" should be selected. Afterwards the package name of the app can be used to navigate to the instances of classes that were saved in the memory dump.
+To navigate trough class instances saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
 ![Create Heap Dump](Images/Chapters/0x05d/Package_Tree_View.png)
 
-The _.hprof_ file will be stored in the directory "captures", relative to the project path open within Android Studio. For deeper analysis of the memory dump the tool Eclipse Memory Analyzer (MAT) should be used.
+For more advanced analysis over the memory dump, Eclipse Memory Analyzer (MAT) can be used. It is available either as an Eclipse plugin or as a standalone application.
 
-Before the _.hprof_ file can be opened in MAT it needs to be converted. The tool _hprof-conf_ can be found in the Android SDK in the directory platform-tools.
+In order to be able to analyze the dump in MAT you need to use the _hprof-conv_ platform tool, provided with the Android SDK. 
 
 ```bash
-./hprof-conv file.hprof file-converted.hprof
+./hprof-conv memory.hprof memory-mat.hprof
 ```
 
-By using MAT, more functions are available, like usage of the Object Query Language (OQL). OQL is an SQL-like language that can be used to make queries in the memory dump. Analysis should be done on the dominator tree as only this contains the variables/memory of static classes.
+MAT provides several different tools you can use to analyze the memory dump. For example, you can use the _Histogram_ to get an idea on how many objects have been captured from a certain type, or the _Thread Overview_ to see process' threads and their stack frames. Check the _Dominator Tree_ to learn about keep-alive dependencies between objects. You can use regular expressions to filter out the results in all of these tools.
 
-To quickly discover potential sensitive data in the _.hprof_ file, it is also useful to run the `string` command against it. When doing a memory analysis, check for sensitive information like:
-- Password and/or usernames
-- Decrypted information
-- User or session related information
-- Interaction with OS, e.g. reading file content
+_Object Query Language_ studio is a MAT tool that enables you to use an SQL-like language for querying objects from the memory dump. It supports simple object transformation trough invocation of Java methods on the particular object, as well as API to build sophisticated tools on top of MAT.
+
+```sql
+SELECT * FROM java.lang.String
+```
+The example above will select all `String` objects present in the memory dump. The results will show the class, memory address, value as well as retain count for the object. To filter out all these info and only see the value of each string, you can do:
+
+```sql
+SELECT toString(object) FROM java.lang.String object
+```
+
+Or
+
+```sql
+SELECT object.toString() FROM java.lang.String object
+```
+
+OQL supports primitive data types as well, so to get the content of all `char` arrays you can do something like:
+
+```sql
+SELECT toString(arr) FROM char[] arr 
+```
+
+Don't be surprised if you get similar results as before as, after all, `String` and other Java data types are just wrappers around the primitive ones. Now let's filter out some results. The following example will select all byte arrays which contain the ASN.1 OID of a RSA key. Now, this doesn't necessarily means that the byte array actually contains a RSA key in it, as it might happen that same sequence of bytes are part of something else, but the chances are pretty high.
+
+```sql
+SELECT * FROM byte[] b WHERE toString(b).matches(".*1\.2\.840\.113549\.1\.1\.1.*")
+```
+
+Finally, you don't have to always select whole objects. If we make an analogy to SQL, then classes would be the tables, objects would be the rows and fields would be the columns. So, if you like to find all objects that have field named "password", you can do something like:
+
+```sql
+SELECT password FROM ".*" WHERE (null != password)
+```
+
+During your analysis try to search for:
+- Indicative field names like: "password", "pass", "pin", "secret", "private", etc.
+- Indicative patterns (e.g. RSA footprints) in strings, char arrays, byte arrays, etc.
+- Presence of known secrets (e.g. credit card number that you have entered, or authentication token provided by the backend).
+- etc.
+
+Obtaining multiple memory dumps and repeating the testing several times will help you draw some statistics on how long certain asset is exposed. Further, observing how one particular memory segment (e.g. byte array) changes over time may lead you to some, otherwise unrecognizable, sensitive data (more on this in the _Remediation_ section below). 
 
 #### Remediation
+No immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the garbage collector might collect them, but they might remain in the heap for a longer period. Nevertheless, you should try to ask for garbage collection after every critical operation (encryption, parsing server response containing sensitive information, etc.). In case some copies of the information are not properly cleaned (explained below) this will help to reduce the time these copies are available in memory.
 
-In Java, no immutable structures should be used to carry secrets (e.g. `String`, `BigInteger`). Nullifying them will not be effective: the garbage collector might collect them, but they might remain in the JVM's heap for a longer period.
-Rather use byte-arrays (`byte[]`) or char-arrays (`char[]`) which are cleaned after the operations are done:
+In order to properly clean sensitive information from memory, best practice is to use primitive data types such as byte-arrays (`byte[]`) or char-arrays (`char[]`) for storing the information. As described in the _Static Analyzes_ section above, usage of mutable non-primitive data types, such as `StringBuffer`, should be avoided.
 
+Make sure to overwrite the content of the critical object once it is no longer needed. One simple and very popular way is to overwrite the content with zeroes:
 
 ```java
-
 byte[] secret = null;
 try{
-	//get or generate the secret, do work with it, make sure you make no local copies
+    //get or generate the secret, do work with it, make sure you make no local copies
 } finally {
-	if (null != secret && secret.length > 0) {
-		for (int i = 0; i < secret; i++) {
-			array[i] = (byte) 0;
-		}
-	}
+    if (null != secret) {
+        Arrays.fill(secret, (byte) 0);
+    }
 }
 ```
+This however, does not truly guarantee that the content will be overwritten in run time. In order to optimize the byte code, the compiler will do analysis in which it can decide not to execute the overwriting of data, as it is no longer used afterwards (unnecessary operation). Even if you verify that the code is present in the compiled DEX, the optimization can still happen during just-in-time or ahead-of-time compilation in the VM.
 
-Also look into the best practices for [securely storing sensitive data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
+There is no silver bullet against this problem, as different solutions have different consequences. For example, one may choose to perform some additional calculation (e.g. XOR the data into some other dummy buffer), but there is no guarantee on how deep will the compiler perform it's optimization analysis. On the other hand, using the overwritten data outside of compiler's scope (e.g. serializing it in a temp file) guarantees the overwriting to be performed, but has obvious performance and maintenance impact.
 
-Keys should be handled by the `AndroidKeyStore` or the `SecretKey` class needs to be adjusted. For a better implementation of the `SecretKey` one can use the `ErasableSecretKey` class below. This class consists of two parts:
-- A wrapper class called `ErasableSecretKey` which takes care of building up the internal key, adding a clean method and a static convenience method. You can call the `getKey()` on a `ErasableSecretKey` to get the actual key.
-- An internal `InternalKey` class which implements `javax.crypto.SecretKey, Destroyable`, so you can actually destroy it and it will behave as a SecretKey from JCE. The destroyable implementation first sets null bytes to the internal key and then it will put null as a reference to the byte[] representing the actual key. As you can see the `InternalKey` does not provide a copy of its internal byte[] representation, instead it gives the actual version. This will make sure that you will no longer have copies of the key in many parts of your application memory.
+Then, using `Arrays.fill()` method to overwrite the data is a bad practice, as it is an obvious target to be hooked (see _Tampering and Reverse Engineering on Android_ chapter for more details).
 
+Finally, one additional issue with the example above is that the content is overwritten with all zeroes. If the case allows, one should try to overwrite critical objects with random data, or ideally content from other non-critical objects. This will make really hard to construct scanners that can identify sensitive data based on the way such data is managed.
+
+Below is an improved version of the previous example:
 
 ```java
-public class ErasableSecretKey implements Serializable {
+byte[] nonSecret = somePublicString.getBytes("ISO-8859-1");
+byte[] secret = null;
+try{
+    //get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+    if (null != secret) {
+        for (int i = 0; i < secret.length; i++) {
+            secret[i] = nonSecret[i % nonSecret.length];
+        }
+        
+        FileOutputStream out = new FileOutputStream("/dev/null");
+        out.write(secret);
+        out.flush();
+        out.close(); 
+    }
+}
+```
 
-    public static final int KEY_LENGTH = 256;
+For some additional info on the topic take a look at [Securely Storing Sensitive Data in RAM.](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM")
 
-    private java.security.Key secKey;
+In the _Static Analysis_ section above, we have also mentioned the issue of properly handling cryptographic keys when using `AndroidKeyStore` or `SecretKey`.
 
-	// Do not try to instantiate it: use the static methods.
-	// The static construction methods only use mutable structures or create a new key directly.
-    protected ErasableSecretKey(final java.security.Key key) {
-        this.secKey = key;
+For a better implementation of `SecretKey` please check the `SecureSecretKey` class below. The implementation is probably missing some boilerplate code to make this class compatible with `SecretKey`, but addresses the main security concerns:
+- No cross-context handling of sensitive data. Each copy of the key can be cleared within the scope where it was created.
+- Local copy is cleared according to the recommendations given above.
+
+```java
+public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
+    private byte[] key;
+    private final String algorithm;
+
+    /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
+      * The caller is responsible of clearing the key array provided as input.
+      * The internal copy of the key can be claered by calling the destroy() method.
+      */
+    public SecureSecretKey(final byte[] key, final String algorithm) {
+        this.key = key.clone();
+        this.algorithm = algorithm;
     }
 
-	//Create a new `ErasableSecretKey` from a byte-array.
-	//Don't forget to clean the byte-array when you are done with the key.
-    public static ErasableSecretKey fromByte(byte[] key) {
-        return new ErasableSecretKey(new SecretKey.InternalKey(key, "AES"));
-    }
-	//Create a new key. Do not forget to implement your own 'Helper.getRandomKeyBytes()'.
-    public static ErasableSecretKey newKey() {
-        return fromByte(Helper.getRandomKeyBytes());
+    public String getAlgorithm() {
+        return this.algorithm;
     }
 
-	//clean the internal key, but only do so if it is not destroyed yet.
-    public void clean() {
-        try {
-            if (this.getKey() instanceof Destroyable) {
-                ((Destroyable) this.getKey()).destroy();
-            }
-
-        } catch (DestroyFailedException e) {
-            //choose what you want to do now: so you could not destroy it, would you run on? Or rather inform the caller of the clean method informing him of the failure?
-        }
-    }
-	//convenience method that takes away the null-check so you can always just call ErasableSecretKey.clearKey(thekeytobecleared)
-    public static void clearKey(ErasableSecretKey key) {
-        if (key != null) {
-            key.clean();
-        }
+    public String getFormat() {
+        return "RAW";
     }
 
-	//internal key class which represents the actual key.
-    private static class InternalKey implements javax.crypto.SecretKey, Destroyable {
-        private byte[] key;
-        private final String algorithm;
-
-        public InternalKey(final byte[] key, final String algorithm) {
-            this.key = key;
-            this.algorithm = algorithm;
+    /** Returns a copy of the key.
+      * Make sure to clear the returned byte array when no longer needed.
+      */
+    public byte[] getEncoded() {
+        if(null == key){
+            throw new NullPointerException();
         }
 
-        public String getAlgorithm() {
-            return this.algorithm;
-        }
-
-        public String getFormat() {
-            return "RAW";
-        }
-
-		//Do not return a copy of the byte-array but the byte-array itself. Be careful: clearing this byte-array, will clear the key.
-        public byte[] getEncoded() {
-            if(null == this.key){
-               throw new NullPointerException();
-            }
-            return this.key;
-        }
-
-		//destroy the key.
-        public void destroy() throws DestroyFailedException {
-            if (this.key != null) {
-                Arrays.fill(this.key, (byte) 0);
-            }
-
-            this.key = null;
-        }
-
-        public boolean isDestroyed() {
-            return this.key == null;
-        }
+        return key.clone();
     }
 
+    /** Overwrites the key with dummy data to ensure this copy is no longer present in memory.*/
+    public void destroy() {
+        if (isDestroyed()) {
+            return;
+        }
 
-    public final java.security.Key getKey() {
-        return this.secKey;
+        byte[] nonSecret = new String("RuntimeException").getBytes("ISO-8859-1");
+        for (int i = 0; i < key.length; i++) {
+          key[i] = nonSecret[i % nonSecret.length];
+        }
+
+        FileOutputStream out = new FileOutputStream("/dev/null");
+        out.write(key);
+        out.flush();
+        out.close(); 
+
+        this.key = null;
+        System.gc();
     }
 
+    public boolean isDestroyed() {
+        return key == null;
+    }
 }
 
 ```
+
+Last case where you would typically find secure information in memory, mentioned in the _Static Analysis_ section, is secure data provided by the user. Often this case is handled by implementing a custom input method, in which case you should follow the recommendations given so far. However, _Android_ allows for information to be partially erased from `EditText` buffers by providing a custom `Editable.Factory`.
+
+```java
+EditText editText = ...; //  point your variable to your EditText instance
+EditText.setEditableFactory(new Editable.Factory() {
+  public Editable newEditable(CharSequence source) {
+  ... // return a new instance of a secure implementation of Editable.
+  }
+});
+```
+Refer to the `SecureSecretKey` example above for some inspiration on how to implement your `Editable`. Also note that by providing your factory, you are only able to handle securely all copies made by `editText.getText()`. You can also try to overwrite the internal `EditText` buffer by calling `editText.setText()`, but there is no guarantee that the buffer has not been copied before. Also by choosing to relay on the default input method and `EditText` you have no control over the keyboard being used, etc. Therefore use this approach only for semi-confidential information.
 
 #### References
 
