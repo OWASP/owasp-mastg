@@ -112,6 +112,80 @@ Ideally, authentication mechanisms shouldn't be implemented from scratch but bui
 - CWE-287: Improper Authentication
 
 
+### Testing 2-Factor Authentication and Step-up Authentication
+
+#### Overview
+
+Two-factor authentication (2FA) is standard for apps that allow access to sensitive personal data. Common implementations use a password as the first factor and any of the following as the second factor:
+
+- One-Time password via SMS (SMS-OTP)
+- One-time Code via Phone Call
+- Hardware or software token
+- Push notifications in combination with PKI and local authentication
+
+The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
+
+#### Static Analysis
+
+When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
+
+2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
+
+For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
+
+Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
+
+- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
+- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
+- [Authy](https://authy.com/ "Authy")
+
+Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
+
+#### Dynamic Analysis
+
+First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
+
+The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
+
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
+
+#### Remediation
+
+The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If any secret data (e.g. OTP seed) is used as part of the authentication process, it must be stored in secure device storage.
+
+##### Transaction Signing Using Push Notifications and PKI
+
+The best way to implement step-up authentication is by leveraging the device Keychain. Generate a public/private key pair on user sign-up and enroll the public key with the backend. To authorize a transaction, send a push notification containing the transaction data to the mobile app. In the app, display a dialog to the user asking to confirm or deny the transaction. If confirmed, ask the user to unlock the Keychain (by entering PIn or fingerprint) and sign the data using Keychain APIs. Send the signed data to the server to confirm the transaction.
+
+##### Further Notes
+
+The authentication scheme may be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+
+- Geolocation
+- IP address
+- Time of day
+
+Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
+
+An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+##### OWASP MASVS
+
+- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- V4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
+
+##### CWE
+
+- CWE-287: Improper Authentication
+- CWE-308: Use of Single-factor Authentication
+
+
 ### Testing the Password Policy
 
 #### Overview
@@ -259,80 +333,6 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 - Burp Suite Professional - https://portswigger.net/burp/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
-
-### Testing 2-Factor Authentication and Step-up Authentication
-
-#### Overview
-
-Two-factor authentication (2FA) is standard for apps that allow access to sensitive personal data. 2FA combines two different authentication factors out of the following categories:
-
-- Something you have: this can be a physical object like a hardware token, a digital object like X.509 certificates (in enterprise environments) or generation of software tokens on the mobile phone itself.
-- Something you know: this can be a secret only known to the user like a password.
-- Something you are: this can be biometric characteristics that identify the users like Touch ID.
-
-Most implementations use a password or biometric authentication (e.g. TouchID) as the first factor, combined with SMS-OTP, hardware or software token as the second factor. 
-
-The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via biometric authentication (e.g. Touch ID) into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
-
-#### Static Analysis
-
-When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
-
-2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
-
-For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
-
-Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
-
-- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
-- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
-- [Authy](https://authy.com/ "Authy")
-
-Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
-
-For local biometric authentication as an additional factor, please verify the test case "Testing Biometric Authentication".
-
-#### Dynamic Analysis
-
-First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
-
-The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
-
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
-
-#### Remediation
-
-The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If cloud solutions are in place, they should be implemented accordingly to best practices.
-
-Step-up authentication should be optional for the majority of user scenarios and only enforced for critical functions or when accessing sensitive data.
-
-Account lockouts for the second factor should be implemented the same way as for non-2FA cases (see "Testing Excessive Login Attempts" and [5]).
-
-Regardless of 2FA or step-up authentication, additionally it should be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can be:
-
-- Geolocation
-- IP address
-- Time of day
-
-Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
-
-An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-- V4.10: "Step-up authentication is required to enable actions that deal with sensitive data or transactions."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-- CWE-308: Use of Single-factor Authentication
 
 
 ### Testing Session-based Authentication
