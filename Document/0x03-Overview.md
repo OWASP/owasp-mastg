@@ -26,15 +26,16 @@ Fragmentation is a problem we deal with especially on Android devices. Not every
 
 ### Communication with Trusted Endpoints
 
-Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates opportunities for network-based attacks that could be anything from simple packet sniffing (monitoring data passed over a network), to creating a rogue access point and an SSL man-in-the-middle attack (MITM eavesdrops on and alters communication between two parties), or even routing protocol injection. The bad guys aren't picky. For more information about MITM, see **Performing Man-in-the-Middle Attacks on the Network Layer** in [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#user-content-performing-man-in-the-middle-attacks-on-the-network-layer).
+Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (potentially malicious) clients. This creates opportunities for a wide variety of network-based attacks ranging from simple to complicated and old to new. It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. As a basic requirement, mobile apps must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
 
-It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. At the very least, a mobile app must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
+> I was thinking that the point of this section isn't to list and explain possible attacks, it's to say that we must create secure communication between apps and endpoints. So, I deleted a bunch of text. Let me know if this change works well. 
 
 ### Authentication and Authorization
 
 In most cases, sending users to log in to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. Unlike web apps, mobile apps often store long-time session tokens that are unlocked with user-to-device authentication features such as fingerprint scanning. While this allows for a quicker login and better user experience (nobody likes to enter complex passwords), it also introduces additional complexity and room for error.
 
 Mobile app architectures also increasingly incorporate authorization frameworks, such as OAuth2, which delegate authentication to a separate service or outsource the authentication process to an authentication provider. *(Q- Correct? or is everything after "which" only about OAuth2?)* Using OAuth2 allows the client-side authentication logic to be outsourced to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of different possible architectures.
+
 > I'm not sure how to fix this paragraph yet - I'm not familiar enough with authentication/authorization. Let me know what's correct vs incorrect and we can fix.
 
 ### Interaction with the Mobile Platform
