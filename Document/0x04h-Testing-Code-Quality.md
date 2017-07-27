@@ -8,7 +8,7 @@ In the following chapter, we'll provide an overview of the most common vulnerabi
 
 #### Overview
 
-An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta characters, an attacker can execute malicious code as is is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
+An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into back-end queries or commands. By injecting meta characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the back-end database.
 
 Vulnerabilities of this class are most prevalent in server-side web services. Exploitable instances also exist within mobile apps, but occurrences are less common, plus the attack surface is smaller.
  
@@ -54,7 +54,7 @@ One real-world instance of client-side SQL injection was discovered by Mark Wood
 
 In an *XML injection* attack, the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, as well as possibly allow an attacker to exploit the operation of the XML parser processing the content.
 
-A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSFR)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
+A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -69,9 +69,9 @@ The current trend in app development focuses mostly on REST/JSON-based services 
 
 #### Finding Injection Flaws
 
-Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services ar less common.
+Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services are less common.
 
-Locating a potential vulnerabilities begins by either:
+Locating a potential vulnerability begins by either:
 
 - Identifying possible entry points for untrusted input then tracing from those locations to see if the destination contains potentially vulnerable functions.
 - Identifying known, dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input successfully interfaces with respective queries.
@@ -133,7 +133,7 @@ Android apps are, for the most part, implemented in Java which is inherently saf
 
 ##### Best Practices
 
-- Avoid using unsafe string functions such as <code>strcpy</code>, most other functions eginning with the “str” prefix, <code>sprint</code>, <cobde>vsprintf</code>, <code>gets</code>, and so on.
+- Avoid using unsafe string functions such as <code>strcpy</code>, most other functions beginning with the “str” prefix, <code>sprint</code>, <code>vsprintf</code>, <code>gets</code>, and so on.
 - If you are using C++, use the ANSI C++ string class.
 - If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you should use CFString, the Core Foundation representation of a string.
 - Do not concatenate untrusted data into format strings.
