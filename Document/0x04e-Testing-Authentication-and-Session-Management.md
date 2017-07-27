@@ -57,6 +57,8 @@ There is no one-size-fits-all when it comes to authentication. The first thing y
 
 Mobile apps combine one or more authentication mechanisms based on the sensitivity of the functions or resources accessed.
 
+#### Assessing the Authentication Architecture
+
 Refer to industry best practices as the basis for your review. For apps that have user login, but aren't considered highly sensitive, username/password authentication (combined with a reasonable password policy) is general considered sufficient. This form of authentication is used by most social apps, for example.
 
 For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that enable access to highly sensitive information like credit card numbers or allow users to move funds. In some industries, these apps must also comply to certain standards. For example, financial apps need to ensure compliance to the Payment Card Industry Data Security Standard (PCI DSS), Gramm Leech Bliley Act and Sarbanes-Oxley Act (SOX). For the US health care sector, compliance considerations include the Health Insurance Portability and Accountability Act (HIPAA) Privacy, Security, Breach Notification Rules and Patient Safety Rule.
@@ -72,23 +74,11 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 
-Besides verifying that appropriate authentication is used, you should also verify that API endpoints consistently authorize incoming requests, i.e. that sensitive and/or user-specific resources and functions can only be accessed with a valid session ID or access token.
-
 #### Static Analysis
 
-For a static analysis of the authentication logic you need access to the source code of the back-end service. Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints.
+Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints. For every request, the session ID or token of the user must be verified, and it must be ensured that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, the request must be rejected.
 
-A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
-
-#### Dynamic Analysis
-
-Enumerate privileged endpoints by using the app and monitoring requests in your interception proxy. Then, replay the requests while removing the session ID or token. If the endpoint responds with data that should only be available to authenticated users, authentication checks are not implemented properly.
-
-#### Remediation
-
-For every endpoint that needs to be protected, implement a mechanism that checks the session ID or token of the user. If a session ID or token exists, make sure that it is valid and that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, reject the request and do not allow the user to access the endpoint.
-
-Authorization must always be performed in server side code and should never rely on client-side controls only.
+Verify that authorization is always performed on the server-side.
 
 Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
 
@@ -96,6 +86,12 @@ Ideally, authentication mechanisms shouldn't be implemented from scratch but bui
 - [Struts (Java)](https://struts.apache.org/docs/security.html)
 - [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
 - [Ruby on Rails](http://guides.rubyonrails.org/security.html)
+
+A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
+
+#### Dynamic Analysis
+
+Enumerate privileged endpoints by using the app and monitoring requests in your interception proxy. Then, replay the requests while removing the session ID or token. If the endpoint responds with data that should only be available to authenticated users, authentication checks are not implemented properly.
 
 #### References
 
@@ -125,39 +121,11 @@ Two-factor authentication (2FA) is standard for apps that allow access to sensit
 
 The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
 
-#### Static Analysis
-
-When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
-
-2FA or step-up authentication shouldn't be implemented from scratch, instead they should be build on top of available libraries that offer this functionality. The libraries used on the server side should be identified and the usage of the available APIs/functions should be verified if they are used accordingly to best practices.
-
-For example server side libraries like [GoogleAuth](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator") can be used. Such libraries rely on a widely accepted mechanism of implementing an additional factor by using Time-Based One-Time Password Algorithms (TOTP). TOTP is a cryptographic algorithm that computes a OTP from a shared secret key between the client and server and the current time. The created OTPs are only valid for a short amount of time, usually 30 to 60 seconds.
-
-Instead of using libraries in the server side code, also available cloud solutions can be used like for example:
-
-- [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en "Google Authenticator")
-- [Microsoft Authenticator](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/end-user/microsoft-authenticator-app-how-to "Microsoft Authenticator")
-- [Authy](https://authy.com/ "Authy")
-
-Regardless if the implementation is done within the server side or by using a cloud provider, the TOTP app need to be started and will display the OTP that need to be keyed in into the app that is waiting to authenticate the user.
-
-#### Dynamic Analysis
-
-First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
-
-The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
-
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
-
-#### Remediation
-
-The implementation of a second or multiple factors should be strictly enforced on server-side for all critical operations. If any secret data (e.g. OTP seed) is used as part of the authentication process, it must be stored in secure device storage.
-
 ##### Transaction Signing Using Push Notifications and PKI
 
-The best way to implement step-up authentication is by leveraging the device Keychain. Generate a public/private key pair on user sign-up and enroll the public key with the backend. To authorize a transaction, send a push notification containing the transaction data to the mobile app. In the app, display a dialog to the user asking to confirm or deny the transaction. If confirmed, ask the user to unlock the Keychain (by entering PIn or fingerprint) and sign the data using Keychain APIs. Send the signed data to the server to confirm the transaction.
+The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the backend. To authorize a transaction, the backend sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PInNor fingerprint) and the data is signed with user's private key. Send the signed data to the server to confirm the transaction.
 
-##### Further Notes
+##### Supplementary Mechanisms
 
 The authentication scheme may be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
 
@@ -168,6 +136,25 @@ The authentication scheme may be supplemented with [passive contextual authentic
 Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
 
 An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
+
+#### Static Analysis
+
+When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
+
+- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations. 
+- If any secret data (e.g. OTP seed) is used as part of the authentication process, verify that the secret is stored in secure device storage.
+
+#### Dynamic Analysis
+
+First, all privileged endpoints a user can only access with step-up authentication or 2FA within an app should be explored. For all of these requests sent to an endpoint, an interception proxy can be used to capture network traffic. Then, try to replay requests with a token or session information that hasn't been elevated yet via 2FA or step-up authentication. If the endpoint is still sending back the requested data, that should only be available after 2FA or step-up authentication, authentication checks are not implemented properly on the endpoint.
+
+The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
+
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
+
+##### Performing a Dictionary Attack with BURP
+
+[-- TODO --]
 
 #### References
 
@@ -194,7 +181,21 @@ Password strength is a key concern when using passwords for authentication. Pass
 
 #### Static Analysis
 
-Passwords can be set when registering accounts, changing the password or when resetting the password in a forgot password process.
+A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"):
+
+**Password Length**
+
+- Minimum length of the passwords should be enforced, at least 10 characters.
+- Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
+
+**Password Complexity**
+
+The password must meet at least three out of the following four complexity rules:
+
+1. at least one uppercase character (A-Z)
+2. at least one lowercase character (a-z)
+3. at least one digit (0-9)
+4. at least one special character (punctuation)
 
 Verify that a password policy exists and that passwords are required to be sufficiently complex. Identify all related functions in the source code, and make sure that a common verification check is applied. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
@@ -242,37 +243,15 @@ function(password) {
 },
 ```
 
-If a ready-made framework feature or library function is used to verify password complexity, verify the configuration against the OWASP password complexity requirements (see "remediation" below).
+For further details check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). A common library that can be used for estimating password strength is [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn"), which is available for many programming languages.
 
 #### Dynamic Analysis
 
-All available functions that allow a user to set a password need to be verified, if passwords can be used that violate the password policy specifications. This can be:
+Attempt to enter weak passwords into registration and password reset functions, such as: 
 
 - Self-registration function for new users that allows to specify a password,
-- Forgot Password function that allows a user to set a new password or
-- Change Password function that allows a logged in user to set a new password.
-
-Use an interception proxy to verify the that the password policy is enforced on server side. More information about testing methods can be found in the OWASP Testing Guide ([OTG-AUTHN-007](https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) "OWASP Testing Guide (OTG-AUTHN-007)"))
-
-#### Remediation
-
-A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"):
-
-**Password Length**
-
-- Minimum length of the passwords should be enforced, at least 10 characters.
-- Maximum password length should not be set too low, as it will prevent users from creating passphrases. Typical maximum length is 128 characters.
-
-**Password Complexity**
-
-The password must meet at least three out of the following four complexity rules
-
-1. at least one uppercase character (A-Z)
-2. at least one lowercase character (a-z)
-3. at least one digit (0-9)
-4. at least one special character (punctuation)
-
-For further details check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). A common library that can be used for estimating password strength is [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn"), which is available for many programming languages.
+- "Forgot Password" function that allows a user to set a new password or
+- "Change Password" function that allows a logged in user to set a new password.
 
 #### References
 
@@ -299,20 +278,18 @@ The default way of blocking this type of attack is locking accounts after a defi
 
 #### Static Analysis
 
-Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a username within a short time frame, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
+Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a user name within a short time frame, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
+
+The following best practices should be followed when implementing anti-brute-force controls:
+
+- The controls must be implemented on the server-side, as client-side controls are easily bypassed.
+- Incorrect login attempts must be cumulative for a user account and not linked to a particular session.  
+
+Further brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
 #### Dynamic Analysis
 
 Attempt to log in with an incorrect password multiple times. After three to five attempts, your login should be (at least temporarily) rejected even when correct credentials are entered.
-
-#### Remediation
-
-The following best practices should be followed when implementing anti-brute-force controls:
-
-- Implement the controls on the server-side, as client-side controls are easily bypassed.
-- Make sure that incorrect login attempts are cumulative for a user account and not linked to a particular session.  
-
-Further brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
 #### References
 
@@ -334,20 +311,29 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
-
 ### Testing Session-based Authentication
 
 #### Overview
 
 All significant, if not privileged, actions must be done after a user is properly authenticated; the application will remember the user inside a session. When improperly managed, sessions are subject to a variety of attacks where the session of a legitimate user may be abused, allowing the attacker to impersonate the user. As a consequence, data may be lost, confidentiality compromised or illegitimate actions performed.
 
-Sessions must have a beginning and an end. It must be impossible for an attacker to forge a session ID: instead, it must be ensured that a session can only be started by the system on the server side. Also, the duration of a session should be as short as possible, and the session must be properly terminated after a given amount of time or after the user has explicitly logged out. It must be impossible to reuse session ID.
+Session IDs must:
+
+- always be created on the server side,
+- not be predictable (use proper length and entropy),
+- always be exchanged over secure connections (e.g. HTTPS),
+- be stored securely within the mobile app,
+- be verified when a user is trying to access privileged parts of an application (a session ID must be valid and correspond to the proper level of authorization),
+- be renewed when a user is asked to log in again to perform an operation requiring higher privileges and
+- be terminated on server side and deleted within the mobile app when a user logs out or after a specified timeout.
+
+It is strongly advised to use proven built-in session ID generators, as they are more secure than building a custom one. Such generators exist for most frameworks and languages.
 
 As such, the scope of this test is to validate that sessions are securely managed and cannot be compromised by an attacker.
 
 #### Static Analysis
 
-When server source code is available, the tester should look for the place where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. For those matters, automated tools or manual search can be used to look for relevant keywords in the target programming language. Sample frameworks on server side are:
+Identify locations in the code where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. For those matters, automated tools or manual search can be used to look for relevant keywords in the target programming language. Sample frameworks on server side are:
 
 - [Spring (Java)](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-session-mgmt)
 - [PHP](http://php.net/manual/en/book.session.php)
@@ -366,20 +352,6 @@ Then, you can use the crawled requests within any intercepting proxy to try to m
 - by trying to re-use a session ID after logging out.
 
 Also, the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more session management test cases.
-
-#### Remediation
-
-In order to offer proper protection against the attacks mentioned earlier, session IDs must:
-
-- always be created on the server side,
-- not be predictable (use proper length and entropy),
-- always be exchanged over secure connections (e.g. HTTPS),
-- be stored securely within the mobile app,
-- be verified when a user is trying to access privileged parts of an application (a session ID must be valid and correspond to the proper level of authorization),
-- be renewed when a user is asked to log in again to perform an operation requiring higher privileges and
-- be terminated on server side and deleted within the mobile app when a user logs out or after a specified timeout.
-
-It is strongly advised to use session ID generators that are build-in within the framework used, as they are more secure than building a custom one. Such generators exist for most frameworks and languages.
 
 #### References
 
@@ -440,8 +412,6 @@ JWT implementations are available for all major programming languages, like [PHP
 
 The attack described here occurs when an attacker alters the token and changes the hashing algorithm to indicate that the integrity of the token has already been verified, by using the "none" keyword. As explained in the link above some libraries treated tokens signed with the none algorithm as a valid token with a verified signature, so an attacker can alter the token claims and they will be trusted by the application.
 
-
-
 First, use a JWT library that is not exposed to this vulnerability.
 
 Last, during token validation, explicitly request that the expected algorithm was used.
@@ -458,6 +428,18 @@ JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 //Verify the token, if the verification fail then an exception is thrown
 
 DecodedJWT decodedToken = verifier.verify(token);
+
+##### Best Practices
+
+The following best practices should be considered, when implementing JWT:
+
+- The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
+- Make sure that tokens with a different signature type are guaranteed to be rejected.
+- Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
+- The private signing key or secret key for HMAC should only be available on server side.
+- If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
+- Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet")
+- Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
 
 #### Static Analysis
 
@@ -486,18 +468,6 @@ Several known vulnerabilities in JWT should be checked while executing a dynamic
   * Decode the Base-64 encoded JWT and check what kind of data is transmitted within it and if it's encrypted or not.
 
 Please also follow the test cases in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet") and check the implementation of the logout as described in "Testing the Logout Functionality".
-
-#### Remediation
-
-The following best practices should be considered, when implementing JWT:
-
-- The latest version available of the JWT libraries in use should be implemented, to avoid known vulnerabilities.
-- Make sure that tokens with a different signature type are guaranteed to be rejected.
-- Store the JWT on the mobile phone using a secure mechanism, like KeyChain on iOS or KeyStore on Android.
-- The private signing key or secret key for HMAC should only be available on server side.
-- If replay attacks are a risk for the app, `jti` (JWT ID) claim should be implemented.
-- Ideally the content of JWT should be encrypted in order to ensure the confidentially of the information contained within it. There might be description of roles, usernames or other sensitive information available that should be protected. An example implementation in Java can be found in the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet")
-- Clarify if copying a token to another device should or should not make an attacker able to continue authenticated. Check the device binding test case, if this should be enforced.
 
 #### References
 
@@ -547,9 +517,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 
 #### Static Analysis
 
-
-
-#### Remediation
+Make sure that the following best practices are implemented:
 
 User-agent:
 
@@ -585,6 +553,8 @@ For additional best practices and detailed information please refer to the sourc
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)").
 
+#### Remediation
+
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -613,9 +583,12 @@ Reducing the lifetime of session identifiers and tokens to a minimum decreases t
 
 One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
 
+Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
+
 ##### Static Analysis 
 
-If server side code is available, it should be reviewed that the session is being terminated or token invalidated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
+If server side code is available, verify that the session is being terminated or token invalidated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
+
 - Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
 - PHP - http://php.net/manual/en/function.session-destroy.php
@@ -625,6 +598,7 @@ For stateless authentication the access token and refresh token (if used) should
 #### Dynamic Analysis
 
 For a dynamic analysis of the application an interception proxy should be used. The following steps can be applied to check if the logout is implemented properly.  
+
 1.  Log into the application.
 2.  Do a couple of operations that require authentication inside the application.
 3.  Perform a logout operation.
@@ -633,15 +607,10 @@ For a dynamic analysis of the application an interception proxy should be used. 
 If the logout is correctly implemented on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then the token or session ID is still valid and has not been correctly terminated on the server side.
 A detailed explanation with more test cases, can also be found in the OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")).
 
-#### Remediation 
-
-The logout function on the server side must invalidate the session identifier or token immediately after logging out to prevent it to be reused by an attacker that could have intercepted it (see [Session Management Cheat Sheet](https://www.owasp.org/index.php/Session_Management_Cheat_Sheet "Session Management Cheat Sheet")).
-
-Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
+
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 ##### OWASP MASVS
@@ -690,6 +659,8 @@ The exact values for token expiration depend on the application requirements and
 });
 ```
 
+Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of your application and the use case of it.
+
 The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
 
 - [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
@@ -702,17 +673,15 @@ The check needed here will be different depending on the technology used. Here a
 Dynamic analysis is an efficient option, as it is easy to validate whether the session timeout is working at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application idle for the time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
 
 The following steps can be applied to check if the session timeout is implemented properly.  
+
 1. Log into the application.
 2. Perform a couple of operations that require authentication inside the application.
 3. Leave the application idle until the session expires (for testing purposes, a reasonable timeout can be configured, and amended later in the final version)
  
 Resend one of the operations executed in step 2 using an interception proxy, for example with Burp Repeater. The purpose of this is to send to the server a request with the session ID that has been invalidated when the session has expired.
+
 If session timeout has been correctly configured on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then, this session is still valid, which means that the session timeout is not configured correctly.
 More information can also be found in the OWASP Web Testing Guide ([OTG-SESS-007](https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007) "OWASP Web Application Test Guide (OTG-SESS-007)")).
-
-#### Remediation
-
-Most of the frameworks have a parameter to configure the session timeout. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of your application and the use case of it.
 
 #### References
 
