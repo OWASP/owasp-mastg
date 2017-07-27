@@ -6,15 +6,17 @@ Practically all network-connected mobile apps use HTTP(S) to send and receive da
 
 #### Overview
 
-One of the core functionalities of mobile apps is sending and/or receiving data from endpoints, over untrusted networks like the Internet. It is possible for an attacker to sniff or even modify trough Man-in-the-middle (Mitm) attacks unencrypted information if he controls any part of the network infrastructure (e.g. an WiFi access point). This puts data in transit on risk and provides additional attack surface. For this reason, developers should make a general rule, that all communication should be [encrypted by using HTTPS](https://developer.android.com/training/articles/security-tips.html#Networking "Security Tips - Networking").
+One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected, it is possible for an attacker with  access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify it in transit. For this reason, it is almost never advisable to use plain-text network protocols.
+
+The vast majority of apps relies on the Hypertext Transfer Protocol (HTTP) for communication with the backend. HTTP over Transport Layer Security (TLS) - a.k.a. HTTPS - wraps the HTTP protocol into an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer, the now-depreciated predecessor of TLS). TLS enables authentication of the backend service, as well as confidentiality and integrity of the network data.
 
 #### Static Analysis
 
-Identify all external endpoints (backend APIs, third-party web services), the app communicates with and ensure that all those communication channels are encrypted. Look for HTTP or other URL schemas the app might be using.
+Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are requested.
 
 #### Dynamic Analysis
 
-The recommended approach is to intercept all network traffic coming to or from the tested application and check if it is encrypted. Network traffic can be intercepted using one of the following approaches:
+Intercept the network traffic coming to or from the tested application and check if it is encrypted. Network traffic can be intercepted using one of the following approaches:
 
 - Capture all HTTP and Websocket traffic using an interception proxy, like [OWASP ZAP](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "OWASP ZAP") or [Burp Suite Professional](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android device to work with Burp") and observe whether all requests are using HTTPS instead of HTTP.
 
@@ -60,14 +62,13 @@ Please be aware that `SSLSocket` **does not** verify the hostname. The hostname 
 - Vproxy - https://github.com/B4rD4k/Vproxy
 
 
-
 ### Verifying the TLS Settings
 
 #### Overview
 
-Many mobile applications consume remote services over the HTTP protocol. HTTPS is HTTP over SSL/TLS. Other encrypted protocols are less common. Thus, it is important to ensure that the TLS configuration on server side is done properly. SSL is the older name of the TLS protocol and should no longer be used, since SSLv3 is considered vulnerable. TLS v1.2 and v1.3 are the modern and more secure versions, but many services still include configurations for TLS v1.0 and v1.1, to ensure compatibility with older clients.
+Besides ensuring that the mobile app requests only HTTPS URLS, it is also important to ensure that the TLS configuration on server side is done properly. Secure Socket Layer (SSL) is depreciated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 as a fall-back to ensure compatibility with older clients.
 
-In the situation where both the client and the server are controlled by the same organization and are used for the purpose of only communicating with each other, higher levels of security can be achieved by more [strict configurations](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+In the situation where both the client and the server are controlled by the same organization and are used for the purpose of only communicating with each other, higher levels of security can be achieved by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
 If a mobile application connects to a specific server for a specific part of its functionality, the networking stack for that client can be tuned to ensure highest levels of security possible given the server configuration. Additionally, the mobile application may have to use a weaker configuration due to the lack of support in the underlying operating system.
 
