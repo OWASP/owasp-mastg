@@ -1,25 +1,20 @@
-> some comments are in blocks like this, some are in italics within paragraphs. In-line italics are marked with a "Q-" so you can search for those instances  
-> to do a technical review of my edits, track changes within git or paste the past version and this version of the doc into a diffchecker such as https://www.diffchecker.com/
+> some comments are in blocks like this, some are in italics within paragraphs. In-line italic notes are marked with a "Q-" so you can search for those instances  
 
 # Introduction to the OWASP Mobile Security Testing Guide
 
 The OWASP Mobile Security Testing Guide (MSTG) is an extension of the OWASP Testing Project that performs security testing of Android and iOS mobile devices.
 
-The goal of this project is to help people understand everything they need to know about testing Android and iOS applications. MSTG delivers a complete suite of test cases designed to address the [OWASP Mobile Top 10 security risks](https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10) and the requirements of the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs).
-
->Do we want to give links to those 3 resources/standards mentioned above (if these links exist)? Do we want to link to the OWASP Testing Project? May also want to link the first instance of OWASP to the main site? Are we avoiding links? What are the ways/forms this book is being published?*
+The goal of this project is to help people understand everything they need to know about testing Android and iOS apps. MSTG delivers a complete suite of test cases designed to address the [OWASP Mobile Top 10 security risks](https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10) and all [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs) requirements.
 
 ## Why Do We Need a Mobile Application Security Testing Guide?
 
 New technology always introduces new security risks, and mobile computing is no exception. Security concerns for mobile apps differ from traditional desktop software in some important ways, including portability and novelty. Modern mobile operating systems are arguably more secure than traditional desktop operating systems, but problems can still appear when we don't carefully consider security during mobile app development. Data storage, inter-app communication, proper usage of cryptographic APIs, and secure network communication are only some of these considerations. 
 
->The second paragraph that used to be here is kinda repeated below in Local Data Storage, so I removed the duplicate content and just hinted at it, keeping the explanation down below. 
-
 ## Key Areas in Mobile Application Security (AppSec)
 
-Many mobile application penetration testing tools have a background in network and web app penetration (app pen) testing, a quality that is valuable for mobile app testing. Almost every mobile app talks to a backend service, and those services are prone to the same kinds of attacks we are familiar with in web apps on desktop machines. Mobile apps differ in that there is a smaller attack surface and therefore more security against injection (attackers supply input to a program) and similar attacks. Instead, we must prioritize data protection on the device and the network to increase mobile security. 
+Many mobile app penetration testing tools have a background in network and web app penetration (app pen) testing, a quality that is valuable for mobile app testing. Almost every mobile app talks to a backend service, and those services are prone to the same kinds of attacks we are familiar with in web apps on desktop machines. Mobile apps differ in that there is a smaller attack surface and therefore more security against injection (attackers supply input to a program) and similar attacks. Instead, we must prioritize data protection on the device and the network to increase mobile security. 
 
-Let's discuss the key areas in mobile application security.
+Let's discuss the key areas in mobile app security.
 
 >Maybe it's a good idea to number each security area below to keep it tied into this introductory sentence above? Maybe not, let me know your thoughts.
 
@@ -33,7 +28,7 @@ Fragmentation is a problem we deal with especially on Android devices. Not every
 
 ### Communication with Trusted Endpoints
 
-Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates opportunities for network-based attacks that could be anything from simple packet sniffing (monitoring data passed over a network), to creating a rogue access point and an SSL man-in-the-middle attack (MITM eavesdrops on and alters communication between two parties), or even routing protocol injection. The bad guys aren't picky. For more information about MITM, see **Performing Man-in-the-Middle Attacks on the Network Layer** in the **Testing Network Communication** chapter.
+Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates opportunities for network-based attacks that could be anything from simple packet sniffing (monitoring data passed over a network), to creating a rogue access point and an SSL man-in-the-middle attack (MITM eavesdrops on and alters communication between two parties), or even routing protocol injection. The bad guys aren't picky. For more information about MITM, see **Performing Man-in-the-Middle Attacks on the Network Layer** in [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#user-content-performing-man-in-the-middle-attacks-on-the-network-layer).
 
 It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. At the very least, a mobile app must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
 
@@ -49,7 +44,7 @@ Mobile operating system architectures differ from classical desktop architecture
 
 ### Code Quality and Exploit Mitigation
 
-Traditional injection and memory management issues aren't often seen in mobile applications due to the smaller attack surface. Mobile apps mostly interface with the trusted backend service and the UI, so even if many buffer overflow vulnerabilities exist in the app, those vulnerabilities usually don't open up any useful attack vectors. Similar protection exists against browser exploits such as cross-site scripting (XSS allows attackers to inject scripts into webpages to bypass access controls) that are very prevalent in web apps. However, there are always exceptions. XSS is theoretically possible on mobile in some cases, but it's very rare to see XSS issues that an individual can exploit. For more information about XSS, see **Testing for Cross-Site Scripting Flaws** in the **Testing Code Quality** chapter.
+Traditional injection and memory management issues aren't often seen in mobile apps due to the smaller attack surface. Mobile apps mostly interface with the trusted backend service and the UI, so even if many buffer overflow vulnerabilities exist in the app, those vulnerabilities usually don't open up any useful attack vectors. Similar protection exists against browser exploits such as cross-site scripting (XSS allows attackers to inject scripts into webpages to bypass access controls) that are very prevalent in web apps. However, there are always exceptions. XSS is theoretically possible on mobile in some cases, but it's very rare to see XSS issues that an individual can exploit. For more information about XSS, see **Testing for Cross-Site Scripting Flaws** in [**Testing Code Quality**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04h-Testing-Code-Quality.md#user-content-testing-for-cross-site-scripting-flaws).
 
 >Asking again about links vs just verbal references. Will be nice to replace this with chapter numbers one day too if links should be avoided (ie for a print medium)
 
@@ -61,23 +56,24 @@ There are three things you should never bring up in polite conversations: religi
 
 ## The OWASP Mobile AppSec Verification Standard, Checklist, and Testing Guide
 
-This guide belongs to a set of three closely related mobile application security documents. All three documents map to the same basic set of security requirements. Depending on the context, they can be used individually or combined to achieve different objectives:
+This guide belongs to a set of three closely related mobile app security documents. All three documents map to the same basic set of security requirements. Depending on the context, they can be used individually or combined to achieve different objectives:
 
-- The **Mobile Application Security Verification Standard (MASVS):** A standard that defines a mobile application security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define what a secure mobile application is.
+- The **Mobile Application Security Verification Standard (MASVS):** A standard that defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app.
 
-- The **Mobile Security Testing Guide (MSTG):** A manual for testing the security of mobile applications. It provides verification instructions for MASVS requirements and operating system-specific best practices (currently for Android and iOS). The MSTG helps ensure completeness and consistency of mobile app security testing. It can also be a standalone learning resource and reference guide for mobile application security testers.
+- The **Mobile Security Testing Guide (MSTG):** A manual for testing the security of mobile apps. It provides verification instructions for MASVS requirements and operating system-specific best practices (currently for Android and iOS). The MSTG helps ensure completeness and consistency of mobile app security testing. It can also be a standalone learning resource and reference guide for mobile app security testers.
 
 - The **Mobile App Security Checklist:** A checklist for tracking compliance against the MASVS during practical assessments. We simplify mobile app penetration testing by linking each requirement in the checklist to the corresponding MSTG test case.
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
-For example, the MASVS requirements could be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the next chapter *(Q- what chapter? let's name it)*, we'll describe how you can apply the checklist and MSTG to a mobile application penetration test.
+For example, the MASVS requirements could be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the next chapter *(Q- what chapter? let's name it)*, we'll describe how you can apply the checklist and MSTG to a mobile app penetration test.
 
 ## Navigating the Mobile Security Testing Guide 
 
 The MSTG contains descriptions of all requirements specified in the MASVS. The MSTG contains the following main sections:
 
-1. The **General Testing Guide** (*Q- "chapters x? to y?"*) contains mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile application security.
+1. The **General Testing Guide** contains mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security.
+> add "chapters x to y"? Or give links? Or both?
 
 2. The **Android Testing Guide** covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and preventions, and tampering techniques and preventions.
 
