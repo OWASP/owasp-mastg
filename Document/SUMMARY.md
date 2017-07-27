@@ -11,8 +11,9 @@
 
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Testing Authenticaton with the Backend](0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Authentication with the Backend](0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
 - [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Android Testing Guide
