@@ -20,7 +20,7 @@ Let's discuss the key areas in mobile app security.
 
 ### Local Data Storage
 
-The protection of sensitive data (such as user credentials and private information) is crucial to mobile security. If operating system mechanisms (such as inter-process communication) are used improperly, sensitive data can be exposed to other apps running on the same device. Data may also unintentionally leak to cloud storage, backups, or the keyboard cache. Additionally, mobile devices can be lost or stolen more easily compared to other types of devices, so it's more likely an individual can gain physical access to sensitive data.
+The protection of sensitive data (such as user credentials and private information) is crucial to mobile security. If an app uses operating system mechanisms (such as inter-process communication) improperly, that app can expose sensitive data to other apps running on the same device. It can also unintentionally leak data to cloud storage, backups, or the keyboard cache. Additionally, mobile devices can be lost or stolen more easily compared to other types of devices, so it's more likely an individual can gain physical access to sensitive data.
 
 When developing mobile apps, we must take extra care when storing user data. For example, we can use appropriate key storage APIs and take advantage of hardware-backed security features when available.
 
@@ -37,6 +37,7 @@ It's crucial to maintain the confidentiality and integrity of information exchan
 In most cases, sending users to log in to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. Unlike web applications, mobile apps often store long-time session tokens that are unlocked with user-to-device authentication features such as fingerprint scanning. While this allows for a quicker login and better user experience (nobody likes to enter complex passwords), it also introduces additional complexity and room for error.
 
 Mobile app architectures also increasingly incorporate authorization frameworks, such as OAuth2, which delegate authentication to a separate service or outsource the authentication process to an authentication provider. *(Q- Correct? or is everything after "which" only about OAuth2?)* Using OAuth2 allows the client-side authentication logic to be outsourced to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of different possible architectures.
+> I'm not sure how to fix this paragraph yet - I'm not familiar enough with authentication/authorization. Let me know what's correct vs incorrect and we can fix.
 
 ### Interaction with the Mobile Platform
 
