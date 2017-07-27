@@ -2,7 +2,7 @@
 
 # Introduction to the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is an extension of the OWASP Testing Project that performs security testing of Android and iOS mobile devices.
+The OWASP Mobile Security Testing Guide (MSTG) is an extension of the [OWASP](https://www.owasp.org/) Testing Project that performs security testing of Android and iOS mobile devices.
 
 The goal of this project is to help people understand everything they need to know about testing Android and iOS apps. MSTG delivers a complete suite of test cases designed to address the [OWASP Mobile Top 10 security risks](https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10) and all [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs) requirements.
 
