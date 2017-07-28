@@ -191,8 +191,6 @@ When testing local authentication on iOS, ensure sensitive flows are protected u
 
 #### Dynamic Analysis
 
-When using an app the usage of Touch ID authentication is quite obvious: a system-style alert asks the user to put the finger on the sensor or fall back to the password (if allowed).
-
 On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") can be used to bypass LocalAuthentication. Swizzler uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Install Swizzler2 and follow the steps below to activate this feature:
 
 - Settings->Swizzler
@@ -207,7 +205,7 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - When the TouchID prompt shows click "cancel"
 - If the application flow continues without requiring the touchID then the bypass has worked.
 
-Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device).
+Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
 #### Remediation
 
