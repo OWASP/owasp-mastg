@@ -187,7 +187,8 @@ If `Security.framework` is used, only the second one will be shown.
 
 It is important to remember that Local Authentication framework is an event-based procedure and as such, should not the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
 
-When testing local authentication on iOS, ensure sensitive flows are protected using the Keychain services method. For example, some apps resume an existing user session with TouchID authentication. In these cases, session credentials or tokens (e.g. refresh tokens) should be securely stored in the Keychain (as described above) as well as "locked" with local authentication.
+- Verify that sensitive processes, such as re-authenticating a user triggering a payment transaction, are protected using the Keychain services method.
+- Verify that the `kSecAccessControlUserPresence` policy and `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` protection classes are set when the `SecAccessControlCreateWithFlags` method is called.
 
 #### Dynamic Analysis
 
@@ -206,13 +207,6 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - If the application flow continues without requiring the touchID then the bypass has worked.
 
 Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
-
-#### Remediation
-
-The Local Authentication framework makes adding either Touch ID or similar authentication a simple procedure. More sensitive processes, such as re-authenticating a user or using a remote payment service with this method, is strongly discouraged. Instead, the best approach for handling local authentication in these scenarios involves utilizing Keychain to store a user secret (e.g. refresh token). This may be accomplished as follows:
-
-- Use the <code>SecAccessControlCreateWithFlags()</code> to call a security access control reference. Specify the <code>kSecAccessControlUserPresence</code> policy and <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> protection class.
-- Insert the data using the returned <code>SecAccessControlRef</code> value into the attributes dictionary.
 
 #### References
 
