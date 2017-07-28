@@ -152,7 +152,7 @@ FileOutputStream fos;
 
 Once the activity is called, the file is created with the provided data and the data is stored in clear text in the external storage.
 
-It’s also worth to know that files stored outside the application folder (`data/data/<package-name>/`) will not be deleted when the user uninstall the application.
+It’s also worth to know that files stored outside the application folder (`data/data/<package-name>/`) will not be deleted when the user uninstalls the application.
 
 
 ##### KeyChain
@@ -179,7 +179,7 @@ In a software-only implementation, the keys are encrypted with a [per-user encry
 ##### Older KeyStore Implementations
 
 Older Android versions do not have a KeyStore, but do have the KeyStore interface from JCA (Java Cryptography Architecture). One can use various KeyStores that implement this interface and ensure secrecy and integrity to the keys stored in the KeyStore implementation. All implementations rely on the fact that a file is stored on the filesystem, which then protects its content by a password. For this, it is recommended to use the BouncyCastle KeyStore (BKS).
-You can create one by using the `KeyStore.getInstance("BKS", "BC");`, where "BKS" is the KeyStore name (BouncycastleKeyStore) and "BC" is the provider (BouncyCastle). Alternatively you can use SpongyCastle as a wrapper and initialize the KeyStore: `KeyStore.getInstance("BKS", "SC");`.
+You can create one by using the `KeyStore.getInstance("BKS", "BC");`, where "BKS" is the KeyStore name (BouncyCastle Keystore) and "BC" is the provider (BouncyCastle). Alternatively you can use SpongyCastle as a wrapper and initialize the KeyStore: `KeyStore.getInstance("BKS", "SC");`.
 
 Please be aware that not all KeyStores offer proper protection to the keys stored in the KeyStore files.
 
@@ -550,7 +550,7 @@ android:inputType="textNoSuggestions"
 
 #### Overview
 
-When keying in data into input fields, the [clipboard](https://developer.android.com/guide/topics/text/copy-paste.html "Copy and Paste in Android") can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can therefore be misused by malicious apps in order to get sensitive data stored in the clipboard.
+When keying in data into input fields, the [clipboard](https://developer.android.com/guide/topics/text/copy-paste.html "Copy and Paste in Android") can be used to copy data in. The clipboard is accessible system-wide and therefore shared between the apps. This feature can therefore be misused by malicious apps in order to get sensitive data stored in the clipboard.
 
 #### Static Analysis
 
@@ -636,7 +636,7 @@ Inspect the source code to further understand how the content provider is meant 
 - `.update(`
 - `.delete(`
 
-When exposing a content provider it should also be checked if parametrized [query methods](https://developer.android.com/reference/android/content/ContentProvider.html#query(android.net.Uri, java.lang.String[], java.lang.String, java.lang.String[], java.lang.String) "Query method in Content Provder Class") (`query()`, `update()`, and `delete()`) are being used to prevent SQL injection. If so, check if all inputs to them are properly sanitized.
+When exposing a content provider it should also be checked if parameterized [query methods](https://developer.android.com/reference/android/content/ContentProvider.html#query(android.net.Uri, java.lang.String[], java.lang.String, java.lang.String[], java.lang.String) "Query method in Content Provider Class") (`query()`, `update()`, and `delete()`) are being used to prevent SQL injection. If so, check if all inputs to them are properly sanitized.
 
 As an example of a vulnerable content provider we will use the vulnerable password manager app [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve - Vulnerable Password Manager").
 
@@ -1245,7 +1245,7 @@ public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
 
     /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
       * The caller is responsible of clearing the key array provided as input.
-      * The internal copy of the key can be claered by calling the destroy() method.
+      * The internal copy of the key can be cleared by calling the destroy() method.
       */
     public SecureSecretKey(final byte[] key, final String algorithm) {
         this.key = key.clone();
