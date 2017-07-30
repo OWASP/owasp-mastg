@@ -17,7 +17,7 @@ Developers have two options for incorporating Touch ID authentication:
 
 ##### Local Authentication Framework
 
-The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function <code>evaluatePolicy</code> of the <code>LAContext</code> class. 
+The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class. 
 
 Two available policies define acceptable forms of authentication:
 

@@ -32,7 +32,7 @@ package:/data/app/com.awesomeproject-1/base.apk
 $ adb pull /data/app/com.awesomeproject-1/base.apk
 ```
 
-APK signatures can be verified using the <code>apksigner</code> tool.
+APK signatures can be verified using the `apksigner` tool.
 
 ```bash
 $ apksigner verify --verbose Desktop/example.apk
@@ -42,7 +42,7 @@ Verified using v2 scheme (APK Signature Scheme v2): true
 Number of signers: 1
 ```
 
-The contents of the signing certificate can be examined using <code>jarsigner</code>. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
+The contents of the signing certificate can be examined using `jarsigner`. Note the in the debug certificate, the Common Name(CN) attribute is set to "Android Debug".
 
 The output for an APK signed with a Debug certificate looks as follows:
 
@@ -57,7 +57,7 @@ sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 (...)
 ```
 
-Ignore the "CertPath not validated" error -  this error appears with Java SDK 7 and greater. Instead, you can rely on the <code>apksigner</code> to verify the certificate chain.
+Ignore the "CertPath not validated" error -  this error appears with Java SDK 7 and greater. Instead, you can rely on the `apksigner` to verify the certificate chain.
 
 #### Dynamic Analysis
 
@@ -67,7 +67,7 @@ Static analysis should be used to verify the APK signature.
 
 Developers need to make sure that [release builds](https://developer.android.com/studio/publish/app-signing.html "Application Signing") are signed with the appropriate certificate. In Android Studio, this can be done manually or by creating a signing configuration and assigning it to the release build type.
 
-The signing configuration can be managed through the Android Studio GUI or the <code>signingConfigs {}</code> block in <code>build.gradle</code>. The following values need to be set to activate both v1 and v2 scheme:
+The signing configuration can be managed through the Android Studio GUI or the `signingConfigs {}` block in `build.gradle`. The following values need to be set to activate both v1 and v2 scheme:
 
 ```
 v1SigningEnabled true
@@ -94,11 +94,11 @@ N/A
 
 #### Overview
 
-The <code>android:debuggable</code> attribute in the [<code>Application</code>](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") element in the manifest determines whether or not the app can be debugged when running on a user mode build of Android. In a release build, this attribute should always be set to "false" (the default value).
+The `android:debuggable` attribute in the [`Application`](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") element in the manifest determines whether or not the app can be debugged when running on a user mode build of Android. In a release build, this attribute should always be set to "false" (the default value).
 
 #### Static Analysis
 
-Check in <code>AndroidManifest.xml</code> whether the <code>android:debuggable</code> attribute is set:
+Check in `AndroidManifest.xml` whether the `android:debuggable` attribute is set:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
@@ -219,7 +219,7 @@ Static analysis should be used to verify for debugging symbols.
 
 #### Remediation
 
-Dynamic symbols can be stripped using the <code>visibility</code> compiler flag. Adding this flag causes gcc to discard the function names while still preserving the names of functions declared as <code>JNIEXPORT</code>.
+Dynamic symbols can be stripped using the `visibility` compiler flag. Adding this flag causes gcc to discard the function names while still preserving the names of functions declared as `JNIEXPORT`.
 
 Add the following to build.gradle:
 

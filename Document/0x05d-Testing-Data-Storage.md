@@ -905,7 +905,7 @@ Like other modern mobile operating systems Android offers auto-backup features. 
 
 Given its diverse ecosystem, Android has a lot of backup options to account for.
 
-- Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the <code>adb backup</code> command when USB debugging is enabled.
+- Stock Android has built-in USB backup facilities. A full data backup, or a backup of a particular app's data directory, can be obtained using the `adb backup` command when USB debugging is enabled.
 
 - Google also provides a "Back Up My Data" feature that backs up all app data to Google's servers.
 

@@ -342,7 +342,7 @@ static bool amIAnInferior(void)
 }
 ```
 
-Disabling <code>ptrace()</code>.
+Disabling `ptrace()`.
 
 ```c
 typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
@@ -691,7 +691,7 @@ if(funcptr)
 return 0; // good
 ```
 
-\} Example code from the Netitude blog <code>[2]</code>.
+\} Example code from the Netitude blog `[2]`.
 
 #### Effectiveness Assessment
 

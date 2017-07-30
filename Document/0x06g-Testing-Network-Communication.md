@@ -2,7 +2,7 @@
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wifi, classical network based-attacks become a potential issue.
 
-Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the <code>NSURLConnection</code> class provides methods to load URL requests asynchronously and synchronously.
+Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
 
 ### Testing App Transport Security
 
@@ -214,13 +214,22 @@ ATS settings should be verified via static analysis in the iOS source code.
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 
-### Testing Custom Certificate Stores and SSL Pinning
+### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
 
-Certificate pinning allows to hard-code the certificate that is known to be used by the server into the app. Pinning the server’s certificate reduces the attack surface of a rogue CA and CA compromise. Mobile applications that implement certificate pinning only can connect to a limited number of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
+Certificate pinning is the process of associating the backend server with a particular X509 certificate or public key. By doing this, the trust on external certificate authorities is removed, reducing the attack surface. 
+
+The certificate can be pinned during development, or at the time the app first connects to the backend.
+In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
 #### Static Analysis
+
+Verify that the server certificate is pinned. This can be done in several ways, where most common include:
+
+1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
+2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
+3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
 The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored  in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
@@ -271,15 +280,6 @@ Second way of storing the certificate (and possibly password) is to use the keyc
 Sometimes applications have one certificate that is hardcoded and use it for the first login and then the personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server.
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
-
-
-#### Remediation
-
-As a best practice, the certificate should be pinned. This can be done in several ways, where most common include:
-
-1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
-2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
-3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
 #### References
 
