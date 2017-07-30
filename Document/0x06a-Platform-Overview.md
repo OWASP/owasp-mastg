@@ -12,9 +12,9 @@ The uniform hardware and tight integration between hardware and software creates
 
 All of this doesn't mean however that iOS app developers don't need to worry about security. Topics like data protection and Keychain, TouchID authentication and network security still leave plenty of margin for errors. In the following chapters, we document the iOS security architecture, followed by explaining a basic security testing methodology and reverse engineering howtos. We'll then map the categories of the MASVS to iOS and outline test cases for each requirement.
 
-### The iOS Security Architecture
+### iOS Security Architecture
 
-The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") consists of six core features.
+[iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") has six core features:
 
 - Hardware Security
 - Secure Boot
