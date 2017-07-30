@@ -145,7 +145,7 @@ Depending on the maturity of the organisation, or development team, the deployme
 
 The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exists. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#manoranjan, #mcgraw).
 
-Todo: Automating security tools in Jenkins,...
+-- TODO [Automating security tools in Jenkins,...] --
 
 ### References
 
