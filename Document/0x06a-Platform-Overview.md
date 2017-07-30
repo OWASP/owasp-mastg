@@ -78,29 +78,24 @@ Building encryption into the physical architecture makes it a default security c
 
 When data protection is enabled, each data file is associated with a specific class that supports a different level of accessibility and protects data based on when it needs to be accessed. The encryption and decryption operations associated with each class are based on multiple key mechanisms that utilizes the device's UID and passcode, plus a class key, file system key and per-file key. The per-file key is used to encrypt the file content. The class key is wrapped around the per file key and stored in the file's metadata. The file system key is used to encrypt the metadata. The UID and passcode protect the class key. This operation is invisible to users. For a device to utilize data protection, a passcode must be used when accessing that device. The passcode does not only unlock the device, but also combined with the UID creates iOS encryption keys that are more resistant to hacking efforts and brute-force attacks. It is with this that users need to enable passcodes on their devices to enable data protection.
 
-
 #### General Exploit Mitigations
 
 iOS currently implements two specific security mechanisms, namely address space layout randomization (ASLR) and eXecute Never (XN) bit, to prevent code execution attacks.
 
-ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked.
-
-Thus, this makes the specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon knowing the memory addresses of basic libc functions.
+ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked. Thus, this makes specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon the memory addresses of basic libc functions.
 
 <!-- TODO [Further develop section on iOS General Exploit Mitigation] -->
-
+XN mechanism allows iOS to mark certain memory segments and non-executable on a program’s stack and heap by default. In case of attack this will prevent malicious code inserted onto the stack or heap from execution.
 
 ### Software Development on iOS
 
-As with other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. Xcode is an Integrated Development Environment (IDE) used for this purpose and iOS applications are implemented either by using Objective-C or Swift.
+Like other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. Xcode is an Integrated Development Environment (IDE) used for this purpose. iOS applications are developed either by using Objective-C or Swift.
 
-Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language and is used on macOS and iOS to develop desktop and mobile applications respectively. Both macOS and iOS are implemented by using Objective-C.
-
-Swift is the successor of Objective-C and allows interoperability with the same and was introduced with Xcode 6 in 2014.
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS and iOS to develop desktop and mobile applications respectively. Swift is the successor of Objective-C and allows interoperability with the it. Swift was introduced with Xcode 6 in 2014.
 
 ### Understanding iOS Apps
 
-iOS applications are distributed in IPA (iOS App Store Package) archives. A IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. The container is in fact a ZIP compressed file, which can be decompressed.
+iOS applications are distributed in IPA (iOS App Store Package) archives. An IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. This package is in fact a ZIP compressed file, which can be decompressed.
 
 An IPA file has a built-in directory structure. The example below shows this structure on a high level:
 
@@ -112,24 +107,25 @@ An IPA file has a built-in directory structure. The example below shows this str
 
 #### IPA Payloads - A Closer Look
 
-Let’s take a closer look at the different files that are to be found in the ZIP compressed IPA container. It is necessary to understand that this is the raw architecture of the bundle container and not the definitive form after installation on the device. It uses a relatively flat structure with few extraneous directories in an effort to save disk space and simplify access to the files. The bundle contains the application executable and any resources used by the application (for instance, the application icon, other images, and localized content) in the top-level bundle directory.
+Let us take a closer look at the different files that can be found in the IPA container. It is necessary to understand that this is the raw architecture of the bundle container and not the definitive form after its installation on a device. It uses a relatively flat structure with few extraneous directories in an effort to save disk space and simplify access to the files. The bundle contains the application executable and any resources used by the application (for instance, the application icon, other images, and localized content) in the top-level bundle directory.
 
-- **MyApp**: The executable containing the application’s code, which is compiled and not in a ‘readable’ format.
+- **MyApp**: The executable containing the application code, which is compiled, not in a ‘readable’ format.
 - **Application**: Icons used at specific times to represent the application.
-- **Info.plist**: Containing configuration information, such as its bundle ID, version number, and display name.
+- **Info.plist**: Configuration information, such as its bundle ID, version number, and application display name.
 - **Launch images**: Images showing the initial interface of the application in a specific orientation. The system uses one of the provided launch images as a temporary background until the application is fully loaded.
-- **MainWindow.nib**: Contains the default interface objects to load at application launch time. Other interface objects are then either loaded from additional nib files or created programmatically by the application.
-- **Settings.bundle**: Contains any application-specific preferences using property lists and other resource files to configure and display them.
-- **Custom resource files**: Non-localized resources are placed at the top level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources consist of nib files, images, sound files, configuration files, strings files and any other custom data files you need for your application.
+- **MainWindow.nib**: Default interface objects to load at the application launch time. Other interface objects are then either loaded from additional nib files or created programmatically by the application.
+- **Settings.bundle**: Application-specific preferences using property lists and other resource files to be configured and displayed.
+- **Custom resource files**: Non-localized resources are placed at the top-level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources include nib files, images, sound files, configuration files, strings files and any other custom data files used by the application.
 
-A language.lproj folder is defined for each language that the application supports. It contains the a storyboard and strings file.
+A language.lproj folder is defined for each language that the application supports. It contains a storyboard and strings file.
 - A storyboard is a visual representation of the user interface of an iOS application, showing screens of content and the connections between those screens.
-- The strings file format consists of one or more key-value pairs along with optional comments.
+- Strings file format consists of one or more key-value pairs along with optional comments.
 
 <img src="Images/Chapters/0x06a/iOS_project_folder.png" width="500px"/>
 - *iOS App Folder Structure*
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
+On a jailbroken device, you can recover the IPA for an installed iOS app using [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). Note that during mobile security assessments, developers will often provide you with the IPA directly. They can send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
+
 
 #### App Structure on the iOS File System
 
