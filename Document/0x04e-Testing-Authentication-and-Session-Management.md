@@ -315,7 +315,15 @@ Attempt to log in with an incorrect password multiple times. After three to five
 
 #### Overview
 
-All significant, if not privileged, actions must be done after a user is properly authenticated; the application will remember the user inside a session. When improperly managed, sessions are subject to a variety of attacks where the session of a legitimate user may be abused, allowing the attacker to impersonate the user. As a consequence, data may be lost, confidentiality compromised or illegitimate actions performed.
+In session-based authentication, an authentication record is kept both on the client and server side. The authentication flow is as follows:
+
+1. The app sends a request with the user's credentials to the backend server;
+2. The server verifies the credentials. If the credentials are valid, the server creates a new session along with a random session ID;
+3. The server sends a response to the client that includes the session ID;
+4. The client sends the the session ID with all subsequent requests. The server validates the session ID and retrieves the associates session record;
+5. When the user logs out, the session record is destroyed on the server, and the client discards the session ID.
+
+When improperly managed, sessions are subject to a variety of attacks where the session of a legitimate user may be compromised, allowing the attacker to impersonate the user. As a consequence, data may be lost, confidentiality compromised or illegitimate actions performed.
 
 Session IDs must:
 
