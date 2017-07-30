@@ -311,7 +311,7 @@ Attempt to log in with an incorrect password multiple times. After three to five
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
-### Testing Session-based Authentication
+### Testing Session Management
 
 #### Overview
 
@@ -589,13 +589,13 @@ For additional best practices and detailed information please refer to the sourc
 
 Reducing the lifetime of session identifiers and tokens to a minimum decreases the likelihood of a successful account hijacking attack. The scope for this test case is to validate that the application has a logout functionality and it effectively terminates the session on client and server side or invalidates a stateless token.
 
-One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
+One of the most common errors when implementing a logout functionality is to not destroy the session on the server-side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
 
 Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
 
 ##### Static Analysis 
 
-If server side code is available, verify that the session is being terminated or token invalidated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
+If server side code is available, verify that the session is terminated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
 
 - Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
@@ -640,13 +640,27 @@ Mobile apps that handle sensitive data like patient data or critical functions s
 
 #### Static Analysis
 
+##### Stateful Sessions
+
 Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
+
+Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
+
+The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
+
+- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
+
+##### Stateless Tokens
 
 In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
 
-Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
+A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token. 
 
-The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
+For apps that handle sensitive data, verify that the refresh token expires after a period of reasonable time. The following example code shows a refresh token API that checks the issuing date of the refresh token. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to re-login.
+
 
 ```Java
  app.post('/refresh_token', function (req, res) {
@@ -655,7 +669,7 @@ The exact values for token expiration depend on the application requirements and
 
   // if more than 14 days old, force login
   if (profile.original_iat - new Date() > 14) { // iat == issued at
-    return res.send(401); // re-logging
+    return res.send(401); // re-login
   }
 
   // check if the user still exists or if authorization hasn't been revoked
@@ -666,15 +680,6 @@ The exact values for token expiration depend on the application requirements and
   res.json({ token: refreshed_token });
 });
 ```
-
-Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of your application and the use case of it.
-
-The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-
-- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
-- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
-- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
 
 #### Dynamic Analysis
 
