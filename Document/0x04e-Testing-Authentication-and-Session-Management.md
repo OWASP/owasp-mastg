@@ -274,11 +274,11 @@ Attempt to enter weak passwords into registration and password reset functions, 
 
 Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try to guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize word lists and smart rule sets to automatically generate the required requests.
 
-The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
+The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last for a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
 
 #### Static Analysis
 
-Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a user name within a short time frame, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
+Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a user name within a short time frame, and prevents login attempts once the threshold is met. After a correct attempt, the code should set the error counter to zero.
 
 The following best practices should be followed when implementing anti-brute-force controls:
 
@@ -289,7 +289,35 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 
 #### Dynamic Analysis
 
-Attempt to log in with an incorrect password multiple times. After three to five attempts, your login should be (at least temporarily) rejected even when correct credentials are entered.
+The purpose of dynamically analysing authentication mechanisms is to make sure an important number of login attempts cannot be made to guess credentials. 
+
+To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation. 
+For this demo, we'll use a proxy (Burp Suite Free edition). Burp Suite offers a module dedicated to such attacks called 'Intruder' (more information can be found from Burp Suite official documentation at [Burp Suite official documentation](https://portswigger.net/burp/help/ "Burp Suite official documentation")):
+
+  - start Burp Suite;
+  - create a new project (or open an existing one);
+  - enter relevant parameters for the project;
+  - now that the proxy is set between your app and the targeted web site, browse the site and intercept the request that corresponds to the authentication mechanism;
+  - in the 'Proxy / HTTP History' tab, right-click this request and select 'Send to Intruder' in the list; 
+  - select the 'Intruder' tab in Burp Suite;
+  - make sure all parameters in the 'Target', 'Positions' and 'Options' tabs are set accordingly, and select the 'Payload' tab;
+  - load the list of passwords to be tried or upload the list. The attack is ready to be started!
+  
+![List of passwords in Burp Suite](Images/Chapters/0x04e/BurpIntruderInputList.gif)
+  
+  - click the 'Start attack' button to launch the attack on the authentication mechanism.
+  
+A new window opens and requests to the site are sent in sequence, each request corresponding to a password in the provided list. For each request, information on the response is provided (length, status code, ...), which allows to distinguish the successful attempt from the others :
+
+![A successful attack in Burp Suite](Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.gif)
+
+In this example, the successful attempt can be identified from its different length (password = "P@ssword1"). 
+
+In order to prevent this type of attack from being successful, a few mitigations can be put in place :
+  - after a few unsuccessful attempts, targeted accounts should be temporarily locked and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+  - change default credentials and avoid common usernames and passwords.
+  - put a strong emphasis on protection privileged accounts.
+
 
 #### References
 
@@ -307,7 +335,7 @@ Attempt to log in with an incorrect password multiple times. After three to five
 
 ##### Tools
 
-- Burp Suite Professional - https://portswigger.net/burp/
+- Burp Suite Free or Professional editions - https://portswigger.net/burp/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
