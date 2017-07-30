@@ -8,12 +8,12 @@ Using TLS for transporting sensitive information over the network is essential f
 
 #### Static Analysis
 
-The static analysis approach is to decompile an application, if the source code was not provided. There are two main issues related with validating TLS connection that should be verified in the code:
+Two key issues should be tested for:
 
-- the first one is verification if a certificate comes from a trusted source and
-- the second one is to check whether the endpoint server presents the right certificate
+- Verify that a certificate comes from a trusted source;
+- Check whether the endpoint server presents the right certificate.
 
-Search the code for usages of TrustManager and HostnameVerifier. You can find insecure usage examples in the sections below.
+Search the code for usages of `TrustManager` and `HostnameVerifier`. You can find insecure usage examples in the sections below.
 
 ##### Verifying the Server Certificate
 
