@@ -2,17 +2,19 @@
 
 Practically all network-connected mobile apps use HTTP(S) to send and receive data from and to a remote endpoint. Consequently, network-based attacks such as packet sniffing and man-in-the-middle-attacks are a potential issue. In this chapter, we discuss potential vulnerabilities, testing techniques and best practices concerning the network communication between a mobile app and its endpoint(s).
 
-### Testing for Unencrypted Sensitive Data on the Network
+### Testing Data Encryption on the Network
 
 #### Overview
 
-One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected, it is possible for an attacker with  access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify it in transit. For this reason, it is almost never advisable to use plain-text network protocols.
+One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected in transit, it is possible for an attacker with access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify itt. For this reason, it is almost never advisable to use plain-text network protocols.
 
-The vast majority of apps relies on the Hypertext Transfer Protocol (HTTP) for communication with the backend. HTTP over Transport Layer Security (TLS) - a.k.a. HTTPS - wraps the HTTP protocol into an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer, the now-depreciated predecessor of TLS). TLS enables authentication of the backend service, as well as confidentiality and integrity of the network data.
+The vast majority of apps relies on the Hypertext Transfer Protocol (HTTP) for communication with the backend. HTTP over Transport Layer Security (TLS) - a.k.a. HTTPS - wraps HTTP into an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer, the now-depreciated predecessor of TLS). TLS enables authentication of the backend service, as well as confidentiality and integrity of the network data.
 
 #### Static Analysis
 
-Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are requested.
+Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are requested. Ensure that sensitive information is being sent via secure channels, using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection"), or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") for socket-level communication using TLS.
+
+Please be aware that `SSLSocket` **does not** verify the hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. A [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly") can be found in the Android developer documentation.
 
 #### Dynamic Analysis
 
@@ -32,12 +34,6 @@ adb forward tcp:1234 tcp:1234
 ```
 
 You can display the captured traffic in a human-readable way by using Wireshark. It should be investigated what protocols are used and if they are unencrypted. It is important to capture all traffic (TCP and UDP), so you should run all possible functions of the tested application after starting intercepting it.
-
-#### Remediation
-
-Ensure that sensitive information is being sent via secure channels, using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection"), or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") for socket-level communication using TLS.
-
-Please be aware that `SSLSocket` **does not** verify the hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. A [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly") can be found in the Android developer documentation.
 
 #### References
 
@@ -97,16 +93,15 @@ Similarly, the iOS ATS (App Transport Security) configuration requires one of th
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`
 
-
 #### Static Analysis
 
 In order to do a static analysis the configuration file need to be provided of the web server or reverse proxy where the HTTPS connection terminates. It is unusual to get this kind of information for a mobile penetration test and it also shouldn't be requested by you as the dynamic analysis is very fast and easy to execute.
 
-In case you have the configuration file, check it against the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+Verify that the server is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
 #### Dynamic Analysis
 
-After identifying all servers your application is communicating with (e.g. by using an interception proxy) you should [verify if they allow the usage of weak ciphers, protocols or keys](https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001\) "Testing for Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection (OTG-CRYPST-001)"). It can be done, using different tools:
+After identifying all endpoints your application is communicating with (e.g. by using an interception proxy) you should [verify if they allow the usage of weak ciphers, protocols or keys](https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001\) "Testing for Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection (OTG-CRYPST-001)"). It can be done, using different tools:
 
 - testssl.sh:
 
@@ -137,10 +132,6 @@ O-Saft can also be run in GUI mode with the following command:
 ```
 o-saft.tcl
 ```
-
-#### Remediation
-
-Any vulnerability or misconfiguration should be solved either by patching or reconfiguring the server. To properly configure transport layer protection for network communication, please follow the [OWASP Transport Layer Protection cheat sheet](https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
 #### References
 
