@@ -130,7 +130,10 @@ Ensure that the host name and certificate are verified correctly. Examples and c
 
 #### Overview
 
-Certificate pinning allows to hard-code the certificate or parts of it into the app that is known to be used by the server. This technique is used to reduce the threat of a rogue CA and CA compromise. Pinning the server’s certificate takes the CA out of the game. Mobile apps that implement certificate pinning only can connect to a limited numbers of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
+Certificate pinning is the process of associating the backend server with a particular X509 certificate or public key, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced (after all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors).
+
+The certificate can be pinned during development, or at the time the app first connects to the backend.
+In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
 #### Static Analysis
 
