@@ -6,7 +6,7 @@ Practically all network-connected mobile apps use HTTP(S) to send and receive da
 
 #### Overview
 
-One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected in transit, it is possible for an attacker with access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify itt. For this reason, it is almost never advisable to use plain-text network protocols.
+One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected in transit, it is possible for an attacker with access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify it. For this reason, it is almost never advisable to use plain-text network protocols.
 
 The vast majority of apps relies on the Hypertext Transfer Protocol (HTTP) for communication with the backend. HTTP over Transport Layer Security (TLS) - a.k.a. HTTPS - wraps HTTP into an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer, the now-depreciated predecessor of TLS). TLS enables authentication of the backend service, as well as confidentiality and integrity of the network data.
 
