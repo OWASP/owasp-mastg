@@ -1114,7 +1114,7 @@ The output would look like this:
 [*] Finished heap search
 ~~~
 
-You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call <code>getMethods()` from the wrapper's `class` property:
+You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
 
 ~~~
 Java.perform(function () {
