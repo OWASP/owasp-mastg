@@ -123,7 +123,7 @@ The secondary authentication step can be performed upon login, or at a later poi
 
 ##### Transaction Signing Using Push Notifications and PKI
 
-The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the back end. To authorize a transaction, the back end sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PInNor fingerprint) and the data is signed with user's private key. Send the signed data to the server to confirm the transaction.
+The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the back end. To authorize a transaction, the back end sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PIN or fingerprint) and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature using the user's public key.
 
 ##### Supplementary Mechanisms
 
