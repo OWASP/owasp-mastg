@@ -31,7 +31,7 @@ Consider the following example from the [OWASP Web Testing Guide](https://www.ow
 http://www.site.com/page.asp?authenticated=no
 ```
 
-The GET parameters sent with the request can be changed arbitrarily by the client. Nothing prevents the client from simply changing the value of the <code>authenticated</code> parameter to "yes", effectively bypassing authentication.
+The GET parameters sent with the request can be changed arbitrarily by the client. Nothing prevents the client from simply changing the value of the `authenticated` parameter to "yes", effectively bypassing authentication.
 
 While this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. The assumption is that these parameters can't be tampered with. As an example, consider the following [classical vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on a Cookie named "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access simply by setting the cookie value as follows:
 
@@ -39,7 +39,7 @@ While this is a simplistic example that you probably won't find in the wild, pro
 isAdmin=True
 ```
 
-Traditionally, security experts used to recommend using session-based authentication and maintaining session data only on the server-side. This prevents any form of client-side tampering with the session state. However, when stateless authentication is used instead of session-based authentication, the whole point is to *not* have any session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as <code>isAdmin</code> is a perfectly normal thing.
+Traditionally, security experts used to recommend using session-based authentication and maintaining session data only on the server-side. This prevents any form of client-side tampering with the session state. However, when stateless authentication is used instead of session-based authentication, the whole point is to *not* have any session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In that case, seeing client-side parameters such as `isAdmin` is a perfectly normal thing.
 
 To prevent tampering with the client-side token, cryptographic signatures are added. Of course, there is some potential here for things to go wrong, and popular implementations of stateless authentication have suffered from vulnerabilities. For example, in some implementations of JWT it was possible to deactivate signature verification by [setting the signature type to "None"](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 

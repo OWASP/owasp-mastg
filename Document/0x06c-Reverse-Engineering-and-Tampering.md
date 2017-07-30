@@ -153,9 +153,9 @@ $ otool -L <binary>
 
 <!-- TODO [iOS Debugging Overview] -->
 
-Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the <code>task_for_pid()</code> function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
+Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid()` function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
-Even though the XNU kernel implements the <code>ptrace()</code> system call as well, some of its functionality has been removed, including the capability to read and write register states and memory contents. Even so, <code>ptrace()</code> is used in limited ways by standard debuggers such as <code>lldb</code> and <code>gdb</code>. Some debuggers, including Radare2's iOS debugger, don't invoke <code>ptrace</code> at all.
+Even though the XNU kernel implements the `ptrace()` system call as well, some of its functionality has been removed, including the capability to read and write register states and memory contents. Even so, `ptrace()` is used in limited ways by standard debuggers such as `lldb` and `gdb`. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
 
 ##### Using lldb
 

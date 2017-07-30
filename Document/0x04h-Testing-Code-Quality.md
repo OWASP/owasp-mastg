@@ -46,7 +46,7 @@ This results in the following query:
 SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1' 
 ```
 
-Because the condition <code>'1' = '1'</code> always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
+Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
 One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
 
@@ -125,15 +125,15 @@ Memory corruption bugs are a popular mainstay with hackers. This class of bug re
 
 - Integer overflows: When the result of an arithmetic operation exceeds the maximum value for the integer type defined by the programmer, this results in the value "wrapping around" the maximum integer value, inevitably resulting in a small value being stored. Conversely, when the result of an arithmetic operation is smaller than the minimum value of the integer type, an *integer underflow* occurs where the result is larger than expected. Whether a particular integer overflow/underflow bug is exploitable depends on how the integer is used – for example, if the integer type were to represent the length of a buffer, this could create a buffer overflow vulnerability.
 
-- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of the <code>printf()</code> family of C functions, attackers may inject format tokens such as ‘%c’ and ‘%n’ to access memory. Format string bugs are convenient to exploit due to their flexibility. Should a program output the result of the string formatting operation, the attacker can read and write to memory arbitrarily, thus bypassing protection features such as ASLR.
+- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of the `printf()` family of C functions, attackers may inject format tokens such as ‘%c’ and ‘%n’ to access memory. Format string bugs are convenient to exploit due to their flexibility. Should a program output the result of the string formatting operation, the attacker can read and write to memory arbitrarily, thus bypassing protection features such as ASLR.
 
-The primary goal in exploiting memory corruption is usually to redirect program flow into a location where the attacker has placed assembled machine instructions referred to as *shellcode*. On iOS, the data execution prevention feature (as the name implies) prevents execution from memory defined as data segments. To bypass this protection, attackers leverage return-oriented programming (ROP). This process involves chaining together small, pre-existing code chunks ("gadgets") in the text segment where these gadgets may execute a function useful to the attacker or, call <code>mprotect</code> to change memory protection settings for the location where the attacker stored the *shellcode*.
+The primary goal in exploiting memory corruption is usually to redirect program flow into a location where the attacker has placed assembled machine instructions referred to as *shellcode*. On iOS, the data execution prevention feature (as the name implies) prevents execution from memory defined as data segments. To bypass this protection, attackers leverage return-oriented programming (ROP). This process involves chaining together small, pre-existing code chunks ("gadgets") in the text segment where these gadgets may execute a function useful to the attacker or, call `mprotect` to change memory protection settings for the location where the attacker stored the *shellcode*.
 
 Android apps are, for the most part, implemented in Java which is inherently safe from memory corruption issues by design. However, native apps utilizing JNI libraries are susceptible to this kind of bug.
 
 ##### Best Practices
 
-- Avoid using unsafe string functions such as <code>strcpy</code>, most other functions beginning with the “str” prefix, <code>sprint</code>, <code>vsprintf</code>, <code>gets</code>, and so on.
+- Avoid using unsafe string functions such as `strcpy`, most other functions beginning with the “str” prefix, `sprint`, `vsprintf`, `gets`, and so on.
 - If you are using C++, use the ANSI C++ string class.
 - If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you should use CFString, the Core Foundation representation of a string.
 - Do not concatenate untrusted data into format strings.
@@ -153,18 +153,18 @@ The following code snippet shows a simple example for a condition resulting in a
  }  
 ```
 
-- To identify potential buffer overflows, look for uses of unsafe string functions (<code>strcpy</code>, <code>strcat</code>, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
+- To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
-    - <code>strcat</code>
-    - <code>strlcat</code>
-    - <code>strcpy</code>
-    - <code>strncat</code>
-    - <code>strlcat</code>
-    - <code>strncpy</code>
-    - <code>strlcpy</code>
-    - <code>sprintf</code>
-    - <code>snprintf</code>
-    - <code>gets</code>
+    - `strcat`
+    - `strlcat`
+    - `strcpy`
+    - `strncat`
+    - `strlcat`
+    - `strncpy`
+    - `strlcpy`
+    - `sprintf`
+    - `snprintf`
+    - `gets`
 
 - Look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly;
 

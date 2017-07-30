@@ -77,7 +77,7 @@ Alternatively, checking whether *su* is in PATH also works:
     }
 ~~~
 
-File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/)) uses the <code>stat</code> system call to retrieve information about a file and returns <code>1</code> if the file exists.
+File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/)) uses the `stat` system call to retrieve information about a file and returns `1` if the file exists.
 
 ```c
 jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath) {
@@ -99,11 +99,11 @@ jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath)
 
 **Executing su and other commands**
 
-Another way of determining whether <code>su</code> exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if <code>su</code> is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
+Another way of determining whether `su` exists is attempting to execute it through `Runtime.getRuntime.exec()`. This will throw an IOException if `su` is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
-Supersu - by far the most popular rooting tool - runs an authentication daemon named <code>daemonsu</code>, so the presence of this process is another sign of a rooted device. Running processes can be enumerated through <code>ActivityManager.getRunningAppProcesses()</code> and <code>manager.getRunningServices()</code> APIs, the <code>ps</code> command, or walking through the <code>/proc</code> directory. As an example, this is implemented the following way in [rootinspector](https://github.com/devadvance/rootinspector/):
+Supersu - by far the most popular rooting tool - runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated through `ActivityManager.getRunningAppProcesses()` and `manager.getRunningServices()` APIs, the `ps` command, or walking through the `/proc` directory. As an example, this is implemented the following way in [rootinspector](https://github.com/devadvance/rootinspector/):
 
 ```java
     public boolean checkRunningProcesses() {
@@ -221,11 +221,11 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Anti-JDWP-Debugging Examples
 
-In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the <code>ro.debuggable</code> system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
+In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the `ro.debuggable` system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
 ###### Checking Debuggable Flag in ApplicationInfo
 
-We have encountered the <code>android:debuggable</code> attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
+We have encountered the `android:debuggable` attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
 
 ```java
     public static boolean isDebuggable(Context context){
@@ -256,7 +256,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 
 ###### Timer Checks
 
-The <code>Debug.threadCpuTimeNanos</code> indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, [the difference in execution time can be used to make an educated guess on whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
+The `Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, [the difference in execution time can be used to make an educated guess on whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
 
 ```
 static boolean detect_threadCpuTimeNanos(){
@@ -383,7 +383,7 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical,
 
 ###### Checking TracerPid
 
-When the <code>ptrace</code> system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
+When the `ptrace` system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
 The following implementation is taken from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/).
 
@@ -416,7 +416,7 @@ The following implementation is taken from [Tim Strazzere's Anti-Emulator projec
 
 **Ptrace variations***
 
-On Linux, the [ptrace() system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
+On Linux, the [ptrace() system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of `ptrace` in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
 
 As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines:
 
@@ -463,7 +463,7 @@ This is however easily bypassed by killing the child and "freeing" the parent fr
 - Keeping track of running processes to make sure the children stay alive;
 - Monitoring values in the /proc filesystem, such as TracerPID in /proc/pid/status.
 
-Let's look at a simple improvement we can make to the above method. After the initial <code>fork()</code>, we launch an extra thread in the parent that continually monitors the status of the child. Depending on whether the app has been built in debug or release mode (according to the <code>android:debuggable</code> flag in the Manifest), the child process is expected to behave in one of the following ways:
+Let's look at a simple improvement we can make to the above method. After the initial `fork()`, we launch an extra thread in the parent that continually monitors the status of the child. Depending on whether the app has been built in debug or release mode (according to the `android:debuggable` flag in the Manifest), the child process is expected to behave in one of the following ways:
 
 1. In release mode, the call to ptrace fails and the child crashes immediately with a segmentation fault (exit code 11).
 2. In debug mode, the call to ptrace works and the child is expected to run indefinitely. As a consequence, a call to waitpid(child_pid) should never return - if it does, something is fishy and we kill the whole process group.
@@ -1099,7 +1099,7 @@ Keep in mind that a hooking framework such as Xposed or Frida could hook this AP
 #### Bypassing Emulator Detection
 
 1. Patch out the emulator detection functionality. Disable the unwanted behavior by simply overwriting the respective bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the <code>TelephonyManager.getDeviceID()</code> method to return an IMEI value.
+2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the `TelephonyManager.getDeviceID()` method to return an IMEI value.
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
@@ -1188,7 +1188,7 @@ With ELF binaries, native function hooks can be installed by either overwriting 
 
 The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. *GOT hooks* overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points into a legitimately loaded library.
 
-In contrast to GNU <code>ld</code>, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding). One can therefore expect all GOT entries to point valid memory locations within the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify that this is indeed the case.
+In contrast to GNU `ld`, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding). One can therefore expect all GOT entries to point valid memory locations within the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify that this is indeed the case.
 
 *Inline hooks* work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. Inline hooks can be detected by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
 

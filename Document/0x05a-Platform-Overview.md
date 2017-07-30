@@ -224,7 +224,7 @@ A process called `Zygote` starts up during the [Android initialization process](
 
 Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path <code>/data/data/<package name></code>. This folder is going to be the private data folder for that particular app.
+When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
 
@@ -383,7 +383,7 @@ In the Binder framework, a client-server communication model is used. To use IPC
 
 Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface for use by clients. Developers write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
 
-Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the <code>addService</code> and retrieved by name using the <code>getService</code> static method in <code>android.os.ServiceManager</code>:
+Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the `addService` and retrieved by name using the `getService` static method in `android.os.ServiceManager`:
 
 ```
   public static IBinder getService(String name)
@@ -553,7 +553,7 @@ Android supports two application signing schemes: As of Android 7.0, APKs can be
 
 ##### JAR Signing (v1 scheme):
 
-In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in <code>META-INF/MANIFEST.MF</code>. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
+In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in `META-INF/MANIFEST.MF`. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
 
 ##### APK Signature Scheme (v2 scheme)
 
@@ -592,7 +592,7 @@ In this example, an unsigned app ready for signing ('myUnsignedApp.apk') is goin
 
 ###### Zipalign
 
-The <code>zipalign</code> tool should always be used to align an APK file before distribution. This tool aligns all uncompressed data within the APK, such as images or raw files, on 4-byte boundaries, which allows for improved memory management during app runtime. If using apksigner, zipalign must be performed before the APK file has been signed.
+The `zipalign` tool should always be used to align an APK file before distribution. This tool aligns all uncompressed data within the APK, such as images or raw files, on 4-byte boundaries, which allows for improved memory management during app runtime. If using apksigner, zipalign must be performed before the APK file has been signed.
 
 #### Publishing Process
 

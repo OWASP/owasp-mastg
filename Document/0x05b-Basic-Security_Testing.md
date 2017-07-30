@@ -232,7 +232,7 @@ Install virtualenv via pip:
 $ pip install virtualenv
 ```
 
-Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command <code>virtualenv drozer</code>. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
+Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
 
 ```
 $ virtualenv drozer
