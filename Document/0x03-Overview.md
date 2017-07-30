@@ -65,11 +65,10 @@ For example, the MASVS requirements could be used in an app's planning and archi
 
 The MSTG contains descriptions of all requirements specified in the MASVS. The MSTG contains the following main sections:
 
-1. The **General Testing Guide** contains mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security.
-> add "chapters x to y"? Or give links? Or both?
+1. The [General Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-General-Testing-Guide.md) contains mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security.
 
-2. The **Android Testing Guide** covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
+2. The [Android Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Android-Testing-Guide.md) covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
 
-3. The **iOS Testing Guide** covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering, and anti-reversing.
+3. The [iOS Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06-iOS-Testing-Guide.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering, and anti-reversing.
 
-4. The **Appendix** contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography. We also include a methodology for assessing software protection schemes.
+4. The [Appendix](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x07-Appendix.md) contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography. We also include a methodology for assessing software protection schemes.
