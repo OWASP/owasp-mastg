@@ -954,7 +954,7 @@ public static boolean c() {
 
 This method iterates through a list of directories and returns "true" (device rooted) if it finds the <code>su</code> binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this.
 
-The method  <code>XposedHelpers.findAndHookMethodfindAndHookMethod</code> allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is <code>c()</code. This method is located in the class <code>com.example.a.b</code>. The following is an Xposed module that overrides the function so that it always returns false:
+The method  <code>XposedHelpers.findAndHookMethodfindAndHookMethod</code> allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class <code>com.example.a.b</code>. The following is an Xposed module that overrides the function so that it always returns false:
 
 ```java
 package com.awesome.pentestcompany;
@@ -984,7 +984,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 }
 ```
 
-Just like regular Android apps, ,odules for Xposed are developed and deployed with Android Studio. For more details on writing, compiling, and installing Xposed modules, refer to the tutorial provided by its author, [rovo89](https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/ "Rovo89: Update on Development of Xposed for Nougat").
+Just like regular Android apps, modules for Xposed are developed and deployed with Android Studio. For more details on writing, compiling, and installing Xposed modules, refer to the tutorial provided by its author, [rovo89](https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/ "Rovo89: Update on Development of Xposed for Nougat").
 
 #### Dynamic Instrumentation with FRIDA
 
