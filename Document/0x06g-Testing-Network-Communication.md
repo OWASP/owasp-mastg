@@ -214,7 +214,7 @@ ATS settings should be verified via static analysis in the iOS source code.
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
 
-### Testing Custom Certificate Stores and SSL Pinning
+### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
 

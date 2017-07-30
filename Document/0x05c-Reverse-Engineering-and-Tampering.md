@@ -884,7 +884,7 @@ Making small changes to the app Manifest or bytecode is often the quickest way t
 
 In most cases, both issues can be fixed by making minor minor changes to the app and then re-signing and re-packaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
 
-##### Example: Disabling SSL Pinning
+##### Example: Disabling Certificate Pinning
 
 Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. Patching bytecode to deactivate SSL pinning can help with this. To demonstrate bypassing certificate pinning, we'll walk through an implementation in an example application.
 

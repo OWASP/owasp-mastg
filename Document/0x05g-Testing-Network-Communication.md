@@ -126,7 +126,7 @@ Ensure that the host name and certificate are verified correctly. Examples and c
 - CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
 
-### Testing Custom Certificate Stores and SSL Pinning
+### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
 
@@ -134,13 +134,13 @@ Certificate pinning allows to hard-code the certificate or parts of it into the 
 
 #### Static Analysis
 
-The process to implement the SSL pinning involves three main steps outlined below:
+The process to implement the certificate pinning involves three main steps outlined below:
 
 1. Obtain a certificate for the desired host
 1. Make sure the certificate is in .bks format
 1. Pin the certificate to an instance of the default Apache Httpclient.
 
-To analyze the correct implementation of SSL pinning the HTTP client should:
+To analyze the correct implementation of certificate pinning the HTTP client should:
 
 1. Load the Keystore:
 
