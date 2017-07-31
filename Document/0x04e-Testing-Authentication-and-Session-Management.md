@@ -119,7 +119,7 @@ Two-factor authentication (2FA) is standard for apps that allow access to sensit
 - Hardware or software token
 - Push notifications in combination with PKI and local authentication
 
-The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
+The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication").
 
 ##### Transaction Signing Using Push Notifications and PKI
 
@@ -141,7 +141,7 @@ An additional control to ensure that an authorized user is using the app on an a
 
 When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
 
-- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations. 
+- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations.
 - If any secret data (e.g. OTP seed) is used as part of the authentication process, verify that the secret is stored in secure device storage.
 
 #### Dynamic Analysis
@@ -247,7 +247,7 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 
 #### Dynamic Analysis
 
-Attempt to enter weak passwords into registration and password reset functions, such as: 
+Attempt to enter weak passwords into registration and password reset functions, such as:
 
 - Self-registration function for new users that allows to specify a password,
 - "Forgot Password" function that allows a user to set a new password or
@@ -276,7 +276,7 @@ Password-guessing attacks are a common and well-known technique used by hackers.
 
 The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last for a specific duration (temporarily lockout), such as a few minutes, or until an administrator manually unlocks the account (permanent lockout). The recommended way however is to implement an exponential back-off algorithm: here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
 
-Important remark: when testing brute forcing an account, reaching out to the customer when permanent account locking has been implemented to request an unlock may be time consuming. The tester should always check whether permanent locking is in place and should in this case make sure an efficient procedure is in place for unlocking and should not try to brute force any account (agreement should be made with the customer in advance).
+> When testing brute forcing of an account, reaching out to the customer when permanent account locking has been implemented to request an unlock may be time consuming. The tester should always check whether permanent locking is in place and should in this case make sure an efficient procedure is in place for unlocking and should not try to brute force any account (agreement should be made with the customer in advance).
 
 #### Static Analysis
 
@@ -291,40 +291,38 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 
 #### Dynamic Analysis
 
-The purpose of dynamically analysing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials. 
+The purpose of dynamically analysing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials.
 
-To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation. 
-For this test case, we'll use an interception proxy (Burp Suite). Burp Suite offers a module dedicated to such attacks called 'Intruder' (more information can be found from Burp Suite official documentation at [Burp Suite official documentation](https://portswigger.net/burp/help/ "Burp Suite official documentation")):
+To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation.
+For this test case, we'll use an interception proxy (Burp Suite). Burp Suite offers a module dedicated to such attacks called [Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder"):
 
-  - start Burp Suite;
-  - create a new project (or open an existing one);
-  - enter relevant parameters for the project;
-  - now that the proxy is set between your app and the targeted web site, browse the site and intercept the request that corresponds to the authentication mechanism;
-  - in the 'Proxy / HTTP History' tab, right-click this request and select 'Send to Intruder' in the list; 
-  - select the 'Intruder' tab in Burp Suite;
-  - make sure all parameters in the 'Target', 'Positions' and 'Options' tabs are set accordingly, and select the 'Payload' tab;
-  - load the list of passwords to be tried or upload the list. The attack is ready to be started!
-  
+- start Burp Suite;
+- create a new project (or open an existing one);
+- enter relevant parameters for the project;
+- now that the proxy is set between your app and the targeted web site, browse the site and intercept the request that corresponds to the authentication mechanism;
+- in the 'Proxy / HTTP History' tab, right-click this request and select 'Send to Intruder' in the context menu;
+- select the 'Intruder' tab in Burp Suite;
+- make sure all parameters in the 'Target', 'Positions' and 'Options' tabs are set accordingly, and select the 'Payload' tab;
+- load the list of passwords to be tried or upload the list. The attack is ready to be started!
+
 ![List of passwords in Burp Suite](Images/Chapters/0x04e/BurpIntruderInputList.gif)
-  
-  - click the 'Start attack' button to launch the attack on the authentication mechanism.
-  
-A new window opens and requests to the site are sent in sequence, each request corresponding to a password in the provided list. For each request, information on the response is provided (length, status code, ...), which allows to distinguish the successful attempt from the others :
+
+- click the 'Start attack' button to launch the attack on the authentication mechanism.
+
+A new window opens and requests to the site are sent in sequence, each request corresponding to a password in the provided list. For each request, information on the response is provided (length, status code, ...), which allows to distinguish the successful attempt from the others:
 
 ![A successful attack in Burp Suite](Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.gif)
 
-In this example, the successful attempt can be identified from its different length (password = "P@ssword1"). 
+In this example, the successful attempt can be identified from its different length (password = "P@ssword1").
 
-```
-Tip: When the tester has a high confidence in the password to be guessed, try to append it at the end of the list and make the list length more than 25. If the attack can be performed without locking the account, that surely means that there is no control against brute force.
-```
+> Tip: Append the correct password of your test account at the end of the password list. The list shouldn't have more than 25 passwords. If the attack can be performed without locking the account, that surely means that there is no control against brute forcing attacks.
 
 In order to prevent this type of attack from being successful, a few mitigations can be put in place :
-  - after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
-  - when temporarily account locking is used, five (5) minutes is often a good duration.
-  - change default credentials and avoid common usernames and passwords.
+- after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+- when temporarily account locking is used, five (5) minutes is a common best practice.
+- change default credentials and avoid common usernames and passwords.
 
-As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts (permanent locking, Multi-Factor Authentication, ...).
+As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts, which can be Multi-Factor Authentication.
 
 
 #### References
@@ -694,7 +692,7 @@ The check needed here will be different depending on the technology used. Here a
 
 In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
 
-A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token. 
+A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token.
 
 For apps that handle sensitive data, verify that the refresh token expires after a period of reasonable time. The following example code shows a refresh token API that checks the issuing date of the refresh token. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to re-login.
 
