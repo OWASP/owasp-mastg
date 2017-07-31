@@ -274,7 +274,9 @@ Attempt to enter weak passwords into registration and password reset functions, 
 
 Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try to guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize word lists and smart rule sets to automatically generate the required requests.
 
-The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last for a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
+The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last for a specific duration (temporarily lockout), such as a few minutes, or until an administrator manually unlocks the account (permanent lockout). The recommended way however is to implement an exponential back-off algorithm: here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
+
+Important remark: when testing brute forcing an account, reaching out to the customer when permanent account locking has been implemented to request an unlock may be time consuming. The tester should always check whether permanent locking is in place and should in this case make sure an efficient procedure is in place for unlocking and should not try to brute force any account (agreement should be made with the customer in advance).
 
 #### Static Analysis
 
@@ -289,10 +291,10 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 
 #### Dynamic Analysis
 
-The purpose of dynamically analysing authentication mechanisms is to make sure an important number of login attempts cannot be made to guess credentials. 
+The purpose of dynamically analysing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials. 
 
 To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation. 
-For this demo, we'll use a proxy (Burp Suite Free edition). Burp Suite offers a module dedicated to such attacks called 'Intruder' (more information can be found from Burp Suite official documentation at [Burp Suite official documentation](https://portswigger.net/burp/help/ "Burp Suite official documentation")):
+For this test case, we'll use an interception proxy (Burp Suite). Burp Suite offers a module dedicated to such attacks called 'Intruder' (more information can be found from Burp Suite official documentation at [Burp Suite official documentation](https://portswigger.net/burp/help/ "Burp Suite official documentation")):
 
   - start Burp Suite;
   - create a new project (or open an existing one);
@@ -313,10 +315,16 @@ A new window opens and requests to the site are sent in sequence, each request c
 
 In this example, the successful attempt can be identified from its different length (password = "P@ssword1"). 
 
+```
+Tip: When the tester has a high confidence in the password to be guessed, try to append it at the end of the list and make the list length more than 25. If the attack can be performed without locking the account, that surely means that there is no control against brute force.
+```
+
 In order to prevent this type of attack from being successful, a few mitigations can be put in place :
-  - after a few unsuccessful attempts, targeted accounts should be temporarily locked and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+  - after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+  - when temporarily account locking is used, five (5) minutes is often a good duration.
   - change default credentials and avoid common usernames and passwords.
-  - put a strong emphasis on protection privileged accounts.
+
+As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts (permanent locking, Multi-Factor Authentication, ...).
 
 
 #### References
@@ -336,6 +344,7 @@ In order to prevent this type of attack from being successful, a few mitigations
 ##### Tools
 
 - Burp Suite Free or Professional editions - https://portswigger.net/burp/
+Important precision: there are several significant limitations in Burp Suite Free edition compared to the Pro edition, for instance in the Intruder module : the tool automatically slows down after a few requests, password dictionaries are not included, projects cannot be saved, ...
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
