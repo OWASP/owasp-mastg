@@ -119,7 +119,7 @@ Two-factor authentication (2FA) is standard for apps that allow access to sensit
 - Hardware or software token
 - Push notifications in combination with PKI and local authentication
 
-The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication"). 
+The secondary authentication step can be performed upon login, or at a later point in the user's session. For example, after logging in via user name and PIN into a banking app, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor needs to be provided ("step-up authentication").
 
 ##### Transaction Signing Using Push Notifications and PKI
 
@@ -141,7 +141,7 @@ An additional control to ensure that an authorized user is using the app on an a
 
 When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
 
-- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations. 
+- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations.
 - If any secret data (e.g. OTP seed) is used as part of the authentication process, verify that the secret is stored in secure device storage.
 
 #### Dynamic Analysis
@@ -247,7 +247,7 @@ For further details check the [OWASP Authentication Cheat Sheet](https://www.owa
 
 #### Dynamic Analysis
 
-Attempt to enter weak passwords into registration and password reset functions, such as: 
+Attempt to enter weak passwords into registration and password reset functions, such as:
 
 - Self-registration function for new users that allows to specify a password,
 - "Forgot Password" function that allows a user to set a new password or
@@ -274,11 +274,13 @@ Attempt to enter weak passwords into registration and password reset functions, 
 
 Password-guessing attacks are a common and well-known technique used by hackers. In this kind of attack, hackers use a dictionary of common passwords to try to guess the correct password for a list of user accounts. This kind of attack doesn’t require a deep technical understanding of the target: Ready-made tools are available that utilize word lists and smart rule sets to automatically generate the required requests.
 
-The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last a specific duration, such as one hour, or until an administrator manually unlocks the account. The recommended way however is to implement an exponential back-off algorithm: Here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
+The default way of blocking this type of attack is locking accounts after a defined number of incorrect password attempts ("login throttling"). Account lockouts may last for a specific duration (temporarily lockout), such as a few minutes, or until an administrator manually unlocks the account (permanent lockout). The recommended way however is to implement an exponential back-off algorithm: here, the time between subsequent login attempts is increased exponentially. Such a mechanism has a negligible effect on usability, while still significantly slowing down automated attacks.
+
+> When testing brute forcing of an account, reaching out to the customer when permanent account locking has been implemented to request an unlock may be time consuming. The tester should always check whether permanent locking is in place and should in this case make sure an efficient procedure is in place for unlocking and should not try to brute force any account (agreement should be made with the customer in advance).
 
 #### Static Analysis
 
-Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a user name within a short time frame, and prevents login attempts once the threshold is meet. After a correct attempt, the code should set the error counter to zero.
+Check the source code for the presence of a throttling mechanism. Verify that the code counts the number of attempts for a user name within a short time frame, and prevents login attempts once the threshold is met. After a correct attempt, the code should set the error counter to zero.
 
 The following best practices should be followed when implementing anti-brute-force controls:
 
@@ -289,7 +291,39 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 
 #### Dynamic Analysis
 
-Attempt to log in with an incorrect password multiple times. After three to five attempts, your login should be (at least temporarily) rejected even when correct credentials are entered.
+The purpose of dynamically analysing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials.
+
+To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation.
+For this test case, we'll use an interception proxy (Burp Suite). Burp Suite offers a module dedicated to such attacks called [Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder"):
+
+- start Burp Suite;
+- create a new project (or open an existing one);
+- enter relevant parameters for the project;
+- now that the proxy is set between your app and the targeted web site, browse the site and intercept the request that corresponds to the authentication mechanism;
+- in the 'Proxy / HTTP History' tab, right-click this request and select 'Send to Intruder' in the context menu;
+- select the 'Intruder' tab in Burp Suite;
+- make sure all parameters in the 'Target', 'Positions' and 'Options' tabs are set accordingly, and select the 'Payload' tab;
+- load the list of passwords to be tried or upload the list. The attack is ready to be started!
+
+![List of passwords in Burp Suite](Images/Chapters/0x04e/BurpIntruderInputList.gif)
+
+- click the 'Start attack' button to launch the attack on the authentication mechanism.
+
+A new window opens and requests to the site are sent in sequence, each request corresponding to a password in the provided list. For each request, information on the response is provided (length, status code, ...), which allows to distinguish the successful attempt from the others:
+
+![A successful attack in Burp Suite](Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.gif)
+
+In this example, the successful attempt can be identified from its different length (password = "P@ssword1").
+
+> Tip: Append the correct password of your test account at the end of the password list. The list shouldn't have more than 25 passwords. If the attack can be performed without locking the account, that surely means that there is no control against brute forcing attacks.
+
+In order to prevent this type of attack from being successful, a few mitigations can be put in place :
+- after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+- when temporarily account locking is used, five (5) minutes is a common best practice.
+- change default credentials and avoid common usernames and passwords.
+
+As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts, which can be Multi-Factor Authentication.
+
 
 #### References
 
@@ -307,11 +341,12 @@ Attempt to log in with an incorrect password multiple times. After three to five
 
 ##### Tools
 
-- Burp Suite Professional - https://portswigger.net/burp/
+- Burp Suite Free or Professional editions - https://portswigger.net/burp/
+Important precision: there are several significant limitations in Burp Suite Free edition compared to the Pro edition, for instance in the Intruder module : the tool automatically slows down after a few requests, password dictionaries are not included, projects cannot be saved, ...
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
-### Testing Session-based Authentication
+### Testing Session Management
 
 #### Overview
 
@@ -589,13 +624,13 @@ For additional best practices and detailed information please refer to the sourc
 
 Reducing the lifetime of session identifiers and tokens to a minimum decreases the likelihood of a successful account hijacking attack. The scope for this test case is to validate that the application has a logout functionality and it effectively terminates the session on client and server side or invalidates a stateless token.
 
-One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
+One of the most common errors when implementing a logout functionality is to not destroy the session on the server-side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
 
 Many mobile apps do not automatically logout a user, because of customer convenience by implementing stateless authentication. There should still be a logout function available within the application and this should work accordingly to best practices by also destroying the access and refresh token on client and server side. Otherwise this could lead to another authentication bypass in case the refresh token is not invalidated.
 
 ##### Static Analysis 
 
-If server side code is available, verify that the session is being terminated or token invalidated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
+If server side code is available, verify that the session is terminated as part of the logout functionality. The check needed here will be different depending on the technology used. Here are different examples on how a session can be terminated in order to implement a proper logout on server side:
 
 - Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
 - Ruby on Rails -  http://guides.rubyonrails.org/security.html
@@ -640,13 +675,27 @@ Mobile apps that handle sensitive data like patient data or critical functions s
 
 #### Static Analysis
 
+##### Stateful Sessions
+
 Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
+
+Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
+
+The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
+
+- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
+
+##### Stateless Tokens
 
 In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
 
-Speaking of tokens for stateless authentication, one should differentiate [types of tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"), such as access tokens and refresh tokens. Access tokens are used for accessing protected resources and should be short-lived. Refresh tokens are primarily used to obtain renewed access tokens. They are rather long-lived but should expire too, as otherwise their leakage would expose the system for unauthorized use.
+A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token.
 
-The exact values for token expiration depend on the application requirements and capacity. Sample code for JWT token refreshments is presented below:
+For apps that handle sensitive data, verify that the refresh token expires after a period of reasonable time. The following example code shows a refresh token API that checks the issuing date of the refresh token. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to re-login.
+
 
 ```Java
  app.post('/refresh_token', function (req, res) {
@@ -655,7 +704,7 @@ The exact values for token expiration depend on the application requirements and
 
   // if more than 14 days old, force login
   if (profile.original_iat - new Date() > 14) { // iat == issued at
-    return res.send(401); // re-logging
+    return res.send(401); // re-login
   }
 
   // check if the user still exists or if authorization hasn't been revoked
@@ -666,15 +715,6 @@ The exact values for token expiration depend on the application requirements and
   res.json({ token: refreshed_token });
 });
 ```
-
-Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of your application and the use case of it.
-
-The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-
-- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
-- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
-- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
 
 #### Dynamic Analysis
 
