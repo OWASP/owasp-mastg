@@ -123,11 +123,11 @@ The secondary authentication step can be performed upon login, or at a later poi
 
 ##### Transaction Signing Using Push Notifications and PKI
 
-The best way to implement step-up authentication is by leveraging the device Keychain. The app generates a public/private key pair on user sign-up and enrolls the public key with the back end. To authorize a transaction, the back end sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PIN or fingerprint) and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature using the user's public key.
+In transaction signing, the user is prompted for authentication to approve critical transactions. The best way to implement this is using asymmetric cryptography. The app generates a public/private key pair on user sign-up and enrolls the public key with the back end. The private key is stored securely in the device keystore. To authorize a transaction, the back end sends a push notification containing the transaction data to the mobile app. The user asking to confirm or deny the transaction. If confirmed, the user is prompted to unlock the Keychain (by entering PIN or fingerprint) and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature using the user's public key.
 
 ##### Supplementary Mechanisms
 
-The authentication scheme may be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+An authentication scheme may be supplemented with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
 
 - Geolocation
 - IP address
@@ -135,14 +135,9 @@ The authentication scheme may be supplemented with [passive contextual authentic
 
 Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
 
-An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
-
 #### Static Analysis
 
-When server-side source code is available, first identify how a second factor or step-up authentication is used and enforced. Afterwards locate all endpoints with sensitive and privileged information and functions: they are the ones that need to be protected. Prior to accessing any item, the application must make sure the user has already passed 2FA or the step-up authentication and that he is allowed to access the endpoint.
-
-- Verify that the second or multiple factors is strictly enforced on server-side for all critical operations.
-- If any secret data (e.g. OTP seed) is used as part of the authentication process, verify that the secret is stored in secure device storage.
+Identify the additional authentication factors used by the app. Locate all endpoints that provide critical functionality. Verify that the second or multiple factors is strictly enforced on server-side on all endpoints.
 
 #### Dynamic Analysis
 
@@ -151,10 +146,6 @@ First, all privileged endpoints a user can only access with step-up authenticati
 The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
 
 Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute-forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
-
-<!--
-[ TODO: Performing a Dictionary Attack with BURP ]
--->
 
 #### References
 
@@ -291,9 +282,10 @@ Further brute force mitigation techniques are described on the OWASP page [Block
 
 #### Dynamic Analysis
 
-The purpose of dynamically analysing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials.
+The purpose of dynamically analyzing authentication mechanisms is to make sure a significant number of login attempts cannot be made to guess credentials.
 
 To test the level of confidence the authentication mechanism provides in an app, automation is often the preferred way. Many tools can be used, including scripts and proxies; the choice for the relevant tool may differ depending upon the situation.
+
 For this test case, we'll use an interception proxy (Burp Suite). Burp Suite offers a module dedicated to such attacks called [Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder"):
 
 - start Burp Suite;
@@ -324,7 +316,6 @@ In order to prevent this type of attack from being successful, a few mitigations
 
 As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts, which can be Multi-Factor Authentication.
 
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -346,7 +337,7 @@ Important precision: there are several significant limitations in Burp Suite Fre
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
-### Testing Session Management
+### Testing Stateful Session Management
 
 #### Overview
 
@@ -360,27 +351,33 @@ In session-based authentication, an authentication record is kept both on the cl
 
 When improperly managed, sessions are subject to a variety of attacks where the session of a legitimate user may be compromised, allowing the attacker to impersonate the user. As a consequence, data may be lost, confidentiality compromised or illegitimate actions performed.
 
-Session IDs must:
-
-- always be created on the server side,
-- not be predictable (use proper length and entropy),
-- always be exchanged over secure connections (e.g. HTTPS),
-- be stored securely within the mobile app,
-- be verified when a user is trying to access privileged parts of an application (a session ID must be valid and correspond to the proper level of authorization),
-- be renewed when a user is asked to log in again to perform an operation requiring higher privileges and
-- be terminated on server side and deleted within the mobile app when a user logs out or after a specified timeout.
-
-It is strongly advised to use proven built-in session ID generators, as they are more secure than building a custom one. Such generators exist for most frameworks and languages.
-
-As such, the scope of this test is to validate that sessions are securely managed and cannot be compromised by an attacker.
-
 #### Static Analysis
 
-Identify locations in the code where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. For those matters, automated tools or manual search can be used to look for relevant keywords in the target programming language. Sample frameworks on server side are:
+Identify locations in the code where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. Verify that:
+
+- Session IDs are randomly generated on on the server side;
+- The generated IDs are not predictable (use proper length and entropy);
+- Session IDs are always exchanged over secure connections (e.g. HTTPS),
+- Session IDs are not stored in permanent storage by the mobile app;
+- Whenever a user is trying to access privileged parts of an application, the session is verified by the server (a session ID must be valid and correspond to the proper level of authorization),
+- The session is terminated on server side and deleted within the mobile app when a user logs out or after a specified timeout.
+
+We strongly recommend using proven built-in session ID generators, as they are more secure than building a custom one. Such generators exist for most frameworks and languages. You'll find framework-specific security guidelines in the documentation of each framework:
 
 - [Spring (Java)](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-session-mgmt)
 - [PHP](http://php.net/manual/en/book.session.php)
 - [Ruby on Rails](http://guides.rubyonrails.org/security.html)
+
+Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
+
+Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
+
+The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
+
+- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
 
 #### Dynamic Analysis
 
@@ -394,6 +391,12 @@ Then, you can use the crawled requests within any intercepting proxy to try to m
 - when changing privilege level (step-up authentication). Try to use the former one (hence with a lower authorization level) to access the privileged part of the application.
 - by trying to re-use a session ID after logging out.
 
+To verify the session timeout:
+
+1. Log into the application.
+2. Perform a couple of operations that require authentication inside the application.
+3. Leave the application idle until the session expires (for testing purposes, a reasonable timeout can be configured, and amended later in the final version)
+
 Also, the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") should be consulted for more session management test cases.
 
 #### References
@@ -405,6 +408,7 @@ Also, the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Sess
 ##### OWASP MASVS
 
 - V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
+- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
 
 ##### CWE
 
@@ -448,6 +452,34 @@ HMACSHA256(
 ```
 
 JWT implementations are available for all major programming languages, like [PHP](https://github.com/firebase/php-jwt "PHP JWT") or [Java Spring](http://projects.spring.io/spring-security-oauth/docs/oauth2.html "Java Spring with JWT")
+
+##### Token Expiration
+
+In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
+
+A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token.
+
+For apps that handle sensitive data, verify that the refresh token expires after a period of reasonable time. The following example code shows a refresh token API that checks the issuing date of the refresh token. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to re-login.
+
+
+```Java
+ app.post('/refresh_token', function (req, res) {
+  // verify the existing token
+  var profile = jwt.verify(req.body.token, secret);
+
+  // if more than 14 days old, force login
+  if (profile.original_iat - new Date() > 14) { // iat == issued at
+    return res.send(401); // re-login
+  }
+
+  // check if the user still exists or if authorization hasn't been revoked
+  if (!valid) return res.send(401); // re-logging
+
+  // issue a new token
+  var refreshed_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
+  res.json({ token: refreshed_token });
+});
+```
 
 ##### Common Issues
 
@@ -659,87 +691,6 @@ A detailed explanation with more test cases, can also be found in the OWASP Web 
 ##### OWASP MASVS
 
 - V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
-
-##### CWE
-
-- CWE-613: Insufficient Session Expiration
-
-
-### Testing the Session Timeout
-
-#### Overview
-
-In contrast to web applications, many mobile app authentication architectures don't implement a session timeout mechanism. Instead, after the initial login, a stateless access tokens is stored that never times out. This results in increased convenience for users (as they only need to login once), but also increases the risk of attackers taking over the session.
-
-Mobile apps that handle sensitive data like patient data or critical functions such as financial transactions should implement a timeout as a security-in-depth measure that forces users to re-login after a defined period.
-
-#### Static Analysis
-
-##### Stateful Sessions
-
-Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
-
-Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
-
-The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
-
-- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
-- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
-- [ASP.Net](https://msdn.microsoft.com/en-GB/library/system.web.sessionstate.httpsessi onstate.timeout(v=vs.110\).aspx)
-
-##### Stateless Tokens
-
-In case of stateless authentication, once a token is signed, it is valid forever unless the signing key is changed. The common way to limit validity of a token is to explicitly set an expiration date. Verify that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and that the back end does not accept expired tokens for processing.
-
-A common method of granting tokens is to use a combination of [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user first logs in, the backend service issues an short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token.
-
-For apps that handle sensitive data, verify that the refresh token expires after a period of reasonable time. The following example code shows a refresh token API that checks the issuing date of the refresh token. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to re-login.
-
-
-```Java
- app.post('/refresh_token', function (req, res) {
-  // verify the existing token
-  var profile = jwt.verify(req.body.token, secret);
-
-  // if more than 14 days old, force login
-  if (profile.original_iat - new Date() > 14) { // iat == issued at
-    return res.send(401); // re-login
-  }
-
-  // check if the user still exists or if authorization hasn't been revoked
-  if (!valid) return res.send(401); // re-logging
-
-  // issue a new token
-  var refreshed_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
-  res.json({ token: refreshed_token });
-});
-```
-
-#### Dynamic Analysis
-
-Dynamic analysis is an efficient option, as it is easy to validate whether the session timeout is working at runtime using an interception proxy. This is similar to test case "Testing the Logout Functionality", but we need to leave the application idle for the time required to trigger the timeout function. Once this condition has been launched, we need to validate that the session is effectively terminated on client and server side.
-
-The following steps can be applied to check if the session timeout is implemented properly.  
-
-1. Log into the application.
-2. Perform a couple of operations that require authentication inside the application.
-3. Leave the application idle until the session expires (for testing purposes, a reasonable timeout can be configured, and amended later in the final version)
- 
-Resend one of the operations executed in step 2 using an interception proxy, for example with Burp Repeater. The purpose of this is to send to the server a request with the session ID that has been invalidated when the session has expired.
-
-If session timeout has been correctly configured on the server side, either an error message or redirect to the login page will be sent back to the client. On the other hand, if you have the same response you had in step 2, then, this session is still valid, which means that the session timeout is not configured correctly.
-More information can also be found in the OWASP Web Testing Guide ([OTG-SESS-007](https://www.owasp.org/index.php/Test_Session_Timeout_(OTG-SESS-007) "OWASP Web Application Test Guide (OTG-SESS-007)")).
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
 
 ##### CWE
 
