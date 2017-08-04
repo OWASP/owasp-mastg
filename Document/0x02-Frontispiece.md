@@ -2,11 +2,9 @@
 
 ## About the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes technical processes for verifying the controls listed in the OWASP Mobile Application Security Verification Standard (MASVS). The MSTG is meant to provide a baseline set of test cases for static and dynamic security tests, and to help ensure completeness and consistency of the tests.
+The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes the process for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). The MSTG provides a set of test cases as a starting point for static and dynamic security tests and ensures those tests are complete and consistent.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the OWASP Mobile Security Project Slack Channel https://owasp.slack.com/messages/project-mobile_omtg/details/. You can sign up here:
-
-http://owasp.herokuapp.com/
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up for the Slack channel at [http://owasp.herokuapp.com/](http://owasp.herokuapp.com/).
 
 ## Copyright and License
 
@@ -15,33 +13,33 @@ Copyright © 2017 The OWASP Foundation. This work is licensed under a [Creative 
 
 ## Acknowledgements
 
-Note: This table is generated based on the contribution log, which can be found under https://github.com/OWASP/owasp-mstg/graphs/contributors. For more details, see the GitHub Repository README under https://github.com/OWASP/owasp-mstg/blob/master/README.md. Note that this isn't updated in real time (yet) - we do this manually every few weeks, so don't panic if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). We manually update the table every few weeks, so be patient if you're not listed immediately.
 
 ### Authors
 
 #### Bernhard Mueller
 
-Bernhard is a cyber security specialist with a talent in hacking all kinds of systems. During more than a decade in the industry, he has published many zero-day exploits for software such as MS SQL Server, Adobe Flash Player, IBM Director, Cisco VOIP and ModSecurity. If you can name it, he has probably broken it at least once. His pioneering work in mobile security was commended with a BlackHat "Best Research" Pwnie Award.
+Bernhard is a cyber security specialist with a talent for hacking systems of all kinds. During more than a decade in the industry, he has published many zero-day exploits for software such as MS SQL Server, Adobe Flash Player, IBM Director, Cisco VOIP, and ModSecurity. If you can name it, he has probably broken it at least once. BlackHat USA commended his pioneering work in mobile security with a Pwnie Award for Best Research.
 
 #### Sven Schleier
 
-Sven is an experienced penetration tester and security architect who specialized in implementing secure SDLC for web application, iOS and Android apps. He is a project leader for the OWASP Mobile Security Testing Guide and the creator of OWASP Mobile Hacking Playground. Sven also supports the community with free hands-on workshops on web and mobile app security testing. He has published several security advisories and a white papers about HSTS.
+Sven is an experienced penetration tester and security architect who specializes in implementing secure SDLC for web applications, iOS apps, and Android apps. He is a project leader for the OWASP Mobile Security Testing Guide and the creator of OWASP Mobile Hacking Playground. Sven also supports the community with free, hands-on workshops about web and mobile app security testing. He has published several security advisories and white papers about HSTS.
 
 ### Co-Authors
 
-Co-authors have consistently contributed quality content, and have at least 2,000 additions logged in the GitHub repository.
+Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
 #### Romuald Szkudlarek
 
-Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the Web, Mobile, IoT and Cloud domains. During his career, he has been dedicating spare time to a variery of projects with the goal of advancing the sectors of software and security. He is regularly teaching at various institutions. He holds CISSP, CSSLP and CEH credentials.
+Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CSSLP, and CEH credentials.
 
 #### Jeroen Willemsen
 
-Jeroen is a full-stack developer specialized in IT security at Xebia with a passion for mobile and risk management. He loves to explain things: starting as a teacher teaching PHP to bachelor students and then move along explaining security, risk management and programming issues to anyone willing to listen and learn.
+Jeroen is a full-stack developer specializing in IT security at Xebia with a passion for mobile and risk management. Driven by a love for explaining technical subjects, he began as a PHP teacher to undergrad students before moving on to discussing security, risk management, and programming issues to anyone willing to listen and learn.
 
 ### Top Contributors
 
-Top contributors have consistently contributed quality content with at least 500 additions logged in the GitHub repository.
+Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
 - Francesco Stillavato
 - Pawel Rzepa
@@ -55,9 +53,9 @@ Top contributors have consistently contributed quality content with at least 500
 
 ### Contributors
 
-Contributors have made a quality contribution with at least 50 additions logged in the GitHub repository.
+Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Gerhard Wagner, Andreas Happe, Michael Helwig, Denis Pilipchuk, Ryan Teoh,  Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani and Anuruddha.
+Jin Kung Ong, Gerhard Wagner, Andreas Happe, Michael Helwig, Denis Pilipchuk, Ryan Teoh, Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, and Anuruddha.
 
 ### Reviewers
 
