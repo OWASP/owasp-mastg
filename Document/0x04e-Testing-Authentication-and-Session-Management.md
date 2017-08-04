@@ -170,10 +170,6 @@ Another attack is related to the case "Testing Excessive Login Attempts" - given
 
 Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. A password policy typically specifies password length, password complexity and password topologies. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
 
-#### Static Analysis
-
-A good password policy should define the following [requirements](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"):
-
 **Password Length**
 
 - Minimum length of the passwords should be enforced, at least 10 characters.
@@ -187,6 +183,14 @@ The password must meet at least three out of the following four complexity rules
 2. at least one lowercase character (a-z)
 3. at least one digit (0-9)
 4. at least one special character (punctuation)
+
+**Alternative**
+
+In some cases, implementing password complexity is hardly possible. In that case, an alternative is to implement a mechanism, triggered when the user sets his password for the system, where the chosen one is compared to a list of known weak passwords (that, for instance, may contain passwords as 'password', 'Passw0rd', 'Welcome123', ...). 
+
+Even if it may be difficult to list all possible weak passwords, such a mechanism offers an acceptable variant where most weak passwords can be rejected.
+
+#### Static Analysis
 
 Verify that a password policy exists and that passwords are required to be sufficiently complex. Identify all related functions in the source code, and make sure that a common verification check is applied. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
