@@ -184,7 +184,7 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character (punctuation)
 
-**Alternative**
+**Dictionary Check**
 
 In some cases, implementing password complexity is hardly possible. In that case, an alternative is to implement a mechanism, triggered when the user sets his password for the system, where the chosen one is compared to a list of known weak passwords (that, for instance, may contain passwords as 'password', 'Passw0rd', 'Welcome123', ...). 
 
