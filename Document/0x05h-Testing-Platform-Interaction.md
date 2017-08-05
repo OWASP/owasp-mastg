@@ -1100,6 +1100,7 @@ The following approach can be used to identify elements mentioned just above:
   * "de.robv.android.xposed"
   * "com.saurik.substrate"
   * "com.mwr.dz"
+  * "busybox"
 
 #### Dynamic Analysis
 
