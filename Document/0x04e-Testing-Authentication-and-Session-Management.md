@@ -74,25 +74,6 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 
-#### Static Analysis
-
-Locate server-side APIs that provide sensitive information and functions, and verify that authorization is consistently enforced on those endpoints. For every request, the session ID or token of the user must be verified, and it must be ensured that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, the request must be rejected.
-
-Verify that authorization is always performed on the server-side.
-
-Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
-
-- [Spring (Java)](https://projects.spring.io/spring-security)
-- [Struts (Java)](https://struts.apache.org/docs/security.html)
-- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html)
-
-A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
-
-#### Dynamic Analysis
-
-Enumerate privileged endpoints by using the app and monitoring requests in your interception proxy. Then, replay the requests while removing the session ID or token. If the endpoint responds with data that should only be available to authenticated users, authentication checks are not implemented properly.
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -168,7 +149,7 @@ Another attack is related to the case "Testing Excessive Login Attempts" - given
 
 #### Overview
 
-Password strength is a key concern when using passwords for authentication. Password policy defines requirements that end users should adhere to. A password policy typically specifies password length, password complexity and password topologies. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
+Password strength is a key concern when using passwords for authentication. The password policy defines requirements that end users should adhere to. A password policy typically specifies password length, password complexity and password topologies. A "strong" password policy makes it difficult or even infeasible for one to guess the password through either manual or automated means.
 
 **Password Length**
 
@@ -248,6 +229,8 @@ Attempt to enter weak passwords into registration and password reset functions, 
 - "Forgot Password" function that allows a user to set a new password or
 - "Change Password" function that allows a logged in user to set a new password.
 
+If you are performing a black-box test, perform a dictionary attack to detect weak passwords (this is described in more detail in the next chapter).
+
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -279,6 +262,8 @@ Check the source code for the presence of a throttling mechanism. Verify that th
 
 The following best practices should be followed when implementing anti-brute-force controls:
 
+- after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
+- when temporarily account locking is used, five (5) minutes is a common best practice.
 - The controls must be implemented on the server-side, as client-side controls are easily bypassed.
 - Incorrect login attempts must be cumulative for a user account and not linked to a particular session.  
 
@@ -312,13 +297,6 @@ A new window opens and requests to the site are sent in sequence, each request c
 In this example, the successful attempt can be identified from its different length (password = "P@ssword1").
 
 > Tip: Append the correct password of your test account at the end of the password list. The list shouldn't have more than 25 passwords. If the attack can be performed without locking the account, that surely means that there is no control against brute forcing attacks.
-
-In order to prevent this type of attack from being successful, a few mitigations can be put in place :
-- after a few unsuccessful attempts, targeted accounts should be locked (temporarily or permanently) and any kind of attempt (successful or unsuccessful) should be rejected in the same manner.
-- when temporarily account locking is used, five (5) minutes is a common best practice.
-- change default credentials and avoid common usernames and passwords.
-
-As a general recommendation, always keep in mind these principles are true for all kinds of accounts and stronger measures must be taken concerning privileged accounts, which can be Multi-Factor Authentication.
 
 #### References
 
@@ -357,7 +335,9 @@ When improperly managed, sessions are subject to a variety of attacks where the 
 
 #### Static Analysis
 
-Identify locations in the code where sessions are initiated, stored, exchanged, verified and terminated. This must be done whenever any access to privileged information or action takes place. Verify that:
+Locate any server-side endpoints that provide sensitive information and functions, and verify that authorization is consistently enforced. The backend service must verify session ID or token of the user, and it must ensure that the associated user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, the request must be rejected.
+
+Verify that:
 
 - Session IDs are randomly generated on on the server side;
 - The generated IDs are not predictable (use proper length and entropy);
@@ -366,17 +346,20 @@ Identify locations in the code where sessions are initiated, stored, exchanged, 
 - Whenever a user is trying to access privileged parts of an application, the session is verified by the server (a session ID must be valid and correspond to the proper level of authorization),
 - The session is terminated on server side and deleted within the mobile app when a user logs out or after a specified timeout.
 
-We strongly recommend using proven built-in session ID generators, as they are more secure than building a custom one. Such generators exist for most frameworks and languages. You'll find framework-specific security guidelines in the documentation of each framework:
+Ideally, authentication mechanisms shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made functionality for authentication and session management. If the app uses framework APIs for authentication, make sure to check the security documentation of these frameworks and verify that the recommended best practices have been followed. Security guides for common frameworks are available at the following links:
 
-- [Spring (Java)](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#ns-session-mgmt)
-- [PHP](http://php.net/manual/en/book.session.php)
+- [Spring (Java)](https://projects.spring.io/spring-security)
+- [Struts (Java)](https://struts.apache.org/docs/security.html)
+- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
 - [Ruby on Rails](http://guides.rubyonrails.org/security.html)
 
-Session timeout functionality must always be enforced on the server-side. Consequently, the static analysis can only be performed with access to the back-end source code.   
+A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
-Note that in most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
+##### Session Timeout
 
-The check needed here will be different depending on the technology used. Here are different examples on how a session timeout can be configured:
+In most popular frameworks, the session timeout can be set via configuration options. This parameter should be set accordingly to the best practices specified of the documentation of the framework. The best practice timeout setting may vary between 10 minutes to two hours, depending on the sensitivity of the app.
+
+Refer to the documentation of the specific framework for examples on how a session timeout can be configured:
 
 - [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
 - [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
@@ -428,15 +411,15 @@ Also, the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Sess
 
 #### Overview
 
-JSON Web Token (JWT) ensures the integrity of information within a JSON object between two parties and is defined in [RFC 7519](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519"). A cryptographic signature is created for the data within the token. This only allows the server to create and modify tokens and enables a stateless authentication. The server doesn't need to remember any session or any other authentication information, as everything is contained within JWT.
+In token-based authentication, each HTTP request is accompanied by a signed token with is verified by the server for authenticity. The most commonly used token format is JSON Web Token (JWT) which is defined in [https://tools.ietf.org/html/rfc7519]. A JWT may contain the complete session state encoded as a JSON object. Therefore, the server does not need to store any session data or authentication information.
 
-An [example of an encoded JSON Web Token](https://jwt.io/#debugger "Sample of JWT Token") can be found below.
+The following example shows a Base64-encoded [Base-64 encoded JSON Web Token](https://jwt.io/#debugger "JWT Token Example on jwt.io"):
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
 ```
 
-JWTs are Base-64 encoded and are divided into three parts:
+The decoded token is divided into three parts:
 
 - **Header** Algorithm and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
 ```JSON
@@ -654,7 +637,7 @@ For additional best practices and detailed information please refer to the sourc
 - Burp Suite
 
 
-### Testing the Logout Functionality
+### Testing User Logout
 
 #### Overview
 
