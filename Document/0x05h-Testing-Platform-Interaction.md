@@ -1099,6 +1099,7 @@ The following approach can be used to identify elements mentioned just above:
   * "RootBeer"
   * "de.robv.android.xposed"
   * "com.saurik.substrate"
+  * "com.mwr.dz"
 
 #### Dynamic Analysis
 
