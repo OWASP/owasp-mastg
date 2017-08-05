@@ -1088,6 +1088,18 @@ If the root detection is implemented from scratch, the following should be check
 - Checking for installed apps that allow or support rooting of a device, like verifying the presence of *Superuser.apk*.
 - Checking available commands, like is it possible to execute `su` and being root afterwards.
 
+The following approach can be used to identify elements mentioned just above:
+* Decompile sources code using the tool [`JADX`](https://github.com/skylot/jadx "JADX") using the command line `jadx -d SOURCES --deobf APP.apk` in order to obtain the decompiled sources in a folder named **SOURCES**.
+* From the folder **SOURCES**, use the following set of expressions in the command template `grep -ir [EXPRESSION] *` in order to identify root detection materials usage:
+  * "test-keys"
+  * "Build.TAGS"
+  * "/su\""
+  * "Runtime.getRuntime().exec"
+  * "superuser"
+  * "RootBeer"
+  * "de.robv.android.xposed"
+  * "com.saurik.substrate"
+
 #### Dynamic Analysis
 
 A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
