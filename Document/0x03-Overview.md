@@ -30,7 +30,7 @@ Mobile devices regularly connect to a variety of networks, including public WiFi
 
 In most cases, sending users to log in to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. Unlike web apps, mobile apps often store long-time session tokens that are unlocked with user-to-device authentication features such as fingerprint scanning. While this allows for a quicker login and better user experience (nobody likes to enter complex passwords), it also introduces additional complexity and room for error.
 
-Mobile app architectures also increasingly incorporate authorization frameworks, such as OAuth2, which delegate authentication to a separate service or outsource the authentication process to an authentication provider. Using OAuth2 allows the client-side authentication logic to be outsourced to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of different possible architectures.
+Mobile app architectures also increasingly incorporate authorization frameworks, such as OAuth2, which delegate authentication to a separate service or to an external authentication provider. Using OAuth2 allows the client-side authentication logic to be outsourced to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of different possible architectures.
 
 
 ### Interaction with the Mobile Platform
