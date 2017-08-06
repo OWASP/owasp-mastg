@@ -1,4 +1,4 @@
-## Cryptography for Mobile Apps
+## Testing Cryptography in Mobile Apps
 
 This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. Platform-specific cryptographic APIs for data storage are covered in greater detail "Testing Data Storage" chapters. Encryption of network traffic - in particular Transport Layer Security (TLS) - is covered in the “Testing Network Communication” chapter.
 
