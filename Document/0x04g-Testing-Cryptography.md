@@ -83,7 +83,7 @@ Ensure that used key length fulfill [accepted industry standards](https://www.en
 
 ##### Weak AES Configuration
 
-###### Block Mode
+###### Weak Block Cipher Mode
 
 Block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
 
@@ -93,13 +93,15 @@ The [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_
 
 ![Difference of encryption modes](Images/Chapters/0x07c/EncryptionMode.png)
 
-Use an established block mode that provides a feedback mechanism for subsequent blocks, e.g. Counter Mode (CTR). For storing encrypted data it is often advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation -- thus being available on all modern platforms.
+Verify that Cipher Block Chaining (CBC) mode is used as opposed to ECB mode. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block looks differently (and essentially random) even if the block contains the same information. The CBC mode requires an initialization vector (IV) to combine with the first plain text block. The IV does not have to be kept secret, but it must be non-predictable.
 
-Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
-
-##### Initialization Vector
+-- TODO Initialization Vector ---
 
 - [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
+
+For storing encrypted data it is sometimes advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms.
+
+Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
 ###### Symmetric Encryption with Hard-coded Cryptographic Keys
 
@@ -116,10 +118,6 @@ A common mistake developers make is to encrypt locally stored data with a static
     - check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
 
 Whenever symmetric cryptography is used in mobile apps, the associated secret keys must be stored in secure device storage. For mote information on the platform-specific APIs, refer to the "Testing Data Storage" chapters.
-
-
-
-
 
 ##### Weak Key Generation Functions
 
