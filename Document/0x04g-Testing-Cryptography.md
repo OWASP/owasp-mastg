@@ -36,15 +36,13 @@ Inspect the source code to identify the instances of cryptographic algorithms th
 
 On Android (via Java Cryptography APIs), selecting an algorithm is done by requesting an instance of the `Cipher` (or other primitive) by passing a string containing the algorithm name. For example, `Cipher cipher = Cipher.getInstance("DES");`. On iOS, algorithms are typically selected using predefined constants defined in CommonCryptor.h, e.g., `kCCAlgorithmDES`. Thus, searching the source code for the presence of these algorithm names would indicate that they are used. Note that since the constants on iOS are numeric, an additional check needs to be performed to check whether the algorithm values sent to CCCrypt function map to one of the deprecated/insecure algorithms.
 
-Other uses of cryptography require careful adherence to best practices:
+The following algorithms are recommended:
 
 - Confidentiality: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity: SHA-256, SHA-384, SHA-512, Blake2
 - Digital signature: RSA (3072 bits and higher), ECDSA with NIST P-384
 - Key establishment: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 - Rely on secure hardware, if available, for storing encryption keys, performing cryptographic operations, etc.
-
-##### Other Best Practices
 
 See also the following best practice documents for recommendations:
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
@@ -67,7 +65,7 @@ See also the following best practice documents for recommendations:
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
-### Testing for Misuse of Cryptography
+### Testing for Misuse and Misconfiguration of Cryptography
 
 #### Overview
 
@@ -75,17 +73,19 @@ Choosing strong cryptographic algorithm alone is not enough. Often security of o
 
 #### Static Analysis
 
-Check the source code for any of the following mis-configurations.
+Check the source code for any of the following misconfigurations.
 
 ##### Insufficient Key Length
 
-Every encryption algorithm becomes vulnerable to brute-force attacks when an insufficient key size is used.
+Even the most secure encryption algorithm becomes vulnerable to brute-force attacks when an insufficient key size is used.
 
 Ensure that used key length fulfill [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014"). Also verify the used [security "Crypto" provider on the Android platform](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security Crypto provider on the Android platform deprecated in Android N").
 
-##### Weak AES Block Mode
+##### Weak AES Configuration
 
-As the name implies, block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
+###### Block Mode
+
+Block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
 
 The [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29 "Electronic Codebook (ECB)") encryption mode should not be used, as it is basically divides the input into blocks of fixed size and each block is encrypted separately. For example, if an image is encrypted utilizing the ECB block mode, then the input image is split up into multiple smaller blocks. Each block might represent a small area of the original image. Each of which is encrypted using the same secret input key. If input blocks are similar, e.g., each input block is just a white background, the resulting encrypted output block will also be the same. While each block of the resulting encrypted image is encrypted, the overall structure of the image will still be recognizable within the resulting encrypted image.
 
@@ -97,9 +97,15 @@ Use an established block mode that provides a feedback mechanism for subsequent 
 
 Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
+##### Initialization Vector
+
+- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
+
 ###### Symmetric Encryption with Hard-coded Cryptographic Keys
 
 The security of symmetric encryption and keyed hashes (MACs) is highly dependent upon the secrecy of the used secret key. If the secret key is disclosed, the security gained by encryption/MACing is rendered naught. This mandates that the secret key is protected and should not be stored together with the encrypted data.
+
+A common mistake developers make is to encrypt locally stored data with a static encryption key and compiling that key into the app. In that case, the key is accessible by anyone who can use a disassembler.
 
 - Ensure that no keys/passwords are hard-and stored within the source code. Note that hard-coded keys are a problem even if the source code is obfuscated: Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
 - If the app is using two-way SSL (i.e. there is both server and client certificate validated) check if:
@@ -109,14 +115,11 @@ The security of symmetric encryption and keyed hashes (MACs) is highly dependent
     - if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
     - check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
 
-The secure and protected storage mechanisms provided by the OS should be used to store secret keys:
-- [iOS: Managing Keys, Certificates, and Passwords](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html "iOS: Managing Keys, Certificates, and Passwords")
-- [Android: The Android Keystore System](https://developer.android.com/training/articles/keystore.html "Android: The Android Keystore System")
-- [Android: Hardware-backed Keystore](https://source.android.com/security/keystore/ "Android: Hardware-backed Keystore")
+Whenever symmetric cryptography is used in mobile apps, the associated secret keys must be stored in secure device storage. For mote information on the platform-specific APIs, refer to the "Testing Data Storage" chapters.
 
-##### Non-random Initialization Vectors
 
-- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
+
+
 
 ##### Weak Key Generation Functions
 
@@ -132,11 +135,9 @@ Verify that no password is directly passed into an encryption function. Instead,
 
 ##### Custom Implementations of Cryptography
 
-Implementing cryptographic functions is time consuming, difficult and very likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
+Inventing proprietary cryptographic functions is time consuming, difficult and very likely to fail. Instead, well-known algorithms that are widely regarded as secure should be used. Mobile operating systems offer standard cryptographic APIs that implement those algorithms.
 
 Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. All cryptographic operations (see the list in the introduction section) should come from the standard providers (for standard APIs for Android and iOS, see cryptography chapters for the respective platforms). Any cryptographic invocations which do not invoke standard routines from known providers should be candidates for closer inspection. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
-
-Do not develop custom cryptographic algorithms, as it is likely  Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
 
 #### References
 
