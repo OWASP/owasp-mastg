@@ -1,10 +1,10 @@
 ## Cryptography for Mobile Apps
 
-The following chapter discusses cryptographic concepts relevant to mobile app security. It gives an overview of important cryptographic principles and test cases that apply independent of mobile operating system. 
+This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. Platform-specific cryptographic APIs for data storage are covered in greater detail "Testing Data Storage" chapters. Encryption of network traffic - in particular Transport Layer Security (TLS) - is covered in the “Testing Network Communication” chapter.
 
-#### Cryptography Overview
+### Key Concepts
 
-The primary goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data comes from a trusted source. Since this is a testing guide and not a cryptography textbook, the following paragraphs provide only a very limited outline of relevant techniques and their usages in the context of mobile applications.
+The primary goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data comes from a trusted source. 
 
 - Encryption ensures data confidentiality by using special algorithms to convert plaintext data into cipher text, which does not reveal any information about the original content. Plaintext data can be restored from the cipher text through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection.
   - Symmetric-key encryption algorithms use the same key for both encryption and decryption. It is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, they require careful key management.
@@ -13,12 +13,6 @@ The primary goal of cryptography is to provide confidentiality, data integrity, 
 - Message Authentication Codes, or MACs, combine other cryptographic mechanisms, such as symmetric encryption or hashes, with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key, and any of those entities will be able to generate a valid MAC. The most commonly used type of MAC, called HMAC, relies on hashing as the underlying cryptographic primitive. As a rule, the full name of an HMAC algorithm also includes the name of the underlying hash, e.g. - HMAC-SHA256.
 - Signatures combine asymmetric cryptography (i.e. - using a public/private key pair) with hashing to provide integrity and authenticity by encrypting the hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property, as the private key should remain unique to the data signer.
 - Key Derivation Functions, or KDFs, are often confused with password hashing functions. KDFs do have many useful properties for password hashing, but were created with different purposes in mind. In context of mobile applications, it is the password hashing functions that are typically meant for protecting stored passwords.
-
-Two uses of cryptography are covered in other chapters:
-
-- Secure communications. TLS (Transport Layer Security) uses most of the primitives named above, as well a number of others. It is covered in the “Testing Network Communication” chapter.
-- Secure storage. Тhis chapter includes high-level considerations for using cryptography for secure data storage, and specific content for secure data storage capabilities will be found in OS-specific data storage chapters.
-
 
 ### Testing for Insecure and/or Deprecated Cryptographic Algorithms
 
@@ -73,7 +67,7 @@ See also the following best practice documents for recommendations:
 - CWE-326: Inadequate Encryption Strength
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 
-### Testing for Insecure Cryptographic Algorithm Configuration and Misuse
+### Testing for Misuse of Cryptography
 
 #### Overview
 
@@ -81,15 +75,15 @@ Choosing strong cryptographic algorithm alone is not enough. Often security of o
 
 #### Static Analysis
 
-Through source code analysis the following non-exhausting configuration options should be checked:
+Check the source code for any of the following mis-configurations.
 
-- Cryptographic salt, which should be at least the same length as hash function output
-- Reasonable choice of iteration counts when using password derivation functions
-- IVs being random and unique
-- Fit-for-purpose block encryption modes
-- Key management being done properly
+##### Insufficient Key Length
 
-##### Reviewing AES Modes and Parameters
+Every encryption algorithm becomes vulnerable to brute-force attacks when an insufficient key size is used.
+
+Ensure that used key length fulfill [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014"). Also verify the used [security "Crypto" provider on the Android platform](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security Crypto provider on the Android platform deprecated in Android N").
+
+##### Weak AES Block Mode
 
 As the name implies, block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
 
@@ -103,89 +97,46 @@ Use an established block mode that provides a feedback mechanism for subsequent 
 
 Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
-#### Dynamic Analysis
+###### Symmetric Encryption with Hard-coded Cryptographic Keys
 
-Various weaknesses can be detected without access to the source code:
+The security of symmetric encryption and keyed hashes (MACs) is highly dependent upon the secrecy of the used secret key. If the secret key is disclosed, the security gained by encryption/MACing is rendered naught. This mandates that the secret key is protected and should not be stored together with the encrypted data.
 
-- Let two users encrypt a file. If this results in the same encrypted file, the app uses a static encryption key. Access to the encrypted file is necessary to confirm this weakness.
-- if two different users are able to generate the same hash for the same file, then no (or an indequate) salt has been used.
-- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors) are usually stored in plain-text at the beginning of a file; compare different encrypted files and check if their encrypted representation does not contain identical IVs.
-
-#### Remediation
-
-Periodically ensure that used key length fulfill [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014"). Also verify the used [security "Crypto" provider on the Android platform](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security Crypto provider on the Android platform deprecated in Android N").
-
-#### References
-
-##### OWASP Mobile Top 10
-- M6 - Broken Cryptography
-
-##### OWASP MASVS
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
-
-##### CWE
-- CWE-326: Inadequate Encryption Strength
-- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-- CWE-329: Not Using a Random IV with CBC Mode
-
-
-### Testing for Custom Implementations of Cryptography
-
-#### Overview
-
-The use of non-standard or custom built cryptographic algorithms is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and very likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
-
-#### Static Analysis
-
-Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. All cryptographic operations (see the list in the introduction section) should come from the standard providers (for standard APIs for Android and iOS, see cryptography chapters for the respective platforms). Any cryptographic invocations which do not invoke standard routines from known providers should be candidates for closer inspection. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
-
-#### Remediation
-
-Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M6 - Broken Cryptography
-
-##### OWASP MASVS
-
-- V3.2: "The app uses proven implementations of cryptographic primitives."
-
-##### CWE
-
-- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-
-### Testing for Hardcoded Cryptographic Keys
-
-#### Overview
-
-The security of symmetric encryption and keyed hashes (MACs) is highly dependent upon the secrecy of the used secret key. If the secret key is disclosed, the security gained by encryption/MACing is rendered naught. This mandates, that the secret key is protected and should not be stored together with the encrypted data.
-
-#### Static Analysis
-
-The following checks should be performed against the source code:
-
-- Ensure that no keys/passwords are hard coded and stored within the source code. Pay special attention to any 'administrative' or backdoor accounts enabled in the source code. Storing a fixed salt within the app or password hashes may cause problems too.
-- Ensure that no obfuscated keys or passwords are in the source code. Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
+- Ensure that no keys/passwords are hard-and stored within the source code. Note that hard-coded keys are a problem even if the source code is obfuscated: Obfuscation is easily bypassed by dynamic instrumentation and in principle does not differ from hard coded keys.
 - If the app is using two-way SSL (i.e. there is both server and client certificate validated) check if:
-    - the password to the client certificate is not stored locally, it should be in the Keychain
+    - the password to the client certificate is not stored locally, or is locked in the device Keychain
     - the client certificate is not shared among all installations (e.g. hard coded in the app)
 - If the app relies on an additional encrypted container stored in app data, ensure how the encryption key is used:
     - if key wrapping scheme is used, ensure that the master secret is initialized for each user, or container is re-encrypted with new key;
     - check how password change is handled and specifically, if you can use master secret or previous password to decrypt the container.
 
-Mobile operating systems provide a specially protected storage area for secret keys, commonly named key stores or key chains. Those storage areas will not be part of normal backup routines and might even be protected by hardware means. The application should use this special storage locations/mechanisms for all secret keys.
-
-#### Remediation
-
 The secure and protected storage mechanisms provided by the OS should be used to store secret keys:
 - [iOS: Managing Keys, Certificates, and Passwords](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html "iOS: Managing Keys, Certificates, and Passwords")
 - [Android: The Android Keystore System](https://developer.android.com/training/articles/keystore.html "Android: The Android Keystore System")
 - [Android: Hardware-backed Keystore](https://source.android.com/security/keystore/ "Android: Hardware-backed Keystore")
+
+##### Non-random Initialization Vectors
+
+- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
+
+##### Weak Key Generation Functions
+
+Cryptographic algorithms, such as symmetric encryption or MACs, expect a secret input of a given size, e.g. 128 or 256 bit. A native implementation might use the user-supplied password directly as an input key. There are a couple of problems with this approach:
+
+- If the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
+- A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is used (approx. 2<sup>6</sup>).
+- If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
+
+Verify that no password is directly passed into an encryption function. Instead, the user-supplied password should be passed into a salted hash function or KDF to create the cryptographic key.
+
+- Reasonable choice of iteration counts when using password derivation functions
+
+##### Custom Implementations of Cryptography
+
+Implementing cryptographic functions is time consuming, difficult and very likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
+
+Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. All cryptographic operations (see the list in the introduction section) should come from the standard providers (for standard APIs for Android and iOS, see cryptography chapters for the respective platforms). Any cryptographic invocations which do not invoke standard routines from known providers should be candidates for closer inspection. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit manipulation operators like XOR (exclusive OR) might be a good sign to start digging deeper.
+
+Do not develop custom cryptographic algorithms, as it is likely  Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations.
 
 #### References
 
@@ -196,40 +147,12 @@ The secure and protected storage mechanisms provided by the OS should be used to
 ##### OWASP MASVS
 
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
-
-##### CWE
-
-- CWE-321 - Use of Hard-coded Cryptographic Key
-
-
-### Testing Key Generation Techniques
-
-#### Overview
-
-Cryptographic algorithms -- such as symmetric encryption or MACs -- expect a secret input of a given size, e.g. 128 or 256 bit. A native implementation might use the user-supplied password directly as an input key. There are a couple of problems with this approach:
-
-- If the password is smaller than the key, then not the full key-space is used (the rest is padded, sometimes even with spaces)
-- A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is used (approx. 2<sup>6</sup>).
-- If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
-
-#### Static Analysis
-
-Use the source code to verify that no password is directly passed into an encryption function.
-
-#### Remediation
-
-Pass the user-supplied password into a salted hash function or KDF; use its result as key for the cryptographic function.
-
-#### References
-
-##### OWASP Mobile Top 10
-
-- M6 - Broken Cryptography
-
-##### OWASP MASVS
-
+- V3.2: "The app uses proven implementations of cryptographic primitives."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 
-- CWE-330 - Use of Insufficiently Random Values
+- CWE-326: Inadequate Encryption Strength
+- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
+- CWE-329: Not Using a Random IV with CBC Mode
