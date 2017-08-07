@@ -1,10 +1,10 @@
 ## Testing Cryptography in Mobile Apps
 
-This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. Platform-specific cryptographic APIs for data storage are covered in greater detail "Testing Data Storage" chapters. Encryption of network traffic - in particular Transport Layer Security (TLS) - is covered in the “Testing Network Communication” chapter.
+This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid on every mobile operating system. Platform-specific cryptographic APIs for data storage are covered in greater detail "Testing Data Storage" chapters. Encryption of network traffic - in particular Transport Layer Security (TLS) - is covered in the "Testing Network Communication" chapter.
 
 ### Key Concepts
 
-The primary goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data comes from a trusted source. 
+The goal of cryptography is to provide confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality is achieved through use of encryption, with the aim of ensuring secrecy of the contents. Data integrity deals with maintaining and ensuring consistency of data and detection of tampering/modification. Authenticity ensures that the data comes from a trusted source. 
 
 - Encryption ensures data confidentiality by using special algorithms to convert plaintext data into cipher text, which does not reveal any information about the original content. Plaintext data can be restored from the cipher text through decryption. Two main forms of encryption are symmetric (or secret key) and asymmetric (or public key). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection.
   - Symmetric-key encryption algorithms use the same key for both encryption and decryption. It is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, they require careful key management.
