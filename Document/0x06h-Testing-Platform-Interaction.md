@@ -343,7 +343,7 @@ For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) c
 - M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 ##### OWASP MASVS
-- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 
 ##### CWE
 

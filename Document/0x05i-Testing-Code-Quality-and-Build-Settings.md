@@ -550,8 +550,8 @@ Now you need to call the initializer for the handler at your custom `Application
 - M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-- V7.5: "The app catches and handles possible exceptions."
-- V7.6: "Error handling logic in security controls denies access by default."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 - CWE-388 - Error Handling
@@ -653,7 +653,7 @@ android {
 
 ##### OWASP MASVS
 
-- V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
 
