@@ -1125,7 +1125,7 @@ To implement root detection within an Android app, libraries can be used like `R
 
 ##### OWASP MASVS
 
-- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
+- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 
 ##### CWE
 

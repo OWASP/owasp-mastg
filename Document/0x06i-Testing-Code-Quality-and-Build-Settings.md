@@ -371,8 +371,8 @@ There are a few things a developer can do:
 
 ##### OWASP MASVS
 
-- V7.5: "The app catches and handles possible exceptions."
-- V7.6: "Error handling logic in security controls denies access by default."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 
@@ -493,7 +493,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### OWASP MASVS
 
-- V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
 
