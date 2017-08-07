@@ -83,6 +83,10 @@ Ensure that used key length fulfill [accepted industry standards](https://www.en
 
 ##### Weak AES Configuration
 
+Advanced Encryption Standard (AES) is de-facto standard for symmetric encryption in mobile apps. It is an iterative block cipher that is based on a series of linked mathematical operations. AES performs a variable number of rounds on the input, each of which involve substitution and permutation of the bytes in the input block. Each round uses a 128-bit round key which is derived from the original AES key.
+
+As of this writing, no efficient cryptanalytic attacks against AES have been discovered. However, implementation details and configurable parameters such as mode leave some margin for
+
 ###### Weak Block Cipher Mode
 
 Block-based encryption is performed upon discrete input blocks, e.g., 128 bit blocks when using AES. If the plain-text is larger than the block-size, it is internally split up into blocks of the given input size and encryption is performed upon each block. The so called block mode defines, if the result of one encrypted block has any impact upon subsequently encrypted blocks.
@@ -93,15 +97,17 @@ The [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_
 
 ![Difference of encryption modes](Images/Chapters/0x07c/EncryptionMode.png)
 
-Verify that Cipher Block Chaining (CBC) mode is used as opposed to ECB mode. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block looks differently (and essentially random) even if the block contains the same information. The CBC mode requires an initialization vector (IV) to combine with the first plain text block. The IV does not have to be kept secret, but it must be non-predictable.
-
--- TODO Initialization Vector ---
-
-- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
+Verify that Cipher Block Chaining (CBC) mode is used as opposed to ECB mode. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block looks differently (and essentially random) even if the block contains the same information.
 
 For storing encrypted data it is sometimes advisable to use a block mode that additionally protects the integrity of the stored data, e.g. Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms.
 
 Also consult the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
+
+###### Predictable Initialization Vector
+
+CBC mode requires an initialization vector (IV) to combine with the first plain text block. The IV does not have to be kept secret, but it must be non-predictable. Make sure that IVs are generated using a cryptographically-secure random number generator.
+
+- [Initialization vectors (IVs)](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors
 
 ###### Symmetric Encryption with Hard-coded Cryptographic Keys
 
@@ -127,7 +133,7 @@ Cryptographic algorithms, such as symmetric encryption or MACs, expect a secret 
 - A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is used (approx. 2<sup>6</sup>).
 - If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
 
-Verify that no password is directly passed into an encryption function. Instead, the user-supplied password should be passed into a salted hash function or KDF to create the cryptographic key. Choose and appropriate iteration count when using password derivation functions. For example, [NIST recommends and iteration count of at least 10,000 for PBKDF2](https://pages.nist.gov/800-63-3/sp800-63b.html#sec5).
+Verify that no password is directly passed into an encryption function. Instead, the user-supplied password should be passed into a salted hash function or KDF to create the cryptographic key. Choose and appropriate iteration count when using password derivation functions. For example, [NIST recommends and iteration count of at least 10,000 for PBKDF2](https://pages.nist.gov/800-63-3/sp800-63b.html#sec5 "NIST Special Publication 800-63B").
 
 ##### Custom Implementations of Cryptography
 
