@@ -127,9 +127,7 @@ Cryptographic algorithms, such as symmetric encryption or MACs, expect a secret 
 - A user-supplied password will realistically consist mostly of displayable and pronounceable characters. So instead of the full entropy, i.e. 2<sup>8</sup> when using ASCII, only a small subset is used (approx. 2<sup>6</sup>).
 - If two users select the same password an attacker can match the encrypted files. This opens up the possibility of rainbow table attacks.
 
-Verify that no password is directly passed into an encryption function. Instead, the user-supplied password should be passed into a salted hash function or KDF to create the cryptographic key.
-
-- Reasonable choice of iteration counts when using password derivation functions
+Verify that no password is directly passed into an encryption function. Instead, the user-supplied password should be passed into a salted hash function or KDF to create the cryptographic key. Choose and appropriate iteration count when using password derivation functions. For example, [NIST recommends and iteration count of at least 10,000 for PBKDF2](https://pages.nist.gov/800-63-3/sp800-63b.html#sec5).
 
 ##### Custom Implementations of Cryptography
 
