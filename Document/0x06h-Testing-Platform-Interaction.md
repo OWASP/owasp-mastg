@@ -60,7 +60,7 @@ Besides the potential for script injection, there is another fundamental securit
 
 WebViews can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). 
 
-Verify that WKWebView comes with some security advantages:
+WKWebView comes with some security advantages:
 
 - The `JavaScriptEnabled` property can be used to completely disable JavaScipt in the WKWebView. This prevents any kind of script injection flaws. 
 - The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent opening of new windows from JavaScript. This prevents JavaScript code from opening irritating pop-up windows from opening.
