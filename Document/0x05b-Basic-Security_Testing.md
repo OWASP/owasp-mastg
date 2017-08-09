@@ -152,6 +152,18 @@ To accomplish the source code testing, you will want to have a setup similar to 
 
 During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in [Android .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
 
+In case you need to pull the APK from the device, the following steps should be followed:
+
+```bash
+$ adb shell pm list packages
+(...)
+package:com.awesomeproject
+(...)
+$ adb shell pm path com.awesomeproject
+package:/data/app/com.awesomeproject-1/base.apk
+$ adb pull /data/app/com.awesomeproject-1/base.apk
+```
+
 An easy way on the CLI to retrieve the source code of an APK is through `apkx`, which also packages `dex2jar` and CFR and automates the extracting, conversion and decompilation steps. Install it as follows:
 
 ```
