@@ -69,7 +69,7 @@ Verify that WKWebView comes with some security advantages:
 Verify that WKWebView has been used, and that JavaScript is disabled in the WebView unless explicitly required. A sample WebView configuration looks as follows. 
 
 
-```
+```objective-c
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
 @interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -95,7 +95,7 @@ Verify that WKWebView has been used, and that JavaScript is disabled in the WebV
     [self.view addSubview:_webView];
 
 }
-
+```
 
 ##### JavaScript Bridge
 
