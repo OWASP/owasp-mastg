@@ -52,7 +52,7 @@ You should carefully validate any URL, before calling it. You can white-list app
 
 WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. 
 
-iOS WebViews support execution of JavaScript by default, so they can be affected by script injection and cross-site scripting attacks. Starting from iOS version 7.0, Apple also introduced APIs that enable communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers if that manage to get their own script running in the WebView.
+iOS WebViews support execution of JavaScript by default, so they can be affected by script injection and cross-site scripting attacks. Starting from iOS version 7.0, Apple also introduced APIs that enable communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers if that manage to inject malicious script into the WebView (e.g through a successful cross-site scripting attack).
 
 Besides the potential for script injection, there is another fundamental security issue related to WebViews: The WebKit libraries packaged with iOS do not get updated out-of-band like the Safari web browser. Therefore, any newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
 
@@ -67,7 +67,6 @@ WKWebView comes with some security advantages:
 - the `hasOnlySecureContent` property can be used to verify that all resources loaded by the WebView have been retrieved through encrypted connections.
 
 Verify that WKWebView has been used, and that JavaScript is disabled in the WebView unless explicitly required. A sample WebView configuration looks as follows. 
-
 
 ```objective-c
 #import "ViewController.h"
@@ -97,9 +96,40 @@ Verify that WKWebView has been used, and that JavaScript is disabled in the WebV
 }
 ```
 
-##### JavaScript Bridge
+##### Accessing Native Code from WebViews
 
--- [ TODO ] --
+###### UIWebView
+
+With iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. Carelessly exposing native functionality can cause problems if an attacker manages to inject JavaScript into the WebView.
+
+A JavaScript execution environment is represented by the `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` can be obtained as follows:
+
+``objective-c
+[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
+``
+
+- Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function.
+
+- JSExport protocol: Properties, instance methods, and class methods declared in an JSExport-inherited protocol are mapped to JavaScript objects that are made available to any JavaScript code. Modifications made to the objects in the JavaScript environment are reflected in the native environment.
+
+###### WKWebView
+
+Note that it is not possible to directly reference the `JSContext` of a `WKWebView`. 
+
+
+```javascript
+window.webkit.messageHandlers.interOp.postMessage(message)
+```
+
+
+```objective-c
+
+- (void)userContentController:(WKUserContentController *)userContentController 
+                            didReceiveScriptMessage:(WKScriptMessage *)message{
+    NSLog(@"%@", message.body);
+}
+```
+
 
 #### Dynamic Analysis
 
