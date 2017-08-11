@@ -4,19 +4,45 @@
 
 #### Overview
 
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+Code signing your app assures users that it is from a known source and the app hasn’t been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
+
+It is possible to retrieve the signing certificate information on the application .app file using [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
 #### Static Analysis
 
--- TODO [Add content on white-box testing of "Verifying that the App is Properly Signed"] --
+After obtaining the application .ipa file, rename it to zip and decompress the file. Navigate to the `Payload` directory and the application .app file will be present.
+
+Execute the following `codesign` command:
+
+```sh
+$ codesign -dvvv <yourapp.app>
+Executable=/Users/Documents/<yourname>/Payload/<yourname.app>/<yourname>
+Identifier=com.example.example
+Format=app bundle with Mach-O universal (armv7 arm64)
+CodeDirectory v=20200 size=154808 flags=0x0(none) hashes=4830+5 location=embedded
+Hash type=sha256 size=32
+CandidateCDHash sha1=455758418a5f6a878bb8fdb709ccfca52c0b5b9e
+CandidateCDHash sha256=fd44efd7d03fb03563b90037f92b6ffff3270c46
+Hash choices=sha1,sha256
+CDHash=fd44efd7d03fb03563b90037f92b6ffff3270c46
+Signature size=4678
+Authority=iPhone Distribution: Example Ltd
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=4 Aug 2017, 12:42:52
+Info.plist entries=66
+TeamIdentifier=8LAMR92KJ8
+Sealed Resources version=2 rules=12 files=1410
+Internal requirements count=1 size=176
+```
 
 #### Dynamic Analysis
 
--- TODO [Add content on black-box testing of "Verifying that the App is Properly Signed"] --
+Not Applicable.
 
 #### Remediation
 
--- TODO [Add remediation for "Verifying that the App is Properly Signed"] --
+For iOS application it is mandatory for applications to be properly signed with a certification issued by Apple before it can be installed on a device or submitted to the App Store.
 
 #### References
 
@@ -34,14 +60,16 @@
 
 ##### Tools
 
--- TODO [Add tools for "Verifying that the App is Properly Signed"] --
+- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
 
 
 ### Testing If the App is Debuggable
 
 #### Overview
 
--- TODO [Give an overview about the functionality "Testing Whether the App is Debuggable" and it's potential weaknesses] --
+On a jailbroken iOS device it is possible to attach a debugger such as [GDB](https://www.gnu.org/software/gdb/) on a running application process. Analyzing or modifying the application's behavior is possible if the application does not implement any form of anti-debugging techniques to prevent attaching of a debugger.
+
+On a non-jailbroken iOS device it is also possible to debug and instrument an application using tools such as [Frida](https://www.frida.re) and [Objection](https://github.com/sensepost/objection). Repackaging the application and resigning it with your own Apple issued certificate is required. This is only possible if you possess the .ipa file of the application.
 
 #### Static Analysis
 
@@ -51,7 +79,8 @@
 
 #### Dynamic Analysis
 
-This test case should be performed through Static Analysis. -- TODO [Develop content on black-box testing of "Testing Whether the App is Debuggable"] --
+This test case should be performed through Static Analysis. -- TODO [Develop content on black-box testing of "Testing Whether the App is Debuggable"] 
+-- TODO [Not possible to test dynamically on a non jailbroken iOS device if no .ipa is provided]
 
 #### Remediation
 
@@ -106,7 +135,9 @@ Not applicable.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying that Debugging Symbols Have Been Removed"] --
+Ensure that debugging symbols are stripped when the application is being build for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty for reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to YES in the build settings of the project.
+
+It is possible to still have a proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html) as it does not require any symbols in the application binary.
 
 #### References
 
@@ -120,7 +151,7 @@ Not applicable.
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Verifying that Debugging Symbols Have Been Removed"] --
+-- TODO [Add relevant CWE for "Testing for Debugging Symbols"] --
 
 
 ### Testing for Debugging Code and Verbose Error Logging
@@ -371,8 +402,8 @@ There are a few things a developer can do:
 
 ##### OWASP MASVS
 
-- V7.5: "The app catches and handles possible exceptions."
-- V7.6: "Error handling logic in security controls denies access by default."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 
@@ -396,15 +427,11 @@ Although XCode set all binary security features by default, it still might be re
 
 #### Static Analysis
 
--- TODO
-
-#### Dynamic Analysis
-
 ##### With otool:
 
 Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
 
--	PIE:
+-   PIE:
 
 ```
 $ unzip DamnVulnerableiOSApp.ipa
@@ -422,7 +449,7 @@ MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
 WEAK_DEFINES BINDS_TO_WEAK PIE
 ```
 
--	Stack Canary:
+-   Stack Canary:
 
 ```
 $ otool -Iv DamnVulnerableIOSApp | grep stack
@@ -438,7 +465,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep stack
 0x0000000100593dc8 83414 _sigaltstack
 ```
 
--	Automatic Reference Counting:
+-   Automatic Reference Counting:
 
 ```
 $ otool -Iv DamnVulnerableIOSApp | grep release
@@ -456,6 +483,10 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
+
+#### Dynamic Analysis
+
+Dynamic Analysis is not application.
 
 #### Remediation
 
@@ -493,7 +524,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### OWASP MASVS
 
-- V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
 

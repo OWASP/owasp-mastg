@@ -188,11 +188,9 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 - How long did it take you to successfully bypass it?
 - What is your subjective assessment of difficulty?
 
-For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
-
-#### Remediation
-
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -610,11 +608,9 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
-
-#### Remediation
-
 If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 ### Testing File Integrity Checks
 
@@ -1217,11 +1213,19 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 N/A
 
+
 ### Testing Device Binding
 
 #### Overview
 
-The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
+
+- augment the credentials used for authentication with device identifiers. This only make sense if the application needs to re-authenticate itself and/or the user frequently.
+- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
+- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
+
 
 #### Static Analysis
 
@@ -1243,8 +1247,9 @@ When the source-code is available, then there are a few codes you can look for, 
   String IMEI = tm.getDeviceId();
 ```
 
-
 Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+
+> Apps targeting Android O will get "UNKNOWN" when they request the Build.Serial.
 
 #### Dynamic Analysis
 
@@ -1384,6 +1389,9 @@ Please note that Google recommends against using these identifiers unless there 
 ```java
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
+
+The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a [new set of recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") in their SDK documentation regarding identifiers as well. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overridden.
+
 #### Effectiveness Assessment
 
 When the source-code is available, then there are a few codes you can look for, such as:
@@ -1434,17 +1442,6 @@ There are a few ways to test device binding dynamically:
 5. Overwrite the data from step 3 in the data folder of the application.
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
-#### Remediation
-
-The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a [new set of recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") in their SDK documentation regarding identifiers as well. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
-Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
-
-- augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
-- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
-- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
-
-The following three identifiers can be possibly used.
 
 #### References
 

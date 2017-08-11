@@ -142,11 +142,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 - `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed.
-
-#### Remediation
-
-Use cryptographic algorithm configurations that are currently considered strong, such those from [NIST](https://www.keylength.com/en/4/ "NIST recommendations (2016)") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations (2017)"). See also the "Remediation" section in the "Cryptography for Mobile Apps" chapter.
+Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong.
 
 #### References
 
@@ -177,6 +173,7 @@ Most developers should instantiate `SecureRandom` via the default constructor wi
 #### Static Analysis
 
 Identify all the instances of random number generators and look for either custom or known insecure `java.util.Random` class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
+
 The following sample source code shows weak random number generation:
 
 ```Java
@@ -192,15 +189,10 @@ for (int i = 0; i < 20; i++) {
 }
 ```
 
-Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness.
+Instead a well-vetted algorithm should be used that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds.
 
-#### Dynamic Analysis
+Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness. Prefer the [no-argument constructor of `SecureRandom`](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers "Generation of Strong Random Numbers") that uses the system-specified seed value to generate a 128-byte-long random number.
 
-Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
-
-#### Remediation
-
-Use a well-vetted algorithm that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds. Prefer the [no-argument constructor of `SecureRandom`](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers "Generation of Strong Random Numbers") that uses the system-specified seed value to generate a 128-byte-long random number.
 In general, if a PRNG is not advertised as being cryptographically secure (e.g. `java.util.Random`), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
 Pseudo-random number generators [can produce predictable numbers](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom") if the generator is known and the seed can be guessed. A 128-bit seed is a good starting point for producing a "random enough" number.
 
@@ -219,6 +211,10 @@ public static void main (String args[]) {
   }
 }
 ```
+
+#### Dynamic Analysis
+
+Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
 #### References
 

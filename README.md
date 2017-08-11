@@ -15,7 +15,6 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
-- [Security Testing in the Software Development Lifecycle](Document/0x04d-Security-Testing-SDLC.md)
 
 ### Android Testing Guide
 

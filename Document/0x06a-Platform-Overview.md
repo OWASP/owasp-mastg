@@ -131,27 +131,28 @@ A language.lproj folder is defined for each language that the application suppor
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). Note that during mobile security assessments, developers will often provide you with the IPA directly. They could send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
 
+
 #### App Structure on the iOS File System
 
-Since iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/ folder. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since iOS 8 this has changed however, so we will see that the static bundle and the application data folders are now stored in different locations on the filesystem. These folders contain information that we will need to closely examine during application security assessments.
+iOS 8 introduced changes to the way an application is stored on a device. In earlier versions of iOS, apps would be unpacked the /var/mobile/applications/ folder. An app would then be identified by its UUID (Universal Unique Identifier), a 128-bit number that will be the name of the folder where the application can be found. Since iOS 8 release static bundle and application data folders are now stored in different locations in the file system. These folders contain information that must be closely examined during application security assessments.
 
 - `/var/mobile/Containers/Bundle/Application/[UUID]/Application.app` contains the previously mentioned application.app data and stores the static content as well as the ARM compiled binary of the application. The content of this folder will be used to validate the code signature.
-- `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the data stored for the application itself. The creation of this data is initiated by the application’s end user.
-- `/var/mobile/Containers/Data/Application/[UUID]/Library` contains files necessary for the application e.g. caches, preferences, cookies, property list (plist) configuration files, etc.
-- `/var/mobile/Containers/Data/Application/[UUID]/Temp` contains temporary files which do not need persistence in between application launches.
+- `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the app's data.
+- `/var/mobile/Containers/Data/Application/[UUID]/Library` contains the files used by the app e.g. caches, preferences, cookies, property list (plist) configuration files, etc.
+- `/var/mobile/Containers/Data/Application/[UUID]/tmp` contains temporary files which are not needed between application launches.
 
-The following figure represents the application’s folder structure:
+The following figure represents the application folder structure:
 
 <img src="/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
 - *iOS App Folder Structure*
 
 #### The Installation Process
 
-Different methods exist to install an IPA package on the device. The easiest solution is to use iTunes, which is the default media player from Apple. iTunes is available for macOS as well as for Windows. iTunes allows you to download applications through the App Store, after which you can install/synchronize them to an iOS device. You can also use [iTunes to install an IPA file to a device](https://www.youtube.com/watch?v=nNn85Qvznug "How to install an app via iTunes").
+Different methods exist to install an IPA package on an iOS device. The easiest solution is to use iTunes, which is the default media player from Apple. iTunes is available for macOS as well as for Windows. iTunes allows users to download applications through the App Store and install them to the iOS device. You can also use [iTunes to install an IPA file to a device](https://www.youtube.com/watch?v=nNn85Qvznug "How to install an app via iTunes").
 
-On Linux we can make use of [libimobiledevice](http://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Through ideviceinstaller we can install packages over an USB connection. The connection is implemented by using the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux you can make use of [libimobiledevice](http://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and set of tools to communicate with iOS devices natively. Packages can be installed to the device via ideviceinstaller over an USB connection. The connection is implemented by using the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
-On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install it. Before your app can integrate app services or be installed on a device it must be signed with a certificate issued by Apple. This means that we can only install it after successful verification of the code signature. On a jailbroken phone this can however be circumvented using [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified), a package made available on the Cydia store. This is an alternative app store containing a lot of useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow the installation of fake-signed IPA packages.
+On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install the application. Any application must be signed with a certificate issued by Apple to be able to integrate app services or be installed on an iOS device. This means that the application we can only be installed after the successful code signature verification. On a jailbroken phone this can however be circumvented using [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified), a package made available on the Cydia store. This is an alternative app store containing numerous useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow the installation of fake-signed IPA packages.
 
 The IPA can also be installed directly from command line by using [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
 
@@ -161,9 +162,9 @@ $ ipainstaller App_name.ipa
 
 #### App Permissions
 
-In contrast to Android, iOS apps do not have preassigned permissions. Instead, the user is asked to grant permission during runtime when an app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+In contrast to Android, iOS applications do not have preassigned permissions. Instead, the user is asked to grant permission during  runtime when the app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
 
-Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
+iOS developers don't have the possibility to set requested permissions directly – they are requesting them indirectly by using sensitive APIs. For example, when accessing user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
 
 The following APIs [require permission from the user](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
 
