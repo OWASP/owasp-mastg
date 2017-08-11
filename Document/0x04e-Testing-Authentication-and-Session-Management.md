@@ -266,7 +266,7 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 #### Dynamic Analysis
 
-Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks. 
+Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
 - Start Burp Suite.
 - Create a new project (or open an existing one).
@@ -399,7 +399,7 @@ Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Se
 
 #### Overview
 
-Token-based authentication is implemented by sending a signed   token (verified by the server) with each HTTP request  . The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
+Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
 The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
@@ -432,9 +432,9 @@ JWT implementations are available for every major programming language.
 
 Once signed,  a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the back end doesn't process expired tokens.
 
-A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token.
+A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
-For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is no older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
+For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
 
 ```Java
@@ -460,13 +460,13 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 
 ###### NONE Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims .
+An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 The first defensive strategy is using a JWT library that doesn't have this vulnerability.
 
 While the token is being validated,  explicitly request the expected algorithm.
 
-
+```
 // HMAC key - Block serialization and storage as String in JVM memory
 private transient byte[] keyHMAC = ...;
 
@@ -478,6 +478,7 @@ JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 //Verify the token; if the verification fails then an exception is thrown
 
 DecodedJWT decodedToken = verifier.verify(token);
+```
 
 ##### Best Practices
 
@@ -487,6 +488,7 @@ Consider the following best practices when implementing JWT:
 - Make sure that tokens of a different signature type will definitely be rejected.
 - Securely store the JWT on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 - Make sure that the private signing key or the secret key for the Hash-based message authentication code (HMAC) is only available on the server.
+- Make sure that the access token expires after a short amount of time (minutes) and the refresh token after a longer period of time (can be days or weeks).
 - Use the `jti` (JWT ID) claim if the app is vulnerable to replay attacks.
 - Encrypt the JWT content. Role descriptions, usernames, and other sensitive information should be protected. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java).
 
@@ -499,6 +501,7 @@ Adhere to the following JWT library [best practices](https://stormpath.com/blog/
 - For all incoming requests containing a token, always verify the signature or HMAC on the server.
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
 - Verify encryption of data embedded in the JWT.
+- Verify the expiry date for the access and refresh token.
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 
 #### Dynamic Analysis
@@ -533,6 +536,7 @@ Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/in
 - CWE-287: Improper Authentication
 
 ##### Tools
+
 - [jwtbrute](https://github.com/jmaxxz/jwtbrute)
 - [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
 - [John the ripper](https://github.com/magnumripper/JohnTheRipper)
@@ -560,7 +564,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 1. The application requests user authorization to access service resources.
 2. If the user authorizes the request, the application receives an authorization grant. The authorization grant may take several forms (explicit, implicit, etc.).
 3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity along with the authorization grant.
-4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application, completing the authorization process. The access token may have a companion refresh token. 
+4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application, completing the authorization process. The access token may have a companion refresh token.
 5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token may be used in several ways (e.g., as a bearer token).
 6. If the access token is valid, the resource server (API) serves the resource to the application.
 
