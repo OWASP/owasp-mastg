@@ -430,6 +430,8 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data.
 
+Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, the access to the pasteboard content is only allowed to apps in the foreground.
+
 #### Static Analysis
 
 Search through the source code provided to look for any implemented subclass of `UITextField`.
