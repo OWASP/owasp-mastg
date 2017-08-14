@@ -28,18 +28,22 @@ In spite of numerous strengths, iOS app developers still need to worry about sec
 
 #### Hardware Security
 
-The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each device comes with two built-in AES 256-bit keys, UID and GID, fused/compiled into the application processor and Secure Enclave during manufacturing. There is no way to directly read these keys through software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines with exclusive access to the keys.
+iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each iOS device comes with two built-in AES 256-bit keys – GID and UID – fused and compiled into the application processor and Secure Enclave during manufacturing. There is no direct way to read these keys by a software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines having exclusive access to these keys.
 
-The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encryption. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
+GID is a common value shared between all processors in a class of devices issued by Apple. It is used to prevent tampering with firmware files and performing other cryptographic tasks that are not directly related to user's private data. 
 
-To enable secure deletion of sensitive data on flash memory, iOS devices include a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
+UIDs are unique to each device and are used to protect the key hierarchy used for device-level file system encryption. These unique values are not recorded during manufacturing which prevents Apple from being able to restore the file encryption keys for each particular device.
+
+To enable secure deletion of sensitive data in its flash memory, iOS devices have a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
+
 
 #### Secure Boot
 
-When the iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating root of trust. In the next step, the Boot ROM code checks if the signature of the iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of next boot stage, which is iOS kernel. If any of these steps fail, the boot process is immediately terminated and the device enters the recovery mode and displays a "Connect to iTunes" screen. If, however, the Boot ROM fails to load, the device enters a special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to the original state. There will be no sign of activity of the device, i.e. the screen will not display anything.
+When an iOS device is powered on, it reads the initial instructions from the read-only Boot ROM, which bootstraps the system. This memory contains immutable code, together with Apple Root CA, which is etched in the silicon die during fabrication process, creating the root of trust. During the next step, the Boot ROM code checks if the signature of the iBoot bootloader is correct. Once the signature is validated, the iBoot checks the signature of the next boot stage, which is iOS kernel. If any of these steps fail, the boot process is immediately terminated and the device enters the recovery mode and displays "Connect to iTunes" screen. However, if the Boot ROM fails to load, the device enters a special low level recovery mode, which is called Device Firmware Upgrade (DFU). This is the last resort to recover the device to its original state. In this case the device will have no sign of activity, i.e. its screen will not display anything.
 
-The entire process is called "Secure Boot Chain" and ensures that it is running only on Apple-manufactured devices. The Secure Boot chain consists of kernel, bootloader, kernel extension and baseband firmware.
-All new devices that have a Secure Enclave coprocessor, i.e. starting from iPhone 5s also use the secure boot process to ensure that the firmware within the Secure Enclave is trusted.
+This entire process is called "Secure Boot Chain". It aims at ensuring that the systems and its components are written and distributed by Apple. The Secure Boot chain consists of kernel, bootloader, kernel extension and baseband firmware.
+All new devices that have a Secure Enclave co-processor (i.e. iPhone 5s and later) also use the secure boot process to ensure that the firmware within the Secure Enclave is trusted.
+
 
 #### Code Signing
 
