@@ -1,20 +1,20 @@
 ## iOS Platform Overview
 
-iOS is the operating system that powers all of Apple's iDevices, including the iPhone, iPad and iPod Touch. Even Apple TVs tvOS is based on iOS. It is a derivate of macOS (formerly OS X), and as such runs a modified version of the XNU kernel. Compared to their desktop relatives however, iOS apps run in a more restricted environment: They are isolated from each other on the file system level, and are significantly limited in terms of system API access.
+iOS is a mobile operating system that powers Apple mobile devices including iPhone, iPad and iPod Touch. It also served the basis for Apple tvOS, which has inherited many of iOS functionalities.
+iOS, like Apple desktop operating system, macOS (formerly OS X), is based on Darwin, a hybrid version of XNU kernel. There is an important difference between the two systems: iOS apps run in a more restricted environment than the desktop apps. They are isolated from each other on the file system level, and are significantly limited in terms of system API access.
 
-iOS is more "closed" than Android: Apple also keeps tight control over which apps are allowed to run on iOS devices. So called side-loading of apps was only possible with a jailbreak or complicated workarounds. Side-loading means installing an app on your iOS device by bypassing the official App store. By using the latest version of Xcode and at least iOS 9 it is possible to do [side-loading via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8") and install an app directly to your phone.
+To protect its users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. Apple App store is the only official application distribution platform where developers can offer their apps and consumers can buy, download and install apps. This is different compared to Android that has several different app stores. Until recently side-loading of apps (or installing an app on your iOS device by bypassing the official App store) was only possible with a jailbreak or complicated workarounds. By using the latest version of Xcode and at least iOS 9 it is possible to do [side-loading via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8") and install an app directly to your phone.
 
-The App store is the only official application distribution platform from Apple that can be used by developers to offer their app and for consumers to buy, download and install apps. This is different compared to Android that has several different app stores.
+Sandboxing is mandatory for iOS apps. Apple sandbox (historically called Seatbelt) is a mandatory access control (MAC) mechanisms describing what resources an app can or cannot access. Compared to Android Binder IPC, iOS limits potential attack surface.
 
-Apps are sandboxed just like in Android, but in contrast to Android's Binder IPC, iOS offers very little IPC functionality. This means more limited options for developers, but also less potential attack surface.
+Uniform hardware and tight integration between hardware and software brings another security advantage. iOS protects its devices by offering secure boot, hardware-backed keychain and file system encryption. Limited install base allows iOS updates to be rolled out to a large percentage of users quickly that means less need for support of older and unprotected versions of iOS.
 
-The uniform hardware and tight integration between hardware and software creates another security advantage: For example, developers can rely on a hardware-backed keychain and file system encryption being available. Also, iOS updates are rolled out to a large percentage of users quickly, meaning less need to support older, less secure versions of iOS.
+In spite of numerous strengths, iOS app developers still need to worry about security. Data protection, Keychain, TouchID authentication and network security still leave plenty of margin for errors. In the following chapters, we are describing iOS security architecture and explaining a basic security testing methodology and reverse engineering how-tos. We are also mapping the categories of MASVS to iOS and outline test cases for each requirement.
 
-All of this doesn't mean however that iOS app developers don't need to worry about security. Topics like data protection and Keychain, TouchID authentication and network security still leave plenty of margin for errors. In the following chapters, we document the iOS security architecture, followed by explaining a basic security testing methodology and reverse engineering howtos. We'll then map the categories of the MASVS to iOS and outline test cases for each requirement.
 
-### The iOS Security Architecture
+### iOS Security Architecture
 
-The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") consists of six core features.
+[iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") has six core features:
 
 - Hardware Security
 - Secure Boot
@@ -125,16 +125,17 @@ A language.lproj folder is defined for each language that the application suppor
 On a jailbroken device, you can recover the IPA for an installed iOS app using [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). Note that during mobile security assessments, developers will often provide you with the IPA directly. They can send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
 
 
+
 #### App Structure on the iOS File System
 
 Since iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since the iOS 8 release static bundle and application data folders are now stored in different locations in the file system. These folders contain information that must be closely examined during application security assessments.
 
 - `/var/mobile/Containers/Bundle/Application/[UUID]/Application.app` contains the previously mentioned application.app data and stores the static content as well as the ARM compiled binary of the application. The content of this folder will be used to validate the code signature.
 - `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the user generated data. The creation of this data is initiated by the application end user.
-- `/var/mobile/Containers/Data/Application/[UUID]/Library` contains files all non user-specific files, like caches, preferences, cookies, property list (plist) configuration files, etc.
+- `/var/mobile/Containers/Data/Application/[UUID]/Library` contains all non user-specific files, like caches, preferences, cookies, property list (plist) configuration files, etc.
 - `/var/mobile/Containers/Data/Application/[UUID]/tmp` contains temporary files which are not needed between application launches.
 
-The following figure represents the application’s folder structure:
+The following figure represents the application folder structure:
 
 <img src="/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
 - *iOS App Folder Structure*
@@ -147,6 +148,8 @@ On Linux you can make use of [libimobiledevice](http://www.libimobiledevice.org/
 
 iOS developers don't have the possibility to set requested permissions directly – they are requesting them indirectly by using sensitive APIs. For example, when accessing user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
 
+On the iOS device, the actual installation process is then handled by installd daemon, which will unpack and install the application. Any application must be signed with a certificate issued by Apple to be able to integrate app services or be installed on an iOS device. This means that the application we can only be installed after the successful code signature verification. On a jailbroken phone this can however be circumvented using [AppSync](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified), a package made available on the Cydia store. This is an alternative app store containing numerous useful applications which leverage root privileges provided through the jailbreak in order to execute advanced functionalities. AppSync is a tweak that patches installd to allow the installation of fake-signed IPA packages.
+
 The IPA can also be installed directly from command line by using [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the IPA onto the device, for example by using scp (secure copy), the ipainstaller can be executed with the filename of the IPA:
 
 ```bash
@@ -157,7 +160,7 @@ $ ipainstaller App_name.ipa
 
 In contrast to Android, iOS applications do not have preassigned permissions. Instead, the user is asked to grant permission during runtime when the app attempts to use a sensitive API for the first time. Once the app has asked for a permission, it is listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
 
-Developers don't have the possibility to set the requested permissions directly - they are requesting them indirectly by using sensitive APIs. For example, when accessing the user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
+iOS developers don't have the possibility to set requested permissions directly – they are requesting them indirectly by using sensitive APIs. For example, when accessing user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g. NSContactsUsageDescription).
 
 The following APIs [require permission from the user](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
 

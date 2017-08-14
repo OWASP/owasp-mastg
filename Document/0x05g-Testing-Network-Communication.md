@@ -8,12 +8,12 @@ Using TLS for transporting sensitive information over the network is essential f
 
 #### Static Analysis
 
-Two key issues should be tested for:
+There are two key issues that should be tested for:
 
-- Verify that a certificate comes from a trusted source;
-- Check whether the endpoint server presents the right certificate.
+- verify that a certificate comes from a trusted source and
+- check whether the endpoint server presents the right certificate.
 
-Search the code for usages of `TrustManager` and `HostnameVerifier`. You can find insecure usage examples in the sections below.
+Ensure that the hostname and certificate are verified correctly. Examples and common pitfalls can be found in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for usages of `TrustManager` and `HostnameVerifier`. You can find insecure usage examples in the sections below.
 
 ##### Verifying the Server Certificate
 
@@ -68,11 +68,11 @@ myWebView.setWebViewClient(new WebViewClient(){
 
 ##### Apache Cordova Certificate Verification
 
-The internal usage of the WebView in the Apache Cordova framework is implemented in a way that [any TLS error is ignored](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest.
+The internal usage of a WebView in the Apache Cordova framework is implemented in a way that [any TLS error is ignored](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest. Therefore ensure that the app is not debuggable. See also the test case "Testing If the App is Debuggable".
 
 ##### Hostname Verification
 
-Another security fault in TLS implementation is lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
+Another security fault in TLS implementation on client side is a lack of hostname verification. A development environment usually uses some internal addresses instead of valid domain names, so developers often disable hostname verification (or force an application to allow any hostname) and simply forget to change it when their application goes to production. The following code is responsible for disabling hostname verification:
 
 ```java
 final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
@@ -84,7 +84,7 @@ final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
 
 It's also possible to accept any hostname using a built-in `HostnameVerifier`:
 
-```
+```Java
 HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
                              .ALLOW_ALL_HOSTNAME_VERIFIER;
 ```
@@ -109,9 +109,7 @@ A dynamic analysis approach will require usage of intercept proxy. To test impro
   In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type in an invalid hostname, e.g. example.org. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any hostname.
 
 If you are interested in further MITM analysis or you face any problems with configuration of your intercept proxy, you may consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT preconfigured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for performing MITM analysis of software. All you have to do is [deploy a tested application on emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
-#### Remediation
 
-Ensure that the host name and certificate are verified correctly. Examples and common pitfalls can be found in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL").
 
 #### References
 
@@ -125,6 +123,7 @@ Ensure that the host name and certificate are verified correctly. Examples and c
 - CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
 - CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+
 
 ### Testing Custom Certificate Stores and Certificate Pinning
 
@@ -236,22 +235,22 @@ Network Security Configuration (NSC) feature can also be used to perform [declar
 ```
 
 If a NSC configuration is in place then the following event can be visible in log:
+
 ```
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
 ```
 
 If a certificate pinning validation check is failing then the following event will be logged:
+
 ```
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
+For further information please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
+
 #### Dynamic Analysis
 
 Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
-
-#### Remediation
-
-The SSL pinning process should be implemented as described on the static analysis section. For further information please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
 
 #### References
 
@@ -275,30 +274,12 @@ Since July 11 2016, Google [rejects Play Store application submissions](https://
 
 #### Static Analysis
 
-In case of an Android SDK based application. The application should have a dependency on the GooglePlayServices. (e.g. in a. gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block). Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()`. Exceptions that are thrown by these methods should be caught and handled correctly.
-If the application cannot patch its security provider then it can either inform the API on his lesser secure state or it can restrict the user in its possible actions as all https-traffic should now be deemed more risky.
-See the remediation section for possible examples.
+In case of an Android SDK based application the application should have a dependency on the GooglePlayServices. For example in a gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block. Next you need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded()` or with `installIfNeededAsync()`. The `ProviderInstaller` needs to be called as early as possible by a component of the application. Exceptions that are thrown by these methods should be caught and handled correctly.
+If the application cannot patch its security provider then it can either inform the API on his lesser secure state or it can restrict the user in its possible actions as all HTTPS-traffic should now be deemed more risky.
 
-In case of an NDK based application: make sure that the application does only bind to a recent and properly patched library that provides SSL/TLS functionality.
+Here are two [examples from the Android Developer documentation](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits") on how to update your Security Provider to protect against SSL exploits. In both cases, the developer needs to handle the exceptions properly and it might be wise to report to the backend when the application is working with an unpatched security provider.
 
-
-#### Dynamic Analysis
-
-When you have the source-code:
-- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the endpoint(s).
-- Right click at the code that is highlighted and select `Evaluate Expression`
-- Type `Security.getProviders()` and press enter
-- Check the providers and see if you can find `GmsCore_OpenSSL` which should be the new toplisted provider.
-
-When you do not have the source-code:
-- Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`.
-- Check if the first provider is `GmsCore_OpenSSL`.
-
-
-#### Remediation
-
-To make sure that the application is using a patched security provider, the application needs to use the `ProviderInstaller` class which comes with the Google Play services. The Google Play Services can be installed as a dependency in the build.gradle file by adding `compile 'com.google.android.gms:play-services-gcm:x.y.z'` (where x.y.z is a version number) in the dependencies block.
-Next, the `ProviderInstaller` needs to be called as early as possible by a component of the application. Here are two adjusted examples from Google on how this could work. In both cases, the developer needs to handle the exceptions properly and it might be wise to report to the backend when the application is working with an unpatched security provider. The first example shows how to do the installation synchronously, the second example shows how to do it asynchronously.
+Patching Synchronously:
 
 ```java
 //this is a sync adapter that runs in the background, so you can run the synchronous patching.
@@ -339,10 +320,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // or was successfully updated.
   }
 }
-
-
-
 ```
+
+Patching Asynchronously:
 
 ```java
 //This is the mainactivity/first activity of the application that is there long enough to make the async installing of the securityprovider work.
@@ -431,9 +411,19 @@ public class MainActivity extends Activity
 
 ```
 
-The Android developer documentation also describes [how to update your security provider to protect against SSL exploits](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits").
+In case of an NDK based application: make sure that the application does only bind to a recent and properly patched library that provides SSL/TLS functionality.
 
-<!-- TODO: {What to do in case of the NDK?} -->
+#### Dynamic Analysis
+
+When you have the source-code:
+- Run the application in debug mode, then make a breakpoint right where the app will make its first contact with the endpoint(s).
+- Right click at the code that is highlighted and select `Evaluate Expression`
+- Type `Security.getProviders()` and press enter
+- Check the providers and see if you can find `GmsCore_OpenSSL` which should be the new toplisted provider.
+
+When you do not have the source-code:
+- Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`.
+- Check if the first provider is `GmsCore_OpenSSL`.
 
 #### References
 
