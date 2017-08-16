@@ -25,15 +25,15 @@ $ strings <yourapp> | grep "myURLscheme://"
 
 As custom URL schemes may contain bugs, it is worth fuzzing those URLs. To do it you may use [IDB](http://www.idbtool.com/) tool:
 
-- Connect IDB tool with your device and select tested application. [Here](http://www.idbtool.com/documentation/setup.html) you can find a detailed guide in setting it up.
-- Go to `URL Handlers` section. In `URL schemes` click `Refresh` button and you will find on the left side list of all custom schemes defined in tested application. You can load those schemes using `Open` button on the right side. By simply opening blank URI scheme you may discover hidden functionality (e.g. debug window) or bypass local authentication.
-- To find out if custom URI schemes contain any bugs you should try to fuzz them. In `URL Handlers` section go to `Fuzzer` tab. On left side are listed default IDB payloads. [Here](https://github.com/fuzzdb-project/fuzzdb) you can find much more useful dictionaries. Once your payload list is ready go to `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
+- Connect IDB tool with your device and select tested application. You can find a detailed guide how to do it in the [IDB documentation](http://www.idbtool.com/documentation/setup.html). 
+- Go to `URL Handlers` section. In `URL schemes` click `Refresh` button and you will find on the left a list of all custom schemes defined in tested application. You can load those schemes using `Open` button on the right side. By simply opening blank URI scheme (e.g. open `myURLscheme://`) you may discover hidden functionality (e.g. debug window) or bypass local authentication.
+- To find out if custom URI schemes contain any bugs you should try to fuzz them. In `URL Handlers` section go to `Fuzzer` tab. On left side are listed default IDB payloads. The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers useful fuzzing dictionaries. Once your payload list is ready go to `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
 ```sh
 myURLscheme://$@$
 ```
 
-While the URL scheme is being fuzzed, watch the logs (in Xcode go to Window -> Devices -> click on your device -> bottom console contains logs) to observe an impact of each payload. On the right side of IDB `Fuzzer` tab, you can see a history of used payloads.
+While the URL scheme is being fuzzed, watch the logs (in Xcode go to `Window -> Devices ->` *click on your device* `->` *bottom console contains logs*) to observe an impact of each payload. On the right side of IDB `Fuzzer` tab, you can see a history of used payloads.
 
 #### Remediation
 
