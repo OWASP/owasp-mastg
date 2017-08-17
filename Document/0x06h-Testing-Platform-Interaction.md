@@ -96,7 +96,7 @@ Verify that WKWebView has been used, and that JavaScript is disabled in the WebV
 }
 ```
 
-##### Accessing Native Code from WebViews
+##### Exposing Native Objects to WebViews
 
 ###### UIWebView
 
@@ -111,6 +111,8 @@ A JavaScript execution environment is represented by the `JSContext` object. Loo
 - Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function.
 
 - JSExport protocol: Properties, instance methods, and class methods declared in an JSExport-inherited protocol are mapped to JavaScript objects that are made available to any JavaScript code. Modifications made to the objects in the JavaScript environment are reflected in the native environment.
+
+Note that only class members defined in the `JSExport` protocol only members are made accessible to JavaScript code.
 
 ###### WKWebView
 
