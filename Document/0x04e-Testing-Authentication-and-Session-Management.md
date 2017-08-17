@@ -23,7 +23,7 @@ Authentication and authorization problems are prevalent security vulnerabilities
 
 #### Authentication Bypass
 
-While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested. Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state.
+Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state. While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested.
 
 Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
 
@@ -164,7 +164,6 @@ The password must meet at least three out of the following four complexity rules
 2. at least one lowercase character (a-z)
 3. at least one digit (0-9)
 4. at least one special character
-
 
 #### Static Analysis
 
@@ -327,7 +326,7 @@ When sessions are improperly managed, they are vulnerable to a variety of attack
 
 Locate any server-side endpoints that provide sensitive information or functions and verify the consistent enforcement of authorization. The backend service must verify the user's session ID or token and make sure that the user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, the request must be rejected.
 
-Make sure:
+Make sure that:
 
 - Session IDs are randomly generated on the server side.
 - The IDs can't be guessed easily (use proper length and entropy).
@@ -362,7 +361,7 @@ First, manually or automatically crawl the application to make sure that all pri
 
 Then, replay the crawled requests while manipulating the session IDs as follows:
 
-- Invalidate the session ID (for example, append to the session ID, or delete the session ID alltogether).
+- Invalidate the session ID (for example, append to the session ID, or delete the session ID from the request).
 - Log out and log back in to see whether the session ID has changed.
 - Try to re-use a session ID after logging out.
 
@@ -401,36 +400,68 @@ Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Se
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
-The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
+JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
 ```
 
-The decoded token has three parts:
+The *header* typically consists of two parts: the token type, which is JWT, and the hashing algorithm being used to compute the signature. In the example above, the header decodes as follows:
 
-- **Header** Algorithm and Token Type (eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9):
-```JSON
+```
 {"alg":"HS256","typ":"JWT"}
 ```
-- **Claims** Data  (eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9):
-```JSON
+
+The second part of the token is the *payload*, which contains so-called claims. Claims are statements about an entity (typically, the user) and additional metadata. For example:
+
+```
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
-- **JSON Web Signature (JWS)** (TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ):
-```JSON
-HMACSHA256(
-  base64UrlEncode(header) + "." +
-  base64UrlEncode(payload),
-  secret
-)
+
+Signature
+
+The signature is created by applying the algorithm specified in the JWT header to the encoded header, encoded payload, and a secret value. For example, when using the HMAC SHA256 algorithm the signature is created in the following way:
+
+```
+HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
 ```
 
-JWT implementations are available for every major programming language.
+Note that the secret is shared between the authentication server and the back end service - the client does not know it. This proves that the token was obtained from a legitimate authentication service. It also prevents the client from tampering with the claims contained in the token.
+
+#### Static Analysis
+
+Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities .
+
+Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
+
+- Verify that the HMAC is checked for all incoming requests containing a token;
+- Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java).
+- Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
+- Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
+
+##### Enforcing the Hashing Algorithm
+
+An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+
+For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
+
+```java
+// HMAC key - Block serialization and storage as String in JVM memory
+private transient byte[] keyHMAC = ...;
+
+//Create a verification context for the token requesting explicitly the use of the HMAC-256 hashing algorithm
+
+JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
+
+//Verify the token; if the verification fails then an exception is thrown
+
+DecodedJWT decodedToken = verifier.verify(token);
+```
 
 ##### Token Expiration
 
-Once signed,  a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the back end doesn't process expired tokens.
+Once signed, a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the back end doesn't process expired tokens.
 
 A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
@@ -456,60 +487,10 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 });
 ```
 
-##### Common Issues
-
-###### NONE Hashing Algorithm
-
-An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
-
-The first defensive strategy is using a JWT library that doesn't have this vulnerability.
-
-While the token is being validated,  explicitly request the expected algorithm.
-
-```
-// HMAC key - Block serialization and storage as String in JVM memory
-private transient byte[] keyHMAC = ...;
-
-
-//Create a verification context for the token requesting explicitly the use of the HMAC-256 hashing algorithm
-
-JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
-
-//Verify the token; if the verification fails then an exception is thrown
-
-DecodedJWT decodedToken = verifier.verify(token);
-```
-
-##### Best Practices
-
-Consider the following best practices when implementing JWT:
-
-- Use the latest version of the JWT libraries to avoid known vulnerabilities.
-- Make sure that tokens of a different signature type will definitely be rejected.
-- Securely store the JWT on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
-- Make sure that the private signing key or the secret key for the Hash-based message authentication code (HMAC) is only available on the server.
-- Make sure that the access token expires after a short amount of time (minutes) and the refresh token after a longer period of time (can be days or weeks).
-- Use the `jti` (JWT ID) claim if the app is vulnerable to replay attacks.
-- Encrypt the JWT content. Role descriptions, usernames, and other sensitive information should be protected. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java).
-
-#### Static Analysis
-
-Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any vulnerabilities .
-
-Adhere to the following JWT library [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
-
-- For all incoming requests containing a token, always verify the signature or HMAC on the server.
-- Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify encryption of data embedded in the JWT.
-- Verify the expiry date for the access and refresh token.
-- Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
-
 #### Dynamic Analysis
 
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
 
-- [Hashing algorithm `none`](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
-  * Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
   *  JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
 - Token Storage on the client:
@@ -520,6 +501,10 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
 Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
+
+##### Tampering with the Hashing Algorithm
+
+Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
 #### References
 
@@ -570,19 +555,18 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 
 #### Static Analysis
 
-Adhere to the following best practices:
+Verify that the following best practices are followed:
 
 User agent:
 
-- Use an external user agent (the browser) instead of an embedded user agent (e.g., WebView or an internal client user interface) to prevent End User Credential Phishing. However, the app relies on the OS Keychain for server trust when using the browser, making certificate pinning impossible.
-- The user should have a way to verify visual trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
+- The user should have a way to visually verify trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
 - To prevent man-in-the-middle attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
 
 Type of grant:
 
-- On native apps, use code grant instead of implicit grant.
-- When you use code grant, implement PKCE (Proof Key for Code Exchange) to protect the code grant. Make sure that the server also implements it.
-- The auth "code" should be short-lived and used immediately after it is received. Make sure that auth codes only reside on transient memory and aren't stored or logged.
+- On native apps, code grant should be used instead of implicit grant.
+- When using code grant, PKCE (Proof Key for Code Exchange) should be implemented to protect the code grant. Make sure that the server also implements it.
+- The auth "code" should be short-lived and used immediately after it is received. Verify that auth codes only reside on transient memory and aren't stored or logged.
 
 Client secrets:
 
@@ -599,6 +583,10 @@ Tokens:
 - Reduce the scope and duration of access tokens when end-to-end confidentiality can't be guaranteed or the token provides access to sensitive information or transactions.
 - Remember that an attacker who has stolen tokens can access their scope and all resources associated with them if the app uses access tokens as bearer tokens with no other way to identify the client.
 - Store refresh tokens in secure local storage; they are long-term credentials.
+
+##### External User Agent vs. Embedded User Agent
+
+An external user agent (the browser) is used instead of an embedded user agent (e.g., WebView or an internal client user interface) to prevent end user credential phishing. Note however, the app relies on the OS Keychain for server trust when using the browser, making certificate pinning impossible.
 
 For additional best practices and detailed information please refer to the following source documents:
 
