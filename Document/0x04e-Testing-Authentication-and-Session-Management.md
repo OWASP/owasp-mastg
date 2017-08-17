@@ -49,7 +49,7 @@ In the following sections, we will list testing methods and best practices for s
 
 #### Overview
 
-There's no one-size-fits-all approach to authentication. You should first consider whether the authentication you use is appropriate for your app. In general, authentication can be based on one or more of the following:
+There's no one-size-fits-all approach to authentication. You should first consider whether the authentication method(s) used are appropriate for the app. Authentication can be based on one or more of the following:
 
 - Something the user knows (password, PIN, pattern, etc.)
 - Something the user has (SIM card, one-time password generator, or hardware token)
