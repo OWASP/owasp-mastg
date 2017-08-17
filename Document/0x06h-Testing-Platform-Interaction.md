@@ -66,15 +66,25 @@ Besides the potential for script injection, there is another fundamental securit
 
 #### Static Analysis
 
-WebViews can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). 
+WebViews can be implemented using the following components:
 
-WKWebView comes with some security advantages:
+- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
+- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). 
+- [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
+
+`UIWebView` is deprecated and should not be used. Verify that either WKWebView or SafariViewController are used to embed web content depending on the scenario:
+
+- `WKWebView` is the appropriate choice if the goal is to extend the functionality of the app, content is displayed in a controlled fashion (i.e. the user is not meant to navigate to arbitrary URLs), and customization is required.
+- `SafariViewController` should be used when the goal is to provide a provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari. 
+
+Compared the `UIWebView`, `WKWebView` comes with several security advantages:
 
 - The `JavaScriptEnabled` property can be used to completely disable JavaScipt in the WKWebView. This prevents any kind of script injection flaws. 
 - The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent opening of new windows from JavaScript. This prevents JavaScript code from opening irritating pop-up windows from opening.
 - the `hasOnlySecureContent` property can be used to verify that all resources loaded by the WebView have been retrieved through encrypted connections.
+- WKWebView implements out-of-process rendering, so any memory corruption bugs won't affect the main app process.
 
-Verify that WKWebView has been used, and that JavaScript is disabled in the WebView unless explicitly required. A sample WebView configuration looks as follows. 
+As a best practice, JavaScript should be disabled in a `WKWebView` unless explicitly required. The following code sample shows a sample configuration.
 
 ```objective-c
 #import "ViewController.h"
@@ -108,9 +118,9 @@ Verify that WKWebView has been used, and that JavaScript is disabled in the WebV
 
 ###### UIWebView
 
-With iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. Carelessly exposing native functionality can cause problems if an attacker manages to inject JavaScript into the WebView.
+Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. If native functionality is carelessly exposing, it could be exploited by an attacker who manages to inject JavaScript into the WebView.
 
-A JavaScript execution environment is represented by the `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` can be obtained as follows:
+A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
 ``objective-c
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
@@ -124,7 +134,7 @@ Note that only class members defined in the `JSExport` protocol only members are
 
 ###### WKWebView
 
-Note that it is not possible to directly reference the `JSContext` of a `WKWebView`. 
+In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. 
 
 
 ```javascript
