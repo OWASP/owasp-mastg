@@ -23,9 +23,17 @@ $ strings <yourapp> | grep "myURLscheme://"
 
 #### Dynamic Analysis
 
-Once you know, what an URL structure is, you should try fuzzing an URL to force an application to perform some malicious action.
+As custom URL schemes may contain bugs, it is worth fuzzing those URLs. To do it you may use [IDB](http://www.idbtool.com/) tool:
 
--- TODO [Add instruction of using dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers in Needle: https://labs.mwrinfosecurity.com/blog/needle-how-to/] --
+- Connect IDB tool with your device and select tested application. You can find a detailed guide how to do it in the [IDB documentation](http://www.idbtool.com/documentation/setup.html). 
+- Go to `URL Handlers` section. In `URL schemes` click `Refresh` button and you will find on the left a list of all custom schemes defined in tested application. You can load those schemes using `Open` button on the right side. By simply opening blank URI scheme (e.g. open `myURLscheme://`) you may discover hidden functionality (e.g. debug window) or bypass local authentication.
+- To find out if custom URI schemes contain any bugs you should try to fuzz them. In `URL Handlers` section go to `Fuzzer` tab. On left side are listed default IDB payloads. The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers useful fuzzing dictionaries. Once your payload list is ready go to `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
+
+```sh
+myURLscheme://$@$
+```
+
+While the URL scheme is being fuzzed, watch the logs (in Xcode go to `Window -> Devices ->` *click on your device* `->` *bottom console contains logs*) to observe an impact of each payload. On the right side of IDB `Fuzzer` tab, you can see a history of used payloads.
 
 #### Remediation
 
@@ -43,7 +51,7 @@ You should carefully validate any URL, before calling it. You can white-list app
 - CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
 ##### Tools
-- Needle - https://labs.mwrinfosecurity.com/tools/needle/
+- IDB - http://www.idbtool.com/
 
 
 ### Testing iOS WebViews
@@ -96,7 +104,7 @@ Verify that WKWebView has been used, and that JavaScript is disabled in the WebV
 }
 ```
 
-##### Accessing Native Code from WebViews
+##### Exposing Native Objects to WebViews
 
 ###### UIWebView
 
@@ -111,6 +119,8 @@ A JavaScript execution environment is represented by the `JSContext` object. Loo
 - Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function.
 
 - JSExport protocol: Properties, instance methods, and class methods declared in an JSExport-inherited protocol are mapped to JavaScript objects that are made available to any JavaScript code. Modifications made to the objects in the JavaScript environment are reflected in the native environment.
+
+Note that only class members defined in the `JSExport` protocol only members are made accessible to JavaScript code.
 
 ###### WKWebView
 

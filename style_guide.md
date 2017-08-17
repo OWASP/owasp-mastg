@@ -77,6 +77,11 @@ When presenting your content in a list format:
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
+- Punctuate and capitalize list items consistently.
+- - Don't add end punctuation to list items that are not complete sentences.
+- - Use appropriate capitalization and punctuation for list items that individually form complete sentences.
+
+
 
 ### Numbering conventions
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
@@ -107,9 +112,9 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-### Standardisation 
+### Standardization 
 
-This is a list of words/abbrevations that are used inconsistent at the moment in the MSTG and need standardisation:
+This is a list of words/abbrevations that are used inconsistently at the moment in the MSTG and need standardization:
 
 - man-in-the-middle attack (MITM)
 
@@ -135,6 +140,12 @@ would not -> wouldn't
 you are -> you're  
 you have -> you've  
 you will -> you'll  
+
+### Abbreviations
+
+Spell out abbreviations the first time they are used.
+
+Ex: United States (U.S.)
 
 ## 3. External References
 
@@ -209,6 +220,14 @@ Use a serial comma before "and" for the last item in a run-in list of items. For
 
 We bought apples, oranges, and tomatoes from the store.
 
+**Technical Terms**
+
+| Noun Form | Adjectival Form |
+| --------- | --------------- |
+|  back end |  backend |
+|server side | server-side |
+|client side | client-side |
+|  Base64    | Base64-  |
 
 ## Comments
 

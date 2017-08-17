@@ -139,7 +139,38 @@ uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1
 
 [Android Studio](http://developer.android.com/tools/debugging/debugging-studio.html "Debugging with Android Studio") can also be used to debug an application and verify if debugging is activated for an app.
 
-Another alternative method to determine if an application is debuggable, is to attach jdb to the running process. If successful, debugging is activated.
+Another alternative method to determine if an application is debuggable, is to attach `jdb` to the running process. If successful, debugging is activated.
+
+The following procedure can be used to start a debug session using `jdb`:
+- Identify, using `adb` and `jdwp`, the PID of the application that we want to debug and that is currently active on the device:
+
+```
+$ adb jdwp
+2355
+16346  <== last launched, corresponds to our application
+```
+
+- Create a communication channel by using `adb` between the application process (using the PID) and the analysis workstation on a specific local port:
+
+```
+# adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
+$ adb forward tcp:55555 jdwp:16346
+```
+
+- Attach the debugger using `jdb` to the local communication channel port and start a debug session:
+
+```
+$ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
+Set uncaught java.lang.Throwable
+Set deferred uncaught java.lang.Throwable
+Initializing jdb ...
+> help
+```
+
+A few notes about debugging:
+- The tool [`JADX`](https://github.com/skylot/jadx "JADX") can be used to identify interesting locations where breakpoints should be inserted.
+- Help about [`JDB`](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB").
+- If an error indicating that *the connection to the debugger has been closed* occur during the binding of `jdb` to the local communication channel port then kill all `adb` sessions and start a new single one.
 
 #### References
 
