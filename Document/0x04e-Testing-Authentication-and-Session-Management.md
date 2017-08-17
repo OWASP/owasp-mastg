@@ -531,6 +531,12 @@ Modify the `alg` attribute in the token header, then delete `HS256`, set it to `
 
 [OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/). It is used in a variety of applications, including user authentication applications.
 
+Common uses for OAuth2 include:
+
+- Getting permission from the user to access an online service using their account.
+- Authenticating to an online service on behalf of the user.
+- Handling authentication errors.
+
 According to OAuth 2.0, a mobile client seeking access to a user's resources must first ask the user to authenticate against an *authentication server*. With the users' approval, the authorization server then issues a token that allows the app to act on behalf of the user. Note that the OAuth2 specification doesn't define any particular kind of authentication or access token format.
 
 OAuth 2.0 defines four roles:
@@ -586,7 +592,19 @@ Tokens:
 
 ##### External User Agent vs. Embedded User Agent
 
-An external user agent (the browser) is used instead of an embedded user agent (e.g., WebView or an internal client user interface) to prevent end user credential phishing. Note however, the app relies on the OS Keychain for server trust when using the browser, making certificate pinning impossible.
+OAuth2 authentication can be performed either through an external user agent (e.g. Chrome or Safari) or in the app itself (e.g. through a WebView embedded into the app or an authentication library). None of the two modes is intrinsically "better" - instead, what mode to choose depends on the context.
+
+Using an *external user agent* is the method of choice for apps that need to interact with social media accounts (Facebook, Twitter, etc.). Advantages of this method include:
+
+- The user's credentials are never directly exposed to the app. This guarantees that the app cannot obtain the credentials during the login process ("credential phishing").
+
+- Almost no authentication logic must be added to the add itself, preventing coding errors.
+
+On the negative side, there is no way to control the behavior of the browser (e.g. to activate certificate pinning).
+
+For apps that operate within a closed ecosystem, *embedded authentication* is the better choice. For example, consider a banking app that uses OAuth2 to retrieve an access token from the bank's authentication server, which is then used to access a number of micro services. In that case, credential phishing is not a viable scenario. It is likely preferable to keep the authentication process in the (hopefully) carefully secured banking app, instead of placing trust on external components.
+
+#### Other OAuth2 Best Best Practices
 
 For additional best practices and detailed information please refer to the following source documents:
 
@@ -638,7 +656,7 @@ If access and refresh tokens are used with stateless authentication, they should
 
 #### Dynamic Analysis
 
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.  
+Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly. 
 
 1.  Log into the application.
 2.  Perform a couple of operations that require authentication inside the application.
