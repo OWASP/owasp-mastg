@@ -122,11 +122,13 @@ Identify the additional authentication factors the app uses. Locate all endpoint
 
 #### Dynamic Analysis
 
-All the privileged app endpoints a user can access with step-up authentication only or 2FA only should be explored first. An interception proxy can be used to capture network traffic for all the requests sent to an endpoint. Next, try to replay requests with a token or session information that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
+Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
-To check for a complete bypass of authentication procedures, you should replay the recorded requests without providing any authentication information.
+##### Brute-Force Attacks
 
-Given that many OTPs are just numeric values, an attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage.  The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
+Given that many OTPs are just numeric values, an attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
+
+Attempt a brute-force attack on the OTP verification endpoint using BURP Intruder or a similar tool (see also [Testing Excessive Login Attempts](#user-content-testing-excessive-login-attempts)).
 
 #### References
 
