@@ -151,6 +151,7 @@ window.webkit.messageHandlers.interOp.postMessage(message)
 ```
 
 
+
 #### Dynamic Analysis
 
 A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
@@ -181,6 +182,7 @@ In order to address these attack vectors, the outcome of the following checks sh
 ##### Info
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
+
 
 ### Testing Object Persistence
 
@@ -241,7 +243,6 @@ Look for a function with a name like isJailBroken in the code. If none of these 
 	2.2 Check if you can write a file: Swift and objective-c both use the key words `write` and `create` for file and directory writing and creation. So grep for this and pipe to a grep for `/private` (or others) to get a reference.
 3. Checking size of `/etc/fstab` - a lot of tools modify this file, but this method is uncommon as an update from apple may break this check.
 4. Creation of symlinks due to the jailbreak taking up space on the system partition. Look for references to `/Library/Ringtones,/Library/Wallpaper,/usr/arm-apple-darwin9,/usr/include,/usr/libexec,/usr/share,/Applications` in the code.
-
 
 #### Dynamic Analysis
 
