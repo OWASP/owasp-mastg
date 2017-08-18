@@ -4,11 +4,18 @@
 
 #### Overview
 
-Protocol handler is a basic form of [IPC](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) in iOS system. Basically, it allows invoking arbitrary applications, by calling a URL scheme with specified parameters. There are some [default handlers](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899), however a developer is allowed to register his own [custom URL scheme](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10). Unfortunately, this brings a serious security concern, that [developers of the Skype application found out](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html). The Skype application registered the `skype://` protocol handler, which allows for making a call to arbitrary numbers without asking for a user's permission. Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website unconsciously was forced to call to a premium number.
+In contrast to Android's rich Inter-Process Communication (IPC) facilities, iOS is offering only very few options for apps to talk to each other. In fact, there is no way for apps to communicate directly. Instead, Apple offers [two ways of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html): Sending Files between apps through AirDrop, and custom URL schemes.
+
+Custom URL schemes allow an app to communicate with other apps through a custom protocol. For this to work, an app must declare support for the scheme and handle incoming URLs that use the scheme. Once the URL scheme is registered, other apps can open the app and pass parameters by creating an appropriately formatted URL and opening it using the `openURL` method.
+
+Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters, or if the user is not prompted for confirmation before triggering a critical action.
+
+A good example for this is a [bug in the Skype Mobile pp](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html) that was discovered in 2010. The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask the user for permission before placing the call, so it was possible for any app to call arbitrary numbers (without the user's knowledge if they weren't looking at their phone).
+
+Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website inadvertently called the premium number.
 
 #### Static Analysis
 
-A security concern related with protocol handlers should arise, when the URL is not validated or the user is not prompted for confirmation in the application before making a particular action.
 The first step is to find out if an application registers any protocol handlers. This information can be found in `info.plist` file in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to `Info` tab and open `URL Types` section, as it is presented on a below screenshot.
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
@@ -23,7 +30,9 @@ $ strings <yourapp> | grep "myURLscheme://"
 
 #### Dynamic Analysis
 
-As custom URL schemes may contain bugs, it is worth fuzzing those URLs. To do it you may use [IDB](http://www.idbtool.com/) tool:
+Once you have identified the custom URL scheme's registered by the app in its `Info.plist`, open the URLs on Safari and observer how the app behaves.
+
+If parts of the URL are parsed by the app, you can perform input fuzzing to detect memory corruption bugs. To do it you may use [IDB](http://www.idbtool.com/) tool:
 
 - Connect IDB tool with your device and select tested application. You can find a detailed guide how to do it in the [IDB documentation](http://www.idbtool.com/documentation/setup.html). 
 - Go to `URL Handlers` section. In `URL schemes` click `Refresh` button and you will find on the left a list of all custom schemes defined in tested application. You can load those schemes using `Open` button on the right side. By simply opening blank URI scheme (e.g. open `myURLscheme://`) you may discover hidden functionality (e.g. debug window) or bypass local authentication.
