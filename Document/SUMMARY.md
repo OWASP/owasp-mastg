@@ -27,6 +27,7 @@
 - [Platform Overview](0x06a-Platform-Overview.md)
 - [iOS Security Testing Basics](0x06b-Basic-Security-Testing.md)
 - [Testing Local Authentication in iOS Apps](0x06f-Testing-Local-Authentication.md)
+- [Testing Platform Interaction on iOS](0x06h-Testing-Platform-Interaction.md)
 
 ### General Mobile App Testing Guide
 
