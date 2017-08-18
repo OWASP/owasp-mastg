@@ -192,6 +192,57 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
 
+### Testing WebView Protocol Handlers
+
+#### Overview
+
+Quoting a [source](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) "Apple provides built-in support for the `http`, `mailto`, `tel`, and `sms` URL schemes among others". The handlers cannot be modified or disabled. So if any of the schemes will be invoked in a WebView object the Apple-provided app is launched instead of your app.
+
+WebViews can load content remotely, but can also load it locally from the app data directory. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
+
+#### Static Analysis
+
+Check the source code for the usage of WebViews. If a WebView instance can be identified check if any local files are loaded ("example_file.html" in the below example).
+
+```objective-c
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+        
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, CGRectGetWidth([UIScreen mainScreen].bounds) - 20, CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
+    self.webView.navigationDelegate = self;
+    [self.view addSubview:self.webView];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"example_file" ofType:@"html"];
+    NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
+}
+```
+
+The `baseURL` should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
+
+#### Dynamic Analysis
+
+While using the app look for ways to trigger phone calls, send sms by injecting a built-in URI. If an attacker is able to store injection on the content displayed in WebView object, then it's possible to urge a victim to call premium number. 
+
+Additionally, when an application dynamically takes a file name as user's input and don't limit to specific filetype (e.g. `pathForResource:filePathVariable ofType:nil`), then try to refer to other local file or any world readable file.
+
+#### Remediation
+
+Users should not be able to store any URIs on an endpoint which is providing a content to iOS WebView object. If you use local files to be loaded in WebView object, then it is recommended to specify them (its name, type and path) statically. 
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+
+##### CWE
+N/A
+
 
 ### Testing Jailbreak Detection
 
