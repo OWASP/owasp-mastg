@@ -10,7 +10,7 @@ Custom URL schemes allow an app to communicate with other apps through a custom 
 
 Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters, or if the user is not prompted for confirmation before triggering a critical action.
 
-A good example for this is a [bug in the Skype Mobile pp](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html) that was discovered in 2010. The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask the user for permission before placing the call, so it was possible for any app to call arbitrary numbers (without the user's knowledge if they weren't looking at their phone).
+A nice example it the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html) discovered in 2010. The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask the user for permission before placing the call, so it was possible for any app to call arbitrary numbers (without the user's knowledge if they weren't looking at their phone).
 
 Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website inadvertently called the premium number.
 
