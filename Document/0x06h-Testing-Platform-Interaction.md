@@ -125,9 +125,11 @@ As a best practice, JavaScript should be disabled in a `WKWebView` unless explic
 
 ##### Exposure of Native Objects
 
+Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView. 
+
 ###### UIWebView
 
-Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. If native functionality is carelessly exposing, it could be exploited by an attacker who manages to inject JavaScript into the WebView.
+Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime.
 
 A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
@@ -143,21 +145,15 @@ Note that only class members defined in the `JSExport` protocol only members are
 
 ###### WKWebView
 
-In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. 
+In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system. JavaScript code can send messages back to the native app using the 'postMessage' method:
 
 
 ```javascript
-window.webkit.messageHandlers.interOp.postMessage(message)
-```
+window.webkit.messageHandlers.myHandler.postMessage()
+````
 
+The `postMessage` API automatically serializes JavaScript objects into native Objective-C or Swift objects. Message Handler are configured using the `addScriptMessageHandler` method.
 
-```objective-c
-
-- (void)userContentController:(WKUserContentController *)userContentController 
-                            didReceiveScriptMessage:(WKScriptMessage *)message{
-    NSLog(@"%@", message.body);
-}
-```
 
 ##### Local File Inclusion
 
