@@ -66,11 +66,13 @@ It is fundamentally impossible to produce truly random numbers on any determinis
 
 Mobile SDKs offer standard implementations of RNG algorithms that produce numbers with sufficient artificial randomness.
 
-#### Static Analysis
+#### Analysis
 
 Apple provides developers with the [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") application programming interface (API) that generates cryptographically secure random numbers.
 
-The Randomisation Services API uses the `SecRandomCopyBytes` function to perform the numbers generation. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom value from 0 to 255 and performs concatenation.
+The Randomization Services API uses the `SecRandomCopyBytes` function to perform the numbers generation. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom value from 0 to 255 and performs concatenation.
+
+Verify that all random numbers are generated using this API - there is no reason why developers should use a different one. 
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 ```
@@ -88,17 +90,6 @@ The following is an example of its usage:
 ```
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Random Number Generation" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
--- TODO [Can probably write about generating multiple values via the random number generation and compare them to analyze the entropy] --
-
-#### Remediation
-
-The recommended remediation to fix this issue is to always use the Randomisation Services API for any random number generation purposes.
-Avoid implementing custom cryptography algorithms and standards. Also, only supply cryptographically strong random numbers to cryptographic functions.
 
 #### References
 
