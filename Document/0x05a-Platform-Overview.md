@@ -470,24 +470,24 @@ Content Providers are implemented through a URI addressing scheme: they all use 
 
 ##### Services
 
-Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...), without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active apps have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main app thread. They are great candidates to run asynchronous tasks.
+Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...) without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active apps have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main app thread. They are great candidates to run asynchronous tasks.
 
 ##### Permissions
 
-Because Android apps are installed in a sandbox and initially it does not have access to neither user information nor access to system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the app can request.
+Because any Android app is installed in a sandbox and initially it does not have access to either user information or access to the system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the app can request.
 As an example, if you want your app to use the camera on the phone you have to request the camera permission.
 On Android versions before Marshmallow (API 23) all permissions requested by an app were granted at installation time. From Android Marshmallow onwards the user have to approve some permissions during app execution.
 
 ###### Protection Levels
 
-Android permissions are classified in four different categories based on the protection level it offers.
-- *Normal*: Is the lower level of protection, it gives apps access to isolated application-level feature, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value.
+Android permissions are ranked in four different categories based on the protection level they offer.
+- *Normal*: the lower level of protection. It gives the apps access to isolated application-level feature, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. It is also the default value for the cases when no protection level is specified.
 Example: `android.permission.INTERNET`
-- *Dangerous*: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the app should have the permission or not.
+- *Dangerous*: This permission usually gives the app control over the user data or over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not.
 Example: `android.permission.RECORD_AUDIO`
 - *Signature*: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted.
 Example: `android.permission.ACCESS_MOCK_LOCATION`
-- *SystemOrSignature*: Permission only granted to apps embedded in the system image or that were signed using the same certificated as the app that declared the permission.
+- *SystemOrSignature*: Permission only granted to the apps embedded in the system image or that were signed using the same certificated as the app that declared the permission.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 ###### Requesting Permissions
@@ -522,8 +522,8 @@ Only apps signed with the same developer certificate can use this permission.
 
 ###### Enforcing Permissions on Android Components
 
-It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers all can use the permission mechanism to protect its interfaces.
-*Activities*, *Services* and *Broadcast Receivers* can enforce a permission by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
+It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers – all can use the permission mechanism to protect their interfaces.
+*Activities*, *Services* and *Broadcast Receivers* can enforce permissions by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
 ```
 <receiver
     android:name="com.permissions.sample.AnalyticsReceiver"
@@ -533,23 +533,23 @@ It is possible to protect Android components using permissions. Activities, Serv
 </receiver>
 ```
 *Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
-- `android:writePermission`, `android:readPermission`: The developer can set separate permissions to read or write.
-- `android:permission`: General permission that will control read and write to the Content Provider.
-- `android:grantUriPermissions`: True if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
+- `android:writePermission`, `android:readPermission`: the developer can set separate permissions to read or write.
+- `android:permission`: general permission that will control read and write to the Content Provider.
+- `android:grantUriPermissions`: true if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
 
 ### Signing and Publishing Process
 
-Once an app has been successfully developed, the next step is to publish it to share it with others. However, apps cannot simply be put on a store and shared: for several reasons, they need to be signed. This is a convenient way to ensure that apps are genuine and authenticate them to their authors: for instance, an upgrade to an app will only be possible if the update is signed with the same certificate as the original app. Also, this is a way to allow sharing between apps that are signed with the same certificate when signature-based permissions are used.
+Once an app has been successfully developed, the next step is to publish it to share it with others. However, apps cannot simply be put on a store and shared for several reasons – they need to be signed. This is a convenient way to ensure that apps are genuine and authenticate them to their authors: for instance, an upgrade to an app will only be possible if the update is signed with the same certificate as the original app. Also, this is a way to allow sharing between apps that are signed with the same certificate when signature-based permissions are used.
 
 #### Signing Process
 
-During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debugging only. Most stores do not accept this kind of certificates when trying to publish, therefore another certificate, with more secure features, has to be created and used.
+During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debugging only. Most stores do not accept this kind of certificate when trying to publish, therefore another certificate, with more secure features, has to be created and used.
 
-When an application  is installed onto an Android device, the Package Manager verifies that it has been signed with the certificate included in that APK. If the public key in the certificate matches the key used to sign any other APK on the device, the new APK has the option to share a UID with that APK. This facilitates interaction between multiple applications from the same vendor. Alternatively, it as also possible to specify security permissions the Signature protection level, restricting access to applications signed with the same key.
+When an application is installed onto the Android device, the Package Manager verifies that it has been signed with the certificate included in that APK. If the public key in the certificate matches the key used to sign any other APK on the device, the new APK has the option to share a UID with that APK. This facilitates interaction between multiple applications from the same vendor. Alternatively, it as also possible to specify security permissions the Signature protection level, restricting access to applications signed with the same key.
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports two application signing schemes. Starting from Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 scheme):
 
