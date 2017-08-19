@@ -123,7 +123,7 @@ As a best practice, JavaScript should be disabled in a `WKWebView` unless explic
 }
 ```
 
-##### Exposing Native Objects to WebViews
+##### Exposure of Native Objects
 
 ###### UIWebView
 
@@ -159,48 +159,9 @@ window.webkit.messageHandlers.interOp.postMessage(message)
 }
 ```
 
-
-
-#### Dynamic Analysis
-
-A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
-
-- Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
-- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
-
-In order to address these attack vectors, the outcome of the following checks should be verified:
-
-- that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
-
-- that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
-
-##### CWE
-
-- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-
-##### Info
-
-- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
-
-### Testing WebView Protocol Handlers
-
-#### Overview
-
-Quoting a [source](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) "Apple provides built-in support for the `http`, `mailto`, `tel`, and `sms` URL schemes among others". The handlers cannot be modified or disabled. So if any of the schemes will be invoked in a WebView object the Apple-provided app is launched instead of your app.
+##### Local File Inclusion
 
 WebViews can load content remotely, but can also load it locally from the app data directory. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
-
-#### Static Analysis
 
 Check the source code for the usage of WebViews. If a WebView instance can be identified check if any local files are loaded ("example_file.html" in the below example).
 
@@ -224,88 +185,25 @@ The `baseURL` should be checked, if any dynamic parameters are used that can be 
 
 #### Dynamic Analysis
 
-While using the app look for ways to trigger phone calls, send sms by injecting a built-in URI. If an attacker is able to store injection on the content displayed in WebView object, then it's possible to urge a victim to call premium number. 
+To simulate an attack, inject your own JavaScript into the WebView using an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-Additionally, when an application dynamically takes a file name as user's input and don't limit to specific filetype (e.g. `pathForResource:filePathVariable ofType:nil`), then try to refer to other local file or any world readable file.
-
-#### Remediation
-
-Users should not be able to store any URIs on an endpoint which is providing a content to iOS WebView object. If you use local files to be loaded in WebView object, then it is recommended to specify them (its name, type and path) statically. 
+In a real-world scenario, JavaScript would have to be injected either through a permanent Cross-Site Scripting vulnerability on the back end, or through a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+- M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 
-##### CWE
-N/A
-
-
-### Testing Jailbreak Detection
-
-#### Overview
-
-iOS implements containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
-
-The risk of malicious code running as root is higher on jailbroken devices, as many of the default integrity checks are disabled. Developers of apps that handle highly sensitive data should therefore consider implementing checks that either prevent the app from running under these conditions, or at least warn the user about the increased risks.
-
-#### Static Analysis
-
-Look for a function with a name like isJailBroken in the code. If none of these are available, look for code checking for the following:
-1. Existence of files (such as anything with cydia or substrate in the name (such as `/private/var/lib/cydia or /Library/MobileSubstrate/MobileSubstrate.dylib`), `/var/lib/apt, /bin/bash, /usr/sbin/sshd, sftp`, etc). In swift this is done with the `FileManager.default.fileExists(atPath: filePath)` function and objective-c uses `[NSFileManager defaultManager] fileExistsAtPath:filePath`, so grepping for fileExists should show you a good list.
-2. Changes of directory permissions (ie being able to write to a file outside the apps own directory - common examples are `/, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc`). /private and / seem to be the most commonly used for testing.
-
-	2.1 Check actual permissions themselves: Swift uses `NSFilePosixPermissions` and objective-c uses `directoryAttributes`, so grep for these.
-
-	2.2 Check if you can write a file: Swift and objective-c both use the key words `write` and `create` for file and directory writing and creation. So grep for this and pipe to a grep for `/private` (or others) to get a reference.
-3. Checking size of `/etc/fstab` - a lot of tools modify this file, but this method is uncommon as an update from apple may break this check.
-4. Creation of symlinks due to the jailbreak taking up space on the system partition. Look for references to `/Library/Ringtones,/Library/Wallpaper,/usr/arm-apple-darwin9,/usr/include,/usr/libexec,/usr/share,/Applications` in the code.
-
-#### Dynamic Analysis
-
-First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use [Cycript](http://www.cycript.org/ "cycript") to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the [nm tool](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html "nm tool"):
-
-```
-nm <appname> | grep swift
-```
-For an Objective-C only app there will be no output. However, it is still possible the app is mixed Swift and Objective-C.
-
-```
-cycript -p <AppName>
-cy#[ObjectiveC.classes allKeys]
-```
-
-It is recommended you pipe this to a file, then search for something that sounds like a promising classname like jailbreak, startup, system, initial, load, etc. Once you have a candidate list the methods:
-
-```
-cy#printMethods(<classname>)
-```
-
-Again, you may want to pipe to a file and go through it for a promising sounding method (e.g. has jail or root in the title).
-
-#### Remediation
-
-For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) could use Cycript's method swizzling to modify this function to always return true. Of course there are more complex implementations, but nearly all can be subverted - the idea is just to make it harder. As such the following is recommended:
-1. Use more than one of the above methods to check if a device is jailbroken.
-2. Call the class and method something that is not immediately obvious (but it well commented).
-3. Use Swift instead of Objective-C.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 
 ##### CWE
 
-N/A
+- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 
-##### Tools
+##### Info
 
-- cycript - http://www.cycript.org/
+- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
+
