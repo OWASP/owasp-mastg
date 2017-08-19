@@ -63,48 +63,6 @@ For iOS application it is mandatory for applications to be properly signed with 
 - Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
 
 
-### Testing If the App is Debuggable
-
-#### Overview
-
-On a jailbroken iOS device it is possible to attach a debugger such as [GDB](https://www.gnu.org/software/gdb/) on a running application process. Analyzing or modifying the application's behavior is possible if the application does not implement any form of anti-debugging techniques to prevent attaching of a debugger.
-
-On a non-jailbroken iOS device it is also possible to debug and instrument an application using tools such as [Frida](https://www.frida.re) and [Objection](https://github.com/sensepost/objection). Repackaging the application and resigning it with your own Apple issued certificate is required. This is only possible if you possess the .ipa file of the application.
-
-#### Static Analysis
-
--	Import the source code into the xCode Editor.
--	Check the project's build settings for 'DEBUG' parameter under "Apple LVM – Preprocessing" -> "Preprocessor Macros".
--	Check the source code for NSAsserts method and its companions.
-
-#### Dynamic Analysis
-
-This test case should be performed through Static Analysis. -- TODO [Develop content on black-box testing of "Testing Whether the App is Debuggable"] 
--- TODO [Not possible to test dynamically on a non jailbroken iOS device if no .ipa is provided]
-
-#### Remediation
-
-Once you have deployed an iOS application, either through the App Store or as an Ad Hoc or Enterprise build, you won't be able to attach Xcode's debugger to it. To debug problems, you need to analyze Crash Logs and Console output from the device itself. Remove any NSLog calls to prevent debug leakage through the Console.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Whether the App is Debuggable"] --
-
-##### Tools
-
--- TODO [Add tools for "Testing Whether the App is Debuggable"] --
-
-
 ### Testing for Debugging Symbols
 
 #### Overview
@@ -283,12 +241,15 @@ External entity resolution is disabled by default in both parsers. In NSXMLParse
 ### Testing Exception Handling
 
 #### Overview
+
 Exceptions can often occur when an application gets into a non-normal or erroneous state.
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
 However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic.
 
+
 ##### Exception handling in Objective-C
+
 Objective-C has two types of errors :
 
 **NSException**
@@ -313,6 +274,7 @@ Bear in mind that using NSException comes with pitfalls regarding memory managem
 `NSError` is used for all other type of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some APIs of the Cocoa frameworks provide them as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
 
 ##### Exception handling in Swift
+
 Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combining Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
 Methods that can throw an error use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
 
@@ -349,9 +311,11 @@ do {
 - Assert that the error will not occur: by using the `try!` expression.
 
 #### Static Analysis
+
 Review the source code to understand/identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
 
 ##### Static Analysis in Objective-C
+
 Here you can verify that:
 
 - The application uses a well-designed and unified scheme to handle exceptions and errors.
@@ -364,6 +328,7 @@ Here you can verify that:
 - That `NSError` objects do not contain information that might leak any sensitive information.
 
 ##### Static Analysis in Swift
+
 Here you can verify that:
 
 - The application uses a well-designed and unified scheme to handle errors.
@@ -387,6 +352,7 @@ In most cases, the application should not crash, but instead, it should:
 - Not provide any information in logging mechanisms used by the application.
 
 #### Remediation
+
 There are a few things a developer can do:
 - Ensure that the application use a well-designed and unified scheme to handle errors.
 - Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
@@ -426,6 +392,34 @@ Although XCode set all binary security features by default, it still might be re
 -	**PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis
+
+
+##### XCode Project Settings
+
+-	Stack smashing protection
+
+Steps for enabling Stack smashing protection within an iOS application:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
+
+3.	PIE support
+
+Steps for building an iOS application as PIE:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	For iOS apps, set iOS Deployment Target to iOS 4.3 or later.
+3.	Verify that "Generate Position-Dependent Code" is set at its default value of NO.
+4.	Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
+
+5.	ARC protection
+
+Steps for enabling ACR protection within an iOS application:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
+
+See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
 ##### With otool:
 
@@ -483,38 +477,6 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
-
-#### Dynamic Analysis
-
-Dynamic Analysis is not application.
-
-#### Remediation
-
--	Stack smashing protection
-
-Steps for enabling Stack smashing protection within an iOS application:
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
-
-3.	PIE support
-
-Steps for building an iOS application as PIE :
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	For iOS apps, set iOS Deployment Target to iOS 4.3 or later.
-3.	Verify that "Generate Position-Dependent Code" is set at its default value of NO.
-4.	Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
-
-5.	ARC protection
-
-Steps for enabling ACR protection within an iOS application :
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
-
-See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
-
 
 #### References
 
