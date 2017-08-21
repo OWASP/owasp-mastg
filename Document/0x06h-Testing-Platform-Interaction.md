@@ -75,13 +75,13 @@ Besides potential script injection, there's another fundamental WebViews securit
 
 #### Static Analysis
 
-You can implement WebViews with the following components:
+Look out for usages of the following components that implement WebViews:
 
 - [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
 - [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later) 
 - [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
 
-`UIWebView` is deprecated and should not be used. Make sure that either WKWebView or SafariViewController are used to embed web content:
+`UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
 
 - `WKWebView` is the appropriate choice for extending app functionality, controlling displayed content  (i.e., prevent the user from navigating to arbitrary URLs), and customizing.
 - `SafariViewController` should be used to provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari. 
@@ -92,6 +92,8 @@ You can implement WebViews with the following components:
 - The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups. 
 - the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - WKWebView implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
+
+##### JavaScript Configuration
 
 As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly required. The following code sample shows a sample configuration.
 
@@ -122,6 +124,8 @@ As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly 
 
 }
 ```
+
+JavaScript cannot be disabled in `SafariViewController` (this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface).
 
 ##### Exposure of Native Objects
 
