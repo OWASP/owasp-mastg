@@ -66,8 +66,6 @@ If the app is available on itunes, you are able to recover the ipa on MacOS with
 - Go to your itunes Apps Library
 - Right-click on the app and select show in finder
 
-<!-- TODO [Further develop section on Static Analysis of an iOS app from non-jailbroken devices without source code] -->
-
 #### Dumping Decrypted Executables
 
 On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
@@ -131,15 +129,6 @@ A minus sign would mean that this is an instance method. Please refer to further
 
 Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/). All these steps will be performed automatically and you will be able to see disassembled binary and class information.
 
-Your main focus while performing static analysis would be:
-- Identifying and understanding functions responsible for jailbreak detection and certificate pinning
-  * For jailbreak detection, look for methods or classes containing words like `jailbreak`, `jailbroken`, `cracked`, etc. Please note that sometimes, the name of function performing jailbreak detection will be 'obfuscated' to slow down the analysis. Your best bet is to look for jailbreak detection mechanisms discussed in further section (cf. Dynamic Analysis - Jailbreak Detection)
-  * For certificate pinning, look for keywords like `pinning`, `X509` or for native method calls like `NSURLSession`, `CFStream`, `AFNetworking`
-- Understanding application logic and possible ways to bypass it
-- Any hardcoded credentials, certificates
-- Any methods that are used for obfuscation and in consequence may reveal sensitive information
-
-
 Other commands:
 
 Listing shared libraries:
@@ -150,8 +139,6 @@ $ otool -L <binary>
 ```
 
 #### Debugging
-
-<!-- TODO [iOS Debugging Overview] -->
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid()` function with the process id of the target process to and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling any exceptions that occur in the debuggee. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
@@ -283,6 +270,7 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 <!-- TODO Instantiate objects from classes -->
 
 ##### Hooking native functions & objective-C methods
+
 - Install the application to be hooked.
 - Run the application and make it sure the app is in foreground (should not be in paused state).
 - Find the PID of the app using the command: `ps ax | grep App`.
@@ -303,6 +291,7 @@ cy# printMethods (“AppDelegate”)
 ```
 
 ##### Bypassing the Jailbreak Detection using Cycript
+
 Use of cycript to overwrite the method implementation to bypass the `JailbreakDetection`.
 
 ![Cycript_Jailbreak](Images/Chapters/0x06c/Cycript_Jailbreak.png)
