@@ -219,7 +219,7 @@ An important aspect of the Android security is that all apps have the same level
 
 ##### Zygote
 
-The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
 
 
 #### The App Sandbox
