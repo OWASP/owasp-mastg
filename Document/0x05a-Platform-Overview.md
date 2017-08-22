@@ -260,17 +260,18 @@ Android apps are made of several high-level components that make up their archit
 
 All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
+
 ##### Application Life Cycle
 
-Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
+Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to the state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by the visible ones, running services, background services, and at last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
-Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
+Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on the app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
 ##### Manifest
 
-Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
+Every app must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
+The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file should contain general metadata about the app, like its icon, its version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -308,7 +309,7 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+Manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 ##### Activities
 
@@ -323,7 +324,7 @@ Activities implement manifest files. Each activity needs to be declared in the a
 
 When activities are not declared in manifests, they cannot be displayed and would raise an exception.
 
-In the same way as apps do, activities also have their own lifecycle and need to listen to system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
+In the same way as apps do, activities also have their own lifecycle and need to listen to the system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
 
 - onCreate
 - onSaveInstanceState
@@ -335,14 +336,14 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
-Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
+Basically, a fragment represents a behavior or a portion of user interface in within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
-As they have their own life cycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+User interfaces are made of several elements: views, groups of views, fragments and activities. Fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+As they have their own life cycle the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
 
@@ -361,7 +362,7 @@ Fragment Managers can be created simply with the following:
 FragmentManager fm = getFragmentManager();
 ```
 
-Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
+Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with the user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
 
 ##### Inter-Process Communication
 
