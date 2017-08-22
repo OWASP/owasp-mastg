@@ -129,7 +129,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 
 #### APK Structure
 
-When preparing the app for release, the necessary files are packaged into an Android Package Kit (APK). This file is a signed ZIP archive which contains all the application's resources, bytecode, etc. It has the following directory structure:
+When preparing the app for the release, all necessary files are packed into an Android Package Kit (APK). This file is a signed ZIP archive that contains all the application's resources, bytecode, etc. It has the following directory structure:
 
 ```
 $ unzip base.apk
@@ -143,16 +143,16 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
 ```
 
-- AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
-- META-INF: This folder contains metadata of the app:
-  - MANIFEST.MF: Stores hashes of app resources.
-  - CERT.RSA: The certificate(s) of the app.
-  - CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
-- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-- classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-- res: A directory containing resources not compiled into resources.arsc.
-- resources.arsc: A file containing precompiled resources, such as XML files for the layout.
+- AndroidManifest.xml: Contains the definition of the app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- META-INF: contains the app’s metadata.
+  - MANIFEST.MF: stores hashes of the app resources.
+  - CERT.RSA: the app’s certificate(s).
+  - CERT.SF: list of the resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
+- assets: directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- classes.dex: classes compiled in the DEX file format understandable by Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
+- lib: directory containing libraries that are part of the APK, for example the 3rd party libraries that are not part of the Android SDK.
+- res: directory containing resources not compiled into resources.arsc.
+- resources.arsc: file containing precompiled resources, such as XML files for the layout.
 
 Some resources inside the APK are compressed using non-standard algorithms (e.g. the AndroidManifest.xml). This means that simply unzipping the file won't reveal all information. A better way is to use the tool 'apktool' to unpack and uncompress the files. The following is a list of the files contained in the apk:
 
@@ -183,17 +183,17 @@ drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
 
-- AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
-- apktool.yml : This file contains information about the output of apktool.
-- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-- original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
-- res: A directory containing resources not compiled into resources.arsc.
-- smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+- AndroidManifest.xml: file is not compressed anymore and can be opened in a text editor.
+- apktool.yml : file contains information about the output of apktool.
+- assets: directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- lib: directory containing libraries that are part of the APK, for example the 3rd party libraries that are not part of the Android SDK.
+- original: folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
+- res: directory containing resources not compiled into resources.arsc.
+- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
 #### Linux UID/GID of Normal Applications
 
-A newly installed apps on Android is assigned a new UID. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
+All newly installed apps on Android are assigned new UIDs. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
 ```
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
@@ -214,15 +214,16 @@ The relationship between group IDs and permissions are defined in the file [fram
 	<group gid="sdcard_rw" />
 </permission>
 ```
-An important aspect of Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions apps can perform as well as access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
+An important aspect of the Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions that the apps can perform as well as the access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
 
 ##### Zygote
 
-A process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. The Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
+
 
 #### The App Sandbox
 
-Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
+Apps are executed in the Android Application Sandbox enforcing isolation of the app data and the code execution from other apps on the device. This adds an additional layer of security.
 
 When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
@@ -230,7 +231,7 @@ Since every app has its own unique Id, Android separates app data folders config
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
-In this example, the Chrome and Calendar app are completely segmented with different UID and different folder permissions.
+In this example, Chrome and Calendar apps are completely segmented with different UID and different folder permissions.
 
 We can confirm this by looking at the filesystem permissions created for each folder:
 
@@ -239,7 +240,7 @@ drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
-However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each others data directory. See the following example on how this is achieved in the Nfc app:
+However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
 
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
