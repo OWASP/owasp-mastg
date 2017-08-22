@@ -496,7 +496,7 @@ Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 ###### Requesting Permissions
 
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
-The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
+The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
@@ -535,7 +535,7 @@ It is possible to protect Android components using permissions. Activities, Serv
     ...
 </receiver>
 ```
-*Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
+*Content Providers* are a little bit different. They allow separate permissions for read, write or access of the Content Provider using a content URI.
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions to read or write.
 - `android:permission`: general permission that will control read and write to the Content Provider.
 - `android:grantUriPermissions`: true if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
