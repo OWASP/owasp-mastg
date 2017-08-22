@@ -13,23 +13,25 @@ Visit the official [Android developer documentation website](https://developer.a
 
 Android is a Linux-based open-source platform initially developed by Google as a mobile operating system (OS) solution. Today, the platform is a foundation for a wide variety of modern technology such as mobile phones and tablets, wearable tech, and other "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through Google Play store and other marketplaces.
 
-The software stack of Android is composed of several different layers. Each layer defines particular behavior and offers specific services. Further, these layers interact with OS portions above, below, and other instances paralleling the respective layer’s position within the system architecture. - ASZ - the phrase is unclear and requires re-phrasing
+The software stack of Android is composed of several different layers. Each layer defines a number of interfaces and offers specific services. 
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
-At the lowest level, Android utilizes a variation of Linux Kernel which serves as the foundation for other elements composing the OS. Just above this level, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with hardware components built into device. Several HAL implementations are packaged into shared library modules (generally, .SO files) called on by the Android system when required. This is basis for allowing applications to interact with the device’s internal hardware – for example, it grants a stock phone application the ability to use its microphone and speaker.
+At the lowest level, Android utilizes a variation of Linux Kernel which serves as the foundation for other elements composing the OS. On top the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with hardware components built into device. Several HAL implementations are packaged into shared library modules called on by the Android system when required. This is basis for allowing applications to interact with the device’s internal hardware – for example, it grants a stock phone application the ability to use the microphone and speaker of a device.
 
-Android apps are usually written in Java language and compiled to Dalvik bytecode, which is somewhat (but not very) different from the traditional Java bytecode. In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's first runtime, the Dalvik Virtual Machine.
-
-The Dalvik bytecode is created by first compiling the Java code to .class files, and then converting the JVM bytecode to Dalvik .dex format using the `dx` tool.
+Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat (but not very) different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, and then converting the JVM bytecode to Dalvik .dex format using the `dx` tool.
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes it does not prevent other apps from working, and only their environment and the app itself have to be restarted. Also, the fact that the apps are not run directly on mobile hardware allows the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to the app, preventing one app from using all resources while leaving only few resources to others. In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode is compiled at execution time into machine language suiting the current processor: such mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time the app is executed on a given mobile. As a consequence, Dalvik has been improved to compile each app only once, at installation time (the principle is called AOT, a.k.a. Ahead Of Time): ART was born, and compilation was required only once, saving precious time at the execution time (the execution time of an app may be divided by 2). Another benefit of ART is consuming less power than Dalvik, allowing the user to use the mobile device and its battery longer.
+In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed.I n Dalvik, bytecode is translated into machine code at execution time. This technique is known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed.
+
+To improve performance, ART introduced Ahead Of Time (AOT) compilation. with AOT, every app on the device is pre-compiled once. This improves performance by a factor of two, while also reduces power consumption.
+
+Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes it does not prevent other apps from working, and only their environment and the app itself have to be restarted. At the same time, the Android runtime controls the maximum amount of resources provided to apps, preventing one app from using all resources while leaving only few resources to others. 
 
 #### Android Users and Groups
 
-Even though Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead Android utilizes the multi-user support of Linux kernel to achieve application sandboxing by running each application under a separate user (with some exceptions).
+Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other.
 
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
 
@@ -49,7 +51,7 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into the dex bytecode. Apps do not access system resources directly. Instead, they interact with the system services using Android Framework – an abstraction layer that offers high-level API easily usable from Java. The majority of these services are used via normal Java method calls, and are translated to IPC calls to the system services running in the background. Examples of the system services include:
+Android apps interact with system services using the Android Framework, an abstraction layer that offers high-level Java APIs. The majority of these services are invoked via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples of system services include:
 
     * Connectivity (Wifi, Bluetooth, NFC, ...)
     * Giles
@@ -57,22 +59,21 @@ As already mentioned, Android apps are written in Java and compiled into the dex
     * Geolocation (GPS)
     * Microphone
 
-The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
+The framework also offers common security functions such as cryptography.
 
-The APIs have evolved a lot from the first Android version (September 2008). Critical bug fixes and security patches are usually propagated through several earlier versions. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
+The API specifications change with every new release of Android. Critical bug fixes and security patches are usually propagated to earlier versions as well. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19, while the current version of Android is 7.1 (Nougat), API level 25.
 
 Noteworthy API versions are:
 
-    Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
-    Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default)
-    Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced)
-    Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features)
-    Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
-    Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
-    Android 8.0 O (API 26) beta (major security fixes expected)
+- Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux);
+- Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default);
+- Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced);
+- Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features);
+- Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting; fine-grained permissions at run time and not all or nothing at installation time);
+- Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART);
+- Android 8.0 O (API 26) beta (major security fixes expected).
 
 Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
-
 
 #### App Folder Structure
 
