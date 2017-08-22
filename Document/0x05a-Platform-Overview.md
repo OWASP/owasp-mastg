@@ -29,7 +29,7 @@ Apps do not have direct access to hardware resources, and their execution enviro
 
 #### Android Users and Groups
 
-Even though the Android operating system is based on the Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing a list of users in the system. Instead, Android utilizes the multi-user support of the Linux kernel to achieve application sandboxing, by running each application under a separate user (with some exceptions).
+Even though Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead Android utilizes the multi-user support of Linux kernel to achieve application sandboxing by running each application under a separate user (with some exceptions).
 
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
 
@@ -49,7 +49,7 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead, apps interact with system services using the Android Framework, an abstraction layer that offers high-level API easily usable from Java. For the most part, these services are used via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples for system services include:
+As already mentioned, Android apps are written in Java and compiled into the dex bytecode. Apps do not access system resources directly. Instead, they interact with the system services using Android Framework – an abstraction layer that offers high-level API easily usable from Java. The majority of these services are used via normal Java method calls, and are translated to IPC calls to the system services running in the background. Examples of the system services include:
 
     * Connectivity (Wifi, Bluetooth, NFC, ...)
     * Giles
@@ -59,7 +59,7 @@ As already mentioned, Android apps are written in Java and compiled into a dex b
 
 The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
 
-APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
+The APIs have evolved a lot from the first Android version (September 2008). Critical bug fixes and security patches are usually propagated through several earlier versions. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
 
 Noteworthy API versions are:
 
@@ -71,15 +71,15 @@ Noteworthy API versions are:
     Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
     Android 8.0 O (API 26) beta (major security fixes expected)
 
-Apps can be installed on an Android device from a variety of sources: locally through USB, from Google's official store (Google Play Store) or from alternative stores.
+Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
 
 
 #### App Folder Structure
 
-Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. Since this folder cannot be listed without root. An alternative method must be used to get the exact name of the APK. To list all installed APKs, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real device. E.g. to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB can be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As in both cases ADB behaves the same, we further assume the default case where connection over USB is established.
+Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. As this folder cannot be listed without the root, an alternative method should be used to get the exact name of the APK. Android Debug Bridge (ADB) can be used to list all installed APKs. ADB allows the tester to interact directly with the real device, e.g. to gain access to a console on the device to issue commands, list installed packages, start/stop processes, etc.
+To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB would be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As the ADB’s behaviour is the same in both cases, we further assume the default case where connection over USB is established.
 
-Once USB-Debugging is enabled, the connected devices can be viewed with the following command:
+Once USB-Debugging is enabled, all connected devices can be viewed with the following command:
 
 ```bash
 $ adb devices
@@ -115,7 +115,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 ```
 
 - **cache**: This location is used to cache app data on runtime including WebView caches.
-- **code_cache**: The location of the application specific cache directory on the filesystem designed for storing cached code. On devices running Lollipop or later, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime. Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
+- **code_cache**: The location of the application specific cache directory on the filesystem designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime. Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
 - **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data.
 - **files**: This folder is used to store files that are created in the App when using the internal storage.
 - **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
