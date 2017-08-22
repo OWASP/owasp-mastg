@@ -2,19 +2,13 @@
 
 Software protections are a controversial topic. Some security experts dismiss client-side protections outright. Security-by-obscurity, they argue, is not *real* security, thus from a security standpoint no value is added. In the MASVS and MSTG we take a more pragmatic approach. Given that software protection controls are used fairly widely in the mobile world, we argue that there is *some* benefit to such controls, as long as they are employed with a clear purpose and realistic expectations in mind, and aren't used to *replace* solid security controls.
 
-What's more, mobile app security testers encounter anti-reversing mechanisms in their daily work, and they not only need ways to "deal" with them to enable dynamic analysis, but also to assess whether these mechanisms are used appropriately and effectively. Giving clients  advice like "you must use obfuscation" or "never obfuscate code because it's useless" doesn't cut it. However, most mobile app security testers have a background in network and web application security, and lack the reverse engineering and cracking skills required to form an opinion. On top of that, there is no methodology or even industry consensus on how anti-reversing schemes should be assessed.
+Mobile app security testers encounter anti-reversing defenses in their daily work, and they not only need ways to "deal" with them to enable dynamic analysis, but also to assess whether these mechanisms are used appropriately and effectively. Advice like "you must use obfuscation" or "never obfuscate code because it's useless" isn't useful to clients. You should be able to provide a measured assessment whether anti-reversing measures should be used in a particular case, and test the effectiveness of a given set of defenses.
 
-The point of software-based reversing defenses is indeed to add obscurity - enough to deter some adversaries from achieving certain goals. There are several reason why developers choose to do this: For example, the intention could be to make it more difficult to steal the source code and IP, or to prevent malware running on the same device from tampering with the runtime behavior of the app.
+The point of software-based reversing defenses is to add *obscurity* - enough to deter a group of adversaries from achieving certain goals. There are several reason why one would opt to do this: For example, to make it more difficult to steal parts of the source code and IP, or to increase the effort needed to for cheating in an online game.
 
 Resilience testing is the process of evaluating the robustness of the a software protection scheme against particular threats. Typically, this kind of testing is performed using a black-box approach, with the objective of circumventing the software protection scheme and reaching a pre-defined goal, such as extracting sensitive assets. This process requires skills that are not typically associated with penetration testing: The tester must be able to handle advanced anti-reversing tricks and obfuscation techniques. Traditionally, this is the domain of malware analysts.
 
-A resilience test can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process consists of the following high-level steps:
-
-1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
-2. Assess the effectiveness of the defenses in countering the identified threats using hybrid static/dynamic analysis. In other words, play the role of the adversary, and crack the defenses!
-3. In some scenarios, white-box testing can be added to assess specific features of the protection scheme in an isolated fashion (e.g., a particular obfuscation method).
-
-## What This Chapter is About
+In prior chapters, we have already seen many anti-reversing tricks employed in mobile apps: Anti-debugging, root detection, integrity checks, and others. We've also introduced reverse engineering techniques, many of which would allow one to deactivate those defenses. In this chapter, we provide the high-level framework needed for a more systematic assessment.
 
 The effectiveness of software protection schemes depends to some extent on originality and secrecy. Standardizing a particular protection scheme has the side effect of making the scheme ineffective: Soon enough, someone will release a generic tool for bypassing the scheme.
 
@@ -24,6 +18,14 @@ It is impossible to provide a step-by-step guide for cracking every possible pro
 2. Highlight key properties that determine the effectiveness of the techniques used;
 3. List robustness criteria for specific types of obfuscation and anti-tampering;
 3. Provide testers with knowledge, processes and tools for verifying effectiveness.
+
+## Resilience Assessment Overview
+
+A *resilience assessment* can be performed in the context of a regular mobile app security test, or stand-alone to verify the effectiveness of a software protection scheme. The process consists of the following high-level steps:
+
+1. Assess whether a suitable and reasonable threat model exists, and the anti-reversing controls fit the threat model;
+2. Assess the effectiveness of the defenses in countering the identified threats using hybrid static/dynamic analysis. In other words, play the role of the adversary, and crack the defenses!
+3. In some scenarios, white-box testing can be added to assess specific features of the protection scheme in an isolated fashion (e.g., a particular obfuscation method).
 
 ## Assessing the Threat Model and Software Protection Architecture
 
@@ -241,8 +243,7 @@ You'll usually find a mix of all the above in a given software protection scheme
 
 ```
 8.6: The app continually verifies the integrity of critical code and data structures within its own memory space.
-```
-
+``` 
 
 
 
