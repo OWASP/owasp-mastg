@@ -219,7 +219,7 @@ An important aspect of the Android security is that all apps have the same level
 
 ##### Zygote
 
-The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
 
 
 #### The App Sandbox
@@ -496,7 +496,7 @@ Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 ###### Requesting Permissions
 
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
-The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
+The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
@@ -535,7 +535,7 @@ It is possible to protect Android components using permissions. Activities, Serv
     ...
 </receiver>
 ```
-*Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
+*Content Providers* are a little bit different. They allow separate permissions for read, write or access of the Content Provider using a content URI.
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions to read or write.
 - `android:permission`: general permission that will control read and write to the Content Provider.
 - `android:grantUriPermissions`: true if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
