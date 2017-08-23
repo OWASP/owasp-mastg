@@ -1,6 +1,6 @@
 # Android Platform Overview
 
-This section introduces the Android platform from an architectural point of view. Four key areas are discussed:
+This section introduces Android platform from the architectural point of view. The following four key areas are discussed:
 
 1. Android security architecture
 2. Android application structure
@@ -11,25 +11,27 @@ Visit the official [Android developer documentation website](https://developer.a
 
 ## Android Security Architecture
 
-Android is a Linux-based open source platform, initially developed by Google as a mobile operating system (OS) solution. Today, the platform is a foundation for a wide variety of modern technology such as mobile phones and tablets, wearable tech, and other "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+Android is a Linux-based open-source platform initially developed by Google as a mobile operating system (OS) solution. Today, the platform is a foundation for a wide variety of modern technology such as mobile phones and tablets, wearable tech, and other "smart" devices like TVs. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through Google Play store and other marketplaces.
 
-The software stack of Android is composed of several different layers. Each layer defines certain behavior and offers specific services. Further, these layers interact with OS portions above, below, and other instances paralleling the respective layer’s position within the system architecture.
+The software stack of Android is composed of several different layers. Each layer defines a number of interfaces and offers specific services. 
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
-At the lowest level, Android utilizes a variation of the Linux Kernel which serves as the foundation for other elements composing the OS. Just above this level, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with hardware components built into a device. Several HAL implementations are packaged into shared library modules (generally, .SO files) called on by the Android system when required. This is basis for allowing applications to interact with a device’s internal hardware – for example, it grants a stock phone application the ability to use the microphone and speaker.
+At the lowest level, Android utilizes a variation of Linux Kernel which serves as the foundation for other elements composing the OS. On top the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with hardware components built into device. Several HAL implementations are packaged into shared library modules called on by the Android system when required. This is basis for allowing applications to interact with the device’s internal hardware – for example, it grants a stock phone application the ability to use the microphone and speaker of a device.
 
-The Android Runtime consists of the core libraries and the Dalvik VM (Virtual Machine). Apps are most often implemented in Java and compiled in Java class files. However since Android integrates a Dalvik VM, not JVM, the Java class files are then compiled again into the dex format. The dex files are packed into APK (a ZIP archive containing all resources, including the executable) and then unpacked and executed within the Dalvik VM. In the following image you can see the differences between the normal process of compiling and running a typical project in Java vs the process in Android using Dalvik VM.
+Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat (but not very) different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, and then converting the JVM bytecode to Dalvik .dex format using the `dx` tool.
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-With Android 4.4 (KitKat) the successor of Dalvik VM was introduced, called Android Runtime (ART). The advent of Android 5.0 (Lollipop) in November 2014 truly enabled general use. In KitKat, ART was only available in the 'Developer' menu to those who wanted to try it explicitly. When no user action was taken to modify the normal behavior of the mobile, Dalvik was used.
+In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed.I n Dalvik, bytecode is translated into machine code at execution time. This technique is known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed.
 
-In Android, apps are executed into their own environment in a Virtual Machine (VM) called Dalvik and located in the runtime environment. Each VM emulates the whole mobile and gives access to relevant resources from the Linux kernel while controlling this access. Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes, it does not prevent other apps from working and only their environment and the app itself have to be restarted. Also, the fact apps are not run directly on the mobile hardware allow the use of the same app (same bytecode) on different architectures (e.g. ARM, x86) as the VM emulates a common hardware for the app. At the same time, the VM controls the maximum amount of resources provided to an app, preventing one app from using all resources while leaving only few resources to others. In Android, apps are installed as bytecode (.dex files, see "Android Application Overview" section). In Dalvik, this bytecode is compiled at execution time into machine language suiting the current processor: such a mechanism is known as Just In Time (JIT). However, this means that such compiling is done every time an app is executed on a given mobile. As a consequence, Dalvik has been improved to compile an app only once, at installation time (the principle is called AOT, a.k.a. Ahead Of Time): ART was born, and compilation was required only once, saving precious time at execution time (the execution time of an app may be divided by 2). Another benefit was that ART was consuming less power than Dalvik, allowing the user to use the mobile device and its battery longer.
+To improve performance, ART introduced Ahead Of Time (AOT) compilation. with AOT, every app on the device is pre-compiled once. This improves performance by a factor of two, while also reduces power consumption.
+
+Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes it does not prevent other apps from working, and only their environment and the app itself have to be restarted. At the same time, the Android runtime controls the maximum amount of resources provided to apps, preventing one app from using all resources while leaving only few resources to others. 
 
 #### Android Users and Groups
 
-Even though the Android operating system is based on the Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing a list of users in the system. Instead, Android utilizes the multi-user support of the Linux kernel to achieve application sandboxing, by running each application under a separate user (with some exceptions).
+Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other.
 
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
 
@@ -49,7 +51,7 @@ File below depicts some of the users defined for Android Nougat:
 
 ### Communication with the Operating System
 
-As already mentioned, Android apps are written in Java and compiled into a dex bytecode. System resources are not accessed directly. Instead, apps interact with system services using the Android Framework, an abstraction layer that offers high-level API easily usable from Java. For the most part, these services are used via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples for system services include:
+Android apps interact with system services using the Android Framework, an abstraction layer that offers high-level Java APIs. The majority of these services are invoked via normal Java method calls, and are translated to IPC calls to system services running in the background. Examples of system services include:
 
     * Connectivity (Wifi, Bluetooth, NFC, ...)
     * Giles
@@ -57,29 +59,28 @@ As already mentioned, Android apps are written in Java and compiled into a dex b
     * Geolocation (GPS)
     * Microphone
 
-The framework also offers common security functions such as cryptography. At the time of writing this guide, the current version of Android is 7.1 (Nougat), API level 25.
+The framework also offers common security functions such as cryptography.
 
-APIs have evolved a lot since the first Android version (September 2008). Critical bug fixes and security patches are usually propagated several versions back. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19.
+The API specifications change with every new release of Android. Critical bug fixes and security patches are usually propagated to earlier versions as well. The oldest Android version supported at the time of writing this guide, is 4.4 (KitKat), API level 19, while the current version of Android is 7.1 (Nougat), API level 25.
 
 Noteworthy API versions are:
 
-    Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
-    Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default)
-    Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced)
-    Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features)
-    Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting fine-grained permissions at run time and not all or nothing at installation time)
-    Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
-    Android 8.0 O (API 26) beta (major security fixes expected)
+- Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux);
+- Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux becomes enabled by default);
+- Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART is introduced);
+- Android 5.0 Lollipop (API 21) in November 2014 (ART by default and many other new features);
+- Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting; fine-grained permissions at run time and not all or nothing at installation time);
+- Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART);
+- Android 8.0 O (API 26) beta (major security fixes expected).
 
-Apps can be installed on an Android device from a variety of sources: locally through USB, from Google's official store (Google Play Store) or from alternative stores.
-
+Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
 
 #### App Folder Structure
 
-Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. Since this folder cannot be listed without root. An alternative method must be used to get the exact name of the APK. To list all installed APKs, the Android Debug Bridge (adb) can be used. ADB allows a tester to directly interact with the real device. E.g. to gain access to a console on the device to issue further commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB can be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As in both cases ADB behaves the same, we further assume the default case where connection over USB is established.
+Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. As this folder cannot be listed without the root, an alternative method should be used to get the exact name of the APK. Android Debug Bridge (ADB) can be used to list all installed APKs. ADB allows the tester to interact directly with the real device, e.g. to gain access to a console on the device to issue commands, list installed packages, start/stop processes, etc.
+To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB would be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As the ADB’s behaviour is the same in both cases, we further assume the default case where connection over USB is established.
 
-Once USB-Debugging is enabled, the connected devices can be viewed with the following command:
+Once USB-Debugging is enabled, all connected devices can be viewed with the following command:
 
 ```bash
 $ adb devices
@@ -115,7 +116,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 ```
 
 - **cache**: This location is used to cache app data on runtime including WebView caches.
-- **code_cache**: The location of the application specific cache directory on the filesystem designed for storing cached code. On devices running Lollipop or later, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime. Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
+- **code_cache**: The location of the application specific cache directory on the filesystem designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime. Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
 - **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data.
 - **files**: This folder is used to store files that are created in the App when using the internal storage.
 - **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
@@ -129,7 +130,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 
 #### APK Structure
 
-An app on Android is a file with the extension .apk. This file is a signed zip-file which contains all the application's resources, byte code, etc. When unzipped the following directory structure can usually be identified:
+When preparing the app for the release, all necessary files are packed into an Android Package Kit (APK). This file is a signed ZIP archive that contains all the application's resources, bytecode, etc. It has the following directory structure:
 
 ```
 $ unzip base.apk
@@ -143,16 +144,16 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
 ```
 
-- AndroidManifest.xml: Contains the definition of app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
-- META-INF: This folder contains metadata of the app:
-  - MANIFEST.MF: Stores hashes of app resources.
-  - CERT.RSA: The certificate(s) of the app.
-  - CERT.SF: The list of resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
-- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-- classes.dex: The classes compiled in the DEX file format understandable by the Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
-- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-- res: A directory containing resources not compiled into resources.arsc.
-- resources.arsc: A file containing precompiled resources, such as XML files for the layout.
+- AndroidManifest.xml: Contains the definition of the app’s package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- META-INF: contains the app’s metadata.
+  - MANIFEST.MF: stores hashes of the app resources.
+  - CERT.RSA: the app’s certificate(s).
+  - CERT.SF: list of the resources and SHA-1 digest of the corresponding lines in the MANIFEST.MF file.
+- assets: directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- classes.dex: classes compiled in the DEX file format understandable by Dalvik virtual machine/Android Runtime. DEX is Java Byte Code for Dalvik Virtual Machine. It is optimized for running on small devices.
+- lib: directory containing libraries that are part of the APK, for example the 3rd party libraries that are not part of the Android SDK.
+- res: directory containing resources not compiled into resources.arsc.
+- resources.arsc: file containing precompiled resources, such as XML files for the layout.
 
 Some resources inside the APK are compressed using non-standard algorithms (e.g. the AndroidManifest.xml). This means that simply unzipping the file won't reveal all information. A better way is to use the tool 'apktool' to unpack and uncompress the files. The following is a list of the files contained in the apk:
 
@@ -183,17 +184,17 @@ drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
 
-- AndroidManifest.xml: This file is not compressed anymore and can be opened in a text editor.
-- apktool.yml : This file contains information about the output of apktool.
-- assets: A directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
-- lib: A directory containing libraries that are part of the APK, for example 3rd party libraries that are not part of the Android SDK.
-- original: This folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
-- res: A directory containing resources not compiled into resources.arsc.
-- smali: A directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+- AndroidManifest.xml: file is not compressed anymore and can be opened in a text editor.
+- apktool.yml : file contains information about the output of apktool.
+- assets: directory containing app assets (files used within the Android App like XML, Java Script or pictures) which can be retrieved by the AssetManager.
+- lib: directory containing libraries that are part of the APK, for example the 3rd party libraries that are not part of the Android SDK.
+- original: folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
+- res: directory containing resources not compiled into resources.arsc.
+- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
 
 #### Linux UID/GID of Normal Applications
 
-A newly installed apps on Android is assigned a new UID. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
+All newly installed apps on Android are assigned new UIDs. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
 ```
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
@@ -214,23 +215,24 @@ The relationship between group IDs and permissions are defined in the file [fram
 	<group gid="sdcard_rw" />
 </permission>
 ```
-An important aspect of Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions apps can perform as well as access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
+An important aspect of the Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions that the apps can perform as well as the access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
 
 ##### Zygote
 
-A process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. The Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
+
 
 #### The App Sandbox
 
-Apps are executed in the Android Application Sandbox thus enforcing isolation of app data and code execution from other apps on the device. This adds an additional layer of security.
+Apps are executed in the Android Application Sandbox enforcing isolation of the app data and the code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path <code>/data/data/<package name></code>. This folder is going to be the private data folder for that particular app.
+When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
 
 Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
-In this example, the Chrome and Calendar app are completely segmented with different UID and different folder permissions.
+In this example, Chrome and Calendar apps are completely segmented with different UID and different folder permissions.
 
 We can confirm this by looking at the filesystem permissions created for each folder:
 
@@ -239,7 +241,7 @@ drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
-However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each others data directory. See the following example on how this is achieved in the Nfc app:
+However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
 
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -260,17 +262,18 @@ Android apps are made of several high-level components that make up their archit
 
 All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
+
 ##### Application Life Cycle
 
-Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by visible ones, running services, background services, and last useless processes (for instance apps that are still open but have not been in use for a significant time).
+Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to the state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by the visible ones, running services, background services, and at last useless processes (for instance apps that are still open but have not been in use for a significant time).
 
-Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
+Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on the app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
 
 ##### Manifest
 
-Every app must have a manifest file, which embeds content in XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
+Every app must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-A manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file also contains general metadata about the app, like its icon, its version number and the theme it uses for User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
+The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file should contain general metadata about the app, like its icon, its version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -308,7 +311,7 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-A manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+Manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 ##### Activities
 
@@ -323,7 +326,7 @@ Activities implement manifest files. Each activity needs to be declared in the a
 
 When activities are not declared in manifests, they cannot be displayed and would raise an exception.
 
-In the same way as apps do, activities also have their own lifecycle and need to listen to system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
+In the same way as apps do, activities also have their own lifecycle and need to listen to the system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
 
 - onCreate
 - onSaveInstanceState
@@ -335,14 +338,14 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
-Basically, a fragment represents a behavior or a portion of user interface in an Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
+Basically, a fragment represents a behavior or a portion of user interface in within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. As for them, fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in that they embed all they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
-As they have their own life cycle, the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+User interfaces are made of several elements: views, groups of views, fragments and activities. Fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+As they have their own life cycle the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
 
@@ -361,7 +364,7 @@ Fragment Managers can be created simply with the following:
 FragmentManager fm = getFragmentManager();
 ```
 
-Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
+Fragments do not necessarily have a user interface: they can be a convenient and efficient way to manage background operations dealing with the user interface in an app. For instance when a fragment is declared as persistent while its parent activity may be destroyed and created again.
 
 ##### Inter-Process Communication
 
@@ -383,7 +386,7 @@ In the Binder framework, a client-server communication model is used. To use IPC
 
 Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface for use by clients. Developers write interfaces for remote services using the Android Interface Descriptor Language (AIDL).
 
-Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the <code>addService</code> and retrieved by name using the <code>getService</code> static method in <code>android.os.ServiceManager</code>:
+Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added using the `addService` and retrieved by name using the `getService` static method in `android.os.ServiceManager`:
 
 ```
   public static IBinder getService(String name)
@@ -470,30 +473,30 @@ Content Providers are implemented through a URI addressing scheme: they all use 
 
 ##### Services
 
-Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...), without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active apps have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main app thread. They are great candidates to run asynchronous tasks.
+Services are components provided by Android operating system (in the form of the Service class) that will perform tasks in the background (data processing, start intents and notifications, ...) without presenting any kind of user interface. Services are meant to run processing on the long term. Their system priorities are lower than the ones active apps have, but are higher than inactive ones. As such, they are less likely to be killed when the system needs resources; they can also be configured to start again automatically when enough resources become available in case they get killed. Activities are executed in the main app thread. They are great candidates to run asynchronous tasks.
 
 ##### Permissions
 
-Because Android apps are installed in a sandbox and initially it does not have access to neither user information nor access to system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the app can request.
+Because any Android app is installed in a sandbox and initially it does not have access to either user information or access to the system components (such as using the camera or the microphone), it provides a system based on permissions where the system has a predefined set of permissions for certain tasks that the app can request.
 As an example, if you want your app to use the camera on the phone you have to request the camera permission.
 On Android versions before Marshmallow (API 23) all permissions requested by an app were granted at installation time. From Android Marshmallow onwards the user have to approve some permissions during app execution.
 
 ###### Protection Levels
 
-Android permissions are classified in four different categories based on the protection level it offers.
-- *Normal*: Is the lower level of protection, it gives apps access to isolated application-level feature, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value.
+Android permissions are ranked in four different categories based on the protection level they offer.
+- *Normal*: the lower level of protection. It gives the apps access to isolated application-level feature, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. It is also the default value for the cases when no protection level is specified.
 Example: `android.permission.INTERNET`
-- *Dangerous*: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permissoin may not be granted at installation time, leaving to the user decide whether the app should have the permission or not.
+- *Dangerous*: This permission usually gives the app control over the user data or over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not.
 Example: `android.permission.RECORD_AUDIO`
 - *Signature*: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted.
 Example: `android.permission.ACCESS_MOCK_LOCATION`
-- *SystemOrSignature*: Permission only granted to apps embedded in the system image or that were signed using the same certificated as the app that declared the permission.
+- *SystemOrSignature*: Permission only granted to the apps embedded in the system image or that were signed using the same certificated as the app that declared the permission.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 ###### Requesting Permissions
 
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
-The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
+The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
@@ -522,8 +525,8 @@ Only apps signed with the same developer certificate can use this permission.
 
 ###### Enforcing Permissions on Android Components
 
-It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers all can use the permission mechanism to protect its interfaces.
-*Activities*, *Services* and *Broadcast Receivers* can enforce a permission by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
+It is possible to protect Android components using permissions. Activities, Services, Content Providers and Broadcast Receivers – all can use the permission mechanism to protect their interfaces.
+*Activities*, *Services* and *Broadcast Receivers* can enforce permissions by entering the attribute *android:permission* inside each tag in AndroidManifest.xml:
 ```
 <receiver
     android:name="com.permissions.sample.AnalyticsReceiver"
@@ -532,32 +535,32 @@ It is possible to protect Android components using permissions. Activities, Serv
     ...
 </receiver>
 ```
-*Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
-- `android:writePermission`, `android:readPermission`: The developer can set separate permissions to read or write.
-- `android:permission`: General permission that will control read and write to the Content Provider.
-- `android:grantUriPermissions`: True if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
+*Content Providers* are a little bit different. They allow separate permissions for read, write or access of the Content Provider using a content URI.
+- `android:writePermission`, `android:readPermission`: the developer can set separate permissions to read or write.
+- `android:permission`: general permission that will control read and write to the Content Provider.
+- `android:grantUriPermissions`: true if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
 
 ### Signing and Publishing Process
 
-Once an app has been successfully developed, the next step is to publish it to share it with others. However, apps cannot simply be put on a store and shared: for several reasons, they need to be signed. This is a convenient way to ensure that apps are genuine and authenticate them to their authors: for instance, an upgrade to an app will only be possible if the update is signed with the same certificate as the original app. Also, this is a way to allow sharing between apps that are signed with the same certificate when signature-based permissions are used.
+Once an app has been successfully developed, the next step is to publish it to share it with others. However, apps cannot simply be put on a store and shared for several reasons – they need to be signed. This is a convenient way to ensure that apps are genuine and authenticate them to their authors: for instance, an upgrade to an app will only be possible if the update is signed with the same certificate as the original app. Also, this is a way to allow sharing between apps that are signed with the same certificate when signature-based permissions are used.
 
 #### Signing Process
 
-During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debugging only. Most stores do not accept this kind of certificates when trying to publish, therefore another certificate, with more secure features, has to be created and used.
+During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is used for debugging only. Most stores do not accept this kind of certificate when trying to publish, therefore another certificate, with more secure features, has to be created and used.
 
-When an application  is installed onto an Android device, the Package Manager verifies that it has been signed with the certificate included in that APK. If the public key in the certificate matches the key used to sign any other APK on the device, the new APK has the option to share a UID with that APK. This facilitates interaction between multiple applications from the same vendor. Alternatively, it as also possible to specify security permissions the Signature protection level, restricting access to applications signed with the same key.
+When an application is installed onto the Android device, the Package Manager verifies that it has been signed with the certificate included in that APK. If the public key in the certificate matches the key used to sign any other APK on the device, the new APK has the option to share a UID with that APK. This facilitates interaction between multiple applications from the same vendor. Alternatively, it as also possible to specify security permissions the Signature protection level, restricting access to applications signed with the same key.
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes: As of Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports two application signing schemes. Starting from Android 7.0, APKs can be verified using the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backward compatibility, APKs signed with the v2 signature format can be installed on older Android devices, as long as these APKs are also v1-signed. [Older platforms ignore v2 signatures and only verify v1 signatures](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 scheme):
 
-In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in <code>META-INF/MANIFEST.MF</code>. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
+In the original version of app signing, the signed APK is actually a standard signed JAR, which must contain exactly the entries listed in `META-INF/MANIFEST.MF`. All entries must be signed using the same certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback with this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and discard data not covered by them. Also, the APK verifier must uncompress all compressed files, consuming considerable time and memory.
 
 ##### APK Signature Scheme (v2 scheme)
 
-In the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, v2 scheme treats performs signature checking across the entire file. This form of APK verification is faster and offers more comprehensive protection against modification.
+In the APK signature scheme the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, v2 scheme treats performs signature checking across the entire file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
 
@@ -565,22 +568,22 @@ In the APK signature scheme, the complete APK is hashed and signed, and an APK S
 
 ##### Creating Your Certificate
 
-Android is using the public/private certificates technology to sign Android apps (.apk files): this permits to establish the authenticity of apps and make sure the originator is the owner of the private key. Such certificates can be self-generated and signed. Certificates are bundles that contain different information, the most important from security point of view being keys: a public certificate will contain the public key of the user, and a private certificate will contain the private key of the user. Both the public and private certificates are linked together. Certificates are unique and cannot be generated again: this means that, in case one or the two are lost, it is not possible to renew them with identical ones, therefore updating an app originally signed with a given certificate will become impossible.
+Android is using the public/private certificates technology to sign Android apps (.apk files): this allows to establish the authenticity of apps and make sure the originator is the owner of the private key. Such certificates can be self-generated and signed. Certificates are bundles that contain different information, the most important from security point of view being keys: a public certificate will contain the public key of the user, and a private certificate will contain the private key of the user. Both public and private certificates are linked together. Certificates are unique and cannot be generated again. This means that, in case one or both certificates are lost, it is not possible to renew them with identical ones, therefore updating an app originally signed with a given certificate will become impossible.
 
-The creator of an app can either reuse an existing private / public key pair that already exists and is stored in an available keystore, or generate a new pair.
+The creator of the app can either reuse an existing private / public key pair that already exists and is stored in an available keystore, or generate a new pair.
 
 Key pairs can be generated by the user with the keytool command (example for a key pair generated for my domain ("Distinguished Name"), using the RSA algorithm with a key length of 2048 bits, for 7300 days = 20 years, and that will be stored in the current directory in the secure file 'myKeyStore.jks'):
 ```
 keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
 ```
 
-Safely storing a secret key and making sure it remains secret during its entire lifecycle is of paramount importance, as any other person who would get access to it would be able to publish updates to your apps with content that you would not control (therefore being able to create updates to you apps and add insecure features, access content that is shared using signature-based permissions, e.g. only with apps under your control originally). The trust a user places in an app and its developers is totally based on such certificates, hence its protection and secure management are vital for reputation and Customer retention. This is the reason why secret keys must never be shared with other individuals, and keys are stored in a binary file that can be protected using a password: such files are referred to as 'keystores'; passwords used to protect keystores should be strong and known only by the key creator (-storepass option in the command above, where a strong password shall be provided as an argument). For this reason keys are usually stored on a dedicated build machine with limited access for developers.
+Safely storing a secret key and making sure it remains secret during its entire lifecycle is of paramount importance, as any other person who gets access to it would be able to publish updates to your apps with the content that you would not control (therefore being able to create updates to you apps and add insecure features, accessing the content that is shared using signature-based permissions, e.g. only with apps under your control originally). The trust that a user places in an app and its developers is totally based on such certificates, hence its protection and secure management are vital for reputation and customer retention. This is the reason why secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected using a password: such files are referred to as 'keystores'. Passwords used to protect keystores should be strong and known only by the key creator (-storepass option in the command above, where a strong password will be provided as an argument). For this reason, keys are usually stored on a dedicated build machine with limited access for developers.
 
-Android certificates must have a validity period longer than the one of the associated app (including its updates). For example, Google Play will require that the certificate remains valid till at least Oct 22nd, 2033.
+Android certificates must have a validity period longer than the one of the associated app (including its updates). For example, Google Play will require that the certificate remains valid until at least Oct 22nd, 2033.
 
 ##### Signing an Application
 
-After the developer has generated its own private / public key pair, the signing process can take place. From a high-level point of view, this process is meant to associate the app file (.apk) with the public key of the developer (by encrypting the hash value of the app file with the private key, where only the associated public key can decrypt it to its actual value that anyone can calculate from the .apk file): this guarantees the authenticity of the app (e.g. that the app really comes from the user who claims it) and enforces a mechanism where it will only be possible to upgrade the app with other versions signed with the same private key (e.g. from the same developer).
+After the developer has generated its own private / public key pair, the signing process can take place. From a high-level point of view, this process is meant to associate the app file (.apk) with the public key of the developer (by encrypting the hash value of the app file with the private key, where only the associated public key can decrypt it to its actual value that anyone can calculate from the .apk file). This guarantees the authenticity of the app (e.g. the fact that the app really comes from the user who claims it) and enforces a mechanism where it will only be possible to upgrade the app with other versions signed with the same private key (e.g. from the same developer).
 
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; you should be aware of this and double-check this point in case others are able to access such files, and remove the information if needed.
 
@@ -592,11 +595,11 @@ In this example, an unsigned app ready for signing ('myUnsignedApp.apk') is goin
 
 ###### Zipalign
 
-The <code>zipalign</code> tool should always be used to align an APK file before distribution. This tool aligns all uncompressed data within the APK, such as images or raw files, on 4-byte boundaries, which allows for improved memory management during app runtime. If using apksigner, zipalign must be performed before the APK file has been signed.
+The `zipalign` tool should always be used to align the APK file before distribution. This tool aligns all uncompressed data within the APK, such as images or raw files, on 4-byte boundaries, that helps to improve memory management during app runtime. If using apksigner, zipalign must be performed before the APK file has been signed.
 
 #### Publishing Process
 
-The Android ecosystem is open, and, as such, it is possible to distribute apps from anywhere (your own site, any store, ...). However, Google Play is the more famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. If a user wants to install third-party apps from a non-trusted source they must explicitly allow this from the security settings on their device.
+The Android ecosystem is open, and thus it is possible to distribute apps from anywhere (your own site, any store, etc.). However, Google Play is the most famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. If a user wants to install third-party apps from a non-trusted source they must explicitly allow this from the security settings on their device.
 
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 

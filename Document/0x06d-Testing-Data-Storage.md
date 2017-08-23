@@ -31,7 +31,7 @@ Files can be assigned one of four protection classes:
 
 - **No Protection (NSFileProtectionNone)**: This class key is protected only with the UID and is kept in Effaceable Storage. This protection class exists to enable fast remote wipe: Deleting the class key immediately makes the data inaccessible.
 
-All class keys except <code>NSFileProtectionNone</code> are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can only happen on the device itself, and requires the correct passcode to be entered.
+All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can only happen on the device itself, and requires the correct passcode to be entered.
 
 Since iOS 7, the default data protection class is "Protected Until First User Authentication".
 
@@ -48,7 +48,7 @@ The [KeyChain API](https://developer.apple.com/library/content/documentation/Sec
 - `SecItemCopyMatching`
 - `SecItemDelete`
 
-Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection is activated by setting the <code>kSecAttrAccessible</code> attribute in the <code>SecItemAdd</code> or <code>SecItemUpdate</code> call. The following Data Protection classes are available:
+Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection is activated by setting the `kSecAttrAccessible` attribute in the `SecItemAdd` or `SecItemUpdate` call. The following Data Protection classes are available:
 
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
@@ -73,6 +73,7 @@ Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you w
 #### Static Analysis
 
 When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
+
 Furthermore, make sure that the `AccessControlFlags` are set appropriately according to the security policy for the given keys in the Keychain.
 
 When looking for instances of insecure data storage in an iOS app you should consider the following possible means of storing data.
@@ -430,6 +431,8 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data.
 
+Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, the access to the pasteboard content is only allowed to apps in the foreground.
+
 #### Static Analysis
 
 Search through the source code provided to look for any implemented subclass of `UITextField`.
@@ -617,13 +620,13 @@ Since iOS backs up installed apps and their data, an obvious concern is whether 
 
 When a user backs up their iPhone, the keychain data is backed up as well, but the secrets in the keychain remain encrypted. The class keys needed to decrypt the keychain data that are not included in the backup. To restore the keychain data, the backup must be restored to a device, and the device must be unlocked with the same passcode.
 
-Keychain items with the <code>kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly</code> attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
+Keychain items with the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
 
 The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), backups aren't an issue.
 
 ##### Excluding Items from Backup
 
-The <code>[NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey")</code>  and <code>[CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey")</code> file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories.
+The `[NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey")`  and `[CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey")` file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories.
 
 Either of these APIs is preferred over the older, deprecated approach of directly setting an extended attribute. All apps running on iOS 5.1 and later should use these APIs to exclude data from backups.
 
@@ -813,11 +816,7 @@ To summarize, when performing static analysis for sensitive data exposed in memo
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
 
-To take advantage of Fridump and objection the iOS app need to be repackaged with FridaGadget.dylib and signed. A detailed explanation on how to do this is in "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
-
-##### Fridump (No Jailbreak needed)
-
--- ToDo
+It is possible to dump the process memory of the app with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump") on a non-jailbroken device. To take advantage of this the iOS app need to be repackaged with FridaGadget.dylib and re-signed. A detailed explanation on how to do this is in the section "Dynamic Analysis on Non-Jailbroken Devices" in the chapter "Basic Security Testing".
 
 ##### Objection (No Jailbreak needed)
 
@@ -841,6 +840,14 @@ Dumping 768.0 KiB from base: 0x1ad200000  [####################################]
 Memory dumped to file: /Users/foo/memory_iOS/memory
 ```
 
+Afterwards the command `strings` can be executed on the dump to extract the strings.
+
+```
+$ strings memory > strings.txt
+```
+
+Open strings.txt in your favourite editor and dig through it to identify sensitive information.
+
 The loaded modules of the current process can also be shown.
 
 ```
@@ -859,8 +866,64 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 ```
 
 
+##### Fridump (No Jailbreak needed)
+
+The original version of Fridump is not maintained anymore and is only working with Python2. Frida is nowadays highly suggesting to use the latest Python 3.x and therefore Fridump is not working out of the box.
+
+If you are getting the following error message, even though your iOS device is connected via USB, you should checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
+
+```
+➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
+
+        ______    _     _
+        |  ___|  (_)   | |
+        | |_ _ __ _  __| |_   _ _ __ ___  _ __
+        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
+        | | | |  | | (_| | |_| | | | | | | |_) |
+        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
+                                         | |
+                                         |_|
+
+Can't connect to App. Have you connected the device?
+```
+
+Once Fridump is working, you need to get the Name of the app you want to dump, which can be done by using `frida-ps`. Afterwards you just specify the app name in fridump.
+
+```
+➜  fridump git:(master) ✗ frida-ps -U
+ PID  Name
+----  ------
+1026  Gadget
+
+➜  fridump git:(master) python3 fridump.py -u Gadget -s
+
+        ______    _     _
+        |  ___|  (_)   | |
+        | |_ _ __ _  __| |_   _ _ __ ___  _ __
+        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
+        | | | |  | | (_| | |_| | | | | | | |_) |
+        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
+                                         | |
+                                         |_|
+
+Current Directory: /Users/foo/PentestTools/iOS/fridump
+Output directory is set to: /Users/foo/PentestTools/iOS/fridump/dump
+Creating directory...
+Starting Memory dump...
+Progress: [##################################################] 100.0% Complete
+
+Running strings on all files:
+Progress: [##################################################] 100.0% Complete
+
+Finished! Press Ctrl+C
+```
+
+When you add the flag `-s` all strings are extracted from the dumped raw memory files into the file `strings.txt` and is stored in the directory `dump` of Fridump.
+
+
 ##### Needle (Jailbreak needed)
 
+-- ToDo
 
 
 #### Remediation
@@ -886,7 +949,6 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 
 - [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
 - [objection](https://github.com/sensepost/objection "objection")
-- [Needle](https://github.com/mwrlabs/needle/ "Needle")
 
 
 ### Testing the Device-Access-Security Policy

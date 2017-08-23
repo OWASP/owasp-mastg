@@ -2,37 +2,51 @@
 
 ### Testing Custom URL Schemes
 
-
 #### Overview
 
-Protocol handler is a basic form of [IPC](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html) in iOS system. Basically, it allows invoking arbitrary applications, by calling a URL scheme with specified parameters. There are some [default handlers](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899), however a developer is allowed to register his own [custom URL scheme](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10). Unfortunately, this brings a serious security concern, that [developers of the Skype application found out](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html). The Skype application registered the `skype://` protocol handler, which allows for making a call to arbitrary numbers without asking for a user's permission. Attackers exploited this vulnerability by putting an invisible `<iframe src=”skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who visited a malicious website unconsciously was forced to call to a premium number.
+In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html): file transfer through AirDrop and custom URL schemes.
+
+Custom URL schemes allow apps to communicate via a custom protocol. An app must declare support for the scheme and handle incoming URLs that use the scheme. Once the URL scheme is registered, other apps can open the app that registered the scheme, and pass parameters by creating appropriately formatted URLs and opening them with the `openURL` method.
+
+Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters and when users aren't prompted for confirmation before triggering an important action.
+
+One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge.
+
+Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
 
 #### Static Analysis
 
-A security concern related with protocol handlers should arise, when the URL is not validated or the user is not prompted for confirmation in the application before making a particular action.
-The first step is to find out if an application registers any protocol handlers. This information can be found in `info.plist` file in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to `Info` tab and open `URL Types` section, as it is presented on a below screenshot.
+The first step to test custom URL schemes is finding out whether an application registers any protocol handlers. This information is in the file `info.plist` in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to the `Info` tab, and open the `URL Types` section, presented in the screenshot below.
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
-Then, you should verify how an URL path is built and validated. A method responsible for handling user's URLs is called [`openURL`] (https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc). Look for implemented controls - how an URL is validated (what input it accepts) and does it need the permission of the user when using the custom URL schema?
+Next, determine how a URL path is built and validated. The method [`openURL`](https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc) is responsible for handling user URLs. Look for implemented controls: how URLs are validated (the input it accepts) and whether it needs user permission when using the custom URL schema?
 
-In a compiled application, you can find registered protocol handlers in a `Info.plist` file under the `CFBundleURLTypes` and then under `CFBundleURLSchemes` key. To find out an URL structure, you can simply use `strings` or `Hooper`:
+In a compiled application, registered protocol handlers are found in the file `Info.plist`. To find a URL structure, look for uses of the `CFBundleURLSchemes` key using `strings` or `Hopper`:
 
 ```sh
 $ strings <yourapp> | grep "myURLscheme://"
 ```
-> Please note that you should firstly decrypt an application (e.g. using [Clutch] (https://github.com/KJCracks/Clutch) if you want to read a binary.
 
 #### Dynamic Analysis
 
-Once you know, what an URL structure is, you should try fuzzing an URL to force an application to perform some malicious action.
+Once you've identified the custom URL schemes the app has registered, open the URLs on Safari and observe how the app behaves.
 
--- TODO [Add instruction of using dynamic/ipc/open_uri: Test IPC attacks by launching URI Handlers in Needle: https://labs.mwrinfosecurity.com/blog/needle-how-to/] --
+If the app parses parts of the URL, you can perform input fuzzing to detect memory corruption bugs. For this you can use [IDB](http://www.idbtool.com/):
 
+- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](http://www.idbtool.com/documentation/setup.html). 
+- Go to the `URL Handlers` section. In `URL schemes`, click `Refresh` , and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking `Open`, on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
+- To find out whether custom URI schemes contain any bugs, try to fuzz them. In the `URL Handlers` section, go to the `Fuzzer` tab. On the left side default IDB payloads are listed. The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers fuzzing dictionaries. Once your payload list is ready, go to the `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
+
+```sh
+myURLscheme://$@$
+```
+
+While the URL scheme is being fuzzed, watch the logs (in Xcode, go to `Window -> Devices ->` *click on your device* `->` *bottom console contains logs*) to observe the impact of each payload. The history of used payloads is on the right side of the IDB `Fuzzer` tab .
 
 #### Remediation
 
-You should carefully validate any URL, before calling it. You can whitelist applications which may be opened via the registered protocol handler. Another helpful control is prompting a user for confirming the action, invoked by an URL.
+You should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
 
 #### References
 
@@ -40,67 +54,50 @@ You should carefully validate any URL, before calling it. You can whitelist appl
 - M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
 
 ##### CWE
 - CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
 ##### Tools
-- Needle - https://labs.mwrinfosecurity.com/tools/needle/
+- IDB - http://www.idbtool.com/
 
 
-
-### Testing for Sensitive Functionality Exposed Through IPC
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing for Sensitive Functionality Exposed Through IPC".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
-
--- TODO [Add content on static analysis of "Testing for Sensitive Functionality Exposed Through IPC" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing for Sensitive Functionality Exposed Through IPC" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Sensitive Functionality Exposed Through IPC".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
-
-##### CWE
--- TODO [Add relevant CWE for "Testing for Sensitive Functionality Exposed Through IPC"] --
-
-##### Tools
--- TODO [Add relevant tools for "Testing for Sensitive Functionality Exposed Through IPC"] --
-
-
-
-### Testing JavaScript Execution in WebViews
+### Testing iOS WebViews
 
 #### Overview
 
-The WebView object is used to embed a web browser in your iOS application. It is a convenient way to display a web page in your application without any interaction with your native mobile browser. WebView even allows you to interact with JavaScript code in pages it has loaded. This great opportunity however may expose your application for a big risk if no security controls are applied. One of such big risk is a possibility to execute a malicious JavaScript code in your application via WebView object.
+WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. 
+
+iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. Starting from iOS version 7.0, Apple also introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
+
+Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
 
 #### Static Analysis
 
-Depending on your iOS version a WebView object can be implemented using [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) or [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later). WKWebView is recommended to be used.
+Look out for usages of the following components that implement WebViews:
 
-The WKWebView object allows for JavaScript execution by default. That may raise a serious risk of running arbitrary code on user's device via WebView object. If your WebView does not require executing JavaScript as it's just display a static web page, you should definitely disable it. You can do it using preferences of an object [WKPreferences](https://developer.apple.com/reference/webkit/wkpreferences#//apple_ref/occ/instp/WKPreferences/javaScriptEnabled "WKPreferences"), like in the following example:
+- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
+- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later) 
+- [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
 
-```
+`UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
+
+- `WKWebView` is the appropriate choice for extending app functionality, controlling displayed content  (i.e., prevent the user from navigating to arbitrary URLs), and customizing.
+- `SafariViewController` should be used to provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari. 
+
+`WKWebView` comes with several security advantages over `UIWebView`:
+
+- The `JavaScriptEnabled` property can be used to completely disable JavaScipt in the WKWebView. This prevents all script injection flaws. 
+- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups. 
+- the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
+- WKWebView implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
+
+##### JavaScript Configuration
+
+As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly required. The following code sample shows a sample configuration.
+
+```objective-c
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
 @interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -126,35 +123,75 @@ The WKWebView object allows for JavaScript execution by default. That may raise 
     [self.view addSubview:_webView];
 
 }
-
 ```
 
-If there is no explicitly disabled JavaScript execution via WKPreferences object, then it means it is enabled.
+JavaScript cannot be disabled in `SafariViewController` (this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface).
 
+##### Exposure of Native Objects
+
+Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView. 
+
+###### UIWebView
+
+Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime.
+
+A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
+
+``objective-c
+[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
+``
+
+- Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function;
+- JSExport protocol: Properties, instance methods, and class methods declared in a JSExport-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
+
+Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
+
+###### WKWebView
+
+In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system. JavaScript code can send messages back to the native app using the 'postMessage' method:
+
+```javascript
+window.webkit.messageHandlers.myHandler.postMessage()
+````
+
+The `postMessage` API automatically serializes JavaScript objects into native Objective-C or Swift objects. Message Handler are configured using the `addScriptMessageHandler` method.
+
+
+##### Local File Inclusion
+
+WebViews can load content remotely and locally from the app data directory. If the content is loaded locally, users should not be able to change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
+
+Check the source code for WebViews usage. If you can identify a WebView instance, check whether any local files have been loaded ("example_file.html" in the below example).
+
+```objective-c
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+        
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, CGRectGetWidth([UIScreen mainScreen].bounds) - 20, CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
+    self.webView.navigationDelegate = self;
+    [self.view addSubview:self.webView];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"example_file" ofType:@"html"];
+    NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
+}
+```
+
+Check the `baseURL` for dynamic parameters that can be manipulated (leading to local file inclusion).
 
 #### Dynamic Analysis
 
-A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an application:
+To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-- Stored Cross-Site Scripting (XSS) vulnerability in an endpoint, where the exploit will be sent to the WebView of the Mobile App when navigating to the vulnerable function.
-- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
-
-#### Remediation
-
-The UIWebView should be avoided and WKWebView used instead. JavaScript is enabled by default in a WKWebView and should be disabled if not needed. This reduces the attack surface and potential threats to the application.
-
-In order to address these attack vectors, the outcome of the following checks should be verified:
-
-- that all functions offered by the endpoint need to be free of [XSS vulnerabilities](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet").
-
-- that the HTTPS communication need to be implemented according to the best practices to avoid MITM attacks (see "Testing Network Communication").
-
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
-- M7 - Client Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 
@@ -164,191 +201,8 @@ In order to address these attack vectors, the outcome of the following checks sh
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 
+##### Info
 
-### Testing WebView Protocol Handlers
+- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
 
-#### Overview
 
--- TODO [Provide a general description of the issue "Testing WebView Protocol Handlers".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
-
--- TODO [Add content on static analysis of "Testing WebView Protocol Handlers" with source code) --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing WebView Protocol Handlers" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing WebView Protocol Handlers".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
-
-##### CWE
--- TODO [Add relevant CWE for "Testing WebView Protocol Handlers"] --
-
-##### Tools
--- TODO [Add relevant tools for "Testing WebView Protocol Handlers"] --
-
-
-### Testing Whether JavaScript Can Access Native Methods
-
-
-#### Overview
-
--- TODO [Provide a general description of the issue .] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Confirm purpose of remark "Use the &lt;sup&gt; tag to reference external sources, e.g. [Meyer's recipe for tomato soup](http://www.finecooking.com/recipes/meyers-classic-tomato-soup.aspx "Meyer's Recipe for Tomato Soup")."] --
-
--- TODO [Add content on static analysis of "Testing for Local File Inclusion in WebViews" with source code] --
-
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing for Local File Inclusion in WebViews" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing for Local File Inclusion in WebViews".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing for Local File Inclusion in WebViews"] --
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing for Local File Inclusion in WebViews"] --
-
-
-
-### Testing Object Persistence
-
-#### Overview
-
--- TODO [Add overview for "Testing Object Serialization"] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
--- TODO [Add content on static analysis of "Testing Object Serialization" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Object Serialization" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Object Serialization".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Object Serialization"] --
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing Object Serialization"] --
-
-
-
-### Testing Jailbreak Detection
-
-#### Overview
-
-iOS implements containerization so that each app is restricted to its own sandbox. A regular app cannot access files outside its dedicated data directories, and access to system APIs is restricted via app privileges. As a result, an app’s sensitive data as well as the integrity of the OS is guaranteed under normal conditions. However, when an adversary gains root access to the mobile operating system, the default protections can be bypassed completely.
-
-The risk of malicious code running as root is higher on jailbroken devices, as many of the default integrity checks are disabled. Developers of apps that handle highly sensitive data should therefore consider implementing checks that either prevent the app from running under these conditions, or at least warn the user about the increased risks.
-
-#### Static Analysis
-
-Look for a function with a name like isJailBroken in the code. If none of these are available, look for code checking for the following:
-1. Existence of files (such as anything with cydia or substrate in the name (such as `/private/var/lib/cydia or /Library/MobileSubstrate/MobileSubstrate.dylib`), `/var/lib/apt, /bin/bash, /usr/sbin/sshd, sftp`, etc). In swift this is done with the `FileManager.default.fileExists(atPath: filePath)` function and objective-c uses `[NSFileManager defaultManager] fileExistsAtPath:filePath`, so grepping for fileExists should show you a good list.
-2. Changes of directory permissions (ie being able to write to a file outside the apps own directory - common examples are `/, /private, /lib, /etc, /System, /bin, /sbin, /cores, /etc`). /private and / seem to be the most commonly used for testing.
-
-	2.1 Check actual permissions themselves: Swift uses `NSFilePosixPermissions` and objective-c uses `directoryAttributes`, so grep for these.
-
-	2.2 Check if you can write a file: Swift and objective-c both use the key words `write` and `create` for file and directory writing and creation. So grep for this and pipe to a grep for `/private` (or others) to get a reference.
-3. Checking size of `/etc/fstab` - a lot of tools modify this file, but this method is uncommon as an update from apple may break this check.
-4. Creation of symlinks due to the jailbreak taking up space on the system partition. Look for references to `/Library/Ringtones,/Library/Wallpaper,/usr/arm-apple-darwin9,/usr/include,/usr/libexec,/usr/share,/Applications` in the code.
-
-
-#### Dynamic Analysis
-
-First try running on a jailbroken device and see what happens. If a jailbreak detection is implemented use [Cycript](http://www.cycript.org/ "cycript") to examine the methods for any obvious anti-Jailbreak type name (e.g. `isJailBroken`). Note this requires a jailbroken iOS device with Cycript installed and shell access (via ssh). Also, at time of writing, Cycript cannot manipulate native Swift code (but can still look at any Objective-C libraries that are called). To tell if the app is written in Swift use the [nm tool](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/nm.1.html "nm tool"):
-
-```
-nm <appname> | grep swift
-```
-For an Objective-C only app there will be no output. However, it is still possible the app is mixed Swift and Objective-C.
-
-```
-cycript -p <AppName>
-cy#[ObjectiveC.classes allKeys]
-```
-
-It is recommended you pipe this to a file, then search for something that sounds like a promising classname like jailbreak, startup, system, initial, load, etc. Once you have a candidate list the methods:
-
-```
-cy#printMethods(<classname>)
-```
-
-Again, you may want to pipe to a file and go through it for a promising sounding method (e.g. has jail or root in the title).
-
-#### Remediation
-
-For iOS jailbreaking, it is worth noting that a determined hacker (or tester!) could use Cycript's method swizzling to modify this function to always return true. Of course there are more complex implementations, but nearly all can be subverted - the idea is just to make it harder. As such the following is recommended:
-1. Use more than one of the above methods to check if a device is jailbroken.
-2. Call the class and method something that is not immediately obvious (but it well commented).
-3. Use Swift instead of Objective-C.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-- V6.9: "The app detects whether it is being executed on a rooted or jailbroken device. Depending on the business requirement, users are warned, or the app is terminated if the device is rooted or jailbroken."
-
-##### CWE
-
-N/A
-
-##### Tools
-
-- cycript - http://www.cycript.org/

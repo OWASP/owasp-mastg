@@ -1,4 +1,5 @@
 ## Testing Tools
+
 To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behavior of running Apps and other test cases and automate them.
 
 ### Mobile Application Security Testing Distributions
@@ -60,7 +61,7 @@ To perform security testing different tools are available in order to be able to
 - [Drozer](https://www.mwrinfosecurity.com/products/drozer/) - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
 - [VirtualHook](https://github.com/rk700/VirtualHook) - VirtualHook is a hooking tool for applications on Android ART(>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks.
 
-#### Bypassing Root Detection and SSL Pinning
+#### Bypassing Root Detection and Certificate Pinning
 
 - [Xposed Module: Just Trust Me](https://github.com/Fuzion24/JustTrustMe) - Xposed Module to bypass SSL certificate pinning.
 - [Xposed Module: SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed - Android Xposed Module to bypass SSL certificate validation (Certificate Pinning\)).

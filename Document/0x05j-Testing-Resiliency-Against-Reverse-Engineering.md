@@ -77,7 +77,7 @@ Alternatively, checking whether *su* is in PATH also works:
     }
 ~~~
 
-File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/)) uses the <code>stat</code> system call to retrieve information about a file and returns <code>1</code> if the file exists.
+File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/)) uses the `stat` system call to retrieve information about a file and returns `1` if the file exists.
 
 ```c
 jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath) {
@@ -99,11 +99,11 @@ jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath)
 
 **Executing su and other commands**
 
-Another way of determining whether <code>su</code> exists is attempting to execute it through <code>Runtime.getRuntime.exec()</code>. This will throw an IOException if <code>su</code> is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
+Another way of determining whether `su` exists is attempting to execute it through `Runtime.getRuntime.exec()`. This will throw an IOException if `su` is not in PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox or the symbolic links that typically point to it.
 
 **Checking running processes**
 
-Supersu - by far the most popular rooting tool - runs an authentication daemon named <code>daemonsu</code>, so the presence of this process is another sign of a rooted device. Running processes can be enumerated through <code>ActivityManager.getRunningAppProcesses()</code> and <code>manager.getRunningServices()</code> APIs, the <code>ps</code> command, or walking through the <code>/proc</code> directory. As an example, this is implemented the following way in [rootinspector](https://github.com/devadvance/rootinspector/):
+Supersu - by far the most popular rooting tool - runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated through `ActivityManager.getRunningAppProcesses()` and `manager.getRunningServices()` APIs, the `ps` command, or walking through the `/proc` directory. As an example, this is implemented the following way in [rootinspector](https://github.com/devadvance/rootinspector/):
 
 ```java
     public boolean checkRunningProcesses() {
@@ -188,11 +188,9 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 - How long did it take you to successfully bypass it?
 - What is your subjective assessment of difficulty?
 
-For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
-
-#### Remediation
-
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 #### References
 
@@ -221,11 +219,11 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Anti-JDWP-Debugging Examples
 
-In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the <code>ro.debuggable</code> system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
+In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java virtual machine. We also showed that it easily possible to enable debugging for any app by either patching its Manifest file, or enabling debugging for all apps by changing the `ro.debuggable` system property. Let's look at a few things developers do to detect and/or disable JDWP debuggers.
 
 ###### Checking Debuggable Flag in ApplicationInfo
 
-We have encountered the <code>android:debuggable</code> attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
+We have encountered the `android:debuggable` attribute a few times already. This flag in the app Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically using the app's ApplicationInfo object. If the flag is set, this is an indication that the Manifest has been tampered with to enable debugging.
 
 ```java
     public static boolean isDebuggable(Context context){
@@ -256,7 +254,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 
 ###### Timer Checks
 
-The <code>Debug.threadCpuTimeNanos</code> indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, [the difference in execution time can be used to make an educated guess on whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
+The `Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has spent executing code. As debugging slows down execution of the process, [the difference in execution time can be used to make an educated guess on whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
 
 ```
 static boolean detect_threadCpuTimeNanos(){
@@ -383,7 +381,7 @@ Most Anti-JDWP tricks (safe for maybe timer-based checks) won't catch classical,
 
 ###### Checking TracerPid
 
-When the <code>ptrace</code> system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
+When the `ptrace` system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is "0" (no other process attached). Consequently, finding anything else than "0" in that field is a sign of debugging or other ptrace-shenanigans.
 
 The following implementation is taken from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/).
 
@@ -416,7 +414,7 @@ The following implementation is taken from [Tim Strazzere's Anti-Emulator projec
 
 **Ptrace variations***
 
-On Linux, the [ptrace() system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of <code>ptrace</code> in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
+On Linux, the [ptrace() system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory and registers. It is the primary means of implementing breakpoint debugging and system call tracing. Many anti-debugging tricks make use of `ptrace` in one way or another, often exploiting the fact that only one debugger can attach to a process at any one time.
 
 As a simple example, one could prevent debugging of a process by forking a child process and attaching it to the parent as a debugger, using code along the following lines:
 
@@ -463,7 +461,7 @@ This is however easily bypassed by killing the child and "freeing" the parent fr
 - Keeping track of running processes to make sure the children stay alive;
 - Monitoring values in the /proc filesystem, such as TracerPID in /proc/pid/status.
 
-Let's look at a simple improvement we can make to the above method. After the initial <code>fork()</code>, we launch an extra thread in the parent that continually monitors the status of the child. Depending on whether the app has been built in debug or release mode (according to the <code>android:debuggable</code> flag in the Manifest), the child process is expected to behave in one of the following ways:
+Let's look at a simple improvement we can make to the above method. After the initial `fork()`, we launch an extra thread in the parent that continually monitors the status of the child. Depending on whether the app has been built in debug or release mode (according to the `android:debuggable` flag in the Manifest), the child process is expected to behave in one of the following ways:
 
 1. In release mode, the call to ptrace fails and the child crashes immediately with a segmentation fault (exit code 11).
 2. In debug mode, the call to ptrace works and the child is expected to run indefinitely. As a consequence, a call to waitpid(child_pid) should never return - if it does, something is fishy and we kill the whole process group.
@@ -610,11 +608,9 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
-
-#### Remediation
-
 If anti-debugging is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. This may include adding more detection mechanisms, or better integrating existing mechanisms with other defenses.
+
+For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
 ### Testing File Integrity Checks
 
@@ -1099,7 +1095,7 @@ Keep in mind that a hooking framework such as Xposed or Frida could hook this AP
 #### Bypassing Emulator Detection
 
 1. Patch out the emulator detection functionality. Disable the unwanted behavior by simply overwriting the respective bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the <code>TelephonyManager.getDeviceID()</code> method to return an IMEI value.
+2. Use Frida or Xposed to hook APIs to hook file system APIs on the Java and native layers. Return innocent looking values (preferably taken from a real device) instead of the tell-tale emulator values. For example, you can override the `TelephonyManager.getDeviceID()` method to return an IMEI value.
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
 
@@ -1188,7 +1184,7 @@ With ELF binaries, native function hooks can be installed by either overwriting 
 
 The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. *GOT hooks* overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points into a legitimately loaded library.
 
-In contrast to GNU <code>ld</code>, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding). One can therefore expect all GOT entries to point valid memory locations within the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify that this is indeed the case.
+In contrast to GNU `ld`, which resolves symbol addresses only once they are needed for the first time (lazy binding), the Android linker resolves all external function and writes the respective GOT entries immediately when a library is loaded (immediate binding). One can therefore expect all GOT entries to point valid memory locations within the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify that this is indeed the case.
 
 *Inline hooks* work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. Inline hooks can be detected by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
 
@@ -1217,11 +1213,19 @@ Refer to the "Tampering and Reverse Engineering section" for examples of patchin
 
 N/A
 
+
 ### Testing Device Binding
 
 #### Overview
 
-The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemend trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+The goal of device binding is to impede an attacker when he tries to copy an app and its state from device A to device B and continue the execution of the app on device B. When device A has been deemed trusted, it might have more privileges than device B, which should not change when an app is copied from device A to device B.
+
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
+
+- augment the credentials used for authentication with device identifiers. This only make sense if the application needs to re-authenticate itself and/or the user frequently.
+- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
+- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
+
 
 #### Static Analysis
 
@@ -1243,8 +1247,9 @@ When the source-code is available, then there are a few codes you can look for, 
   String IMEI = tm.getDeviceId();
 ```
 
-
 Furthermore, to reassure that the identifiers can be used, the AndroidManifest.xml needs to be checked in case of using the IMEI and the Build.Serial. It should contain the following permission: `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+
+> Apps targeting Android O will get "UNKNOWN" when they request the Build.Serial.
 
 #### Dynamic Analysis
 
@@ -1384,6 +1389,9 @@ Please note that Google recommends against using these identifiers unless there 
 ```java
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
+
+The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a [new set of recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") in their SDK documentation regarding identifiers as well. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overridden.
+
 #### Effectiveness Assessment
 
 When the source-code is available, then there are a few codes you can look for, such as:
@@ -1434,17 +1442,6 @@ There are a few ways to test device binding dynamically:
 5. Overwrite the data from step 3 in the data folder of the application.
 6. Can you continue in an authenticated state? If so, then binding might not be working properly.
 
-#### Remediation
-
-The behavior of the SSAID has changed since Android O and the behavior of MAC addresses have [changed in Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). Google has set a [new set of recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") in their SDK documentation regarding identifiers as well. Because of this new behavior, we recommend developers to not rely on the SSAID alone, as the identifier has become less stable. For instance: The SSAID might change upon a factory reset or when the app is reinstalled after the upgrade to Android O. Please note that there are amounts of devices which have the same ANDROID_ID and/or have an ANDROID_ID that can be overriden.
-Next, the Build.Serial was often used. Now, apps targetting Android O will get "UNKNOWN" when they request the Build.Serial.
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods which allow for device binding:
-
-- augment the credentials used for authentication with device identifiers. This can only make sense if the application needs to re-authenticate itself and/or the user frequently.
-- obfuscate the data stored on the device using device-identifiers as keys for encryption methods. This can help in binding to a device when a lot of offline work is done by the app or when access to APIs depends on access-tokens stored by the application.
-- Use a token based device authentication (InstanceID) to reassure that the same instance of the app is used.
-
-The following three identifiers can be possibly used.
 
 #### References
 

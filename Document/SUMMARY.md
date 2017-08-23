@@ -8,7 +8,6 @@
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)
 
 ### Android Testing Guide
 
@@ -28,10 +27,17 @@
 - [Platform Overview](0x06a-Platform-Overview.md)
 - [iOS Security Testing Basics](0x06b-Basic-Security-Testing.md)
 - [Testing Local Authentication in iOS Apps](0x06f-Testing-Local-Authentication.md)
+- [Testing Platform Interaction on iOS](0x06h-Testing-Platform-Interaction.md)
+
+### General Mobile App Testing Guide
+
+- [Testing Authentication with the Back End](0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Appendix
 
-- [Assessing Software Protection Schemes](0x07d-Assessing-Anti-Reverse-Engineering-Schemes.md)
 - [Testing Tools](0x08-Testing-Tools.md)
 - [Suggested Reading](0x09-Suggested-Reading.md)
 

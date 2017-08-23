@@ -4,19 +4,45 @@
 
 #### Overview
 
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
+Code signing your app assures users that it is from a known source and the app hasn’t been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
+
+It is possible to retrieve the signing certificate information on the application .app file using [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
 #### Static Analysis
 
--- TODO [Add content on white-box testing of "Verifying that the App is Properly Signed"] --
+After obtaining the application .ipa file, rename it to zip and decompress the file. Navigate to the `Payload` directory and the application .app file will be present.
+
+Execute the following `codesign` command:
+
+```sh
+$ codesign -dvvv <yourapp.app>
+Executable=/Users/Documents/<yourname>/Payload/<yourname.app>/<yourname>
+Identifier=com.example.example
+Format=app bundle with Mach-O universal (armv7 arm64)
+CodeDirectory v=20200 size=154808 flags=0x0(none) hashes=4830+5 location=embedded
+Hash type=sha256 size=32
+CandidateCDHash sha1=455758418a5f6a878bb8fdb709ccfca52c0b5b9e
+CandidateCDHash sha256=fd44efd7d03fb03563b90037f92b6ffff3270c46
+Hash choices=sha1,sha256
+CDHash=fd44efd7d03fb03563b90037f92b6ffff3270c46
+Signature size=4678
+Authority=iPhone Distribution: Example Ltd
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=4 Aug 2017, 12:42:52
+Info.plist entries=66
+TeamIdentifier=8LAMR92KJ8
+Sealed Resources version=2 rules=12 files=1410
+Internal requirements count=1 size=176
+```
 
 #### Dynamic Analysis
 
--- TODO [Add content on black-box testing of "Verifying that the App is Properly Signed"] --
+Not Applicable.
 
 #### Remediation
 
--- TODO [Add remediation for "Verifying that the App is Properly Signed"] --
+For iOS application it is mandatory for applications to be properly signed with a certification issued by Apple before it can be installed on a device or submitted to the App Store.
 
 #### References
 
@@ -34,46 +60,7 @@
 
 ##### Tools
 
--- TODO [Add tools for "Verifying that the App is Properly Signed"] --
-
-
-### Testing If the App is Debuggable
-
-#### Overview
-
--- TODO [Give an overview about the functionality "Testing Whether the App is Debuggable" and it's potential weaknesses] --
-
-#### Static Analysis
-
--	Import the source code into the xCode Editor.
--	Check the project's build settings for 'DEBUG' parameter under "Apple LVM – Preprocessing" -> "Preprocessor Macros".
--	Check the source code for NSAsserts method and its companions.
-
-#### Dynamic Analysis
-
-This test case should be performed through Static Analysis. -- TODO [Develop content on black-box testing of "Testing Whether the App is Debuggable"] --
-
-#### Remediation
-
-Once you have deployed an iOS application, either through the App Store or as an Ad Hoc or Enterprise build, you won't be able to attach Xcode's debugger to it. To debug problems, you need to analyze Crash Logs and Console output from the device itself. Remove any NSLog calls to prevent debug leakage through the Console.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Whether the App is Debuggable"] --
-
-##### Tools
-
--- TODO [Add tools for "Testing Whether the App is Debuggable"] --
+- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
 
 
 ### Testing for Debugging Symbols
@@ -106,7 +93,9 @@ Not applicable.
 
 #### Remediation
 
--- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying that Debugging Symbols Have Been Removed"] --
+Ensure that debugging symbols are stripped when the application is being build for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty for reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to YES in the build settings of the project.
+
+It is possible to still have a proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html) as it does not require any symbols in the application binary.
 
 #### References
 
@@ -120,7 +109,7 @@ Not applicable.
 
 ##### CWE
 
--- TODO [Add relevant CWE for "Verifying that Debugging Symbols Have Been Removed"] --
+-- TODO [Add relevant CWE for "Testing for Debugging Symbols"] --
 
 
 ### Testing for Debugging Code and Verbose Error Logging
@@ -211,7 +200,7 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
 
 The iPhone SDK comes with two libraries for XML parsing.
 
-- <code>NSXMLParser</code> - an objective-C class provides a SAX parser; 
+- `NSXMLParser` - an objective-C class provides a SAX parser; 
 - libxml2 - an XML API written in C.
 
 Besides these two, a number of open source libraries is available. Examples include [BXML, TouchXML, KissXML, TinyXML, and GDataXML](https://www.raywenderlich.com/553/xml-tutorial-for-ios-how-to-choose-the-best-xml-parser-for-your-iphone-project "Ray Wenderlich Blog - How To Choose The Best XML Parser for Your iPhone Project").
@@ -220,7 +209,7 @@ Besides these two, a number of open source libraries is available. Examples incl
 NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
 ```
 
-External entity resolution is disabled by default in both parsers. In NSXMLParser, it can be activated explicitly by setting the <code>setShouldResolveExternalEntities</code> option.
+External entity resolution is disabled by default in both parsers. In NSXMLParser, it can be activated explicitly by setting the `setShouldResolveExternalEntities` option.
 
 #### Dynamic Analysis
 
@@ -252,12 +241,15 @@ External entity resolution is disabled by default in both parsers. In NSXMLParse
 ### Testing Exception Handling
 
 #### Overview
+
 Exceptions can often occur when an application gets into a non-normal or erroneous state.
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
 However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic.
 
+
 ##### Exception handling in Objective-C
+
 Objective-C has two types of errors :
 
 **NSException**
@@ -282,6 +274,7 @@ Bear in mind that using NSException comes with pitfalls regarding memory managem
 `NSError` is used for all other type of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some APIs of the Cocoa frameworks provide them as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
 
 ##### Exception handling in Swift
+
 Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combining Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
 Methods that can throw an error use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
 
@@ -318,9 +311,11 @@ do {
 - Assert that the error will not occur: by using the `try!` expression.
 
 #### Static Analysis
+
 Review the source code to understand/identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
 
 ##### Static Analysis in Objective-C
+
 Here you can verify that:
 
 - The application uses a well-designed and unified scheme to handle exceptions and errors.
@@ -333,6 +328,7 @@ Here you can verify that:
 - That `NSError` objects do not contain information that might leak any sensitive information.
 
 ##### Static Analysis in Swift
+
 Here you can verify that:
 
 - The application uses a well-designed and unified scheme to handle errors.
@@ -356,6 +352,7 @@ In most cases, the application should not crash, but instead, it should:
 - Not provide any information in logging mechanisms used by the application.
 
 #### Remediation
+
 There are a few things a developer can do:
 - Ensure that the application use a well-designed and unified scheme to handle errors.
 - Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
@@ -371,8 +368,8 @@ There are a few things a developer can do:
 
 ##### OWASP MASVS
 
-- V7.5: "The app catches and handles possible exceptions."
-- V7.6: "Error handling logic in security controls denies access by default."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 
 ##### CWE
 
@@ -396,15 +393,39 @@ Although XCode set all binary security features by default, it still might be re
 
 #### Static Analysis
 
--- TODO
 
-#### Dynamic Analysis
+##### XCode Project Settings
+
+-	Stack smashing protection
+
+Steps for enabling Stack smashing protection within an iOS application:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
+
+3.	PIE support
+
+Steps for building an iOS application as PIE:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	For iOS apps, set iOS Deployment Target to iOS 4.3 or later.
+3.	Verify that "Generate Position-Dependent Code" is set at its default value of NO.
+4.	Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
+
+5.	ARC protection
+
+Steps for enabling ACR protection within an iOS application:
+
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
+2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
+
+See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
 ##### With otool:
 
 Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
 
--	PIE:
+-   PIE:
 
 ```
 $ unzip DamnVulnerableiOSApp.ipa
@@ -422,7 +443,7 @@ MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
 WEAK_DEFINES BINDS_TO_WEAK PIE
 ```
 
--	Stack Canary:
+-   Stack Canary:
 
 ```
 $ otool -Iv DamnVulnerableIOSApp | grep stack
@@ -438,7 +459,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep stack
 0x0000000100593dc8 83414 _sigaltstack
 ```
 
--	Automatic Reference Counting:
+-   Automatic Reference Counting:
 
 ```
 $ otool -Iv DamnVulnerableIOSApp | grep release
@@ -457,34 +478,6 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
-#### Remediation
-
--	Stack smashing protection
-
-Steps for enabling Stack smashing protection within an iOS application:
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
-
-3.	PIE support
-
-Steps for building an iOS application as PIE :
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	For iOS apps, set iOS Deployment Target to iOS 4.3 or later.
-3.	Verify that "Generate Position-Dependent Code" is set at its default value of NO.
-4.	Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
-
-5.	ARC protection
-
-Steps for enabling ACR protection within an iOS application :
-
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
-
-See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
-
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
@@ -493,7 +486,7 @@ See also the [Technical Q&A QA1788 Building a Position Independent Executable]( 
 
 ##### OWASP MASVS
 
-- V7.8: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
 

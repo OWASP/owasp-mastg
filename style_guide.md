@@ -37,7 +37,7 @@ For digital content - create shorter pages that are cross-linked. If your conten
 
 ### Audience
 
-Write for an international audience with a *basic* level of technical understanding i.e. they have a mobile phone and know how to install an app.
+Write for an international audience with a *basic* level of technical understanding i.e. they have a mobile phone and know how to install an app. Avoid hard-to-translate slang words/phrases to ensure content is accessible to readers who aren't native English speakers.
 
 ### Context and orientation
 
@@ -77,6 +77,11 @@ When presenting your content in a list format:
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
+- Punctuate and capitalize list items consistently.
+- - Don't add end punctuation to list items that are not complete sentences.
+- - Use appropriate capitalization and punctuation for list items that individually form complete sentences.
+
+
 
 ### Numbering conventions
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
@@ -107,12 +112,40 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-### Standardisation 
+### Standardization 
 
-This is a list of words/abbrevations that are used inconsistent at the moment in the MSTG and need standardisation:
+This is a list of words/abbrevations that are used inconsistently at the moment in the MSTG and need standardization:
 
 - man-in-the-middle attack (MITM)
 
+### Contractions
+
+Use the following common contractions:
+
+are not -> aren't  
+cannot -> can't  
+could not -> couldn't  
+did not -> didn't  
+do not -> don't  
+does not -> doesn't  
+has not -> hasn't  
+had not -> hadn't  
+have not -> haven't  
+that is -> that's  
+there is -> there's  
+was not -> wasn't  
+were not -> weren't  
+will not -> wont  
+would not -> wouldn't  
+you are -> you're  
+you have -> you've  
+you will -> you'll  
+
+### Abbreviations
+
+Spell out abbreviations the first time they are used.
+
+Ex: United States (U.S.)
 
 ## 3. External References
 
@@ -175,10 +208,26 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 - *iOS Data Protection Key Hierarchy*
 ```
 
-## Lowercase or capital letter after a colon
+## Punctuation conventions
+
+**Lowercase or capital letter after a colon**
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
+**Serial comma use**
+
+Use a serial comma before "and" for the last item in a run-in list of items. For example:
+
+We bought apples, oranges, and tomatoes from the store.
+
+**Technical Terms**
+
+| Noun Form | Adjectival Form |
+| --------- | --------------- |
+|  back end |  backend |
+|server side | server-side |
+|client side | client-side |
+|  Base64    | Base64-  |
 
 ## Comments
 

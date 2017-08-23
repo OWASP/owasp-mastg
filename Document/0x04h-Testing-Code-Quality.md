@@ -8,11 +8,11 @@ In the following chapter, we'll provide an overview of the most common vulnerabi
 
 #### Overview
 
-An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta characters, an attacker can execute malicious code as is is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
+An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into back-end queries or commands. By injecting meta characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the back-end database.
 
 Vulnerabilities of this class are most prevalent in server-side web services. Exploitable instances also exist within mobile apps, but occurrences are less common, plus the attack surface is smaller.
  
-For example, while an app might query a local SQLite database, such databases usually do not store sensitive data (assuming the developer followed basic security practices). This makes SQL injection an non-viable attack vector. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
+For example, while an app might query a local SQLite database, such databases usually do not store sensitive data (assuming the developer followed basic security practices). This makes SQL injection a non-viable attack vector. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
 
 ##### Common Injection Types
 
@@ -46,15 +46,15 @@ This results in the following query:
 SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1' 
 ```
 
-Because the condition <code>'1' = '1'</code> always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
+Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
-One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog] (http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - "QNAP Android: Don't Over Provide").
+One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](http://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
 
 ###### XML Injection
 
 In an *XML injection* attack, the attacker injects XML meta characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, as well as possibly allow an attacker to exploit the operation of the XML parser processing the content.
 
-A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSFR)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
+A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008)):
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -69,9 +69,9 @@ The current trend in app development focuses mostly on REST/JSON-based services 
 
 #### Finding Injection Flaws
 
-Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services ar less common.
+Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services are less common.
 
-Locating a potential vulnerabilities begins by either:
+Locating a potential vulnerability begins by either:
 
 - Identifying possible entry points for untrusted input then tracing from those locations to see if the destination contains potentially vulnerable functions.
 - Identifying known, dangerous library / API calls (e.g. SQL queries) and then checking whether unchecked input successfully interfaces with respective queries.
@@ -91,7 +91,7 @@ We will cover details related to input sources and potentially vulnerable APIs f
 
 In most other cases, vulnerabilities can be prevented by following programming best practices, such as:
 
-- Always be type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
+- Always type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
 - Use prepared statements with variable binding (i.e. parameterized queries) when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
 - When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
 
@@ -125,11 +125,18 @@ Memory corruption bugs are a popular mainstay with hackers. This class of bug re
 
 - Integer overflows: When the result of an arithmetic operation exceeds the maximum value for the integer type defined by the programmer, this results in the value "wrapping around" the maximum integer value, inevitably resulting in a small value being stored. Conversely, when the result of an arithmetic operation is smaller than the minimum value of the integer type, an *integer underflow* occurs where the result is larger than expected. Whether a particular integer overflow/underflow bug is exploitable depends on how the integer is used – for example, if the integer type were to represent the length of a buffer, this could create a buffer overflow vulnerability.
 
-- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of the <code>printf()</code> family of C functions, attackers may inject format tokens such as ‘%c’ and ‘%n’ to access memory. Format string bugs are convenient to exploit due to their flexibility. Should a program output the result of the string formatting operation, the attacker can read and write to memory arbitrarily, thus bypassing protection features such as ASLR.
+- Format string vulnerabilities: When unchecked user input is passed to the format string parameter of the `printf()` family of C functions, attackers may inject format tokens such as ‘%c’ and ‘%n’ to access memory. Format string bugs are convenient to exploit due to their flexibility. Should a program output the result of the string formatting operation, the attacker can read and write to memory arbitrarily, thus bypassing protection features such as ASLR.
 
-The primary goal in exploiting memory corruption is usually to redirect program flow into a location where the attacker has placed assembled machine instructions referred to as *shellcode*. On iOS, the data execution prevention feature (as the name implies) prevents execution from memory defined as data segments. To bypass this protection, attackers leverage return-oriented programming (ROP). This process involves chaining together small, pre-existing code chunks ("gadgets") in the text segment where these gadgets may execute a function useful to the attacker or, call <code>mprotect</code> to change memory protection settings for the location where the attacker stored the *shellcode*.
+The primary goal in exploiting memory corruption is usually to redirect program flow into a location where the attacker has placed assembled machine instructions referred to as *shellcode*. On iOS, the data execution prevention feature (as the name implies) prevents execution from memory defined as data segments. To bypass this protection, attackers leverage return-oriented programming (ROP). This process involves chaining together small, pre-existing code chunks ("gadgets") in the text segment where these gadgets may execute a function useful to the attacker or, call `mprotect` to change memory protection settings for the location where the attacker stored the *shellcode*.
 
-Android apps are, for the most part, implemented in Java which is inherently safe from memory corruption issues by design. However, *native apps* utilizing JNI libraries are susceptible to this kind of bug.
+Android apps are, for the most part, implemented in Java which is inherently safe from memory corruption issues by design. However, native apps utilizing JNI libraries are susceptible to this kind of bug.
+
+##### Best Practices
+
+- Avoid using unsafe string functions such as `strcpy`, most other functions beginning with the “str” prefix, `sprint`, `vsprintf`, `gets`, and so on.
+- If you are using C++, use the ANSI C++ string class.
+- If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you should use CFString, the Core Foundation representation of a string.
+- Do not concatenate untrusted data into format strings.
 
 #### Static Analysis
 
@@ -146,18 +153,18 @@ The following code snippet shows a simple example for a condition resulting in a
  }  
 ```
 
-- To identify potential buffer overflows, look for uses of unsafe string functions (<code>strcpy</code>, <code>strcat</code>, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
+- To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
-    - <code>strcat</code>
-    - <code>strlcat</code>
-    - <code>strcpy</code>
-    - <code>strncat</code>
-    - <code>strlcat</code>
-    - <code>strncpy</code>
-    - <code>strlcpy</code>
-    - <code>sprintf</code>
-    - <code>snprintf</code>
-    - <code>gets</code>
+    - `strcat`
+    - `strlcat`
+    - `strcpy`
+    - `strncat`
+    - `strlcat`
+    - `strncpy`
+    - `strlcpy`
+    - `sprintf`
+    - `snprintf`
+    - `gets`
 
 - Look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly;
 
@@ -170,13 +177,6 @@ Memory corruption bugs are best discovered via input fuzzing: an automated black
 Fuzz testing techniques or scripts (often called “fuzzers”) will typically generate multiple instances of structured input in a semi-correct fashion. Essentially, the values or arguments generated are at least partially accepted by the target application, yet also contain invalid elements, potentially triggering input processing flaws and unexpected program behaviors. A good fuzzer exposes a substantial amount of possible program execution paths (i.e. high coverage output). Inputs are either generated from scratch ("generation-based") or derived from mutation known, valid input data ("mutation-based").
 
 For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
-
-#### Remediation
-
-- Avoid using unsafe string functions such as <code>strcpy</code>, most other functions beginning with the “str” prefix, <code>sprint</code>, <code>vsprintf</code>, <code>gets</code>, and so on.
-- If you are using C++, use the ANSI C++ string class.
-- If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you should use CFString, the Core Foundation representation of a string.
-- Do not concatenate untrusted data into format strings.
 
 #### References
 
@@ -191,6 +191,7 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 ##### CWE
 
 - CWE-20 - Improper Input Validation
+
 
 ### Testing for Cross-Site Scripting Flaws
 
@@ -212,23 +213,15 @@ XSS issues may exist if the URL opened by WebView is partially determined by use
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
 
-If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the webserver, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
+If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
 
-#### Dynamic Analysis
+Verify that the following best practices have been followed:
 
-The best method to test for XSS issues requires using a combination of manual and automatic input fuzzing – injecting HTML tags and special characters into all available input fields to verify the web application denies invalid inputs or escapes the HTML meta-characters in its output.
+- No untrusted data is rendered in HTML, JavaScript or other interpreted contexts unless it is absolutely necessary. 
 
-A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_Cross_site_scripting_(OTG-INPVAL-001)) refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be ab effective method. For example, the [BURP Scanner](https://portswigger.net/burp/) is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
+- Appropriate encoding is applied to escape characters, such as HTML entity encoding. Note: escaping rules become complicated when HTML is nested within other code, for example, rendering a URL located inside a JavaScript block.
 
-#### Remediation
-
-Security testers commonly use the infamous JavaScript message box to demonstrate exploitation via XSS. Inadvertently, developers sometimes assume by blacklisting the string "<code>alert()</code>" serves as an acceptable solution but this is not the case. Instead, preventing XSS is best accomplished by following general programming best practices:
-
-- Avoid placing untrusted data in an HTML document unless it is absolutely necessary. If you do, be aware of the context in which the data is rendered. Note: escaping rules become complicated when HTML is nested within other code, for example, rendering a URL located inside a JavaScript block.
-
-- Utilize appropriate encoding for escape characters, such as HTML entity encoding. This will prevent switching into a context where execution becomes a possibility, such as for script, style, or event handlers.
-
-Consider how data will be rendered in a response. For example, there are six HTML control characters that must be escaped to remove vulnerability situations:
+Consider how data will be rendered in a response. For example, if data is rendered in a HTML context, six control characters that must be escaped:
 
 | Character  | Escaped      |
 | :-------------: |:-------------:|
@@ -239,7 +232,14 @@ Consider how data will be rendered in a response. For example, there are six HTM
 | ' | &amp;#x27;| 
 | / | &amp;#x2F;| 
 
+
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet "OWASP XSS Prevention Cheat Sheet").
+
+#### Dynamic Analysis
+
+The best method to test for XSS issues requires using a combination of manual and automatic input fuzzing – injecting HTML tags and special characters into all available input fields to verify the web application denies invalid inputs or escapes the HTML meta-characters in its output.
+
+A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_Cross_site_scripting_(OTG-INPVAL-001)) refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be ab effective method. For example, the [BURP Scanner](https://portswigger.net/burp/) is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
 #### References
 

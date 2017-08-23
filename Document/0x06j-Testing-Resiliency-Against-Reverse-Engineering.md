@@ -4,7 +4,7 @@
 
 #### Overview
 
-In the context of reverse engineering defenses, jailbreak detection mechanisms are added to make it more difficult to run the app on a jailbroken device. This in turn impedes some tools and techniques reverse engineers like to use. As it is the case with most other defenses, jailbreak detection is not a very effective defense on its own, but having some checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme. A list of typical jailbreak detection techniques on iOS can be found below.
+In the context of reverse engineering defenses, jailbreak detection mechanisms are added to make it more difficult to run the app on a jailbroken device. This in turn impedes some tools and techniques reverse engineers like to use. As it is the case with most other defenses, jailbreak detection is not a very effective defense on its own, but having some checks sprinkled throughout the app can improve the effectiveness of the overall anti-tampering scheme. A [list of typical jailbreak detection techniques on iOS can be found below](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods on the Trustware Spiderlabs Blog").
 
 ##### File-based Checks
 
@@ -285,6 +285,8 @@ sys.stdin.read()
 
 #### References
 
+-	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf "Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android")
+
 ##### OWASP Mobile Top 10 2016
 
 -	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
@@ -296,11 +298,6 @@ sys.stdin.read()
 ##### CWE
 
 -- TODO [Add relevant CWE for "Testing Jailbreak Detection"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Info
-
--	Jailbreak Detection Methods on the Trustware Spiderlabs Blog - https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/
--	Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - http://delaat.net/rp/2015-2016/p51/report.pdf
 
 ##### Tools
 -	Frida - http://frida.re/
@@ -345,7 +342,7 @@ static bool amIAnInferior(void)
 }
 ```
 
-Disabling <code>ptrace()</code>.
+Disabling `ptrace()`.
 
 ```c
 typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
@@ -694,7 +691,7 @@ if(funcptr)
 return 0; // good
 ```
 
-\} Example code from the Netitude blog <code>[2]</code>.
+\} Example code from the Netitude blog `[2]`.
 
 #### Effectiveness Assessment
 

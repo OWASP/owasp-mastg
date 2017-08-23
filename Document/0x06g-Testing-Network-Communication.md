@@ -2,7 +2,7 @@
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wifi, classical network based-attacks become a potential issue.
 
-Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the <code>NSURLConnection</code> class provides methods to load URL requests asynchronously and synchronously.
+Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
 
 ### Testing App Transport Security
 
@@ -171,56 +171,30 @@ ATS settings should be verified via static analysis in the iOS source code.
 
 - V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 - V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 
 ##### CWE
 
 - CWE-319 - Cleartext Transmission of Sensitive Information
 - CWE-326 - Inadequate Encryption Strength
 
-### Testing Endpoint Identity Verification
+
+### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
 
--- TODO [Provide a general description of the issue "Testing Endpoint Identity Verification".]
+Certificate pinning is the process of associating the backend server with a particular X509 certificate or public key, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced (after all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors).
+
+The certificate can be pinned during development, or at the time the app first connects to the backend.
+In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
 #### Static Analysis
 
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
+Verify that the server certificate is pinned. Pinning can be implemented in multiple ways:
 
--- TODO [Add content on "Testing Endpoint Identity Verification" with source code] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Endpoint Identity Verification" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Endpoint Identity Verification".] --
-
-#### References
-
-#### OWASP Mobile Top 10 2016
-
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-
-##### OWASP MASVS
-
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a valid CA are accepted."
-
-##### CWE
-
-- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
-
-
-### Testing Custom Certificate Stores and SSL Pinning
-
-#### Overview
-
-Certificate pinning allows to hard-code the certificate that is known to be used by the server into the app. Pinning the server’s certificate reduces the attack surface of a rogue CA and CA compromise. Mobile applications that implement certificate pinning only can connect to a limited number of servers, as a small list of trusted CAs or server certificates are hard-coded in the application.
-
-#### Static Analysis
+1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
+2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
+3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
 The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored  in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
@@ -271,15 +245,6 @@ Second way of storing the certificate (and possibly password) is to use the keyc
 Sometimes applications have one certificate that is hardcoded and use it for the first login and then the personal certificate is downloaded. In this case, check if it's possible to still use the 'generic' certificate to connect to the server.
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
-
-
-#### Remediation
-
-As a best practice, the certificate should be pinned. This can be done in several ways, where most common include:
-
-1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
-2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
-3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
 #### References
 

@@ -10,9 +10,9 @@ This section provides an overview of different methods of testing an Android app
 
 #### Preparation
 
-Security testing involves many invasive tasks such as monitoring and manipulating the network traffic between the mobile app and its remote endpoints, inspecting the app's data files, and instrumenting API calls. Security controls like SSL Pinning and root detection might impede these tasks and slow down testing dramatically.
+Security testing involves many invasive tasks such as monitoring and manipulating the network traffic between the mobile app and its remote endpoints, inspecting the app's data files, and instrumenting API calls. Security controls like certificate pinning and root detection might impede these tasks and slow down testing dramatically.
 
-To overcome these obstacles, it might make sense to request two build variants of the app from the development team. One variant should be provided as a release build to check if the implemented controls like SSL Pinning are working properly or can be easily bypassed. The second variant should also be provided as a debug build that deactivates certain security controls. This approach makes it possible to cover all scenarios and test cases in the most efficient way.
+To overcome these obstacles, it might make sense to request two build variants of the app from the development team. One variant should be provided as a release build to check if the implemented controls like certificate pinning are working properly or can be easily bypassed. The second variant should also be provided as a debug build that deactivates certain security controls. This approach makes it possible to cover all scenarios and test cases in the most efficient way.
 
 Of course, depending on the scope of the engagement, such approach may not be possible. For a white box test, requesting both production and debug builds will help to go through all test cases and give a clear statement of the security maturity of the app. For a black box test, the client might prefer the test to be focused on the production app, with the goal of evaluating the effectiveness of its security controls.
 
@@ -67,7 +67,7 @@ See also "Android Platform Overview" for further details.
 
 For testing of an Android app a rooted device is the foundation for a tester to be able to execute all available test cases. In case a non-rooted device need to be used, it is still possible to execute several test cases to the app.
 
-Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if SSL Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
+Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if certificate Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
 
 #### Testing on the Emulator
 
@@ -152,6 +152,18 @@ To accomplish the source code testing, you will want to have a setup similar to 
 
 During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in [Android .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
 
+In case you need to pull the APK from the device, the following steps should be followed:
+
+```bash
+$ adb shell pm list packages
+(...)
+package:com.awesomeproject
+(...)
+$ adb shell pm path com.awesomeproject
+package:/data/app/com.awesomeproject-1/base.apk
+$ adb pull /data/app/com.awesomeproject-1/base.apk
+```
+
 An easy way on the CLI to retrieve the source code of an APK is through `apkx`, which also packages `dex2jar` and CFR and automates the extracting, conversion and decompilation steps. Install it as follows:
 
 ```
@@ -232,7 +244,7 @@ Install virtualenv via pip:
 $ pip install virtualenv
 ```
 
-Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command <code>virtualenv drozer</code>. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
+Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
 
 ```
 $ virtualenv drozer
@@ -495,11 +507,11 @@ Interception proxies like Burp or OWASP ZAP will not show this traffic, as they 
 
 For the following security controls that might be implemented into the app you are about to test, it should be discussed with the project team if it is possible to provide a debug build. A debug build has several benefits when provided during a (white box) test, as it allows a more comprehensive analysis.
 
-##### SSL Pinning
+##### Certificate Pinning
 
-SSL Pinning is a mechanism to make dynamic analysis harder. Certificates provided by an interception proxy to enable a Man-in-the-middle position are declined and the app will not make any requests. To be able to efficiently test during a white box test, a debug build with deactivated SSL Pinning should be provided.
+If the app implements certificate pinning, C.509 certificates provided by an interception proxy are declined and the app will refuse to make any requests through the proxy. To be able to efficiently test during a white box test, a debug build with deactivated certificate pinning should be provided.
 
-For a black box test, there are several ways to bypass SSL Pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
+For a black box test, there are several ways to bypass certificate pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
 
 To manually deactivate SSL Pinning there are two ways:
 - Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI")
@@ -507,7 +519,7 @@ To manually deactivate SSL Pinning there are two ways:
 
 Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
 
-See also test case "Testing Custom Certificate Stores and SSL Pinning" for further details.
+See also test case "Testing Custom Certificate Stores and Certificate Pinning" for further details.
 
 ##### Root Detection
 
