@@ -23,19 +23,19 @@ Android apps are usually written in Java and compiled to Dalvik bytecode, which 
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed.I n Dalvik, bytecode is translated into machine code at execution time. This technique is known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed.
+In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed. 
 
-To improve performance, ART introduced Ahead Of Time (AOT) compilation. with AOT, every app on the device is pre-compiled once. This improves performance by a factor of two, while also reduces power consumption.
+In Dalvik, bytecode is translated into machine code at execution time, a technique known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed. To improve performance, ART introduced *Ahead Of Time* (AOT) compilation. As the name implies, with AOT apps are pre-compiled to machine code once before being executed for the first time. In subsequent runs, the already compiled machine code is executed. This improves performance by a factor of two, while also reducing power consumption.
 
-Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes it does not prevent other apps from working, and only their environment and the app itself have to be restarted. At the same time, the Android runtime controls the maximum amount of resources provided to apps, preventing one app from using all resources while leaving only few resources to others. 
+Android apps do not have direct access to hardware resources, and each app runs in their own sandbox. This allows fine-grained control over resources and apps: for instance, when an app crashes this does impact other apps running on the device. At the same time, the Android runtime controls the maximum amount of system resources allocated to apps, preventing any one app from locking up too many resources.
 
 #### Android Users and Groups
 
-Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other.
+Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other and from the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) includes a list of the predefined users and groups used used by system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
 
-File below depicts some of the users defined for Android Nougat:
+For example, Android Nougat defines the following system users:
 
 ```
     #define AID_ROOT             0  /* traditional unix root user */
