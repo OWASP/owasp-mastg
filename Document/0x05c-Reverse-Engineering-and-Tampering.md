@@ -14,7 +14,7 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the following is installed on your system:
 
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. In general, these tools are backward-compatible, so you need only one version.
+- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. 
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
 
@@ -77,6 +77,18 @@ This creates a standalone toolchain for Android 7.0 in the directory `/tmp/andro
 
 ```bash
 $  export TOOLCHAIN=/tmp/android-7-toolchain
+```
+
+### Enabling Developer Mode
+
+You must enable USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+
+Once USB debugging is enabled, connected devices can be viewed with the following command:
+
+```bash
+$ adb devices
+List of devices attached
+BAZ5ORFARKOZYDFA	device
 ```
 
 ### Building a Reverse Engineering Environment for Free
@@ -367,10 +379,6 @@ When this function returns, R0 contains a pointer to the newly constructed UTF s
 So far, you've been using static analysis techniques without running the target apps. In the real world—especially when reversing malware or more complex apps—pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
 
 Android apps support two different types of debugging: Debugging on the level of the Java runtime with the Java Debug Wire Protocol (JDWP), and Linux/Unix-style ptrace-based debugging on the native layer, both of which are valuable to reverse engineers.
-
-##### Activating Developer Options
-
-Since Android 4.2, the "Developer options" submenu is by default hidden in the Settings app. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Debugging Release Apps
 
