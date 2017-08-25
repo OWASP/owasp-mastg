@@ -174,7 +174,9 @@ Apps require no extra permissions to read or write to the returned path, since t
 
 #### Linux UID/GID of Normal Applications
 
-All newly installed apps on Android are assigned new UIDs. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
+Android leverages Linux user management to isolate apps from each other. This approach is different from how user management is used in traditional Linux environments, where multiple apps are often run by the same user. Android creates a unique user ID (UID) for each Android app, and runs the app as that user in a separate process. Consequently, any one app can only access its own resources. This protection is enforced by the Linux kernel.
+
+Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
 ```
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
@@ -195,8 +197,6 @@ The relationship between group IDs and permissions are defined in the file [fram
 	<group gid="sdcard_rw" />
 </permission>
 ```
-
-Assigning a separate user account to each app processes is an important aspect of Android security. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions that the apps can perform as well as the access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
 
 ##### Zygote
 
