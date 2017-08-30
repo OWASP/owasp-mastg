@@ -240,9 +240,9 @@ Apps must implement event handlers that react to a number of events: for example
 
 ##### Manifest
 
-Every app must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
+Every app has a manifest file which embeds content in binary XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file should contain general metadata about the app, like its icon, its version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
+The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. It also contains contain general metadata about the app, like its icon, version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -280,7 +280,7 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-Manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+The full list of options available in the manifest is listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 #### App Components
 
@@ -296,16 +296,16 @@ All these elements are provided by the Android operating system in the form of p
 
 ##### Activities
 
-Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with three different screens is implementing three different activities. This allows the user to interact with the system (get and enter information). Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
+Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with three different screens is implementing three different activities. Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
 
-Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
+Each activity needs to be declared in the app manifest with the following syntax:
 
 ```
 <activity android:name="ActivityName">
 </activity>
 ```
 
-When activities are not declared in manifests, they cannot be displayed and would raise an exception.
+Activities not declared in the manifest cannot be displayed, and attempting to launch them would raise an exception.
 
 In the same way as apps do, activities also have their own lifecycle and need to listen to the system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
 
@@ -319,13 +319,14 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the `onCreate` manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. `onDestroy` may be overridden as well when resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
-Basically, a fragment represents a behavior or a portion of user interface in within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
+A fragment represents a behavior or a portion of user interface within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. Fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+Fragments are meant to encapsulate parts of the interface to make re-usability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+
 As they have their own life cycle the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
@@ -339,6 +340,7 @@ public class myFragment extends Fragment {
 Fragments don't need to be declared in manifest files as they depend on activities.
 
 In order to manage its fragments, an Activity can use a Fragment Manager (FragmentManager class). This class makes it easy to find, add, remove and replace associated fragments.
+
 Fragment Managers can be created simply with the following:
 
 ```Java
@@ -349,7 +351,7 @@ Fragments do not necessarily have a user interface: they can be a convenient and
 
 ##### Inter-Process Communication
 
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
+As we already learned, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
 
 The term *Binder* stands for a lot of different things, including:
 
@@ -360,7 +362,7 @@ The term *Binder* stands for a lot of different things, including:
 - Binder service - Implementation of the Binder object. For example, location service, sensor service,...
 - Binder client - An object using the binder service
 
-In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently marshalls the call parameters into a *parcel* and sends a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
+In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently *marshalls* the call parameters into a *parcel* and sends a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
 
 ![Binder Overview](Images/Chapters/0x05a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
@@ -477,6 +479,7 @@ Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 ###### Requesting Permissions
 
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
+
 The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
