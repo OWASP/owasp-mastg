@@ -73,8 +73,6 @@ Noteworthy API versions are:
 - Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART);
 - Android 8.0 O (API 26) beta (major security fixes expected).
 
-Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
-
 #### App Folder Structure
 
 Android apps installed from the Google Play Store or other sources are located at `/data/app/[package-name]`. For example, the Youtube app is found at:
@@ -198,57 +196,47 @@ The relationship between group IDs and permissions are defined in the file [fram
 </permission>
 ```
 
-##### Zygote
-
-The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
-
-
 #### The App Sandbox
 
 Apps are executed in the Android Application Sandbox enforcing isolation of the app data and the code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
-
-Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
+When installing a new app, a new directory named after the app package - `/data/data/[package-name]` - is created. This is directory is used to hold the data of that particular app. Linux directory permissions are set such that the directory can be read and written only by the app's unique UID. 
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
-In this example, Chrome and Calendar apps are completely segmented with different UID and different folder permissions.
-
-We can confirm this by looking at the filesystem permissions created for each folder:
+We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different used accounts:
 
 ```
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
-However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
+Sandboxing can be sidestepped by developer that want their own apps to share a common sandbox. When two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
 
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.android.nfc"
-	android:sharedUserId="android.uid.nfc">
+  package="com.android.nfc"
+  android:sharedUserId="android.uid.nfc">
 ```
 
+##### Zygote
 
-#### App Components
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
 
-Android apps are made of several high-level components that make up their architectures. The main components are:
+##### App Lifecycle
 
-- Activities
-- Fragments
-- Intents
-- Broadcast receivers
-- Content providers and services
+In Android, the lifetime of an app process is controlled by the operating system. A new app process is created when code of the app needs to be run. Android may decide to kill the process when it decides that it is no longer needed, or when it needs to reclaim memory for running other, more important apps. The decision whether a process should be killed is mainly related to the state of the user's interaction with it. In general, there are four states a process can be in:
 
-All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
+- A foreground process (e.g running an Activity at the top of the screen or has a running BroadcastReceiver that is currently running (its BroadcastReceiver.onReceive() method is executing).
 
+- A visible process is doing work that the user is currently aware of, so killing it would have a noticeable negative impact on the user experience. 
+E.g. is running an Activity that is visible to the user on-screen but not in the foreground. 
 
-##### Application Life Cycle
+- A service process is one holding a Service th`at has been started with the startService() method. Though these processes are not directly visible to the user, they are generally doing things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there is not enough memory to retain all foreground and visible processes.
 
-Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to the state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by the visible ones, running services, background services, and at last useless processes (for instance apps that are still open but have not been in use for a significant time).
+- A cached process is one that is not currently needed, so the system is free to kill it as desired when memory is needed elsewhere. 
 
-Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on the app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
+Apps must implement event handlers that react to a number of events: for example, the `onCreate` handler is called when the app process is first created. Other callback functions include `onLowMemory`, `onTrimMemory` and `onConfigurationChanged`.
 
 ##### Manifest
 
@@ -293,6 +281,18 @@ Here is an example of a manifest file, including the package name (the conventio
 ```
 
 Manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+
+#### App Components
+
+Android apps are made of several high-level components. The main components are:
+
+- Activities
+- Fragments
+- Intents
+- Broadcast receivers
+- Content providers and services
+
+All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
 ##### Activities
 
@@ -581,6 +581,8 @@ The `zipalign` tool should always be used to align the APK file before distribut
 #### Publishing Process
 
 The Android ecosystem is open, and thus it is possible to distribute apps from anywhere (your own site, any store, etc.). However, Google Play is the most famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. If a user wants to install third-party apps from a non-trusted source they must explicitly allow this from the security settings on their device.
+
+Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
 
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 
