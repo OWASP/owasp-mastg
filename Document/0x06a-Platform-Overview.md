@@ -1,20 +1,25 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices including iPhone, iPad and iPod Touch. It also served the basis for Apple tvOS, which has inherited many of iOS functionalities.
-iOS, like Apple desktop operating system, macOS (formerly OS X), is based on Darwin, a hybrid version of XNU kernel. There is an important difference between the two systems: iOS apps run in a more restricted environment than the desktop apps. They are isolated from each other on the file system level, and are significantly limited in terms of system API access.
+iOS is a mobile operating system that powers Apple mobile devices including iPhone, iPad and iPod Touch. It also served the basis for Apple tvOS, which inherits many functionalities from iOS.
 
-To protect its users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. Apple App store is the only official application distribution platform where developers can offer their apps and consumers can buy, download and install apps. This is different compared to Android that has several different app stores. Until recently side-loading of apps (or installing an app on your iOS device by bypassing the official App store) was only possible with a jailbreak or complicated workarounds. By using the latest version of Xcode and at least iOS 9 it is possible to do [side-loading via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8") and install an app directly to your phone.
+iOS, like Apple desktop operating system, macOS (formerly OS X), is based on Darwin, an open-source Unix operating system developed by Apple. The kernel used by Darwin is called XNU ("XNU is not Unix"), a hybrid kernel that combines components of the Mach and FreeBSD kernels.
 
-Sandboxing is mandatory for iOS apps. Apple sandbox (historically called Seatbelt) is a mandatory access control (MAC) mechanisms describing what resources an app can or cannot access. Compared to Android Binder IPC, iOS limits potential attack surface.
+In comparison to Mac OS however, iOS apps run in a more restricted environment that their Desktop counterparts. They are isolated from each other on the file system level, and are significantly limited in terms of system API access.
 
-Uniform hardware and tight integration between hardware and software brings another security advantage. iOS protects its devices by offering secure boot, hardware-backed keychain and file system encryption. Limited install base allows iOS updates to be rolled out to a large percentage of users quickly that means less need for support of older and unprotected versions of iOS.
+To protect its users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. The Apple App store is the only official application distribution platform where developers can offer their apps and consumers can buy, download and install apps. This is different compared to Android, which supports several different app stores and side-loading of apps. 
 
-In spite of numerous strengths, iOS app developers still need to worry about security. Data protection, Keychain, TouchID authentication and network security still leave plenty of margin for errors. In the following chapters, we are describing iOS security architecture and explaining a basic security testing methodology and reverse engineering how-tos. We are also mapping the categories of MASVS to iOS and outline test cases for each requirement.
+On iOS, side-loading of apps (or installing an app on your iOS device by bypassing the official App store) was only possible with a jailbreak or complicated workarounds. By using the latest version of Xcode and iOS 9 or higher it is possible to do [side-loading via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8") and install an app directly on an iOS device.
+
+iOS apps are isolated from each other through the Apple sandbox (historically called Seatbelt),s a mandatory access control (MAC) mechanisms describing what resources an app can or cannot access. Compared to Android's extensive Binder IPC facilities, iOS offers only very limited options for IPC, minimizing the potential attack surface.
+
+Uniform hardware and tight integration between hardware and software brings another security advantage. Every iOS offers security features such as secure boot, hardware-backed keychain and file system encryption. iOS updates are usually rolled out to a large percentage of users quickly, resulting in less need for supporting older and unprotected versions of iOS.
+
+In spite of numerous strengths, iOS app developers still need to worry about security. Data protection, Keychain, TouchID authentication and network security still leave plenty of margin for errors. In the following chapters, we describe iOS security architecture and explaining a basic security testing methodology and reverse engineering how-tos.
 
 
 ### iOS Security Architecture
 
-[iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") has six core features:
+The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") consists of six core features:
 
 - Hardware Security
 - Secure Boot
@@ -28,7 +33,7 @@ In spite of numerous strengths, iOS app developers still need to worry about sec
 
 #### Hardware Security
 
-The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each iOS device comes with two built-in AES 256-bit keys – GID and UID – fused and compiled into the application processor and Secure Enclave during manufacturing. There is no direct way to read these keys by software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines having exclusive access to these keys.
+The iOS security architecture makes heavy use of hardware-based security features that enhance overall performance and security. Each iOS device comes with two built-in AES 256-bit keys – GID and UID – that are fused and compiled into the application processor and Secure Enclave during manufacturing. There is no direct way to read these keys by software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines having exclusive access to these keys.
 
 The GID is a common value shared between all processors in a class of devices and known to Apple, and is used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy used for device-level file system encryption. Because they are not recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
@@ -53,6 +58,7 @@ A developer profile and an Apple-signed certificate are required in order to dep
 Developers need to register with Apple and join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription fee to get the full range of development and deployment possibilities. A free account still allows you to compile and deploy an application via side-loading.  
 
 Apple has implemented an intricate DRM system to make sure that only valid and approved code runs on Apple devices. In other words, on a non-jailbroken device, one will not be able to run any code unless Apple explicitly allows it. You cannot even opt to run any code on your own device unless you enroll in the Apple developer program and obtain the provisioning profile and signing certificate. For this and other reasons, iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms").
+
 #### Sandbox
 
 The [app sandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html "File System Basics") is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
@@ -82,7 +88,6 @@ iOS currently implements two specific security mechanisms, namely address space 
 
 ASLR is a technique that does the job of randomizing the memory location of the program executable, data, heap and stack on every execution of the program. As the shared libraries need to be static in order to be shared by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time when the program is invoked. Thus, this makes specific memory addresses of functions and libraries hard to predict, thereby preventing attacks such as a return-to-libc attack, which relies upon the memory addresses of basic libc functions.
 
-<!-- TODO [Further develop section on iOS General Exploit Mitigation] -->
 The XN mechanism allows iOS to mark certain memory segments as non-executable on a program’s stack and heap by default. In case of an attack this will prevent malicious code inserted onto the stack or heap from execution.
 
 ### Software Development on iOS
@@ -91,9 +96,9 @@ Like other platforms, Apple provides a Software Development Kit (SDK) for iOS th
 
 Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS and iOS to develop desktop and mobile applications respectively. Swift is the successor of Objective-C and allows interoperability with it. Swift was introduced with Xcode 6 in 2014.
 
-### Understanding iOS Apps
+### Apps on iOS
 
-iOS applications are distributed in IPA (iOS App Store Package) archives. An IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. This package is in fact a ZIP compressed file, which can be decompressed.
+iOS apps are distributed in IPA (iOS App Store Package) archives. An IPA file contains all the necessary (for ARM compiled) application code and resources required to execute the application. This package is in fact a ZIP compressed file, which can be decompressed.
 
 An IPA file has a built-in directory structure. The example below shows this structure on a high level:
 
