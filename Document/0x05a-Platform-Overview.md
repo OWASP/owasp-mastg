@@ -23,19 +23,19 @@ Android apps are usually written in Java and compiled to Dalvik bytecode, which 
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed.I n Dalvik, bytecode is translated into machine code at execution time. This technique is known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed.
+In current version of Android, this bytecode is executed on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik an ART lies in the way the bytecode is executed. 
 
-To improve performance, ART introduced Ahead Of Time (AOT) compilation. with AOT, every app on the device is pre-compiled once. This improves performance by a factor of two, while also reduces power consumption.
+In Dalvik, bytecode is translated into machine code at execution time, a technique known as *Just In Time* (JIT) compilation. The drawback of JIT compilation is its adverse effect on performance: The compilation step must be performed every time the app is executed. To improve performance, ART introduced *Ahead Of Time* (AOT) compilation. As the name implies, with AOT apps are pre-compiled to machine code once before being executed for the first time. In subsequent runs, the already compiled machine code is executed. This improves performance by a factor of two, while also reducing power consumption.
 
-Apps do not have direct access to hardware resources, and their execution environments are therefore separate from each other. This allows fine-grained control over resources and apps: for instance, when an app crashes it does not prevent other apps from working, and only their environment and the app itself have to be restarted. At the same time, the Android runtime controls the maximum amount of resources provided to apps, preventing one app from using all resources while leaving only few resources to others. 
+Android apps do not have direct access to hardware resources, and each app runs in their own sandbox. This allows fine-grained control over resources and apps: for instance, when an app crashes this does impact other apps running on the device. At the same time, the Android runtime controls the maximum amount of system resources allocated to apps, preventing any one app from locking up too many resources.
 
 #### Android Users and Groups
 
-Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other.
+Even though the Android operating system is based on Linux, it does not utilize user accounts in the same way other Unix-like systems do. For instance, it does not have a _/etc/passwd_ file containing the list of users in the system. Instead, Android utilizes the multi-user support of Linux kernel to achieve app sandboxing: With a few exceptions, each app runs as under a separate Linux user, effectively isolating apps from each other and from the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) shows the complete list of the predefined users and groups used for system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details you can check this [overview of Android application sandbox.](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html).
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) includes a list of the predefined users and groups used used by system processes. UIDs (userIDs) for other applications are added as they are installed on the system. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
 
-File below depicts some of the users defined for Android Nougat:
+For example, Android Nougat defines the following system users:
 
 ```
     #define AID_ROOT             0  /* traditional unix root user */
@@ -73,64 +73,15 @@ Noteworthy API versions are:
 - Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART);
 - Android 8.0 O (API 26) beta (major security fixes expected).
 
-Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
-
 #### App Folder Structure
 
-Android apps installed (from Google Play Store or from external sources) are located at `/data/app/`. As this folder cannot be listed without the root, an alternative method should be used to get the exact name of the APK. Android Debug Bridge (ADB) can be used to list all installed APKs. ADB allows the tester to interact directly with the real device, e.g. to gain access to a console on the device to issue commands, list installed packages, start/stop processes, etc.
-To do so, the device has to have USB-Debugging enabled (can be found under developer settings) and has to be connected via USB. Alternatively, you can configure the device so that ADB would be [connected over TCP/IP](https://stackoverflow.com/questions/2604727/how-can-i-connect-to-android-with-adb-over-tcp). As the ADB’s behaviour is the same in both cases, we further assume the default case where connection over USB is established.
-
-Once USB-Debugging is enabled, all connected devices can be viewed with the following command:
+Android apps installed from the Google Play Store or other sources are located at `/data/app/[package-name]`. For example, the Youtube app is found at:
 
 ```bash
-$ adb devices
-List of devices attached
-BAZ5ORFARKOZYDFA	device
+/data/app/com.google.android.youtube-1/base.apk
 ```
 
-Then the following command lists all installed apps and their locations:
-
-```bash
-$ adb shell pm list packages -f
-package:/system/priv-app/MiuiGallery/MiuiGallery.apk=com.miui.gallery
-package:/system/priv-app/Calendar/Calendar.apk=com.android.calendar
-package:/system/priv-app/BackupRestoreConfirmation/BackupRestoreConfirmation.apk=com.android.backupconfirm
-```
-
-To pull one of those apps from the phone, the following command can be used:
-
-```bash
-$ adb pull /data/app/com.google.android.youtube-1/base.apk
-```
-
-This file only contains the “installer” of the app. This is the app the developer uploaded to the store.
-The local data of the app is stored at /data/data/PACKAGE-NAME and has the following structure:
-
-```bash
-drwxrwx--x u0_a65   u0_a65            2016-01-06 03:26 cache
-drwx------ u0_a65   u0_a65            2016-01-06 03:26 code_cache
-drwxrwx--x u0_a65   u0_a65            2016-01-06 03:31 databases
-drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 files
-drwxr-xr-x system   system            2016-01-06 03:26 lib
-drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
-```
-
-- **cache**: This location is used to cache app data on runtime including WebView caches.
-- **code_cache**: The location of the application specific cache directory on the filesystem designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime. Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
-- **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data.
-- **files**: This folder is used to store files that are created in the App when using the internal storage.
-- **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
-   * armeabi: Compiled code for all ARM based processors only
-   * armeabi-v7a: Compiled code for all ARMv7 and above based processors only
-   * arm64-v8a: Compiled code for all ARMv8 arm64 and above based processors only
-   * x86: Compiled code for x86 processors only
-   * x86_64: Compiled code for x86_64 processors only
-   * mips: Compiled code for MIPS processors only
-- **shared_prefs**: This folder is used to store the preference file generated by an app at runtime to save current state of the app including data, configuration, session, etc. The file format is XML.
-
-#### APK Structure
-
-When preparing the app for the release, all necessary files are packed into an Android Package Kit (APK). This file is a signed ZIP archive that contains all the application's resources, bytecode, etc. It has the following directory structure:
+The Android Package Kit (APK) file is an archive that contains the code and resources needed to run the app. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
 
 ```
 $ unzip base.apk
@@ -190,11 +141,40 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 - lib: directory containing libraries that are part of the APK, for example the 3rd party libraries that are not part of the Android SDK.
 - original: folder contains the MANIFEST.MF file which stores meta data about the contents of the JAR and signature of the APK. The folder is also named as META-INF.
 - res: directory containing resources not compiled into resources.arsc.
-- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable.
+- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human readable representation of the Dalvik executable. 
+
+Ever app also has a data directory for storing data created during runtime. This directory is found at `/data/data/[package-name]` and has the following structure:
+
+```bash
+drwxrwx--x u0_a65   u0_a65            2016-01-06 03:26 cache
+drwx------ u0_a65   u0_a65            2016-01-06 03:26 code_cache
+drwxrwx--x u0_a65   u0_a65            2016-01-06 03:31 databases
+drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 files
+drwxr-xr-x system   system            2016-01-06 03:26 lib
+drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
+```
+
+Apps require no extra permissions to read or write to the returned path, since this path lives in their private storage.
+
+- **cache**: This location is used to cache runtime data, such as WebView caches.
+- **code_cache**: The location of the application specific cache directory on the file system designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location both when your specific application is upgraded, and when the entire platform is upgraded. This location is optimal for storing compiled or optimized code generated by your application at runtime.
+- **databases**: This folder stores sqlite database files generated by the app at runtime, e.g. to store user data.
+- **files**: This folder is used to store files that are created in the App when using the internal storage.
+- **lib**: This folder used to store native libraries written in C/C++. These libraries can have file extension as .so, .dll (x86 support). The folder contains subfolders for the platforms the app has native libraries for:
+   * armeabi: Compiled code for all ARM based processors only
+   * armeabi-v7a: Compiled code for all ARMv7 and above based processors only
+   * arm64-v8a: Compiled code for all ARMv8 arm64 and above based processors only
+   * x86: Compiled code for x86 processors only
+   * x86_64: Compiled code for x86_64 processors only
+   * mips: Compiled code for MIPS processors only
+- **shared_prefs**: This folder is used to store the preference file generated by an app at runtime to save current state of the app including data, configuration, session, etc. The file format is XML.
+
 
 #### Linux UID/GID of Normal Applications
 
-All newly installed apps on Android are assigned new UIDs. Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
+Android leverages Linux user management to isolate apps from each other. This approach is different from how user management is used in traditional Linux environments, where multiple apps are often run by the same user. Android creates a unique user ID (UID) for each Android app, and runs the app as that user in a separate process. Consequently, any one app can only access its own resources. This protection is enforced by the Linux kernel.
+
+Generally apps are assigned UIDs in the range of 10000 (AID_APP) and 99999. Android apps receive a user name based on their UID. For example, the apps with UID 10188 receive the user name u0_a188. If an app requested some permissions and they are granted, the corresponding group ID is added to the process of the app. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That is the group related to android.permission.INTERNET permission. The result of the id command is shown below:
 ```
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
@@ -215,65 +195,54 @@ The relationship between group IDs and permissions are defined in the file [fram
 	<group gid="sdcard_rw" />
 </permission>
 ```
-An important aspect of the Android security is that all apps have the same level of privileges. Both native and third-party apps are built on the same APIs and run in similar environments. Apps are not executed at 'root' instead they hold user level privileges. This restricts the actions that the apps can perform as well as the access to some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
-
-##### Zygote
-
-The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the the app-specific code.
-
 
 #### The App Sandbox
 
 Apps are executed in the Android Application Sandbox enforcing isolation of the app data and the code execution from other apps on the device. This adds an additional layer of security.
 
-When installing a new app (From Google Play Store or External Sources), a new folder is created in the file system in the path `/data/data/<package name>`. This folder is going to be the private data folder for that particular app.
-
-Since every app has its own unique Id, Android separates app data folders configuring the mode _read_ and _write_ only to the owner of the app.
+When installing a new app, a new directory named after the app package - `/data/data/[package-name]` - is created. This is directory is used to hold the data of that particular app. Linux directory permissions are set such that the directory can be read and written only by the app's unique UID. 
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
-In this example, Chrome and Calendar apps are completely segmented with different UID and different folder permissions.
-
-We can confirm this by looking at the filesystem permissions created for each folder:
+We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different used accounts:
 
 ```
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
-However, if two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
+Sandboxing can be sidestepped by developer that want their own apps to share a common sandbox. When two apps are signed with the same certificate and explicitly share the same user ID (by including the _sharedUserId_ in their _AndroidManifest.xml_) they can access each other’s data directory. See the following example on how this is achieved in the Nfc app:
 
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.android.nfc"
-	android:sharedUserId="android.uid.nfc">
+  package="com.android.nfc"
+  android:sharedUserId="android.uid.nfc">
 ```
 
+##### Zygote
 
-#### App Components
+The process called `Zygote` starts up during the [Android initialization process](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service used to launch apps. It opens up a socket in /dev/socket/zygote and listens on it for requests to start new applications. Zygote process is a "base" process that contains all the core libraries that are needed by any app. When Zygote receives a request over its listening socket, it forks a new process which then loads and executes the app-specific code.
 
-Android apps are made of several high-level components that make up their architectures. The main components are:
+##### App Lifecycle
 
-- Activities
-- Fragments
-- Intents
-- Broadcast receivers
-- Content providers and services
+In Android, the lifetime of an app process is controlled by the operating system. A new app process is created when code of the app needs to be run. Android may decide to kill the process when it decides that it is no longer needed, or when it needs to reclaim memory for running other, more important apps. The decision whether a process should be killed is mainly related to the state of the user's interaction with it. In general, there are four states a process can be in:
 
-All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
+- A foreground process (e.g running an Activity at the top of the screen or has a running BroadcastReceiver that is currently running (its BroadcastReceiver.onReceive() method is executing).
 
+- A visible process is doing work that the user is currently aware of, so killing it would have a noticeable negative impact on the user experience. 
+E.g. is running an Activity that is visible to the user on-screen but not in the foreground. 
 
-##### Application Life Cycle
+- A service process is one holding a Service th`at has been started with the startService() method. Though these processes are not directly visible to the user, they are generally doing things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there is not enough memory to retain all foreground and visible processes.
 
-Android apps have their own lifecycles under the control of the operating system. Therefore, apps need to listen to the state changes and react accordingly. For instance, when the system needs resources, apps may be killed. The system selects the ones that will be killed according to the app priority: active apps have the highest priority (actually the same as Broadcast Receivers), followed by the visible ones, running services, background services, and at last useless processes (for instance apps that are still open but have not been in use for a significant time).
+- A cached process is one that is not currently needed, so the system is free to kill it as desired when memory is needed elsewhere. 
 
-Apps implement several event managers to handle events: for example, the onCreate handler implements what has to be done on the app creation and will be called on that event. Other managers include onLowMemory, onTrimMemory and onConfigurationChanged.
+Apps must implement event handlers that react to a number of events: for example, the `onCreate` handler is called when the app process is first created. Other callback functions include `onLowMemory`, `onTrimMemory` and `onConfigurationChanged`.
 
 ##### Manifest
 
-Every app must have a manifest file, which embeds content in the XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
+Every app has a manifest file which embeds content in binary XML format. The name of this file is standardized as AndroidManifest.xml and is the same for every app. It is located in the root tree of the .apk file in which the app is published.
 
-The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. Permission filters for IPC can be implemented to refine the way the app will interact with the outside world. The manifest file should contain general metadata about the app, like its icon, its version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed in (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
+The manifest file describes the app structure as well as its exposed components (activities, services, content providers and intent receivers) and requested permissions. It also contains contain general metadata about the app, like its icon, version number and the theme it uses for the User Experience (UX). It may list other information like the APIs it is compatible with (minimal, targeted and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location")
 
 Here is an example of a manifest file, including the package name (the convention is to use a url in reverse order, but any string can be used). It also lists the app version, relevant SDKs, required permissions, exposed content providers, used broadcast receivers with intent filters as well as a description of the app and its activities:
 ```
@@ -311,20 +280,32 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-Manifest is a text file and can be edited within Android Studio (the preferred IDE for Android development). A lot more useful options can be added to manifest files, which are listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+The full list of options available in the manifest is listed in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+
+#### App Components
+
+Android apps are made of several high-level components. The main components are:
+
+- Activities
+- Fragments
+- Intents
+- Broadcast receivers
+- Content providers and services
+
+All these elements are provided by the Android operating system in the form of predefined classes available through APIs.
 
 ##### Activities
 
-Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with three different screens is implementing three different activities. This allows the user to interact with the system (get and enter information). Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
+Activities make up the visible part of any app. One activity exists per screen (e.g. user interface) so an app with three different screens is implementing three different activities. Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views and layouts.
 
-Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
+Each activity needs to be declared in the app manifest with the following syntax:
 
 ```
 <activity android:name="ActivityName">
 </activity>
 ```
 
-When activities are not declared in manifests, they cannot be displayed and would raise an exception.
+Activities not declared in the manifest cannot be displayed, and attempting to launch them would raise an exception.
 
 In the same way as apps do, activities also have their own lifecycle and need to listen to the system changes in order to handle them accordingly. Activities can have the following states: active, paused, stopped and inactive. These states are managed by Android operating system. Accordingly, activities can implement the following event managers:
 
@@ -338,13 +319,14 @@ In the same way as apps do, activities also have their own lifecycle and need to
 - onRestart
 - onDestroy
 
-An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the onCreate manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. onDestroy may be overridden as well in case some resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
+An app may not explicitly implement all event managers in which case default actions are taken. Typically, at least the `onCreate` manager is overridden by the app developers. This is the place where most user interface components are declared and initialized. `onDestroy` may be overridden as well when resources need to be explicitly released (like network connections or connections to databases) or if specific actions need to take place at the end of the app.
 
 ##### Fragments
 
-Basically, a fragment represents a behavior or a portion of user interface in within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
+A fragment represents a behavior or a portion of user interface within the Activity. Fragments have been introduced in Android with version Honeycomb 3.0 (API level 11).
 
-User interfaces are made of several elements: views, groups of views, fragments and activities. Fragments are meant to encapsulate parts of the interface to make reusability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+Fragments are meant to encapsulate parts of the interface to make re-usability easier and better adapt to different size of screens. Fragments are autonomous entities in a way they embed everything they need to work in themselves (they have their own layout, own buttons etc.). However, they must be integrated in activities to become useful: fragments cannot exist on their own. They have their own life cycle, which is tied to the one of the activity that implements them.
+
 As they have their own life cycle the Fragment class contains event managers, that can be redefined or extended. Such event managers can be onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be implemented easily by extending the Fragment class provided by Android:
@@ -358,6 +340,7 @@ public class myFragment extends Fragment {
 Fragments don't need to be declared in manifest files as they depend on activities.
 
 In order to manage its fragments, an Activity can use a Fragment Manager (FragmentManager class). This class makes it easy to find, add, remove and replace associated fragments.
+
 Fragment Managers can be created simply with the following:
 
 ```Java
@@ -368,7 +351,7 @@ Fragments do not necessarily have a user interface: they can be a convenient and
 
 ##### Inter-Process Communication
 
-As we know, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
+As we already learned, every process on Android has its own sandboxed address space. Inter-process communication (IPC) facilities enable apps to exchange signals and data in a (hopefully) secure way. Instead of relying on the default Linux IPC facilities, IPC on Android is done through Binder, a custom implementation of OpenBinder. Most Android system services, as well as all high-level IPC services, depend on Binder.
 
 The term *Binder* stands for a lot of different things, including:
 
@@ -379,7 +362,7 @@ The term *Binder* stands for a lot of different things, including:
 - Binder service - Implementation of the Binder object. For example, location service, sensor service,...
 - Binder client - An object using the binder service
 
-In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently marshalls the call parameters into a *parcel* and sends a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
+In the Binder framework, a client-server communication model is used. To use IPC functionality, apps call IPC methods in proxy objects. The proxy object transparently *marshalls* the call parameters into a *parcel* and sends a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests, and is responsible for delivering messages to the destination object. From the view of the client app, all of this looks like a regular method call - all the heavy lifting is done by the binder framework.
 
 ![Binder Overview](Images/Chapters/0x05a/binder.jpg)
 *Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
@@ -415,7 +398,7 @@ Found 99 services:
 - Delivering a broadcast
     - A broadcast is a message that any app can receive. The system delivers various broadcasts for system events, such as when the system boots up or the device starts charging. You can deliver a broadcast to other apps by passing an Intent to sendBroadcast() or sendOrderedBroadcast().
 
-Intents are messaging components used between apps and components. They can be used by an app to send information to its own components (for instance, start inside the app a new activity) or to other apps, and may be received from other apps or from the operating system. Intents can be used to start activities or services, run an action on a given set of data, or broadcast a message to the whole system. They are a convenient way to decouple components.
+Intents are messaging components used between apps and components. They can be used by an app to send information to its own components (for instance, start a new activity inside the app) or to other apps, and may be received from other apps or from the operating system. Intents can be used to start activities or services, run an action on a given set of data, or broadcast a message to the whole system. They are a convenient way to decouple components.
 
 There are two types of Intents. Explicit intents specify the component to start by name (the fully-qualified class name). For instance:
 
@@ -433,7 +416,7 @@ An *intent filter* is an expression in an app's manifest file that specifies the
 
 Android uses intents to broadcast messages to apps, like an incoming call or SMS, important information on power supply (low battery for example) or network changes (loss of connection for instance). Extra data may be added to intents (through putExtra / getExtras).
 
-Here is a short list of intents from the operating system. All constants are defined in the Intent class, and the whole list can be found in Android official documentation:
+Here is a short list of intents from the operating system. All constants are defined in the Intent class, and the whole list can be found in the official Android documentation:
 
 - ACTION_CAMERA_BUTTON
 - ACTION_MEDIA_EJECT
@@ -467,7 +450,7 @@ A Local Broadcast Manager can be used to make sure intents are received only fro
 
 Android is using SQLite to store data permanently: as it is in Linux, data is stored in files. SQLite is an open-source, light and efficient technology for relational data storage that does not require much processing power, making it ideal for use in the mobile world. An entire API is available to the developer with specific classes (Cursor, ContentValues, SQLiteOpenHelper, ContentProvider, ContentResolver, ...).
 SQLite is not run in a separate process from a given app, but it is part of it.
-By default, a database belonging to a given app is only accessible to this app. However, Content Providers offer a great mechanism to abstract data sources (including databases, but also flat files) for a more easy use in an app; they also provide a standard and efficient mechanism to share data between apps, including native ones. In order to be accessible to other apps, content providers need to be explicitly declared in the Manifest file of the app that will share it. As long as Content Providers are not declared, they are not exported and can only be called by the app that creates them.
+By default, a database belonging to a given app is only accessible to this app. However, Content Providers offer a great mechanism to abstract data sources (including databases, but also flat files) for easier use in an app; they also provide a standard and efficient mechanism to share data between apps, including native ones. In order to be accessible to other apps, content providers need to be explicitly declared in the Manifest file of the app that will share it. As long as Content Providers are not declared, they are not exported and can only be called by the app that creates them.
 
 Content Providers are implemented through a URI addressing scheme: they all use the content:// model. Whatever the nature of sources is (SQLite database, flat file, ...), the addressing scheme is always the same, abstracting what sources are and offering a unique scheme to the developer. Content providers offer all regular operations on databases: create, read, update, delete. That means that any app with proper rights in its manifest file can manipulate the data from other apps.
 
@@ -496,7 +479,8 @@ Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 ###### Requesting Permissions
 
 Apps can request permissions of protection level Normal, Dangerous and Signature by inserting the XML tag `<uses-permission />` to its Android Manifest file.
-The example below shows an AndroidManifes.xml sample requesting permission to read SMS messages:
+
+The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
@@ -535,7 +519,7 @@ It is possible to protect Android components using permissions. Activities, Serv
     ...
 </receiver>
 ```
-*Content Providers* are a little bit different. They allow separate permissions for read, write or access the Content Provider using a content URI.
+*Content Providers* are a little bit different. They allow separate permissions for read, write or access of the Content Provider using a content URI.
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions to read or write.
 - `android:permission`: general permission that will control read and write to the Content Provider.
 - `android:grantUriPermissions`: true if the Content Provider can be accessed using a content URI, temporarily overcoming the restriction of other permissions and False, if not.
@@ -600,6 +584,8 @@ The `zipalign` tool should always be used to align the APK file before distribut
 #### Publishing Process
 
 The Android ecosystem is open, and thus it is possible to distribute apps from anywhere (your own site, any store, etc.). However, Google Play is the most famous, trusted and popular store and is provided by Google itself. Amazon Appstore is the default, trusted store on Kindle devices. If a user wants to install third-party apps from a non-trusted source they must explicitly allow this from the security settings on their device.
+
+Apps can be installed on an Android device from a variety of sources: locally via USB, via Google's official app store (Google Play Store) or from alternative stores.
 
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this way, a short release time can be expected between the moment when the developer starts the publishing process and the moment when the app is available to users.
 
