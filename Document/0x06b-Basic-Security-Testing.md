@@ -1,5 +1,7 @@
 ## Basic Security Testing on iOS
 
+In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
+
 ### Setting Up Your Testing Environment
 
 In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator completely useless for black-box analysis and reverse engineering.

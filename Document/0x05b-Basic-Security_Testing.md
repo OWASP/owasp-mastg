@@ -1,7 +1,7 @@
 ## Basic Security Testing on Android
 
 By now, you should have a basic understanding of how Android apps are structured and deployed. 
-In this chapter, we'll introduce basic processes and techniques you can use to test Android apps for security flaws.
+In this chapter, we'll introduce basic processes and techniques you can use to test Android apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
 
 #### Software Needed on the Host PC or Mac
 
