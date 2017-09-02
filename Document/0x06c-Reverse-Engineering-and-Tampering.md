@@ -4,6 +4,10 @@
 
 <!-- TODO [Environment Overview] -->
 
+### Swift and Objective-C
+
+The vast majority of this chapter is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by [Cycript](http://www.cycript.org/ "Cycript") will not work with Swift methods. At the time of writing this testing guide, Frida does support [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
+
 #### XCode and iOS SDK
 
 XCode is an Integrated Development Environment (IDE) for macOS containing a suite of software development tools developed by Apple for developing software for macOS, iOS, watchOS and tvOS. The latest release as of the writing of this book is XCode 8 which can be [downloaded from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
