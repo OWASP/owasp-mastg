@@ -140,7 +140,7 @@ Since iOS 8, changes were made to the way an application is stored on the device
 
 The following figure represents the application folder structure:
 
-<img src="/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
 - *iOS App Folder Structure*
 
 #### The Installation Process
