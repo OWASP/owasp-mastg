@@ -47,28 +47,10 @@ This entire process is called "Secure Boot Chain". It aims at ensuring that the 
 
 #### Code Signing
 
-Signing application code in iOS is different than in Android. In the latter you can sign with a self-signed key and the main purpose would be to establish a root of trust for future application updates. In other words, to make sure that only the original developer of a given application would be able to update it. In Android, applications can be distributed freely as APK files or from Google Play Store. On the contrary, Apple allows app distribution only via App Store.
-
-At least two scenarios exist where you can install an application without the App Store:
-
-1. Via Enterprise Mobile Device Management. This requires the company to have company-wide certificate signed by Apple.
-2. Via side-loading, i.e. by signing an app with a developer's certificate and installing it on the device via Xcode. Note that there is an upper limit of the number of devices that can be used with the same certificate.
+Apple has implemented an elaborate DRM system to make sure that only Apple-approved code runs on their devices. In other words, on a non-jailbroken iOS device, one will not be able to run any code unless Apple explicitly allows it. End users are meant to install apps through the official Apple app store only. For this and other reasons, iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms").
 
 A developer profile and an Apple-signed certificate are required in order to deploy and run an application.
-Developers need to register with Apple and join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription fee to get the full range of development and deployment possibilities. A free account still allows you to compile and deploy an application via side-loading.  
-
-Apple has implemented an intricate DRM system to make sure that only valid and approved code runs on Apple devices. In other words, on a non-jailbroken device, one will not be able to run any code unless Apple explicitly allows it. You cannot even opt to run any code on your own device unless you enroll in the Apple developer program and obtain the provisioning profile and signing certificate. For this and other reasons, iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms").
-
-#### Sandbox
-
-The [app sandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html "File System Basics") is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
-
-Along with the "crystal prison”, sandboxing has been a core security feature since the first releases of iOS. As a principle, all user applications run under the same user `mobile`, with only a few system applications and services running as `root`. Regular apps on iOS are confined to a "container" that restricts access to the app's own files and a very limited amount of system APIs. Access to all resources, like files, network sockets, IPCs, shared memory, etc. will be then controlled by the sandbox. These restrictions work the following ways. [#levin]:
-
-- The app process is restricted to it's own directory (under /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism.
-- The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable and preventing processes from executing dynamically generated code. In combination with code signing and FairPlay, this enforces strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
-- Isolation from other running processes, even if they are owned by the same UID.
-- Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
+Developers need to register with Apple and join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription fee to get the full range of development and deployment possibilities. There is also a free account that allows you to compile and deploy apps via side-loading (but not to distribute them on the App Store).
 
 #### Encryption and Data Protection
 
@@ -82,6 +64,17 @@ Building encryption into the physical architecture makes it a default security c
 
 +When data protection is enabled, each data file is associated with a specific class that supports a different level of accessibility and protects data based on when it needs to be accessed. The encryption and decryption operations associated with each class are based on multiple key mechanisms that utilizes the device's UID and passcode, plus a class key, file system key and per-file key. The per-file key is used to encrypt the file content. The class key is wrapped around the per file key and stored in the file's metadata. The file system key is used to encrypt the metadata. The UID and passcode protect the class key. This operation is invisible to users. The passcode must be used when accessing the device to enable data protection. The passcode does not only unlock the device, but also combined with the UID creates iOS encryption keys that are more resistant to hacking efforts and brute-force attacks. Enabling data protection is the main reason for users to use passcodes on their devices.
 
+#### Sandbox
+
+The [app sandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html "File System Basics") is an access control technology that was provided for iOS and it is enforced at kernel level. It's purpose is to limit the impact and damage to the system and user data that may occur when an app is compromised.
+
+Sandboxing has been a core security feature since the first releases of iOS. As a principle, all third party apps run under the same user `mobile`, with only a few system applications and services running as `root`. Regular apps on iOS are confined to a *container* that restricts access to the app's own files and a very limited amount of system APIs. Access to all resources, like files, network sockets, IPCs, shared memory, etc. are controlled by the sandbox. These restrictions work the following ways. [#levin]:
+
+- The app process is restricted to it's own directory (under /var/mobile/Containers/Bundle/Application/) using a chroot-like mechanism.
+- The mmap and mmprotect() system calls are modified to prevent apps from make writeable memory pages executable and preventing processes from executing dynamically generated code. In combination with code signing and FairPlay, this enforces strict limitations on what code can be run under specific circumstances (e.g., all code in apps distributed via the app store is approved by Apple).
+- Isolation from other running processes, even if they are owned by the same UID.
+- Hardware drivers cannot be accessed directly. Instead, any access goes through Apple's frameworks.
+
 #### General Exploit Mitigations
 
 iOS currently implements two specific security mechanisms, namely address space layout randomization (ASLR) and eXecute Never (XN) bit, to prevent code execution attacks.
@@ -94,7 +87,14 @@ The XN mechanism allows iOS to mark certain memory segments as non-executable on
 
 Like other platforms, Apple provides a Software Development Kit (SDK) for iOS that helps developers to develop, install, run and test native iOS Apps by offering different tools and interfaces. Xcode is an Integrated Development Environment (IDE) used for this purpose. iOS applications are developed either by using Objective-C or Swift.
 
-Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS and iOS to develop desktop and mobile applications respectively. Swift is the successor of Objective-C and allows interoperability with it. Swift was introduced with Xcode 6 in 2014.
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS and iOS to develop desktop and mobile applications respectively. Swift is the successor of Objective-C and allows interoperability with it. 
+
+Swift was introduced with Xcode 6 in 2014.
+
+On a non-jailbroken device, there are two ways of installing an application without the App Store:
+
+1. Via Enterprise Mobile Device Management. This requires the company to have company-wide certificate signed by Apple.
+2. Via side-loading, i.e. by signing an app with a developer's certificate and installing it on the device via Xcode. Note that there is an upper limit of the number of devices that can be used with the same certificate
 
 ### Apps on iOS
 
@@ -129,8 +129,6 @@ A language.lproj folder is defined for each language that the application suppor
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). Note that during mobile security assessments, developers will often provide you with the IPA directly. They can send you the actual file, or provide access to the development specific distribution platform they use e.g. [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
 
-
-
 #### App Structure on the iOS File System
 
 Since iOS 8, changes were made to the way an application is stored on the device. On versions before iOS 8, applications would be unpacked to a folder in the /var/mobile/applications/. The application would be identified by its UUID (Universal Unique Identifier), a 128-bit number. This would be the name of the folder in which we will find the application itself. Since the iOS 8 release static bundle and application data folders are now stored in different locations in the file system. These folders contain information that must be closely examined during application security assessments.
@@ -142,7 +140,7 @@ Since iOS 8, changes were made to the way an application is stored on the device
 
 The following figure represents the application folder structure:
 
-<img src="/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
 - *iOS App Folder Structure*
 
 #### The Installation Process
