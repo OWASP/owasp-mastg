@@ -4,7 +4,7 @@ In the previous chapter, we provided an overview of the iOS platform and describ
 
 ### Setting Up Your Testing Environment
 
-In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator completely useless for black-box analysis and reverse engineering.
+In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator useless for black-box analysis and reverse engineering.
 
 For your iOS app testing setup you should have at least the following basic setup:
 
@@ -21,7 +21,7 @@ If you want to get serious with iOS security testing, you need a Mac, for the si
 
 #### Jailbreaking an iOS Device
 
-Ideally you should have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply one of the many workarounds described later in this chapter, but be prepared for a less-than-smooth experience.
+Ideally you should have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a less-than-smooth experience.
 
 ##### Jailbreaking Overview
 
@@ -30,15 +30,25 @@ iOS jailbreaking is often compared to Android rooting, but the process is actual
 - **Rooting**: This typically consists of installing the `su` binary within the existing system or replacing the whole system with an already rooted custom ROM. Normally, exploits are not required in order to obtain root access, as long as the bootloader is accessible.
 - **Flashing custom ROMs** (that might be already rooted): Allows to completely replace the OS running on the device after unlocking the bootloader (which might require an exploit). 
 
-On iOS devices, flashing a custom ROM won't work, because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is also the reason that even official iOS images cannot be installed if they are not signed by Apple, often making downgrades to older versions of iOS impossible.
+On iOS devices, flashing a custom ROM isn't possible, because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is also the reason that even official iOS images cannot be installed if they are not signed by Apple, often making downgrades to older versions of iOS impossible.
 
-Instead, the goal in jailbreaking is to disable iOS system protections, in particular Apple's code signing mechanisms, so that arbitrary unsigned code can run on the device. Colloquially, the word "jailbreak" is used to refer to all-in-one tools that automate the complete process, from executing the necessary exploit(s) to  installing the Cydia app store.
+Instead, the goal in jailbreaking is to disable iOS system protections, in particular Apple's code signing mechanisms, so that arbitrary unsigned code can run on the device. Colloquially, the word "jailbreak" is used to refer to all-in-one tools that automate this process.
 
-Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools (don't worry, we're all script kiddies in some areas). Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
+Cydia is an alternative app store for jailbroken devices developed by Jay Freeman ("saurik"). It provides a graphical user interface on top of an iOS port of Advanced Packaging Tool (APT). From Cydia, you can easily access a large amount of "unsanctioned" app packages. Most jailbreak tools install Cydia automatically.
+
+Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
 ##### Jailbreak Types
 
-In jailbreak lingo, we talk about *tethered* and *untethered* jailbreaks. In the *tethered* scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer after every reboot to re-apply it. *Untethered* jailbreaks need only be applied once, making them the most popular choice for end users.
+In jailbreak lingo, we talk about *tethered*, *semi-tethered*, *semi-untethered* and *untethered* jailbreaks.
+
+- In the tethered scenario, the jailbreak doesn't persist throughout reboots, so the device must be connected (tethered) to a computer during every reboot to re-apply it. The device might not be able to reboot at all without the computer connected.
+
+- With a semi-tethered jailbreak, the device must be connected to a computer during reboot to re-apply the jailbreak. The device can also boot on its own into non-jailbroken mode.
+
+- With a semi-untethered jailbreak, the device can boot on its own, but the kernel patches for disabling code signing are not applied automatically. The user must re-jailbreak their device by starting an app on the device or visiting a website.
+
+- Untethered jailbreaks need only be applied once, and the device remains in jailbroken state permanently, making them the most popular choice for end users.
 
 #### Benefits of Jailbreaking
 
@@ -54,7 +64,7 @@ End users often jailbreak their devices in order to tweak the iOS system appeara
 
 Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system and patching the corresponding vulnerabilities that jailbreaks are based on. Additionally, it has become a very time sensitive procedure as they stop signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that, contrary to Android, that you can't downgrade to a specific iOS version once Apple is not signing the firmware anymore.
 
-If you have a jailbroken device that you use for security testing, keep it as it is, unless you are 100% sure that you can perform another jailbreak to it. Additionally you should consider getting a spare device, which is updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is usually quick to release a patch, hence you have only a couple of days to upgrade to the affected iOS version and apply the jailbreak.
+If you have a jailbroken device that you use for security testing, keep it as it is, unless you are 100% sure that you can re-jailbreak after upgrading to the latest iOS. Additionally you should consider getting a spare device, which is updated with every major iOS release and wait for public jailbreak to be released. Once a public jailbreak is released, Apple is usually quick to release a patch, hence you have only a couple of days to upgrade to the affected iOS version and apply the jailbreak.
 
 The iOS upgrade process is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can downgrade the iOS version. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
@@ -74,9 +84,7 @@ The iOS jailbreak scene evolves so rapidly that it is difficult to provide up-to
 
 #### Dealing with Jailbreak Detection
 
-Some apps attempt to detect whether the iOS device they're installed and running on is jailbroken. The reason for this is that jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment. See also the test cases "Testing Jailbreak Detection" in "Testing Platform Interaction" and "Testing Resiliency Against Reverse Engineering".
-
-The core dilemma with this approach is that, by definition, jailbreaking causes the app's environment to be unreliable: The APIs used to test whether a device is jailbroken can be manipulated, and with code signing disabled, the jailbreak detection code can easily be patched out. It is therefore not a very effective way of impeding reverse engineers. Nevertheless, jailbreak detection can be useful in the context of a larger software protection scheme. We'll revisit this topic later.
+Some apps attempt to detect whether the iOS device they're installed and running on is jailbroken. The reason for this is that jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment. However, there are several ways to get around those checks - we'll introduce techniques for doing this in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS".
 
 ### Preparing the Test Environment
 
@@ -87,15 +95,13 @@ Once you have jailbroken your iOS device and Cydia is installed (as shown in the
 
 1. From Cydia install aptitude and openssh
 2. SSH to your iDevice
-  * Two users are `root` and `mobile`
+  * Default users are `root` and `mobile`
   * Default password is `alpine`
 3. Change the default password for users root and mobile
 4. Add the following repository to Cydia: `https://build.frida.re`
 5. Install Frida from Cydia
 
-You will find many useful packages on the Cydia app store.
-
-6. Install following packages with aptitude:
+You will find many useful packages on the Cydia app store. Recommended packages include:
 
 ```
 inetutils
@@ -111,7 +117,19 @@ adv-cmds
 bigbosshackertools
 ```
 
-Your workstation should have a SSH client, Hopper Disassembler, Burp Suite and Frida installed. You can install Frida with pip:
+Your workstation should have at least the following installed: 
+
+- SSH client
+- An interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp).
+
+Other useful tools we'll be referring to throughout the guide include:
+
+- [Introspy](https://github.com/iSECPartners/Introspy-iOS)
+- [Frida](http://www.frida.re)
+- [IDB](http://www.idbtool.com)
+- [Needle](https://github.com/mwrlabs/needle)
+
+You can install Frida with pip:
 
 ```
 $ sudo pip install frida
