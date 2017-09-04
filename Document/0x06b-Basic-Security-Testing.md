@@ -101,21 +101,18 @@ Once you have jailbroken your iOS device and Cydia is installed (as shown in the
 4. Add the following repository to Cydia: `https://build.frida.re`
 5. Install Frida from Cydia
 
-You will find many useful packages on the Cydia app store. Recommended packages include:
+Cydia allows you to manage repositories. One of the most popular repositories is BigBoss. If your Cydia installation isn't pre-configured with this repository, you can add it by navigation to "Sources" -> "Edit", then clicking "Add" on the top left, and entering the following URL:
 
 ```
-inetutils
-syslogd
-less
-com.autopear.installipa
-class-dump
-com.ericasadun.utilities
-odcctools
-cycript
-sqlite3
-adv-cmds
-bigbosshackertools
+http://apt.thebigboss.org/repofiles/cydia/
 ```
+The following are some useful packages you can install from Cydia to get started.
+
+- BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
+- adv-cmds: 
+- IPA Installer: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- Class Dump: A command-line tool for examining the Objective-C runtime information stored in Mach-O files. 
+- cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment. Can be injected into running processes (we'll revisit cycript in the "Reverse Engineering on iOS" chapter).
 
 Your workstation should have at least the following installed: 
 
@@ -129,11 +126,6 @@ Other useful tools we'll be referring to throughout the guide include:
 - [IDB](http://www.idbtool.com)
 - [Needle](https://github.com/mwrlabs/needle)
 
-You can install Frida with pip:
-
-```
-$ sudo pip install frida
-```
 
 ### Static Analysis
 
@@ -260,7 +252,15 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
+
+Let's use Damn Vulnerable iOS Application (DVIA)
+
+http://damnvulnerableiosapp.com
+
 <!--
+
+
+
 
 ##### Security Profiling with Introspy
 
