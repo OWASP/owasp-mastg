@@ -47,6 +47,7 @@ To perform security testing different tools are available in order to be able to
 - [ClassNameDeobfuscator](https://github.com/HamiltonianCycle/ClassNameDeobfuscator) - Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines.
 - [Android backup extractor](https://github.com/nelenkov/android-backup-extractor) - Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP.
 - [VisualCodeGrepper](https://sourceforge.net/projects/visualcodegrepp/) - Static Code Analysis Tool for several programming languages including Java
+- [ByteCodeViewer](http://bytecodeviewer.com/) - FIVE DIFFERENT JAVA DECOMPILERS, TWO BYTECODE EDITORS, A JAVA COMPILER,PLUGINS, SEARCHING, SUPPORTS LOADING FROM CLASSES, JARS, ANDROID APKS AND MORE.
 
 #### Dynamic and Runtime Analysis
 
