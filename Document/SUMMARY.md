@@ -7,6 +7,13 @@
 - [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
 
+### General Mobile App Testing Guide
+
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
+- [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
+- [Testing Authentication with the Back End](0x04e-Testing-Authentication-and-Session-Management.md)
+
 ### Android Testing Guide
 
 - [Platform Overview](0x05a-Platform-Overview.md)
@@ -26,13 +33,6 @@
 - [iOS Security Testing Basics](0x06b-Basic-Security-Testing.md)
 - [Testing Local Authentication in iOS Apps](0x06f-Testing-Local-Authentication.md)
 - [Testing Platform Interaction on iOS](0x06h-Testing-Platform-Interaction.md)
-
-### General Mobile App Testing Guide
-
-- [Testing Authentication with the Back End](0x04e-Testing-Authentication-and-Session-Management.md)
-- [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
-- [Testing Network Communication](0x04f-Testing-Network-Communication.md)
-- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 
 ### Appendix
 

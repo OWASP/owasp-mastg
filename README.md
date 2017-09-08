@@ -16,6 +16,13 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
 - [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
 
+### General Testing Guide
+
+- [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
+- [Testing Cryptography for Mobile Apps](Document/0x04g-Testing-Cryptography.md)
+- [Testing Authentication with the Backend](Document/0x04e-Testing-Authentication-and-Session-Management.md)
+- [Testing Network Communication](Document/0x04f-Testing-Network-Communication.md)
+
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
@@ -42,12 +49,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)
 - [Testing Anti-Reversing Defenses](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
-### General Testing Guide
 
-- [Testing Authentication with the Backend](Document/0x04e-Testing-Authentication-and-Session-Management.md)
-- [Testing Network Communication](Document/0x04f-Testing-Network-Communication.md)
-- [Testing Cryptography for Mobile Apps](Document/0x04g-Testing-Cryptography.md)
-- [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
 
 ### Appendix
 
