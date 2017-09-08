@@ -6,7 +6,9 @@
 
 ### Swift and Objective-C
 
-The vast majority of this chapter is relevant to applications written mainly in Objective-C or having bridged Swift types. Please note that these languages are fundamentally different. Features like method swizzling, which is heavily used by [Cycript](http://www.cycript.org/ "Cycript") will not work with Swift methods. At the time of writing this testing guide, Frida does support [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
+Since Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows changing method invocations at runtime. This makes it easy to hook in other functions in an app, which is heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools. This "method swizzling" is not implemented in the same way in Swift, which makes it harder to do than in Objective-C.
+
+The majority of this chapter is relevant to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. Most tools that currently work well with Objective-C are working on improving their compatibility with Swift. For example, Frida currently does support [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
 #### XCode and iOS SDK
 
@@ -16,19 +18,19 @@ The iOS SDK (Software Development Kit), formerly known as iPhone SDK, is a softw
 
 #### Utilities
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/) is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols.
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/) is a command-line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories and protocols.
 
-- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) s re-write of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z near 10 times faster than the precedences.
+- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) is a rewrite of class-dump from scratch using C++, avoiding using dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than the precedences.
 
 - [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/) allows dumping and retrieving symbols directly from the shared cache, eliminating the need to extract the files first. It can generate header files from app binaries, libraries, frameworks, bundles or the whole dyld_shared_cache. Is is also possible to Mass-dump the whole dyld_shared_cache or directories recursively.
 
-- [MachoOView]( https://sourceforge.net/projects/machoview/) is a useful visual Mach-O file browser that also allows for in-file editing of ARM binaries.
+- [MachoOView]( https://sourceforge.net/projects/machoview/) is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
-- otool is a tool for  displays  specified  parts	of object files or libraries. It understands both Mach-O (Mach object) files and universal file formats.  
+- otool is a tool to display specified parts of object files or libraries. It understands both Mach-O files and universal file formats.
 
 #### Reversing Frameworks
 
-Radare2 is a complete framework for reverse-engineering and analyzing. It is built around the Capstone disassembler, Keystone assembler, and Unicorn CPU emulation engine. Radare2 has support for iOS binaries and many useful iOS-specific features, such as a native Objective-C parser, and an iOS debugger.
+[Radare2](http://rada.re/r/) is a complete framework for reverse-engineering and analyzing. It is built around the Capstone disassembler, Keystone assembler, and Unicorn CPU emulation engine. Radare2 has support for iOS binaries and many useful iOS-specific features, such as a native Objective-C parser, and an iOS debugger.
 
 #### Commercial Disassemblers
 
@@ -38,7 +40,7 @@ IDA Pro can deal with iOS binaries and has a built-in iOS debugger. IDA is widel
 
 iOS reverse engineering is a mixed bag. On the one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called through dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of this is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also has the effect that no direct cross-references between methods are available in the disassembler, and constructing a flow graph is challenging.
 
-In this guide, we'll give an introduction on static and dynamic analysis and instrumentation. Throughout this chapter, we'll be referring to the OWASP UnCrackable Apps for iOS, so download them from MSTG repository if you're planning to follow the examples.
+In this guide, we'll give an introduction on static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the OWASP UnCrackable Apps for iOS, so download them from MSTG repository if you're planning to follow the examples.
 
 #### Static Analysis
 
@@ -64,10 +66,10 @@ iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 
 ###### From non-Jailbroken Devices
 
-If the app is available on itunes, you are able to recover the ipa on MacOS with the following simple steps:
+If the app is available on iTunes, you are able to recover the IPA on MacOS with the following simple steps:
 
-- Download the app in itunes
-- Go to your itunes Apps Library
+- Download the app in iTunes
+- Go to your iTunes Apps Library
 - Right-click on the app and select show in finder
 
 #### Dumping Decrypted Executables
