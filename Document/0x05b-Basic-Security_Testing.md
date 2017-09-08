@@ -1,38 +1,41 @@
 ## Basic Security Testing on Android
 
-By now, you should have a basic understanding of how Android apps are structured and deployed. 
-In this chapter, we'll introduce basic processes and techniques you can use to test Android apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
+By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
+
+You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. In principle, you can do without a real Android device and test purely on the emulator, but testing on a real device has some advantages such as higher performance. Below, you'll find instructions for setting up both the emulator and regular Android device.
 
 #### Software Needed on the Host PC or Mac
 
-On the laptop or PC you are testing on, you should install or have at least the following.
+At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the newest [SDK tools] and [platform tools] packages are installed on your system.
 
-1. JRE or JDK
-2. Android SDK
-3. Android device or emulator
+#### Setting up the Android SDK
 
-##### OS Versions
+Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
 
-Before starting to test any application, it is important to have all the required hardware and software. This does not only mean that you must have a configured machine ready to run auditing tools, but also that you have the correct version of Android OS installed on the testing device. Therefore, it is always recommended to ask if the application runs only on specific versions of Android OS.
+- API 23: Android 6.0
+- API 24: Android 7.0
+- API 25: Android 7.1
+- API 26: Android 8.0
+
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>
+
+Installed SDKs are found at the following locations:
+
+```
+Windows:
+
+C:\Users\<username>\AppData\Local\Android\sdk
+
+MacOS:
+
+/Users/<username>/Library/Android/sdk
+```
+
+Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `/usr/local` are common locations.
 
 #### Testing on a Real Device
 
-Different preparation steps need to be applied before a dynamic analysis of a mobile app can be started. Ideally the device is rooted, as otherwise some test cases cannot be tested properly. See "Rooting your device" for more information.
-
-The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or [an ad-hoc wireless network is created](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
-
-Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
-
-- The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store the CA certificate might differ.
-
-After finishing these steps and starting the app, the requests should show up in the interception proxy.
-
-##### Rooting Your Device
-
-###### Risks of Rooting
-
-As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed: rooting
+As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
 
 - Usually voids the device warranty (always check the manufacturer policy before taking any action),
 - May "brick" the device, i.e., render it inoperable and unusable.
@@ -46,13 +49,22 @@ Virtually any Android mobile can be rooted. Commercial versions of Android OS, a
 
 The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
-See also "Android Platform Overview" for further details.
-
 ##### Restrictions When Using a Non-Rooted Device
 
 For testing of an Android app a rooted device is the foundation for a tester to be able to execute all available test cases. In case a non-rooted device need to be used, it is still possible to execute several test cases to the app.
 
 Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if certificate Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
+
+##### Network Setup
+
+The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or [an ad-hoc wireless network is created](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+
+Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
+
+- The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
+- The [CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store the CA certificate might differ.
+
+After finishing these steps and starting the app, the requests should show up in the interception proxy.
 
 #### Testing on the Emulator
 
