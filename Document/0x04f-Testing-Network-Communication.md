@@ -2,29 +2,33 @@
 
 Practically all network-connected mobile apps use HTTP(S) to send and receive data from and to a remote endpoint. Consequently, network-based attacks such as packet sniffing and man-in-the-middle-attacks are a potential issue. In this chapter, we discuss potential vulnerabilities, testing techniques and best practices concerning the network communication between a mobile app and its endpoint(s).
 
-### Using an Interception Proxy
+### Intercepting HTTP(S) Traffic
 
-In most cases, it is most practical to configure a system proxy on the mobile device, so that all HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side bugs. 
+In most cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side bugs. 
 
-- OWASP ZAP
-- Burp Suite
-- Charles Proxy
+Several free and commercial proxy tools are available. Here are some of the most popular:
+
+- [Burp Suite](https://portswigger.net/burp)
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+- [Charles Proxy](https://www.charlesproxy.com)
+
+To use the interception proxy, you'll need run it on your PC/MAC and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings. 
+
+Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
 ### Intercepting Traffic on the Network Layer
 
-Instead of a specific test case we will first talk about a generic attack pattern that is also applicable for mobile applications when executing a security test against them: man-in-the-middle (MITM) attacks.
-
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is no working:
 
-- What if XMPP or other protocols are used that are not recognized by your interception proxy?
-- What if mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used, where the produced apps do not use the local proxy settings of your Android or iOS phone and you are not able to redirect the requests to your interception proxy?
-- What if you want to intercept push notifications, like for example GCM/FCM on Android (see also "Firebase/Google Cloud Messaging (FCM/GCM)" in basic security testing on Android)?
+- If XMPP or other non-HTTP protocols are used;
+- If mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used that ignore the system proxy settings;
+- If you want to intercept push notifications, like for example GCM/FCM on Android.
 
-In these cases we need to monitor and analyze the network traffic first in order to decide what to do next. When you don't have a rooted Android device and you need to get all network traffic, tools like ettercap can be a good solution to achieve this task. On iOS you can create a "Remote Virtual Interface" instead, which is described in the chapter "Basic Security Testing" for iOS. 
+In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. When you don't have a rooted Android device and you need to get all network traffic, you can either route the traffic over your host machine, or use ettercap to redirect the traffic (see below). On iOS you can create a "Remote Virtual Interface" instead, which is described in the chapter "Basic Security Testing" for iOS. 
 
 > Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
-#### Preparation
+#### Simulating a Man-in-the-Middle Attack
 
 [Ettercap](https://ettercap.github.io/ettercap/ "Ettercap") can be used during network penetration tests in order to simulate a man-in-the-middle attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target machines. When such an attack is successful, all packets between two machines are redirected to a third machine that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
 
@@ -121,7 +125,20 @@ If that's the case, you are now able to see the complete network traffic that is
 
 As an example we will now redirect all requests from a Xamarin app to our interception proxy in the next section.
 
-#### Xamarin
+#### Span Port / Port Forwarding
+
+As an alternative to a MITM attack with ettercap, a Wifi Access Point (AP) or router can also be used instead. The setup requires access to the configuration of the AP and this should be clarified prior to the engagement. If it's possible to reconfigure you should check first if the AP supports either:
+
+- port forwarding or
+- has a span or mirror port.
+
+In both scenarios the AP needs to be configured to point to your machines IP. Tools like Wireshark can then again be used to monitor and record the traffic for further investigation.
+
+#### Setting a Proxy Through Runtime Instrumentation
+
+On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage) or code injection frameworks like [frida](https://www.frida.re) and [cycript](http://www.cycript.org). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
+
+#### Example: Dealing with Xamarin
 
 Xamarin is a mobile application development platform that is capable of producing [native Android](https://developer.xamarin.com/guides/android/getting_started/ "Getting Started with Android") and [iOS apps](https://developer.xamarin.com/guides/ios/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
 
@@ -133,9 +150,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
 ```
 
-2. --TODO What about Inspeckage to set a proxy within the app? https://github.com/ac-pm/Inspeckage
-
-3. Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+2. Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
 ```bash
 $ echo "
@@ -157,14 +172,6 @@ If not already done, install the CA certificates in your mobile device which wil
 Start using the app and trigger it's functions. You should see HTTP messages showing up in your interception proxy.
 
 > When using ettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
-
-#### Span Port / Port Forwarding
-
-As an alternative to a MITM attack with ettercap, a Wifi Access Point (AP) or router can also be used instead. The setup requires access to the configuration of the AP and this should be clarified prior to the engagement. If it's possible to reconfigure you should check first if the AP supports either:
-- port forwarding or
-- has a span or mirror port.
-
-In both scenarios the AP needs to be configured to point to your machines IP. Tools like Wireshark can then again be used to monitor and record the traffic for further investigation.
 
 ### Verifying Data Encryption on the Network
 
