@@ -2,18 +2,7 @@
 
 Practically all network-connected mobile apps use HTTP(S) to send and receive data from and to a remote endpoint. Consequently, network-based attacks such as packet sniffing and man-in-the-middle-attacks are a potential issue. In this chapter, we discuss potential vulnerabilities, testing techniques and best practices concerning the network communication between a mobile app and its endpoint(s).
 
-#### Static Analysis
-
-Review the code and identify those parts which refers to critical operations. Verify if it uses additional channels to perform such operation. Examples of additional verification channels are the following:
-
-- Token (e.g. RSA token, yubikey)
-- Push notification (e.g. Google Prompt)
-- SMS
-- E-mail
-- Data from another website you had to visit or scan
-- Data from a physical letter or physical entry point (e.g.: data you receive only after signing a document at the office of a bank)
-
-### Using a HTTPS Proxy
+### Using an Interception Proxy
 
 In most cases, it is most practical to configure a system proxy on the mobile device, so that all HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side bugs. 
 
@@ -21,7 +10,7 @@ In most cases, it is most practical to configure a system proxy on the mobile de
 - Burp Suite
 - Charles Proxy
 
-### Performing Man-in-the-Middle-Attacks on the Network Layer
+### Intercepting Traffic on the Network Layer
 
 Instead of a specific test case we will first talk about a generic attack pattern that is also applicable for mobile applications when executing a security test against them: man-in-the-middle (MITM) attacks.
 
