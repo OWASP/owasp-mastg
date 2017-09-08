@@ -12,7 +12,7 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 ### What You Need
 
-At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the following is installed on your system:
+Make sure that the following is installed on your system:
 
 - The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. 
 
