@@ -2,7 +2,7 @@
 
 In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
 
-### Setting Up Your Testing Environment
+### Setting Up a Testing Environment
 
 In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator useless for black-box analysis and reverse engineering.
 
@@ -23,8 +23,6 @@ If you want to get serious with iOS security testing, you need a Mac, for the si
 
 Ideally you should have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a less-than-smooth experience.
 
-##### Jailbreaking Overview
-
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To better understand this, let's review the terms "rooting" and "flashing" on Android first.
 
 - **Rooting**: This typically consists of installing the `su` binary within the existing system or replacing the whole system with an already rooted custom ROM. Normally, exploits are not required in order to obtain root access, as long as the bootloader is accessible.
@@ -38,6 +36,16 @@ Cydia is an alternative app store for jailbroken devices developed by Jay Freema
 
 Developing a jailbreak for any given version of iOS is not an easy endeavor. As a security tester, you'll most likely want to use publicly available jailbreak tools. Even so, we recommend studying the techniques used to jailbreak various versions of iOS in the past - you'll encounter many highly interesting exploits and learn a lot about the internals of the OS. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free bug in the kernel (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
+#### Benefits of Jailbreaking
+
+End users often jailbreak their devices in order to tweak the iOS system appearance, add new features or install third party apps from unofficial app stores. However, for a security tester the benefits of jailbreaking an iOS device go far beyond simply tweaking the system. They include but are not limited to the following:
+
+- Removing parts of the security (and other) limitations on the OS imposed by Apple;
+- Providing root access to the operating system;
+- Allowing applications and tools not signed by Apple to be installed and run without any restrictions;
+- Debugging and performing dynamic analysis;
+- Providing access to the Objective-C Runtime.
+
 ##### Jailbreak Types
 
 In jailbreak lingo, we talk about *tethered*, *semi-tethered*, *semi-untethered* and *untethered* jailbreaks.
@@ -50,16 +58,6 @@ In jailbreak lingo, we talk about *tethered*, *semi-tethered*, *semi-untethered*
 
 - Untethered jailbreaks need only be applied once, and the device remains in jailbroken state permanently, making them the most popular choice for end users.
 
-#### Benefits of Jailbreaking
-
-End users often jailbreak their devices in order to tweak the iOS system appearance, add new features or install third party apps from unofficial app stores. However, for a security tester the benefits of jailbreaking an iOS device go far beyond simply tweaking the system. They include but are not limited to the following:
-
-- Removing parts of the security (and other) limitations on the OS imposed by Apple;
-- Providing root access to the operating system;
-- Allowing applications and tools not signed by Apple to be installed and run without any restrictions;
-- Debugging and performing dynamic analysis;
-- Providing access to the Objective-C Runtime.
-
 #### Caveats and Considerations
 
 Jailbreaking iOS devices is becoming more and more complicated as Apple keeps hardening the system and patching the corresponding vulnerabilities that jailbreaks are based on. Additionally, it has become a very time sensitive procedure as they stop signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that, contrary to Android, that you can't downgrade to a specific iOS version once Apple is not signing the firmware anymore.
@@ -68,7 +66,7 @@ If you have a jailbroken device that you use for security testing, keep it as it
 
 The iOS upgrade process is based on a challenge-response process. The device will perform the OS installation only if the response to the challenge is signed by Apple. This is what researchers call 'signing window' and explains the fact that you can't simply store the OTA firmware package downloaded via iTunes and load it to the device at any time. During minor iOS upgrades, it is possible that two versions are signed at the same time by Apple. This is the only case when you can downgrade the iOS version. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
-#### How to Jailbreak iOS?
+#### What Jailbreaking Tool to Use
 
 Jailbreaking methods vary across iOS versions. The best choice is to [check if a public jailbreak is available for your iOS version](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware that is often distributed around the Internet, often hiding behind domain names similar to the jailbreaking group/author.
 
@@ -86,7 +84,7 @@ The iOS jailbreak scene evolves so rapidly that it is difficult to provide up-to
 
 Some apps attempt to detect whether the iOS device they're installed and running on is jailbroken. The reason for this is that jailbreaking deactivates some of iOS' default security mechanisms, leading to a less trustable environment. However, there are several ways to get around those checks - we'll introduce techniques for doing this in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS".
 
-### Preparing the Test Environment
+#### Jailbroken Device Setup
 
 <img src="Images/Chapters/0x06b/cydia.png" width="500px"/>
 - *Cydia Store*
@@ -110,9 +108,12 @@ The following are some useful packages you can install from Cydia to get started
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
 - adv-cmds: 
-- IPA Installer: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- IPA Installer Console: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command-line tool for examining the Objective-C runtime information stored in Mach-O files. 
+- Substrate: 
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment that can be injected into running processes.
+- AppList:
+- PreferenceLoader:
 
 Your workstation should have at least the following installed: 
 
@@ -125,7 +126,6 @@ Other useful tools we'll be referring to throughout the guide include:
 - [Frida](http://www.frida.re)
 - [IDB](http://www.idbtool.com)
 - [Needle](https://github.com/mwrlabs/needle)
-
 
 ### Static Analysis
 
@@ -252,81 +252,42 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
+<!-- In progress
+
+#### Dynamic Analysis with Frida and Objection
+
+The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
+
+$ pip install frida
+
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
+
+$ frida-ps -U
+
+> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
+
+Objection needs Python3 to work.
+
+$ pip install objection
 
 Let's use Damn Vulnerable iOS Application (DVIA)
 
 http://damnvulnerableiosapp.com
 
-<!--
 
+The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
 
+- the installation of `objection`,
+- the process of patching an iOS application and
+- running patches iOS applications.
 
+A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
 
-##### Security Profiling with Introspy
-
-Intospy is an open-source security profiler for iOS released by iSecPartners. Built on top of substrate, it can be used to log security-sensitive API calls on a jailbroken device.  The recorded API calls sent to the console and written to a database file, which can then be converted into an HTML report using Introspy-Analyzer `[32]`.
+- listing and downloading of files of the App sandbox,
+- SSL Pinning bypasses or
+- dump the iOS keychain, and export it to a file.
 
 -->
-
-<!-- TODO [Write an IntroSpy howto] -->
-
-#### Monitoring Console Logs
-
-Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the Xcode "Devices" window as follows:
-
-1. Launch Xcode
-2. Connect your device to your host computer
-3. Choose Devices from the window menu
-4. Click on your connected iOS device in the left section of the Devices window
-5. Reproduce the problem
-6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
-window to expose the console log contents
-
-To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
-
-<img src="Images/Chapters/0x06b/device_console.jpg" width="500px"/>
-- *Monitoring console logs through Xcode*
-
-#### Setting up a Web Proxy using BurpSuite
-
-Burp Suite is an integrated platform for performing security testing of mobile and web applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and web server(s). It allows the interception, inspection and modification of the raw HTTP traffic passing in both directions.
-
-Setting up Burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iOS device and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to Burp through USB.
-
-Portswigger also provides a good [tutorial on setting up an iOS Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on how to install Burps CA certificate in an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
-
-#### Certificate Pinning
-
-When you try to intercept the communication between the mobile app and the server, you might fail due to certificate pinning. Certificate pinning is a practice used to tighten the security of the TLS connection. When an application connects to the server using TLS, it checks if the server's certificate is signed with a trusted CA's private key. The verification is based on checking the signature with the public key that is within the device's trusted key store. This in turn contains the public keys of all trusted root CAs.
-
-Certificate pinning means that either the server certificate is bundled within the app binary or the hash of the certificate is hardcoded into the source code and checked when establishing a TLS connection. This would protect against the attack scenario where a CA get's compromised and is issuing a certificate for our domain to a third-party.
-
-Instead of the server certificate also the intermediate certificate of the CA can be used. This has the benefit that the certificate pinning implementation in the app might be valid for 5 to 10 years, instead of changing the server certificate every year and also the need to regularly update the app. For this reason certificate pinning can also become a risk as the server certificate is getting updated mostly on a yearly basis. If a process to update the certificate in the app was not defined and the server certificate is replaced, the whole user base is not able to use the app anymore. An update for the app via App or Play Store also might take a few days. In this case the introduction of a security control can become a risk on it's own for the availability of the service. Besides the technical implementation a business process need to be created that triggers an update for the app once the server certificate will get updated.
-
-A more detailed explanation with a [sample certificate pinning implementation for iOS and Android](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning "Certificate and Public Key Pinning") is provided by OWASP.
-
-##### Bypassing Certificate Pinning
-
-One method to disable certificate pinning is to use `[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")`, which can be installed via Cydia store. It will hook on all high-level API calls and bypass the certificate pinning.
-
-Alternatively Burp Suite offers an app called "[Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html "Using Burp Suite Mobile Assistant")" that can also be used to bypass certificate pinning.
-
-There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning and you have access to the source code and are able to recompile the app:
-
-- Look for the following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
-- Try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
-
-If you do not have access to the source you can try binary patching or runtime manipulation:
-
-- In case OpenSSL certificate pinning is implemented you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
-- Applications written by using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript.
-- Sometimes the certificate resides as a file within the application bundle. It might be sufficient to replace it with Burp's certificate, but beware of the certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
-
-Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
-
-If you want to get more details on white-box testing and usual code patters, refer to "iOS Application Security" by David Thiel. It contains description and code snippets of most-common techniques used to perform certificate pinning.
-
-To get more information on testing transport security, please refer to section "Testing Network Communication".
 
 #### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -339,7 +300,6 @@ The toolset we're going to use consists of `optool`, Apple's build tools and som
 To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load FridaGadget.dylib during startup so we can instrument it using Frida.
 
 > Please note that all of the following steps are applicable for macOS only. Also Xcode is only available for macOS.
-
 
 ##### Get the IPA file
 
@@ -524,24 +484,63 @@ PID  Name
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Also Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is a useful resource.
 
 
-#### Dynamic Analysis with Objection
+#### Monitoring Console Logs
 
-The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
+Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the Xcode "Devices" window as follows:
 
-> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
+1. Launch Xcode
+2. Connect your device to your host computer
+3. Choose Devices from the window menu
+4. Click on your connected iOS device in the left section of the Devices window
+5. Reproduce the problem
+6. Click the triangle in a box toggle located in the lower-left corner of the right section of the Devices
+window to expose the console log contents
 
-The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
+To save the console output to a text file, click the circle with a downward-pointing arrow at the bottom right.
 
-- the installation of `objection`,
-- the process of patching an iOS application and
-- running patches iOS applications.
+<img src="Images/Chapters/0x06b/device_console.jpg" width="500px"/>
+- *Monitoring console logs through Xcode*
 
-A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
+#### Setting up a Web Proxy using BurpSuite
 
-- listing and downloading of files of the App sandbox,
-- SSL Pinning bypasses or
-- dump the iOS keychain, and export it to a file.
+Burp Suite is an integrated platform for performing security testing of mobile and web applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and web server(s). It allows the interception, inspection and modification of the raw HTTP traffic passing in both directions.
 
+Setting up Burp to proxy your traffic through is pretty straightforward. It is assumed that you have both: iOS device and workstation connected to the same WiFi network where client to client traffic is permitted. If client-to-client traffic is not permitted, it is possible to use usbmuxd in order to connect to Burp through USB.
+
+Portswigger also provides a good [tutorial on setting up an iOS Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on how to install Burps CA certificate in an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+
+#### Certificate Pinning
+
+When you try to intercept the communication between the mobile app and the server, you might fail due to certificate pinning. Certificate pinning is a practice used to tighten the security of the TLS connection. When an application connects to the server using TLS, it checks if the server's certificate is signed with a trusted CA's private key. The verification is based on checking the signature with the public key that is within the device's trusted key store. This in turn contains the public keys of all trusted root CAs.
+
+Certificate pinning means that either the server certificate is bundled within the app binary or the hash of the certificate is hardcoded into the source code and checked when establishing a TLS connection. This would protect against the attack scenario where a CA get's compromised and is issuing a certificate for our domain to a third-party.
+
+Instead of the server certificate also the intermediate certificate of the CA can be used. This has the benefit that the certificate pinning implementation in the app might be valid for 5 to 10 years, instead of changing the server certificate every year and also the need to regularly update the app. For this reason certificate pinning can also become a risk as the server certificate is getting updated mostly on a yearly basis. If a process to update the certificate in the app was not defined and the server certificate is replaced, the whole user base is not able to use the app anymore. An update for the app via App or Play Store also might take a few days. In this case the introduction of a security control can become a risk on it's own for the availability of the service. Besides the technical implementation a business process need to be created that triggers an update for the app once the server certificate will get updated.
+
+A more detailed explanation with a [sample certificate pinning implementation for iOS and Android](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning "Certificate and Public Key Pinning") is provided by OWASP.
+
+##### Bypassing Certificate Pinning
+
+One method to disable certificate pinning is to use `[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")`, which can be installed via Cydia store. It will hook on all high-level API calls and bypass the certificate pinning.
+
+Alternatively Burp Suite offers an app called "[Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html "Using Burp Suite Mobile Assistant")" that can also be used to bypass certificate pinning.
+
+There are some cases, though, where certificate pinning is more tricky to bypass. Things to look for when you try to bypass certificate pinning and you have access to the source code and are able to recompile the app:
+
+- Look for the following API calls: `NSURLSession`, `CFStream`, `AFNetworking`
+- Try to look for methods/strings containing words like 'pinning', 'X509', 'Certificate', etc.
+
+If you do not have access to the source you can try binary patching or runtime manipulation:
+
+- In case OpenSSL certificate pinning is implemented you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
+- Applications written by using Apache Cordova or Adobe Phonegap heavily use callbacks. You can look for the callback function called upon success and call it manually with Cycript.
+- Sometimes the certificate resides as a file within the application bundle. It might be sufficient to replace it with Burp's certificate, but beware of the certificate's SHA sum that might be hardcoded in the binary. In that case you must replace it too!
+
+Certificate pinning is a good security practice and should be used for all applications handling sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) provides list of root and intermediate CAs that are by default trusted on major operating systems. Please also refer to a [map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
+
+If you want to get more details on white-box testing and usual code patters, refer to "iOS Application Security" by David Thiel. It contains description and code snippets of most-common techniques used to perform certificate pinning.
+
+To get more information on testing transport security, please refer to section "Testing Network Communication".
 
 #### Network Monitoring/Sniffing
 
