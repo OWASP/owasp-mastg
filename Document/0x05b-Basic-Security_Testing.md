@@ -6,7 +6,7 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 #### Software Needed on the Host PC or Mac
 
-At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the newest [SDK tools] and [platform tools] packages are installed on your system.
+At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
 #### Setting up the Android SDK
 
@@ -305,7 +305,7 @@ To show the list of all Drozer modules that can be executed in the current sessi
 
 - To list out all the packages installed on the emulator, run the following command:
 
-	`dz>run app.package.list`
+	`dz> run app.package.list`
 
  * To find out the package name of a specific app, pass  the “-f” along with a search string:
 
@@ -313,7 +313,7 @@ To show the list of all Drozer modules that can be executed in the current sessi
 
 - To see some basic information about the package, use
 
-       `dz> run app.package.info –a (package name)`
+  	`dz> run app.package.info –a (package name)`
 
 - To identify the exported application components, run the following command:
 
@@ -321,7 +321,7 @@ To show the list of all Drozer modules that can be executed in the current sessi
 
 - To identify the the list of Activities exported in the target application, execute the following command:
 
-  	`run app.activity.info -a (package name)`
+  	`dz> run app.activity.info -a (package name)`
 
  * To launch the activities exported,run the following command:
 
