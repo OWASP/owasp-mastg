@@ -462,18 +462,9 @@ PID  Name
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Also Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is a useful resource.
 
-#### Dynamic Analysis with Objection
+##### Automated Re-Packaging with Objection
 
 [Objection](https://github.com/sensepost/objection "Objection") is a runtime mobile exploration toolkit based on [Frida](http://www.frida.re). One of the best things about Objection is that it works even with non-jailbroken devices. It achieves this by automating the process of repackaging the app with `FridaGadget.dylib`.
-
-Objection needs Python3 to work.
-
-$ pip install objection
-
-Let's use Damn Vulnerable iOS Application (DVIA)
-
-http://damnvulnerableiosapp.com
-
 
 The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
 
@@ -486,6 +477,14 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 - listing and downloading of files of the App sandbox,
 - SSL Pinning bypasses or
 - dump the iOS keychain, and export it to a file.
+
+<!--
+
+#### Method Tracing with Frida
+
+TODO
+
+-->
 
 #### Monitoring Console Logs
 
