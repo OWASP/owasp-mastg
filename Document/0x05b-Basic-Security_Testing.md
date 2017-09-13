@@ -2,7 +2,7 @@
 
 By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. In principle, you can do without a real Android device and test purely on the emulator, but testing on a real device has some advantages such as higher performance. Below, you'll find instructions for setting up both the emulator and regular Android device.
+You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. 
 
 #### Software Needed on the Host PC or Mac
 
@@ -35,11 +35,17 @@ Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `
 
 #### Testing on a Real Device
 
-As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
+If you are planning to do dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test purely on the emulator. However, apps execute quite slowly on the emulator, which can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+
+When testing on a real device, it is recommended to *root* the device (i.e., modifying the OS so that you can run commands as the root user). This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. This in turn allows you to perform techniques like code injection and function hooking more easily.
+
+Note however that rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
 
 - Usually voids the device warranty (always check the manufacturer policy before taking any action),
 - May "brick" the device, i.e., render it inoperable and unusable.
 - Brings additional security risks as built-in exploit mitigations are often removed.
+
+You should not root a personal device that you also use to store your private information. Instead, we recommend getting a cheap, dedicated test device. Many older devices, such as Google's Nexus series, can run the newest Android versions and are perfectly fine for testing.
 
 **You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be held responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process.**
 
@@ -48,12 +54,6 @@ As a security tester, you may want to root your mobile device: while some tests 
 Virtually any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (who has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called `su` used for switching users.
 
 The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
-
-##### Restrictions When Using a Non-Rooted Device
-
-For testing of an Android app a rooted device is the foundation for a tester to be able to execute all available test cases. In case a non-rooted device need to be used, it is still possible to execute several test cases to the app.
-
-Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if certificate Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
 
 ##### Network Setup
 

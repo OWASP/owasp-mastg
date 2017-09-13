@@ -104,7 +104,14 @@ Cydia allows you to manage repositories. One of the most popular repositories is
 ```
 http://apt.thebigboss.org/repofiles/cydia/
 ```
-The following are some useful packages you can install from Cydia to get started.
+
+You might also want to add the HackYouriPhone repository to get the AppSync package:
+
+```
+http://repo.hackyouriphone.org
+```
+
+The following are some useful packages you can install from Cydia to get started:
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
 - adv-cmds: 
@@ -114,6 +121,7 @@ The following are some useful packages you can install from Cydia to get started
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment that can be injected into running processes.
 - AppList:
 - PreferenceLoader:
+- AppSync: 
 
 Your workstation should have at least the following installed: 
 
@@ -130,6 +138,28 @@ Other useful tools we'll be referring to throughout the guide include:
 ### Static Analysis
 
 iOS binaries aren't as easily decompiled as Android apps, so for a proper manual code review you'll need the original XCode project and source code. Alternatively, you can statically analyze iOS binaries using a disassembler, provided that you know how to decipher the machine code. We'll provide an introduction to iOS reverse engineering in the chapter "Reverse Engineering and Tampering on iOS".
+
+##### Getting an IPA File from an ITunes Link
+
+One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
+
+```
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
+
+```
+npm install -g itms-services
+```
+
+With the following command you can get the IPA and write the output to a file locally.
+
+```
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
+During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to create the basis for dynamic analysis.
 
 #### Automated Static Analysis Tools
 
@@ -252,43 +282,6 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
-<!-- In progress
-
-#### Dynamic Analysis with Frida and Objection
-
-The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
-
-$ pip install frida
-
-Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
-
-$ frida-ps -U
-
-> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
-
-Objection needs Python3 to work.
-
-$ pip install objection
-
-Let's use Damn Vulnerable iOS Application (DVIA)
-
-http://damnvulnerableiosapp.com
-
-
-The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
-
-- the installation of `objection`,
-- the process of patching an iOS application and
-- running patches iOS applications.
-
-A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
-
-- listing and downloading of files of the App sandbox,
-- SSL Pinning bypasses or
-- dump the iOS keychain, and export it to a file.
-
--->
-
 #### Dynamic Analysis on Non-Jailbroken Devices
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
@@ -301,27 +294,13 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 > Please note that all of the following steps are applicable for macOS only. Also Xcode is only available for macOS.
 
-##### Get the IPA file
+##### Installing Frida
 
-One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
+$ pip install frida
 
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
 
-This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
-
-```
-npm install -g itms-services
-```
-
-With the following command you can get the IPA and write the output to a file locally.
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
-During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to  create the basis for dynamic analysis.
+$ frida-ps -U
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
@@ -439,7 +418,7 @@ First, let's add our own provisioning profile to the package:
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
-Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. The reason for this is that the "codesign" tool will read the Bundle ID from Info.plist during signing - a wrong value will lead to an invalid signature.
+Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. The reason for this is that the "codesign" tool will read the Bundle ID from Info.plist duirng signing - a wrong value will lead to an invalid signature.
 
 ```
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
@@ -479,10 +458,33 @@ PID  Name
 
 ![Frida on non-JB device](Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
 
-##### Troubleshooting.
+##### Troubleshooting
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Also Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is a useful resource.
 
+##### Automated Re-Packaging with Objection
+
+[Objection](https://github.com/sensepost/objection "Objection") is a runtime mobile exploration toolkit based on [Frida](http://www.frida.re). One of the best things about Objection is that it works even with non-jailbroken devices. It achieves this by automating the process of repackaging the app with `FridaGadget.dylib`.
+
+The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
+
+- the installation of `objection`,
+- the process of patching an iOS application and
+- running patches iOS applications.
+
+A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
+
+- listing and downloading of files of the App sandbox,
+- SSL Pinning bypasses or
+- dump the iOS keychain, and export it to a file.
+
+<!--
+
+#### Method Tracing with Frida
+
+TODO
+
+-->
 
 #### Monitoring Console Logs
 
@@ -501,7 +503,7 @@ To save the console output to a text file, click the circle with a downward-poin
 <img src="Images/Chapters/0x06b/device_console.jpg" width="500px"/>
 - *Monitoring console logs through Xcode*
 
-#### Setting up a Web Proxy using BurpSuite
+#### Setting up a Web Proxy using Burp Suite
 
 Burp Suite is an integrated platform for performing security testing of mobile and web applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and web server(s). It allows the interception, inspection and modification of the raw HTTP traffic passing in both directions.
 
@@ -557,3 +559,4 @@ On iOS it is possible to remotely sniff all traffic in real-time by [creating a 
 ```
 ip.addr == 192.168.1.1 && http
 ```
+
