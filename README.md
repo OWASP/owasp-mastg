@@ -2,7 +2,7 @@
 
 # OWASP Mobile Security Testing Guide
 
-This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). You can also read the MSTG on [Gitbooks](https://b-mueller.gitbooks.io/the-owasp-mobile-security-testing-guide/content/) or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview).
+This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). You can also read the MSTG on [Gitbook](https://b-mueller.gitbooks.io/the-owasp-mobile-security-testing-guide/content/) or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview).
 
 ## Table-of-Contents
 
@@ -26,7 +26,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
-- [Android Security Testing Basics](Document/0x05b-Basic-Security_Testing.md)
+- [Setting up a Testing Environment for Android Apps](Document/0x05b-Basic-Security_Testing.md)
 - [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x05e-Testing-Cryptography.md)
 - [Testing Local Authentication](Document/0x05f-Testing-Local-Authentication.md)
@@ -39,7 +39,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 ### iOS Testing Guide
 
 - [Platform Overview](Document/0x06a-Platform-Overview.md)
-- [iOS Security Testing Basics](Document/0x06b-Basic-Security-Testing.md)
+- [Setting up a Testing Environment for iOS Apps](Document/0x06b-Basic-Security-Testing.md)
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x06e-Testing-Cryptography.md)
 - [Testing Local Authentication](Document/0x06f-Testing-Local-Authentication.md)

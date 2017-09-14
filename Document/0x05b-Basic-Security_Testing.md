@@ -1,8 +1,8 @@
-## Basic Security Testing on Android
+## Setting up a Testing Environment for Android Apps
 
 By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. In principle, you can do without a real Android device and test purely on the emulator, but testing on a real device has some advantages such as higher performance. Below, you'll find instructions for setting up both the emulator and regular Android device.
+You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. 
 
 #### Software Needed on the Host PC or Mac
 
@@ -35,11 +35,17 @@ Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `
 
 #### Testing on a Real Device
 
-As a security tester, you may want to root your mobile device: while some tests can be performed on a non-rooted mobile, some do require a rooted one. However, you need to be aware of the fact that rooting is not an easy process and requires advanced knowledge. Rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
+If you are planning to do dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test purely on the emulator. However, apps execute quite slowly on the emulator, which can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+
+When testing on a real device, it is recommended to *root* the device (i.e., modifying the OS so that you can run commands as the root user). This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. This in turn allows you to perform techniques like code injection and function hooking more easily.
+
+Note however that rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
 
 - Usually voids the device warranty (always check the manufacturer policy before taking any action),
 - May "brick" the device, i.e., render it inoperable and unusable.
 - Brings additional security risks as built-in exploit mitigations are often removed.
+
+You should not root a personal device that you also use to store your private information. Instead, we recommend getting a cheap, dedicated test device. Many older devices, such as Google's Nexus series, can run the newest Android versions and are perfectly fine for testing.
 
 **You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be held responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process.**
 
@@ -48,12 +54,6 @@ As a security tester, you may want to root your mobile device: while some tests 
 Virtually any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (who has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called `su` used for switching users.
 
 The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
-
-##### Restrictions When Using a Non-Rooted Device
-
-For testing of an Android app a rooted device is the foundation for a tester to be able to execute all available test cases. In case a non-rooted device need to be used, it is still possible to execute several test cases to the app.
-
-Nevertheless, this highly depends on the restrictions and settings made in the app. For example if backups are allowed, a backup of the data directory of the app can be extracted. This allows detailed analysis of leakage of sensitive data when using the app. Also if certificate Pinning is not used a dynamic analysis can also be executed on a non-rooted device.  
 
 ##### Network Setup
 
@@ -73,9 +73,9 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 - AppUse
 - MobSF
 
-It is also possible to simply create an AVD and use this for testing.
+You can also easily create Android Virtual Devices (AVDs) via Android Studio.
 
-##### Setting Up a Web Proxy on Virtual Device
+##### Setting Up a Web Proxy on a Virtual Device
 
 To set up a HTTP proxy on the emulator follow the following procedure, which works on the Android emulator shipping with Android Studio 2.x:
 
@@ -185,14 +185,14 @@ More details and tools about the Android reverse engineering topic can be found 
 
 #### Automated Static Analysis
 
-Static analysis should be supported through the usage of tools, to make the analysis efficient and to allow the tester to focus on the more complicated business logic. There are a plethora of static code analyzers that can be used, ranging from open source scanners to full blown enterprise ready scanners. The decision on which tool to use depends on the budget, requirements by the client and the preferences of the tester.
+Static analysis should be supported through the usage of tools, to make the analysis efficient and to allow the tester to focus on the more complicated business logic. There are a plethora of static code analyzers that can be used, ranging from open source scanners to full blown enterprise ready scanners. The decision on which tool to use depends on your budget, requirements by the client and the preferences of the tester.
 
-Some Static Analyzers rely on the availability of the source code while others take the compiled APK as input.
+Some static analyzers rely on the availability of the source code while others take the compiled APK as input.
 It is important to keep in mind that while static analyzers can help us to focus attention on potential problems, they may not be able to find all the problems by itself. Go through each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
 
 One important thing to note is to configure the static analyzer properly in order to reduce the likelihood of false positives and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming and the effort can become counterproductive if an overly large report need to be manually investigated.
 
-Automated open source tools for performing security analysis on an IPA are:
+Automated open source tools for performing security analysis on an APK are:
 
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")

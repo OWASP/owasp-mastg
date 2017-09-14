@@ -1,8 +1,6 @@
-## Basic Security Testing on iOS
+## Setting up a Testing Environment for iOS Apps
 
 In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
-
-### Setting Up a Testing Environment
 
 In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator useless for black-box analysis and reverse engineering.
 
@@ -19,7 +17,7 @@ If you want to get serious with iOS security testing, you need a Mac, for the si
 - At least two iOS devices, one jailbroken, second non-jailbroken
 - Hopper or IDA Pro
 
-#### Jailbreaking an iOS Device
+### Jailbreaking an iOS Device
 
 Ideally you should have a jailbroken iPhone or iPad available for running tests. That way, you get root access to the device and can install a variety of useful tools, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a less-than-smooth experience.
 
@@ -46,7 +44,7 @@ End users often jailbreak their devices in order to tweak the iOS system appeara
 - Debugging and performing dynamic analysis;
 - Providing access to the Objective-C Runtime.
 
-##### Jailbreak Types
+#### Jailbreak Types
 
 In jailbreak lingo, we talk about *tethered*, *semi-tethered*, *semi-untethered* and *untethered* jailbreaks.
 
@@ -104,7 +102,14 @@ Cydia allows you to manage repositories. One of the most popular repositories is
 ```
 http://apt.thebigboss.org/repofiles/cydia/
 ```
-The following are some useful packages you can install from Cydia to get started.
+
+You might also want to add the HackYouriPhone repository to get the AppSync package:
+
+```
+http://repo.hackyouriphone.org
+```
+
+The following are some useful packages you can install from Cydia to get started:
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
 - adv-cmds: Advanced command-line. Includes finger, fingerd, last, lsvfs, md and ps
@@ -114,6 +119,7 @@ The following are some useful packages you can install from Cydia to get started
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment that can be injected into running processes.
 - AppList: Allows developers to query the list of installed apps and provide a preference pane based on that information.
 - PreferenceLoader: Is a MobileSubstrate based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that AppStore apps use.
+- AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
 Your workstation should have at least the following installed: 
 
@@ -137,9 +143,39 @@ Several automated tools for analyzing iOS apps are available, most of which are 
 
 Don't shy away from using automated scanners to support your analysis - they help to pick off the low hanging fruit, and allow you to focus on the more interesting parts such as the business logic. Keep in mind however that static analyzers may produce false positives and false negatives, so always review the findings carefully.
 
+#### Getting an IPA File from an ITunes Link
+
+One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
+
+```
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
+
+```
+npm install -g itms-services
+```
+
+With the following command you can get the IPA and write the output to a file locally.
+
+```
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
+During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to create the basis for dynamic analysis.
+
 ### Dynamic Analysis on Jailbroken Devices
 
 Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail later. For basic API monitoring purposes however, you can get away without knowing all the details about Substrate - you can simply use existing tools built for this purpose.
+
+#### Installing Frida
+
+$ pip install frida
+
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
+
+$ frida-ps -U
 
 #### SSH Connection via USB
 
@@ -190,7 +226,7 @@ The application directory is a subdirectory of bundle. The static installer file
 
 The random string in the URI is the application's GUID, which is unique to every installation.
 
-##### Copying App Data Files
+#### Copying App Data Files
 
 Files belonging to an app are stored in the app's data directory. To identify the correct path, ssh into the device and retrieve the package information using IPA Installer Console:
 
@@ -218,7 +254,7 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-##### Dumping KeyChain Data
+#### Dumping KeyChain Data
 
 [Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump the contents of the KeyChain on a jailbroken device. The easiest way of running the tool is to download the binary from its GitHub repo:
 
@@ -252,44 +288,7 @@ Keychain Data: WOg1DfuH
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
 
-<!-- In progress
-
-#### Dynamic Analysis with Frida and Objection
-
-The steps we've just done manually to patch an iOS app can also be partly automated by using [objection](https://github.com/sensepost/objection "Objection").
-
-$ pip install frida
-
-Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
-
-$ frida-ps -U
-
-> objection is a runtime mobile exploration toolkit, powered by Frida. It was built with the aim of helping assess mobile applications and their security posture without the need for a jailbroken or rooted mobile device.
-
-Objection needs Python3 to work.
-
-$ pip install objection
-
-Let's use Damn Vulnerable iOS Application (DVIA)
-
-http://damnvulnerableiosapp.com
-
-
-The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
-
-- the installation of `objection`,
-- the process of patching an iOS application and
-- running patches iOS applications.
-
-A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
-
-- listing and downloading of files of the App sandbox,
-- SSL Pinning bypasses or
-- dump the iOS keychain, and export it to a file.
-
--->
-
-#### Dynamic Analysis on Non-Jailbroken Devices
+### Dynamic Analysis on Non-Jailbroken Devices
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
 
@@ -301,29 +300,7 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 > Please note that all of the following steps are applicable for macOS only. Also Xcode is only available for macOS.
 
-##### Get the IPA file
-
-One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
-
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
-
-```
-npm install -g itms-services
-```
-
-With the following command you can get the IPA and write the output to a file locally.
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
-During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to  create the basis for dynamic analysis.
-
-##### Getting a Developer Provisioning Profile and Certificate
+#### Getting a Developer Provisioning Profile and Certificate
 
 The *provisioning profile* is a plist file signed by Apple that whitelists your code signing certificate on one or multiple devices. In other words, this is Apple explicitly allowing your app to run in certain contexts, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to do the actual signing.
 
@@ -373,7 +350,7 @@ $ cat entitlements.plist
 
 Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the one app with this particular app id. The "get-task-allow" key is also important - when set to "true", other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to "false" in a distribution profile).
 
-##### Other Preparations
+#### Other Preparations
 
 To make our app load an additional library at startup we need some way of inserting an additional load command into the Mach-O header of the main executable. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
 
@@ -413,7 +390,7 @@ $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 
 Besides the tools listed above, we'll be using standard tools that come with macOS and Xcode and make sure you have the [Xcode command line developer tools](http://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
 
-##### Patching, Repackaging and Re-Signing
+#### Patching, Repackaging and Re-Signing
 
 Time to get serious! As you already now, IPA files are actually ZIP archives, so use any zip tool to unpack the archive. Then, copy FridaGadget.dylib into the app directory, and add a load command to the "UnCrackable Level 1" binary using optool.
 
@@ -439,7 +416,7 @@ First, let's add our own provisioning profile to the package:
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
-Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. The reason for this is that the "codesign" tool will read the Bundle ID from Info.plist during signing - a wrong value will lead to an invalid signature.
+Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile. The reason for this is that the "codesign" tool will read the Bundle ID from Info.plist duirng signing - a wrong value will lead to an invalid signature.
 
 ```
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
@@ -460,7 +437,7 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
-##### Installing and Running the App
+#### Installing and Running an App
 
 Now you should be all set for running the modified app. Deploy and run the app on the device as follows.
 
@@ -479,12 +456,35 @@ PID  Name
 
 ![Frida on non-JB device](Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
 
-##### Troubleshooting.
+#### Troubleshooting
 
 If something goes wrong (which it usually does), mismatches between the provisioning profile and code signing header are the most likely suspect. In that case it is helpful to read the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") and gaining a deeper understanding of the code signing process. Also Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is a useful resource.
 
+#### Automated Re-Packaging with Objection
 
-#### Monitoring Console Logs
+[Objection](https://github.com/sensepost/objection "Objection") is a runtime mobile exploration toolkit based on [Frida](http://www.frida.re). One of the best things about Objection is that it works even with non-jailbroken devices. It achieves this by automating the process of repackaging the app with `FridaGadget.dylib`.
+
+The [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") explain in detail:
+
+- the installation of `objection`,
+- the process of patching an iOS application and
+- running patches iOS applications.
+
+A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video of sample usage") demonstrates also what can be done at the moment with objection, which includes for example:
+
+- listing and downloading of files of the App sandbox,
+- SSL Pinning bypasses or
+- dump the iOS keychain, and export it to a file.
+
+<!--
+
+#### Method Tracing with Frida
+
+TODO
+
+-->
+
+### Monitoring Console Logs
 
 Many apps log informative (and potentially sensitive) messages to the console log. Besides that, the log also contains crash reports and potentially other useful information. You can collect console logs through the Xcode "Devices" window as follows:
 
@@ -501,7 +501,7 @@ To save the console output to a text file, click the circle with a downward-poin
 <img src="Images/Chapters/0x06b/device_console.jpg" width="500px"/>
 - *Monitoring console logs through Xcode*
 
-#### Setting up a Web Proxy using BurpSuite
+### Setting up a Web Proxy using Burp Suite
 
 Burp Suite is an integrated platform for performing security testing of mobile and web applications. Its various tools work seamlessly together to support the entire testing process, from initial mapping and analysis of an application’s attack surface, to finding and exploiting security vulnerabilities. It is a toolkit where Burp proxy operates as a web proxy server, and sits as a man-in-the-middle between the browser and web server(s). It allows the interception, inspection and modification of the raw HTTP traffic passing in both directions.
 
@@ -542,7 +542,7 @@ If you want to get more details on white-box testing and usual code patters, ref
 
 To get more information on testing transport security, please refer to section "Testing Network Communication".
 
-#### Network Monitoring/Sniffing
+### Network Monitoring/Sniffing
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
 
@@ -557,3 +557,4 @@ On iOS it is possible to remotely sniff all traffic in real-time by [creating a 
 ```
 ip.addr == 192.168.1.1 && http
 ```
+
