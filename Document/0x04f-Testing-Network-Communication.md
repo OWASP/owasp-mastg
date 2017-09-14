@@ -16,17 +16,25 @@ To use the interception proxy, you'll need run it on your PC/MAC and configure t
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
+![Intercepting HTTP requests with BURP Suite Pro](Images/Chapters/0x04f/BURP.jpg)
+
 ### Intercepting Traffic on the Network Layer
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is no working:
 
-- If XMPP or other non-HTTP protocols are used;
 - If mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used that ignore the system proxy settings;
-- If you want to intercept push notifications, like for example GCM/FCM on Android.
+- If you want to intercept push notifications, like for example GCM/FCM on Android;
+- If XMPP or other non-HTTP protocols are used.
 
-In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. When you don't have a rooted Android device and you need to get all network traffic, you can either route the traffic over your host machine, or use ettercap to redirect the traffic (see below). On iOS you can create a "Remote Virtual Interface" instead, which is described in the chapter "Basic Security Testing" for iOS. 
+In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-> Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
+- Route the traffic through the host machine. You can set up your Mac/PC as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any Internet-bound traffic from the mobile devie;
+
+- Use [ettercap](https://ettercap.github.io/ettercap/ "Ettercap") to redirect network traffic from the mobile device to your host machine (see below);
+
+- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
+
+- On iOS, you can create a "Remote Virtual Interface" instead. We'll describe this method in the chapter "Basic Security Testing on iOS". 
 
 #### Simulating a Man-in-the-Middle Attack
 
@@ -122,6 +130,8 @@ TCP  74.125.68.95:443 --> 192.168.0.102:35354 | R (0)
 ```
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
+
+> Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
 As an example we will now redirect all requests from a Xamarin app to our interception proxy in the next section.
 
