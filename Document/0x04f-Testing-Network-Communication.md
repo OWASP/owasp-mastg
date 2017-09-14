@@ -28,11 +28,11 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host machine. You can set up your Mac/PC as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any Internet-bound traffic from the mobile devie;
+- Route the traffic through the host machine. You can set up your Mac/PC as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any Internet-bound traffic from the mobile device;
 
 - Use [ettercap](https://ettercap.github.io/ettercap/ "Ettercap") to redirect network traffic from the mobile device to your host machine (see below);
 
-- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
+- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters;
 
 - On iOS, you can create a "Remote Virtual Interface" instead. We'll describe this method in the chapter "Basic Security Testing on iOS". 
 
