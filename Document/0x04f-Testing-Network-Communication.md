@@ -1,10 +1,10 @@
 ## Testing Network Communication
 
-Practically all network-connected mobile apps use HTTP(S) to send and receive data from and to a remote endpoint. Consequently, network-based attacks such as packet sniffing and man-in-the-middle-attacks are a potential issue. In this chapter, we discuss potential vulnerabilities, testing techniques and best practices concerning the network communication between a mobile app and its endpoint(s).
+Practically every network-connected mobile app uses the Hypertext Transfer Protocol (HTTP) or HTTP over Transport Layer Security (TLS), HTTPS, to send and receive data to and from remote endpoints. Consequently, network-based attacks (such as packet sniffing and man-in-the-middle-attacks) are a problem. In this chapter we discuss potential vulnerabilities, testing techniques, and best practices concerning the network communication between mobile apps and their endpoints.
 
 ### Intercepting HTTP(S) Traffic
 
-In most cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side bugs. 
+In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side bugs. 
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
@@ -28,11 +28,11 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host machine. You can set up your Mac/PC as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any Internet-bound traffic from the mobile devie;
+- Route the traffic through the host machine. You can set up your Mac/PC as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any Internet-bound traffic from the mobile device;
 
 - Use [ettercap](https://ettercap.github.io/ettercap/ "Ettercap") to redirect network traffic from the mobile device to your host machine (see below);
 
-- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
+- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters;
 
 - On iOS, you can create a "Remote Virtual Interface" instead. We'll describe this method in the chapter "Basic Security Testing on iOS". 
 
@@ -187,19 +187,19 @@ Start using the app and trigger it's functions. You should see HTTP messages sho
 
 #### Overview
 
-One of the core functionalities of mobile apps is sending and/or receiving data from endpoints over untrusted networks like the Internet. If the data is not properly protected in transit, it is possible for an attacker with access to any part of the network infrastructure (e.g. an WiFi access point) to intercept, read or modify it. For this reason, it is almost never advisable to use plain-text network protocols.
+One of the core mobile app functions is sending/receiving data over untrusted networks like the Internet. If the data is not properly protected in transit, an attacker with access to any part of the network infrastructure (e.g., a Wi-Fi access point) may intercept, read, or modify it. This is why plaintext network protocols are rarely advisable.
 
-The vast majority of apps relies on the Hypertext Transfer Protocol (HTTP) for communication with the backend. HTTP over Transport Layer Security (TLS) - a.k.a. HTTPS - wraps HTTP into an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer, the now-depreciated predecessor of TLS). TLS enables authentication of the backend service, as well as confidentiality and integrity of the network data.
+The vast majority of apps rely on HTTP for communication with the backend. HTTPS wraps HTTP in an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer (SSL); SSL is the deprecated predecessor of TLS). TLS allows authentication of the backend service and ensures confidentiality and integrity of the network data.
 
-##### TLS Settings
+##### Recommended TLS Settings
 
-Besides ensuring that the mobile app requests only HTTPS URLS, it is also important to ensure that the TLS configuration on server side is done properly. Secure Socket Layer (SSL) is depreciated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 as a fall-back to ensure compatibility with older clients.
+Ensuring proper TLS configuration on the server side is also important. SSL is deprecated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 for compatibility with older clients.
 
-In the situation where both the client and the server are controlled by the same organization and are used for the purpose of only communicating with each other, higher levels of security can be achieved by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
-If a mobile application connects to a specific server for a specific part of its functionality, the networking stack for that client can be tuned to ensure highest levels of security possible given the server configuration. Additionally, the mobile application may have to use a weaker configuration due to the lack of support in the underlying operating system.
+If a mobile application connects to a specific server, its networking stack can be tuned to ensure the highest possible security level for the server's configuration. Lack of support in the underlying operating system may force the mobile application to use a weaker configuration.
 
-For example, the popular Android networking library okhttp uses the following list as the preferred set of cipher suites, but these are only available on Android 7.0 and later:
+For example, the popular Android networking library okhttp uses the following preferred set of cipher suites, but these are only available on Android versions 7.0 and later:
 
 - `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256`
 - `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`
@@ -208,7 +208,7 @@ For example, the popular Android networking library okhttp uses the following li
 - `TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256`
 - `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256`
 
-To support earlier versions of Android, it adds a few ciphers that are not considered as secure as for example `TLS_RSA_WITH_3DES_EDE_CBC_SHA`.
+To support earlier versions of Android, it adds a few ciphers that are considered less secure, for example, `TLS_RSA_WITH_3DES_EDE_CBC_SHA`.
 
 Similarly, the iOS ATS (App Transport Security) configuration requires one of the following ciphers:
 
@@ -224,67 +224,34 @@ Similarly, the iOS ATS (App Transport Security) configuration requires one of th
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`
 
-
 #### Static Analysis
 
-Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are requested. Ensure that sensitive information is being sent via secure channels, using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection"), or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") for socket-level communication using TLS.
+Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are requested. Make sure that sensitive information is sent over secure channels by using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
 
-Please be aware that `SSLSocket` **does not** verify the hostname. The hostname verification should be done by using `getDefaultHostnameVerifier()` with expected hostname. A [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly") can be found in the Android developer documentation.
-
-In order to do a static analysis the configuration file need to be provided of the web server or reverse proxy where the HTTPS connection terminates. It is unusual to get this kind of information for a mobile penetration test and it also shouldn't be requested by you as the dynamic analysis is very fast and easy to execute.
+Be aware that `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
 
 Verify that the server is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
+The configuration file of the web server or reverse proxy at which the HTTPS connection terminates is required for static analysis. See also the [OWASP Transport Layer Protection cheat sheet](https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+
 #### Dynamic Analysis
 
-Intercept the network traffic coming to or from the tested application and check if it is encrypted. Network traffic can be intercepted using one of the following approaches:
+Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP and Websocket traffic using an interception proxy, like [OWASP ZAP](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "OWASP ZAP") or [Burp Suite Professional](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android device to work with Burp") and observe whether all requests are using HTTPS instead of HTTP.
+- Capture all HTTP and Websocket traffic with an interception proxy like [OWASP ZAP](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "OWASP ZAP") or [Burp Suite Professional](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android device to work with Burp") and make sure all requests are made via HTTPS instead of HTTP.
 
-Interception proxies like Burp or OWASP ZAP will only show HTTP traffic. There are however Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay) that can be used to decode and visualize for example XMPP traffic and also other protocols.
+Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You can, however, use Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [mitm-relay](https://github.com/jrmdev/mitm_relay) to decode and visualize communication via XMPP and other protocols.
 
-> Please note, that some applications may not work with proxies like Burp or ZAP (because of Certificate Pinning). In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning" first. Also tools like Vproxy can be used to redirect all HTTP(S) traffic to your machine to sniff it and investigate for unencrypted requests.
+> Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning". Tools like Vproxy can be used to redirect all HTTP(S) traffic to your machine to sniff and investigate it for unencrypted requests.
 
-- Capture all network traffic, using Tcpdump. This can be considered in case protocols are used that are not recognized by Burp or OWASP ZAP (e.g. XMPP). You can begin live capturing via the command:
+- Capture all network traffic with Tcpdump. Consider this when Burp or OWASP ZAP do not recognize protocols (e.g. XMPP). You can begin live capturing via the command:
 
 ```bash
 adb shell "tcpdump -s 0 -w - | nc -l -p 1234"
 adb forward tcp:1234 tcp:1234
 ```
 
-You can display the captured traffic in a human-readable way by using Wireshark. It should be investigated what protocols are used and if they are unencrypted. It is important to capture all traffic (TCP and UDP), so you should run all possible functions of the tested application after starting intercepting it.
-
-After identifying all endpoints your application is communicating with (e.g. by using an interception proxy) you should [verify if they allow the usage of weak ciphers, protocols or keys](https://www.owasp.org/index.php/Testing_for_Weak_SSL/TLS_Ciphers,_Insufficient_Transport_Layer_Protection_(OTG-CRYPST-001\) "Testing for Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection (OTG-CRYPST-001)"). It can be done, using different tools:
-
-- testssl.sh:
-
-The GitHub repo of testssl.sh offers a compiled openssl version for download that supports **all cipher suites and protocols including SSLv2**.
-
-```
-$ ./testssl.sh --openssl bin/openssl.Linux.x86_64 yoursite.com
-```
-
-The tool will also help identifying potential misconfiguration or vulnerabilities by highlighting them in red. If you want to store the report preserving color and format use `aha`:
-
-```
-$ ./testssl.sh --openssl bin/openssl.Linux.x86_64 yoursite.com | aha > output.html
-```
-
-This will give you a HTML document that will match the  CLI output.
-
-- O-Saft (OWASP SSL Advanced Forensic Tool):
-
-There are [multiple options](https://www.owasp.org/index.php/O-Saft/Documentation#COMMANDS "O-Saft various tests") available for O-Saft, but the most general one is the following, verifying certificate, ciphers and SSL/TLS connection:
-
-```
-perl o-saft.pl +check www.example.com:443
-```
-
-O-Saft can also be run in GUI mode with the following command:
-
-```
-o-saft.tcl
-```
+You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application after you've intercepted it.
 
 #### References
 
@@ -294,7 +261,7 @@ o-saft.tcl
 
 ##### OWASP MASVS
 
-- V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
+- V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
 
 ##### CWE
 
@@ -307,5 +274,41 @@ o-saft.tcl
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 - Burp Suite - https://portswigger.net/burp/
 - Vproxy - https://github.com/B4rD4k/Vproxy
-- testssl.sh- https://testssl.sh
-- O-Saft - https://www.owasp.org/index.php/O-Saft
+
+
+### Making Sure that Critical Operations Use Secure Communication Channels
+
+#### Overview
+
+For sensitive applications like banking apps, [OWASP MASVS](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md "The Mobile Application Security Verification Standard") introduces "Defense in Depth" verification levels. The critical operations (e.g., user enrollment and account recovery) of such applications are some of the most attractive targets to attackers. This requires implementation of advanced security controls, such as additional channels (e.g., SMS and e-mail) to confirm user actions. 
+
+#### Static Analysis
+
+Review the code and identify the parts that refer to critical operations. Make sure that additional channels are used for such operation. The following are examples of additional verification channels:
+
+- Token (e.g., RSA token, yubikey);
+- Push notification (e.g., Google Prompt);
+- SMS;
+- E-mail;
+- Data from another website you visited or scanned;
+- Data from a physical letter or physical entry point (e.g., data you receive only after signing a document at a bank).
+
+#### Dynamic Analysis
+
+Identify all of the tested application's critical operations (e.g., user enrollment, account recovery, and money transfer). Ensure that each critical operation requires at least one additional channel (e.g., SMS, e-mail, or token). Make sure that directly calling the function bypasses usage of these channels.
+
+#### Remediation
+
+Make sure that critical operations enforce the use of at least one additional channel to confirm user actions. These channels must not be bypassed when executing critical operations. If you're going to implement an additional factor to verify the user's identity, consider [Infobip 2FA library](https://2-fa.github.io/libraries/android-library.html "Infobip 2FA library") or one-time passcodes (OTP) via [Google Authenticator](https://github.com/google/google-authenticator-android "Google Authenticator for Android").
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
+##### OWASP MASVS
+- V5.5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
+
+##### CWE
+- CWE-308 - Use of Single-factor Authentication
+
