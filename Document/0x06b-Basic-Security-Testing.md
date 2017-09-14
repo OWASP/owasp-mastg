@@ -107,13 +107,13 @@ http://apt.thebigboss.org/repofiles/cydia/
 The following are some useful packages you can install from Cydia to get started.
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
-- adv-cmds: 
+- adv-cmds: Advanced command-line. Includes finger, fingerd, last, lsvfs, md and ps
 - IPA Installer Console: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command-line tool for examining the Objective-C runtime information stored in Mach-O files. 
-- Substrate: 
+- Substrate: A platform that makes it easier to develop third-party addons for iOS.
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment that can be injected into running processes.
-- AppList:
-- PreferenceLoader:
+- AppList: Allows developers to query the list of installed apps and provide a preference pane based on that information.
+- PreferenceLoader: Is a MobileSubstrate based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that AppStore apps use.
 
 Your workstation should have at least the following installed: 
 
