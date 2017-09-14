@@ -364,7 +364,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 
 ##### CWE
-- CWE-359 "Exposure of Private Information ('Privacy Violation')"
+- CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
 
 ##### Tools
 - OWASP ZAP
@@ -375,7 +375,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 #### Overview
 
-In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
+In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in /private/var/mobile/Library/Keyboard/dynamic-text.dat
 
 This behavior is achieved by means of [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
 
@@ -400,7 +400,7 @@ This behavior is achieved by means of [UITextInputTraits protocol](https://devel
 2. Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
 3. Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
-/private/var/mobile/Library/Keyboard/
+`/private/var/mobile/Library/Keyboard/`
 
 4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
