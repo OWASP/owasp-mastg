@@ -72,6 +72,7 @@ All of the above steps to prepare a hardware testing device do also apply if an 
 
 - AppUse
 - MobSF
+- Nathan
 
 You can also easily create Android Virtual Devices (AVDs) via Android Studio.
 
