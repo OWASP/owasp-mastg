@@ -1,4 +1,4 @@
-## Basic Security Testing on Android
+## Setting up a Testing Environment for Android Apps
 
 By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
 
