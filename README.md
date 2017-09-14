@@ -26,7 +26,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
-- [Android Security Testing Basics](Document/0x05b-Basic-Security_Testing.md)
+- [Setting up a Testing Environment for Android Apps](Document/0x05b-Basic-Security_Testing.md)
 - [Testing Data Storage](Document/0x05d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x05e-Testing-Cryptography.md)
 - [Testing Local Authentication](Document/0x05f-Testing-Local-Authentication.md)
@@ -39,7 +39,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 ### iOS Testing Guide
 
 - [Platform Overview](Document/0x06a-Platform-Overview.md)
-- [iOS Security Testing Basics](Document/0x06b-Basic-Security-Testing.md)
+- [Setting up a Testing Environment for iOS Apps](Document/0x06b-Basic-Security-Testing.md)
 - [Testing Data Storage](Document/0x06d-Testing-Data-Storage.md)
 - [Testing Cryptography](Document/0x06e-Testing-Cryptography.md)
 - [Testing Local Authentication](Document/0x06f-Testing-Local-Authentication.md)
