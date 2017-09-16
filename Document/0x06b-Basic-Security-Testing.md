@@ -462,13 +462,45 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 - SSL Pinning bypasses or
 - dump the iOS keychain, and export it to a file.
 
-<!--
-
 #### Method Tracing with Frida
 
-TODO
 
--->
+
+```python
+import frida
+
+def get_messages_from_js(message, data):
+            print(message)
+            print(message['payload'])
+
+frida_code = """
+    // Get a reference to the openURL selector
+    var openURL = ObjC.classes.UIApplication["- openURL:"];
+    
+    // Intercept the method
+    Interceptor.attach(openURL.implementation, {
+    onEnter: function(args) {
+    // As this is an ObjectiveC method, the arguments are as follows:
+    // 0. 'self'
+    // 1. The selector (openURL:)
+    // 2. The first argument to the openURL selector
+    var myNSURL = new ObjC.Object(args[2]);
+    // Convert it to a JS string
+    var myJSURL = myNSURL.absoluteString().toString();
+    // Log it
+    send("Launching URL: " + myJSURL);
+    }
+    });
+"""
+
+process = frida.get_usb_device().attach("Safari")
+script = process.create_script(frida_code)
+script.on('message', get_messages_from_js)
+script.load()
+```
+
+
+
 
 ### Monitoring Console Logs
 
