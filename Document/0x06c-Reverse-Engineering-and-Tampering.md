@@ -44,6 +44,26 @@ In this guide, we'll give an introduction on static and dynamic analysis and ins
 
 #### Static Analysis
 
+#### Getting the IPA File from an OTA Distribution Link
+
+During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that case, you will receive an itms-services link such as the following:
+
+```
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) tool to download the IPS from an OTA distribution URL. Install it via npm as follows:
+
+```
+npm install -g itms-services
+```
+
+Save the IPA file locally with the following command:
+
+```
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
 ##### Recovering an IPA File From an Installed App
 
 ###### From Jailbroken Devices
@@ -87,6 +107,7 @@ On top of code signing, apps distributed via the app store are also protected us
 ~~~
 
 If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
+
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 

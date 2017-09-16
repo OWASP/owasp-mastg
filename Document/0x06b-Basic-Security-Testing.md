@@ -112,14 +112,14 @@ http://repo.hackyouriphone.org
 The following are some useful packages you can install from Cydia to get started:
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line apps. Includes standard Unix utilities missing from iOS like wget, unrar, less, and sqlite3 client, and more.
-- adv-cmds: 
+- adv-cmds: Advanced command-line. Includes finger, fingerd, last, lsvfs, md and ps
 - IPA Installer Console: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command-line tool for examining the Objective-C runtime information stored in Mach-O files. 
-- Substrate: 
+- Substrate: A platform that makes it easier to develop third-party addons for iOS.
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate mode console environment that can be injected into running processes.
-- AppList:
-- PreferenceLoader:
-- AppSync: 
+- AppList: Allows developers to query the list of installed apps and provide a preference pane based on that information.
+- PreferenceLoader: Is a MobileSubstrate based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that AppStore apps use.
+- AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
 Your workstation should have at least the following installed: 
 
@@ -135,35 +135,41 @@ Other useful tools we'll be referring to throughout the guide include:
 
 ### Static Analysis
 
-iOS binaries aren't as easily decompiled as Android apps, so for a proper manual code review you'll need the original XCode project and source code. Alternatively, you can statically analyze iOS binaries using a disassembler, provided that you know how to decipher the machine code. We'll provide an introduction to iOS reverse engineering in the chapter "Reverse Engineering and Tampering on iOS".
+The preferred way of statically analyzing iOS apps is with access to a fully working build environment (usually, this means getting the XCode project files). In the ideal case, you are able compile and debug the app to quickly verify any potential issues discovered in the source code.
+ 
+Performing black-box-analysis of iOS apps without access to the original source code requires some reverse engineering skills. For one, no decompilers for iOS apps are available, so for a deep inspection you need to be able to read assembler code. We'll not go into too much detail about this in this chapter, but will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS".
+
+For the static analysis instructions in the following chapters, we will assume that the source code is available.
+
+#### Getting the IPA File from an OTA Distribution Link
+
+During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that case, you will receive an itms-services link such as the following:
+
+```
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) tool to download the IPS from an OTA distribution URL. Install it via npm as follows:
+
+```
+npm install -g itms-services
+```
+
+Save the IPA file locally with the following command:
+
+```
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
+#### Copying App Binary Files From the Device
+
+Apps installed from the App Store are protected with FairPlay DRM. If you copy the executable files from the app's installation directory, you'll end up with encrypted binary files that are not useful for static analysis. There are ways around this however - we'll revisit this topic in the chapter "Reverse Engineering and Tampering on iOS".
 
 #### Automated Static Analysis Tools
 
 Several automated tools for analyzing iOS apps are available, most of which are commercial. As for free and open source tools, [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some built-in analysis functionality. Some additional products are listed in the "Static Source Code Analysis" section of the "Testing Tools" Appendix.
 
 Don't shy away from using automated scanners to support your analysis - they help to pick off the low hanging fruit, and allow you to focus on the more interesting parts such as the business logic. Keep in mind however that static analyzers may produce false positives and false negatives, so always review the findings carefully.
-
-#### Getting an IPA File from an ITunes Link
-
-One of the first challenges you have to overcome is to get the IPA. In a real world security test you might only get a link like the following, instead of the IPA directly:
-
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-This link need to be opened in mobile Safari on your iOS device and will trigger the installation. By using the tool `itms-services` you are able to download the IPA from an itms-services link. You can install it via npm.
-
-```
-npm install -g itms-services
-```
-
-With the following command you can get the IPA and write the output to a file locally.
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
-During a test you can therefore obtain the IPA also from an itms link and use it afterwards to patch it to create the basis for dynamic analysis.
 
 ### Dynamic Analysis on Jailbroken Devices
 
@@ -290,7 +296,7 @@ Note however that this binary is signed with a self-signed certificate with a "w
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only on if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
+If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and can do pretty much everything you need for a dynamical analysis (of course, you can't break out of the sandbox that way, but you usually don't need to). This technique however works only if the app binary isn't FairPlay-encrypted (i.e. obtained from the app store).
 
 Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than one would expect. iOS refuses to run an app unless you get the provisioning profile and code signature header absolutely right. This requires you to learn about a whole lot of concepts - different types of certificates, BundleIDs, application IDs, team identifiers, and how they are tied together using Apple's build tools. Suffice it to say, getting the OS to run a particular binary that hasn't been built using the default way (Xcode) can be a daunting process.
 

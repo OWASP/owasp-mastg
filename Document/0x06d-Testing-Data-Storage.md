@@ -19,7 +19,9 @@ The data protection architecture is based on a hierarchy of keys. The UID and th
 Every file stored in the iOS file system is encrypted with its own individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file.
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
+
 *[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")*
+
 
 Files can be assigned one of four protection classes:
 
@@ -362,7 +364,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 - V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 
 ##### CWE
-- CWE-359 "Exposure of Private Information ('Privacy Violation')": [Link to CWE issue]
+- CWE-359 "Exposure of Private Information ('Privacy Violation')"
 
 ##### Tools
 - OWASP ZAP
@@ -373,7 +375,7 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 #### Overview
 
-In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in /private/var/mobile/Library/Keyboard/dynamic-text.dat
+In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
 This behavior is achieved by means of [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
 
@@ -398,7 +400,7 @@ This behavior is achieved by means of [UITextInputTraits protocol](https://devel
 2. Proceed to use the application's functionalities. Identify the functions which allow users to enter sensitive data.
 
 3. Dump the keyboard cache file dynamic-text.dat at the following directory (Might be different in iOS below 8.0):
-/private/var/mobile/Library/Keyboard/
+`/private/var/mobile/Library/Keyboard/`
 
 4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
@@ -626,7 +628,7 @@ The takeaway: As long as sensitive data is handled as recommended earlier in thi
 
 ##### Excluding Items from Backup
 
-The `[NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey")`  and `[CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey")` file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories.
+The [NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey")  and [CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey") file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories.
 
 Either of these APIs is preferred over the older, deprecated approach of directly setting an extended attribute. All apps running on iOS 5.1 and later should use these APIs to exclude data from backups.
 
