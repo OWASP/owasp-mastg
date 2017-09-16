@@ -135,7 +135,11 @@ Other useful tools we'll be referring to throughout the guide include:
 
 ### Static Analysis
 
-iOS binaries aren't as easily decompiled as Android apps, so for a proper manual code review you'll need the original XCode project and source code. Alternatively, you can statically analyze iOS binaries using a disassembler, provided that you know how to decipher the machine code.
+The preferred way of statically analyzing iOS apps is with access to a fully working build environment (usually, this means getting the XCode project files). In the ideal case, you are able compile and debug the app to quickly verify any potential issues discovered in the source code.
+ 
+Performing black-box-analysis of iOS apps without access to the original source code requires some reverse engineering skills. For one, no decompilers for iOS apps are available, so for a deep inspection you need to be able to read assembler code. We'll not go into too much detail about this in this chapter, but will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS".
+
+For the static analysis instructions in the following chapters, we will assume that the source code is available.
 
 #### Getting the IPA File from an OTA Distribution Link
 
