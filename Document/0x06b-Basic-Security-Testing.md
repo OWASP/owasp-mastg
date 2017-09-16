@@ -6,16 +6,12 @@ In contrast to the Android emulator, which fully emulates the processor and hard
 
 For your iOS app testing setup you should have at least the following basic setup:
 
-- Laptop with admin rights
-- WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
-- At least one jailbroken iOS device (with desired iOS version)
-- Burp Suite or other interception proxy tool
+- Laptop with admin rights;
+- WiFi network with client-to-client traffic permitted (multiplexing through USB is also possible);
+- At least one jailbroken iOS device (with desired iOS version);
+- Burp Suite or other interception proxy tool'
 
-If you want to get serious with iOS security testing, you need a Mac, for the simple reason that XCode and the iOS SDK are only available for macOS. Many tasks that you can do effortlessly on Mac are a chore, or even impossible, on Windows and Linux. In addition to the basic setup, the following items are recommended for a sophisticated test setup:
-
-- Macbook with Xcode and Developer Profile
-- At least two iOS devices, one jailbroken, second non-jailbroken
-- Hopper or IDA Pro
+While you can use a Linux or Windows machine for testing, you'll find that many tasks become a chore or are even impossible to perform. To make things worse, the XCode development environment and the iOS SDK are only available for macOS. This means that for source code analysis and debugging, you'll definitely want to work on a Mac - but it also makes black-box testing easier.
 
 ### Jailbreaking an iOS Device
 
@@ -141,30 +137,6 @@ Performing black-box-analysis of iOS apps without access to the original source 
 
 For the static analysis instructions in the following chapters, we will assume that the source code is available.
 
-#### Getting the IPA File from an OTA Distribution Link
-
-During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that case, you will receive an itms-services link such as the following:
-
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) tool to download the IPS from an OTA distribution URL. Install it via npm as follows:
-
-```
-npm install -g itms-services
-```
-
-Save the IPA file locally with the following command:
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
-#### Copying App Binary Files From the Device
-
-Apps installed from the App Store are protected with FairPlay DRM. If you copy the executable files from the app's installation directory, you'll end up with encrypted binary files that are not useful for static analysis. There are ways around this however - we'll revisit this topic in the chapter "Reverse Engineering and Tampering on iOS".
-
 #### Automated Static Analysis Tools
 
 Several automated tools for analyzing iOS apps are available, most of which are commercial. As for free and open source tools, [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some built-in analysis functionality. Some additional products are listed in the "Static Source Code Analysis" section of the "Testing Tools" Appendix.
@@ -177,11 +149,19 @@ Life is easy with a jailbroken device: Not only do you gain easy access to the a
 
 #### Installing Frida
 
+[Frida](https://www.frida.re "frida") is a runtime instrumentation framework "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX.". We already wrote a lot about Frida in the Android Reverse Engineering chapter. The good news is that Frida is also compatible with iOS, where it offers many of the same useful features.
+
+To get Frida to work, you need to install the Frida Python package on your host machine. 
+
 $ pip install frida
 
-Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
+On a jailbroken device, you can also install frida-server through Cydia - this will run frida-server as the root the user, allowing you to easily inject code into any process. Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
+
+Connect your device via USB and verify that Frida works by running the following command:
 
 $ frida-ps -U
+
+This should return the list of processes running on the device.
 
 #### SSH Connection via USB
 
