@@ -465,41 +465,66 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 #### Method Tracing with Frida
 
 
+```
+$ frida-trace -U -m "-[NSURL *]" Safari
+Instrumenting functions...                                              
+-[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
+-[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
+(...)
+Started tracing 248 functions. Press Ctrl+C to stop.     
+```
+
+
+```
+           /* TID 0xc07 */
+  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
+ 20313 ms  -[NSURLRequest URL]
+(...)
+ 21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
+ 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80 
+```
+
+
 
 ```python
+import sys
 import frida
 
-def get_messages_from_js(message, data):
+
+def message_callback(message, data):
             print(message)
             print(message['payload'])
 
 frida_code = """
-    // Get a reference to the openURL selector
-    var openURL = ObjC.classes.UIApplication["- openURL:"];
-    
+
+    var URL = ObjC.classes.NSURLRequest["- initWithURL:];
+
     // Intercept the method
-    Interceptor.attach(openURL.implementation, {
-    onEnter: function(args) {
-    // As this is an ObjectiveC method, the arguments are as follows:
-    // 0. 'self'
-    // 1. The selector (openURL:)
-    // 2. The first argument to the openURL selector
-    var myNSURL = new ObjC.Object(args[2]);
-    // Convert it to a JS string
-    var myJSURL = myNSURL.absoluteString().toString();
-    // Log it
-    send("Launching URL: " + myJSURL);
-    }
+    Interceptor.attach(URL.implementation, {
+      onEnter: function(args) {
+
+        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
+
+        var NSString = ObjC.classes.NSString;
+
+        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
+
+        NSLog(args[2].absoluteString_());
+
+        pool.release();
+      }
     });
+
+
 """
 
 process = frida.get_usb_device().attach("Safari")
 script = process.create_script(frida_code)
-script.on('message', get_messages_from_js)
+script.on('message', message_callback)
 script.load()
+
+sys.stdin.read()
 ```
-
-
 
 
 ### Monitoring Console Logs
