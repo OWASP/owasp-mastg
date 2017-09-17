@@ -155,13 +155,26 @@ To get Frida to work, you need to install the Frida Python package on your host 
 
 $ pip install frida
 
-On a jailbroken device, you can also install frida-server through Cydia - this will run frida-server as the root the user, allowing you to easily inject code into any process. Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
+To be able to connect Frida to an app running on an iOS device, you also need a way of injecting the Frida runtime into that app. Doing this is easy on a jailbroken device: All you need to do is install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
 
-Connect your device via USB and verify that Frida works by running the following command:
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
 
+Connect your device via USB and verify that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
+
+```
 $ frida-ps -U
-
-This should return the list of processes running on the device.
+PID  Name
+---  ----------------
+963  Mail
+952  Safari
+416  BTServer
+422  BlueTool
+791  CalendarWidget
+451  CloudKeychainPro
+239  CommCenter
+764  ContactsCoreSpot
+(...)
+```
 
 #### SSH Connection via USB
 
@@ -462,7 +475,9 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 - SSL Pinning bypasses or
 - dump the iOS keychain, and export it to a file.
 
-#### Method Tracing with Frida
+### Method Tracing with Frida
+
+Once you have 
 
 
 ```
@@ -526,6 +541,8 @@ script.load()
 sys.stdin.read()
 ```
 
+
+<img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
 
 ### Monitoring Console Logs
 
