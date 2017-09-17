@@ -477,7 +477,11 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 
 ### Method Tracing with Frida
 
-Once you have 
+Frida is a flexible tool that is useful in many situations. To unlock its full potential, you should learn to use the JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
+
+A common use-case in security testing is intercepting selected Objective-C methods. For example, you might be interested in data storage operations or network requests. In the following example, we'll show how to write a simple tracer for logging HTTP(S) requests.
+
+[Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/)
 
 
 ```
