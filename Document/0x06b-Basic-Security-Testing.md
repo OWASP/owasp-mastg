@@ -485,11 +485,11 @@ Frida is a flexible tool that is useful in many situations.
 
 A common use-case in security testing is intercepting selected Objective-C methods. For example, you might be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests performed with iOS standard HTTP APIs, and show how to inject it into the Safari web browser.
 
-In the following examples we'll assume that you are working on a jailbroken device. If that's not the case, you'll first need to follow the steps outlined in the previous section to repackage the Safari app. 
+In the following examples we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app. 
 
-Frida comes with a ready-made tool for function tracing called `frida-trace`. This tool accepts Objective-C methods via the `-m` flag. What's nice about frida-trace is that you can also pass it wildcards - for example, if you specify `-[NSURL *]`, frida-trace will automatically install hooks on all selectors of the `NSURL` class.
+Frida comes with a ready-made tool for function tracing called `frida-trace`. This tool accepts Objective-C methods via the `-m` flag. What's nice about frida-trace is that you can also pass it wildcards - for example, if you specify `-[NSURL *]`, frida-trace will automatically install hooks on all selectors of the `NSURL` class. We'll use this to get a rough idea about which library functions are called by Safari when the user opens a URL. 
 
-Run Safari on the device and make sure the device is connected via USB. 
+Run Safari on the device and make sure the device is connected via USB. Then, start `frida-trace` as follows:
 
 ```
 $ frida-trace -U -m "-[NSURL *]" Safari
@@ -500,6 +500,7 @@ Instrumenting functions...
 Started tracing 248 functions. Press Ctrl+C to stop.     
 ```
 
+Then, navigate to a new website in Safari. You should start seeing console from `frida-trace` showing a number of traced function calls. Note that the `initWithURL:` method is called to initialize a new URL request object.
 
 ```
            /* TID 0xc07 */
@@ -510,6 +511,15 @@ Started tracing 248 functions. Press Ctrl+C to stop.
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80 
 ```
 
+We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
+
+```objective-c
+- (instancetype)initWithURL:(NSURL *)url;
+```
+
+The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property named `absoluteString` that allows us to retrieve the the absolute URL represented by the `NSURL` object.
+
+We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed as its argument. The full script is below - make sure to read the code and in-line comments to understand what's going on.
 
 
 ```python
