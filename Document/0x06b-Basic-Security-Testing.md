@@ -147,35 +147,6 @@ Don't shy away from using automated scanners to support your analysis - they hel
 
 Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail later. For basic API monitoring purposes however, you can get away without knowing all the details about Substrate - you can simply use existing tools built for this purpose.
 
-#### Installing Frida
-
-[Frida](https://www.frida.re "frida") is a runtime instrumentation framework "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX.". We already wrote a lot about Frida in the Android Reverse Engineering chapter. The good news is that Frida is also compatible with iOS, where it offers many of the same useful features.
-
-To get Frida to work, you need to install the Frida Python package on your host machine. 
-
-$ pip install frida
-
-To be able to connect Frida to an app running on an iOS device, you also need a way of injecting the Frida runtime into that app. Doing this is easy on a jailbroken device: All you need to do is install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
-
-Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
-
-Connect your device via USB and verify that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
-
-```
-$ frida-ps -U
-PID  Name
----  ----------------
-963  Mail
-952  Safari
-416  BTServer
-422  BlueTool
-791  CalendarWidget
-451  CloudKeychainPro
-239  CommCenter
-764  ContactsCoreSpot
-(...)
-```
-
 #### SSH Connection via USB
 
 In a real-world blackbox test a reliable WiFi connection might not be available. In that case, you can connect to the SSH server on your device through USB using [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd").
@@ -286,6 +257,39 @@ Keychain Data: WOg1DfuH
 ```
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
+
+#### Installing Frida
+
+[Frida](https://www.frida.re "frida") is a runtime instrumentation framework that lets you inject snippets of JavaScript or your own library into native apps on Android and iOS. If you have already read the Android section of this guide, you should already be quite familiar with it. The good news is that Frida is also compatible with iOS, where it offers many of the same useful features.
+
+I you haven't already, you need to install the Frida Python package on your host machine:
+
+```
+$ pip install frida
+```
+
+To be able to connect Frida to an app running on an iOS device, you also need a way of injecting the Frida runtime into that app. Doing this is easy on a jailbroken device: All you need to do is install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
+
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
+
+Connect your device via USB and verify that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
+
+```
+$ frida-ps -U
+PID  Name
+---  ----------------
+963  Mail
+952  Safari
+416  BTServer
+422  BlueTool
+791  CalendarWidget
+451  CloudKeychainPro
+239  CommCenter
+764  ContactsCoreSpot
+(...)
+```
+
+We'll demonstrate a few more uses for Frida below, but first let's have a look at what to do if you're for some reason forced to work on a non-jailbroken device.
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -477,12 +481,15 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 
 ### Method Tracing with Frida
 
-Frida is a flexible tool that is useful in many situations. To unlock its full potential, you should learn to use the JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
+Frida is a flexible tool that is useful in many situations. 
 
-A common use-case in security testing is intercepting selected Objective-C methods. For example, you might be interested in data storage operations or network requests. In the following example, we'll show how to write a simple tracer for logging HTTP(S) requests.
+A common use-case in security testing is intercepting selected Objective-C methods. For example, you might be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests performed with iOS standard HTTP APIs, and show how to inject it into the Safari web browser.
 
-[Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/)
+In the following examples we'll assume that you are working on a jailbroken device. If that's not the case, you'll first need to follow the steps outlined in the previous section to repackage the Safari app. 
 
+Frida comes with a ready-made tool for function tracing called `frida-trace`. This tool accepts Objective-C methods via the `-m` flag. What's nice about frida-trace is that you can also pass it wildcards - for example, if you specify `-[NSURL *]`, frida-trace will automatically install hooks on all selectors of the `NSURL` class.
+
+Run Safari on the device and make sure the device is connected via USB. 
 
 ```
 $ frida-trace -U -m "-[NSURL *]" Safari
@@ -547,6 +554,11 @@ sys.stdin.read()
 
 
 <img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
+
+To unlock its full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
+
+[Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/)
+
 
 ### Monitoring Console Logs
 
