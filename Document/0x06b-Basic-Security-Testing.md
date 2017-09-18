@@ -6,16 +6,12 @@ In contrast to the Android emulator, which fully emulates the processor and hard
 
 For your iOS app testing setup you should have at least the following basic setup:
 
-- Laptop with admin rights
-- WiFi network with client to client traffic permitted (multiplexing through USB is also possible)
-- At least one jailbroken iOS device (with desired iOS version)
-- Burp Suite or other interception proxy tool
+- Laptop with admin rights;
+- WiFi network with client-to-client traffic permitted (multiplexing through USB is also possible);
+- At least one jailbroken iOS device (with desired iOS version);
+- Burp Suite or other interception proxy tool'
 
-If you want to get serious with iOS security testing, you need a Mac, for the simple reason that XCode and the iOS SDK are only available for macOS. Many tasks that you can do effortlessly on Mac are a chore, or even impossible, on Windows and Linux. In addition to the basic setup, the following items are recommended for a sophisticated test setup:
-
-- Macbook with Xcode and Developer Profile
-- At least two iOS devices, one jailbroken, second non-jailbroken
-- Hopper or IDA Pro
+While you can use a Linux or Windows machine for testing, you'll find that many tasks become a chore or are even impossible to perform. To make things worse, the XCode development environment and the iOS SDK are only available for macOS. This means that for source code analysis and debugging, you'll definitely want to work on a Mac - but it also makes black-box testing easier.
 
 ### Jailbreaking an iOS Device
 
@@ -141,30 +137,6 @@ Performing black-box-analysis of iOS apps without access to the original source 
 
 For the static analysis instructions in the following chapters, we will assume that the source code is available.
 
-#### Getting the IPA File from an OTA Distribution Link
-
-During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that case, you will receive an itms-services link such as the following:
-
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) tool to download the IPS from an OTA distribution URL. Install it via npm as follows:
-
-```
-npm install -g itms-services
-```
-
-Save the IPA file locally with the following command:
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
-#### Copying App Binary Files From the Device
-
-Apps installed from the App Store are protected with FairPlay DRM. If you copy the executable files from the app's installation directory, you'll end up with encrypted binary files that are not useful for static analysis. There are ways around this however - we'll revisit this topic in the chapter "Reverse Engineering and Tampering on iOS".
-
 #### Automated Static Analysis Tools
 
 Several automated tools for analyzing iOS apps are available, most of which are commercial. As for free and open source tools, [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some built-in analysis functionality. Some additional products are listed in the "Static Source Code Analysis" section of the "Testing Tools" Appendix.
@@ -174,14 +146,6 @@ Don't shy away from using automated scanners to support your analysis - they hel
 ### Dynamic Analysis on Jailbroken Devices
 
 Life is easy with a jailbroken device: Not only do you gain easy access to the app's sandbox, you can also use more powerful dynamic analysis techniques due to the lack of code singing. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover in more detail later. For basic API monitoring purposes however, you can get away without knowing all the details about Substrate - you can simply use existing tools built for this purpose.
-
-#### Installing Frida
-
-$ pip install frida
-
-Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter https://build.frida.re. You should now be able to find and install the Frida package which lets Frida inject JavaScript into apps running on your iOS device. This happens over USB, so you will need to have your USB cable handy, though there’s no need to plug it in just yet.
-
-$ frida-ps -U
 
 #### SSH Connection via USB
 
@@ -293,6 +257,39 @@ Keychain Data: WOg1DfuH
 ```
 
 Note however that this binary is signed with a self-signed certificate with a "wildcard" entitlement, granting access to *all* items in the Keychain - if you are paranoid, or have highly sensitive private data on your test device, you might want to build the tool from source and manually sign the appropriate entitlements into your build - instructions for doing this are available in the GitHub repository.
+
+#### Installing Frida
+
+[Frida](https://www.frida.re "frida") is a runtime instrumentation framework that lets you inject snippets of JavaScript or your own library into native apps on Android and iOS. If you have already read the Android section of this guide, you should already be quite familiar with it. The good news is that Frida is also compatible with iOS, where it offers many of the same useful features.
+
+I you haven't already, you need to install the Frida Python package on your host machine:
+
+```
+$ pip install frida
+```
+
+To be able to connect Frida to an app running on an iOS device, you also need a way of injecting the Frida runtime into that app. Doing this is easy on a jailbroken device: All you need to do is install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
+
+Start Cydia and add Frida’s repository by going to Manage -> Sources -> Edit -> Add and enter `https://build.frida.re`. You should now be able to find and install the Frida package.
+
+Connect your device via USB and verify that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
+
+```
+$ frida-ps -U
+PID  Name
+---  ----------------
+963  Mail
+952  Safari
+416  BTServer
+422  BlueTool
+791  CalendarWidget
+451  CloudKeychainPro
+239  CommCenter
+764  ContactsCoreSpot
+(...)
+```
+
+We'll demonstrate a few more uses for Frida below, but first let's have a look at what to do if you're for some reason forced to work on a non-jailbroken device.
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
@@ -482,13 +479,86 @@ A [video](https://github.com/sensepost/objection#sample-usage "Objection - Video
 - SSL Pinning bypasses or
 - dump the iOS keychain, and export it to a file.
 
-<!--
+### Method Tracing with Frida
 
-#### Method Tracing with Frida
+Frida is a flexible tool that is useful in many situations. 
 
-TODO
+A common use-case in security testing is intercepting selected Objective-C methods. For example, you might be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests performed with iOS standard HTTP APIs, and show how to inject it into the Safari web browser.
 
--->
+In the following examples we'll assume that you are working on a jailbroken device. If that's not the case, you'll first need to follow the steps outlined in the previous section to repackage the Safari app. 
+
+Frida comes with a ready-made tool for function tracing called `frida-trace`. This tool accepts Objective-C methods via the `-m` flag. What's nice about frida-trace is that you can also pass it wildcards - for example, if you specify `-[NSURL *]`, frida-trace will automatically install hooks on all selectors of the `NSURL` class.
+
+Run Safari on the device and make sure the device is connected via USB. 
+
+```
+$ frida-trace -U -m "-[NSURL *]" Safari
+Instrumenting functions...                                              
+-[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
+-[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
+(...)
+Started tracing 248 functions. Press Ctrl+C to stop.     
+```
+
+
+```
+           /* TID 0xc07 */
+  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
+ 20313 ms  -[NSURLRequest URL]
+(...)
+ 21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
+ 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80 
+```
+
+
+
+```python
+import sys
+import frida
+
+
+def message_callback(message, data):
+            print(message)
+            print(message['payload'])
+
+frida_code = """
+
+    var URL = ObjC.classes.NSURLRequest["- initWithURL:];
+
+    // Intercept the method
+    Interceptor.attach(URL.implementation, {
+      onEnter: function(args) {
+
+        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
+
+        var NSString = ObjC.classes.NSString;
+
+        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
+
+        NSLog(args[2].absoluteString_());
+
+        pool.release();
+      }
+    });
+
+
+"""
+
+process = frida.get_usb_device().attach("Safari")
+script = process.create_script(frida_code)
+script.on('message', message_callback)
+script.load()
+
+sys.stdin.read()
+```
+
+
+<img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
+
+To unlock its full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
+
+[Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/)
+
 
 ### Monitoring Console Logs
 
