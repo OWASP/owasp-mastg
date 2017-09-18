@@ -8,7 +8,7 @@ However, iOS apps run in a more restricted environment than their desktop counte
 
 To protect users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. The Apple App store is the only official application distribution platform. There developers can offer their apps and consumers can buy, download, and install apps. This distribution style differs from Android, which supports several app stores and sideloading (installing an app on your iOS device without using the official App store). 
 
-In the past, sideloading  was  possible only with a jailbreak or complicated workarounds. With iOS 9 or higher, it is possible to [sideload via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8").
+In the past, sideloading was  possible only with a jailbreak or complicated workarounds. With iOS 9 or higher, it is possible to [sideload via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8").
 
 iOS apps are isolated from each other via the Apple sandbox (historically called Seatbelt),s a mandatory access control (MAC) mechanisms describing the resources an app can and can't access. Compared to Android's extensive Binder IPC facilities, iOS offers very few IPC options, minimizing the potential attack surface.
 
