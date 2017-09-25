@@ -23,7 +23,7 @@ Two available policies define acceptable forms of authentication:
 
 - `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C): When available, the user is prompted to perform TouchID authentication. If TouchID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
 
-- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where user the is prompted for TouchID.
+- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where the user is prompted for TouchID.
 
 The `evaluatePolicy` function returns a boolean value indicating whether the user has authenticated successfully.
 
@@ -49,9 +49,9 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 
 #####  Using Keychain Services for Local Authentication
 
-The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data identifying the user stored by the Keychain. In order to authenticate a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
+The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data identifying the user be stored in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
 
-The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user will pass Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
+The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
 
 In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
 
@@ -174,7 +174,7 @@ Usage of frameworks in an app can also be detected by analyzing the app binary's
 $ otool -L <AppName>.app/<AppName>
 ```
 
-If `LocalAuhentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuhentication.framework` uses `Security.framework` under the hood):
+If `LocalAuthentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuthentication.framework` uses `Security.framework` under the hood):
 
 ```
 /System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication
@@ -192,7 +192,7 @@ It is important to remember that Local Authentication framework is an event-base
 
 #### Dynamic Analysis
 
-On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") can be used to bypass LocalAuthentication. Swizzler uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Install Swizzler2 and follow the steps below to activate this feature:
+On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
 
 - Settings->Swizzler
 - Enable "Inject Swizzler into Apps"
@@ -205,6 +205,8 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - Close the app and start it again
 - When the TouchID prompt shows click "cancel"
 - If the application flow continues without requiring the touchID then the bypass has worked.
+
+If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you will have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses cycript instead of frida is also available in Needle.
 
 Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
