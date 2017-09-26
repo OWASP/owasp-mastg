@@ -573,9 +573,17 @@ main[1] cont
 
 This is the plaintext string you're looking for!
 
-The `java.lang.String.equals` breakpoint might be too common, so it can be reached multiple times, even before you are able to enter arbitrary text in the edit field, and tap the "verify" button. In this case, it is recommended to clear the `java.lang.String.equals` breakpoint temporarily, and set a new breakpoint in the interesting method that performs the string comparisson. Remember, from the "static analysis" section, the method was `sg.vantagepoint.uncrackable1.a.a`.
+The `java.lang.String.equals` breakpoint might be too common, so it can be reached multiple times. It can be reached even before been able to enter arbitrary text in the edit field, and tap the "verify" button. In this case, it is recommended to clear the `java.lang.String.equals` breakpoint temporarily. First, set a new breakpoint in the interesting method that performs the string comparisson. Remember, from the "static analysis" section, the method was `sg.vantagepoint.uncrackable1.a.a`.
 
-The list of current breakpoints can be displayed with the `clear` command, and a specific breakpoint can be removed with the `clear java.lang.String.equals` command. Therefore, the suggested sequence of actions would be: add the new `sg.vantagepoint.uncrackable1.a.a` breakpoint, remove the `java.lang.String.equals` breakpoint, resume the execution, enter the arbitrary text and click the verify button and, once the `a.a` method breakpoint is reached, add again the `java.lang.String.equals` breakpoint, and iterate several times through the `resume` and `locals` commands until the secret is obtained. The goal of this apporach is to minimize the number of times this last String breakpoint is reached. Even with this optimization, this breakpoint will stop the app execution several times until the secret plaintext string is obtained:
+The list of current breakpoints can be displayed with the `clear` command, and a specific breakpoint can be removed with the `clear java.lang.String.equals` command. Therefore, the suggested sequence of actions would be: 
+* Add the new `sg.vantagepoint.uncrackable1.a.a` breakpoint.
+* Remove the previous `java.lang.String.equals` breakpoint.
+* Resume the app execution.
+* Enter the arbitrary text and click the verify button.
+* Once the `a.a` method breakpoint is reached, add again the `java.lang.String.equals` breakpoint.
+* Iterate several times through the `resume` and `locals` commands until the secret is obtained. 
+
+The goal of this apporach is to minimize the number of times this last String breakpoint is reached. Even with this optimization, this breakpoint will stop the app execution several times until the secret plaintext string is obtained:
 
 ```
 main[1] clear
