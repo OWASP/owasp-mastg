@@ -605,25 +605,30 @@ This method searches for the "su" binary within a list of directories (`/system/
 
 <img src="Images/Chapters/0x05c/variables.png" width="700px" />
 
-You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a()` method .
+In order to be able to obtain the methods return values, be sure you enable this especific option in the Android Studio Debugger. The option is disabled by default. It can be enabled from the Debugger `Settings` icon (gear icon available in the bottom left corner), by selecting the "Show Method Return Values" option.
+
+You can see the directory names inside the "Variables" window by clicking "Step Into" in the Debugger view to step into and through the `a()` method (the image below incorrectly shows "Step Over").
 
 <img src="Images/Chapters/0x05c/step_over.png" width="700px" />
 
-Step into the `System.getenv` method with the "Force Step Into" feature.
+Step into the `System.getenv` method with the "Force Step Into" feature to debug its execution (you might need to use it multiple times). You can instead "Step Out" of this method to simply get its return value (the directory names).
 
-After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a()` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications. Otherwise, identifying the next line to be executed would become complicated.
+NOTE: The first time the debug session reaches a core Java or Android class (e.g. System.class), the IDE (e.g. Android Studio) 
+might ask you to make use of its built-in decompiler to inspect and debug the bytecode of that core class (this is an optional step).
 
-If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea  once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
+After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a()` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications, together with the help of the `Frames` view (on the left hand side). Otherwise, identifying the next line to be executed would become complicated.
+
+If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the target app decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
 <img src="Images/Chapters/0x05c/step_out.png" width="700px" />
 
-After the `a()` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the varibales holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
+After the `a()` method gets the directory names, it will search for the `su` binary within these directories. To defeat this check, step through the detection method (using "Step Into") and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value" (you might need to do this action multiple times, for each PATH item).
 
 <img src="Images/Chapters/0x05c/set_value.png" width="700px" />
 
 <img src="Images/Chapters/0x05c/modified_binary_name.png" width="700px" />
 
-Once you modify the binary name or the directory name, `File.exists` should return `false`.
+Once you modify the binary name or the directory name, `File.exists()` should return `false`.
 
 <img src="Images/Chapters/0x05c/file_exists_false.png" width="700px" />
 
