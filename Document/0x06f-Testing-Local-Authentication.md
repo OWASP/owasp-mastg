@@ -49,7 +49,7 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 
 #####  Using Keychain Services for Local Authentication
 
-The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data identifying the user be stored in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
+The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
 
 The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
 
@@ -206,7 +206,7 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - When the TouchID prompt shows click "cancel"
 - If the application flow continues without requiring the touchID then the bypass has worked.
 
-If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you will have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses cycript instead of frida is also available in Needle.
+If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses cycript instead of frida is also available in Needle.
 
 Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
