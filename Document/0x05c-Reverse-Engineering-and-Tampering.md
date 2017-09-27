@@ -390,7 +390,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 ###### Repackaging
 
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `&lt;application&gt;` element. This is the typical configuration of Android devices shipped to end users.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
 When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0," Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool— being able to inspect the run time state of a program makes understanding the program *a lot* easier.
 
@@ -485,8 +485,8 @@ Initializing jdb ...
 
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
-- *classes: list all loaded classes
-- class/method/fields <class id>: Print details about a class and list its method and fields
+- classes: list all loaded classes
+- class/methods/fields <class id>: Print details about a class and list its methods and fields
 - locals: print local variables in current stack frame
 - print/dump <expr>: print information about an object
 - stop in <method>: set a method breakpoint
@@ -572,6 +572,58 @@ main[1] cont
 ```
 
 This is the plaintext string you're looking for!
+
+The `java.lang.String.equals` breakpoint might be too common, so it can be reached multiple times. It can be reached even before been able to enter arbitrary text in the edit field, and tap the "verify" button. In this case, it is recommended to clear the `java.lang.String.equals` breakpoint temporarily. First, set a new breakpoint in the interesting method that performs the string comparisson. Remember, from the "static analysis" section, the method was `sg.vantagepoint.uncrackable1.a.a`.
+
+The list of current breakpoints can be displayed with the `clear` command, and a specific breakpoint can be removed with the `clear java.lang.String.equals` command. Therefore, the suggested sequence of actions would be: 
+* Add the new `sg.vantagepoint.uncrackable1.a.a` breakpoint.
+* Remove the previous `java.lang.String.equals` breakpoint.
+* Resume the app execution.
+* Enter the arbitrary text and click the verify button.
+* Once the `a.a` method breakpoint is reached, add again the `java.lang.String.equals` breakpoint.
+* Iterate several times through the `resume` and `locals` commands until the secret is obtained. 
+
+The goal of this apporach is to minimize the number of times this last String breakpoint is reached. Even with this optimization, this breakpoint will stop the app execution several times until the secret plaintext string is obtained:
+
+```
+main[1] clear
+Breakpoints set:
+        breakpoint android.app.Dialog.setCancelable
+        breakpoint java.lang.String.equals
+
+main[1] stop in sg.vantagepoint.uncrackable1.a.a
+Deferring breakpoint sg.vantagepoint.uncrackable1.a.a.
+It will be set after the class is loaded.
+
+main[1] clear java.lang.String.equals
+Removed: breakpoint java.lang.String.equals
+main[1] resume
+All threads resumed.
+```
+
+Enter the the arbitrary text and click the verify button.
+
+```
+main[1] resume
+All threads resumed.
+> Set deferred breakpoint sg.vantagepoint.uncrackable1.a.a
+
+Breakpoint hit: "thread=main", sg.vantagepoint.uncrackable1.a.a(), line=-1 bci=0
+
+main[1] stop in java.lang.String.equals
+Set breakpoint java.lang.String.equals
+
+main[1] resume
+All threads resumed.
+>
+Breakpoint hit: "thread=main", java.lang.String.equals(), line=924 bci=2
+
+main[1] locals
+Method arguments:
+Local variables:
+anObject = "I want to believe"
+main[1]
+```
 
 ###### Debugging with an IDE
 
