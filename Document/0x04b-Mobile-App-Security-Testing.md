@@ -303,19 +303,64 @@ From the human aspect, this is achieved by creating cross functional teams that 
 
 ###### Overview
 
-As the frequency of deployments to production increases, and DevOps high-performers deploy to production many times a day, it is elementary to automate as many of the security verification tasks as possible. The best approach to facilitate that is by integrating security into the deployment pipeline. A deployment pipeline is a combination of continuous integration and continuous delivery practices, which have been created to facilitate rapid development and receive almost instantaneous feedback upon every commit. More details on the deployment pipeline are provided in the section below.
+Automation is key in DevSecOps: as stated earlier, the frequency of deliveries from development to operation increase when compared to the traditional approach, and activities that usually require time need to keep up, e.g. deliver the same added value while taking more time. Consequently, unproductive activities need to be removed and essential tasks need to be fastened. This impacts infrastructure changes, deployment and security:
+- infrastructure is more and more moving towards **Infrastructure as Code**;
+- deployment is more and more scripted, translated through two concepts: **Continuous Integration** and **Continuous Delivery**;
+- **security activities** are automated as much as possible and take place all along the lifecycle.
 
-###### The Deployment Pipeline
+The sections below provide more details about these three points.
+
+###### Infrastructure as Code
+
+Instead of manually provisioning computing resources (physical servers, virtual machines, ...) and modifying configuration files, Infrastructure as Code makes heavy use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Often, corresponding scripts are stored under version control to facilitate sharing and the resolution of issues. 
+
+Such practices facilitate the collaboration between development and operations teams: 
+- Devs better understand infrastructure through a point of view that is familiar to them and can prepare resources that will be required by the running application, 
+- while Ops operate an environment that better suits the application and share a common language with Devs.
+
+It also facilitates the construction of the different environments required in a classical software creation project, for **development** ("DEV"), **integration** ("INT"), **testing** ("PPR" for Pre-Production. Some tests are usually performed in earlier environments, and tests in PPR are mostly about non-regression and performance with similar data as in production) and **production** ("PRD"), the value of infrastructure as code being that these environments can be very similar (ideally, they should be the same). 
+
+Infrastructure as Code is very commonplace in projects using resources in the Cloud, as many vendors provide APIs that can be used by project teams to provision items (virtual machines, storage spaces, ...) and work on configurations (modify memory sizes or the number of CPUs used in virtual machines, ...) instead of having administrators perform these same activities from monitoring consoles.
+
+The main tools in this domain are Puppet ([Puppet](https://puppet.com/ "Puppet")) and Chef ([Chef](https://www.chef.io/chef/ "Chef")).
+
+###### Deployment
 
 Depending on the maturity of the project organization or the development team, the deployment pipeline can be very sophisticated. In its simplest form, the deployment pipeline consists of a commit phase. The commit phase commonly runs simple compiler checks, the unit test suite, as well as creates a deployable artifact of the application which is called release candidate. A release candidate is the latest version of changes that has been checked into the trunk of the version control system and will be evaluated by the deployment pipeline to verify if it is in line with the established standards to be potentially deployed to production.
 
-The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exist. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#manoranjan, #mcgraw).
+The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exist. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#paul, #mcgraw).
+
+An interesting concept needs to be discussed: the reader will often hear about "CI / CD". CI / CD means "Continuous Integration / Continuous Delivery" in some contexts, "Continuous Integration / Continuous Deployment" in some others. Actually, the logic is :
+- in Continuous Integration, a build action (triggered either by a commit or performed regularly, every 30 minutes for instance) takes all source code and builds a candidate release. Then, tests can be performed and the compliance of the release with pre-defined rules (for security, quality, ...) can be checked. In case compliance is confirmed, the process can move to the next step; otherwise, the development team needs to take appropriate actions to remediate to the issue(s) and propose changes.
+- in Continuous Delivery, the candidate release can move up to the pre-production environment. Then, validation of this release can be performed (either manually or automatically); if the light goes green, deployment can go on. If not, the project team is notified and proper action(s) need to be taken.
+- in Continuous Deployment, the release is directly transitioned from integration to production, e.g. it becomes accessible to the user. However, no release should reach the production environment when significant defects have been identified during previous activities.
+
+Sometimes, when dealing with applications with a low or medium sensitivity, delivery and deployment may be merged in a single step, where no validation is performed after delivery. However, it is strongly advised to keep these two actions separate and have strong validation when dealing with sensitive applications.
+
+###### Security
+
+At this point, the big question becomes: now that other activities implied in delivering code have significantly improved in terms of speed and effectiveness, how can security keep up? How can we maintain an appropriate level of security? For sure, it would not be a totally good news to be able to deliver value to users more often, but with a lower level of security!
+
+Well, again, the answer comes through the concepts of automation and tooling: by implementing these two concepts all along the project lifecycle, security can be kept to the same level as in the past, and even improved. Also, the higher the expected security level, the more controls, checkpoints and emphasis will take place: for instance,
+- Static Application Security Testing (SAST) can take place during the development phase and can be integrated in the Continuous Integration process, with more or less emphasis on scan results; also, more or less demanding Secure Coding Rules can be put in place and their effective implementation checked by SAST tools.
+- Dynamic Application Security Testing (DAST) may be automatically performed after the application has been built (e.g. after Continuous Integration has taken place) and before delivery, again with more or less emphasis on results.
+- Manual validation checkpoints may be added between two consecutive phases, for instance between delivery and deployment. 
+
+However, in DevOps, the security of an application shall not be seen only during the development phase, but must also be considered during operations: for instance,
+- regular scanning should take place (both at the infrastructure and the application levels);
+- pentesting may take place regularly (actually, pentesting should be performed on the version of the application used in production, with data similar to the one in production, but in a dedicated environment. Cf the section on Penetration Testing above for more details);
+- active monitoring should be performed in order to identify any issue and remediate it as soon as possible thanks to the feedback loop.
+
+The level of security of a DevSecOps process shall always be under the responsibility of the reader. However, to provide some guidance and for clarity, here is an example of a process:
+
+![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.JPG)
 
 
 ### References
 
 - [manoranjan] - P. Manoranjan. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press) 2nd Edition, 2013
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
+
 
 
 
