@@ -47,8 +47,6 @@ In the following sections, we will list testing methods and best practices for s
 
 ### Verifying that Appropriate Authentication is in Place
 
-#### Overview
-
 There's no one-size-fits-all approach to authentication. You should first consider whether the authentication method(s) used are appropriate for the app. Authentication can be based on one or more of the following:
 
 - Something the user knows (password, PIN, pattern, etc.)
@@ -74,24 +72,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-
-
 ### Testing 2-Factor Authentication and Step-up Authentication
-
-#### Overview
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
 
@@ -102,11 +83,11 @@ Two-factor authentication (2FA) is standard for apps that allow users to access 
 
 The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
 
-##### Transaction Signing with Push Notifications and PKI
+#### Transaction Signing with Push Notifications and PKI
 
 Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
 
-##### Supplementary Schemes
+#### Supplementary Schemes
 
 You may supplement an authentication scheme with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
 
@@ -129,22 +110,6 @@ Use the app extensively (going through all UI flows) while using an interception
 Given that many OTPs are just numeric values, an attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
 Attempt a brute-force attack on the OTP verification endpoint using BURP Intruder or a similar tool (see also [Testing Excessive Login Attempts](#user-content-testing-excessive-login-attempts)).
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
-- V4.10: "Sensitive transactions require step-up authentication."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-- CWE-308: Use of Single-factor Authentication
 
 
 ### Testing the Password Policy
@@ -227,20 +192,6 @@ Attempt to pass weak passwords to registration and password reset functions, suc
 
 When you're black-box testing, use a dictionary attack to detect weak passwords (this is described in more detail in the next chapter).
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.5: "A password policy exists and is enforced at the remote endpoint."
-
-##### CWE
-
-- CWE-521: Weak Password Requirements
-
 
 ### Testing Excessive Login Attempts
 
@@ -288,26 +239,6 @@ A new window will open. Site requests are sent sequentially, each request corres
 In this example, you can identify the successful attempt by length (password = "P@ssword1").
 
 > Tip: Append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without locking the account, that means the account isn't protected against brute force attacks.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
-
-##### CWE
-
-- CWE-307: Improper Restriction of Excessive Authentication Attempts
-
-##### Tools
-
-- Free and Professional Burp Suite editions - https://portswigger.net/burp/
-Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 
 ### Testing Stateful Session Management
@@ -374,27 +305,6 @@ To verify session timeout:
 3. Leave the session idle until it expires. After session expiry, attempt to use the same session ID to access authenticated functionality.
 
 Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more session management test cases.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
-
-##### CWE
-
-- CWE-613: Insufficient Session Expiration
-
-##### Tools
-
-- OWASP ZAP (Zed Attack Proxy)
-- Burp Suite
-
 
 ### Testing Stateless (Token-Based) Authentication
 
@@ -508,26 +418,6 @@ Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/in
 
 Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-
-##### Tools
-
-- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
-- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
-- [John the ripper](https://github.com/magnumripper/JohnTheRipper)
-
 
 ### Testing OAuth 2.0 Flows
 
@@ -614,27 +504,6 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-#### Remediation
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-
-##### CWE
-
-- CWE-613: Insufficient Session Expiration
-
-##### Tools
-
-- OWASP ZAP (Zed Attack Proxy)
-- Burp Suite
-
 
 ### Testing User Logout
 
@@ -668,16 +537,37 @@ Use an interception proxy for dynamic application analysis. Use the following st
 If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
 The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
+- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
+- V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
 - V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
+- V4.5: "A password policy exists and is enforced at the remote endpoint."
+- V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
+- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
+- V4.10: "Sensitive transactions require step-up authentication."
 
-##### CWE
+#### CWE
 
+- CWE-287: Improper Authentication
+- CWE-307: Improper Restriction of Excessive Authentication Attempts
+- CWE-308: Use of Single-factor Authentication
+- CWE-521: Weak Password Requirements
 - CWE-613: Insufficient Session Expiration
+
+##### Tools
+
+- Free and Professional Burp Suite editions - https://portswigger.net/burp/
+Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
+- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
+- [John the ripper](https://github.com/magnumripper/JohnTheRipper)
