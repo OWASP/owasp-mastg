@@ -253,28 +253,6 @@ adb forward tcp:1234 tcp:1234
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application after you've intercepted it.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-
-##### OWASP MASVS
-
-- V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
-
-##### CWE
-
-- CWE-319 - Cleartext Transmission of Sensitive Information
-
-##### Tools
-
-- Tcpdump - http://www.androidtcpdump.com/
-- Wireshark - https://www.wireshark.org/
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- Burp Suite - https://portswigger.net/burp/
-- Vproxy - https://github.com/B4rD4k/Vproxy
-
 
 ### Making Sure that Critical Operations Use Secure Communication Channels
 
@@ -301,14 +279,23 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 Make sure that critical operations enforce the use of at least one additional channel to confirm user actions. These channels must not be bypassed when executing critical operations. If you're going to implement an additional factor to verify the user's identity, consider [Infobip 2FA library](https://2-fa.github.io/libraries/android-library.html "Infobip 2FA library") or one-time passcodes (OTP) via [Google Authenticator](https://github.com/google/google-authenticator-android "Google Authenticator for Android").
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
-##### OWASP MASVS
+#### OWASP MASVS
+- V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
 - V5.5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
 
-##### CWE
+#### CWE
 - CWE-308 - Use of Single-factor Authentication
+- CWE-319 - Cleartext Transmission of Sensitive Information
 
+#### Tools
+
+- Tcpdump - http://www.androidtcpdump.com/
+- Wireshark - https://www.wireshark.org/
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- Burp Suite - https://portswigger.net/burp/
+- Vproxy - https://github.com/B4rD4k/Vproxy
