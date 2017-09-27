@@ -9,7 +9,7 @@ For your iOS app testing setup you should have at least the following basic setu
 - Laptop with admin rights;
 - WiFi network with client-to-client traffic permitted (multiplexing through USB is also possible);
 - At least one jailbroken iOS device (with desired iOS version);
-- Burp Suite or other interception proxy tool'
+- Burp Suite or other interception proxy tool.
 
 While you can use a Linux or Windows machine for testing, you'll find that many tasks become a chore or are even impossible to perform. To make things worse, the XCode development environment and the iOS SDK are only available for macOS. This means that for source code analysis and debugging, you'll definitely want to work on a Mac - but it also makes black-box testing easier.
 
