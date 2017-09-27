@@ -2,7 +2,7 @@
 
 By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS. 
+You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS.
 
 #### Software Needed on the Host PC or Mac
 
@@ -59,12 +59,86 @@ The first step in rooting a mobile is to unlock its boot loader. The procedure d
 
 The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or [an ad-hoc wireless network is created](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
 
-Once the network is configured and connectivity is established between the testing machine and the mobile device, several other steps need to be done.
+Once the network is configured and connectivity is established between the testing machine and the mobile device, next steps are configuring a proxy and installing a CA certificate.
 
-- The proxy in the network settings of the Android device need to be [configured properly to point to the interception proxy in use](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store the CA certificate might differ.
+###### Configuring Proxy
 
-After finishing these steps and starting the app, the requests should show up in the interception proxy.
+A proxy allows for intercepting and modifying network requests and responses. The configuration procedure will be explained with a usage of [Burp Suite free edition](https://portswigger.net/burp/freedownload).
+
+1. In Burp, go to "Proxy" -> "Options" tab and click "Add" button.
+<img src="Images/Chapters/0x05b/burp-add-proxy.png"/>
+
+2. Set a port number in "Bind to port" field, e.g. 8081. In the next "Bind to address" field, choose "All interfaces" or "Specific address" and then the IP address of your device.
+<img src="Images/Chapters/0x05b/burp-bind-port-and-address.png"/>
+> Please note that you have to set a port which is not currently in use.
+
+3. Your proxy should be ready to use.
+<img src="Images/Chapters/0x05b/burp-running-proxy.png"/>
+
+
+###### Configuring Device To Use The Proxy
+
+Once a listening proxy is awaiting for incoming traffic on your computer, it's time for configuring your mobile device to send its network traffic through the proxy.
+
+1. In your Android device go to "Settings" menu.
+<img src="Images/Chapters/0x05b/android-settings.png"/>
+
+2. Go to "Network & Internet".
+<img src="Images/Chapters/0x05b/android-wifi-settings.png"/>
+
+3. Switch the "Wi-Fi" button on, and tap the "Wi-Fi".
+<img src="Images/Chapters/0x05b/android-wifi-on.png"/>
+
+4. You should be presented with a list of available networks. Find your network and connect to it.
+<img src="Images/Chapters/0x05b/mstg-network.png"/>
+
+5. Once you are connected, hold down on the network name to bring up the context menu. Tap "Modify network".
+<img src="Images/Chapters/0x05b/android-modify-network.png"/>
+
+6. Tap on "Advanced options" and then on "None" in "Proxy" section.
+<img src="Images/Chapters/0x05b/android-advanced-options.png"/>
+
+7. Choose "Manual".
+<img src="Images/Chapters/0x05b/android-proxy-manual.png"/>
+
+8. Specify the IP address of your computer where the proxy is listening into the "Proxy hostname". Enter the port number which you specified in the “Proxy Listeners” section earlier. Tap "Save".
+<img src="Images/Chapters/0x05b/android-proxy-hostname-port.png"/>
+
+9. Now you should be able to handle HTTP connection. To test it go to your Android browser and visit any HTTP web page.
+
+10. You should see the intercepted request in your proxy.
+<img src="Images/Chapters/0x05b/burp-intercepted-request.png"/>
+
+
+> Note that you are able to intercept only HTTP connections. To intercept also HTTPS you have to install Burp's CA certificate on your Android device. The below section explains how to do it.
+
+###### Installing CA certificate on Android device
+
+The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store the CA certificate might differ. The below mentioned example is based on Android 8.0 on Nexus 5x device.
+
+1. On your computer with running proxy, visit the following address: http://burp. In the top-right corner, right click on "CA Certificate" and rename the downloaded file with ".cer" extension, e.g. "cacert.cer".
+<img src="Images/Chapters/0x05b/burp-ca-certificate.png"/>
+
+2. Move the certificate file to your mobile device. You can do this in few ways by:
+	- sending it in a mail as an attachment and then receive it on a mobile device using mail client.
+	- sending it via USB cable and program [Android File Transfer](https://www.android.com/filetransfer/) or [Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html).
+	- sending it via Bluetooth.
+	- sending it via web server.
+>This guide shows a method of accessing the "cacert.cer" file as a mail attachment.
+3. In your mail client open message you have just sent and download the "cacer.cer" file to your mobile device.
+<img src="Images/Chapters/0x05b/mail-cert-download.png"/>
+
+4. Open a "Downloads" app.
+<img src="Images/Chapters/0x05b/android-downloads-app.png" width="300px"/>
+
+5. Tap on cacert.cer" file. You will be prompted for confirming your password.
+<img src="Images/Chapters/0x05b/android-confirm.png"/>
+
+6. Once you re-authenticated yourself, you will be presented with a certificate install menu. Choose a name for your certificate, e.g. "cacert" and tap "OK".
+<img src="Images/Chapters/0x05b/android-cert-install.png"/>
+
+7. After finishing these steps and starting the app, the requests should show up in the interception proxy. To confirm, got your Android browser and visit any HTTPS web page, e.g. https://owasp.org.
+<img src="Images/Chapters/0x05b/burp-https-intercepted.png"/>
 
 #### Testing on the Emulator
 
