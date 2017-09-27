@@ -24,7 +24,7 @@ Other tools are really a matter of preference and budget. A ton of free and comm
 
 #### Setting up the Android SDK
 
-Local Android SDK installations are managed through Android Studio. Select "Configure->SDK Manager" from the initial Android Studio window, or create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
+Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
 
 - API 21: Android 5.0
 - API 22: Android 5.1
@@ -64,23 +64,7 @@ The Android NDK contains prebuilt versions of the native compiler and toolchain.
 
 Besides picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Native APIs vary by Android API level. Possible sysroots for each Android API level are in `$NDK/platforms/`. Each API level directory contains subdirectories for the various CPUs and architectures.
 
-One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain — a "temporary" toolchain that incorporates the required settings.
-
-The local NDK installation can be managed through Android Studio. Select "Configure->SDK Manager" from the initial Android Studio window, or create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Tools" tab lets you install the NDK.
-
-The NDK is installed at the following locations (referenced as $NDK):
-
-```
-Windows:
-
-C:\Users\<username>\AppData\Local\Android\sdk\ndk-bundle
-
-MacOS:
-
-/Users/<username>/Library/Android/sdk/ndk-bundle
-```
-
-Note: On Linux, you'll need to pick your own SDK (and NDK) location. `/opt`, `/srv`, and `/usr/local` are common locations.
+One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain—a "temporary" toolchain that incorporates the required settings.
 
 To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
 
@@ -125,11 +109,11 @@ Although working with a completely free setup is possible, you should consider i
 
 ##### JEB
 
-[JEB](https://www.pnfsoftware.com "JEB Decompiler"), a commercial decompiler, packs all the functionality necessary for static and dynamic analysis of Android apps into an all-in-one package. It is reasonably reliable and includes prompt support. It has a built-in debugger, which allows for an efficient workflow—setting breakpoints directly in the decompiled (and annotated) sources is invaluable, especially with ProGuard-obfuscated bytecode. Of course, convenience like this doesn't come cheap, and now that JEB is provided via a subscription-based license, you'll have to pay a monthly fee to use it.
+[JEB](https://www.pnfsoftware.com "JEB Decompiler"), a commercial decompiler, packs all the functionality necessary for static and dynamic analysis of Android apps into an all-in-one package. It is reasonably reliable and includes prompt support. It has a built-in debugger, which allows for an efficient workflow—setting breakpoints directly in the decompiled (and annotated) sources is invaluable, especially with ProGuard-obfuscated bytecode. Of course, convenience like this doesn't come cheap, and now that JEB is provided fvia a subscription-based license, you'll have to pay a monthly fee to use it.
 
 ##### IDA Pro
 
-[IDA Pro]( https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't be performed, which can make working with more complex Java apps tedious.
+[IDA Pro]( https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
 
 ### Reverse Engineering
 
@@ -406,7 +390,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 ###### Repackaging
 
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `&lt;application&gt;` element. This is the typical configuration of Android devices shipped to end users.
 
 When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0," Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool— being able to inspect the run time state of a program makes understanding the program *a lot* easier.
 
@@ -501,8 +485,8 @@ Initializing jdb ...
 
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
-- classes: list all loaded classes
-- class/methods/fields <class id>: Print details about a class and list its methods and fields
+- *classes: list all loaded classes
+- class/method/fields <class id>: Print details about a class and list its method and fields
 - locals: print local variables in current stack frame
 - print/dump <expr>: print information about an object
 - stop in <method>: set a method breakpoint
@@ -589,58 +573,6 @@ main[1] cont
 
 This is the plaintext string you're looking for!
 
-The `java.lang.String.equals` breakpoint might be too common, so it can be reached multiple times. It can be reached even before been able to enter arbitrary text in the edit field, and tap the "verify" button. In this case, it is recommended to clear the `java.lang.String.equals` breakpoint temporarily. First, set a new breakpoint in the interesting method that performs the string comparisson. Remember, from the "static analysis" section, the method was `sg.vantagepoint.uncrackable1.a.a`.
-
-The list of current breakpoints can be displayed with the `clear` command, and a specific breakpoint can be removed with the `clear java.lang.String.equals` command. Therefore, the suggested sequence of actions would be: 
-* Add the new `sg.vantagepoint.uncrackable1.a.a` breakpoint.
-* Remove the previous `java.lang.String.equals` breakpoint.
-* Resume the app execution.
-* Enter the arbitrary text and click the verify button.
-* Once the `a.a` method breakpoint is reached, add again the `java.lang.String.equals` breakpoint.
-* Iterate several times through the `resume` and `locals` commands until the secret is obtained. 
-
-The goal of this apporach is to minimize the number of times this last String breakpoint is reached. Even with this optimization, this breakpoint will stop the app execution several times until the secret plaintext string is obtained:
-
-```
-main[1] clear
-Breakpoints set:
-        breakpoint android.app.Dialog.setCancelable
-        breakpoint java.lang.String.equals
-
-main[1] stop in sg.vantagepoint.uncrackable1.a.a
-Deferring breakpoint sg.vantagepoint.uncrackable1.a.a.
-It will be set after the class is loaded.
-
-main[1] clear java.lang.String.equals
-Removed: breakpoint java.lang.String.equals
-main[1] resume
-All threads resumed.
-```
-
-Enter the the arbitrary text and click the verify button.
-
-```
-main[1] resume
-All threads resumed.
-> Set deferred breakpoint sg.vantagepoint.uncrackable1.a.a
-
-Breakpoint hit: "thread=main", sg.vantagepoint.uncrackable1.a.a(), line=-1 bci=0
-
-main[1] stop in java.lang.String.equals
-Set breakpoint java.lang.String.equals
-
-main[1] resume
-All threads resumed.
->
-Breakpoint hit: "thread=main", java.lang.String.equals(), line=924 bci=2
-
-main[1] locals
-Method arguments:
-Local variables:
-anObject = "I want to believe"
-main[1]
-```
-
 ###### Debugging with an IDE
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect—it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
@@ -673,30 +605,25 @@ This method searches for the "su" binary within a list of directories (`/system/
 
 <img src="Images/Chapters/0x05c/variables.png" width="700px" />
 
-In order to be able to obtain the methods return values, be sure you enable this especific option in the Android Studio Debugger. The option is disabled by default. It can be enabled from the Debugger `Settings` icon (gear icon available in the bottom left corner), by selecting the "Show Method Return Values" option.
-
-You can see the directory names inside the "Variables" window by clicking "Step Into" in the Debugger view to step into and through the `a()` method (the image below incorrectly shows "Step Over").
+You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a()` method .
 
 <img src="Images/Chapters/0x05c/step_over.png" width="700px" />
 
-Step into the `System.getenv` method with the "Force Step Into" feature to debug its execution (you might need to use it multiple times). You can instead "Step Out" of this method to simply get its return value (the directory names).
+Step into the `System.getenv` method with the "Force Step Into" feature.
 
-NOTE: The first time the debug session reaches a core Java or Android class (e.g. System.class), the IDE (e.g. Android Studio) 
-might ask you to make use of its built-in decompiler to inspect and debug the bytecode of that core class (this is an optional step).
+After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a()` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications. Otherwise, identifying the next line to be executed would become complicated.
 
-After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a()` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications, together with the help of the `Frames` view (on the left hand side). Otherwise, identifying the next line to be executed would become complicated.
-
-If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the target app decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
+If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea  once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
 <img src="Images/Chapters/0x05c/step_out.png" width="700px" />
 
-After the `a()` method gets the directory names, it will search for the `su` binary within these directories. To defeat this check, step through the detection method (using "Step Into") and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value" (you might need to do this action multiple times, for each PATH item).
+After the `a()` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the varibales holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
 <img src="Images/Chapters/0x05c/set_value.png" width="700px" />
 
 <img src="Images/Chapters/0x05c/modified_binary_name.png" width="700px" />
 
-Once you modify the binary name or the directory name, `File.exists()` should return `false`.
+Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
 <img src="Images/Chapters/0x05c/file_exists_false.png" width="700px" />
 
@@ -979,7 +906,7 @@ You then locate the certificate pinning checks in the Smali source code. Searchi
 
 In our example, a search for "X509TrustManager" returns one class that implements a custom Trustmanager. The derived class implements the methods `checkClientTrusted`, `checkServerTrusted`, and `getAcceptedIssuers`.
 
-To bypass the pinning check, ass the `return-void` opcode to the first line of each method. This opcode causes the checks to return immediately. With this modification, no certificate checks are performed, and the application accepts all certificates.
+To bypass the pinning check, add the `return-void` opcode to the first line of each method. This opcode causes the checks to return immediately. With this modification, no certificate checks are performed, and the application accepts all certificates.
 
 ```smali
 .method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
@@ -1088,7 +1015,7 @@ Here are some more APIs FRIDA offers on Android:
 - Scan process memory for occurrences of a string
 - Intercept native function calls to run your own code at function entry and exit
 
-Some features don't yet work on current Android devices. Most notably, the FRIDA Stalker—a code tracing engine based on dynamic recompilation—doesn't support ARM at the time of writing (version 7.2.0). Also, support for ART was only recently included, so the Dalvik runtime is still better supported.
+The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 (https://www.frida.re/news/2017/08/25/frida-10-5-released/). Some features have limitted support on current Android devices, such as support for ART (https://www.frida.re/docs/android/), so it is recommended to start out with the Dalvik runtime.
 
 ##### Installing Frida
 
