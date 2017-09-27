@@ -2,14 +2,14 @@
 
 In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes serve as the foundation for the more detailed test cases outlined in the following chapters. 
 
-In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for an actual device don't run, making the simulator useless for black-box analysis and reverse engineering.
+In contrast to the Android emulator, which fully emulates the processor and hardware of an actual Android device, the simulator in the iOS SDK offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black-box analysis and reverse engineering.
 
 For your iOS app testing setup you should have at least the following basic setup:
 
 - Laptop with admin rights;
 - WiFi network with client-to-client traffic permitted (multiplexing through USB is also possible);
 - At least one jailbroken iOS device (with desired iOS version);
-- Burp Suite or other interception proxy tool'
+- Burp Suite or other interception proxy tool.
 
 While you can use a Linux or Windows machine for testing, you'll find that many tasks become a chore or are even impossible to perform. To make things worse, the XCode development environment and the iOS SDK are only available for macOS. This means that for source code analysis and debugging, you'll definitely want to work on a Mac - but it also makes black-box testing easier.
 
@@ -517,9 +517,9 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property named `absoluteString` that allows us to retrieve the the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property named `absoluteString` that should contain the absolute URL represented by the `NSURL` object.
 
-We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed as its argument. The full script is below - make sure to read the code and in-line comments to understand what's going on.
+We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed within its argument. The full script is below - make sure to read the code and in-line comments to understand what's going on.
 
 
 ```python
@@ -527,21 +527,24 @@ import sys
 import frida
 
 
-def message_callback(message, data):
-            print(message)
-            print(message['payload'])
-
+// JavaScript to be injected
 frida_code = """
 
+	// Obtain a reference to the initWithURL: method of the NSURLRequest class
     var URL = ObjC.classes.NSURLRequest["- initWithURL:];
-
+ 
     // Intercept the method
     Interceptor.attach(URL.implementation, {
       onEnter: function(args) {
 
+      	// We should always initialize an autorelease pool before interacting with Objective-C APIs
+
         var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
 
         var NSString = ObjC.classes.NSString;
+
+        // Obtain a reference to the NSLog function, and use it to print the URL value
+        // args[2] refers to the first method argument (NSURL *url)
 
         var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
 
@@ -562,10 +565,11 @@ script.load()
 sys.stdin.read()
 ```
 
+Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (in case you don't know how to access the logs, we'll explain how to do it in he following section). Try opening a new URL in Safari, and you should see output from Frida in the logs.
 
 <img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
 
-To unlock its full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
+Of course, is only the tip of the iceberg of what you can do with Frida. To unlock its full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS. 
 
 [Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/)
 
@@ -595,17 +599,7 @@ Setting up Burp to proxy your traffic through is pretty straightforward. It is a
 
 Portswigger also provides a good [tutorial on setting up an iOS Device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on how to install Burps CA certificate in an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
-#### Certificate Pinning
-
-When you try to intercept the communication between the mobile app and the server, you might fail due to certificate pinning. Certificate pinning is a practice used to tighten the security of the TLS connection. When an application connects to the server using TLS, it checks if the server's certificate is signed with a trusted CA's private key. The verification is based on checking the signature with the public key that is within the device's trusted key store. This in turn contains the public keys of all trusted root CAs.
-
-Certificate pinning means that either the server certificate is bundled within the app binary or the hash of the certificate is hardcoded into the source code and checked when establishing a TLS connection. This would protect against the attack scenario where a CA get's compromised and is issuing a certificate for our domain to a third-party.
-
-Instead of the server certificate also the intermediate certificate of the CA can be used. This has the benefit that the certificate pinning implementation in the app might be valid for 5 to 10 years, instead of changing the server certificate every year and also the need to regularly update the app. For this reason certificate pinning can also become a risk as the server certificate is getting updated mostly on a yearly basis. If a process to update the certificate in the app was not defined and the server certificate is replaced, the whole user base is not able to use the app anymore. An update for the app via App or Play Store also might take a few days. In this case the introduction of a security control can become a risk on it's own for the availability of the service. Besides the technical implementation a business process need to be created that triggers an update for the app once the server certificate will get updated.
-
-A more detailed explanation with a [sample certificate pinning implementation for iOS and Android](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning "Certificate and Public Key Pinning") is provided by OWASP.
-
-##### Bypassing Certificate Pinning
+#### Bypassing Certificate Pinning
 
 One method to disable certificate pinning is to use `[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")`, which can be installed via Cydia store. It will hook on all high-level API calls and bypass the certificate pinning.
 
@@ -629,8 +623,6 @@ If you want to get more details on white-box testing and usual code patters, ref
 To get more information on testing transport security, please refer to section "Testing Network Communication".
 
 ### Network Monitoring/Sniffing
-
-Dynamic analysis by using an interception proxy can be straight forward if standard libraries in iOS are used and all communication is done via HTTP. But what if XMPP or other protocols are used that are not recognized by your interception proxy? What if mobile application development platforms like Xamarin are used, where the produced apps do not use the local proxy settings of your iOS device? In this case we need to monitor and analyze the network traffic first in order to decide what to do next.
 
 On iOS it is possible to remotely sniff all traffic in real-time by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First ensure you have Wireshark installed on your macOS machine.
 

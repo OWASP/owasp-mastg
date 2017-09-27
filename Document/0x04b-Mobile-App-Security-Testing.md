@@ -242,12 +242,13 @@ Whatever the development methodology that is being used, a SDLC always follows t
 For mobile applications, the [OWASP MASVS](https://www.owasp.org/images/f/fe/MASVS_v0.9.3.pdf "OWASP MASVS") can be leveraged to determine the security requirements based on the risk assessment that was conducted in this initial step. It is common, especially for agile projects, to iteratively review the set of requirements based on newly added features and new classes of data that is handled by the application;
 - Then, as architecture and design are ongoing, a foundational artifact must be performed: **Threat Modeling**, which is basically an activity where threats are identified, enumerated, prioritized and their treatment initialized. An input of the Threat Model is the **Security Architecture**, but which can be refined after Threat Modeling (both for software and hardware aspects). **Secure Coding rules** are established and the list of **Security tools** that will be used is created. Also, the strategy for **Security testing** is clarified;
 - All security requirements and design considerations should be stored in the Application Life cycle Management System (ALM), which is typically known as issue tracker, that the development / ops team already uses to ensure that security requirements are tightly integrated into the development workflow. The security requirements should ideally also contain the relevant source code snippets for the used programming language, to ensure that developers can quickly reference them. Another strategy for secure coding guidelines is to create a dedicated repository under version control, that only contains these code snippets, which has many benefits over the traditional approach of storing these guidelines in word documents or PDFs.
-- The next step is to **securely develop software**. In order to improve the security level of produced code, some security activities need to be performed, including **Security Code Reviews**, **Security Static Analysis** and **Security Unit Testing**. While these activities have their equivalents for quality, the same logic needs to be applied for security, e.g. reviewing, analyzing and testing code for security defects (for instance, missing validation of inputs, failing to free all resources, ...);
-- Then comes the long-awaited moment to perform tests on the release candidate: **Penetration Testing** ("Pentests"), using both manual and automated techniques;
-- And finally, after software has been **Accredited** by all stakeholders, it can be transitioned to Operation teams and safely put in Production.
+- The next step is to **securely develop software**. In order to improve the security level of produced code, some security activities need to be performed, including **Security Code Reviews**, **Static Application Security Testing (SAST)** and **Security Unit Testing**. While these activities have their equivalents for quality, the same logic needs to be applied for security, e.g. reviewing, analyzing and testing code for security defects (for instance, missing validation of inputs, failing to free all resources, ...);
+- Then comes the long-awaited moment to perform tests on the release candidate: **Penetration Testing** ("Pentests"), using both manual and automated techniques; **Dynamic Application Security Testing (DAST)** is also generally performed during this phase;
+- And finally, after software has been **Accredited** during **Acceptance** by all stakeholders, it can be safely transitioned to **Operation** teams and put in Production.
+- The last phase, too often neglected, is about safely **Decommissioning** software after its end of use.
 
 The picture below shows all the phases with the different artifacts:
--- TODO [Add a picture of a SDLC diagram that clarifies the description above] --
+![General description of SDLC](Images/Chapters/0x04b/SDLCOverview.JPG)
 
 Based on the general risk profile of the project, some artifacts may be simplified (or even skipped) while others may be added (formal intermediary approvals, formal documentation of certain points, ...). **Always keep in mind a SDLC is meant to bring risk reduction to software development and is a framework that helps put in place controls that will reduce those risks to an acceptable level.** While this is a generic description of SDLC, always tailor this framework to the needs of your projects.
 
@@ -255,9 +256,7 @@ Based on the general risk profile of the project, some artifacts may be simplifi
 ##### Defining a Test Strategy
 
 The purpose of a test strategy is to define which tests will be performed all along the SDLC and how often. Its goal is to make sure security objectives are met by the final software product, which are generally expressed by customers / legal / marketing / corporate teams, while being cost-effective. 
-The test strategy is generally created at the beginning of a project, after risks have been clarified (Initiation phase) but before code development (Coding phase) starts. It generally takes place during the Architecture and Design phase. It takes inputs from activities such as Risk Management, Threat Modeling, Security Engineering, etc.
-
--- TODO [Add diagram (in the form of a workflow) showing inputs of a Test Strategy, and outputs (test cases, ...)] --
+The test strategy is generally created at the beginning of a project in the Secure Design phase, after risks have been clarified (Initiation phase) but before code development (Secure Implementation phase) starts. It takes inputs from activities such as Risk Management, previous Threat Modeling (if any), Security Engineering, etc.
 
 A Test Strategy does not always need to be formally written: it may be described through Stories (in Agile projects), quickly written in the form of checklists, or test cases could be written in a given tool; however, it definitely needs to be shared, as it may be defined by the Architecture team, but will have to be implemented by other teams such as Development, Testing, QA. Moreover, it needs to be agreed upon by all technical teams as it should not place unacceptable burdens on any of them.
 
@@ -290,33 +289,83 @@ In this model, testing activities happen in sequence and are performed as a whol
 
 #### Security Testing in Agile / DevOps and DevSecOps
 
-DevOps refers to practices that focus on a close collaboration between all stakeholders involved in delivering software. DevOps is the logical evolution of Agile in that it enables software to be released to users as rapidly as possible. Besides the collaboration aspect, to a large extent, this is facilitated through heavy automation of the build, test and release process of software and infrastructure changes. This automation is embodied in the deployment pipeline.
+DevOps refers to practices that focus on a close collaboration between all stakeholders involved in software development (generally called Devs) and operation (generally called Ops). It is not about merging Devs and Ops. 
+Originally, development and operations teams were working in silos; pushing developed software to production could take a significant amount of time. As development teams were starting to work in Agile, resulting in the need to move more and more deliveries to production, operation teams had to find a solution to speed up and move at the same pace. DevOps is the necessary evolution to that challenge in that it enables software to be released to users in a faster manner. Besides the collaboration aspect, to a large extent, this is facilitated through heavy automation of the build, test and release process of software and infrastructure changes. This automation is embodied in the deployment pipeline with the concepts of Continuous Integration and Continuous Delivery (CI / CD).
 
 The term DevOps might be mistaken for only expressing collaboration between development and operations teams, however, as Gene Kim, a DevOps thought leader, puts it: "At first blush, it seems as though the problems are just between dev and ops," he says, "but test is in there, and you have information security objectives, and the need to protect systems and data. These are top-level concerns of management, and they have become part of the DevOps picture."
 
-In other words, when you hear "DevOps" today, you should probably be thinking [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery").”
+In other words, DevOps refers to many more things than just development and operations teams working together: it involves of course Devs and Ops, but also quality and security teams, and many other teams depending on the project itself. When you hear "DevOps" today, you should probably be thinking of something like [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery"). Indeed, DevOps values are to increase speed, but also quality, security, reliability, stability and resilience. 
 
-Security is just as important for the business success as the overall quality, performance and usability of an application. As development cycles are shortened and deployment frequencies increased it is elementary to ensure that quality and security is built in from the very beginning. DevSecOps is about bringing security in the DevOps process.
+Security is just as important for the business success as the overall quality, performance and usability of an application. As development cycles are shortened and delivery frequencies increased, it is essential to ensure that quality and security are built in from the very beginning. **DevSecOps** is all about bringing security in the DevOps process. Whereas most of defects were found in production in the past, it puts in place best practices to identify the maximum of defects early in the lifecycle and to minimize the number of defects that are present in the released application.
 
-From the human aspect, this is achieved by creating cross functional teams that work together on achieving business outcomes. This section is going to focus on the interaction with and integration of security into the development life cycle, from the inception of requirements, all the way until the value of the change is made available to users.
+However, DevSecOps is not a linear process with the single goal of delivering the best possible software to operations: it also mandates that operations closely monitor software in production to identify issues and incorporate a quick and efficient feedback loop with development to fix these issues. DevSecOps is a process that puts a heavy emphasis on Continuous Improvement.
+
+![DevSecOps process](Images/Chapters/0x04b/DevSecOpsProcess.JPG)
+
+From the human aspect, this is achieved by creating cross functional teams that work together on achieving business outcomes. This section is going to focus on necessary interactions and on the integration of security into the development lifecycle, from project inception all the way down to the delivery of value to users.
 
 ##### What Agile / DevSecOps are and how testing activities are arranged
 
 ###### Overview
 
-As the frequency of deployments to production increases, and DevOps high-performers deploy to production many times a day, it is elementary to automate as many of the security verification tasks as possible. The best approach to facilitate that is by integrating security into the deployment pipeline. A deployment pipeline is a combination of continuous integration and continuous delivery practices, which have been created to facilitate rapid development and receive almost instantaneous feedback upon every commit. More details on the deployment pipeline are provided in the section below.
+Automation is key in DevSecOps: as stated earlier, the frequency of deliveries from development to operation increase when compared to the traditional approach, and activities that usually require time need to keep up, e.g. deliver the same added value while taking more time. Consequently, unproductive activities need to be removed and essential tasks need to be fastened. This impacts infrastructure changes, deployment and security:
+- infrastructure is more and more moving towards **Infrastructure as Code**;
+- deployment is more and more scripted, translated through two concepts: **Continuous Integration** and **Continuous Delivery**;
+- **security activities** are automated as much as possible and take place all along the lifecycle.
 
-###### The Deployment Pipeline
+The sections below provide more details about these three points.
+
+###### Infrastructure as Code
+
+Instead of manually provisioning computing resources (physical servers, virtual machines, ...) and modifying configuration files, Infrastructure as Code makes heavy use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Often, corresponding scripts are stored under version control to facilitate sharing and the resolution of issues. 
+
+Such practices facilitate the collaboration between development and operations teams: 
+- Devs better understand infrastructure through a point of view that is familiar to them and can prepare resources that will be required by the running application, 
+- while Ops operate an environment that better suits the application and share a common language with Devs.
+
+It also facilitates the construction of the different environments required in a classical software creation project, for **development** ("DEV"), **integration** ("INT"), **testing** ("PPR" for Pre-Production. Some tests are usually performed in earlier environments, and tests in PPR are mostly about non-regression and performance with similar data as in production) and **production** ("PRD"), the value of infrastructure as code being that these environments can be very similar (ideally, they should be the same). 
+
+Infrastructure as Code is very commonplace in projects using resources in the Cloud, as many vendors provide APIs that can be used by project teams to provision items (virtual machines, storage spaces, ...) and work on configurations (modify memory sizes or the number of CPUs used in virtual machines, ...) instead of having administrators perform these same activities from monitoring consoles.
+
+The main tools in this domain are Puppet ([Puppet](https://puppet.com/ "Puppet")) and Chef ([Chef](https://www.chef.io/chef/ "Chef")).
+
+###### Deployment
 
 Depending on the maturity of the project organization or the development team, the deployment pipeline can be very sophisticated. In its simplest form, the deployment pipeline consists of a commit phase. The commit phase commonly runs simple compiler checks, the unit test suite, as well as creates a deployable artifact of the application which is called release candidate. A release candidate is the latest version of changes that has been checked into the trunk of the version control system and will be evaluated by the deployment pipeline to verify if it is in line with the established standards to be potentially deployed to production.
 
-The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exist. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#manoranjan, #mcgraw).
+The commit phase is designed to provide instant feedback to developers and as such is run on every commit to the trunk. Because of that, certain time constraints exist. Typically, the commit phase should run within five minutes, but in any case, shouldn't take longer than 10 minutes to complete. This time constraint is quite challenging in the security context, as many of the currently existing tools can't run in that short amount of time (#paul, #mcgraw).
+
+An interesting concept needs to be discussed: the reader will often hear about "CI / CD". CI / CD means "Continuous Integration / Continuous Delivery" in some contexts, "Continuous Integration / Continuous Deployment" in some others. Actually, the logic is :
+- in Continuous Integration, a build action (triggered either by a commit or performed regularly, every 30 minutes for instance) takes all source code and builds a candidate release. Then, tests can be performed and the compliance of the release with pre-defined rules (for security, quality, ...) can be checked. In case compliance is confirmed, the process can move to the next step; otherwise, the development team needs to take appropriate actions to remediate to the issue(s) and propose changes.
+- in Continuous Delivery, the candidate release can move up to the pre-production environment. Then, validation of this release can be performed (either manually or automatically); if the light goes green, deployment can go on. If not, the project team is notified and proper action(s) need to be taken.
+- in Continuous Deployment, the release is directly transitioned from integration to production, e.g. it becomes accessible to the user. However, no release should reach the production environment when significant defects have been identified during previous activities.
+
+Sometimes, when dealing with applications with a low or medium sensitivity, delivery and deployment may be merged in a single step, where no validation is performed after delivery. However, it is strongly advised to keep these two actions separate and have strong validation when dealing with sensitive applications.
+
+###### Security
+
+At this point, the big question becomes: now that other activities implied in delivering code have significantly improved in terms of speed and effectiveness, how can security keep up? How can we maintain an appropriate level of security? For sure, it would not be a totally good news to be able to deliver value to users more often, but with a lower level of security!
+
+Well, again, the answer comes through the concepts of automation and tooling: by implementing these two concepts all along the project lifecycle, security can be kept to the same level as in the past, and even improved. Also, the higher the expected security level, the more controls, checkpoints and emphasis will take place: for instance,
+- Static Application Security Testing (SAST) can take place during the development phase and can be integrated in the Continuous Integration process, with more or less emphasis on scan results; also, more or less demanding Secure Coding Rules can be put in place and their effective implementation checked by SAST tools.
+- Dynamic Application Security Testing (DAST) may be automatically performed after the application has been built (e.g. after Continuous Integration has taken place) and before delivery, again with more or less emphasis on results.
+- Manual validation checkpoints may be added between two consecutive phases, for instance between delivery and deployment. 
+
+However, in DevOps, the security of an application shall not be seen only during the development phase, but must also be considered during operations: for instance,
+- regular scanning should take place (both at the infrastructure and the application levels);
+- pentesting may take place regularly (actually, pentesting should be performed on the version of the application used in production, with data similar to the one in production, but in a dedicated environment. Cf the section on Penetration Testing above for more details);
+- active monitoring should be performed in order to identify any issue and remediate it as soon as possible thanks to the feedback loop.
+
+The level of security of a DevSecOps process shall always be under the responsibility of the reader. However, to provide some guidance and for clarity, here is an example of a process:
+
+![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.JPG)
 
 
 ### References
 
-- [manoranjan] - P. Manoranjan. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press) 2nd Edition, 2013
+- [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
+
 
 
 
