@@ -6,15 +6,13 @@ In the following chapter, we'll provide an overview of the most common vulnerabi
 
 ### Testing for Injection Flaws
 
-#### Overview
-
 An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into back-end queries or commands. By injecting meta characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the back-end database.
 
 Vulnerabilities of this class are most prevalent in server-side web services. Exploitable instances also exist within mobile apps, but occurrences are less common, plus the attack surface is smaller.
  
 For example, while an app might query a local SQLite database, such databases usually do not store sensitive data (assuming the developer followed basic security practices). This makes SQL injection a non-viable attack vector. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
 
-##### Common Injection Types
+##### Common Types of Injection
 
 ###### SQL Injection
 
@@ -67,9 +65,9 @@ In this example, the local file `/dev/random` is opened where an endless stream 
 
 The current trend in app development focuses mostly on REST/JSON-based services as XML is becoming less common. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries, it could be interpreted by local XML parsers, such as NSXMLParser on iOS. As such, said input should always be validated and meta-characters should be escaped.
 
-#### Finding Injection Flaws
+#### Injection Vectors
 
-Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. Attacks executed through the user interface or network services are less common.
+Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device. In contrast to web applications, attacks executed through the user interface or network services are rare in mobile apps.
 
 Locating a potential vulnerability begins by either:
 
@@ -85,33 +83,15 @@ During a manual security review, you should employ a combination of both techniq
 - Pasteboards
 - User interface
 
-We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
+Verify that the following best practices have been followed:
 
-#### Remediation
-
-In most other cases, vulnerabilities can be prevented by following programming best practices, such as:
-
-- Always type-check untrusted inputs and/or validate the inputs using a white-list of acceptable values. 
-- Use prepared statements with variable binding (i.e. parameterized queries) when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
+- Untrusted inputs are type-checked and/or validated using a white-list of acceptable values. 
+- Prepared statements with variable binding (i.e. parameterized queries) are used when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
 - When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
 
-#### References
+We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
-##### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-
-- CWE-20 - Improper Input Validation
-
-### Testing for Memory Corruption Bugs in Native Code
-
-#### Overview
+### Memory Corruption Bugs
 
 Memory corruption bugs are a popular mainstay with hackers. This class of bug results from a programming error that causes the program to access an unintended memory location. Under the right conditions, attackers can capitalize on this behavior to hijack the execution flow of the vulnerable program and execute arbitrary code. This kind of vulnerability occurs in a number of ways:
 
@@ -131,13 +111,6 @@ The primary goal in exploiting memory corruption is usually to redirect program 
 
 Android apps are, for the most part, implemented in Java which is inherently safe from memory corruption issues by design. However, native apps utilizing JNI libraries are susceptible to this kind of bug.
 
-##### Best Practices
-
-- Avoid using unsafe string functions such as `strcpy`, most other functions beginning with the “str” prefix, `sprint`, `vsprintf`, `gets`, and so on.
-- If you are using C++, use the ANSI C++ string class.
-- If you are writing code in Objective-C, use the NSString class. If you are writing code in C on iOS, you should use CFString, the Core Foundation representation of a string.
-- Do not concatenate untrusted data into format strings.
-
 #### Static Analysis
 
 Static code analysis of low-level code is a complex topic that could easily fill its own book. Automated tools such as [RATS](https://code.google.com/archive/p/rough-auditing-tool-for-security/downloads "RATS - Rough auditing tool for security") combined with limited manual inspection efforts are usually sufficient to identify low-hanging fruits. However, memory corruption conditions often stem from complex causes. For example, a use-after-free bug may actually be the result of an intricate, counter-intuitive race condition not immediately apparent. Bugs manifesting from deep instances of overlooked code deficiencies are generally discovered through dynamic analysis or by testers who invest time to gain a deep understanding of the program.
@@ -153,7 +126,7 @@ The following code snippet shows a simple example for a condition resulting in a
  }  
 ```
 
-- To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
+To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
     - `strcat`
     - `strlcat`
@@ -166,9 +139,15 @@ The following code snippet shows a simple example for a condition resulting in a
     - `snprintf`
     - `gets`
 
-- Look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly;
+Also, look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly.
+
+Verify that the following best practices have been followed:
 
 - When using integer variables for array indexing, buffer length calculations, or any other security-critical operation, verify that  unsigned integer types are used and perform precondition tests are performed to prevent the possibility of integer wrapping.
+- The app does not use unsafe string functions such as `strcpy`, most other functions beginning with the “str” prefix, `sprint`, `vsprintf`, `gets`, etc.;
+- If the app contains C++ code, ANSI C++ string classes are used;
+- iOS apps written in  Objective-C use NSString class. C apps on iOS should use CFString, the Core Foundation representation of a string.
+- No untrusted data is concatenated into format strings.
 
 #### Dynamic Analysis
 
@@ -178,24 +157,7 @@ Fuzz testing techniques or scripts (often called “fuzzers”) will typically g
 
 For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing).
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-
-- CWE-20 - Improper Input Validation
-
-
-### Testing for Cross-Site Scripting Flaws
-
-#### Overview
+### Testing for Cross-Site Scripting
 
 Cross-site scripting (XSS) flaws enable attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
@@ -241,16 +203,17 @@ The best method to test for XSS issues requires using a combination of manual an
 
 A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_Cross_site_scripting_(OTG-INPVAL-001)) refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be ab effective method. For example, the [BURP Scanner](https://portswigger.net/burp/) is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 
-##### CWE
+#### CWE
 
 - CWE-20 - Improper Input Validation
+
