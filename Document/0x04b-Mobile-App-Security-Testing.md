@@ -363,7 +363,7 @@ The level of security of a DevSecOps process shall always be under the responsib
 
 ### References
 
-- [manoranjan] - P. Manoranjan. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press) 2nd Edition, 2013
+- [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
 
 
