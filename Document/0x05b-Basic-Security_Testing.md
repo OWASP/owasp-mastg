@@ -63,7 +63,7 @@ Once the network is configured and connectivity is established between the testi
 
 ###### Configuring Proxy
 
-A proxy allows for intercepting and modifying network requests and responses. The configuration procedure will be explained with a usage of [Burp Suite free edition](https://portswigger.net/burp/freedownload).
+A proxy can intercept and modify network requests and responses. The configuration procedure will be explained with a usage of [Burp Suite free edition](https://portswigger.net/burp/freedownload).
 
 1. In Burp, go to "Proxy" -> "Options" tab and click "Add" button.
 <img src="Images/Chapters/0x05b/burp-add-proxy.png"/>
