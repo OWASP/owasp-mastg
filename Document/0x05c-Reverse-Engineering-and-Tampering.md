@@ -963,7 +963,7 @@ Making small changes to the app Manifest or bytecode is often the quickest way t
 1. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest.
 2. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
 
-In most cases, both issues can be fixed by making minor minor changes to the app and then re-signing and re-packaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
+In most cases, both issues can be fixed by making minor changes to the app and then re-signing and re-packaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
 
 ##### Example: Disabling Certificate Pinning
 
@@ -1035,7 +1035,7 @@ public static boolean c() {
 
 This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this.
 
-The method  `XposedHelpers.findAndHookMethodfindAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
+The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
 
 ```java
 package com.awesome.pentestcompany;
