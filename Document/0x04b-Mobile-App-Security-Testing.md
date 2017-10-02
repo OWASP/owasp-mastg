@@ -211,7 +211,7 @@ Many templates can be found on the internet: Google is your friend!
 
 ### Security Testing and the SDLC
 
-Even if the principles of security testing have not fundamentally changed in recent history, the way to develop software has dramatically changed. While software development was becoming quicker with the wide adoption of Agile practices, security testing had to keep up and to become more agile and quicker, while still providing a high degree of confidence in delivered software.
+Even if the principles of security testing have not fundamentally changed in recent history, the way to develop software changed dramatically. While software development became quicker with the wide adoption of Agile practices, security testing had to keep up and to become more agile and quicker, while still providing a high degree of confidence in delivered software.
 
 The following sections will focus on this evolution and will provide elements on modern ways security testing is performed.
 
