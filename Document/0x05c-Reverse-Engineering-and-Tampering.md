@@ -1025,7 +1025,7 @@ To install Frida locally, simply use PyPI:
 $ sudo pip install frida
 ~~~
 
-Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
+Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
 ~~~
 $ frida --version
@@ -1091,7 +1091,7 @@ Java.perform(function () {
 });
 ~~~
 
-The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
+The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
 
 Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
@@ -1229,15 +1229,14 @@ setImmediate(function() { //prevent timeout
     console.log("[*] Starting script");
 
     Java.perform(function() {
-
       bClass = Java.use("sg.vantagepoint.uncrackable1.b");
       bClass.onClick.implementation = function(v) {
          console.log("[*] onClick called");
-      }
-      console.log("[*] onClick handler modified")
+      };
+      console.log("[*] onClick handler modified");
 
-    })
-})
+    });
+});
 ```
 
 Wrap your code in the function `setImmediate` to prevent timeouts (you may or may not need to do this), then call `Java.perform` to use Frida's methods for dealing with Java. Afterwards retrieve a wrapper for the class that implements the `OnClickListener` interface and overwrite its `onClick` method. Unlike the original, the new version of `onClick` just writes console output and *doesn't exit the app*. If you inject your version of this method via Frida, the app should not exit when you click the "OK" dialog button.
@@ -1297,34 +1296,30 @@ setImmediate(function() {
     console.log("[*] Starting script");
 
     Java.perform(function() {
-
         bClass = Java.use("sg.vantagepoint.uncrackable1.b");
         bClass.onClick.implementation = function(v) {
          console.log("[*] onClick called.");
-        }
-        console.log("[*] onClick handler modified")
-
+        };
+        console.log("[*] onClick handler modified");
 
         aaClass = Java.use("sg.vantagepoint.a.a");
         aaClass.a.implementation = function(arg1, arg2) {
             retval = this.a(arg1, arg2);
-            password = ''
+            password = '';
             for(i = 0; i < retval.length; i++) {
                password += String.fromCharCode(retval[i]);
             }
 
             console.log("[*] Decrypted: " + password);
             return retval;
-        }
+        };
         console.log("[*] sg.vantagepoint.a.a.a modified");
 
-
     });
-
 });
 ```
 
-After running the script in Frida and seeing the "[*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get  output similar to the following:
+After running the script in Frida and seeing the "[*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
 ```
 michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
