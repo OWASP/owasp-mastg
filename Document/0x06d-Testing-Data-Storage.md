@@ -2,11 +2,7 @@
 
 The protection of sensitive data, such as authentication tokens or private information, is a key focus in mobile security. In this chapter, you will learn about the APIs iOS offers for local data storage, as well as best practices for using them.
 
-Note that "sensitive data" need to be identified in the context of each specific app. Data classification is described in detail in the chapter "Testing Processes and Techniques".
-
 ### Testing Local Data Storage
-
-#### Overview
 
 As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the crypto hardware available in every iOS device. Assuming that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
 
@@ -87,12 +83,15 @@ When looking for instances of insecure data storage in an iOS app you should con
 - `sqlite3`: The `libsqlite3.dylib` library is required to be added in an application. This library is a C++ wrapper that provides the API to the SQLite commands.
 
 ##### Realm databases
+
 The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
 
 ##### Couchbase Lite Databases
+
 [Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS.
 
 ##### YapDatabase
+
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is comprised of 2 main features:
 
 - A collection/key/value store built atop sqlite for iOS & Mac (the foundation).
@@ -243,29 +242,7 @@ Here is a sample in Swift with which you can use to create keys (notice the `kSe
 
 ```
 
-
-  -- [TODO: add key generation for RSA encryption] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-
-##### CWE
-- CWE-311 - Missing Encryption of Sensitive Data
-- CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-522 - Insufficiently Protected Credentials
-- CWE-922 - Insecure Storage of Sensitive Information
-
-
-
 ### Testing for Sensitive Data in Logs
-
-#### Overview
 
 There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the apps developer once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
 Log files can be created in various ways. The following list shows the mechanisms that are available on iOS:
@@ -312,27 +289,7 @@ Use a define to enable NSLog statements for development and debugging, and disab
 #endif
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.2: "No sensitive data is written to application logs."
-
-##### CWE
-- CWE-117: Improper Output Neutralization for Logs
-- CWE-532: Information Exposure Through Log Files
-- CWE-534: Information Exposure Through Debug Log Files
-
-##### Tools
-- Xcode
-
-
 ### Testing Whether Sensitive Data Is Sent to Third Parties
-
-#### Overview
 
 Different 3rd party services are available that can be embedded into the app to implement different features. These features can vary from tracker services to monitor the user behavior within the app, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
 
@@ -354,26 +311,7 @@ All requests made to external services should be analyzed if any sensitive infor
 
 All data that is sent to 3rd Party services should be anonymized, so no PII data is available that would allow the 3rd party to identify the user account. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-
-##### CWE
-- CWE-359 "Exposure of Private Information ('Privacy Violation')"
-
-##### Tools
-- OWASP ZAP
-- Burp Suite Professional
-
-
 ### Testing for Sensitive Data in the Keyboard Cache
-
-#### Overview
 
 In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
@@ -412,21 +350,6 @@ The application must ensure that data typed into text fields which contains sens
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
-
-##### CWE
-- CWE-524: Information Exposure Through Caching
-
-
-
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
@@ -448,7 +371,6 @@ action == @select(copy:)
 #### Dynamic Analysis
 
 Proceed to a view in the app that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. Enter some values and double tap on the input field. If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define". The "Cut" and "Copy" option should be disabled for sensitive input fields, since it will be possible to retrieve the value by pasting it. If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
-
 
 #### Remediation
 
@@ -489,20 +411,6 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 [pb setValue:@"" forPasteboardType:UIPasteboardNameGeneral];
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
-
-##### CWE
-- CWE-200: Information Exposure
-
-
-
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
 #### Overview
@@ -514,7 +422,6 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
   * XPC Services API
 - **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow for local communication (on the same device) only. They can either be implemented natively or by using Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
 - **NSFileCoordinator**: The class NSFileCoordinator can be used to manage and exchange data between apps through files that are accessible on the local file system for different processes.
-
 
 #### Static Testing
 
@@ -563,52 +470,6 @@ IPC mechanisms should be verified via static analysis in the iOS source code. At
 XPC services is the most secure and flexible way when implementing IPC on iOS and should be used primarily.
 
 [NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.6: "No sensitive data is exposed via IPC mechanisms."
-
-##### CWE
-- CWE-634 - Weaknesses that Affect System Processes
-
-
-
-### Testing for Sensitive Data Disclosure Through the User Interface
-
-##### Overview
-
-<!-- TODO [Add content on overview for "Testing for Sensitive Data Disclosure Through the User Interface"] -->
-
-#### Static Analysis
-
-<!-- TODO [Add content on white-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
-
-#### Dynamic Analysis
-
-<!-- TODO [Add content on black-box testing of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
-
-#### Remediation
-
-<!-- TODO [Add remediation of "Testing for Sensitive Data Disclosure Through the User Interface"] -->
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-
-##### CWE
-- CWE
-
-
 
 ### Testing for Sensitive Data in Backups
 
@@ -697,21 +558,6 @@ As such, avoid storing any sensitive data in plaintext within any of the files o
 
 While all the files in `Documents/` and `Library/Application Support/` are always being backed up by default, it is possible to [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28 "Where You Should Put Your App’s Files") by calling `[NSURL setResourceValue:forKey:error:]` using the `NSURLIsExcludedFromBackupKey` key.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
-
-##### CWE
-- CWE-200: Information Exposure
-- CWE-538: File and Directory Information Exposure
-
-
-
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
 #### Overview
@@ -748,20 +594,6 @@ Possible remediation method that will set a default screenshot:
 ```
 
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.9: "The app removes sensitive data from views when backgrounded."
-
-##### CWE
-- CWE-200 - Information Exposure
-
-
 
 ### Testing for Sensitive Data in Memory
 
@@ -923,62 +755,43 @@ Finished! Press Ctrl+C
 When you add the flag `-s` all strings are extracted from the dumped raw memory files into the file `strings.txt` and is stored in the directory `dump` of Fridump.
 
 
-##### Needle (Jailbreak needed)
+### References
 
--- ToDo
-
-
-#### Remediation
-
--- ToDo
-
-#### References
-
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M1 - Improper Platform Usage
 - M2 - Insecure Data Storage
 
-##### OWASP MASVS
+#### OWASP MASVS
 
-- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- V2.2: "No sensitive data is written to application logs."
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
+- V2.9: "The app removes sensitive data from views when backgrounded."
 
-##### CWE
+#### CWE
 
-- CWE-316 - Cleartext Storage of Sensitive Information in Memory
+- CWE-117: Improper Output Neutralization for Logs
+- CWE-200: Information Exposure
+- CWE-311 - Missing Encryption of Sensitive Data
+- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-359 "Exposure of Private Information ('Privacy Violation')"
+- CWE-522 - Insufficiently Protected Credentials
+- CWE-524: Information Exposure Through Caching
+- CWE-532: Information Exposure Through Log Files
+- CWE-534: Information Exposure Through Debug Log Files
+- CWE-538: File and Directory Information Exposure
+- CWE-634 - Weaknesses that Affect System Processes
+- CWE-922 - Insecure Storage of Sensitive Information
 
-##### Tools
+#### Tools
 
 - [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
 - [objection](https://github.com/sensepost/objection "objection")
+- OWASP ZAP
+- Burp Suite Professional
 
-
-### Testing the Device-Access-Security Policy
-
-#### Overview
-
-<!-- TODO [Add content for overview of "Testing the Device-Access-Security Policy"] -->
-
-#### Static Analysis
-
-<!-- TODO [Add content for static analysis of "Testing the Device-Access-Security Policy"] -->
-
-#### Dynamic Analysis
-
-<!-- TODO [Add content for dynamic analysis of "Testing the Device-Access-Security Policy"] -->
-
-#### Remediation
-
-<!-- TODO [Add remediation of "Testing the Device-Access-Security Policy"] -->
-
-#### References
-
-##### OWASP MASVS
-- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-
-##### CWE
-- N/A
 
