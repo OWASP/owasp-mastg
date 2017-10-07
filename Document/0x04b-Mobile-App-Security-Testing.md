@@ -296,21 +296,6 @@ In this model, testing activities happen in sequence and are performed as a whol
 
 ##### Security Testing in Agile / DevOps and DevSecOps
 
-DevOps refers to practices that focus on a close collaboration between all stakeholders involved in software development (generally called Devs) and operation (generally called Ops). It is not about merging Devs and Ops. 
-Originally, development and operations teams were working in silos; pushing developed software to production could take a significant amount of time. As development teams were starting to work in Agile, resulting in the need to move more and more deliveries to production, operations teams had to find a solution to speed up and move at the same pace. DevOps is the necessary evolution to that challenge in that it enables software to be released to users in a faster manner. Besides the collaboration aspect, to a large extent, this is facilitated through heavy automation of the build, test and release processes of software and infrastructure changes. This automation is embodied in the deployment pipeline with the concepts of Continuous Integration and Continuous Delivery (CI / CD).
-
-The term DevOps might be mistaken for only expressing collaboration between development and operations teams, however, as Gene Kim, a DevOps thought leader, puts it: "At first blush, it seems as though the problems are just between dev and ops," he says, "but test is in there, and you have information security objectives, and the need to protect systems and data. These are top-level concerns of management, and they have become part of the DevOps picture."
-
-In other words, DevOps refers to much more than just development and operations teams working together: it involves of course Devs and Ops, but also quality and security teams, and many other teams depending on the project itself. When you hear "DevOps" today, you should probably be thinking of something like [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery"). Indeed, DevOps values are to increase speed, but also quality, security, reliability, stability and resilience. 
-
-Security is just as important for the business success as the overall quality, performance and usability of an application. As development cycles are shortened and delivery frequencies increased, it is essential to ensure that quality and security are built in from the very beginning. **DevSecOps** is all about bringing security in the DevOps process. Whereas most of defects were found in production in the past, it puts in place best practices to identify the maximum of defects early in the project lifecycle and to minimize the number of defects that are present in the released application.
-
-However, DevSecOps is not a linear process with the single goal of delivering the best possible software to operations: it also mandates that operations closely monitor software in production to identify issues and incorporate a quick and efficient feedback loop with development to fix these issues. DevSecOps is a process that puts a heavy emphasis on Continuous Improvement.
-
-![DevSecOps process](Images/Chapters/0x04b/DevSecOpsProcess.JPG)
-
-From the human aspect, this is achieved by creating cross functional teams that work together on achieving business outcomes. This section is going to focus on necessary interactions and on the integration of security into the development lifecycle, from project inception all the way down to the delivery of value to users.
-
 Automation is key in DevSecOps: as stated earlier, the frequency of deliveries from development to operations increase when compared to the traditional approach, and activities that usually require time need to keep up, e.g. deliver the same added value while taking less time. Consequently, unproductive activities need to be removed and essential tasks need to be fastened. This impacts infrastructure changes, deployment and security:
 - infrastructure is more and more moving towards **Infrastructure as Code**;
 - deployment is more and more scripted, translated through two concepts: **Continuous Integration** and **Continuous Delivery**;
