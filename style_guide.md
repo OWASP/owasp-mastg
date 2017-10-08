@@ -78,7 +78,7 @@ When presenting your content in a list format:
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
 - Punctuate and capitalize list items consistently.
-- - Don't add end punctuation to list items that are not complete sentences.
+- - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
 - - Use appropriate capitalization and punctuation for list items that individually form complete sentences.
 
 
@@ -138,7 +138,7 @@ were not -> weren't
 will not -> wont  
 would not -> wouldn't  
 you are -> you're  
-you have -> you've  
+you have + *verb* -> you've + *verb* 
 you will -> you'll  
 
 ### Abbreviations
@@ -216,18 +216,23 @@ Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: 
 
 **Serial comma use**
 
-Use a serial comma before "and" for the last item in a run-in list of items. For example:
+Use a serial comma before "and" for the last item in a run-in list of three or more items. For example:
 
 We bought apples, oranges, and tomatoes from the store.
 
 **Technical Terms**
 
-| Noun Form | Adjectival Form |
-| --------- | --------------- |
-|  back end |  backend |
-|server side | server-side |
-|client side | client-side |
-|  Base64    | Base64-  |
+| Noun Form  | Adjectival Form |
+| ---------  | --------------- |
+|  back end  |  backend        |
+|  Base64    | Base64-         |
+| black box  |   *same*        |
+|client side | client-side     |
+|command line|     *same*      |
+| server side| server-side     |
+|snapshot length| NA|
+| use case   |   *same*        |
+| white box  |   *same*        |
 
 ## Comments
 
@@ -238,7 +243,7 @@ Markdown blockquotes can be used for comments in the documents by using ">"/
 
 ## Code and Shell Commands
 
-Use code tags when including sample code and shell commands. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
+Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
 \`\`\`java
 
@@ -257,3 +262,6 @@ When including shell commands, make sure to remove any host names and usernames 
 ```
 $ echo 'Hello World'
 ```
+**In-text keywords**
+
+When they do not occur in a large code block, place the following code-related keywords in backticks (``): function names, method names, commands, class names.
