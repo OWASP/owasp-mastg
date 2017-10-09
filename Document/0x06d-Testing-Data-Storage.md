@@ -4,30 +4,29 @@ The protection of sensitive data, such as authentication tokens or private infor
 
 ### Testing Local Data Storage
 
-As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the crypto hardware available in every iOS device. Assuming that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
+As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the cryptographic hardware available in every iOS device. Assuming that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
 
-##### Data Protection API
+#### Data Protection API
 
-App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access controls for user data stored in flash memory. The API is built on top of the secure enclave, a coprocessor that provides cryptographic operations for data protection key management. A device-specific hardware key - the device UID - is embedded into the secure enclave, ensuring the integrity of data protection even if the operating system kernel is compromised.
+App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access controls for user data stored in flash memory. The API is built on top of the Secure Enclave Processor (SEP) that was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key - the device UID - is embedded into the secure enclave, ensuring the integrity of data protection even if the operating system kernel is compromised.
 
 The data protection architecture is based on a hierarchy of keys. The UID and the user passcode key, which is derived from the user's passphrase using the PBKDF2 algorithm, sits on the top of this hierarchy. Together, they can be used to "unlock" so-called class keys which are associated with different device states (e.g. device is locked/unlocked).
 
 Every file stored in the iOS file system is encrypted with its own individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file.
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
-
 *[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")*
 
 
-Files can be assigned one of four protection classes:
+Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
 
-- **Complete Protection (NSFileProtectionComplete)**: This class key is protected with a key derived from the user passcode and the device UID. It is wiped from memory shortly after the device is locked, making the data inaccessible until the user unlocks the device.
+- **Complete Protection (NSFileProtectionComplete)**: A key derived from the user passcode and the device UID is used to protect this class key. It is wiped from memory shortly after the device is locked, making the data inaccessible until the user unlocks the device.
 
-- **Protected Unless Open (NSFileProtectionCompleteUnlessOpen)**: Behaves similar to Complete Protection, but if the file is opened when unlocked, the app can continue to access the file even if the user locks the device. This is implemented using asymmetric elliptic curve cryptography.
+- **Protected Unless Open (NSFileProtectionCompleteUnlessOpen)**: Behaves similar to Complete Protection, but if the file is opened when unlocked, the app can continue to access the file even if the user locks the device. This protection class is for example used when a mail attachment is downloading in the background.
 
-- **Protected Until First User Authentication (NSFileProtectionCompleteUntilFirstUserAuthentication)**: The file can be accessed from the moment the user unlocks the device for the first time after booting. It can be accessed even if the user subsequently locks the device.
+- **Protected Until First User Authentication (NSFileProtectionCompleteUntilFirstUserAuthentication)**: The file can be accessed from the moment the user unlocks the device for the first time after booting. It can be accessed even if the user subsequently locks the device and the class key is not removed from memory.
 
-- **No Protection (NSFileProtectionNone)**: This class key is protected only with the UID and is kept in Effaceable Storage. This protection class exists to enable fast remote wipe: Deleting the class key immediately makes the data inaccessible.
+- **No Protection (NSFileProtectionNone)**: The class key for this protection class is only protected with the UID. It is stored in the so called "[Effaceable Storage](https://www.safaribooksonline.com/library/view/hacking-and-securing/9781449325213/ch01s03.html "Effaceable Storage")", which is a region of flash memory on the iOS device that allows small amounts of data to be stored. This protection class exists to enable fast remote wipe: Deleting the class key immediately making the data inaccessible.
 
 All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can only happen on the device itself, and requires the correct passcode to be entered.
 
@@ -645,7 +644,7 @@ To summarize, when performing static analysis for sensitive data exposed in memo
   - Overwriting should be done before removing references.
   - Pay attention to third-party components (libraries and frameworks).
     Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
-    
+
 #### Dynamic Analysis
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
@@ -757,6 +756,8 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 ### References
 
+- [Demystifying the Secure Enclave Processor](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf)
+
 #### OWASP Mobile Top 10 2016
 
 - M1 - Improper Platform Usage
@@ -774,16 +775,16 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 #### CWE
 
-- CWE-117: Improper Output Neutralization for Logs
-- CWE-200: Information Exposure
+- CWE-117 - Improper Output Neutralization for Logs
+- CWE-200 - Information Exposure
 - CWE-311 - Missing Encryption of Sensitive Data
 - CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-359 "Exposure of Private Information ('Privacy Violation')"
+- CWE-359 - "Exposure of Private Information ('Privacy Violation')"
 - CWE-522 - Insufficiently Protected Credentials
-- CWE-524: Information Exposure Through Caching
-- CWE-532: Information Exposure Through Log Files
-- CWE-534: Information Exposure Through Debug Log Files
-- CWE-538: File and Directory Information Exposure
+- CWE-524 - Information Exposure Through Caching
+- CWE-532 - Information Exposure Through Log Files
+- CWE-534 - Information Exposure Through Debug Log Files
+- CWE-538 - File and Directory Information Exposure
 - CWE-634 - Weaknesses that Affect System Processes
 - CWE-922 - Insecure Storage of Sensitive Information
 
@@ -791,7 +792,5 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 - [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
 - [objection](https://github.com/sensepost/objection "objection")
-- OWASP ZAP
-- Burp Suite Professional
-
-
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+- [Burp Suite Professional](https://portswigger.net/burp)
