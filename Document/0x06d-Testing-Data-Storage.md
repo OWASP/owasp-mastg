@@ -34,9 +34,9 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 ##### The Keychain
 
-The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can only be accessed through the Keychain APIs. The Keychain items can be encrypted using the device UID and the user PIN/password (if one has been set by the user).
+The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can only be accessed through the Keychain APIs.
 
-On macOS every user application can create as many Keychains as desired and every login account has it's own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different as there is only one Keychain that is available for all apps. Access can however be shared between apps signed by the same developer by using the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") in the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements.
+On macOS every user application can create as many Keychains as desired and every login account has it's own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different, as there is only one Keychain that is available for all apps. Access to the items can be shared between apps signed by the same developer by using the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") in the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements.
 
 The [KeyChain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "Keychain concepts") consists of the following main operations with self-explanatory names:
 
@@ -45,27 +45,26 @@ The [KeyChain API](https://developer.apple.com/library/content/documentation/Sec
 - `SecItemCopyMatching`
 - `SecItemDelete`
 
-Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection is activated by setting the `kSecAttrAccessible` attribute in the `SecItemAdd` or `SecItemUpdate` call. The following Data Protection classes are available:
+Data stored in the Keychain is protected through a class structure that is similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection for Keychain items is configured by setting the `kSecAttrAccessible` key in the `SecItemAdd` or `SecItemUpdate` call. The following [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") can be configured and are the Keychain Data Protection classes:
 
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+- `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
 - `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleWhenUnlocked`: The data in the keychain item can be accessed only while the device is unlocked by the user.
 - `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
 
-Next to the Data Protection classes, there are `AccessControlFlags` which define with which mechanism one can authenticate to unlock the key(`SecAccessControlCreateFlags`):
-- `kSecAccessControlDevicePasscode`: only access the item using a passcode.
-- `kSecAccessControlTouchIDAny` : access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint will not invalidate the item.
-- `kSecAccessControlTouchIDCurrentSet`: access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
-- `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprint (using TouchID) or fallback to the PassCode.
+Next to the Data Protection classes, there are `AccessControlFlags` that define with which mechanism a user  can authenticate to unlock the key (`SecAccessControlCreateFlags`):
+- `kSecAccessControlDevicePasscode`: access the item using a passcode.
+- `kSecAccessControlTouchIDAny` : access the item using one of the fingerprints registered to TouchID. Adding or removing a fingerprint will not invalidate the item.
+- `kSecAccessControlTouchIDCurrentSet`: access the item using one of the fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
+- `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprints (using TouchID) or fallback to the PassCode.
 
 Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key. The key resides in the Secure Enclave.
 
-Next, from iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the remediation chapter for more info on creating the ECC keys.
-iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave.
-
-Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
+From iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
+iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave. You can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
 #### Static Analysis
 
