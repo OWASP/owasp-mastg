@@ -1,5 +1,7 @@
 ## Mobile App Security Testing
 
+Before we dive into the technical ins-and-outs, we'll provide a brief overview of general security testing principles and key terminology. The concepts introduced are largely identical to those found in other types of penetration testing, so if you are an experienced tester, you may want to skip this chapter. 
+
 Throughout the guide, we use "mobile app security testing" as a catch-all phrase for evaluating the security of mobile apps using static and dynamic analysis. In practice, you'll find that various terms such as "mobile app penetration testing", "mobile app security review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app.
 
 In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
@@ -10,15 +12,13 @@ Vulnerability analysis is, generally speaking, the fact of looking for vulnerabi
 
 #### Static Analysis
 
-On the one hand, Static Analysis deals with examining the inner elements of an application without executing it. It often refers to source code analysis, either done manually or aided by an automated tool. Sometimes, it can be close to white-box testing.
-
-When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
+Static analysis deals with examining the security properties of an application without executing it. When executing static analysis, the source code or binary code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automated / manual approach is used: Automated scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage. Today, the buzzword-acronym "SAST" ("Static Application Security Testing") is often used to refer to static analysis.
 
 OWASP provides great resources on [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") which can help in understanding the techniques to be used, its strengths and weaknesses and its limitations.
 
 ##### Automated Static Analysis
 
-In order to fasten the review process, automated analysis tools can be used for Static Application Security Testing (SAST). They check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
+Automated analysis tools check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
 
 While some static code analysis tools do encapsulate a deep knowledge of the underlying rules and semantics required to perform analysis of mobile apps, they can produce a high number of false positives, particularly if the tool is not properly configured for the target environment. The results must therefore always be reviewed by a security professional.
 
@@ -52,6 +52,7 @@ Dynamic analysis must be used in coordination with static analysis: it is not a 
 ##### Cons of Dynamic Analysis
 
 Cons of dynamic analysis are:
+
 - Limited scope of coverage because the mobile application must be foot-printed to identify the specific test area,
 - No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses.
 
