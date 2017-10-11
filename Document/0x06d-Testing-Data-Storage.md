@@ -794,4 +794,3 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 - OWASP ZAP
 - Burp Suite Professional
 
-
