@@ -4,30 +4,29 @@ The protection of sensitive data, such as authentication tokens or private infor
 
 ### Testing Local Data Storage
 
-As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the crypto hardware available in every iOS device. Assuming that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
+As little sensitive data as possible should be saved on permanent local storage. However, in most practical scenarios, at least some type of user-related data needs to be stored. Fortunately, iOS offers secure storage APIs which allow developers to make use of the cryptographic hardware available in every iOS device. Assuming that these APIs are used correctly, key data and files can be secured using hardware-backed 256 bit AES encryption.
 
-##### Data Protection API
+#### Data Protection API
 
-App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access controls for user data stored in flash memory. The API is built on top of the secure enclave, a coprocessor that provides cryptographic operations for data protection key management. A device-specific hardware key - the device UID - is embedded into the secure enclave, ensuring the integrity of data protection even if the operating system kernel is compromised.
+App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access controls for user data stored in flash memory. The API is built on top of the Secure Enclave Processor (SEP) that was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key - the device UID (Unique ID) - is embedded into the secure enclave, ensuring the integrity of data protection even if the operating system kernel is compromised.
 
 The data protection architecture is based on a hierarchy of keys. The UID and the user passcode key, which is derived from the user's passphrase using the PBKDF2 algorithm, sits on the top of this hierarchy. Together, they can be used to "unlock" so-called class keys which are associated with different device states (e.g. device is locked/unlocked).
 
 Every file stored in the iOS file system is encrypted with its own individual per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with one of the class keys, depending on the protection class selected by the app when creating the file.
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
-
 *[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")*
 
 
-Files can be assigned one of four protection classes:
+Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
 
-- **Complete Protection (NSFileProtectionComplete)**: This class key is protected with a key derived from the user passcode and the device UID. It is wiped from memory shortly after the device is locked, making the data inaccessible until the user unlocks the device.
+- **Complete Protection (NSFileProtectionComplete)**: A key derived from the user passcode and the device UID is used to protect this class key. It is wiped from memory shortly after the device is locked, making the data inaccessible until the user unlocks the device.
 
-- **Protected Unless Open (NSFileProtectionCompleteUnlessOpen)**: Behaves similar to Complete Protection, but if the file is opened when unlocked, the app can continue to access the file even if the user locks the device. This is implemented using asymmetric elliptic curve cryptography.
+- **Protected Unless Open (NSFileProtectionCompleteUnlessOpen)**: Behaves similar to Complete Protection, but if the file is opened when unlocked, the app can continue to access the file even if the user locks the device. This protection class is for example used when a mail attachment is downloading in the background.
 
-- **Protected Until First User Authentication (NSFileProtectionCompleteUntilFirstUserAuthentication)**: The file can be accessed from the moment the user unlocks the device for the first time after booting. It can be accessed even if the user subsequently locks the device.
+- **Protected Until First User Authentication (NSFileProtectionCompleteUntilFirstUserAuthentication)**: The file can be accessed from the moment the user unlocks the device for the first time after booting. It can be accessed even if the user subsequently locks the device and the class key is not removed from memory.
 
-- **No Protection (NSFileProtectionNone)**: This class key is protected only with the UID and is kept in Effaceable Storage. This protection class exists to enable fast remote wipe: Deleting the class key immediately makes the data inaccessible.
+- **No Protection (NSFileProtectionNone)**: The class key for this protection class is only protected with the UID. It is stored in the so called "[Effaceable Storage](https://www.safaribooksonline.com/library/view/hacking-and-securing/9781449325213/ch01s03.html "Effaceable Storage")", which is a region of flash memory on the iOS device that allows small amounts of data to be stored. This protection class exists to enable fast remote wipe: Deleting the class key immediately making the data inaccessible.
 
 All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can only happen on the device itself, and requires the correct passcode to be entered.
 
@@ -35,9 +34,9 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 ##### The Keychain
 
-The iOS Keychain is used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can be accessed only through Keychain APIs. The Keychain database is encrypted using the device Key and the user PIN/password (if one has been set by the user).
+The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as a SQLite database that can only be accessed through the Keychain APIs.
 
-By default, each app can only access the Keychain created by itself. Access can however be shared between apps signed by the same developer by using the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") in the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements.
+On macOS every user application can create as many Keychains as desired and every login account has it's own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different, as there is only one Keychain that is available for all apps. Access to the items can be shared between apps signed by the same developer by using the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") in the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access based on the app's `Keychain-access-groups`, `application-identifier` and `application-group` entitlements.
 
 The [KeyChain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "Keychain concepts") consists of the following main operations with self-explanatory names:
 
@@ -46,27 +45,26 @@ The [KeyChain API](https://developer.apple.com/library/content/documentation/Sec
 - `SecItemCopyMatching`
 - `SecItemDelete`
 
-Keychain data is protected using a class structure similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key. Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection is activated by setting the `kSecAttrAccessible` attribute in the `SecItemAdd` or `SecItemUpdate` call. The following Data Protection classes are available:
+Data stored in the Keychain is protected through a class structure that is similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection for Keychain items is configured by setting the `kSecAttrAccessible` key in the `SecItemAdd` or `SecItemUpdate` call. The following [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") can be configured and are the Keychain Data Protection classes:
 
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
+- `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
 - `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleWhenUnlocked`: The data in the keychain item can be accessed only while the device is unlocked by the user.
 - `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
 
-Next to the Data Protection classes, there are `AccessControlFlags` which define with which mechanism one can authenticate to unlock the key(`SecAccessControlCreateFlags`):
-- `kSecAccessControlDevicePasscode`: only access the item using a passcode.
-- `kSecAccessControlTouchIDAny` : access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint will not invalidate the item.
-- `kSecAccessControlTouchIDCurrentSet`: access the item using one of your fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
-- `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprint (using TouchID) or fallback to the PassCode.
+Next to the Data Protection classes, there are `AccessControlFlags` that define with which mechanism a user  can authenticate to unlock the key (`SecAccessControlCreateFlags`):
+- `kSecAccessControlDevicePasscode`: access the item using a passcode.
+- `kSecAccessControlTouchIDAny` : access the item using one of the fingerprints registered to TouchID. Adding or removing a fingerprint will not invalidate the item.
+- `kSecAccessControlTouchIDCurrentSet`: access the item using one of the fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
+- `kSecAccessControlUserPresence`: access the item using either one of the registered fingerprints (using TouchID) or fallback to the PassCode.
 
 Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: the keychain only holds a token, but not the actual key. The key resides in the Secure Enclave.
 
-Next, from iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the remediation chapter for more info on creating the ECC keys.
-iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave.
-
-Next, you can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
+From iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
+iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave. You can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
 #### Static Analysis
 
@@ -645,7 +643,7 @@ To summarize, when performing static analysis for sensitive data exposed in memo
   - Overwriting should be done before removing references.
   - Pay attention to third-party components (libraries and frameworks).
     Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
-    
+
 #### Dynamic Analysis
 
 In order to dump the memory of an iOS app, several different approaches and tools are available that are listed below.
@@ -757,6 +755,8 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 ### References
 
+- [Demystifying the Secure Enclave Processor](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf)
+
 #### OWASP Mobile Top 10 2016
 
 - M1 - Improper Platform Usage
@@ -774,16 +774,16 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 #### CWE
 
-- CWE-117: Improper Output Neutralization for Logs
-- CWE-200: Information Exposure
+- CWE-117 - Improper Output Neutralization for Logs
+- CWE-200 - Information Exposure
 - CWE-311 - Missing Encryption of Sensitive Data
 - CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-359 "Exposure of Private Information ('Privacy Violation')"
+- CWE-359 - "Exposure of Private Information ('Privacy Violation')"
 - CWE-522 - Insufficiently Protected Credentials
-- CWE-524: Information Exposure Through Caching
-- CWE-532: Information Exposure Through Log Files
-- CWE-534: Information Exposure Through Debug Log Files
-- CWE-538: File and Directory Information Exposure
+- CWE-524 - Information Exposure Through Caching
+- CWE-532 - Information Exposure Through Log Files
+- CWE-534 - Information Exposure Through Debug Log Files
+- CWE-538 - File and Directory Information Exposure
 - CWE-634 - Weaknesses that Affect System Processes
 - CWE-922 - Insecure Storage of Sensitive Information
 
@@ -791,6 +791,5 @@ When you add the flag `-s` all strings are extracted from the dumped raw memory 
 
 - [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
 - [objection](https://github.com/sensepost/objection "objection")
-- OWASP ZAP
-- Burp Suite Professional
-
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+- [Burp Suite Professional](https://portswigger.net/burp)

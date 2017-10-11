@@ -350,13 +350,13 @@ Tools like `ProGuard`, which is already included in Android Studio can be used t
 Please note that the above example only ensures that calls to the methods offered by the Log class will be removed. However, if the string to be logged is dynamically constructed, the code for constructing the string might remain in the bytecode. For example, the following code issues an implicit StringBuilder to construct the log statement:
 
 ```java
-Log.v("Private key [byte format]: " + key);
+Log.v(TAG, "Private key [byte format]: " + key);
 ```
 
 The compiled bytecode however, is equivalent to the bytecode of the following log statement, which has the string constructed explicitly:
 
 ```java
-Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+Log.v(TAG, new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 
 What ProGuard guarantees is the removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version used](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
@@ -366,6 +366,7 @@ This is potentially a security risk, as the (now unused) string leaks plain text
 Unfortunately, there is no silver bullet against this issue, but there are few options available:
 
 - Implement a custom logging facility that takes simple arguments and does the construction of the log statements internally.
+
 ```java
 SecureLog.v("Private key [byte format]: ", key);
 ```
