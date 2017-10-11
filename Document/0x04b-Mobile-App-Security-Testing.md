@@ -101,17 +101,11 @@ In any case, think about the actual exploit scenarios and impacts of the vulnera
 
 #### Preparation
 
-Before conducting a test, an agreement must be reached as to what security level will be used to test the app against. The security requirements should ideally have been decided at the beginning of the project, but this may not always be the case. In addition, different organizations have different security needs, and different amounts of resources to invest in test activities. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree on an appropriate level of test coverage.
-
-Organizations / applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor authentication (2FA) may be obligatory for a financial app, as enforced by the respective country central bank and / or financial regulatory authorities.
-
-Security goals / controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
+Before conducting the technical analysis, it is useful to map out a simple threat model and assess the security requirements of the target app (this can be done informally in a pre-kickoff discussion with the client). Depending on the maturity of the client's software development processes, they may have a clear idea about the specific security requirements pertaining to the app - or they might not have given it much thought. 
 
 ![Preparation](Images/Chapters/0x03/mstg-preparation.png)
 
-All involved parties need to agree on the decisions made and on the scope in the checklist, as this will define the baseline for all security testing, regardless if done manually or automatically.
-
-##### Coordinating with the Client
+##### Testing Environment
 
 Setting up a working testing environment can be a challenging task. For instance, when performing testing on-site at client premises, the restrictions on the enterprise wireless access points and networks may make dynamic analysis more difficult. Company policies may prohibit the use of rooted phones or network testing tools (hardware and software) within the enterprise networks. Apps implementing root detection and other reverse engineering countermeasures may add a significant amount of extra work before further analysis can be performed.
 
@@ -181,9 +175,11 @@ The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.ph
 
 ##### Testing for Vulnerabilities
 
+This phase is where the actual fun starts: The tester uses static and dynamic analysis methods to discover vulnerabilities. The methods to do so range from basic automated scanning to manual inspection of the business logic and instrumentation of system APIs. You'll find all the necessary techniques documented in this book.
+
 ##### Exploitation
 
-Unfortunately, due to shortage of time or limited financial resources, many pentests are limited to mapping the application, often using automated scanners (for instance, for vulnerability analysis). While vulnerabilities identified during the previous phase may be interesting, the reality of their effectiveness need to be confirmed on five axes:
+Unfortunately, due to shortage of time or limited financial resources, many penetration tests are limited to vulnerability discovery, often using automated scanners (for instance, for vulnerability analysis). While vulnerabilities identified during the previous phase may be interesting, the reality of their effectiveness need to be confirmed on five axes:
 
 - **Damage potential** - the damage(s) to which the vulnerability can lead if exploited successfully,
 - **Reproducibility** - how easy it is to reproduce the attack,
@@ -191,11 +187,12 @@ Unfortunately, due to shortage of time or limited financial resources, many pent
 - **Affected users** - how many users are affected by the attack,
 - **Discoverability** - how easy it is to discover the vulnerability.
 
-Indeed, against all odds, some vulnerabilities may not be exploitable and may not lead to any compromise or lead to minor ones. In the opposite manner, some others vulnerabilities may seem harmless at first sight while the tester may find them highly dangerous for the application when testing in real conditions. Performing the exploitation phase with care really brings value to a pentest campaign by characterizing vulnerabilities and proving information on their impacts.
+Indeed, against all odds, some vulnerabilities may not be exploitable and may not lead to any compromise or lead to minor ones. In the opposite manner, some others vulnerabilities may seem harmless at first sight while the tester may find them highly dangerous for the application when testing in real conditions. Performing the exploitation phase with care increases the value of the penetration test by characterizing vulnerabilities and proving information on their impacts.
 
 #### Reporting
 
 All the findings the security tester will make during the different phases will be valuable to the customer only as they are clearly documented. A good pentest report will need to include information like (but not limited to):
+
 - an executive summary,
 - description of the scope and context (targeted systems, ...),
 - methodology used,

@@ -122,7 +122,6 @@ The following steps can be used on a jailbroken device to identify how the appli
 3. Perform a grep command of the data that you have stored, such as: `grep -iRn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
-
 It is also possible to analyze the app data directory on a non-jailbroken iOS device using third party applications such as [iMazing](https://imazing.com "iMazing").
 
 1. Proceed to trigger functionality that stores potential sensitive data.
