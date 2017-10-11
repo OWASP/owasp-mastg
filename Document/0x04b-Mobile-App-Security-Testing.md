@@ -175,7 +175,7 @@ The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.ph
 
 ##### Testing for Vulnerabilities
 
-This phase is where the actual fun starts: The tester uses static and dynamic analysis methods to discover vulnerabilities. The methods to do so range from basic automated scanning to manual inspection of the business logic and instrumentation of system APIs. You'll find all the necessary techniques documented in this book.
+This phase is where the actual fun starts: The tester uses static and dynamic analysis methods to discover vulnerabilities. The methods to do so range from basic automated scanning to manual inspection of the business logic and instrumentation of system APIs. This is where the OWASP Mobile Security Testing Guide comes in: You'll find all the necessary tricks and techniques in this book.
 
 ##### Exploitation
 
