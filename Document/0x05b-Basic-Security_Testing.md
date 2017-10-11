@@ -1,16 +1,16 @@
 ## Setting up a Testing Environment for Android Apps
 
-By now, you should have a basic understanding of how Android apps are structured and deployed. In this chapter, we'll talk about setting up an environment for security testing and describe basic processes you'll be using. The content of this chapter servers as a foundation for the more detailed testing methods discussed in later chapters.
+By now, you should have a basic understanding of the way Android apps are structured and deployed. In this chapter, we'll talk about setting up a security testing environment and describe basic testing processes you'll be using. This chapter is the foundation for the more detailed testing methods discussed in later chapters.
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux or Mac OS.
+You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS. 
 
 #### Software Needed on the Host PC or Mac
 
-At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools and emulator, and a manager app to manage the various SDK versions and framework components. With Android Studio, you also get an SDK Manager app that lets you install the Android SDK tools and manage SDKs for various API levels, as well as the emulator and an AVD Manager application to create emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
+At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
 #### Setting up the Android SDK
 
-Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab is where you install SDKs for multiple API levels. Recent API levels:
 
 - API 23: Android 6.0
 - API 24: Android 7.0
@@ -19,7 +19,7 @@ Local Android SDK installations are managed through Android Studio. Create an em
 
 <img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>
 
-Installed SDKs are found at the following locations:
+Installed SDKs are on the following paths:
 
 ```
 Windows:
@@ -31,128 +31,54 @@ MacOS:
 /Users/<username>/Library/Android/sdk
 ```
 
-Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `/usr/local` are common locations.
+Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
 
 #### Testing on a Real Device
 
-If you are planning to do dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test purely on the emulator. However, apps execute quite slowly on the emulator, which can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
 
-When testing on a real device, it is recommended to *root* the device (i.e., modifying the OS so that you can run commands as the root user). This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. This in turn allows you to perform techniques like code injection and function hooking more easily.
+*Rooting* (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
 
-Note however that rooting is risky, and three main consequences need to be clarified before you may proceed. Rooting can have the following negative effects:
+Note that rooting is risky, and three main consequences need to be clarified before you proceed. Rooting can have the following negative effects:
 
-- Usually voids the device warranty (always check the manufacturer policy before taking any action),
-- May "brick" the device, i.e., render it inoperable and unusable.
-- Brings additional security risks as built-in exploit mitigations are often removed.
+- voiding the device warranty (always check the manufacturer's policy before taking any action)
+- "bricking" the device, i.e., rendering it inoperable and unusable
+- creating additional security risks (because built-in exploit mitigations are often removed)
 
-You should not root a personal device that you also use to store your private information. Instead, we recommend getting a cheap, dedicated test device. Many older devices, such as Google's Nexus series, can run the newest Android versions and are perfectly fine for testing.
+You should not root a personal device that you store your private information on. We recommend getting a cheap, dedicated test device instead. Many older devices, such as Google's Nexus series, can run the newest Android versions and are perfectly fine for testing.
 
-**You need to understand that rooting your device is ultimately YOUR own decision and that OWASP shall in no way be held responsible for any damage. In case you feel unsure, always seek expert advice before starting the rooting process.**
+**You need to understand that rooting your device is ultimately YOUR decision and that OWASP shall in no way be held responsible for any damage. If you're uncertain, seek expert advice before starting the rooting process.**
 
-###### What Mobiles Can Be Rooted?
+###### Which Mobiles Can Be Rooted?
 
-Virtually any Android mobile can be rooted. Commercial versions of Android OS, at the kernel level evolutions of Linux OS, are optimized for the mobile world. Here some features are removed or disabled, such as the possibility for a non-privileged user to become the 'root' user (who has elevated privileges). Rooting a phone means adding the feature to become the root user, e.g. technically speaking adding a standard Linux executable called `su` used for switching users.
+Virtually any Android mobile can be rooted. Commercial versions of Android OS (which are Linux OS evolutions at the kernel level) are optimized for the mobile world. Some features have been removed or disabled for these versions, for example, non-privileged users' ability to become the 'root' user (who has elevated privileges). Rooting a phone means allowing users to become the root user, e.g., adding a standard Linux executable called `su`, which is used to change to another user account.
 
-The first step in rooting a mobile is to unlock its boot loader. The procedure depends on each manufacturer. However, for practical reasons, rooting some mobiles is more popular than rooting others, particularly when it comes to security testing: devices created by Google (and manufactured by other companies like Samsung, LG and Motorola) are among the most popular, particularly because they are widely used by developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself to work with rooted devices. A curated list of guide on rooting devices from all major brands can be found in the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
+To root a mobile device, first unlock its boot loader. The unlocking procedure depends on the device manufacturer. However, for practical reasons, rooting some mobile devices is more popular than rooting others, particularly when it comes to security testing: devices created by Google and manufactured by companies like Samsung, LG, and Motorola are among the most popular, particularly because they are used by many developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself. A curated list of guides for rooting all major brand devices is posted on the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
 ##### Network Setup
 
-The available setup options for the network need to be evaluated first. The mobile device used for testing and the machine running the interception proxy need to be placed within the same WiFi network. Either an (existing) access point is used or [an ad-hoc wireless network is created](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+The available network setup options must be evaluated first. The mobile device used for testing and the machine running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
 
-Once the network is configured and connectivity is established between the testing machine and the mobile device, next steps are configuring a proxy and installing a CA certificate.
+Once you've configured the network and established a connection between the testing machine and the mobile device, several steps remain.
 
-###### Configuring Proxy
+- The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 
-A proxy can intercept and modify network requests and responses. The configuration procedure will be explained with a usage of [Burp Suite free edition](https://portswigger.net/burp/freedownload).
-
-1. In Burp, go to "Proxy" -> "Options" tab and click "Add" button.
-<img src="Images/Chapters/0x05b/burp-add-proxy.png"/>
-
-2. Set a port number in "Bind to port" field, e.g. 8081. In the next "Bind to address" field, choose "All interfaces" or "Specific address" and then the IP address of your device.
-<img src="Images/Chapters/0x05b/burp-bind-port-and-address.png"/>
-> Please note that you have to set a port which is not currently in use.
-
-3. Your proxy should be ready to use.
-<img src="Images/Chapters/0x05b/burp-running-proxy.png"/>
-
-
-###### Configuring Device To Use The Proxy
-
-Once a listening proxy is awaiting for incoming traffic on your computer, it's time for configuring your mobile device to send its network traffic through the proxy.
-
-1. In your Android device go to "Settings" menu.
-<img src="Images/Chapters/0x05b/android-settings.png"/>
-
-2. Go to "Network & Internet".
-<img src="Images/Chapters/0x05b/android-wifi-settings.png"/>
-
-3. Switch the "Wi-Fi" button on, and tap the "Wi-Fi".
-<img src="Images/Chapters/0x05b/android-wifi-on.png"/>
-
-4. You should be presented with a list of available networks. Find your network and connect to it.
-<img src="Images/Chapters/0x05b/mstg-network.png"/>
-
-5. Once you are connected, hold down on the network name to bring up the context menu. Tap "Modify network".
-<img src="Images/Chapters/0x05b/android-modify-network.png"/>
-
-6. Tap on "Advanced options" and then on "None" in "Proxy" section.
-<img src="Images/Chapters/0x05b/android-advanced-options.png"/>
-
-7. Choose "Manual".
-<img src="Images/Chapters/0x05b/android-proxy-manual.png"/>
-
-8. Specify the IP address of your computer where the proxy is listening into the "Proxy hostname". Enter the port number which you specified in the “Proxy Listeners” section earlier. Tap "Save".
-<img src="Images/Chapters/0x05b/android-proxy-hostname-port.png"/>
-
-9. Now you should be able to handle HTTP connection. To test it go to your Android browser and visit any HTTP web page.
-
-10. You should see the intercepted request in your proxy.
-<img src="Images/Chapters/0x05b/burp-intercepted-request.png"/>
-
-
-> Note that you are able to intercept only HTTP connections. To intercept also HTTPS you have to install Burp's CA certificate on your Android device. The below section explains how to do it.
-
-###### Installing CA certificate on Android device
-
-The CA certificate of the interception proxy need to be added to the trusted certificates in the certificate storage of the Android device. Due to different versions of Android and modifications of Android OEMs to the settings menu, the location of the menu to store the CA certificate might differ. The below mentioned example is based on Android 8.0 on Nexus 5x device.
-
-1. On your computer with running proxy, visit the following address: http://burp. In the top-right corner, right click on "CA Certificate" and rename the downloaded file with ".cer" extension, e.g. "cacert.cer".
-<img src="Images/Chapters/0x05b/burp-ca-certificate.png"/>
-
-2. Move the certificate file to your mobile device. You can do this in few ways by:
-	- sending it in a mail as an attachment and then receive it on a mobile device using mail client.
-	- sending it via USB cable and program [Android File Transfer](https://www.android.com/filetransfer/) or [Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html).
-	- sending it via Bluetooth.
-	- sending it via web server.
->This guide shows a method of accessing the "cacert.cer" file as a mail attachment.
-3. In your mail client open message you have just sent and download the "cacer.cer" file to your mobile device.
-<img src="Images/Chapters/0x05b/mail-cert-download.png"/>
-
-4. Open a "Downloads" app.
-<img src="Images/Chapters/0x05b/android-downloads-app.png" width="300px"/>
-
-5. Tap on cacert.cer" file. You will be prompted for confirming your password.
-<img src="Images/Chapters/0x05b/android-confirm.png"/>
-
-6. Once you re-authenticated yourself, you will be presented with a certificate install menu. Choose a name for your certificate, e.g. "cacert" and tap "OK".
-<img src="Images/Chapters/0x05b/android-cert-install.png"/>
-
-7. After finishing these steps and starting the app, the requests should show up in the interception proxy. To confirm, got your Android browser and visit any HTTPS web page, e.g. https://owasp.org.
-<img src="Images/Chapters/0x05b/burp-https-intercepted.png"/>
+After completing these steps and starting the app, the requests should show up in the interception proxy.
 
 #### Testing on the Emulator
 
-All of the above steps to prepare a hardware testing device do also apply if an emulator is used. For dynamic testing several tools or VMs are available that can be used to test an app within an emulator environment:
+All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
 
 - AppUse
 - MobSF
 - Nathan
 
-You can also easily create Android Virtual Devices (AVDs) via Android Studio.
+You can also easily create AVDs via Android Studio.
 
 ##### Setting Up a Web Proxy on a Virtual Device
 
-To set up a HTTP proxy on the emulator follow the following procedure, which works on the Android emulator shipping with Android Studio 2.x:
+The following procedure, which works on the Android emulator that ships with Android Studio 2.x, is for setting up an HTTP proxy on the emulator:
 
 1. Set up your proxy to listen on localhost. Reverse-forward the proxy port from the emulator to the host, e.g.:
 
@@ -160,44 +86,44 @@ To set up a HTTP proxy on the emulator follow the following procedure, which wor
 $ adb reverse tcp:8080 tcp:8080
 ```
 
-2. Configure the HTTP proxy in the access point settings of the device:
+2. Configure the HTTP proxy with the device's access point settings:
 - Open the Settings Menu
-- Tap on "Wireless & Networks" -> "Cellular Networks" or "Mobile Networks"
+- Tap on "Wireless & Networks" -> "Cellular Networks" or "Wireless & Networks" -> "Mobile Networks"
 - Open "Access Point Names"
-- Open the existing APN (e.g. "T-Mobile US")
-- Enter "127.0.0.1" in the "Proxy" field and your proxy port in the "Port" field (e.g. "8080")
-- Open the top-right menu and tap "save"
+- Open the existing APN (e.g., "T-Mobile US")
+- Enter "127.0.0.1" in the "Proxy" field and your proxy port in the "Port" field (e.g., "8080")
+- Open the menu at the top right and tap "save"
 
 <img width=300px src="Images/Chapters/0x05b/emulator-proxy.jpg"/>
 
-HTTP and HTTPS requests should now be routed over the proxy on the host machine. Try toggling airplane mode off and on if it doesn't work.
+HTTP and HTTPS requests should now be routed over the proxy on the host machine. If not, try toggling airplane mode off and on.
 
 ##### Installing a CA Certificate on the Virtual Device
 
-An easy way to install a CA certificate is pushing the cert to the device and adding it to the certificate store via Security Settings. For example, you can install the PortSwigger (Burp) CA certificate as follows:
+An easy way to install a CA certificate is to push the certificate to the device and add it to the certificate store via Security Settings. For example, you can install the PortSwigger (Burp) CA certificate as follows:
 
-1. Start Burp and navigate to http://burp/ using a web browser on the host, and download `cacert.der` by clicking the "CA Certificate" button.
-2. Change the file extension from `.der` to `.cer`
+1. Start Burp and use a web browser on the host to navigate to http://burp/, then download `cacert.der` by clicking the "CA Certificate" button.
+2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 
 ```bash
 $ adb push cacert.cer /sdcard/
 ```
 
-4. Navigate to "Settings" -> "Security" -> "Install from SD Card"
-5. Scroll down and tap on `cacert.cer`
+4. Navigate to "Settings" -> "Security" -> "Install from SD Card."
+5. Scroll down and tap `cacert.cer`.
 
-You should now be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
+You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
-An Android Virtual Device (AVD) can be created by using the AVD manager, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices"). The AVD manager can also be started separately from the command line by using the `android` command in the tools directory of the Android SDK:
+You can create an Android Virtual Device with the AVD manager, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices"). You can also start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
 
 ```bash
 $ ./android avd
 ```
 
-Once the emulator is up and running a root connection can be established by using `adb`.
+Once the emulator is up and running, you can establish a root connection with the `adb` command.
 
 ```bash
 $ adb root
@@ -206,25 +132,25 @@ root@generic_x86:/ $ id
 uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:su:s0
 ```
 
-Rooting of an emulator is therefore not needed as root access can be granted through `adb`.
+Rooting an emulator is therefore unnecessary; root access can be established with `adb`.
 
 ##### Restrictions When Testing on an Emulator
 
-There are several downsides when using an emulator. You might not be able to test an app properly in an emulator, if it's relying on the usage of a specific mobile network, or uses NFC or Bluetooth. Testing within an emulator is usually also slower in nature and might lead to issues on its own.
+There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
 
-Nevertheless several hardware characteristics can be emulated, including [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and many more.
+Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
 
 ### Testing Methods
 
 #### Manual Static Analysis
 
-In principle, we talk about white-box testing when the source code (or even better, the complete Android Studio project) is available, and black-box if only APK package is available. In Android app security testing however, the difference is not all that big. The majority of apps can be decompiled easily, and with some reverse engineering knowledge, having access to bytecode and binary code is almost as good as having the original code, except in cases where the release build is purposefully obfuscated.
+In Android app security testing, black-box testing (with access to the compiled binary, but not the original source code) is almost equivalent to white-box testing. The majority of apps can be decompiled easily, and having some reverse engineering knowledge and access to bytecode and binary code is almost as good as having the original code unless the release build has been purposefully obfuscated.
 
-To accomplish the source code testing, you will want to have a setup similar to the developer. You will need a testing environment on your machine with the Android SDK and an IDE installed. It is also recommended to have access either to a physical device or an emulator, so you can debug the app.
+For source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
 
-During **Black box testing** you will not have access to the source code in its original form. Usually, you will have the application package in hand (in [Android .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered with the goal to retrieve parts of the source code.
+During **black box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered to help you retrieve parts of the source code.
 
-In case you need to pull the APK from the device, the following steps should be followed:
+The following pull the APK from the device:
 
 ```bash
 $ adb shell pm list packages
@@ -236,7 +162,7 @@ package:/data/app/com.awesomeproject-1/base.apk
 $ adb pull /data/app/com.awesomeproject-1/base.apk
 ```
 
-An easy way on the CLI to retrieve the source code of an APK is through `apkx`, which also packages `dex2jar` and CFR and automates the extracting, conversion and decompilation steps. Install it as follows:
+`apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. Install it as follows:
 
 ```
 $ git clone https://github.com/b-mueller/apkx
@@ -244,7 +170,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. Run it on the APK that need to be tested:
+This should copy `apkx` to `/usr/local/bin`. Run it on the APK that you want to test as follows:
 
 ```bash
 $ apkx UnCrackable-Level1.apk
@@ -254,36 +180,36 @@ dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
 Decompiling to UnCrackable-Level1/src (cfr)
 ```
 
-If the application is based solely on Java and does not have any native library (code written in C/C++), the reverse engineering process is relatively easy and recovers almost the entire source code. Nevertheless, if the code is obfuscated, this process might become very time consuming and might not be productive. The same applies for applications that contain a native library. They can still be reverse engineered but require low level knowledge and the process is not automated.
+If the application is based solely on Java and doesn't have any native libraries (C/C++ code), the reverse engineering process is relatively easy and recovers almost all the source code. Nevertheless, if the code is obfuscated, this process may be very time-consuming and unproductive. This also applies to applications that contain a native library. They can still be reverse engineered, but the process is not automated and requires knowledge of low-level details.
 
-More details and tools about the Android reverse engineering topic can be found in the "Tampering and Reverse Engineering on Android" section.
+The "Tampering and Reverse Engineering on Android" section contains more details about reverse engineering Android.
 
 #### Automated Static Analysis
 
-Static analysis should be supported through the usage of tools, to make the analysis efficient and to allow the tester to focus on the more complicated business logic. There are a plethora of static code analyzers that can be used, ranging from open source scanners to full blown enterprise ready scanners. The decision on which tool to use depends on your budget, requirements by the client and the preferences of the tester.
+You should use tools for efficient static analysis. They allow the tester to focus on the more complicated business logic. A plethora of static code analyzers are available, ranging from open source scanners to full-blown enterprise-ready scanners. The best tool for the job depends on budget, client requirements, and the tester's preferences.
 
-Some static analyzers rely on the availability of the source code while others take the compiled APK as input.
-It is important to keep in mind that while static analyzers can help us to focus attention on potential problems, they may not be able to find all the problems by itself. Go through each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
+Some static analyzers rely on the availability of the source code; others take the compiled APK as input.
+Keep in mind that static analyzers may not be able to find all problems by themselves even though they can help us focus on potential problems. Review each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
 
-One important thing to note is to configure the static analyzer properly in order to reduce the likelihood of false positives and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming and the effort can become counterproductive if an overly large report need to be manually investigated.
+Configure the static analyzer properly to reduce the likelihood of false positives. and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming, and your efforts can be counterproductive if you must manually investigate a large report.
 
-Automated open source tools for performing security analysis on an APK are:
+There are several open source tools for automated security analysis of an APK.
 
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
 
-See also the section "Static Source Code Analysis" for enterprise tools in the chapter "Testing Tools".
+For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
 #### Dynamic Analysis
 
-Compared to static analysis, dynamic analysis is applied while executing the mobile app. The test cases can range from investigating the file system and changes made to it on the mobile device to monitoring the communication with the endpoint while using the app.
+Unlike static analysis, dynamic analysis is performed while executing the mobile app. The test cases range from investigating the file system to monitoring communication.
 
-When we talk about dynamic analysis of applications that rely on the HTTP(S) protocol, several tools can be used to support the dynamic analysis. The most important tools are so called interception proxies, like OWASP ZAP or Burp Suite Professional to name the most famous ones. An interception proxy allows the tester to have a Man-in-the-middle position in order to read and/or modify all requests made from the app and responses coming from the endpoint for testing Authorization, Session Management and so on.
+Several tools support the dynamic analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; OWASP ZAP and Burp Suite Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 ##### Drozer
 
-[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and begin using Drozer.
+[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
 
 ###### Installing Drozer
 
@@ -302,13 +228,13 @@ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 
 **On Mac:**
 
-On Mac, Drozer is a bit more difficult to install due to missing dependencies. Specifically, Mac OS versions from El Capitan don't have OpenSSL installed, so compiling pyOpenSSL doesn't work. You can resolve those issues by [installing OpenSSL manually]. To install openSSL, run:
+On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
 
 ```
 $ brew install openssl
 ```
 
-Drozer also depends on older versions of some libraries. In order not to mess up the system Python setup, it is better to install Python with homebrew and creating a dedicated environment with virtualenv (using a Python version management tool like [pyenv](https://github.com/pyenv/pyenv "pyenv") is even better, but setting this up is beyond the scope of this book).
+Drozer depends on older versions of some libraries. Avoid messing up the system's Python installation by installing Python with homebrew and creating a dedicated environment with virtualenv. (Using a Python version management tool such as [pyenv](https://github.com/pyenv/pyenv "pyenv") is even better, but this is beyond the scope of this book).
 
 Install virtualenv via pip:
 
@@ -316,7 +242,7 @@ Install virtualenv via pip:
 $ pip install virtualenv
 ```
 
-Create a project directory to work in - you'll download several files into that directory. Change into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder which contains the Python executable files and a copy of the pip library.
+Create a project directory to work in; you'll download several files into it. Navigate into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder, which contains the Python executable files and a copy of the pip library.
 
 ```
 $ virtualenv drozer
@@ -324,7 +250,7 @@ $ source drozer/bin/activate
 (drozer) $
 ```
 
-You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. The pyOpenSSL version required by Drozer has a typo that prevents it from compiling successfully, so need to fix the source before compiling. Fortunately, ropnop has figured out necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
+You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. A typo in the source of the pyOpenSSL version Drozer prevents successful compilation, so you'll need to fix the source before compiling. Fortunately, ropnop has figured out the necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
 Run the following commands:
 
 ```
@@ -353,7 +279,7 @@ $ easy_install drozer-2.3.4-py2.7.egg
 
 **Installing the Agent:**
 
-Drozer agent is the component running on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/), and install it with adb.
+Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
 
 ```
 $ adb install drozer.apk
@@ -361,54 +287,54 @@ $ adb install drozer.apk
 
 **Starting a Session:**
 
-You should now have the Drozer console installed on your host machine, and the Agent running on your USB-connected device or emulator. Now, you need to connect the two and you’re ready to start exploring.
+You should now have the Drozer console installed on your host machine and the Agent running on your USB-connected device or emulator. Now you need to connect the two to start exploring.
 
-Open the Drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
+Open the Drozer application in the running emulator and click the OFF button at the bottom of the app to start an Embedded Server.
 
 ![alt text](Images/Chapters/0x05b/server.png "Drozer")
 
-By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run Drozer on the host to connect to the agent.
+The server listens on port 31415 by default. Use adb to forward this port to the localhost interface, then run Drozer on the host to connect to the agent.
 
 ```bash
 $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
 ```
 
-To show the list of all Drozer modules that can be executed in the current session use the "list" command.
+ Use the "list" command to view all Drozer modules that can be executed in the current session.
 
 **Basic Drozer Commands:**
 
-- To list out all the packages installed on the emulator, run the following command:
+- To list all the packages installed on the emulator, execute the following command:
 
 	`dz> run app.package.list`
 
- * To find out the package name of a specific app, pass  the “-f” along with a search string:
+ - To find the package name of a specific app, pass  "-f" and a search string:
 
 	`dz> run app.package.list –f (string to be searched)`
 
-- To see some basic information about the package, use
+- To see basic information about the package, execute the following command:
 
   	`dz> run app.package.info –a (package name)`
 
-- To identify the exported application components, run the following command:
+- To identify the exported application components, execute the following command:
 
   	`dz> run app.package.attacksurface (package name)`
 
-- To identify the the list of Activities exported in the target application, execute the following command:
+- To identify the list of exported Activities in the target application, execute the following command:
 
   	`dz> run app.activity.info -a (package name)`
 
- * To launch the activities exported,run the following command:
+ * To launch the exported Activities, execute the following command:
 
    	`dz> run app.activity.start --component (package name) (component name)`
 
 **Using Modules:**
 
-Out of the box, Drozer provides modules to investigate various aspects of the Android platform, and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
+Out of the box, Drozer provides modules for investigating various aspects of the Android platform and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
 
 **Finding Modules:**
 
-The official Drozer module repository is hosted alongside the main project on Github. This is automatically setup in your copy of Drozer. You can search for modules using the `module` command:
+The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
 
 ```bash
 dz> module search tool
@@ -433,7 +359,7 @@ mwrlabs.urls
 
 **Installing Modules:**
 
-You can install modules using the `module` command:
+You can install modules with the `module` command:
 
 ```
 dz> module install mwrlabs.tools.setup.sqlite3
@@ -441,12 +367,11 @@ Processing mwrlabs.tools.setup.sqlite3... Already Installed.
 Successfully installed 1 modules, 0 already installed
 ```
 
-This will install any module that matches your query. Newly installed modules are dynamically loaded into the
-console and are available for immediate use.
+This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
 
 #### Network Monitoring/Sniffing
 
-On Android it is possible to [remotely sniff all traffic in real-time by using tcpdump, netcat (nc) and Wireshark](http://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First ensure you have the latest version of [Android tcpdump](http://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+ [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](http://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](http://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```
 # adb root
@@ -454,7 +379,7 @@ On Android it is possible to [remotely sniff all traffic in real-time by using t
 # adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
-When executing `adb root` you might get an error saying `adbd cannot run as root in production builds`. If that's the case install tcpdump like this:
+If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
 ```
 # adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
@@ -464,9 +389,9 @@ $ mount -o rw,remount /system;
 $ cp /data/local/tmp/tcpdump /system/xbin/
 ```
 
-> Remember: In order to use `tcpdump` you need root privileges on the phone!
+> Remember: To use tcpdump, you need root privileges on the phone!
 
-`tcpdump` should now be working, so execute it once to see if it does. Once a few packets are coming in you can stop it by pressing CTRL+c.
+Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
 
 ```
 # tcpdump
@@ -481,55 +406,55 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 0 packets dropped by kernel
 ```
 
-The first step in order to do remote sniffing of the network traffic on the Android phone is by executing `tcpdump` and pipe its output to netcat (nc):
+To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to netcat (nc):
 
 ```
 $ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
-The tcpdump command above is
-- listening on the interface wlan0,
-- defines the size (snaplength) of the capture in bytes to get everything (-s0) and is
-- writing to a file (-w), but instead of a filename we provide `-` which will make tcpdump to write to stdout.
+The tcpdump command above involves
+- listening on the wlan0 interface,
+- defining the size (snapshot length) of the capture in bytes to get everything (-s0), and
+- writing to a file (-w). Instead of a filename, we pass `-`, which will make tcpdump write to stdout.
 
-With the pipe (`|`) we sent all output from tcpdump to netcat that opens a listener on port 11111. Usually you want to monitor the wlan0 interface, in case you need another interface just list the available ones with `$ ip addr`.
+With the pipe (`|`), we sent all output from tcpdump to netcat, which opens a listener on port 11111. You'll usually want to monitor the wlan0 interface. If you need another interface, list the available options with the command `$ ip addr`.
 
-In order to access port 11111 on the Android phone opened by netcat, we need to forward the port via adb to your machine.
+To access port 11111, you need to forward the port to your machine via adb.
 
 ```
-$ adb forward tcp:11111 tcp:11111
+$ adb forward tcp:11111
 ```
 
-With the following command you are connecting to the forwarded port available on your local machine via netcat and piping it to Wireshark.
+The following command connects you to the forwarded port via netcat and piping to Wireshark.
 
 ```
 $ nc localhost 11111 | wireshark -k -S -i -
 ```
 
-Wireshark should start now immediately (-k) and get's all data from stdin (-i -) via netcat that is connecting to the forwarded port. You should see now all the traffic from the wlan0 interface from the Android phone.
+Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
 <img src="Images/Chapters/0x05b/Android_Wireshark.png" width="350px"/>
 
 
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
-Firebase Cloud Messaging (FCM) is the successor of Google Cloud Messaging (GCM) and is a free service offered by Google and allows to send messages between an application server and client apps. The server and client app are communicating via the FCM/GCM connection server that is handling the downstream and upstream messages.
+Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
 ![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
 
-Downstream messages are sent from the application server to the client app (push notifications); upstream messages are sent from the client app to the server.
+Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
-FCM is available for Android and also for iOS and Chrome. FCM provides two connection server protocols at the moment: HTTP and XMPP and there are several differences in the implementation, as described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"). The following example demonstrates how to intercept both protocols.
+FCM is available for Android, iOS, and Chrome. FCM currently provides two connection server protocols: HTTP and XMPP. As described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"), these protocols are implemented differently. The following example demonstrates how to intercept both protocols.
 
 ##### Preparation
 
-FCM can use two different protocols to communicate with the Google backend, either XMPP or HTTP.
+FCM can use either XMPP or HTTP to communicate with the Google backend.
 
 **HTTP**
 
-The ports used by FCM for HTTP are 5228, 5229, and 5230. Typically only 5228 is used, but sometimes also 5229 or 5230 is used.
+FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only port 5228 is used.
 
-- Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
+- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
 
 ```bash
 $ echo "
@@ -539,13 +464,13 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-- The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
 **XMPP**
 
-The [ports used by FCM over XMPP](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") are 5235 (Production) and 5236 (Testing).
+For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") 5235 (Production) and 5236 (Testing).
 
-- Configure a local port forwarding on your machine for the ports used by FCM. The following example can be used on Mac OS X:
+- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
 
 ```bash
 $ echo "
@@ -554,47 +479,48 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-- The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
 ##### Intercepting Messages
 
-Look also into the chapter "Testing Network Communication" and the test case "Man-in-the-middle (MITM) attacks" for further preparation steps and to get ettercap running.
+Read the chapter "Testing Network Communication" and the test case "Man-in-the-middle (MITM) attacks" for further preparation and instructions for running ettercap.
 
-Your testing machine and the Android device need to be in the same wireless network. Start ettercap with the following command and replace the IP addresses with the one of the Android device and the network gateway in the wireless network.
+Your testing machine and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
 
 ```bash
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
-Start using the app and trigger a function that uses FCM. You should see HTTP messages showing up in your interception proxy.
+Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-> When using ettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
+> You need to activate "Support invisible proxying" in Proxy Tab/Options/Edit Interface when using ettercap.
 
-Interception proxies like Burp or OWASP ZAP will not show this traffic, as they are not capable of decoding it properly by default. There are however Burp plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay) that visualize XMPP traffic.
+Interception proxies such as Burp and OWASP ZAP won't show this traffic because they aren't capable of decoding it properly by default. There are, however, Burp plugins that visualize XMPP traffic, such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay).
 
 
 #### Potential Obstacles
 
-For the following security controls that might be implemented into the app you are about to test, it should be discussed with the project team if it is possible to provide a debug build. A debug build has several benefits when provided during a (white box) test, as it allows a more comprehensive analysis.
+Discuss with your project team the possibility of providing a debug build for the following security controls, which may be implemented in the app you're about to test. A debug build provides several benefits for a (white box) test by allowing a more comprehensive analysis.
 
 ##### Certificate Pinning
 
-If the app implements certificate pinning, C.509 certificates provided by an interception proxy are declined and the app will refuse to make any requests through the proxy. To be able to efficiently test during a white box test, a debug build with deactivated certificate pinning should be provided.
+If the app implements certificate pinning, C.509 certificates provided by an interception proxy will be declined and the app will refuse to make any requests through the proxy. To perform an efficient white box test, use a debug build with deactivated certificate pinning.
 
-For a black box test, there are several ways to bypass certificate pinning, for example [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") or [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Therefore bypassing can be done within seconds, but only if the app uses the API functions that are covered for these tools. If the app is using a different framework or library to implement SSL Pinning that is not implemented yet in those tools, the patching and deactivation of SSL Pinning needs to be done manually and can become time consuming.
+There are several ways to bypass certificate pinning for a black box test, for example, [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") and [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a framework or library that those tools don't yet implement, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
 
-To manually deactivate SSL Pinning there are two ways:
-- Dynamical Patching while running the App, by using [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI")
-- [Identify the SSL Pinning logic in smali code, patch it and reassemble the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+There are two ways to manually deactivate SSL Pinning:
+- Dynamic Patching with [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI") while running the app 
+- [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
 
-Once successful, the prerequisites for a dynamic analysis are met and the apps communication can be investigated.
+Deactivating SSL Pinning satisfies the prerequisites for dynamic analysis, after which the app's communication can be investigated.
 
-See also test case "Testing Custom Certificate Stores and Certificate Pinning" for further details.
+See the test case "Testing Custom Certificate Stores and Certificate Pinning" for more details.
 
 ##### Root Detection
 
-Root detection can be implemented using pre-made libraries like [RootBeer](https://github.com/scottyab/rootbeer "RootBeer") or custom checks. An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
+Root detection can be implemented with custom checks or pre-made libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer"). An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
-In a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, root detection can be disabled using a variety of methods which will be introduced later in this book.
+For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
+
