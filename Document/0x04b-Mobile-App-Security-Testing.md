@@ -8,11 +8,11 @@ In this guide we cover mobile app security testing in two different contexts. Th
 
 ### Vulnerability Analysis Overview
 
-Vulnerability analysis is, generally speaking, the fact of looking for vulnerabilities in an app. While this may be done manually, most of the time automated scanners are used to identify the main vulnerabilities of an app. Static and dynamic analysis are ways to run vulnerability analysis.
+Vulnerability analysis is the process of identifying security vulnerabilities in an app. Generally, we distinguish between *static analysis* and *dynamic analysis*. 
 
 #### Static Analysis
 
-Static analysis deals with examining the security properties of an application without executing it. When executing static analysis, the source code or binary code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automated / manual approach is used: Automated scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage. Today, the buzzword-acronym "SAST" ("Static Application Security Testing") is often used to refer to static analysis.
+In static analysis, the source code or binary code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. Notably, static analysis can be applied without executing the app. In most cases, a hybrid automated / manual approach is used: Automated scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage. Today, the buzzword-acronym "SAST" ("Static Application Security Testing") is often used to refer to static analysis.
 
 OWASP provides great resources on [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") which can help in understanding the techniques to be used, its strengths and weaknesses and its limitations.
 
