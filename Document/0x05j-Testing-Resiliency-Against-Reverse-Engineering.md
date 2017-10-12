@@ -470,14 +470,14 @@ The complete code implementing this as a JNI function is below:
 
 ```c
 #include <jni.h>
-#include <string>
 #include <unistd.h>
 #include <sys/ptrace.h>
 #include <sys/wait.h>
+#include <pthread.h>
 
 static int child_pid;
 
-void *monitor_pid(void *) {
+void *monitor_pid() {
 
     int status;
 
@@ -519,18 +519,14 @@ void anti_debug() {
         pthread_t t;
 
         /* Start the monitoring thread */
-
         pthread_create(&t, NULL, monitor_pid, (void *)NULL);
     }
 }
-extern "C"
 
 JNIEXPORT void JNICALL
-Java_sg_vantagepoint_antidebug_MainActivity_antidebug(
-        JNIEnv *env,
-        jobject /* this */) {
+Java_sg_vantagepoint_antidebug_MainActivity_antidebug(JNIEnv *env, jobject instance) {
 
-        anti_debug();
+    anti_debug();
 }
 ```
 

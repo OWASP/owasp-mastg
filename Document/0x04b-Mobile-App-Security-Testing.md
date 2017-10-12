@@ -1,24 +1,24 @@
 ## Mobile App Security Testing
 
+Before we dive into the technical ins-and-outs, we'll provide a brief overview of general security testing principles and key terminology. The concepts introduced are largely identical to those found in other types of penetration testing, so if you are an experienced tester, you may want to skip this chapter. 
+
 Throughout the guide, we use "mobile app security testing" as a catch-all phrase for evaluating the security of mobile apps using static and dynamic analysis. In practice, you'll find that various terms such as "mobile app penetration testing", "mobile app security review", and others are used somewhat inconsistently in the security industry, but those terms refer to roughly the same thing. Usually, a mobile app security test is done as part of a larger security assessment or penetration test that also encompasses the overall client-server architecture, as well as server-side APIs used by the mobile app.
 
 In this guide we cover mobile app security testing in two different contexts. The first one is the "classical" security test done towards the end of the development life cycle. Here, the tester gets access to a near-final or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is implementing requirements and automating security tests from the beginning of the software development life cycle. In both cases, the same basic requirements and test cases apply, but there's a difference in the high-level methodology and level of interaction with the client.
 
 ### Vulnerability Analysis Overview
 
-Vulnerability analysis is, generally speaking, the fact of looking for vulnerabilities in an app. While this may be done manually, most of the time automated scanners are used to identify the main vulnerabilities of an app. Static and dynamic analysis are ways to run vulnerability analysis.
+Vulnerability analysis is the process of identifying security vulnerabilities in an app. Generally, we distinguish between *static analysis* and *dynamic analysis*. 
 
 #### Static Analysis
 
-On the one hand, Static Analysis deals with examining the inner elements of an application without executing it. It often refers to source code analysis, either done manually or aided by an automated tool. Sometimes, it can be close to white-box testing.
-
-When executing static analysis, the source code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. In most cases, a hybrid automatic / manual approach is used. Automatic scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage.
+In static analysis, the source code or binary code of the mobile app is analyzed to ensure sufficient and correct implementation of security controls. Notably, static analysis can be applied without executing the app. In most cases, a hybrid automated / manual approach is used: Automated scans catch the low-hanging fruits, while the human tester can explore the code base with specific business and usage contexts in mind, providing enhanced relevance and coverage. Today, the buzzword-acronym "SAST" ("Static Application Security Testing") is often used to refer to static analysis.
 
 OWASP provides great resources on [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") which can help in understanding the techniques to be used, its strengths and weaknesses and its limitations.
 
 ##### Automated Static Analysis
 
-In order to fasten the review process, automated analysis tools can be used for Static Application Security Testing (SAST). They check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
+Automated analysis tools check the source code for compliance with a predefined set of rules or industry best practices. The tool then typically displays a list of findings or warnings and flags all detected violations. Static analysis tools come in different varieties - some only run against the compiled app, some need to be fed with the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
 
 While some static code analysis tools do encapsulate a deep knowledge of the underlying rules and semantics required to perform analysis of mobile apps, they can produce a high number of false positives, particularly if the tool is not properly configured for the target environment. The results must therefore always be reviewed by a security professional.
 
@@ -52,6 +52,7 @@ Dynamic analysis must be used in coordination with static analysis: it is not a 
 ##### Cons of Dynamic Analysis
 
 Cons of dynamic analysis are:
+
 - Limited scope of coverage because the mobile application must be foot-printed to identify the specific test area,
 - No access to the actual instructions being executed, as the tool exercises the mobile application and conducts pattern matching on requests and responses.
 
@@ -100,17 +101,11 @@ In any case, think about the actual exploit scenarios and impacts of the vulnera
 
 #### Preparation
 
-Before conducting a test, an agreement must be reached as to what security level will be used to test the app against. The security requirements should ideally have been decided at the beginning of the project, but this may not always be the case. In addition, different organizations have different security needs, and different amounts of resources to invest in test activities. While the controls in MASVS Level 1 (L1) are applicable to all mobile apps, it is a good idea to walk through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders to agree on an appropriate level of test coverage.
-
-Organizations / applications may have different regulatory and legal obligations in certain territories. Even if an app does not handle sensitive data, it may be important to consider whether some L2 requirements may be relevant due to industry regulations or local laws. For example, 2-factor authentication (2FA) may be obligatory for a financial app, as enforced by the respective country central bank and / or financial regulatory authorities.
-
-Security goals / controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
+Before conducting the technical analysis, it is useful to map out a simple threat model and assess the security requirements of the target app (this can be done informally in a pre-kickoff discussion with the client). Depending on the maturity of the client's software development processes, they may have a clear idea about the specific security requirements pertaining to the app - or they might not have given it much thought. 
 
 ![Preparation](Images/Chapters/0x03/mstg-preparation.png)
 
-All involved parties need to agree on the decisions made and on the scope in the checklist, as this will define the baseline for all security testing, regardless if done manually or automatically.
-
-##### Coordinating with the Client
+##### Testing Environment
 
 Setting up a working testing environment can be a challenging task. For instance, when performing testing on-site at client premises, the restrictions on the enterprise wireless access points and networks may make dynamic analysis more difficult. Company policies may prohibit the use of rooted phones or network testing tools (hardware and software) within the enterprise networks. Apps implementing root detection and other reverse engineering countermeasures may add a significant amount of extra work before further analysis can be performed.
 
@@ -180,9 +175,11 @@ The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.ph
 
 ##### Testing for Vulnerabilities
 
+This phase is where the actual fun starts: The tester uses static and dynamic analysis methods to discover vulnerabilities. The methods to do so range from basic automated scanning to manual inspection of the business logic and instrumentation of system APIs. This is where the OWASP Mobile Security Testing Guide comes in: You'll find all the necessary tricks and techniques in this book.
+
 ##### Exploitation
 
-Unfortunately, due to shortage of time or limited financial resources, many pentests are limited to mapping the application, often using automated scanners (for instance, for vulnerability analysis). While vulnerabilities identified during the previous phase may be interesting, the reality of their effectiveness need to be confirmed on five axes:
+Unfortunately, due to shortage of time or limited financial resources, many penetration tests are limited to vulnerability discovery, often using automated scanners (for instance, for vulnerability analysis). While vulnerabilities identified during the previous phase may be interesting, the reality of their effectiveness need to be confirmed on five axes:
 
 - **Damage potential** - the damage(s) to which the vulnerability can lead if exploited successfully,
 - **Reproducibility** - how easy it is to reproduce the attack,
@@ -190,11 +187,12 @@ Unfortunately, due to shortage of time or limited financial resources, many pent
 - **Affected users** - how many users are affected by the attack,
 - **Discoverability** - how easy it is to discover the vulnerability.
 
-Indeed, against all odds, some vulnerabilities may not be exploitable and may not lead to any compromise or lead to minor ones. In the opposite manner, some others vulnerabilities may seem harmless at first sight while the tester may find them highly dangerous for the application when testing in real conditions. Performing the exploitation phase with care really brings value to a pentest campaign by characterizing vulnerabilities and proving information on their impacts.
+Indeed, against all odds, some vulnerabilities may not be exploitable and may not lead to any compromise or lead to minor ones. In the opposite manner, some others vulnerabilities may seem harmless at first sight while the tester may find them highly dangerous for the application when testing in real conditions. Performing the exploitation phase with care increases the value of the penetration test by characterizing vulnerabilities and proving information on their impacts.
 
 #### Reporting
 
 All the findings the security tester will make during the different phases will be valuable to the customer only as they are clearly documented. A good pentest report will need to include information like (but not limited to):
+
 - an executive summary,
 - description of the scope and context (targeted systems, ...),
 - methodology used,
