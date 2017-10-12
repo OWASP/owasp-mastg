@@ -68,36 +68,15 @@ iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to 
 
 #### Static Analysis
 
-When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys, and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or internal policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
+When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or company policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
 
 Furthermore, make sure that the `AccessControlFlags` are set appropriately according to the security policy for the given keys in the Keychain.
 
-When looking for instances of insecure data storage in an iOS app you should consider the following possible means of storing data.
-
-##### CoreData/SQLite Databases
-
-- [`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 "Core Data iOS"): Is a framework that you use to manage the model layer of objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. Core Data operates on a sqlite database at lower level.
-
-- `sqlite3`: The `libsqlite3.dylib` library is required to be added in an application. This library is a C++ wrapper that provides the API to the SQLite commands.
-
-##### Realm databases
-
-The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
-
-##### Couchbase Lite Databases
-
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS.
-
-##### YapDatabase
-
-[YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is comprised of 2 main features:
-
-- A collection/key/value store built atop sqlite for iOS & Mac (the foundation).
-- A plugin architecture that provides for advanced functionality such as Views, Secondary Indexes, Full Text Search, etc.
+When looking for instances of insecure data storage in an iOS app you should consider the following possible means of storing data, as they all do not encrypt data by default.
 
 ##### NSUserDefaults
 
-The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
+The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customise its behaviour to match a user’s preferences. Data saved by NSUserDefaults can be viewed from the application bundle. It also stores data in a plist file, but it's meant for smaller amounts of data.
 
 ##### File system
 
@@ -111,9 +90,30 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 - `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`: Are used to manage file paths.
 - The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
 
+##### CoreData
+
+[`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 "Core Data iOS") is a framework that you use to manage the model layer of objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. [Core Data can use SQLite as its persistent store](https://cocoacasts.com/what-is-the-difference-between-core-data-and-sqlite/ "What Is the Difference Between Core Data and SQLite"), but the framework itself is not a database.
+
+##### SQLite Databases
+
+The SQLite 3 library is required to be added in an app in order to be able to use SQLite. This library is a C++ wrapper that provides the API to the SQLite commands.
+
+##### Realm databases
+
+The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
+
+##### Couchbase Lite Databases
+
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is an embedded lightweight, document-oriented (NoSQL), syncable database engine. It compiles natively for iOS and Mac OS.
+
+##### YapDatabase
+
+[YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is a key/value store built atop sqlite.
+
+
 #### Dynamic Analysis
 
-A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger as much app functionality as possible before the data is analyzed, as the app might only store system credentials when specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
+A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger all app functionality before the data is analyzed, as the app might only store sensitive data when specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
 
 The following steps can be used on a jailbroken device to identify how the application stores data locally on the iOS device.
 
@@ -122,7 +122,6 @@ The following steps can be used on a jailbroken device to identify how the appli
 3. Perform a grep command of the data that you have stored, such as: `grep -iRn "USERID"`.
 4. If the sensitive data is being stored in plaintext, it fails this test.
 
-
 It is also possible to analyze the app data directory on a non-jailbroken iOS device using third party applications such as [iMazing](https://imazing.com "iMazing").
 
 1. Proceed to trigger functionality that stores potential sensitive data.
@@ -130,6 +129,10 @@ It is also possible to analyze the app data directory on a non-jailbroken iOS de
 3. Select "Apps" and right-click on the desired iOS application, select "Extract App".
 4. Browse to the output directory and locate the $APP_NAME.imazingapp. Rename it to $APP_NAME.zip.
 5. Unpack the renamed .zip file and the application data can now be analyzed.
+
+> Note that tools like iMazing are not copying data from the device directly but trying to extract data from the backup they create. Therefore it is not possible to get all data from the app stored on the iOS device, as not all folders are included in a backup. Ideally you should use a jailbroken device or repackage the app with Frida and use a tool like objection to get access to all data and files created.
+
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" in "Basic Security Testing", you can use [objection](https://github.com/sensepost/objection "objection") to directly transfer data from the app data directory or [read data directly in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition").
 
 Important filesystem locations are:
 
@@ -166,15 +169,15 @@ Important filesystem locations are:
   - Content in this directory is not backed up
   - OS may delete the files automatically when app is not running (e.g. storage space running low).
 
-For a more detailed analysis, use an API monitoring tool such as IntroSpy to instrument the app.
-
-If necessary during dynamic analysis, the contents of the Keychain can be dumped using [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS".
+If necessary during dynamic analysis, the contents of the Keychain can be dumped. On a jailbroken device [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") can be used as described in the chapter "Basic Security Testing on iOS".
 
 The keychain file is located at:
 
 ```
 /private/var/Keychains/keychain-2.db
 ```
+
+On a non-jailbroken device objection can be used to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
 
 #### Remediation
 
