@@ -68,9 +68,43 @@ iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to 
 
 #### Static Analysis
 
-When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or company policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption. In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
+When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or company policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption.
 
-Furthermore, make sure that the `AccessControlFlags` are set appropriately according to the security policy for the given keys in the Keychain.
+In any case, the encryption must be implemented such that the secret key is stored in the Keychain using secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`. This ensures the usage of hardware-backed storage mechanisms. Furthermore, make sure that the `AccessControlFlags` are set appropriately according to the security policy for the given keys in the Keychain.
+
+A [generic example](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 "GenericKeyChain") for using the KeyChain to store, update or delete data can be found in the official Apple documentation.
+
+A sample for using [TouchID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10 "KeychainTouchID") can be found in the official Apple documentation.
+
+Here is a sample in Swift with which you can use to create keys (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
+
+```swift
+ // private key parameters
+    let privateKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "privateLabel",
+        kSecAttrIsPermanent as String: true,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]        
+    // public key parameters
+    let publicKeyParams: [String: AnyObject] = [
+        kSecAttrLabel as String: "publicLabel",
+        kSecAttrIsPermanent as String: false,
+        kSecAttrApplicationTag as String: "applicationTag"
+    ]
+
+    // global parameters
+    let parameters: [String: AnyObject] = [
+        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+        kSecAttrKeySizeInBits as String: 256,
+        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+        kSecPublicKeyAttrs as String: publicKeyParams,
+        kSecPrivateKeyAttrs as String: privateKeyParams
+    ]        
+
+    var pubKey, privKey: SecKeyRef?
+    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+```
 
 When looking for instances of insecure data storage in an iOS app you should consider the following possible means of storing data, as they all do not encrypt data by default.
 
@@ -90,6 +124,15 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 - `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`: Are used to manage file paths.
 - The `NSFileManager` object lets you examine the contents of the file system and make changes to it. A way to create a file and write to it can be done through `createFileAtPath`.
 
+The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
+
+```objective-c
+[[NSFileManager defaultManager] createFileAtPath:[self filePath]
+  contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
+  attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
+  forKey:NSFileProtectionKey]];
+```
+
 ##### CoreData
 
 [`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 "Core Data iOS") is a framework that you use to manage the model layer of objects in your application. It provides generalized and automated solutions to common tasks associated with object life cycle and object graph management, including persistence. [Core Data can use SQLite as its persistent store](https://cocoacasts.com/what-is-the-difference-between-core-data-and-sqlite/ "What Is the Difference Between Core Data and SQLite"), but the framework itself is not a database.
@@ -101,6 +144,20 @@ The SQLite 3 library is required to be added in an app in order to be able to us
 ##### Realm databases
 
 The [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and the [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") are not supplied by Apple, but still worth noting here. They either store everything unencrypted, unless the configuration has encryption enabled.
+
+The following example demonstrates how to use encryption for a Realm database.
+
+```swift
+// Open the encrypted Realm file where getKey() is a method to obtain a key from the keychain or a server
+let config = Realm.Configuration(encryptionKey: getKey())
+do {
+  let realm = try Realm(configuration: config)
+  // Use the Realm as normal
+} catch let error as NSError {
+  // If the encryption key is wrong, `error` will say that it's an invalid database
+  fatalError("Error opening realm: \(error)")
+}
+```
 
 ##### Couchbase Lite Databases
 
@@ -179,69 +236,6 @@ The keychain file is located at:
 
 On a non-jailbroken device objection can be used to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
 
-#### Remediation
-
-Hardware-backed storage mechanisms must be used for storing sensitive data. Permitted options for storing sensitive data are:
-
-- Storing the data in the keychain with the `kSecAttrAccessibleWhenUnlocked` attribute.
-- Encrypting the data using standard crypto APIs before storing it, and storing the encryption key in the keychain.
-- Another option is to use the encryption support, such as Realm provides.
-
-```swift
-// Open the encrypted Realm file where getKey() is a method to obtain a key from the keychain or a server
-let config = Realm.Configuration(encryptionKey: getKey())
-do {
-  let realm = try Realm(configuration: config)
-  // Use the Realm as normal
-} catch let error as NSError {
-  // If the encryption key is wrong, `error` will say that it's an invalid database
-  fatalError("Error opening realm: \(error)")
-}
-```
-- Creating a file with the `NSFileProtectionComplete` attribute.
-
-The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
-
-```objective-c
-[[NSFileManager defaultManager] createFileAtPath:[self filePath]
-  contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
-  attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
-  forKey:NSFileProtectionKey]];
-```
-
-A [generic example](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 "GenericKeyChain") for using the KeyChain to store, update or delete data can be found in the official Apple documentation.
-
-A sample for using [TouchID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10 "KeychainTouchID") can be found in the official Apple documentation.
-
-Here is a sample in Swift with which you can use to create keys (notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: here you instruct that we want to use the Secure Enclave directly):
-
-```swift
- // private key parameters
-    let privateKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "privateLabel",
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]        
-    // public key parameters
-    let publicKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "publicLabel",
-        kSecAttrIsPermanent as String: false,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
-
-    // global parameters
-    let parameters: [String: AnyObject] = [
-        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-        kSecAttrKeySizeInBits as String: 256,
-        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        kSecPublicKeyAttrs as String: publicKeyParams,
-        kSecPrivateKeyAttrs as String: privateKeyParams
-    ]        
-
-    var pubKey, privKey: SecKeyRef?
-    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
-
-```
 
 ### Testing for Sensitive Data in Logs
 
