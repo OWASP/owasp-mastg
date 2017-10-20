@@ -97,21 +97,6 @@ Ensure that debugging symbols are stripped when the application is being build f
 
 It is possible to still have a proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html) as it does not require any symbols in the application binary.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.3: "Debugging symbols have been removed from native binaries."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing for Debugging Symbols"] --
-
-
 ### Testing for Debugging Code and Verbose Error Logging
 
 #### Overview
@@ -211,32 +196,6 @@ NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
 
 External entity resolution is disabled by default in both parsers. In NSXMLParser, it can be activated explicitly by setting the `setShouldResolveExternalEntities` option.
 
-#### Dynamic Analysis
-
--- TODO [Add content on black-box testing of "Verifying that the App is Properly Signed"] --
-
-#### Remediation
-
--- TODO [Add remediation for "Verifying that the App is Properly Signed"] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--   M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.1: "The app is signed and provisioned with valid certificate."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Verifying that the App is Properly Signed"] --
-
-##### Tools
-
--- TODO [Add tools for "Verifying that the App is Properly Signed"] --
-
 
 ### Testing Exception Handling
 
@@ -246,7 +205,6 @@ Exceptions can often occur when an application gets into a non-normal or erroneo
 Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
 
 However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic.
-
 
 ##### Exception handling in Objective-C
 
@@ -354,30 +312,12 @@ In most cases, the application should not crash, but instead, it should:
 #### Remediation
 
 There are a few things a developer can do:
+
 - Ensure that the application use a well-designed and unified scheme to handle errors.
 - Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
 - For Objective-C, in case of a high-risk application: create your own exception handler which cleans out any secret that should not be easily retrieved. The handler that can be set through `NSSetUncaughtExceptionHandler`.
 - When using Swift, make sure that you do not use `try!` unless you have made sure that there really cannot be any error in the method the throwing method that is being called.
 - When using Swift, make sure that the error does not propagate too far off through intermediate methods.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Exception Handling"] --
-
-##### Tools
-
--- CyCript
 
 
 ### Verify That Free Security Features Are Activated
@@ -392,7 +332,6 @@ Although XCode set all binary security features by default, it still might be re
 -	**PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis
-
 
 ##### XCode Project Settings
 
@@ -478,20 +417,22 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 - V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
-##### CWE
+#### CWE
 
 -- TODO [Add relevant CWE for "Verify That Free Security Features Are Activated"] --
 
-##### Tools
+#### Tools
 
 - idb - https://github.com/dmayer/idb

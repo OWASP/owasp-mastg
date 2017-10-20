@@ -41,24 +41,6 @@ Obviously, there are other non-standard libraries that your application might be
 
 -- TODO [Describe the best practices that developers should follow to prevent this issue "Verifying the Configuration of Cryptographic Standard Algorithms".] --
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
-
-##### OWASP MASVS
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
-
-##### CWE
--- TODO [Add relevant CWE for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
-- CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
--- TODO [Add links to relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
-- Enjarify - https://github.com/google/enjarify
-
 
 ### Testing Random Number Generation
 
@@ -93,18 +75,17 @@ The following is an example of its usage:
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 - M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
 
-##### OWASP MASVS
+#### OWASP MASVS
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 - V3.6: "All random values are generated using a sufficiently secure random number generator."
 
-##### CWE
+#### CWE
 - CWE-337 - Predictable Seed in PRNG
 - CWE-338 - Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
 
-##### Tools
--- TODO [Add links to relevant tools for "Testing Random Number Generation"] --
-- Enjarify - https://github.com/google/enjarify

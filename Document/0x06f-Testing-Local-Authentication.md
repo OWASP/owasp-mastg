@@ -210,16 +210,16 @@ If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module an
 
 Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
-##### CWE
+#### CWE
 
 - CWE-287 - Improper Authentication
