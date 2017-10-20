@@ -284,26 +284,6 @@ Install and use the app, executing all functions at least once. Data can be gene
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
 
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-
-##### OWASP MASVS
-- V2.1: "System credential storage facilities are used to store sensitive data, such as user credentials and cryptographic keys."
-
-##### CWE
-- CWE-311 - Missing Encryption of Sensitive Data
-- CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-522 - Insufficiently Protected Credentials
-- CWE-922 - Insecure Storage of Sensitive Information
-
-##### Tools
-- Sqlite3 - http://www.sqlite.org/cli.html
-- Realm Browser - Realm Browser - https://github.com/realm/realm-browser-osx
-
-
 ### Testing Logs for Sensitive Data
 
 #### Overview
@@ -405,24 +385,6 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 $ adb logcat > logcat.log
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-
-##### OWASP MASVS
-- V2.2: "No sensitive data is written to application logs."
-
-##### CWE
-- CWE-117: Improper Output Neutralization for Logs
-- CWE-532: Information Exposure Through Log Files
-- CWE-534: Information Exposure Through Debug Log Files
-
-##### Tools
-- ProGuard - http://proguard.sourceforge.net/
-- Logcat - http://developer.android.com/tools/help/logcat.html
-
 
 ### Determining Whether Sensitive Data is Sent to Third Parties
 
@@ -451,28 +413,6 @@ All data sent to third-party services should be anonymized. Data (such as applic
 Check all requests to external services for embedded sensitive information.
 To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or _OWASP ZAP_. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
-#### References
-
-- [#nolan] Bulletproof Android, Godfrey Nolan - Chapter 7, Third-Party Library Integration
-
-##### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-
-##### OWASP MASVS
-
-- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-
-##### CWE
-
-- CWE-359 - Exposure of Private Information ('Privacy Violation')
-
-##### Tools
-
-- Burp Suite Professional - https://portswigger.net/burp/
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-
 
 ### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
 
@@ -496,19 +436,6 @@ The code for all input fields that take sensitive information should include thi
 #### Dynamic Analysis
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-
-##### OWASP MASVS
-- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
-
-##### CWE
-- CWE-524 - Information Exposure Through Caching
-
 
 
 ### Finding Sensitive Data on the Clipboard
@@ -558,22 +485,6 @@ You can use the Drozer module `post.capture.clipboard` to extract data from the 
 dz> run post.capture.clipboard
 [*] Clipboard value: ClipData.Item { T:Secretmessage }
 ```
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
-
-##### CWE
-- CWE-200 - Information Exposure
-
-##### Tools
-- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
-
 
 ### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
 
@@ -794,25 +705,6 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-
-- V2.6: "No sensitive data is exposed via IPC mechanisms."
-
-##### CWE
-
-- CWE-634 - Weaknesses that Affect System Processes
-
-##### Tools
-
-- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
-
 
 ### Checking for Sensitive Data Disclosure Through the User Interface
 
@@ -837,20 +729,6 @@ With this setting, dots (instead of the input characters) will be displayed in t
 To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
 
 If the information is masked by, for example, replacing input with asterisks or dots, the app isn't leaking data to the user interface.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Unintended Data Leakage
-
-##### OWASP MASVS
-
-- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-
-##### CWE
-
-- CWE-200 - Information Exposure
 
 
 ### Testing Backups for Sensitive Data
@@ -948,26 +826,6 @@ Extract the tar file to your working directory.
 $ tar xvf mybackup.tar
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-
-- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
-
-##### CWE
-
-- CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
-
-##### Tools
-
-- Android Backup Extractor - https://github.com/nelenkov/android-backup-extractor
-
-
 
 ### Finding Sensitive Information in Auto-Generated Screenshots
 
@@ -999,22 +857,6 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
 | ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
-
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-
-- V2.9: "The app removes sensitive data from views when backgrounded."
-
-##### CWE
-
-- CWE-200 - Information Exposure
 
 
 ### Checking Memory for Sensitive Data
@@ -1262,25 +1104,6 @@ During your analysis, search for:
 
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
-
-##### OWASP MASVS
-- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
-
-##### CWE
-- CWE-316 - Cleartext Storage of Sensitive Information in Memory
-
-##### Tools
-- Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
-- Eclipse's MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
-- Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
-- Fridump - https://github.com/Nightbringer21/fridump
-- LiME - https://github.com/504ensicsLabs/LiME
-
 
 ### Testing the Device-Access-Security Policy
 
@@ -1306,16 +1129,55 @@ You can implement checks on the Android device by querying  [_Settings.Secure_](
 
 The dynamic analysis depends on the checks enforced by the app and their expected behavior. If the checks can be bypassed, they must be validated.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
-- M1 - Improper Platform Usage
+- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
+- M4 - Unintended Data Leakage
 
-##### OWASP MASVS
+#### OWASP MASVS
 
-- V2.11: "The app enforces a minimal device-access-security policy, such as requiring the user to set a device passcode."
+- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- V2.2: "No sensitive data is written to application logs."
+- V2.3: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- V2.4: "The keyboard cache is disabled on text inputs that process sensitive data."
+- V2.5: "The clipboard is deactivated on text fields that may contain sensitive data."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
+- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
+- V2.9: "The app removes sensitive data from views when backgrounded."
+- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
-##### CWE
+#### CWE
 
-- N/A
+- CWE-117: Improper Output Neutralization for Logs
+- CWE-200 - Information Exposure
+- CWE-316 - Cleartext Storage of Sensitive Information in Memory
+- CWE-359 - Exposure of Private Information ('Privacy Violation')
+- CWE-524 - Information Exposure Through Caching
+- CWE-532: Information Exposure Through Log Files
+- CWE-534: Information Exposure Through Debug Log Files
+- CWE-311 - Missing Encryption of Sensitive Data
+- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-522 - Insufficiently Protected Credentials
+- CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
+- CWE-634 - Weaknesses that Affect System Processes
+- CWE-922 - Insecure Storage of Sensitive Information
+
+#### Tools
+
+- Sqlite3 - http://www.sqlite.org/cli.html
+- Realm Browser - Realm Browser - https://github.com/realm/realm-browser-osx
+- ProGuard - http://proguard.sourceforge.net/
+- Logcat - http://developer.android.com/tools/help/logcat.html
+- Burp Suite Professional - https://portswigger.net/burp/
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
+- Android Backup Extractor - https://github.com/nelenkov/android-backup-extractor
+- Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
+- Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
+- Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
+- Fridump - https://github.com/Nightbringer21/fridump
+- LiME - https://github.com/504ensicsLabs/LiME
