@@ -163,17 +163,17 @@ Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean in
 
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
-##### CWE
+#### CWE
 
 - CWE-287 - Improper Authentication
 - CWE-604 - Use of Client-Side Authentication

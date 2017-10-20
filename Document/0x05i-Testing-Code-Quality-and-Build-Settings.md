@@ -63,19 +63,7 @@ Several best practices to [configure the app for release](http://developer.andro
 
 Static analysis should be used to verify the APK signature.
 
-#### References
 
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V7.1: "The app is signed and provisioned with valid certificate."
-
-##### CWE
-N/A
-
-##### Tools
-- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
 
 
 ### Testing If the App is Debuggable
@@ -172,25 +160,6 @@ A few notes about debugging:
 - Help about [`JDB`](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB").
 - If an error indicating that *the connection to the debugger has been closed* occur during the binding of `jdb` to the local communication channel port then kill all `adb` sessions and start a new single one.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-
-##### CWE
-
-- CWE-215 - Information Exposure Through Debug Information
-
-##### Tools
-
-- Drozer - https://github.com/mwrlabs/drozer
-
-
 ### Testing for Debugging Symbols
 
 #### Overview
@@ -239,25 +208,6 @@ Check if the following was added to build.gradle:
 #### Dynamic Analysis
 
 Static analysis should be used to verify for debugging symbols.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.3: "Debugging symbols have been removed from native binaries."
-
-##### CWE
-
-- CWE-215 - Information Exposure Through Debug Information
-
-##### Tools
-
-- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
-
 
 ### Testing for Debugging Code and Verbose Error Logging
 
@@ -321,21 +271,6 @@ There are different ways of detecting  `StrictMode` and it depends on how the po
 - Logcat
 - Warning Dialog
 - Crash of the application
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-
-##### CWE
-
-- CWE-215 - Information Exposure Through Debug Information
-- CWE-489 - Leftover Debug Code
 
 
 ### Testing for Injection Flaws
@@ -441,21 +376,6 @@ content query --uri content://sg.vp.owasp_mobile.provider.College/students --whe
 
 For dynamic testing Drozer can also be used.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-##### CWE
-- CWE-20 - Improper Input Validation
-
-##### Tools
-- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
-
-
 ### Testing Exception Handling
 
 #### Overview
@@ -543,22 +463,6 @@ In all cases, the application should not crash, but instead, it should:
 - If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
 - Not provide any information in logging mechanisms used by the application.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-
-##### CWE
-- CWE-388 - Error Handling
-
-##### Tools
-
-- Xposed - http://repo.xposed.info/
-
 
 ### Verify That Free Security Features Are Activated
 
@@ -628,20 +532,37 @@ class a$b
 }
 ```
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- V7.1: "The app is signed and provisioned with valid certificate."
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- V7.3: "Debugging symbols have been removed from native binaries."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
 - V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
-##### CWE
+#### CWE
 
+- CWE-20 - Improper Input Validation
+- CWE-215 - Information Exposure Through Debug Information
+- CWE-388 - Error Handling
+- CWE-489 - Leftover Debug Code
 - CWE-656 - Reliance on Security Through Obscurity
 
-##### Tools
+
+#### Tools
 
 - ProGuard - https://www.guardsquare.com/en/proguard
+- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
+- Xposed - http://repo.xposed.info/
+- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
+
+- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
