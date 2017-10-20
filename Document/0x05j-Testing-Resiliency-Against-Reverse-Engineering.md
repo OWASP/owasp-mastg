@@ -192,20 +192,6 @@ If root detection is missing or too easily bypassed, make suggestions in line wi
 
 For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-
-##### CWE
-
-N/A
-
 
 ### Testing Anti-Debugging
 
@@ -783,21 +769,6 @@ A similar approach holds here, but now answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
-
-##### CWE
-
-- N/A
-
-
 ### Testing Detection of Reverse Engineering Tools
 
 #### Overview
@@ -1017,24 +988,6 @@ The app should respond in some way to the presence of any of those tools. At the
 
 For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
-
-##### CWE
-
-N/A
-
-##### Tools
-
-- frida - https://www.frida.re/
-
 ### Testing Emulator Detection
 
 #### Overview
@@ -1108,24 +1061,6 @@ Work on bypassing the defenses and answer the following questions:
 
 For a more detailed assessment, apply the criteria listed under "Assessing Programmatic Defenses" in the "Assessing Software Protection Schemes" chapter.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.5: "The app detects, and responds to, being run in an emulator."
-
-##### CWE
-
-N/A
-
-##### Tools
-
-N/A
-
 
 ### Testing Runtime Integrity Checks
 
@@ -1194,20 +1129,6 @@ Work on bypassing the checks using the following techniques:
 2. Use Frida or Xposed to hook APIs to hook the APIs used for detection and return fake values.
 
 Refer to the "Tampering and Reverse Engineering section" for examples of patching, code injection and kernel modules.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
-
-##### CWE
-
-N/A
 
 
 ### Testing Device Binding
@@ -1337,7 +1258,6 @@ Lastly register the service in your AndroidManifest:
 When you submit the iid and the tokens to your server as well, you can use that server together with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, then you can trigger a safeguard procedure (e.g. inform server on possible copying, possible security issues, etc. or removing the data from the app and ask for a re-registration).
 
 Please note that [Firebase has support for InstanceID as well](https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId "Firebase InstanceID documentation").
-<!-- TODO [SHOULD WE ADD THE SERVER CODE HERE TOO TO EXPLAIN HOW TOKENS CAN BE USED TO EVALUATE?] -->
 
 ##### IMEI & Serial
 
@@ -1436,28 +1356,7 @@ There are a few ways to test device binding dynamically:
 3. Retrieve the data from the first rooted device
 4. Install the application on the second rooted device
 5. Overwrite the data from step 3 in the data folder of the application.
-6. Can you continue in an authenticated state? If so, then binding might not be working properly.
-
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-
-##### CWE
-
-N/A
-
-##### Tools
-
-- ADB & DDMS
-- Android Emulator or two rooted devices.
-
+6. Can you continue in an authenticated state? If so, then binding might not be working properly.]
 
 ### Testing Obfuscation
 
@@ -1477,22 +1376,24 @@ Attempt to decompile the bytecode and disassemble any included libary files, and
 
 For a more detailed assessment, you need to have a detailed understanding of the threats defended against and the obfuscation methods used. Refer to the "Assessing Obfuscation" section of the "Assessing Software Protection Schemes" chapter for more information.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
+- V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
+- V8.5: "The app detects, and responds to, being run in an emulator."
+- V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
 - V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
 - V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
-##### CWE
+#### Tools
 
-- N/A
-
-##### Tools
-
-- N/A
+- frida - https://www.frida.re/
+- ADB & DDMS

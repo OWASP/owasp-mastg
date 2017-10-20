@@ -271,38 +271,6 @@ script.load()
 sys.stdin.read()
 ```
 
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Jailbreak Detection" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Jailbreak Detection".] --
-
-#### References
-
--	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf "Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android")
-
-##### OWASP Mobile Top 10 2016
-
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Jailbreak Detection"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
--	Frida - http://frida.re/
-
-
 ### Testing Anti-Debugging
 
 #### Overview
@@ -432,41 +400,6 @@ static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
 }
 ```
 
-#### Static Analysis
-
--- TODO [Describe how to assess this with access to the source code and build configuration] --
-
-#### Dynamic Analysis
-
--- TODO [Needs more detail] --
-
-Attach a debugger to the running process. This should either fail, or the app should terminate or misbehave when the debugger has been detected. For example, if ptrace(PT_DENY_ATTACH) has been called, gdb will crash with a segmentation fault:
-
-Note that some anti-debugging implementations respond in a stealthy way so that changes in behavior are not immediately apparent. For example, a soft token app might not visibly respond when a debugger is detected, but instead secretly alter the state of an internal variable so that an incorrect OTP is generated at a later point. Make sure to run through the complete workflow to determine if attaching the debugger causes a crash or malfunction.
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Anti-Debugging"] --
-
-#### References
-
-##### OWASP Mobile Top 10 2014
-
--- TODO [Add link to OWASP Mobile Top 10 2014 for "Testing Anti-Debugging"] --
-
-##### OWASP MASVS
-
-- V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Anti-Debugging"] --
-
-##### Tools
-
--- TODO [Add tools for "Testing Anti-Debugging"] --
-
-
 #### Bypassing File Integrity Checks
 
 #### Overview
@@ -478,6 +411,7 @@ There are two file-integrity related topics:
  2. _The file storage related integrity checks:_ When files are stored by the application or key-value pars in the keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database or a Realm database, then their integrity should be protected.
 
 ##### Sample Implementation - application-source
+
 Integrity checks are already taken care off by Apple using their DRM. However, there are additional controls possible, such as in the example below. Here the `mach_header` is parsed through to calculate the start of the instruction data and then use that to generate the signature. Now the signature is compared to the one given. Please make sure that the signature to be compared to is stored or coded somewhere else.
 
 ```c
@@ -576,7 +510,6 @@ When verifying the HMAC with CC:
 
 ```
 
-
 ##### Bypassing File Integrity Checks
 
 *When trying to bypass the application-source integrity checks*
@@ -605,65 +538,11 @@ For a more detailed assessment, apply the criteria listed under "Assessing Progr
 
 *For the storage integrity checks*
 A similar approach holds here, but now answer the following questions:
+
 - Can the mechanisms be bypassed using trivial methods (e.g. changing the contents of a file or a key-value)?
 - How difficult is it to obtain the HMAC key or the asymmetric private key?
 - Did you need to write custom code to disable the defenses? How much time did you need to invest?
 - What is your subjective assessment of difficulty?
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
-
-##### CWE
-
-- N/A
-
-
-
-### Testing Detection of Reverse Engineering Tools
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Detection of Reverse Engineering Tools".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
-
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Detection of Reverse Engineering Tools" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Detection of Reverse Engineering Tools".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Detection of Reverse Engineering Tools"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing Detection of Reverse Engineering Tools"] --* Enjarify - https://github.com/google/enjarify
-
 
 
 ### Testing Runtime Integrity Checks
@@ -692,40 +571,6 @@ return 0; // good
 ```
 
 \} Example code from the Netitude blog `[2]`.
-
-#### Effectiveness Assessment
-
--- TODO [Describe how to test for this issue "Testing Runtime Integrity Checks" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Static Analysis
-
--- TODO
-
-#### Dynamic Analysis
-
--- TODO
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Runtime Integrity Checks".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Runtime Integrity Checks"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing Runtime Integrity Checks"] --* Enjarify - https://github.com/google/enjarify
 
 
 ### Testing Device Binding
@@ -790,61 +635,24 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 Any scheme based on these variants will be more secure the moment passcode and/or touch-id has been enabled and the materials stored in the Keychain or filesystem have been protected with protectionclasses such as  `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` and the `SecAccessControlCreateFlags` is set with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or touchid), `kSecAccessControlTouchIDAny` (touchID), `kSecAccessControlTouchIDCurrentSet` (touchID: but current fingerprints only).
 
+### References
 
-#### References
+-	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf "Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android")
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Device Binding"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
+#### Tools
+-	Frida - http://frida.re/
 - Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper
 - Appsync Unified - https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified
 
-
-### Testing Obfuscation
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Obfuscation".] --
-
-#### Static Analysis
-
--- TODO [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.] --
-
-#### Dynamic Analysis
-
--- TODO [Describe how to test for this issue "Testing Obfuscation" by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.] --
-
-#### Remediation
-
--- TODO [Describe the best practices that developers should follow to prevent this issue "Testing Obfuscation".] --
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing Obfuscation"] -- - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
--- TODO [Add relevant tools for "Testing Obfuscation"] --

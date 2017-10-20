@@ -48,20 +48,6 @@ While the URL scheme is being fuzzed, watch the logs (in Xcode, go to `Window ->
 
 You should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
-
-##### CWE
-- CWE-939: Improper Authorization in Handler for Custom URL Scheme
-
-##### Tools
-- IDB - http://www.idbtool.com/
-
 
 ### Testing iOS WebViews
 
@@ -187,22 +173,25 @@ To simulate an attack, inject your own JavaScript into the WebView with an inter
 
 In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 
-##### CWE
+#### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
-##### Info
+#### Info
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
 
-
+#### Tools
+- IDB - http://www.idbtool.com/

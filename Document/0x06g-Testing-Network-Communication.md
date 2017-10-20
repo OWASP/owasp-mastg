@@ -246,16 +246,16 @@ Sometimes applications have one certificate that is hardcoded and use it for the
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
-##### CWE
+#### CWE
 
 - CWE-295 - Improper Certificate Validation
