@@ -145,20 +145,6 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong.
 
-#### References
-
-##### OWASP Mobile Top 10
-
-- M6 - Broken Cryptography
-
-##### OWASP MASVS
-
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-
-##### CWE
-
-- CWE-326: Inadequate Encryption Strength
-
 ### Testing Random Number Generation
 
 #### Overview
@@ -296,17 +282,20 @@ This will highlight all the classes that use the ```SecretKeySpec``` class, we n
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
-#### References
+### References
+
+##### OWASP Mobile Top 10
+
+- M6 - Broken Cryptography
 
 ##### OWASP MASVS
 
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
+- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 - V3.5: "The app doesn't reuse the same cryptographic key for multiple purposes."
-
-##### OWASP Mobile Top 10 2016
-
-- M6 - Broken Cryptography
 
 ##### CWE
 
 - CWE-321: Use of Hard-coded Cryptographic Key
+- CWE-326: Inadequate Encryption Strength
+

@@ -117,28 +117,6 @@ $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 
 Note that this method cannot be used for `signature` level permissions, as Drozer would need to be signed by the same certificate as the target application.
 
-#### References
-
-- [#JeffSix] - Jeff Six, An In-Depth Introduction to
-the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.1: "The app only requests the minimum set of permissions necessary."
-
-##### CWE
-
--	CWE-250 - Execution with Unnecessary Privileges
-
-##### Tools
-
--	AAPT - http://elinux.org/Android_aapt
--	Drozer - https://github.com/mwrlabs/drozer
-
 
 ### Testing Custom URL Schemes
 
@@ -220,26 +198,6 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 ```
 
 Defining your own URL scheme and using it can become a risk in this case, if data is sent to it from an external party and processed in the app.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
-
-##### CWE
-
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
-
-##### Tools
-
--	Drozer - https://github.com/mwrlabs/drozer
-
-
 
 ### Testing For Sensitive Functionality Exposure Through IPC
 
@@ -403,8 +361,6 @@ BroadcastReceivers should make use of the `android:permission` attribute, as oth
 
 #### Dynamic Analysis
 
-<!-- TODO - Editing and improve examples -->
-
 IPC components can be enumerated using Drozer. To list all exported IPC components, the module `app.package.attacksurface` should be used:
 
 ```
@@ -547,25 +503,6 @@ Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
-
-##### CWE
-
-- CWE-749 - Exposed Dangerous Method or Function
-
-##### Tools
-
--	Drozer - https://github.com/mwrlabs/drozer
-
-
 
 ### Testing JavaScript Execution in WebViews
 
@@ -614,21 +551,6 @@ In order to address these attack vectors, the outcome of the following checks sh
   - the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or
   - the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")
 - Only files within the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
-
-##### CWE
-
--	CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-
 
 ### Testing WebView Protocol Handlers
 
@@ -689,20 +611,6 @@ webView.getSettings().setAllowContentAccess(false);
 #### Dynamic Analysis
 
 While using the app look for ways to trigger phone calls or accessing files from the file system to identify usage of protocol handlers.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
-
-##### CWE
-
-N/A
 
 
 ### Testing Whether Java Objects Are Exposed Through WebViews
@@ -788,21 +696,6 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 The dynamic analysis of the app can determine what HTML or JavaScript files are loaded and if known vulnerabilities are present. The procedure to exploit the vulnerability is to produce a JavaScript payload and then inject it into the file that the app is requesting for. The injection could be done either though a MITM attack, or by modifying directly the file in case it is stored on the external storage. The whole process could be done through Drozer that using weasel (MWR's advanced exploitation payload) which is able to install a full agent, injecting a limited agent into a running process, or connecting a reverse shell to act as a Remote Access Tool (RAT).
 
 A full description of the attack can be found in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-
-##### CWE
-
--	CWE-749 - Exposed Dangerous Method or Function
-
 
 
 ### Testing Object Persistence
@@ -1007,103 +900,28 @@ There are various steps one can take for dynamic analysis:
 1.	Regarding the actual persistence: use the techniques described in the data storage chapter.
 2.	Regarding the reflection based approaches: use Xposed to hook into the de-serialization methods or add extra unprocessable information to the serialized objects to see how they are handled (e.g. Will the application crash? Or can you extract extra information by enriching the objects?).
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
+- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
-##### CWE
+#### CWE
 
-N/A
+- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-749 - Exposed Dangerous Method or Function
+
+#### Tools
+
+- Drozer - https://github.com/mwrlabs/drozer
 
 
-
-### Testing Root Detection
-
-#### Overview
-
-Checking the integrity of the environment where the app is running is getting more and more common on the Android platform. Due to the usage of rooted devices several fundamental security mechanisms of Android are deactivated or can easily be bypassed by any app. Apps that process sensitive information or have built in largely intellectual property (IP), like gaming apps, might want to avoid to run on a rooted phone to protect data or their IP.
-
-Keep in mind that root detection is not protecting an app from attackers, but can slow down an attacker dramatically and higher the bar for successful local attacks. Root detection should be considered as part of a broad security-in-depth strategy, to be more resilient against attackers and make analysis harder.
-
-#### Static Analysis
-
-Root detection can either be implemented by leveraging existing root detection libraries, such as [`Rootbeer`](https://github.com/scottyab/rootbeer "RootBeer"), or by implementing manually checks.
-
-Check the source code for the string `rootbeer` and also the `gradle` file, if a dependency is defined for Rootbeer:
-
-```java
-dependencies {
-    compile 'com.scottyab:rootbeer-lib:0.0.4'
-}
-```
-
-If this library is used, code like the following might be used for root detection.
-
-```java
-        RootBeer rootBeer = new RootBeer(context);
-        if(rootBeer.isRooted()){
-            //we found indication of root
-        }else{
-            //we didn't find indication of root
-        }
-```
-
-If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:
-
-- Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
-- Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
-- Checking for installed apps that allow or support rooting of a device, like verifying the presence of *Superuser.apk*.
-- Checking available commands, like is it possible to execute `su` and being root afterwards.
-
-The following approach can be used to identify elements mentioned just above:
-* Decompile sources code using the tool [`JADX`](https://github.com/skylot/jadx "JADX") using the command line `jadx -d SOURCES --deobf APP.apk` in order to obtain the decompiled sources in a folder named **SOURCES**.
-* From the folder **SOURCES**, use the following set of expressions in the command template `grep -ir [EXPRESSION] *` in order to identify root detection materials usage:
-  * "test-keys"
-  * "Build.TAGS"
-  * "/su\""
-  * "Runtime.getRuntime().exec"
-  * "superuser"
-  * "RootBeer"
-  * "de.robv.android.xposed"
-  * "com.saurik.substrate"
-  * "com.mwr.dz"
-  * "busybox"
-
-To implement root detection within an Android app, libraries can be used like `RootBeer`. The root detection should either trigger a warning to the user after start, to remind him that the device is rooted and that the user can only proceed on his own risk. Alternatively, the app can terminate itself in case a rooted environment is detected. This decision is depending on the business requirements and the risk appetite of the stakeholders.
-
-#### Dynamic Analysis
-
-A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
-
-In case of a black box test, an implemented root detection can be challenging if for example the app is immediately terminated because of a rooted phone. Ideally, a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection needs to be defeated first in that case. Identifying the implemented root detection logic without source code in a dynamic scan can be fairly hard.
-
-By using the Xposed module `RootCloak` it is possible to run apps that detect root without disabling root. Nevertheless, if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
-
-Other options are dynamically patching the app with Frida or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
-
-Otherwise it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup. This is of course only possible if the SSL Pinning can be deactivated for example in smali and repackaging the app.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-
-##### CWE
-
-N/A
-
-##### Tools
-
--	RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2

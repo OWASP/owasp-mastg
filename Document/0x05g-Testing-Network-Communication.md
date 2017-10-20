@@ -252,18 +252,6 @@ For further information please check the [OWASP certificate pinning guide](https
 
 Dynamic analysis can be performed by launching a MITM attack using your preferred interception proxy. This will allow to monitor the traffic exchanged between client (mobile application) and the backend server. If the Proxy is unable to intercept the HTTP requests and responses, the SSL pinning is correctly implemented.
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-
-##### OWASP MASVS
-- V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
-
-##### CWE
-- CWE-295 - Improper Certificate Validation
-
-
 
 ### Testing the Security Provider
 
@@ -425,16 +413,14 @@ When you do not have the source-code:
 - Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`.
 - Check if the first provider is `GmsCore_OpenSSL`.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
-
+#### OWASP Mobile Top 10 2016
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
-##### OWASP MASVS
-
+#### OWASP MASVS
+- V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 - V5.6: "The app only depends on up-to-date connectivity and security libraries."
 
-##### CWE
-
-N/A
+#### CWE
+- CWE-295 - Improper Certificate Validation
