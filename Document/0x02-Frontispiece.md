@@ -41,21 +41,21 @@ Jeroen is a full-stack developer specializing in IT security at Xebia with a pas
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
-- Francesco Stillavato
 - Pawel Rzepa
+- Francesco Stillavato
 - Andreas Happe
+- Alexander Anthuk
 - Henry Hoggard
 - Wen Bin Kong
 - Abdessamad Temmar
-- Alexander Anthuk
-- Slawomir Kosowski
 - Bolot Kerimbaev
+- Slawomir Kosowski
 
 ### Contributors
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Gerhard Wagner, Andreas Happe, Michael Helwig, Denis Pilipchuk, Ryan Teoh, Dharshin De Silva, Anita Diamond, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, and Anuruddha.
+Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpa, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
@@ -63,6 +63,14 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 - Anant Shrivastava
 - Sjoerd Langkemper
+
+### Editors
+
+- Heaven Hodges
+- Caitlin Andrews
+- Nick Epson
+- Anita Diamond
+- Anna Szkudlarek
 
 ### Others
 
