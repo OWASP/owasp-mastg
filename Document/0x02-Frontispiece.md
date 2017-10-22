@@ -61,8 +61,8 @@ Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, D
 
 Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
 
-- Anant Shrivastava
 - Sjoerd Langkemper
+- Anant Shrivastava
 
 ### Editors
 
