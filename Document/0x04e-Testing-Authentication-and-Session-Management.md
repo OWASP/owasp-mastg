@@ -490,7 +490,7 @@ Using an *external user agent* is the method of choice for apps that need to int
 
 - The user's credentials are never directly exposed to the app. This guarantees that the app cannot obtain the credentials during the login process ("credential phishing").
 
-- Almost no authentication logic must be added to the add itself, preventing coding errors.
+- Almost no authentication logic must be added to the app itself, preventing coding errors.
 
 On the negative side, there is no way to control the behavior of the browser (e.g. to activate certificate pinning).
 
