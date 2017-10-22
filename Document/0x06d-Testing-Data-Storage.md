@@ -167,7 +167,6 @@ do {
 
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is a key/value store built atop sqlite.
 
-
 #### Dynamic Analysis
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger all app functionality before the data is analyzed, as the app might only store sensitive data when specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
@@ -191,7 +190,7 @@ It is also possible to analyze the app data directory on a non-jailbroken iOS de
 
 If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" in "Basic Security Testing", you can use [objection](https://github.com/sensepost/objection "objection") to directly transfer data from the app data directory or [read data directly in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition").
 
-Important filesystem locations are:
+Important file system locations are:
 
 - AppName.app
   - The app’s bundle, contains the app and all of its resources
@@ -563,19 +562,6 @@ Manufacturers want to provide device users an aesthetically pleasing effect when
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded by using [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView").
 
-#### Dynamic Analysis
-
-Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (might be different in iOS below 8.0):
-
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
-
-If the application caches the sensitive information page as a screenshot, it fails this test.
-
-It is highly recommended to have a default screenshot that will be cached whenever the application enters the background.
-
-
-#### Remediation
-
 Possible remediation method that will set a default screenshot:
 
 ```
@@ -589,6 +575,17 @@ Possible remediation method that will set a default screenshot:
 ```
 
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
+
+#### Dynamic Analysis
+
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (might be different in iOS below 8.0):
+
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
+
+If the application caches the sensitive information page as a screenshot, it fails this test.
+
+It is highly recommended to have a default screenshot that will be cached whenever the application enters the background.
+
 
 ### Testing for Sensitive Data in Memory
 
