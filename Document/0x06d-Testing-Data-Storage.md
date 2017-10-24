@@ -238,7 +238,7 @@ On a non-jailbroken device objection can be used to [dump the Keychain items](ht
 
 ### Testing for Sensitive Data in Logs
 
-There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the apps developer once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
+There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the apps developer once online again or for usage statistics. However, logging sensitive data such as credit card numbers and session information might expose the data to attackers or malicious applications.
 Log files can be created in various ways. The following list shows the mechanisms that are available on iOS:
 
 - NSLog Method
@@ -259,7 +259,7 @@ Check the app source code for usage of predefined and/or custom logging statemen
   - Logging
   - Logfile
 
-Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (\*.pch) file:
+In order to address this issue in general, you can use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (\*.pch) file:
 
 ```C#
 #ifdef DEBUG
@@ -280,7 +280,7 @@ tail -f /var/log/syslog
 
 - Connect your iOS device via USB and launch Xcode. Navigate to Windows > Devices, select your device and the respective application.
 
-Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
+Proceed to complete the input fields prompt and if sensitive data is displayed in the output of the above command, it fails this test.
 
 
 ### Testing Whether Sensitive Data Is Sent to Third Parties
@@ -301,15 +301,14 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 
 #### Dynamic Analysis
 
-All requests made to external services should be analyzed if any sensitive information is embedded into them. By using an interception proxy, we can try to investigate the traffic from the app to the 3rd party endpoints. When using the app all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
-
+All requests made to external services should be analyzed if any sensitive information is embedded into them. By using an interception proxy, you can try to investigate the traffic from the app to the 3rd party endpoints. When using the app all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
 
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
-In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
+In order to simplify keyboard input several options are offered to users, like providing autocorrection or spell checking. Most of the keyboard input is cached by default in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
-This behavior is achieved by means of [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
+Keyboard caching is achieved by [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar and is influenced by the following properties:
 
 - `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
 - `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default.
@@ -318,21 +317,23 @@ This behavior is achieved by means of [UITextInputTraits protocol](https://devel
 
 - Search through the source code provided to look for similar implementations, like the following:
 
-  ```#ObjC
+```ObjC
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
-  ```
+```
 
 - Open xib and storyboard files in the `Interface Builder` of Xcode and verify states of `Secure Text Entry` and `Correction` in `Attributes Inspector` for appropriate objects.
 
 The application must ensure that data typed into text fields which contains sensitive information are not cached. This can be achieved by disabling the feature programmatically by using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews and UISearchBars. For data that should be masked such as PIN and passwords, set the `textObject.secureTextEntry` to `YES`.
 
-```#ObjC
+```ObjC
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
 
 #### Dynamic Analysis
+
+If a jailbroken iPhone is available the following steps can be executed:
 
 1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
@@ -343,21 +344,22 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
-
-<<<<<<< HEAD
-```#ObjC
+```objective-c
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
 
+If a non-jailbroken iPhone need to be used:
+- reset the keyboard cache,
+- key in all sensitive data in the app,
+- use the app again and check if autocorrect suggest already keyed in sensitive information.
 
-=======
->>>>>>> f5849d3d4fc764e2d0aaa3288f8f3c7a5f2ae8a9
+
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
-When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data.
+When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data stored in the clipboard.
 
 Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, the access to the pasteboard content is only allowed to apps in the foreground.
 
@@ -371,9 +373,9 @@ action == @select(cut:)
 action == @select(copy:)
 ```
 
-Possible remediation method to [disable clipboard on iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS"):
+One possible remediation method to [disable clipboard on iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") can be found below:
 
-```#ObjC
+```ObjC
 @interface NoSelectTextField : UITextField
 
 @end
@@ -401,9 +403,9 @@ Possible remediation method to [disable clipboard on iOS](http://stackoverflow.c
 @end
 ```
 
-To clear the pasteboard with [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral"):
+To clear the pasteboard with [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral") you can use the following code snippet:
 
-```
+```ObjC
 UIPasteboard *pb = [UIPasteboard generalPasteboard];
 [pb setValue:@"" forPasteboardType:UIPasteboardNameGeneral];
 ```
