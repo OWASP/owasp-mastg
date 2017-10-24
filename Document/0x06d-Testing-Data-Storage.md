@@ -306,6 +306,7 @@ All requests made to external services should be analyzed if any sensitive infor
 
 All data that is sent to 3rd Party services should be anonymized, so no PII data is available that would allow the 3rd party to identify the user account. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
 
+
 ### Testing for Sensitive Data in the Keyboard Cache
 
 In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
@@ -345,6 +346,8 @@ The application must ensure that data typed into text fields which contains sens
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
+
+
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
@@ -466,6 +469,7 @@ XPC services is the most secure and flexible way when implementing IPC on iOS an
 
 [NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
 
+
 ### Testing for Sensitive Data in Backups
 
 #### Overview
@@ -553,6 +557,7 @@ As such, avoid storing any sensitive data in plaintext within any of the files o
 
 While all the files in `Documents/` and `Library/Application Support/` are always being backed up by default, it is possible to [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28 "Where You Should Put Your App’s Files") by calling `[NSURL setResourceValue:forKey:error:]` using the `NSURLIsExcludedFromBackupKey` key.
 
+
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
 #### Overview
@@ -593,6 +598,7 @@ This will cause the background image to be set to the "overlayImage.png" instead
 ### Testing for Sensitive Data in Memory
 
 #### Overview
+
 Analyzing memory can help developers to identify root causes of several problems, such as application crashes. However, it can also be used to gain access to sensitive data. This section describes how to check for disclosure of data within the process' memory.
 
 First, you need to identify which sensitive information is stored in memory. Basically, if you have a sensitive asset it's very likely that at some point it is loaded in memory. The objective is to verify that this info is exposed as briefly as possible.
