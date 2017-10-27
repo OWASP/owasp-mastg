@@ -421,19 +421,15 @@ Proceed to a view in the app that has input fields which prompt the user for sen
 
 [Inter Process Communication (IPC)](http://nshipster.com/inter-process-communication/ "IPC on iOS") is a method that allows processes to send each other messages and data. In case two processes need to communicate with each other, different methods are available to implement IPC on iOS:
 
-- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC is a structured, asynchronous interprocess communication library which provides basic interprocess communication and is managed by `launchd`. It runs with the most restricted environment possible: sandboxed with minimal file system access, network access, and no root privilege escalation. There are two different APIs, when working with XPC Services:
+- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC is a structured, asynchronous interprocess communication library which provides basic interprocess communication and is managed by `launchd`. It is the most secure and flexible way when implementing IPC on iOS and should be used primarily. It runs with the most restricted environment possible: sandboxed with minimal file system access, network access, and no root privilege escalation. There are two different APIs, when working with XPC Services:
   * NSXPCConnection API and
   * XPC Services API
 - **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow for local communication (on the same device) only. They can either be implemented natively or by using Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
-- **NSFileCoordinator**: The class NSFileCoordinator can be used to manage and exchange data between apps through files that are accessible on the local file system for different processes.
+- **NSFileCoordinator**: The class NSFileCoordinator can be used to manage and exchange data between apps through files that are accessible on the local file system for different processes. [NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
 
 #### Static Analysis
 
 The following section summarizes different keywords that you should look for in order to identify IPC implementations within iOS source code.
-
-XPC services is the most secure and flexible way when implementing IPC on iOS and should be used primarily.
-
-[NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
 
 ##### XPC Services
 
@@ -478,7 +474,7 @@ IPC mechanisms should be verified via static analysis in the iOS source code. At
 
 #### Overview
 
-Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
+iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
 
@@ -488,11 +484,11 @@ When a user backs up their iPhone, the keychain data is backed up as well, but t
 
 Keychain items with the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
 
-The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), backups aren't an issue.
+The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), backups aren't a security issue.
 
 ##### Static Analysis
 
-In performing an iTunes backup of a device on which a particular mobile application has been installed, the backup will include all subdirectories (except for the `Library/Caches/` subdirectory) and files contained within that app's private directory on the [device's file system](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App"  ).
+In performing an iTunes backup of a device on which a particular mobile application has been installed, the backup will include all subdirectories (except for the `Library/Caches/` subdirectory) and files contained within that app's private directory on the [device's file system](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
 
 As such, avoid storing any sensitive data in plaintext within any of the files or folders within the app's private directory or subdirectories.
 
@@ -616,9 +612,9 @@ The reason for the later requirement is that it enables developers direct access
 _Swift_ data types, other than collections should strictly be avoided, regardless of whether they are considered mutable or not. Many data types in _Swift_ hold their data by value, not reference. While for simple types like `char` or `int` this allows us to modify their actual memory, having a complex type like `String` handled by value implies a hidden layer of objects, structures, or primitive arrays whose memory can not be directly accessed and modified. Certain usage may appear, and even be documented, to result in mutable data object, but it actually results in a mutable identifier (variable) as opposite to an immutable identifier (constant). For example, many consider the following to result in a mutable `String` in _Swift_, but actually it is an example of a variable whose complex value can be changed (replaced, not modified in place):
 
 ```swift
-var str1 = "Goodbye"              // "Goodby", base address:            0x0001039e8dd0
-str1.append(" ")                 // "Goodby ", base address:            0x608000064ae0
-str1.append("cruel world!")      // "Goodby cruel world", base address: 0x6080000338a0
+var str1 = "Goodbye"              // "Goodbye", base address:            0x0001039e8dd0
+str1.append(" ")                 // "Goodbye ", base address:            0x608000064ae0
+str1.append("cruel world!")      // "Goodbye cruel world", base address: 0x6080000338a0
 str1.removeAll()                 // "", base address                    0x00010bd66180
 ```
 
@@ -640,8 +636,7 @@ To summarize, when performing static analysis for sensitive data exposed in memo
   - Such data must not be passed over immutable data types such as `String` or `NSString`.
   - Non-primitive data types might leave data behind and therefore should be avoided.
   - Overwriting should be done before removing references.
-  - Pay attention to third-party components (libraries and frameworks).
-    Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
+  - Pay attention to third-party components (libraries and frameworks). Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
 
 #### Dynamic Analysis
 
