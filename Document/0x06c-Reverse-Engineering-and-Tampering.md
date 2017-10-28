@@ -70,19 +70,19 @@ Save the IPA file locally with the following command:
 
 You can use [Saurik's IPA Installer](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
 
-~~~
+```shell
 iPhone:~ root# ipainstaller -l
 com.apple.Pages
 com.example.targetapp
 com.google.ios.youtube
 com.spotify.client
-~~~
+```
 
 Generate the IPA file for using the following command:
 
-~~~
+```shell
 iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
-~~~
+```
 
 ###### From non-Jailbroken Devices
 
@@ -96,24 +96,24 @@ If the app is available on iTunes, you are able to recover the IPA on MacOS with
 
 On top of code signing, apps distributed via the app store are also protected using Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the app store only executes on the particular device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only possible way to obtain the decrypted code from a FairPlay-decrypted app is dumping it from memory while the app is running. On a jailbroken device, this can be done with Clutch tool that is included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them and pack to IPA file:
 
-~~~
+```
 # Clutch -i
-~~~
+```
 
 **NOTE:** Only applications distributed with AppStore are protected with FairPlay DRM. If you obtained your application compiled and exported directly from XCode, you don't need to decrypt it. The easiest way is to load the application into Hopper and check if it's being correctly disassembled. You can also check it with otool:
 
-~~~
+```shell
 # otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
-~~~
+```
 
-If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this comand is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
+If the output contains cryptoff, cryptsize and cryptid fields, then the binary is encrypted. If the output of this command is empty, it means that binary is not encrypted. **Remember** to use otool on binary, not on the IPA file.
 
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 
 Class-dump tool can be used to get information about methods in the application. Example below uses [Damn Vulnerable iOS Application]( http://damnvulnerableiosapp.com/). As our binary is so-called fat binary, which means that it can be executed on 32 and 64 bit platforms:
 
-```
+```shell
 $ unzip DamnVulnerableiOSApp.ipa
 
 $ cd Payload/DamnVulnerableIOSApp.app
@@ -135,13 +135,13 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYL
 Note architecture `armv7` which is 32 bit and `arm64`. This design permits to deploy the same application on all devices.
 In order to analyze the application with class-dump we must create so-called thin binary, which contains only one architecture:
 
-```
+```shell
 iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
 ```
 
 And then we can proceed to performing class-dump:
 
-```
+```shell
 iOS8-jailbreak:~ root# class-dump DVIA32
 
 @interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
@@ -183,7 +183,7 @@ To obtain the executable mount the following DMG image:
 
 You’ll find the debugserver executable in the /usr/bin/ directory on the mounted volume - copy it to a temporary directory. Then, create a file called entitlements.plist with the following content:
 
-~~~
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -198,7 +198,7 @@ You’ll find the debugserver executable in the /usr/bin/ directory on the mount
 	<true/>
 </dict>
 </plist>
-~~~
+```
 
 And apply the entitlement with codesign:
 
@@ -208,19 +208,19 @@ codesign -s - --entitlements entitlements.plist -f debugserver
 
 Copy the modified binary to any directory on the test device (note: The following examples use usbmuxd to forward a local port through USB).
 
-~~~
+```shell
 $ ./tcprelay.py -t 22:2222
 $ scp -P2222 debugserver root@localhost:/tmp/
-~~~
+```
 
 You can now attach debugserver to any process running on the device.
 
-~~~
+```shell
 VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
 debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
  for armv7.
 Attaching to process 2670...
-~~~
+```
 
 #### Cycript and Cynject
 
@@ -312,7 +312,7 @@ cy# printMethods (“AppDelegate”)
 
 If you haven't already done so, you need to install the Frida Python package on your host machine:
 
-```
+```shell
 $ pip install frida
 ```
 
@@ -322,7 +322,7 @@ Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edi
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
 
-```
+```shell
 $ frida-ps -U
 PID  Name
 ---  ----------------
@@ -361,7 +361,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 If you've developed and deployed iOS apps with Xcode before, you already have your own code signing certificate installed. Use the *security* tool to list your signing identities:
 
-```
+```shell
 $ security find-identity -p codesigning -v
   1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Vantage Point Security Pte. Ltd."
   2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
@@ -377,7 +377,7 @@ Apple will issue a free development provisioning profile even if you're not a pa
 
 Once you've obtained the provisioning profile, you can check its contents with the *security* tool. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those for code signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
-```
+```shell
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
 $ /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' profile.plist > entitlements.plist
 $ cat entitlements.plist
@@ -405,7 +405,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
 
-```
+```shell
 $ git clone https://github.com/alexzielenski/optool.git
 $ cd optool/
 $ git submodule update --init --recursive
@@ -415,7 +415,7 @@ $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 
 We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
-```
+```shell
 $ git clone https://github.com/phonegap/ios-deploy.git
 $ cd ios-deploy/
 $ xcodebuild
@@ -428,14 +428,14 @@ The last line in optool and ios-deploy creates a symbolic link and makes the exe
 
 Reload your shell to make the new commands available:
 
-```
+```shell
 zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
 To follow the examples below, you also need FridaGadget.dylib:
 
-```
+```shell
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
@@ -445,7 +445,7 @@ Besides the tools listed above, we'll be using standard tools that come with mac
 
 Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any zip tool to unpack the archive. Copy FridaGadget.dylib into the app directory and use optool to add a load command to the "UnCrackable Level 1" binary.
 
-```
+```shell
 $ unzip UnCrackable_Level1.ipa
 $ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
 $ optool install -c load -p "@executable_path/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
@@ -463,19 +463,19 @@ Of course such blatant tampering invalidates the main executable's code signatur
 
 First, let's add our own provisioning profile to the package:
 
-```
+```shell
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
 Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile because the `codesign` tool will read the Bundle ID from Info.plist during signing; the wrong value will lead to an invalid signature.
 
-```
+```shell
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ```
 
 Finally, we use the codesign tool to re-sign both binaries. Instead of "8004380F331DCA22CC1B47FB1A805890AE41C938," you need to use your signing identity, which you can output by executing the command `security find-identity -p codesigning -v`.
 
-```
+```shell
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
 Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
@@ -483,7 +483,7 @@ Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
 
 entitlements.plist is the file you created earlier, for your empty iOS project.
 
-```
+```shell
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
@@ -492,13 +492,13 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 
 Now you should be ready to run the modified app. Deploy and run the app on the device as follows:
 
-```
+```shell
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
 If everything went well, the app should launch in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the frida-ps command:
 
-```
+```shell
 $ frida-ps -U
 PID  Name
 ---  ------
@@ -527,7 +527,7 @@ Frida comes with `frida-trace`, a ready-made function tracing tool. `frida-trace
 
 Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
 
-```
+```shell
 $ frida-trace -U -m "-[NSURL *]" Safari
 Instrumenting functions...                                              
 -[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
