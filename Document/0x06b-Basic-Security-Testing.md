@@ -42,7 +42,7 @@ End users often jailbreak their devices to tweak the iOS system appearance, add 
 
 There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
 
-- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks require the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
+- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
 
 - Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
 
@@ -52,7 +52,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 #### Caveats and Considerations
 
-Jailbreaking iOS devices are becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions within relatively short time intervals (unless they are hardware-based vulnerabilities). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
+Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions within relatively short time intervals (unless they are hardware-based vulnerabilities). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
 If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting a spare device (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Once a jailbreak is released publicly, Apple is usually quick to release a patch, so you have only a couple of days to upgrade to the affected iOS version and apply the jailbreak.
 
