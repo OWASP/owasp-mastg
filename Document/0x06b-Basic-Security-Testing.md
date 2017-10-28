@@ -52,7 +52,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 #### Caveats and Considerations
 
-Jailbreaking iOS devices is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions within relative short time intervals (unless they are hardware-based vulnerabilities). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
+Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions within relatively short time intervals (unless they are hardware-based vulnerabilities). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
 If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting a spare device (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Once a jailbreak is released publicly, Apple is usually quick to release a patch, so you have only a couple of days to upgrade to the affected iOS version and apply the jailbreak.
 
@@ -161,7 +161,7 @@ waiting for connection
 
 The above command maps port 22 on the iOS device to port 2222 on localhost. With the following command, you should be able to connect to the device:
 
-```
+```shell
 $ ssh -p 2222 root@localhost
 root@localhost's password:
 iPhone:~ root#
@@ -173,7 +173,7 @@ Connecting to your iPhone via USB is also possible via [Needle](https://labs.mwr
 
 System applications are in the directory "/Applications." You can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps. Connect to the device via SSH and run the `installipa` command as follows:
 
-```
+```shell
 iOS8-jailbreak:~ root# installipa -l
 me.scan.qrcodereader
 iOS8-jailbreak:~ root# installipa -i me.scan.qrcodereader
@@ -260,7 +260,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 If you haven't already done so, you need to install the Frida Python package on your host machine:
 
-```
+```shell
 $ pip install frida
 ```
 
@@ -270,7 +270,7 @@ Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edi
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command. This should return the list of processes running on the device:
 
-```
+```shell
 $ frida-ps -U
 PID  Name
 ---  ----------------
@@ -309,7 +309,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 If you've developed and deployed iOS apps with Xcode before, you already have your own code signing certificate installed. Use the *security* tool to list your signing identities:
 
-```
+```shell
 $ security find-identity -p codesigning -v
   1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Vantage Point Security Pte. Ltd."
   2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
@@ -325,7 +325,7 @@ Apple will issue a free development provisioning profile even if you're not a pa
 
 Once you've obtained the provisioning profile, you can check its contents with the *security* tool. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those for code signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
-```
+```shell
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
 $ /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' profile.plist > entitlements.plist
 $ cat entitlements.plist
@@ -353,7 +353,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
 
-```
+```shell
 $ git clone https://github.com/alexzielenski/optool.git
 $ cd optool/
 $ git submodule update --init --recursive
@@ -363,7 +363,7 @@ $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 
 We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
-```
+```shell
 $ git clone https://github.com/phonegap/ios-deploy.git
 $ cd ios-deploy/
 $ xcodebuild
@@ -376,14 +376,14 @@ The last line in optool and ios-deploy creates a symbolic link and makes the exe
 
 Reload your shell to make the new commands available:
 
-```
+```shell
 zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
 To follow the examples below, you also need FridaGadget.dylib:
 
-```
+```shell
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
@@ -393,7 +393,7 @@ Besides the tools listed above, we'll be using standard tools that come with mac
 
 Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any zip tool to unpack the archive. Copy FridaGadget.dylib into the app directory and use optool to add a load command to the "UnCrackable Level 1" binary.
 
-```
+```shell
 $ unzip UnCrackable_Level1.ipa
 $ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
 $ optool install -c load -p "@executable_path/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
@@ -411,19 +411,19 @@ Of course such blatant tampering invalidates the main executable's code signatur
 
 First, let's add our own provisioning profile to the package:
 
-```
+```shell
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
 Next, we need to make sure that the BundleID in Info.plist matches the one specified in the profile because the `codesign` tool will read the Bundle ID from Info.plist during signing; the wrong value will lead to an invalid signature.
 
-```
+```shell
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ```
 
 Finally, we use the codesign tool to re-sign both binaries. Instead of "8004380F331DCA22CC1B47FB1A805890AE41C938," you need to use your signing identity, which you can output by executing the command `security find-identity -p codesigning -v`.
 
-```
+```shell
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
 Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
@@ -431,7 +431,7 @@ Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
 
 entitlements.plist is the file you created earlier, for your empty iOS project.
 
-```
+```shell
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
@@ -440,13 +440,13 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 
 Now you should be ready to run the modified app. Deploy and run the app on the device as follows:
 
-```
+```shell
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
 If everything went well, the app should launch in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the frida-ps command:
 
-```
+```shell
 $ frida-ps -U
 PID  Name
 ---  ------
@@ -473,7 +473,7 @@ Frida comes with `frida-trace`, a ready-made function tracing tool. `frida-trace
 
 Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
 
-```
+```shell
 $ frida-trace -U -m "-[NSURL *]" Safari
 Instrumenting functions...                                              
 -[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
@@ -484,7 +484,7 @@ Started tracing 248 functions. Press Ctrl+C to stop.
 
 Next, navigate to a new website in Safari. You should see traced function calls on the `frida-trace` console. Note that the `initWithURL:` method is called to initialize a new URL request object.
 
-```
+```shell
            /* TID 0xc07 */
   20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
  20313 ms  -[NSURLRequest URL]
@@ -613,7 +613,7 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 4. Launch Wireshark and select "rvi0" as the capture interface.
 5. Filter the traffic in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
-```
+```shell 
 ip.addr == 192.168.1.1 && http
 ```
 
