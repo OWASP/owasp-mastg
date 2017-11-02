@@ -420,7 +420,7 @@ To improve security and privacy, a Local Broadcast Manager is used to send and r
 
 Broadcast Receivers are components that allow apps to receive notifications from other apps and from the system itself. With it, apps can react to events (internal, initiated by other apps, or initiated by the operating system). They are generally used to update user interfaces, start services, update content, and create user notifications.
 
-Broadcast Receivers must be declared in the app's manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running receive intents; the system starts apps automatically when a relevant intent is raised.
+Broadcast Receivers must be declared in the app's manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 ```

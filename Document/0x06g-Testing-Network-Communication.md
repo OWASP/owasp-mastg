@@ -18,7 +18,7 @@ The following is a summarized list of [App Transport Security Requirements](http
 - The X.509 Certificate has a SHA256 fingerprint and must be signed with at least a 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key.
 - Transport Layer Security (TLS) version must be 1.2 or above and must support Perfect Forward Secrecy (PFS) through Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) key exchange and AES-128 or AES-256 symmetric ciphers.
 
-The cipher suit must be one of the following:
+The cipher suite must be one of the following:
 
 - `TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384`
 - `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256`
@@ -71,7 +71,6 @@ The following table summarizes the global ATS exceptions. For more information a
 | `NSAllowsLocalNetworking` | Allow connection to unqualified domain names and .local domains |
 | `NSAllowsArbitraryLoadsForMedia` | Disable all ATS restrictions for media loaded through the AV Foundations framework |
 
-
 The following table summarizes the per-domain ATS exceptions. For more information about these exceptions, please refer to [table 3 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW44 "App Transport Security dictionary primary keys").
 
 |  Key | Description |
@@ -82,8 +81,6 @@ The following table summarizes the per-domain ATS exceptions. For more informati
 | `NSExceptionRequiresForwardSecrecy` | Disable perfect forward secrecy (PFS) |
 
 Starting from January 1 2017, Apple App Store review requires justification if one of the following ATS exceptions are defined.
-
-Starting from January 1 2017, Apple App Store review and requires justification if one of the following ATS exceptions are defined.
 
 - `NSAllowsArbitraryLoads`
 - `NSAllowsArbitraryLoadsForMedia`
@@ -127,13 +124,9 @@ $ plutil -convert xml1 Info.plist
 
 Once the file is converted to a human readable format, the exceptions can be analyzed. The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP website that does not have all the ATS requirements.
 
-#### Dynamic Analysis
+In general it can be summarised:
 
-ATS settings should be verified via static analysis in the iOS source code.
-
-#### Remediation
-
-- ATS should always be activated and only be deactivated under certain circumstances.
+- ATS should be configured according to best practices by Apple and only be deactivated under certain circumstances.
 - If the application connects to a defined number of domains that the application owner controls, then configure the servers to support the ATS requirements and opt-in for the ATS requirements within the app. In the following example, `example.com` is owned by the application owner and ATS is enabled for that domain.
 
 ```
@@ -158,25 +151,12 @@ ATS settings should be verified via static analysis in the iOS source code.
 </dict>
 ```
 
-- If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and deactivated.
+- If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views
 
-#### References
+#### Dynamic Analysis
 
-##### OWASP Mobile Top 10 2016
-
-- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
-
-##### OWASP MASVS
-
-- V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
-- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
-
-##### CWE
-
-- CWE-319 - Cleartext Transmission of Sensitive Information
-- CWE-326 - Inadequate Encryption Strength
+ATS settings should be verified via static analysis in the iOS source code.
 
 
 ### Testing Custom Certificate Stores and Certificate Pinning
@@ -246,16 +226,22 @@ Sometimes applications have one certificate that is hardcoded and use it for the
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
-### References
 
-#### OWASP Mobile Top 10 2016
+#### References
 
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+##### OWASP Mobile Top 10 2016
 
-#### OWASP MASVS
+- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
+##### OWASP MASVS
+
+- V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
+- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
-#### CWE
+##### CWE
 
+- CWE-319 - Cleartext Transmission of Sensitive Information
+- CWE-326 - Inadequate Encryption Strength
 - CWE-295 - Improper Certificate Validation

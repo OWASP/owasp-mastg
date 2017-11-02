@@ -167,7 +167,6 @@ do {
 
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is a key/value store built atop sqlite.
 
-
 #### Dynamic Analysis
 
 A way to identify if sensitive information like credentials and keys are stored insecurely and without leveraging the native functions from iOS is to analyze the app data directory. It is important to trigger all app functionality before the data is analyzed, as the app might only store sensitive data when specific functionality is triggered by the user. A static analysis can then be performed for the data dump based on generic keywords and app specific data.
@@ -191,7 +190,7 @@ It is also possible to analyze the app data directory on a non-jailbroken iOS de
 
 If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" in "Basic Security Testing", you can use [objection](https://github.com/sensepost/objection "objection") to directly transfer data from the app data directory or [read data directly in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition").
 
-Important filesystem locations are:
+Important file system locations are:
 
 - AppName.app
   - The app’s bundle, contains the app and all of its resources
@@ -239,7 +238,7 @@ On a non-jailbroken device objection can be used to [dump the Keychain items](ht
 
 ### Testing for Sensitive Data in Logs
 
-There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the apps developer once online again or for usage statistics. However, logging sensitive data such as credit card number and session IDs might expose the data to attackers or malicious applications.
+There are many legit reasons to create log files on a mobile device, for example to keep track of crashes or errors that are stored locally when being offline and being sent to the apps developer once online again or for usage statistics. However, logging sensitive data such as credit card numbers and session information might expose the data to attackers or malicious applications.
 Log files can be created in various ways. The following list shows the mechanisms that are available on iOS:
 
 - NSLog Method
@@ -250,6 +249,7 @@ Log files can be created in various ways. The following list shows the mechanism
 #### Static Analysis
 
 Check the app source code for usage of predefined and/or custom logging statements by using the following keywords:
+
 - For predefined and built-in functions:
   - NSLog
   - NSAssert
@@ -258,6 +258,16 @@ Check the app source code for usage of predefined and/or custom logging statemen
 - For custom functions:
   - Logging
   - Logfile
+
+In order to address this issue in general, you can use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (\*.pch) file:
+
+```C#
+#ifdef DEBUG
+#   define NSLog (...) NSLog(__VA_ARGS__)
+#else
+#   define NSLog (...)
+#endif
+```
 
 #### Dynamic Analysis
 
@@ -270,19 +280,8 @@ tail -f /var/log/syslog
 
 - Connect your iOS device via USB and launch Xcode. Navigate to Windows > Devices, select your device and the respective application.
 
-Proceed to complete the input fields prompt and if the sensitive data are displayed in the output of the above command, it fails this test.
+Proceed to complete the input fields prompt and if sensitive data is displayed in the output of the above command, it fails this test.
 
-#### Remediation
-
-Use a define to enable NSLog statements for development and debugging, and disable these before shipping the software. This can be done by putting the following code into the appropriate PREFIX_HEADER (\*.pch) file:
-
-```C#
-#ifdef DEBUG
-#   define NSLog (...) NSLog(__VA_ARGS__)
-#else
-#   define NSLog (...)
-#endif
-```
 
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
@@ -298,19 +297,18 @@ The downside is that a developer doesn’t know in detail what code is executed 
 
 API calls and/or functions provided through the 3rd party library should be reviewed on a source code level to identify if they are used accordingly to best practices.
 
+All data that is sent to 3rd Party services should be anonymized, so no PII data is available that would allow the 3rd party to identify the user account. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
+
 #### Dynamic Analysis
 
-All requests made to external services should be analyzed if any sensitive information is embedded into them. By using an interception proxy, we can try to investigate the traffic from the app to the 3rd party endpoints. When using the app all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
+All requests made to external services should be analyzed if any sensitive information is embedded into them. By using an interception proxy, you can try to investigate the traffic from the app to the 3rd party endpoints. When using the app all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
 
-#### Remediation
-
-All data that is sent to 3rd Party services should be anonymized, so no PII data is available that would allow the 3rd party to identify the user account. Also all other data, like IDs in an application that can be mapped to a user account or session should not be sent to a third party.  
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
-In order to simplify keyboard input by providing autocorrection, predicative input, spell checking, etc., most of keyboard input by default is cached in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
+In order to simplify keyboard input several options are offered to users, like providing autocorrection or spell checking. Most of the keyboard input is cached by default in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
-This behavior is achieved by means of [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar. Keyboard caching is influenced by following properties:
+Keyboard caching is achieved by [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UIText​Input​Traits protocol"), which is adopted by UITextField, UITextView and UISearchBar and is influenced by the following properties:
 
 - `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled or disabled during typing. With autocorrection enabled, the text object tracks unknown words and suggests a more suitable replacement candidate to the user, replacing the typed text automatically unless the user explicitly overrides the action. The default value for this property is `UIText​Autocorrection​Type​Default`, which for most input methods results in autocorrection being enabled.
 - `var secureTextEntry: BOOL` identifies whether text copying and text caching should be disabled and in case of UITextField hides the text being entered. This property is set to `NO` by default.
@@ -319,14 +317,23 @@ This behavior is achieved by means of [UITextInputTraits protocol](https://devel
 
 - Search through the source code provided to look for similar implementations, like the following:
 
-  ```#ObjC
+```ObjC
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
-  ```
+```
 
 - Open xib and storyboard files in the `Interface Builder` of Xcode and verify states of `Secure Text Entry` and `Correction` in `Attributes Inspector` for appropriate objects.
 
+The application must ensure that data typed into text fields which contains sensitive information are not cached. This can be achieved by disabling the feature programmatically by using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews and UISearchBars. For data that should be masked such as PIN and passwords, set the `textObject.secureTextEntry` to `YES`.
+
+```ObjC
+UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
+textField.autocorrectionType = UITextAutocorrectionTypeNo;
+```
+
 #### Dynamic Analysis
+
+If a jailbroken iPhone is available the following steps can be executed:
 
 1. Reset your iOS device keyboard cache by going through: Settings > General > Reset > Reset Keyboard Dictionary
 
@@ -337,19 +344,22 @@ This behavior is achieved by means of [UITextInputTraits protocol](https://devel
 
 4. Look for sensitive data such as username, passwords, email addresses, credit card numbers, etc. If the sensitive data can be obtained through the keyboard cache file, it fails this test.
 
-#### Remediation
-
-The application must ensure that data typed into text fields which contains sensitive information are not cached. This can be achieved by disabling the feature programmatically by using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews and UISearchBars. For data that should be masked such as PIN and passwords, set the `textObject.secureTextEntry` to `YES`.
-
-```#ObjC
+```objective-c
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
+
+If a non-jailbroken iPhone need to be used:
+- reset the keyboard cache,
+- key in all sensitive data in the app,
+- use the app again and check if autocorrect suggest already keyed in sensitive information.
+
+
 ### Testing for Sensitive Data in the Clipboard
 
 #### Overview
 
-When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data.
+When keying in data into input fields, the clipboard can be used to copy data in. The clipboard is accessible systemwide and therefore shared between the apps. This feature can be misused by malicious apps in order to get sensitive data stored in the clipboard.
 
 Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, the access to the pasteboard content is only allowed to apps in the foreground.
 
@@ -363,15 +373,9 @@ action == @select(cut:)
 action == @select(copy:)
 ```
 
-#### Dynamic Analysis
+One possible remediation method to [disable clipboard on iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") can be found below:
 
-Proceed to a view in the app that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. Enter some values and double tap on the input field. If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define". The "Cut" and "Copy" option should be disabled for sensitive input fields, since it will be possible to retrieve the value by pasting it. If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
-
-#### Remediation
-
-Possible remediation method to [disable clipboard on iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS"):
-
-```#ObjC
+```ObjC
 @interface NoSelectTextField : UITextField
 
 @end
@@ -399,12 +403,17 @@ Possible remediation method to [disable clipboard on iOS](http://stackoverflow.c
 @end
 ```
 
-To clear the pasteboard with [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral"):
+To clear the pasteboard with [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral") you can use the following code snippet:
 
-```
+```ObjC
 UIPasteboard *pb = [UIPasteboard generalPasteboard];
 [pb setValue:@"" forPasteboardType:UIPasteboardNameGeneral];
 ```
+
+#### Dynamic Analysis
+
+Proceed to a view in the app that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. Enter some values and double tap on the input field. If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define". The "Cut" and "Copy" option should be disabled for sensitive input fields, since it will be possible to retrieve the value by pasting it. If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
+
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
@@ -412,13 +421,13 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 
 [Inter Process Communication (IPC)](http://nshipster.com/inter-process-communication/ "IPC on iOS") is a method that allows processes to send each other messages and data. In case two processes need to communicate with each other, different methods are available to implement IPC on iOS:
 
-- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC is a structured, asynchronous interprocess communication library which provides basic interprocess communication and is managed by `launchd`. It runs with the most restricted environment possible: sandboxed with minimal file system access, network access, and no root privilege escalation. There are two different APIs, when working with XPC Services:
+- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC is a structured, asynchronous interprocess communication library which provides basic interprocess communication and is managed by `launchd`. It is the most secure and flexible way when implementing IPC on iOS and should be used primarily. It runs with the most restricted environment possible: sandboxed with minimal file system access, network access, and no root privilege escalation. There are two different APIs, when working with XPC Services:
   * NSXPCConnection API and
   * XPC Services API
 - **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow for local communication (on the same device) only. They can either be implemented natively or by using Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
-- **NSFileCoordinator**: The class NSFileCoordinator can be used to manage and exchange data between apps through files that are accessible on the local file system for different processes.
+- **NSFileCoordinator**: The class NSFileCoordinator can be used to manage and exchange data between apps through files that are accessible on the local file system for different processes. [NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
 
-#### Static Testing
+#### Static Analysis
 
 The following section summarizes different keywords that you should look for in order to identify IPC implementations within iOS source code.
 
@@ -450,27 +459,22 @@ Keywords to look for in high-level implementations (Core Foundation and Foundati
 - NSMachPort
 - NSMessagePort
 
-
 ##### NSFileCoordinator
 
 Keywords to look for:
 - NSFileCoordinator
 
-#### Dynamic Testing
+#### Dynamic Analysis
 
 IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is available on iOS to verify IPC usage.
 
-#### Remediation
 
-XPC services is the most secure and flexible way when implementing IPC on iOS and should be used primarily.
-
-[NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will block until they complete. That's convenient since you don't have to wait for an asynchronous block callback, but it obviously also means that they block the current thread.
 
 ### Testing for Sensitive Data in Backups
 
 #### Overview
 
-Like other modern mobile operating systems iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
+iOS offers auto-backup features that create copies of the data on the device. On iOS, backups can be made either through iTunes, or the cloud using the iCloud backup feature. In both cases, the backup includes nearly all data stored on the device, except some highly sensitive things like Apple Pay information and TouchID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
 
@@ -480,9 +484,15 @@ When a user backs up their iPhone, the keychain data is backed up as well, but t
 
 Keychain items with the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
 
-The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), backups aren't an issue.
+The takeaway: As long as sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, or encrypted with a key locked inside the Keychain), backups aren't a security issue.
 
-##### Excluding Items from Backup
+##### Static Analysis
+
+In performing an iTunes backup of a device on which a particular mobile application has been installed, the backup will include all subdirectories (except for the `Library/Caches/` subdirectory) and files contained within that app's private directory on the [device's file system](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
+
+As such, avoid storing any sensitive data in plaintext within any of the files or folders within the app's private directory or subdirectories.
+
+While all the files in `Documents/` and `Library/Application Support/` are always being backed up by default, it is possible to [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28 "Where You Should Put Your App’s Files") by calling `[NSURL setResourceValue:forKey:error:]` using the `NSURLIsExcludedFromBackupKey` key.
 
 The [NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey")  and [CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey") file system properties can be used to exclude files and directories from backups. Apps that need to exclude a large number of files can exclude them by creating their own sub-directory and marking that directory as excluded. Apps should create their own directories for exclusion, rather than excluding the system defined directories.
 
@@ -529,11 +539,6 @@ The following is a [sample code for excluding a file from backup](https://develo
 ```
 
 
-#### Static Analysis
-
-Review the iOS mobile application source code to see if data is backed up unencrypted.
--- TODO
-
 #### Dynamic Analysis
 
 After the app data has been backed up, review the data content of the backup files and folders. Specifically, the following directories should be reviewed to check if they contain any sensitive data:
@@ -545,13 +550,7 @@ After the app data has been backed up, review the data content of the backup fil
 
 Refer to the overview of this section to read up more on the purpose of each of the mentioned directories and the type of information they store.
 
-#### Remediation
 
-In performing an iTunes backup of a device on which a particular mobile application has been installed, the backup will include all subdirectories (except for the `Library/Caches/` subdirectory) and files contained within that app's private directory on the [device's file system](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App"  ).
-
-As such, avoid storing any sensitive data in plaintext within any of the files or folders within the app's private directory or subdirectories.
-
-While all the files in `Documents/` and `Library/Application Support/` are always being backed up by default, it is possible to [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28 "Where You Should Put Your App’s Files") by calling `[NSURL setResourceValue:forKey:error:]` using the `NSURLIsExcludedFromBackupKey` key.
 
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
@@ -562,19 +561,6 @@ Manufacturers want to provide device users an aesthetically pleasing effect when
 #### Static Analysis
 
 While analyzing the source code, look for the fields or screens where sensitive data is involved. Identify if the application sanitize the screen before being backgrounded by using [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView").
-
-#### Dynamic Analysis
-
-Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (might be different in iOS below 8.0):
-
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
-
-If the application caches the sensitive information page as a screenshot, it fails this test.
-
-It is highly recommended to have a default screenshot that will be cached whenever the application enters the background.
-
-
-#### Remediation
 
 Possible remediation method that will set a default screenshot:
 
@@ -590,9 +576,21 @@ Possible remediation method that will set a default screenshot:
 
 This will cause the background image to be set to the "overlayImage.png" instead whenever the application is being backgrounded. It will prevent sensitive data leaks as the "overlayImage.png" will always override the current view.
 
+#### Dynamic Analysis
+
+Proceed to a page on the application which displays sensitive information such as username, email address, account details, etc. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and proceed to the following directory (might be different in iOS below 8.0):
+
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
+
+If the application caches the sensitive information page as a screenshot, it fails this test.
+
+It is highly recommended to have a default screenshot that will be cached whenever the application enters the background.
+
+
 ### Testing for Sensitive Data in Memory
 
 #### Overview
+
 Analyzing memory can help developers to identify root causes of several problems, such as application crashes. However, it can also be used to gain access to sensitive data. This section describes how to check for disclosure of data within the process' memory.
 
 First, you need to identify which sensitive information is stored in memory. Basically, if you have a sensitive asset it's very likely that at some point it is loaded in memory. The objective is to verify that this info is exposed as briefly as possible.
@@ -614,9 +612,9 @@ The reason for the later requirement is that it enables developers direct access
 _Swift_ data types, other than collections should strictly be avoided, regardless of whether they are considered mutable or not. Many data types in _Swift_ hold their data by value, not reference. While for simple types like `char` or `int` this allows us to modify their actual memory, having a complex type like `String` handled by value implies a hidden layer of objects, structures, or primitive arrays whose memory can not be directly accessed and modified. Certain usage may appear, and even be documented, to result in mutable data object, but it actually results in a mutable identifier (variable) as opposite to an immutable identifier (constant). For example, many consider the following to result in a mutable `String` in _Swift_, but actually it is an example of a variable whose complex value can be changed (replaced, not modified in place):
 
 ```swift
-var str1 = "Goodbye"              // "Goodby", base address:            0x0001039e8dd0
-str1.append(" ")                 // "Goodby ", base address:            0x608000064ae0
-str1.append("cruel world!")      // "Goodby cruel world", base address: 0x6080000338a0
+var str1 = "Goodbye"              // "Goodbye", base address:            0x0001039e8dd0
+str1.append(" ")                 // "Goodbye ", base address:            0x608000064ae0
+str1.append("cruel world!")      // "Goodbye cruel world", base address: 0x6080000338a0
 str1.removeAll()                 // "", base address                    0x00010bd66180
 ```
 
@@ -638,8 +636,7 @@ To summarize, when performing static analysis for sensitive data exposed in memo
   - Such data must not be passed over immutable data types such as `String` or `NSString`.
   - Non-primitive data types might leave data behind and therefore should be avoided.
   - Overwriting should be done before removing references.
-  - Pay attention to third-party components (libraries and frameworks).
-    Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
+  - Pay attention to third-party components (libraries and frameworks). Good indicator that they have considered the discussed issue is if their public API handles data according to the recommendations above.
 
 #### Dynamic Analysis
 

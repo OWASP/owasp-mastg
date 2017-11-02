@@ -36,9 +36,9 @@ Inspect the app's source code to identify instances of cryptographic algorithms 
 
 The names of cryptographic APIs depend on the particular mobile platform:
 
-On Android, developers use `Cipher.getInstance("algorithm-name")` (part of the Java Cryptography API) in the app's source code to request an instance of the `Cipher` (or other primitive) that includes that algorithm. The argument to the `Cipher` class determines which algorithm is used (for example, `Cipher cipher = Cipher.getInstance("DES");`). You'll find more information on this in the "Testing Cryptography in Android apps" chapter.
-
-iOS code usually refers to predefined constants defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants to detect if they are used. Note that since the constants on iOS are numeric, make sure to check whether the algorithm constant values sent to the `CCCrypt` function represent an algorithm we know is insecure or deprecated. Once you have selected an insecure algorithm, you can work to redesign your solution to use a recommended algorithm instead. We'll revisit this topic in the "Testing Cryptography in iOS apps" chapter.
+- Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
+- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison").
+- Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
 The following algorithms are recommended:
 

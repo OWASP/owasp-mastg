@@ -6,6 +6,7 @@
 
 - [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
 - [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
+- [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
 
 ### General Mobile App Testing Guide
 
@@ -31,7 +32,10 @@
 
 - [Platform Overview](0x06a-Platform-Overview.md)
 - [iOS Security Testing Basics](0x06b-Basic-Security-Testing.md)
+- [Testing Data Storage in iOS Apps](0x06d-Testing-Data-Storage.md)
+- [Testing Cryptography in iOS Apps](0x06e-Testing-Cryptography.md)
 - [Testing Local Authentication in iOS Apps](0x06f-Testing-Local-Authentication.md)
+- [Testing Network Communication in iOS Apps](0x06g-Testing-Network-Communication.md)
 - [Testing Platform Interaction on iOS](0x06h-Testing-Platform-Interaction.md)
 
 ### Appendix
