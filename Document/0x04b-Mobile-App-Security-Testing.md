@@ -233,7 +233,8 @@ You can use the [OWASP MASVS](https://www.owasp.org/images/f/fe/MASVS_v0.9.3.pdf
 - The last phase, too often neglected, is the safe **Decommissioning** of software after its end of use.
 
 The picture below illustrates all the phases and artifacts:
-![General description of SDLC](Images/Chapters/0x04b/SDLCOverview.JPG)
+
+![General description of SDLC](Images/Chapters/0x04b/SDLCOverview.jpg)
 
 Based on the project's general risk profile, you may simplify (or even skip) some artifacts, and you may add others (formal intermediary approvals, formal documentation of certain points, etc.). **Always remember two things: an SDLC is meant to reduce risks associated with software development, and it is a framework that helps you set up controls to that end.** This this is a generic description of SDLC; always tailor this framework to your projects.
 
@@ -344,7 +345,7 @@ The security of an application developed with DevOps must be considered during o
 - Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. Cf the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
-![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.JPG)
+![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg)
 
 
 ### References
