@@ -10,34 +10,26 @@ In this guide, we cover mobile app security testing in two contexts. The first i
 
 #### White-box Testing versus Black-box Testing
 
-Let's start by defining the concepts:
+Let's start by reviewing some key concepts:
+
 - Black-box testing is conducted without the tester's having any information about the app being tested. This process is sometimes called "zero-knowledge testing." The main purpose of this test is allowing the tester to behave like a real attacker in the sense of exploring possible uses for publicly available and discoverable information.
 - White-box testing (sometimes called "full knowledge testing") is the total opposite of black-box testing in the sense that the tester has full knowledge of the app. The knowledge may encompass source code, documentation, and diagrams. Although much easier and faster than black-box testing, white-box testing doesn't allow for as many test cases. White-box testing is generally more useful for protecting the app against internal attackers.
 - Gray-box testing is all testing that falls in between the two aforementioned testing types: some information is provided to the tester, and other information is intended to be discovered. This type of testing is an interesting compromise in the number of test cases, the cost, the speed, and the scope of testing. Gray-box testing is the most common kind of testing in the security industry.
 
-We strongly advise that you request the source code so that you can use the testing time as efficiently as possible. The tester's code access obviously doesn't simulate an external attack, but it simplifies the identification of vulnerabilities by allowing the tester to verify every identified anomaly or suspicious behavior at the code level. A white-box test is the way to go if the app hasn't been tested before.
-
-Even though decompiling on Android is straightforward, the source code may be obfuscated, and de-obfuscating will be time-consuming, possibly to the point of being even. Time constraints are therefore another reason for the tester to have access to the source code.
-
-Clients may request black-box testing, but they should be told that external attackers don't operate within a limited time frame (like the tester). Therefore, black-box testing may be a good choice only if the app is already mature from a security point of view and the client wants to test the app's security controls.
+We strongly advise that you request the source code so that you can use the testing time as efficiently as possible. Having access to the original code, and possible a working build environment, vastly simplifies the identification of vulnerabilities.
 
 #### Static versus Dynamic Analysis
 
-Static analysis involves examining an application's components without executing them. It may be similar to white-box testing. The term often refers to manual or automatic source code analysis. 
-OWASP provides information about [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
+Vulnerability analysis is the process of looking for vulnerabilities in an app. Although this may be done manually, automated scanners are usually used to identify the main vulnerabilities. Static and dynamic analysis are types of vulnerability analysis.
 
-Dynamic analysis involves examining the app from the outside while executing it. This type of analysis can be manual or automatic. It usually doesn't provide the information that static analysis provides, but it is a good way to detect interesting elements (assets, features, entry points, etc.) from a user's point of view. It may be similar to black-box testing.
-OWASP provides information about [Dynamic Analysis](https://www.owasp.org/index.php/Dynamic_Analysis "OWASP Dynamic Analysis") that may help you understand how to analyze apps.
+*Static analysis* involves examining an application's components (source code or binary code) without executing them. During static analysis, the mobile app's source code is analyzed to ensure appropriate implementation of security controls. In security new-speak, you'll sometimes hear people refer to static analysis at "SAST" (Static Application Security Testing).
 
-Now that we have defined static and dynamic analysis, let's dive deeper.
+The focus of *dynamic analysis* (also called DAST, or Dynamic Application Security Testing) is the testing and evaluation of apps via their real-time execution. The main objective of dynamic analysis is finding security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted both at the mobile platform layer and against the back-end services and APIs, where the mobile app's request and response patterns can be analyzed.
 
-#### Vulnerability Analysis
+Dynamic analysis is usually used to check for security mechanisms that provide sufficient protection against the most prevalent types of attack, such as disclosure of data in transit, authentication and authorization issues, and server configuration errors.
 
-Vulnerability analysis is usually the process of looking for vulnerabilities in an app. Although this may be done manually, automated scanners are usually used to identify the main vulnerabilities. Static and dynamic analysis are types of vulnerability analysis.
 
-#### Static Analysis
-
-During static analysis, the mobile app's source code is analyzed to ensure appropriate implementation of security controls. In most cases, a hybrid automatic/manual approach is used. Automatic scans catch the low-hanging fruit, and the human tester can explore the code base with specific usage contexts in mind.
+To learn more about the techniques, strengths, and limitations.associated of both approaches, check out the OWASP pages on [static]](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") and [dynamic analysis](https://www.owasp.org/index.php/Dynamic_Analysis "OWASP Dynamic Analysis"), check out the respective OWA[OWASP page on 
 
 ##### Manual Code Analysis
 
@@ -49,33 +41,15 @@ In contrast to automatic code analysis, manual code review is very good for iden
 
 A manual code review requires an expert code reviewer who is proficient in both the language and the frameworks used for the mobile application. Full code review can be a slow, tedious, time-consuming process for the reviewer, especially given large code bases with many dependencies.
 
-##### Automatic Code Analysis
+##### Automated Code Analysis
 
 Automated analysis tools can be used to speed up the review process of Static Application Security Testing (SAST). They check the source code for compliance with a predefined set of rules or industry best practices, then typically display a list of findings or warnings and flags for all detected violations. Some static analysis tools run against the compiled app only, some must be fed the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
 
 Although some static code analysis tools incorporate a lot of information about the rules and semantics required to analyze mobile apps, they may produce many false positives, particularly if they are not configured for the target environment. A security professional must therefore always review the results.
 
+In most cases, a hybrid automatic/manual approach is used. Automatic scans catch the low-hanging fruit, and the human tester can explore the code base with specific usage contexts in mind.
+
 The chapter "Testing tools" includes a list of static analysis tools.
-
-#### Dynamic Analysis
-
-The focus of dynamic analysis (also called DAST, or Dynamic Application Security Testing) is the testing and evaluation of apps via their real-time execution. The main objective of dynamic analysis is finding security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted both at the mobile platform layer and against the back-end services and APIs, where the mobile app's request and response patterns can be analyzed.
-
-Dynamic analysis is usually used to check for security mechanisms that provide sufficient protection against the most prevalent types of attack, such as disclosure of data in transit, authentication and authorization issues, and server configuration errors.
-
-##### Pros of Dynamic Analysis
-
-Dynamic analysis must be combined with static analysis: it is not a silver bullet (e.g., you cannot find some flaws with dynamic analysis alone). The following are pros:
-
-- Dynamic analysis doesn't require access to the source code and documentation.
-- It can help you identify infrastructure, configuration, and patch issues that static analysis tools may miss.
-
-##### Cons of Dynamic Analysis
-
-The cons of dynamic analysis are:
-- limited coverage (because identifying the test area requires the mobile application to be footprinted);
-- lack of access to the instructions being executed (because the tool exercises the mobile application and matches requests and response patterns).
-
 
 #### Avoiding False Positives
 
@@ -94,10 +68,9 @@ Stored Cross-Site Scripting (CSS) can be an issue if the app includes Webviews, 
 
 In any case, consider exploit scenarios when you perform the risk assessment; don't blindly trust your scanning tool's output.
 
-
 #### Penetration Testing (a.k.a. Pentesting)
 
-The classic approach involves all-around security testing of the app's final or near-final build, e.g., the build that's available at the end of the development process. For testing at the end of the development process, we recommend the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "OWASP MASVS") and the associated checklist. A typical security test is structured as follows:
+A penetration test involves all-around security testing of the app's final or near-final build, e.g., the build that's available at the end of the development process. For testing at the end of the development process, we recommend using the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "OWASP MASVS") and the associated checklist. A typical security test is structured as follows:
 
 - **Preparation** - defining the scope of security testing, including identifying applicable security controls, the organization's testing goals, and sensitive data. More generally, preparation includes all synchronization with the client as well as legally protecting the tester (who is often a third party). Remember, attacking a system without written authorization is illegal in many parts of the world!
 - **Intelligence Gathering** - analyzing the **environmental** and **architectural** context of the app to gain a general contextual understanding.
