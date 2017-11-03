@@ -44,7 +44,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 
-### 2-Factor Authentication and Step-up Authentication
+#### 2-Factor Authentication and Step-up Authentication
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
 
