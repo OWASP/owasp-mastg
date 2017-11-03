@@ -1,5 +1,7 @@
 ## Mobile App Security Testing
 
+In the following sections we'll provide a brief overview of general security testing principles and key terminology. The concepts introduced are largely identical to those found in other types of penetration testing, so if you are an experienced tester you may want to skip this chapter and go right to the interesting part.
+
 Throughout the guide, we use "mobile app security testing" as a catchall phrase to refer to the evaluation of mobile app security via static and dynamic analysis. Terms such as "mobile app penetration testing" and "mobile app security review" are used somewhat inconsistently in the security industry, but these terms refer to roughly the same thing. A mobile app security test is usually part of a larger security assessment or penetration test that encompasses the client-server architecture and server-side APIs used by the mobile app.
 
 In this guide, we cover mobile app security testing in two contexts. The first is the "classical" security test completed near the end of the development life cycle. In this context, the tester accesses a nearly finished or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is characterized by the implementation of requirements and the automation of security tests from the beginning of the software development life cycle onwards. The same basic requirements and test cases apply to both contexts, but the high-level method and the level client interaction differ.
@@ -179,7 +181,6 @@ Unfortunately, time or financial constraints limit many pentests to application 
 
 Against all odds, some vulnerabilities may not be exploitable and may lead to minor compromises, if any. Other vulnerabilities may seem harmless at first sight, yet be determined very dangerous under realistic test conditions. Testers who carefully go through the exploitation phase support pentesting by characterizing vulnerabilities and their effects.
 
-
 #### Reporting
 
 The security tester's findings will be valuable to the client only if they are clearly documented. A good pentest report should include information such as, but not limited to, the following:
@@ -193,7 +194,6 @@ The security tester's findings will be valuable to the client only if they are c
 - recommendations for fixing each defect
 
 Many pentest report templates are available on the internet: Google is your friend!
-
 
 ### Security Testing and the SDLC
 
@@ -346,7 +346,6 @@ The security of an application developed with DevOps must be considered during o
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
 ![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg)
-
 
 ### References
 
