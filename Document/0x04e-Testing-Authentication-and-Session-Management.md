@@ -1,4 +1,4 @@
-## User Authentication Architectures and Testing Methods
+## Mobile App Authentication Architectures
 
 Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
 
@@ -59,7 +59,7 @@ The secondary authentication can be performed at login or later in the user's se
 
 Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
 
-### Supplementary Authentication
+#### Supplementary Authentication
 
 Authentication schemes are sometimes supplemented by [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
 
