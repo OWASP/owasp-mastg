@@ -462,7 +462,7 @@ When something goes wrong (and it usually does), mismatches between the provisio
 #### Automated Repackaging with Objection
 
 [Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on [Frida](http://www.frida.re). One of the best things about Objection is that it works even with non-jailbroken devices. It does this by automating the process of app repackaging with `FridaGadget.dylib`.
-We won’t cover Objection in detail in this guide, but you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+We won’t cover Objection in detail in this guide, but you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") and also [how to repackage an IPA](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Apps").
 
 ### Method Tracing with Frida
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
