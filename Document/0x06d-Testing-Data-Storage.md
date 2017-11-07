@@ -474,16 +474,29 @@ IPC mechanisms should be verified via static analysis in the iOS source code. At
 
 #### Overview
 
-<TBD>
+An essential parts of many apps is entering sensitive information, for example when registering an account or making payments. This data can be financial information such as credit card data or passwords for a user account and may be exposed if the app doesn't properly mask it while keying it in.
+
+Masking of sensitive data, by showing asterisk or dots instead of clear text should be enforced within an app's activity to prevent disclosure and mitigate risks such as shoulder surfing.
 
 #### Static Analysis
 
-<TBD>
+A text field that masks the input can be configured in two ways:
+
+**Storyboard**
+In the storyboard of the iOS project, open the configuration of the text field that is asking for sensitive data. Check that the option is "Secure Text Entry" is ticked. If this is activated dots are shown in the UI instead of the text keyed in.
+
+**Source Code**
+If the text field is defined in source code, check that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set. This obscures the text being entered by showing dots.
+
+```
+sensitiveTextField.isSecureTextEntry = true
+```
 
 #### Dynamic Analysis
 
-<TBD>
+To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
 
+If the information is masked by, for example replacing input with asterisks or dots, the app isn't leaking data to the user interface.
 
 
 
