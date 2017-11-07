@@ -234,11 +234,11 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
     int iterationCount = 10000;
     int saltLength     = keyLength / 8;
     SecureRandom random = new SecureRandom();
-    
+
     //Generate the salt
     byte[] salt = new byte[saltLength];
     randomb.nextBytes(salt);
-    
+
     KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
     SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
     byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
@@ -251,7 +251,7 @@ Now, it is clear that regularly prompting the user for its passphrase is not som
 
 However, be aware that the ```KeyStore``` API has been changed significantly throughout various versions of Android. In earlier versions the ```KeyStore``` API only supported storing public\private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the ```KeyStore```. The encrypted symmetric key can now be safely stored in the ```SharedPreferences```. Whenever we need the symmetric key, the application retrieves the private key from the ```KeyStore``` and decrypts the symmetric key.
 
-A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys. 
+A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys.
 
 The last two options are to use hardcoded encryption keys in the source code and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code . Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
 
@@ -293,9 +293,9 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 - V3.5: "The app doesn't reuse the same cryptographic key for multiple purposes."
+- V3.6: "All random values are generated using a sufficiently secure random number generator."
 
 ##### CWE
 
 - CWE-321: Use of Hard-coded Cryptographic Key
 - CWE-326: Inadequate Encryption Strength
-
