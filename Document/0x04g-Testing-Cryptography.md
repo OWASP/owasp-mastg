@@ -1,6 +1,6 @@
-## Testing Cryptography in Mobile Apps
+## Cryptography in Mobile Apps
 
-This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid on every mobile operating system. Platform-specific cryptographic APIs for data storage are covered in greater detail in the [**Testing Data Storage on Android**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md) and [**Testing Data Storage on iOS**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md) chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md) chapter.
+Cryptography plays an especially important role in securing the user's data - even more so in a mobile environment, where attackers having physical access to the user's device is a likely scenario. This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid independent of the mobile operating system. 
 
 ### Key Concepts
 
@@ -18,7 +18,7 @@ Encryption algorithms converts plaintext data into cipher text that conceals the
 
 **Key Derivation Functions** (KDFs) derive secret keys from a secret value (such as a password) and are used to turn keys into other formats or to increase their length. KDFs are similar to hashing functions but have other uses as well (for example, they are used as components of multi-party key-agreement protocols). While both hashing functions and KDFs must be difficult to reverse, KDFs have the added requirement that the keys they produce must have a level of randomness.
 
-### Testing for Insecure and/or Deprecated Cryptographic Algorithms
+### Identifying Insecure and/or Deprecated Cryptographic Algorithms
 
 When assessing a mobile app, you should make sure that it does not use cryptographic algorithms and protocols that have significant known weaknesses or are otherwise insufficient for modern security requirements. Algorithms that were considered secure in the past may become insecure over time; therefore, it's important to periodically check current best practices and adjust configurations accordingly.
 
@@ -54,7 +54,7 @@ For more information on algorithm choice and best practices, see the following r
 - [NIST recommendations (2016)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2017)](https://www.keylength.com/en/8/ "BSI recommendations")
 
-### Common Vulnerabilities
+### Common Configuration Issues
 
 #### Insufficient Key Length
 
@@ -98,7 +98,7 @@ Advanced Encryption Standard (AES) is the widely accepted standard for symmetric
 
 As of this writing, no efficient cryptanalytic attacks against AES have been discovered. However, implementation details and configurable parameters such as the block cipher mode leave some margin for error.
 
-#### Weak Block Cipher Mode
+##### Weak Block Cipher Mode
 
 Block-based encryption is performed upon discrete input blocks (for example, AES has 128 bit blocks). If the plaintext is larger than the block size, the plaintext is internally split up into blocks of the given input size and encryption is performed on each block. A block cipher mode of operation (or block mode) determines if the result of encrypting the previous block impacts subsequent blocks.
 
@@ -112,9 +112,13 @@ When storing encrypted data, we recommend using a block mode that also protects 
 
 For more information on effective block modes, see the [NIST guidelines on block mode selection](http://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
-#### Predictable Initialization Vector
+##### Predictable Initialization Vector
 
 CBC mode requires the first plaintext block to be combined with an initialization vector (IV). The IV doesn't have to be kept secret, but it shouldn't be predictable. Make sure that IVs are generated using a cryptographically-secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors).
+
+### Cryptographic APIs on Android and iOS
+
+While same basic cryptographic principles apply independent of the particular OS, each operating system offers its own implementation and APIs. Platform-specific cryptographic APIs for data storage are covered in greater detail in the [**Testing Data Storage on Android**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md) and [**Testing Data Storage on iOS**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md) chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md) chapter.
 
 #### References
 
