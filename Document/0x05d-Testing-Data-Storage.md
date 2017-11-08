@@ -100,7 +100,7 @@ Secure ways to retrieve the key include:
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
 
 ##### Realm Databases
-	
+
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
@@ -134,7 +134,7 @@ try {
 ```
 You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) are laxer and may pose a security risk.
 
-Search for the class `FileInputStream` to find out which files are opened and read within the app. 
+Search for the class `FileInputStream` to find out which files are opened and read within the app.
 
 ##### External Storage
 
@@ -256,7 +256,7 @@ The keys of a software-only implementation are encrypted with a [per-user encryp
 
 ##### Older KeyStore Implementations
 
-Older Android versions don't include KeyStore, but they *do* include the KeyStore interface from JCA (Java Cryptography Architecture). You can use KeyStores that implement this interface to ensure the secrecy and integrity of keys stored with KeyStore; BouncyCastle KeyStore (BKS) is recommended. All implementations are based on the fact that files are stored on the filesystem; all files are password-protected. 
+Older Android versions don't include KeyStore, but they *do* include the KeyStore interface from JCA (Java Cryptography Architecture). You can use KeyStores that implement this interface to ensure the secrecy and integrity of keys stored with KeyStore; BouncyCastle KeyStore (BKS) is recommended. All implementations are based on the fact that files are stored on the filesystem; all files are password-protected.
 To create one, you can use the `KeyStore.getInstance("BKS", "BC") method`, where "BKS" is the KeyStore name (BouncyCastle Keystore) and "BC" is the provider (BouncyCastle). You can also use SpongyCastle as a wrapper and initialize the KeyStore as follows: `KeyStore.getInstance("BKS", "SC")`.
 
 Be aware that not all KeyStores properly protect the keys stored in the KeyStore files.
@@ -390,7 +390,7 @@ $ adb logcat > logcat.log
 
 #### Overview
 
-You can embed third-party services in apps. These services can implement tracker services, monitor user behavior, sell banner advertisements, improve the user experience, and more. 
+You can embed third-party services in apps. These services can implement tracker services, monitor user behavior, sell banner advertisements, improve the user experience, and more.
 
 The downside is a lack of visibility: you can't know exactly what code third-party libraries execute. Consequently, you should make sure that only necessary, non-sensitive information will be sent to the service.
 
@@ -710,9 +710,9 @@ Row: 1 id=2, username=test, password=test
 
 #### Overview
 
-Many apps require users to enter several kinds of data to, for example, register an account or make a payment. Sensitive data may be exposed if the app doesn't properly mask it (by displaying data in clear text).
+Many apps require users to enter several kinds of data to, for example, register an account or make a payment. Sensitive data may be exposed if the app doesn't properly mask it, when displaying data in clear text.
 
-Sensitive data masking should be enforced within an app's activity to prevent disclosure and mitigate risks such as shoulder surfing.
+Masking of sensitive data, by showing asterisk or dots instead of clear text should be enforced within an app's activity to prevent disclosure and mitigate risks such as shoulder surfing.
 
 #### Static Analysis
 

@@ -19,8 +19,8 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 ### General Testing Guide
 
 - [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
-- [Testing Cryptography for Mobile Apps](Document/0x04g-Testing-Cryptography.md)
-- [Testing Authentication with the Backend](Document/0x04e-Testing-Authentication-and-Session-Management.md)
+- [Cryptography in Mobile Apps](Document/0x04g-Testing-Cryptography.md)
+- [Mobile App Authentication Architectures](Document/0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](Document/0x04f-Testing-Network-Communication.md)
 
 ### Android Testing Guide

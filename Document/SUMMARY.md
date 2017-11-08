@@ -11,9 +11,9 @@
 ### General Mobile App Testing Guide
 
 - [Testing Code Quality](0x04h-Testing-Code-Quality.md)
-- [Testing Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](0x04f-Testing-Network-Communication.md)
-- [Testing Authentication with the Back End](0x04e-Testing-Authentication-and-Session-Management.md)
 
 ### Android Testing Guide
 
