@@ -324,9 +324,17 @@ $ drozer console connect
 
   	`dz> run app.activity.info -a (package name)`
 
- * To launch the exported Activities, execute the following command:
+- To launch the exported Activities, execute the following command:
 
    	`dz> run app.activity.start --component (package name) (component name)`
+
+- To identify the list of exported Broadcast receivers in the target application, execute the following command:
+
+    `dz> run app.broadcast.info -a (package name)`
+
+* To send a message to a Broadcast receiver, execute the following command:
+    
+	`dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
 **Using Modules:**
 
