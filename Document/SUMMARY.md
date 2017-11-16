@@ -31,15 +31,15 @@
 ### iOS Testing Guide
 
 - [Platform Overview](0x06a-Platform-Overview.md)
-- [Setting up a Testing Environment for iOS Apps](Document/0x06b-Basic-Security-Testing.md)
-- [Data Storage on iOS](Document/0x06d-Testing-Data-Storage.md)
-- [iOS Cryptographic APIs](Document/0x06e-Testing-Cryptography.md)
-- [Local Authentication on iOS](Document/0x06f-Testing-Local-Authentication.md)
-- [iOS Network APIs](Document/0x06g-Testing-Network-Communication.md)
-- [iOS Platform APIs](Document/0x06h-Testing-Platform-Interaction.md)
-- [Code Quality and Build Settings for iOS Apps](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md)
-- [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)
-- [iOS Anti-Reversing Defenses](Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
+- [Setting up a Testing Environment for iOS Apps](0x06b-Basic-Security-Testing.md)
+- [Data Storage on iOS](0x06d-Testing-Data-Storage.md)
+- [iOS Cryptographic APIs](0x06e-Testing-Cryptography.md)
+- [Local Authentication on iOS](0x06f-Testing-Local-Authentication.md)
+- [iOS Network APIs](0x06g-Testing-Network-Communication.md)
+- [iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)
+- [Code Quality and Build Settings for iOS Apps](0x06i-Testing-Code-Quality-and-Build-Settings.md)
+- [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)
+- [iOS Anti-Reversing Defenses](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ### Appendix
 
