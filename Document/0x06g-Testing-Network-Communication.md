@@ -1,4 +1,4 @@
-## Testing Network Communication in iOS Apps
+## iOS Network APIs
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wifi, classical network based-attacks become a potential issue.
 

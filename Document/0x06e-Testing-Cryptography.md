@@ -1,4 +1,4 @@
-## Testing Cryptography in iOS Apps
+## iOS Cryptographic APIs
 
 In the chapter "Testing Cryptography in Mobile Apps", we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on the cryptography APIs available on iOS. We'll show how to identify usage of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 

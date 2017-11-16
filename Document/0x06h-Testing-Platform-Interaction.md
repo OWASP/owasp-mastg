@@ -1,4 +1,4 @@
-## Testing Platform Interaction on iOS
+## iOS Platform APIs
 
 ### Testing Custom URL Schemes
 

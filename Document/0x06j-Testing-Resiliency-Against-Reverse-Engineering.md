@@ -1,4 +1,4 @@
-## Testing Anti-Reversing Defenses on iOS
+## iOS Anti-Reversing Defenses
 
 ### Testing Jailbreak Detection
 
