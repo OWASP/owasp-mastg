@@ -132,5 +132,6 @@ To perform security testing different tools are available in order to be able to
 
 ### IDEs
 
+- [Android Studio](https://developer.android.com/studio/index.html) -  is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
 - [IntelliJ](https://www.jetbrains.com/idea/download/) - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
 - [Eclipse](https://eclipse.org/) - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
