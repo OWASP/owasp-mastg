@@ -107,7 +107,7 @@ The following are some useful packages you can install from Cydia to get started
 
 - BigBoss Recommended Tools: A list of hacker tools that installs many useful command line tools. Includes standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
-- IPA Installer Console: Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files. 
 - Substrate: A platform that makes developing third-party iOS addons easier.
 - cycript: Cycript is an inlining, optimizing, JavaScript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes.
@@ -171,34 +171,36 @@ Connecting to your iPhone via USB is also possible via [Needle](https://labs.mwr
 
 #### App Folder Structure
 
-System applications are in the directory "/Applications." You can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps. Connect to the device via SSH and run the `installipa` command as follows:
+System applications are in the directory "/Applications." You can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the `ipainstaller` command (same command as `installipa`) as follows:
 
 ```shell
-iOS8-jailbreak:~ root# installipa -l
-me.scan.qrcodereader
-iOS8-jailbreak:~ root# installipa -i me.scan.qrcodereader
-Bundle: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C
-Application: /private/var/mobile/Containers/Bundle/Application/09D08A0A-0BC5-423C-8CC3-FF9499E0B19C/QR Reader.app
-Data: /private/var/mobile/Containers/Data/Application/297EEF1B-9CC5-463C-97F7-FB062C864E56
+iPhone:~ root# ipainstaller -l
+...
+sg.vp.UnCrackable1
+
+iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1
+...
+Bundle: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1
+Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1/UnCrackable Level 1.app
+Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
 ```
 
-As you can see, the Application directory contains three subdirectories:
+As you can see, the user-installed apps contain two main subdirectories (plus the `Shared` subdirectory since iOS 9). The `Application` subdirectory, inside the `Bundle` subdirectory, reflects the app name (in the `<name>.app` subdirectory):
 
 - `Bundle`
-- `Application`
 - `Data`
 
-The application directory is a bundle subdirectory. The static installer files are in the application directory, and all user data is in the data directory.
+The `Application` directory is a bundle subdirectory. The static installer files are in the `Application` directory, and all user data is in the `Data` directory.
 
-The random string in the URI is the application's GUID. Every installation has a unique GUID.
+The random string in the URI is the application's GUID. Every app installation has a unique GUID. There is no relationship between the `Bundle` GUID and the `Data` GUID for the same app.
 
 #### Copying App Data Files
 
-An app's files are stored in the app's data directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information:
+An app's files are stored in the app's `Data` directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information (as shown previously):
 
 ```bash
 iPhone:~ root# ipainstaller -l
-sg.vp.UnCrackable-2
+...
 sg.vp.UnCrackable1
 
 iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1
@@ -212,7 +214,7 @@ Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-467
 Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
 ```
 
-You can now simply archive the data directory and pull it from the device with scp.
+You can now simply archive the `Data` directory and pull it from the device with `scp`:
 
 ```bash
 iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
