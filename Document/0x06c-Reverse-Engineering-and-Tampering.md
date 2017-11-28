@@ -68,7 +68,7 @@ Save the IPA file locally with the following command:
 
 ###### From Jailbroken Devices
 
-You can use [Saurik's IPA Installer](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install IPA installer console via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
+You can use Saurik's [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install `IPA Installer Console` via Cydia. Then, ssh into the device and look up the bundle id of the target app. For example:
 
 ```shell
 iPhone:~ root# ipainstaller -l
