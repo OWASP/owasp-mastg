@@ -68,7 +68,7 @@ GCM is another AES block mode that provides additional security benefits over ot
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
-Here's an example of using that key to decrypt:
+Here's an example of using that key to encrypt:
 
 ```Java
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
