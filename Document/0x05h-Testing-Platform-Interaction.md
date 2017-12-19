@@ -993,6 +993,11 @@ There are various steps one can take for dynamic analysis:
 
 ### References
 
+#### Android Fragment Injection
+
+- https://www.synopsys.com/blogs/software-security/fragment-injection/
+- https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
+
 #### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
