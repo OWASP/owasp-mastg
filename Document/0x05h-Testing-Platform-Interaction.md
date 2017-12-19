@@ -698,6 +698,55 @@ The dynamic analysis of the app can determine what HTML or JavaScript files are 
 A full description of the attack can be found in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
 
+
+
+
+
+### Testing for Fragment Injection
+
+#### Overview
+
+Android SDK offers a way for developers to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html). to users, allowing them to extend this abstract class and adapt it to their needs.
+
+This abstract class will parse the extra data fields received on a Intent, in particular the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)`
+
+It is expected that the first field contains the `Fragment` class name and the second one contains the input bundle passed to the `Fragment`.
+
+Due to the fact that the `PreferenceActivity` uses reflection to load the fragment, this can lead to load an arbitrary class inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
+
+With this vulnerability the attacker will be able to call non exported Activities or fragments inside the target application.
+
+To mitigate this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19), that allows developers to override it and define which fragments are allowed to be used in this context.
+
+The default implementation returns true on version bellow Android 4.4 KitKat (API Level 19). For later versions with will throw an exception.
+
+
+#### Static Analysis
+
+- Determine the minSDKVersion and maxSDKVersion to determine what will be the behaviour of the class.
+- Find exported Activities that extends the `PreferenceActivity` class.
+
+The following example shows a Activity that extends this activity :
+
+```Java
+public class MyPreferences extends PreferenceActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Testing Object Persistence
 
 #### Overview
