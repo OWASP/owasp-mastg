@@ -1,113 +1,61 @@
-# Introduction to the Mobile Security Testing Guide
+# Introduction to the OWASP Mobile Security Testing Guide
 
-Technological revolutions can happen quickly. Less than a decade ago, smartphones were clunky devices with little keyboards - expensive playthings for tech-savvy business users. Today, smartphones are an essential part of our lives. We've come to rely on them for information, navigation and communication, and they are ubiquitous both in business and in our social lives.
+New technology always introduces new security risks, and mobile computing is no exception. Security concerns for mobile apps differ from traditional desktop software in some important ways. Modern mobile operating systems are arguably more secure than traditional desktop operating systems, but problems can still appear when we don't carefully consider security during mobile app development. Data storage, inter-app communication, proper usage of cryptographic APIs, and secure network communication are only some of these considerations. 
 
-Apps running on those devices store our personal information, pictures, recordings, notes, account data, business information, location and much more. They act as clients that connect us to services we use on a daily basis, and as communications hubs that processes each and every message we exchange with others. Compromise a person's smartphone and you get unfiltered access to that person's life. When we consider that mobile devices are more readily lost or stolen and mobile malware is on the rise, the need for data protection becomes even more apparent.
+## Key Areas in Mobile Application Security
 
-Every new technology introduces new security risks, and mobile computing is no different. Even though modern mobile operating systems like iOS and Android are arguably more secure by design compared to traditional Desktop operating systems, there's still a lot of things that can go wrong when security is not considered during the mobile app development process. Data storage, inter-app communication, proper usage of cryptographic APIs and secure network communication are only some of the aspects that require careful consideration.
+Many mobile app penetration testing tools have a background in network and web app penetration testing, a quality that is valuable for mobile app testing. Almost every mobile app talks to a back-end service, and those services are prone to the same kinds of attacks we are familiar with in web apps on desktop machines. Mobile apps differ in that there is a smaller attack surface and therefore more security against injection and similar attacks. Instead, we must prioritize data protection on the device and the network to increase mobile security. 
 
-## Mobile Application Threats
+Let's discuss the key areas in mobile app security.
 
-Security concerns in the mobile app space differ from traditional desktop software in some important ways. Firstly, while not many people opt to carry a desktop tower around in their pocket, doing this with a mobile device is decidedly more common. As a consequence, mobile devices are more readily lost and stolen, so adversaries are more likely to get physical access to a device and access any of the data stored. Also leaving a device unattended, which allows adversaries temporary physical access (Evil-Maid attack) can already lead to full compromise of the device or steal data without the owner noticing it.
+### Local Data Storage
 
-From the view of a mobile app, this means that extra care has to be taken when storing user data, such as using appropriate key storage APIs and taking advantage of hardware-backed security features when available. Here however we encounter another problem: Much depends on the device and operating system the app is running on, as well as its configuration. Is the keychain locked with a passcode? What if the device doesn't offer hardware-backed secure storage, as is the case with some Android devices? Can and should the app even verify this, or is it the responsibility of the user?
+The protection of sensitive data, such as user credentials and private information, is crucial to mobile security. If an app uses operating system APIs such as local storage or inter-process communication (IPC) improperly, the app might expose sensitive data to other apps running on the same device. It may also unintentionally leak data to cloud storage, backups, or the keyboard cache. Additionally, mobile devices can be lost or stolen more easily compared to other types of devices, so it's more likely an individual can gain physical access to the device, making it easier to retrieve the data.
 
-Another key difference to their more stationary cousins is that mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (possibly malicious) clients. This creates great opportunities for network-based attacks, from simple packet sniffing to creating a rogue access point and going SSL man-in-the-middle (or even old-school stuff like routing protocol injection - those baddies use whatever works).
+When developing mobile apps, we must take extra care when storing user data. For example, we can use appropriate key storage APIs and take advantage of hardware-backed security features when available.
 
-## OWASP Mobile Top 10 2016
-The OWASP Mobile Top 10 is the equivalent counterpart of the OWASP Top Ten Project, but is specifically designed to focus on the mobile application security. Most of the time, folks in the information security industry discuss about the "OWASP Top Ten" project but in fact, they are only referring to the web application security.
+Fragmentation is a problem we deal with especially on Android devices. Not every Android device offers hardware-backed secure storage, and many devices are running outdated versions of Android. For an app to be supported on these out-of-date devices, it would have to be created using an older version of Android's API which may lack important security features. For maximum security, the best choice is to create apps with the current API version even though that excludes some users.
 
-In this guide, we bring to your attention about its equivalent counterpart, the OWASP Mobile Top 10 2016, which is essentially an awareness document for mobile application security.
+### Communication with Trusted Endpoints
 
-The OWASP Mobile Top 10 represents a broad consensus about what are the most critical mobile application security flaws identified in the actual mobile applications, derived as per the raw data obtained from various different vendors and consultants in the information security industry.
+Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (potentially malicious) clients. This creates opportunities for a wide variety of network-based attacks ranging from simple to complicated and old to new. It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. As a basic requirement, mobile apps must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
 
-The following are the OWASP Mobile Top 10:
+### Authentication and Authorization
 
-* M1 - Improper Platform Usage<sup>[1]</sup>
-  * Misuse of a mobile platform feature or failure to use platform security controls adequately
-  * Scope of coverage includes Android intents, platform permissions, misuse of TouchID, the Keychain, or some other security control that is part of the mobile operating system
-  * Some examples includes the violation of published guidelines, violation of convention or common practice, and any unintentional misuse
-* M2 - Insecure Data Storage<sup>[2]</sup>
-  * Insufficient protection mechanisms towards user or app data stored locally in the mobile devices
-  * Scope of coverage includes an adversary that has attained a lost or stolen mobile device, malware or a repackaged app acting on the adversary's behalf that executes on the mobile device
-  * Data insecurely stored includes files such as SQLite databases, log files, XML files and cookies
-* M3 - Insecure Communication<sup>[3]</sup>
-  * Insufficient protection mechanisms towards user or app data transmitted over the mobile device's carrier network or the internet
-  * Scope of coverage includes an adversary that shares the same Local Area Network (LAN), network devices or malware; and whether defensive mechanisms such as Certificate Pinning has been implemented in the mobile app   
-* M4 - Insecure Authentication<sup>[4]</sup>
-  * Lack of proper authentication methods and controls
-  * Scope of coverage includes the exploitation of authentication vulnerabilities like weak password policy
-* M5 - Insufficient Cryptography<sup>[5]</sup>
-  * Usage of inadequately strong cryptographic standards, or poor cryptography implementation and usages
-  * Scope of coverage includes the cracking of improperly encrypted data through physical access or mobile malware acting on an adversary's behalf
-* M6 - Insecure Authorisation<sup>[6]</sup>
-  * Lack of proper roles and permissions validation and access rights controls
-  * Scope of coverage includes the exploitation of the authorization vulnerabilities like insecure direct object references
-* M7 - Poor Code Quality<sup>[7]</sup>
-  * Insufficient consistency in coding patterns and lack of proper user data input validations and method calls
-  * Scope of coverage includes any plausible endpoints that can pass untrusted inputs to method calls made within the mobile app's code, resulting in potential exploitation via malware or phishing scams
-* M8 - Code Tampering<sup>[8]</sup>
-  * Lack of runtime checks function that perform app code integrity checks  
-  * Scope of coverage includes exploitation through code modification via malicious forms of the apps hosted in third-party app stores. Malicious attacker may also trick the user into installing the app via phishing attacks
-* M9 - Reverse Engineering<sup>[9]</sup>
-  * Missing obfuscation methods
-  * Scope of coverage includes downloading the mobile app from an app store and analyze it within their own local environment using a suite of different tools to identify potential attack vectors
-* M10 - Extraneous Functionality<sup>[10]</sup>
-  * Lack of logs and endpoints verification prior to publishing the production builds
-  * Scope of coverage includes the identification of hidden or extraneous functionality in the backend system or the mobile app itself, and then exploit it directly from their own systems without any involvement by end-users
+In most cases, sending users to log in to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. Unlike web apps, mobile apps often store long-time session tokens that are unlocked with user-to-device authentication features such as fingerprint scanning. While this allows for a quicker login and better user experience (nobody likes to enter complex passwords), it also introduces additional complexity and room for error.
 
-To read more about the category of vulnerabilities and procedures to prevent them from compromising your mobile application, please refer to the OWASP Mobile Top 2016 Project Page<sup>11</sup>.
+Mobile app architectures also increasingly incorporate authorization frameworks (such as OAuth2) that delegate authentication to a separate service or outsource the authentication process to an authentication provider. Using OAuth2 allows the client-side authentication logic to be outsourced to other apps on the same device (e.g. the system browser). Security testers must know the advantages and disadvantages of different possible architectures.
 
-## The OWASP Mobile AppSec Verification Standard, Checklist and Testing Guide
+### Interaction with the Mobile Platform
 
-This guide belongs to a set of three closely related mobile application security documents. All three documents map to the same basic set of security requirements. Depending on the context, they can be used stand-alone or in combination to achieve different objectives:
+Mobile operating system architectures differ from classical desktop architectures in important ways. For example, all mobile operating systems implement app permission systems that regulate access to specific APIs. They also offer more (Android) or less rich (iOS) inter-process communication (IPC) facilities that enable apps to exchange signals and data. These platform-specific features come with their own set of pitfalls. For example, if IPC APIs are misused, sensitive data or functionality might be unintentionally exposed to other apps running on the device.
 
-* The **Mobile Application Security Verification Standard (MASVS):** A standard that defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define what a secure mobile application is.
-* The **Mobile Security Testing Guide (MSTG):** A manual for testing the security of mobile apps. It provides verification instructions for the requirements defined in the MASVS along with operating-system-specific best practices (currently for Android and iOS). The MSTG helps ensure completeness and consistency of mobile app security testing. It is also useful as a standalone learning resource and reference guide for mobile application security testers.
-* The **Mobile App Security Checklist:** A checklist for tracking compliance against the MASVS during practical assessments. The list conveniently links to the MSTG test case for each requirement, making mobile penetration app testing a breeze.
+### Code Quality and Exploit Mitigation
+
+Traditional injection and memory management issues aren't often seen in mobile apps due to the smaller attack surface. Mobile apps mostly interface with the trusted backend service and the UI, so even if many buffer overflow vulnerabilities exist in the app, those vulnerabilities usually don't open up any useful attack vectors. Similar protection exists against browser exploits such as cross-site scripting (XSS allows attackers to inject scripts into web pages to bypass access controls) that are very prevalent in web apps. However, there are always exceptions. XSS is theoretically possible on mobile in some cases, but it's very rare to see XSS issues that an individual can exploit. For more information about XSS, see **Testing for Cross-Site Scripting Flaws** in the chapter [**Testing Code Quality**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04h-Testing-Code-Quality.md#user-content-testing-for-cross-site-scripting-flaws).
+
+This protection from injection and memory management issues doesn't mean that app developers can get away with writing sloppy code. Following security best practices results in hardened (secure) release builds that are resilient against tampering. Free security features offered by compilers and mobile SDKs help increase security and mitigate attacks.
+
+### Anti-Tampering and Anti-Reversing
+
+There are three things you should never bring up in polite conversations: religion, politics, and code obfuscation. Many security experts dismiss client-side protections outright. However, software protection controls are widely used in the mobile app world, so security testers need ways to deal with these protections. We believe there's a benefit to client-side protections if they are employed with a clear purpose and realistic expectations in mind and aren't used to replace security controls.
+
+## The OWASP Mobile AppSec Verification Standard
+
+This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. Both documents map to the same basic set of security requirements, and depending on the context they can be used individually or combined to achieve different objectives.
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 
-For example, the MASVS requirements could be used in the planning and architecture design stages, while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during of after development. In the next chapter, we'll describe how the checklist and guide can be practically applied during a mobile application penetration test.
+For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the [Mobile App Security Testing chapter](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04b-Mobile-App-Security-Testing.md) we'll describe how you can apply the checklist and MSTG to a mobile app penetration test.
 
-## Organization of the Mobile Security Testing Guide
+## Navigating the Mobile Security Testing Guide 
 
-All requirements specified in the MASVS are described in technical detail in the testing guide. The main sections of the MSTG are explained briefly in this chapter.
+The MSTG contains descriptions of all requirements specified in the MASVS. The MSTG contains the following main sections:
 
-### Testing Process and Techniques
+1. The [General Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04-General-Testing-Guide.md) contains mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security.
 
-This section explains the checklist and how to use it during a project. The different analysis techniques used for the test cases are explained like static and dynamic analysis on source code, but also on binaries. An introduction into tampering and reverse engineering is also part of this section.
+2. The [Android Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Android-Testing-Guide.md) covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
 
-### Android Testing Guide
+3. The [iOS Testing Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06-iOS-Testing-Guide.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering, and anti-reversing.
 
--- TODO
-The Android chapter of the testing guide contains all technical procedures to verify the requirements of the MASVS on the Android platform.
-
-### iOS Testing Guide
-
--- TODO
-The iOS chapter of the testing guide contains all technical procedures to verify the requirements of the MASVS on the iOS platform.
-
-### Reverse Engineering and Tampering
-
--- TODO
-
-### Testing Tools
-
-There are various tool that can be used to conduct an effective mobile security test and like any tool of choice it all depends on the matter of preference and budget. An extensive list of tools can be found in "Testing Tools" chapter at the end of this document.
-
--- TODO [Describe the organization of the current guide] --
-
-## References
-
-* [1] M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-* [2] M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-* [3] M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-* [4] M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-* [5] M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
-* [6] M6 - Insecure Authorization - https://www.owasp.org/index.php/Mobile_Top_10_2016-M6-Insecure_Authorization
-* [7] M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-* [8] M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
-* [9] M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-* [10] M10 - Extraneous Functionality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality
-* [11] OWASP Mobile Top 2016 Project Page - https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10
+4. The [Appendix](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x07-Appendix.md) contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography. We also include a methodology for assessing software protection schemes.
