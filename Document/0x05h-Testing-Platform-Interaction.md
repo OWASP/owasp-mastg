@@ -723,8 +723,10 @@ The default implementation returns true on version bellow Android 4.4 KitKat (AP
 
 #### Static Analysis
 
-- Determine the minSDKVersion and maxSDKVersion to determine what will be the behaviour of the class.
+Steps:
+- Find the package `minSDKVersion` to determine what will be the behaviour of the class.
 - Find exported Activities that extends the `PreferenceActivity` class.
+- Determine if the method isValidFragment is override
 
 The following example shows a Activity that extends this activity :
 
@@ -735,9 +737,16 @@ public class MyPreferences extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 ```
 
+The following examples shows the override of the isValidFragment method with an implementation that only allows the MyPreferenceFragment to be loaded:
 
+```Java
+@Override
+protected boolean isValidFragment(String fragmentName)
+{
+return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
+}
 
-
+```
 
 
 
