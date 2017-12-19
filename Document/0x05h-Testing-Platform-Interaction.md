@@ -714,8 +714,8 @@ It is expected that the first field contains the `Fragment` class name and the s
 
 Due to the fact that the `PreferenceActivity` uses reflection to load the fragment, this can lead to load an arbitrary class inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
 
-With this vulnerability the attacker will be able fragments inside the target application.
-Any class that does not extends Fragment will cause a java.lang.CastException
+With this vulnerability the attacker will be able to call fragments inside the target application or run the code present in other classes constructors.
+Any class passed in the intent that does not extends the Fragment class will cause a java.lang.CastException, but before the exception is thrown the empty constructor is executed, allowing to run the code present in the class constructor.
 
 To mitigate this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19), that allows developers to override it and define which fragments are allowed to be used in this context.
 
