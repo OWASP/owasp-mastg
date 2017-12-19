@@ -786,6 +786,8 @@ Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
+[`Download Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk)
+[`Download Exploit POC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk)
 
 ### Testing Object Persistence
 
