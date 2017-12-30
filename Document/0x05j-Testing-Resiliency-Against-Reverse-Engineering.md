@@ -257,6 +257,7 @@ static boolean detect_threadCpuTimeNanos(){
   else {
     return true;
   }
+}
 ```
 
 ###### Messing With JDWP-related Data Structures
