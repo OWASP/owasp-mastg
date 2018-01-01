@@ -1,4 +1,4 @@
-## Testing Data Storage on iOS
+## Data Storage on iOS
 
 The protection of sensitive data, such as authentication tokens or private information, is a key focus in mobile security. In this chapter, you will learn about the APIs iOS offers for local data storage, as well as best practices for using them.
 

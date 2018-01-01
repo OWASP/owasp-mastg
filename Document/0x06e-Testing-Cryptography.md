@@ -1,4 +1,4 @@
-## Testing Cryptography in iOS Apps
+## iOS Cryptographic APIs
 
 In the chapter "Testing Cryptography in Mobile Apps", we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on the cryptography APIs available on iOS. We'll show how to identify usage of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
@@ -21,16 +21,11 @@ CCCryptorStatus CCCryptorCreate(
 	CCCryptorRef *cryptorRef);  /* RETURNED */
 ```
 
-You can then compare all the `enum` types to understand which algorithm, padding and key material is being used. Pay attention to the keying material, if it's coming directly from a password (which is bad), or if it's coming from Key Derivation Function (e.g. PBKDF2).
-Obviously, there are other non-standard libraries that your application might be using (for instance `openssl`), so you should check for these too.
+You can then compare all the `enum` types to understand which algorithm, padding and key material is being used. Pay attention to the keying material, if it's coming directly from a password (which is bad), or if it's coming from Key Derivation Function (e.g. PBKDF2). Obviously, there are other non-standard libraries that your application might be using (for instance `openssl`), so you should check for these too.
 
-iOS code usually refers to predefined constants defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants to detect if they are used. Note that since the constants on iOS are numeric, make sure to check whether the algorithm constant values sent to the `CCCrypt` function represent an algorithm we know is insecure or deprecated. Once you have selected an insecure algorithm, you can work to redesign your solution to use a recommended algorithm instead.
+iOS code usually refers to predefined constants defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants to detect if they are used. Note that since the constants on iOS are numeric. Make sure to check whether the algorithm constant values sent to the `CCCrypt` function represent an algorithm we know is insecure or deprecated. Any use of cryptography on iOS should follow the same best practices we described in the chapter [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md).
 
 ### Random Number Generation on iOS
-
-It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (RNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that *appear* as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. *Cryptographically secure* RNGs generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks.
-
-Mobile SDKs offer standard implementations of RNG algorithms that produce numbers with sufficient artificial randomness.
 
 Apple provides developers with the [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") application programming interface (API) that generates cryptographically secure random numbers.
 

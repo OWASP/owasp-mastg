@@ -1,4 +1,4 @@
-## Testing Code Quality and Build Settings of iOS Apps
+## Code Quality and Build Settings for iOS Apps
 
 ### Verifying that the App is Properly Signed
 
@@ -7,8 +7,6 @@
 Code signing your app assures users that it is from a known source and the app hasn’t been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
 
 It is possible to retrieve the signing certificate information on the application .app file using [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
-
-#### Static Analysis
 
 After obtaining the application .ipa file, rename it to zip and decompress the file. Navigate to the `Payload` directory and the application .app file will be present.
 
@@ -35,33 +33,6 @@ TeamIdentifier=8LAMR92KJ8
 Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
-
-#### Dynamic Analysis
-
-Not Applicable.
-
-#### Remediation
-
-For iOS application it is mandatory for applications to be properly signed with a certification issued by Apple before it can be installed on a device or submitted to the App Store.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.1: "The app is signed and provisioned with valid certificate."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Verifying that the App is Properly Signed"] --
-
-##### Tools
-
-- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
-
 
 ### Testing for Debugging Symbols
 
@@ -152,50 +123,6 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
     // Debug-only code
 #endif
 ```
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-
-##### CWE
-
--- TODO [Add relevant CWE for "Testing for Debugging Code and Verbose Error Logging"] --
-
-##### Tools
-
--	XCode & simulator
--	A standard iPhone/iPad
-
-
-### Testing for Injection Flaws
-
-#### Overview
-
--- TODO [Give an overview about the functionality and it's potential weaknesses] --
-
-#### Static Analysis
-
-##### XML Injection
-
-The iPhone SDK comes with two libraries for XML parsing.
-
-- `NSXMLParser` - an objective-C class provides a SAX parser; 
-- libxml2 - an XML API written in C.
-
-Besides these two, a number of open source libraries is available. Examples include [BXML, TouchXML, KissXML, TinyXML, and GDataXML](https://www.raywenderlich.com/553/xml-tutorial-for-ios-how-to-choose-the-best-xml-parser-for-your-iphone-project "Ray Wenderlich Blog - How To Choose The Best XML Parser for Your iPhone Project").
-
-```objective-c
-NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
-```
-
-External entity resolution is disabled by default in both parsers. In NSXMLParser, it can be activated explicitly by setting the `setShouldResolveExternalEntities` option.
-
 
 ### Testing Exception Handling
 
@@ -359,7 +286,7 @@ Steps for enabling ACR protection within an iOS application:
 
 See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
-##### With otool:
+##### With otool
 
 Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
 
@@ -410,7 +337,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 [SNIP]
 ```
 
-##### With idb:
+##### With idb
 
 IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
@@ -424,14 +351,18 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 #### OWASP MASVS
 
+- V7.1: "The app is signed and provisioned with valid certificate."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.6: "The app catches and handles possible exceptions."
 - V7.7: "Error handling logic in security controls denies access by default."
 - V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
-#### CWE
-
--- TODO [Add relevant CWE for "Verify That Free Security Features Are Activated"] --
-
 #### Tools
 
 - idb - https://github.com/dmayer/idb
+- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
+
+
+
+
+
