@@ -232,7 +232,7 @@ The same API can be called from native code by accessing the DvmGlobals global s
 
 ```
 JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv * env, jobject obj) {
-    if (gDvm.debuggerConnect || gDvm.debuggerAlive)
+    if (gDvm.debuggerConnected || gDvm.debuggerActive)
         return JNI_TRUE;
     return JNI_FALSE;
 }
@@ -257,6 +257,7 @@ static boolean detect_threadCpuTimeNanos(){
   else {
     return true;
   }
+}
 ```
 
 ###### Messing With JDWP-related Data Structures
