@@ -1,4 +1,4 @@
-## Testing Anti-Reversing Defenses on Android
+## Android Anti-Reversing Defenses
 
 ### Testing Root Detection
 

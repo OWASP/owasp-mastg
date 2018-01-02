@@ -1,6 +1,6 @@
-## Testing Anti-Reversing Defenses on iOS
+## iOS Anti-Reversing Defenses
 
-### Testing Jailbreak Detection
+### Jailbreak Detection
 
 #### Overview
 
@@ -71,17 +71,8 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 ##### Calling System APIs
 
--- TODO [Fork-based check] --
+Calling the system() function with a NULL argument on a non jailbroken device will return ”0”; doing the same on a jailbroken device will return ”1”. This is since the function will check whether `/bin/sh` can be accessed, and this is only the case on jailbroken devices.
 
-Executing privileged actions. Calling the system() function with a NULL argument on a non jailbroken device will return ”0”; doing the same on a jailbroken device will return ”1”. This is since the function will check whether `/bin/sh` can be accessed, and this is only the case on jailbroken devices.
-
-##### Using the Dynamic Loader
-
--- TODO [dyld-based check] --
-
-##### SSH Loopback Connection
-
--- TODO [Connect to localhost:22] --
 
 #### Bypassing Jailbreak Detection
 
@@ -271,136 +262,8 @@ script.load()
 sys.stdin.read()
 ```
 
-### Testing Anti-Debugging
 
-#### Overview
-
-Debugging is a highly effective way of analyzing the runtime behavior of an app. It allows the reverse engineer to step through the code, stop execution of the app at arbitrary point, inspect and modify the state of variables, and a lot more.
-
--- TODO [Typical debugging defenses] --
-
-[Detecting Mach Exception Ports](https://zgcoder.net/ramblings/osx-debugger-detection "Detecting the Debugger on OS X"):
-
-```c
-#include <mach/task.h>
-#include <mach/mach_init.h>
-#include <stdbool.h>
-
-static bool amIAnInferior(void)
-{
-	mach_msg_type_number_t count = 0;
-	exception_mask_t masks[EXC_TYPES_COUNT];
-	mach_port_t ports[EXC_TYPES_COUNT];
-	exception_behavior_t behaviors[EXC_TYPES_COUNT];
-	thread_state_flavor_t flavors[EXC_TYPES_COUNT];
-	exception_mask_t mask = EXC_MASK_ALL & ~(EXC_MASK_RESOURCE | EXC_MASK_GUARD);
-
-	kern_return_t result = task_get_exception_ports(mach_task_self(), mask, masks, &count, ports, behaviors, flavors);
-	if (result == KERN_SUCCESS)
-	{
-		for (mach_msg_type_number_t portIndex = 0; portIndex < count; portIndex++)
-		{
-			if (MACH_PORT_VALID(ports[portIndex]))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-```
-
-Disabling `ptrace()`.
-
-```c
-typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
-
-#define PT_DENY_ATTACH 31
-
-void disable_ptrace() {
-    void* handle = dlopen(0, RTLD_GLOBAL | RTLD_NOW);
-    ptrace_ptr_t ptrace_ptr = dlsym(handle, "ptrace");
-    ptrace_ptr(PT_DENY_ATTACH, 0, 0, 0);
-    dlclose(handle);
-}
-```
-
-```c
-void disable_ptrace() {
-
-	asm(
-		"mov	r0, #31\n\t"	// PT_DENY_ATTACH
-		"mov	r1, #0\n\t"
-		"mov	r2, #0\n\t"
-		"mov 	ip, #26\n\t"	// syscall no.
-		"svc    0\n"
-	);
-}
-```
-
-```c
-- (void)protectAgainstPtrace {
-    int                 junk;
-    int                 mib[4];
-    struct kinfo_proc   info;
-    size_t              size;
-
-    info.kp_proc.p_flag = 0;
-
-    // Initialize mib, which tells sysctl the info we want, in this case
-    // we're looking for information about a specific process ID.
-
-    mib[0] = CTL_KERN;
-    mib[1] = KERN_PROC;
-    mib[2] = KERN_PROC_PID;
-    mib[3] = getpid();
-
-
-    while(1) {
-
-        size = sizeof(info);
-        junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
-        assert(junk == 0);
-
-        // We're being debugged if the P_TRACED flag is set.
-
-        if ((info.kp_proc.p_flag & P_TRACED) != 0) {
-            exit(0);
-        }
-
-        sleep(1);
-
-    }
-}
-```
-
-The app should either actively prevent debuggers from attaching, or terminate when a debugger is detected.
-
-#### Bypassing Anti-Debugging Defenses
-
--- TODO [Bypass techniques] --
-
-```c
-#import <substrate.h>
-
-#define PT_DENY_ATTACH 31
-
-static int (*_my_ptrace)(int request, pid_t pid, caddr_t addr, int data);
-
-
-static int $_my_ptrace(int request, pid_t pid, caddr_t addr, int data) {
-	if (request == PT_DENY_ATTACH) {
-		request = -1;
-	}
-	return _ptraceHook(request,pid,addr,data);
-}
-
-%ctor {
-	MSHookFunction((void *)MSFindSymbol(NULL,"_ptrace"), (void *)$ptraceHook, (void **)&_ptraceHook);
-}
-```
-
-#### Bypassing File Integrity Checks
+#### File Integrity Checks
 
 #### Overview
 
@@ -545,35 +408,7 @@ A similar approach holds here, but now answer the following questions:
 - What is your subjective assessment of difficulty?
 
 
-### Testing Runtime Integrity Checks
-
-#### Overview
-
--- TODO [Provide a general description of the issue "Testing Runtime Integrity Checks".] --
-
-#### Examples
-
-**Detecting Substrate Inline Hooks**\*
-
-Inline hooks are implemented by overwriting the first few bytes of a function with a trampoline that redirects control flow to adversary-controlled code. They can be detected by scanning the function prologue of each function for unusual and telling instructions. For example, substrate
-
-inline int checkSubstrateTrampoline() attribute((always_inline)); int checkSubstrateTrampoline(void * funcptr) {
-
-```
-unsigned int *funcaddr = (unsigned int *)funcptr;
-
-if(funcptr)
-    // assuming the first word is the trampoline
-    if (funcaddr[0] == 0xe51ff004) // 0xe51ff004 = ldr pc, [pc-4]
-        return 1; // bad
-
-return 0; // good
-```
-
-\} Example code from the Netitude blog `[2]`.
-
-
-### Testing Device Binding
+### Device Binding
 
 #### Overview
 

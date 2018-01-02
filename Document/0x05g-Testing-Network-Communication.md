@@ -1,4 +1,4 @@
-## Testing Network Communication in Android Apps
+## Android Network APIs
 
 ### Testing Endpoint Identify Verification
 

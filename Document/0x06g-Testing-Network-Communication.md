@@ -1,10 +1,10 @@
-## Testing Network Communication in iOS Apps
+## iOS Network APIs
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wifi, classical network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
 
-### Testing App Transport Security
+### App Transport Security
 
 #### Overview
 
@@ -90,7 +90,7 @@ Starting from January 1 2017, Apple App Store review requires justification if o
 
 However this decline is extended later by Apple stating [“To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”](https://developer.apple.com/news/?id=12212016b "Apple Developer Portal Announcement - Supporting App Transport Security")
 
-#### Static Analysis
+#### Analyzing the ATS Configuration
 
 If the source code is available, open then `Info.plist` file in the application bundle directory and look for any exceptions that the application developer has configured. This file should be examined taking the applications context into consideration.
 
@@ -153,10 +153,6 @@ In general it can be summarised:
 
 - If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views
-
-#### Dynamic Analysis
-
-ATS settings should be verified via static analysis in the iOS source code.
 
 
 ### Testing Custom Certificate Stores and Certificate Pinning

@@ -1,6 +1,6 @@
-## Testing Cryptography in Android Apps
+## Android Cryptographic APIs
 
-In the chapter "Testing Cryptography in Mobile Apps", we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
+In the chapter [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
@@ -68,7 +68,7 @@ GCM is another AES block mode that provides additional security benefits over ot
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
-Here's an example of using that key to decrypt:
+Here's an example of using that key to encrypt:
 
 ```Java
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES

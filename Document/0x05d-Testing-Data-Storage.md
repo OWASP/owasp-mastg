@@ -1,4 +1,4 @@
-## Testing Data Storage on Android
+## Data Storage on Android
 
 Protecting authentication tokens, private information, and other sensitive data is key to mobile security. In this chapter, you will learn about the APIs Android offers for local data storage and best practices for using them.
 
