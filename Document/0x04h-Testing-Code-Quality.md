@@ -53,7 +53,7 @@ Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL,
 
 ```
 
-This SQL vulnerability was found in the Yahoo Weather application and did not expose any data that the user didn't already have access to. This example presents another very creative way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
+This SQL vulnerability was found in the Yahoo Weather application and did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
 
 ```python
 
@@ -289,4 +289,8 @@ A [reflected XSS attack](https://www.owasp.org/index.php/Testing_for_Reflected_C
 #### XSS via start ContentActivity
 
 - https://hackerone.com/reports/189793
+
+#### Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?
+
+- http://blog.ostorlab.co/2016/03/android-sql-and-contentproviders-or-why.html
 
