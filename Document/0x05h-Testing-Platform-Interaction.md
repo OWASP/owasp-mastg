@@ -699,14 +699,11 @@ A full description of the attack can be found in the [blog article by MWR](https
 
 
 
-
-
-
 ### Testing for Fragment Injection
 
 #### Overview
 
-Android SDK offers a way for developers to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html). to users, allowing them to extend this abstract class and adapt it to their needs.
+Android SDK offers a way for developers to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing them to extend this abstract class and adapt it to their needs.
 
 This abstract class will parse the extra data fields received on a Intent, in particular the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)`
 
@@ -714,12 +711,11 @@ It is expected that the first field contains the `Fragment` class name and the s
 
 Due to the fact that the `PreferenceActivity` uses reflection to load the fragment, this can lead to load an arbitrary class inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
 
-With this vulnerability the attacker will be able to call fragments inside the target application or run the code present in other classes constructors.
-Any class passed in the intent that does not extends the Fragment class will cause a java.lang.CastException, but before the exception is thrown the empty constructor is executed, allowing to run the code present in the class constructor.
+With this vulnerability the attacker will be able to call fragments inside the target application or run the code present in other classes constructors. Any class passed in the intent that does not extends the Fragment class will cause a java.lang.CastException, but before the exception is thrown the empty constructor is executed, allowing to run the code present in the class constructor.
 
 To mitigate this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19), that allows developers to override it and define which fragments are allowed to be used in this context.
 
-The default implementation returns true on version bellow Android 4.4 KitKat (API Level 19). For later versions with will throw an exception.
+The default implementation returns true on version bellow Android 4.4 KitKat (API Level 19), for later versions it will throw an exception.
 
 
 #### Static Analysis
@@ -786,8 +782,8 @@ Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
-[`Download Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk)
-[`Download Exploit POC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk)
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") can be downloaded. 
+
 
 ### Testing Object Persistence
 
