@@ -2,14 +2,16 @@
 
 ### Testing Endpoint Identify Verification
 
-Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between mobile application and backend API is not a trivial task. Developers often decide for easier, but less secure (e.g. accepting any certificate) solutions to ease the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
+Using TLS for transporting sensitive information over the network is essential from security point of view. However, implementing a mechanism of encrypted communication between a mobile application and its corresponding backend API is not a trivial task. Developers often decide for easier, but less secure (e.g. accepting any certificate) solutions to ease the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
 There are two key issues that should be tested for:
 
-- verify that a certificate comes from a trusted source and
+- verify that a certificate comes from a trusted source (CA) and
 - check whether the endpoint server presents the right certificate.
 
-Ensure that the hostname and certificate are verified correctly. Examples and common pitfalls can be found in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for usages of `TrustManager` and `HostnameVerifier`. You can find insecure usage examples in the sections below.
+Ensure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls can be found in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for usages of `TrustManager` and `HostnameVerifier`. You can find insecure usage examples you should look for in the sections below.
+
+#### Static Analysis
 
 ##### Verifying the Server Certificate
 
@@ -19,9 +21,9 @@ A mechanism responsible for verifying conditions to establish a trusted connecti
 - Is the certificate expired?
 - Is the certificate self-signed?
 
-Look in the code if there are control checks of aforementioned conditions. For example, the following code will accept any certificate:
+The following code snippet can sometimes be found during development phases and will accept any certificate, by overwriting the checkClientTrusted(), checkServerTrusted() and getAcceptedIssuers() functions. Such implementations should be avoided and if needed be clearly separated from production builds in order to avoid build-in security flaws.
 
-```
+```Java
 TrustManager[] trustAllCerts = new TrustManager[] {
     new X509TrustManager() {
         @Override
@@ -47,7 +49,7 @@ context.init(null, trustAllCerts, new SecureRandom());
 
 ##### WebView Server Certificate Verification
 
-Sometimes applications use the WebView UI component to render the website associated with the application. This is also the case for HTML/JavaScript based frameworks, like for example Apache Cordova, that internally uses a WebView to perform application interaction. When a WebView is used, it is the mobile browser that performs the server certificate validation. A bad practice would be to ignore any TLS error that occurs when the WebView tries to establish the connection with the remote website.
+Sometimes applications use a WebView to render the website associated with the application. This is also the case for HTML/JavaScript based frameworks, like for example Apache Cordova, that internally uses a WebView to perform application interaction. When a WebView is used, it is the mobile browser that performs the server certificate validation. A bad practice would be to ignore any TLS error that occurs when the WebView tries to establish the connection with the remote website.
 
 The following code would ignore any TLS issues, precisely the custom implementation of the WebViewClient provided to the WebView:
 
@@ -85,40 +87,23 @@ HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
                              .ALLOW_ALL_HOSTNAME_VERIFIER;
 ```
 
-Ensure that your application verifies a hostname before setting trusted connection.
+Ensure that your application verifies a hostname before setting a trusted connection.
 
 
 #### Dynamic Analysis
 
-A dynamic analysis approach will require usage of intercept proxy. To test improper certificate verification, you should go through following control checks:
+A dynamic analysis approach will require the usage of an interception proxy. To test improper certificate verification, you should go through following control checks:
 
- 1) Self-signed certificate
+- Self-signed certificate
+In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab and check `Use a self-signed certificate` and click `Ok`. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting self-signed certificates.
 
-  In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab and check `Use a self-signed certificate` and click `Ok`. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting self-signed certificates.
+- Accepting invalid certificate
+In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type in the hostname of the backend server. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any certificate.
 
- 2) Accepting invalid certificate
+- Accepting wrong hostname.
+In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type in an invalid hostname, e.g. example.org. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any hostname.
 
-  In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type a hostname of a backend server. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any certificate.
-
- 3) Accepting wrong hostname.
-
-  In Burp go to `Proxy -> Options` tab, go to `Proxy Listeners` section, highlight your listener and click `Edit`. Then go to `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname` and type in an invalid hostname, e.g. example.org. Now, run your application. If you are able to see HTTPS traffic, then it means your application is accepting any hostname.
-
-If you are interested in further MITM analysis or you face any problems with configuration of your intercept proxy, you may consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT preconfigured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for performing MITM analysis of software. All you have to do is [deploy a tested application on emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
-
-
-#### References
-
-#### OWASP Mobile Top 10 2016
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
-
-##### OWASP MASVS
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
-
-##### CWE
-- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+If you are interested in further MITM analysis or you face any problems with the configuration of your interception proxy, you may consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT preconfigured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for performing MITM analysis of software. All you have to do is [deploy a tested application on emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 
 
 ### Testing Custom Certificate Stores and Certificate Pinning
@@ -127,81 +112,18 @@ If you are interested in further MITM analysis or you face any problems with con
 
 Certificate pinning is the process of associating the backend server with a particular X509 certificate or public key, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced (after all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors).
 
-The certificate can be pinned during development, or at the time the app first connects to the backend.
-In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
+The certificate can be pinned and hardcoded into the App, or at the time the app first connects to the backend. In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
 #### Static Analysis
 
-The process to implement the certificate pinning involves three main steps outlined below:
+##### Network Security Configuration
 
-1. Obtain a certificate for the desired host
-1. Make sure the certificate is in .bks format
-1. Pin the certificate to an instance of the default Apache Httpclient.
+Applications can use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") feature provided by Android from version 7.0 onwards, to customize their network security settings in a safe, declarative configuration file without modifying app code.
 
-To analyze the correct implementation of certificate pinning the HTTP client should:
-
-1. Load the Keystore:
-
-```java
-InputStream in = resources.openRawResource(certificateRawResource);
-keyStore = KeyStore.getInstance("BKS");
-keyStore.load(resourceStream, password);
-```
-
-Once the Keystore is loaded we can use the TrustManager that trusts the CAs in our KeyStore :
-
-```java
-String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-tmf.init(keyStore);
-Create an SSLContext that uses the TrustManager
-// SSLContext context = SSLContext.getInstance("TLS");
-sslContext.init(null, tmf.getTrustManagers(), null);
-```
-
-The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain.
-
-Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, [okhttp](https://github.com/square/okhttp/wiki/HTTPS "okhttp library") can be set up with the `CertificatePinner` as follows:
-
-```java
-OkHttpClient client = new OkHttpClient.Builder()
-        .certificatePinner(new CertificatePinner.Builder()
-            .add("bignerdranch.com", "sha256/UwQAapahrjCOjYI3oLUx5AQxPBR02Jz6/E2pt0IeLXA=")
-            .build())
-        .build();
-```
-
-Applications that use a WebView component may utilize the event handler of the WebViewClient in order to perform some kind of "certificate pinning" on each request before the target resource will be loaded. The following code shows an example for verifying the Issuer DN of the certificate sent by the server:
-
-```java
-WebView myWebView = (WebView) findViewById(R.id.webview);
-myWebView.setWebViewClient(new WebViewClient(){
-    private String expectedIssuerDN = "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US;";
-
-    @Override
-    public void onLoadResource(WebView view, String url)  {
-        //From Android API documentation about "WebView.getCertificate()":
-        //Gets the SSL certificate for the main top-level page
-        //or null if there is no certificate (the site is not secure).
-        //
-        //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
-        SslCertificate serverCert = view.getCertificate();
-        if(serverCert != null){
-            //Apply check on Issuer DN against expected one
-            SslCertificate.DName issuerDN = serverCert.getIssuedBy();
-            if(!this.expectedIssuerDN.equals(issuerDN.toString())){
-                //Throw exception to cancel resource loading...
-            }
-        }
-    }
-});
-```
-
-Applications can decide to use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") feature provided by Android from version 7.0 onwards, to customize their network security settings in a safe, declarative configuration file without modifying app code.
-
-Network Security Configuration (NSC) feature can also be used to perform [declarative certificate pinning](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") on specific domains. If an application uses the NSC feature then there two points to check in order to identify the defined configuration:
+The Network Security Configuration (NSC) feature can also be used to perform [declarative certificate pinning](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") on specific domains. If an application uses the NSC feature then there are two points to check in order to identify the defined configuration:
 
 1. Specification of the NSC file reference in the Android application manifest using the "android:networkSecurityConfig" attribute on the application tag:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="owasp.com.app">
@@ -212,6 +134,7 @@ Network Security Configuration (NSC) feature can also be used to perform [declar
 ```
 
 2. Content the NSC file stored in location "res/xml/network_security_config.xml" of the module:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -240,6 +163,73 @@ If a certificate pinning validation check is failing then the following event wi
 
 ```
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
+```
+
+##### TrustManager
+
+The process to implement the certificate pinning involves three main steps outlined below:
+
+- Obtain the certificate of the desired host(s)
+- Make sure the certificate is in .bks format
+- Pin the certificate to an instance of the default Apache Httpclient.
+
+To analyze the correct implementation of certificate pinning the HTTP client should load the Keystore:
+
+```java
+InputStream in = resources.openRawResource(certificateRawResource);
+keyStore = KeyStore.getInstance("BKS");
+keyStore.load(resourceStream, password);
+```
+
+Once the Keystore is loaded we can use the TrustManager that trusts the CAs in our KeyStore:
+
+```java
+String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+tmf.init(keyStore);
+Create an SSLContext that uses the TrustManager
+// SSLContext context = SSLContext.getInstance("TLS");
+sslContext.init(null, tmf.getTrustManagers(), null);
+```
+
+The specific implementation in the app might be different, as it might be pinning against only the public key of the certificate, the whole certificate or a whole certificate chain.
+
+##### Network Libraries and WebViews
+
+Applications that use third-party networking libraries may utilize the certificate pinning functionality in those libraries. For example, [okhttp](https://github.com/square/okhttp/wiki/HTTPS "okhttp library") can be set up with the `CertificatePinner` as follows:
+
+```java
+OkHttpClient client = new OkHttpClient.Builder()
+        .certificatePinner(new CertificatePinner.Builder()
+            .add("example.com", "sha256/UwQAapahrjCOjYI3oLUx5AQxPBR02Jz6/E2pt0IeLXA=")
+            .build())
+        .build();
+```
+
+Applications that use a WebView component may utilize the event handler of the WebViewClient in order to perform some kind of "certificate pinning" on each request before the target resource will be loaded. The following code shows an example for verifying the Issuer DN of the certificate sent by the server:
+
+```java
+WebView myWebView = (WebView) findViewById(R.id.webview);
+myWebView.setWebViewClient(new WebViewClient(){
+    private String expectedIssuerDN = "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US;";
+
+    @Override
+    public void onLoadResource(WebView view, String url)  {
+        //From Android API documentation about "WebView.getCertificate()":
+        //Gets the SSL certificate for the main top-level page
+        //or null if there is no certificate (the site is not secure).
+        //
+        //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
+        SslCertificate serverCert = view.getCertificate();
+        if(serverCert != null){
+            //Apply check on Issuer DN against expected one
+            SslCertificate.DName issuerDN = serverCert.getIssuedBy();
+            if(!this.expectedIssuerDN.equals(issuerDN.toString())){
+                //Throw exception to cancel resource loading...
+            }
+        }
+    }
+});
 ```
 
 For further information please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
@@ -409,14 +399,20 @@ When you do not have the source-code:
 - Use Xposed to hook into `java.security` package, then hook into `java.security.Security` with the method `getProviders` with no arguments. The return value is an Array of `Provider`.
 - Check if the first provider is `GmsCore_OpenSSL`.
 
-### References
+
+#### References
 
 #### OWASP Mobile Top 10 2016
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
-#### OWASP MASVS
+##### OWASP MASVS
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 - V5.6: "The app only depends on up-to-date connectivity and security libraries."
 
-#### CWE
+
+##### CWE
 - CWE-295 - Improper Certificate Validation
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
+- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
