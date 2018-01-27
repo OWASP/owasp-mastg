@@ -295,10 +295,7 @@ void anti_debug() {
 ```
 
 The dis-assembly of the binary implementing this approach looks like following: 
-![Ptrace Disassembly](Images/Chapters/0x06j/ptraceDisassemlby.png)
-
-To break down whats happening in the binary, `dlsym()` is called with `ptrace` as the 2nd argument (register R1) to the function. The return value, in register R0 is moved to register R6 at offset *0x1908A*. Eventually at offset *0x19098*, the pointer value in register R6 is called using BLX R6 instruction. In this case, to disable `ptrace()` call, all we need to do is to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with NOP (0x00 0xBF in Little Endian) instruction.  Armconverter.com is a handy tool for conversion between bytecode and instruction mnemonics. The code after patching looks like following: 
-![Ptrace Patched](Images/Chapters/0x06j/ptracePatched.png)
+![Ptrace Disassembly](Images/Chapters/0x06j/ptraceDisassemlby.png) To break down whats happening in the binary, `dlsym()` is called with `ptrace` as the 2nd argument (register R1) to the function. The return value, in register R0 is moved to register R6 at offset *0x1908A*. Eventually at offset *0x19098*, the pointer value in register R6 is called using BLX R6 instruction. In this case, to disable `ptrace()` call, all we need to do is to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with NOP (0x00 0xBF in Little Endian) instruction.  Armconverter.com is a handy tool for conversion between bytecode and instruction mnemonics. The code after patching looks like following: ![Ptrace Patched](Images/Chapters/0x06j/ptracePatched.png)
 
 ##### Using Sysctl 
 
