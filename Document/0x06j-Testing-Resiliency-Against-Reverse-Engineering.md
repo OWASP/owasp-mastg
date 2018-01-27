@@ -262,6 +262,46 @@ script.load()
 sys.stdin.read()
 ```
 
+#### Anti-Debugging Checks
+
+#### Overview
+
+##### Using Ptrace 
+
+iOS under the hood runs a XNU kernel. The XNU kernel do implement ptrace() system call, but it is not potent compared to implementation in Unix and Linux. Rather XNU kernel exposes another interface via Mach IPC to perform debugging. Although implementation of ptrace in iOS is not powerful compared to other OS, but it does provide one important feature of preventing a process from being debugged. The feature in question is the PT_DENY_ATTACH option of ptrace syscall. Use of PT_DENY_ATTACH is a fairly well known anti-debugging technique and one might encounter it more often than not while performing an iOS pentest. 
+
+As per The Mac Hacker's Handbook, PT_DENY_ATTACH option can be explained as following: 
+
+```
+PT_DENY_ATTACH
+This request is the other operation used by the traced process; it allows a process that is not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.  
+```
+
+To rephrase, using ptrace with PT_DENY_ATTACH, ensures that no other debugger can attach to the calling process; even if an attempt is made, the process will exit. 
+
+Before diving into the details, it is important to know that ptrace() is not part of public API on iOS. As per the appstore publishing policy, use of non-public API is prohibited and use of them may lead to rejection of the app from the AppStore (https://developer.apple.com/documentation/). Because of this, ptrace() is not called directly in the code, instead its called via obtaining ptrace() function pointer using dlsym. 
+
+Programmatically the above logic will look like following:
+
+```objective-C
+#import <dlfcn.h>
+#import <sys/types.h>
+#import <stdio.h>
+typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
+void anti_debug() {
+  ptrace_ptr_t ptrace_ptr = (ptrace_ptr_t)dlsym(RTLD_SELF, "ptrace");
+  ptrace_ptr(31, 0, 0, 0); // PTRACE_DENY_ATTACH = 31
+}
+```
+
+The dis-assembly of the binary implementing this approach looks like following: 
+![Ptrace Disassembly](Images/Chapters/0x06j/ptraceDisassemlby.png)
+
+To break down whats happening in the binary, `dlsym()` is called with `ptrace` as the 2nd argument (register R1) to the function. The return value, in register R0 is moved to register R6 at offset *0x1908A*. Eventually at offset *0x19098*, the pointer value in register R6 is called using BLX R6 instruction. In this case, to disable `ptrace()` call, all we need to do is to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with NOP (0x00 0xBF in Little Endian) instruction.  Armconverter.com is a handy tool for conversion between bytecode and instruction mnemonics. The code after patching looks like following: 
+![Ptrace Patched](Images/Chapters/0x06j/ptracePatched.png)
+
+##### Using Sysctl 
+
 
 #### File Integrity Checks
 
