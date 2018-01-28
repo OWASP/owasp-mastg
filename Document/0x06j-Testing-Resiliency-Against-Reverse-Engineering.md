@@ -363,7 +363,7 @@ When above code is compiled, the disassembly for the later half of the code look
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlOriginal.png)
 
-Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x00 0x20). The patched code will looks as below:
+Patching the instruction at offset *0xC13C*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x00 0x20). The patched code will looks as below:
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
 
