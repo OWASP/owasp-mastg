@@ -363,7 +363,8 @@ When above code is compiled, the disassembly for the later half of the code look
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlOriginal.png)
 
-Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (0x01 0x20). The patched code will look like as 
+Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x01 0x20). The patched code will looks as below:
+
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
 
 Apart from patching the code, `sysctl` check can be bypassed by using the debugger itself, and setting the breakpoint on call of `sysctl`. This approach is demonstrated in the post [here](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/). 
