@@ -265,6 +265,13 @@ sys.stdin.read()
 #### Anti-Debugging Checks
 
 #### Overview
+Ability to debug an application and explore the working of an application using it, really helps during a reversing exercise. Using a debugger, reverse engineer not only watch and track the value of various critical variables, but can also read and modify memory to her benefit. 
+
+Given the importance of having debugging capability against an application, application developers use myriad of techniques to prevent application from being debugged. These techniques to deny access to debugging to an attacker are collectively called as anti-debugging techniques. As discussed in "Testing Resiliency Against Reverse Engineering" chapter for Android, anti-debugging techniques can be preventive or reactive in approach. 
+
+In case of preventive techniques, the attempt is to prevent the debugger from attaching to the application at all, while in case of reactive techniques, an attempt is made firstly to determine the presence of a debugger, if so, the application can diverge from the expected behaviour.  
+
+There are multiple anti-debugging techniques available, few of them are discussed below. 
 
 ##### Using Ptrace 
 
@@ -303,7 +310,63 @@ To break down whats happening in the binary, `dlsym()` is called with `ptrace` a
 [Armconverter.com](Armconverter.com) is a handy tool for conversion between bytecode and instruction mnemonics. 
 
 ##### Using Sysctl 
+Another approach for detecting if the presence of debugger attached to the calling process is `sysctl()`. As per the Apple documentation:
 
+```
+The sysctl() function retrieves system information and allows processes with appropriate privileges to set system information. 
+```
+
+`Sysctl` can also be used to retrieve the information about the current process. Using `sysctl` one can determine whether the process is being debugged or not. Programmatically, as discussed [here](https://developer.apple.com/library/content/qa/qa1361/_index.html), looks like following: 
+
+```
+#include <assert.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/sysctl.h>
+
+static bool AmIBeingDebugged(void)
+    // Returns true if the current process is being debugged (either 
+    // running under the debugger or has a debugger attached post facto).
+{
+    int                 junk;
+    int                 mib[4];
+    struct kinfo_proc   info;
+    size_t              size;
+
+    // Initialize the flags so that, if sysctl fails for some bizarre 
+    // reason, we get a predictable result.
+
+    info.kp_proc.p_flag = 0;
+
+    // Initialize mib, which tells sysctl the info we want, in this case
+    // we're looking for information about a specific process ID.
+
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PID;
+    mib[3] = getpid();
+
+    // Call sysctl.
+
+    size = sizeof(info);
+    junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
+    assert(junk == 0);
+
+    // We're being debugged if the P_TRACED flag is set.
+
+    return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
+}
+```
+
+When above code is compiled, the disassembly for the later half of the code looks like following: 
+
+![Sysctl Disassembly](Images/Chapters/0x06j/sysctlOriginal.png)
+
+Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (0x01 0x20). The patched code will look like as 
+![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
+
+Apart from patching the code, `sysctl` check can be bypassed by using the debugger itself, and setting the breakpoint on call of `sysctl`. This approach is demonstrated in the post [here](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/). 
 
 #### File Integrity Checks
 
