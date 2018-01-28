@@ -318,7 +318,7 @@ The sysctl() function retrieves system information and allows processes with app
 
 `Sysctl` can also be used to retrieve the information about the current process. Using `sysctl` one can determine whether the process is being debugged or not. Programmatically, as discussed [here](https://developer.apple.com/library/content/qa/qa1361/_index.html), looks like following: 
 
-```
+```C
 #include <assert.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -363,7 +363,7 @@ When above code is compiled, the disassembly for the later half of the code look
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlOriginal.png)
 
-Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x01 0x20). The patched code will looks as below:
+Patching the instruction at offset *0x31C3*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x00 0x20). The patched code will looks as below:
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
 
