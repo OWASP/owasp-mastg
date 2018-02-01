@@ -22,9 +22,10 @@ $ adb install UnCrackable-Level1.apk
 ### Solutions
 
 - [Solution using frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/)
-- [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/)
 - [Solution using static analysis](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-statically-analyzing-java-code)
 - [Solution using jdb](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-debugging-release-apps)
+- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html)
+- [Solution using Xposed by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level1/)
 
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_02/)
 
@@ -42,7 +43,9 @@ $ adb install UnCrackable-Level2.apk
 
 ### Solutions
 
-- [Using frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
+- [Solution using frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
+- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html)
+- [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/)
 
 ## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_03/)
 
@@ -60,7 +63,8 @@ $ adb install UnCrackable-Level3.apk
 
 ### Solutions
 
-N/A
+- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html)
+- [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/)
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/)
 
@@ -105,6 +109,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 ### Solutions
 
+- [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/)
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html)
 
 ## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/)
