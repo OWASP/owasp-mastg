@@ -145,6 +145,139 @@ Don't shy away from using automated scanners for your analysis—they help you p
 
 Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are built on top of Cydia Substrate, a framework for developing runtime patches that we will cover later. For basic API monitoring, you can get away with not knowing all the details of how Substrate works—you can simply use existing API monitoring tools built on top of it.
 
+
+#### Needle
+
+[Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an iOS security assessment framework that can be used to test the security of iOS applications on jailbroken devices. The following section documents the steps necessary to install and use Needle.
+
+##### Installing Needle
+
+**On Linux**
+
+The following commands can be used to install the dependencies required to run Needle on Linux.
+
+```
+# Unix packages
+sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
+
+# Python packages
+sudo pip install readline paramiko sshtunnel frida mitmproxy biplist
+
+# Download source
+git clone https://github.com/mwrlabs/needle.git
+
+```
+
+**On Mac**
+
+The following commands can be used to install the dependencies required to run Needle on MacOs.
+
+```
+# Core dependencies
+brew install python
+brew install libxml2
+xcode-select --install
+
+# Python packages
+sudo -H pip install --upgrade --user readline
+sudo -H pip install --upgrade --user paramiko
+sudo -H pip install --upgrade --user sshtunnel
+sudo -H pip install --upgrade --user frida
+sudo -H pip install --upgrade --user biplist
+# sshpass
+brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+
+# mitmproxy
+wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz
+tar -xvzf mitmproxy-0.17.1-osx.tar.gz
+sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
+
+# Download source
+git clone https://github.com/mwrlabs/needle.git
+```
+
+##### Install the Needle Agent
+
+The only prerequisite is a Jailbroken device, with the following packages installed:
+
+* `Cydia`
+* `Apt 0.7 Strict`
+
+(For non-essential prerequisites, please refer to [Device Dependencies](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide#device-dependencies))
+
+* Add the following repository to the Cydia Sources: http://mobiletools.mwrinfosecurity.com/cydia/  
+* Search for `NeedleAgent` and install the package
+
+![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
+
+* If the setup process is successful, you'll find the `NeedleAgent` app on the home screen
+
+![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_3.jpg)
+
+##### Start the Framework
+
+**Start NeedleAgent**
+
+* Open the `NeedleAgent` app on your device.
+* Then, tap on `Listen` in the top left corner and it will start listening on port `4444` by default. This can be changed using the field in the top right.
+
+![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_4.jpg)
+
+**Start Needle**
+
+To launch Needle, just open a console and type:
+
+```
+$ python needle.py
+      __  _ _______ _______ ______         ______
+      | \ | |______ |______ | \     |      |______
+      | \_| |______ |______ |_____/ |_____ |______
+                  Needle v1.0 [mwr.to/needle] 
+    [MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)]
+
+[needle] > help
+Commands (type [help|?] <topic>):
+---------------------------------
+back exit info kill pull reload search shell show use
+exec_command help jobs load push resource set shell_local unset
+
+[needle] > show options
+
+  Name                      Current Value                Required  Description
+  ------------------------  -------------                --------  -----------
+  AGENT_PORT                4444                         yes       Port on which the Needle Agent is listening
+  APP                                                    no        Bundle ID of the target application (e.g., com.example.app). Leave empty to launch wizard
+  DEBUG                     False                        yes       Enable debugging output
+  HIDE_SYSTEM_APPS          False                        yes       If set to True, only 3rd party apps will be shown
+  IP                        127.0.0.1                    yes       IP address of the testing device (set to localhost to use USB)
+  OUTPUT_FOLDER             /root/.needle/output         yes       Full path of the output folder, where to store the output of the modules
+  PASSWORD                  ********                     yes       SSH Password of the testing device
+  PORT                      2222                         yes       Port of the SSH agent on the testing device (needs to be != 22 to use USB)
+  PUB_KEY_AUTH              True                         yes       Use public key auth to authenticate to the device. Key must be present in the ssh-agent if a passphrase is used
+  SAVE_HISTORY              True                         yes       Persists command history across sessions
+  SKIP_OUTPUT_FOLDER_CHECK  False                        no        Skip the check that ensures the output folder does not already contain other files. It will automatically overwrite any file
+  USERNAME                  root                         yes       SSH Username of the testing device
+  VERBOSE                   True                         yes       Enable verbose output
+
+[needle] >
+```
+
+You will be presented with Needle's command line interface.
+
+The tool has some global options (listed with the "`show options`" command, and set with the "`set <option> <value>`" command):
+
+* **USERNAME, PASSWORD**: SSH credentials of the testing device (set by default to "root" and "alpine", respectively)
+* **PUB_KEY_AUTH**: Use public key authentication to authenticate to the device. Key must be present in the ssh-agent if a passphrase is used
+* **IP, PORT**: the session manager embedded in the core of Needle is able to handle SSH connections over Wi-Fi or USB. If SSH-over-USB is the chosen method, the IP option must be set to localhost ("set IP 127.0.0.1"), and PORT set to anything different from 22 ("set PORT 2222")
+* **AGENT_PORT**: Port on which the NeedleAgent installed on the device is listening to
+* **APP**: this is the bundle identifier of the app to analyse (e.g., "com.example.app"). If it is not known beforehand, this field can be left empty. In this case, Needle will launch a wizard which prompts the user to select an app among those already installed on the device
+* **OUTPUT_FOLDER**: this is the full path of the output folder, where Needle will store the output of the modules
+* **SKIP_OUTPUT_FOLDER_CHECK**: if set to True, it will skip the check that ensures the output folder does not already contain other files
+* **HIDE_SYSTEM_APPS**: if set to True, only 3rd party apps will be shown
+* **SAVE_HISTORY**: if set to True, the command history will be persisted across sessions
+* **VERBOSE, DEBUG**: if set to True, they will enable verbose and debug logging, respectively
+
+
 #### SSH Connection via USB
 
 During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
