@@ -148,7 +148,7 @@ Life is easy with a jailbroken device: not only do you gain easy access to the a
 
 #### Needle
 
-[Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an iOS security assessment framework that can be used to test the security of iOS applications on jailbroken devices. The following section documents the steps necessary to install and use Needle.
+[Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an all in one iOS security assessment framework. The following section documents the steps necessary to install and use Needle.
 
 ##### Installing Needle
 
