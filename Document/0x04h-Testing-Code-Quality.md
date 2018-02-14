@@ -55,7 +55,7 @@ Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL,
 
 The payload can be further simplified using the following `_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master\)`. 
 
-This SQL vulnerability was found in the Yahoo Weather application and did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
+This SQL vulnerability did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
 
 ```python
 
