@@ -208,6 +208,15 @@ If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module an
 
 Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
+Needle can be used to bypass insecure biometric authentication in iOS platforns. Needle utilizes frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
+
+```
+[needle][container] > use hooking/frida/script_touch-id-bypass
+[needle][script_touch-id-bypass] > run
+```
+
+If vulnerable, the module will automatically bypass the login form.
+
 ### References
 
 #### OWASP Mobile Top 10 2016

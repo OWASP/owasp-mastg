@@ -262,6 +262,12 @@ script.load()
 sys.stdin.read()
 ```
 
+Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to identify that the device is jailbroken, it also searches for function names that may be used in the jailbreak detection process, and return false when the device is found to be jailbroken. The following command should be used to execute this module:
+
+```
+[needle] > use dynamic/detection/script_jailbreak-detection-bypass
+[needle][script_jailbreak-detection-bypass] > run
+```
 
 #### File Integrity Checks
 
