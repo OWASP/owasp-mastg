@@ -44,7 +44,7 @@ SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1
 
 Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
-The is an example from Ostorlab of SQL injection via the sort parameter using adb.
+Ostorlab exploited the sort parameter of Yahoo's weather mobile application with adb using this SQL injection payload.
 
 ```
 > $ adb shell content query --uri content://com.yahoo.mobile.client.android.weather.provider.Weather/locations/ --sort '_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master/**/where/**/1=1\)'  
@@ -53,7 +53,7 @@ Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL,
 
 ```
 
-This payload can be further simplified using the following `_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master\)`. 
+The payload can be further simplified using the following `_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master\)`. 
 
 This SQL vulnerability was found in the Yahoo Weather application and did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
 
