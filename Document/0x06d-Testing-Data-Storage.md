@@ -66,6 +66,55 @@ Please note that keys secured by TouchID (using `kSecAccessControlTouchIDCurrent
 From iOS 9 onward, you can do ECC based signing operations in the Secure Enclave. In that case the private key as well as the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to store the public key in the Keychain, as that cannot be stored in the Secure Enclave. You can use the `kSecAttrKeyType` to instruct what type of algorithm you want to use this key with upon creation of the key.
 
+###### Keychain Data Persistence 
+
+On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical abiity to perform.
+
+When performing an assessment of an iOS application, Keychain data persistence should be checked, this is normally achieved by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, and reinstalling the application to check if the data is retained between application installs. It can also be identified using the iOS security assessment framework Needle to read the Keychain, which is demonstrated in the following Needle commands below:
+
+```
+python needle.py
+[needle] > use storage/data/keychain_dump
+[needle] > run
+  {
+   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
+   "Account" : "username",
+   "Service" : "",
+   "Access Group" : "ABCD.com.test.passwordmngr-test",
+   "Protection" : "kSecAttrAccessibleWhenUnlocked",
+   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
+   "Data" : "testUser",
+   "AccessControl" : "Not Applicable"
+ },
+ {
+   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
+   "Account" : "password",
+   "Service" : "",
+   "Access Group" : "ABCD.com.test.passwordmngr-test,
+   "Protection" : "kSecAttrAccessibleWhenUnlocked",
+   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
+   "Data" : "rosebud",
+   "AccessControl" : "Not Applicable"
+ }
+```
+
+There is no iOS API that developers can use to force the wipe of data on application uninstall. Instead it is recommended developers take the following steps to protect Keychain data from persisting across application installs:
+* On first launch of an application after installation, it is recommended that all Keychain data associated with the application is wiped. This will prevent a second hand user of a device accidently gaining access to the previous user's accounts. A basic demonstration of this can be seen in the following Swift example:
+
+```swift
+let userDefaults = UserDefaults.standard
+
+if userDefaults.bool(forKey: "hasRunBefore") == false {
+     // Remove Keychain items here
+
+     // Update the flag indicator
+     userDefaults.set(true, forKey: "hasRunBefore")
+     userDefaults.synchronize() // Forces the app to update UserDefaults
+}
+```
+
+* When developing logout functionality in an iOS application, ensure that the Keychain data is also wiped as part of the account logout. This will give users the ability to clear their accounts before uninstalling an application.
+
 #### Static Analysis
 
 When having access to the source code of the iOS app, try to spot sensitive data that is saved and processed throughout the app. This includes in general passwords, secret keys and personally identifiable information (PII), but might as well also include other data identified as sensitive through industry regulations, laws or company policies. Look for instances where this data is saved using any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in NSUserDefaults without additional encryption.
@@ -235,6 +284,55 @@ The keychain file is located at:
 
 On a non-jailbroken device objection can be used to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
 
+##### Dynamic Analysis with needle
+
+On a jailbroken device the iOS security assessment framework Needle can be used to find vulnerabilities in the way in which the application stores data.
+
+**Reading the Keychain**
+
+To read the Keychain using Needle, the following command should be used:
+
+```
+[needle] > use storage/data/keychain_dump
+[needle][keychain_dump] > run
+```  
+
+**Searching for Binary Cookies**
+
+iOS applications often store binary cookie files in the application sandbox, which are binary format files containing cookie data for webviews in the application. Needle can be used to convert these files to readable format and inspect the data. The following Needle module should be used, which searches for binary cookie files stored within the application container, lists their data protection values, and gives the user an option to inspect, or download the file.
+
+```
+[needle] > use storage/data/files_binarycookies
+[needle][files_binarycookies] > run
+```
+
+**Searching for Property List Files**
+
+iOS applications often store data in property list (plist) files within both the application sandbox and IPA package. Sometimes these files can contain sensitive information such as usernames and passwords, therefore the contents of this files should be inspected during iOS assessments. The following Needle module should be used, which searches for plist files stored within the application container, lists their data protection values, and gives the user an option to inspect, or download the file.
+
+
+```
+[needle] > use storage/data/files_plist
+[needle][files_plist] > run
+```
+
+**Searching for Cache Databases**
+
+iOS applications can store cache databases within the application containing data such as web requests and responses, sometimes this data can contain sensitive information. The following Needle module should be used, which searches for cache files stored within the application container, lists their data protection values, and gives the user an option to inspect, or download the file.
+
+```
+[needle] > use storage/data/files_cachedb
+[needle][files_cachedb] > run
+```
+
+**Searching for SQLite Databases**
+
+iOS applications commonly use SQLite databases to store data required by the application. Testers should check the data protection values of these files as well as the contents to check for sensitive data. The following Needle module should be used, which searches for SQLite databases stored within the application container, lists their data protection values, and gives the user an option to inspect, or download the file.
+
+```
+[needle] > use storage/data/files_sql
+[needle][files_sql] > 
+```
 
 ### Testing for Sensitive Data in Logs
 
@@ -282,6 +380,12 @@ tail -f /var/log/syslog
 
 Proceed to complete the input fields prompt and if sensitive data is displayed in the output of the above command, it fails this test.
 
+Log files can also be monitored using Needle, to capture the logs of an iOS application the following commands should be used:
+
+```
+[needle] > use dynamic/monitor/syslog
+[needle][syslog] > run
+```
 
 ### Testing Whether Sensitive Data Is Sent to Third Parties
 
@@ -302,7 +406,6 @@ All data that is sent to 3rd Party services should be anonymized, so no PII data
 #### Dynamic Analysis
 
 All requests made to external services should be analyzed if any sensitive information is embedded into them. By using an interception proxy, you can try to investigate the traffic from the app to the 3rd party endpoints. When using the app all requests that are not going directly to the server where the main function is hosted should be checked, if any sensitive information is sent to a 3rd party. This could be for example PII (Personal Identifiable Information) in a tracker or ad service.
-
 
 ### Testing for Sensitive Data in the Keyboard Cache
 
@@ -414,6 +517,13 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 
 Proceed to a view in the app that has input fields which prompt the user for sensitive information such as username, password, credit card number, etc. Enter some values and double tap on the input field. If the "Select", "Select All", and "Paste" option shows up, proceed to tap on the "Select", or "Select All" option, it should allow you to "Cut", "Copy", "Paste", or "Define". The "Cut" and "Copy" option should be disabled for sensitive input fields, since it will be possible to retrieve the value by pasting it. If the sensitive input fields allow you to "Cut" or "Copy" the values, it fails this test.
 
+Needle can be used to monitor for sensitive data written to the clipboard on jailbroken devices. The following Needle module should be launched to start passive monitoring of the clipbard, any clipboard data will be written to the specified output file:
+
+```
+[needle] > use dynamic/monitor/pasteboard
+[needle] > set OUTPUT "./clipboard-logs.txt"
+[needle] > run
+ ```
 
 ### Testing Whether Sensitive Data Is Exposed via IPC Mechanisms
 
@@ -468,8 +578,6 @@ Keywords to look for:
 
 IPC mechanisms should be verified via static analysis in the iOS source code. At this point of time no tool is available on iOS to verify IPC usage.
 
-
-
 ### Testing for Sensitive Data Disclosure Through the User Interface
 
 #### Overview
@@ -497,8 +605,6 @@ sensitiveTextField.isSecureTextEntry = true
 To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
 
 If the information is masked by, for example replacing input with asterisks or dots, the app isn't leaking data to the user interface.
-
-
 
 ### Testing for Sensitive Data in Backups
 
@@ -580,8 +686,6 @@ After the app data has been backed up, review the data content of the backup fil
 
 Refer to the overview of this section to read up more on the purpose of each of the mentioned directories and the type of information they store.
 
-
-
 ### Testing For Sensitive Information in Auto-Generated Screenshots
 
 #### Overview
@@ -612,10 +716,25 @@ Proceed to a page on the application which displays sensitive information such a
 
 `/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
 
+Screenshot caching vulnerabilities can also be detected using Needle. This is demonstrated in the following Needle excerpt:
+
+```
+[needle] > use storage/caching/screenshot
+[needle][screenshot] > run
+[V] Creating timestamp file...
+[*] Launching the app...
+[*] Background the app by hitting the home button, then press enter: 
+
+[*] Checking for new screenshots...
+[+] Screenshots found:
+[+]   /private/var/mobile/Containers/Data/Application/APP_ID/Library/Caches/Snapshots/app_name/B75DD942-76D1-4B86-8466-B79F7A78B437@2x.png
+[+]   /private/var/mobile/Containers/Data/Application/APP_ID/Library/Caches/Snapshots/app_name/downscaled/12B93BCB-610B-44DA-A171-AF205BA71269@2x.png
+[+] Retrieving screenshots and saving them in: /home/user/.needle/output
+```
+
 If the application caches the sensitive information page as a screenshot, it fails this test.
 
 It is highly recommended to have a default screenshot that will be cached whenever the application enters the background.
-
 
 ### Testing for Sensitive Data in Memory
 
