@@ -266,30 +266,30 @@ sys.stdin.read()
 #### Anti-Debugging Checks
 
 #### Overview
-Ability to debug an application and explore the working of an application using it, really helps during a reversing exercise. Using a debugger, reverse engineer not only watch and track the value of various critical variables, but can also read and modify memory to her benefit. 
+Debugging and exploring applications are helpful during reversing exercises. Using a debugger, a reverse engineer can not only track the value of critical variables but also read and modify memory.
 
-Given the importance of having debugging capability against an application, application developers use myriad of techniques to prevent application from being debugged. These techniques to deny access to debugging to an attacker are collectively called as anti-debugging techniques. As discussed in "Testing Resiliency Against Reverse Engineering" chapter for Android, anti-debugging techniques can be preventive or reactive in approach. 
+Given the importance of having debugging capabilities against an application, application developers use many techniques to prevent it. These are called anti-debugging techniques. As discussed in the "Testing Resiliency Against Reverse Engineering" chapter for Android, anti-debugging techniques can be preventive or reactive.
 
-In case of preventive techniques, the attempt is to prevent the debugger from attaching to the application at all, while in case of reactive techniques, an attempt is made firstly to determine the presence of a debugger, if so, the application can diverge from the expected behaviour.  
+Preventive techniques prevent the debugger from attaching to the application at all, while reactive techniques first verify the presence of a debugger, then allow the application to diverge from expected behavior.  
 
-There are multiple anti-debugging techniques available, few of them are discussed below. 
+There are several anti-debugging techniques; a few of them are discussed below.
 
-##### Using Ptrace 
+##### Using Ptrace
 
-iOS under the hood runs a XNU kernel. The XNU kernel do implement ptrace() system call, but it is not potent compared to implementation in Unix and Linux. Rather XNU kernel exposes another interface via Mach IPC to perform debugging. Although implementation of ptrace in iOS is not powerful compared to other OS, but it does provide one important feature of preventing a process from being debugged. The feature in question is the PT_DENY_ATTACH option of ptrace syscall. Use of PT_DENY_ATTACH is a fairly well known anti-debugging technique and one might encounter it more often than not while performing an iOS pentest. 
+iOS runs on a XNU kernel. The XNU kernel implements a `ptrace` system call, but it is not as powerful as the Unix or Linux implementations. The XNU kernel exposes another interface via Mach IPC to enable debugging. The iOS implementation of `ptrace` provides an important feature: preventing a process from being debugged. This feature is implemented as the PT_DENY_ATTACH option of the `ptrace` syscall. Using PT_DENY_ATTACH is a fairly well-known anti-debugging technique, so you may encounter it more often than not during iOS pentests.
 
-As per The Mac Hacker's Handbook, PT_DENY_ATTACH option can be explained as following: 
+The Mac Hacker's Handbook, describes PT_DENY_ATTACH:
 
 ```
 PT_DENY_ATTACH
-This request is the other operation used by the traced process; it allows a process that is not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.  
+This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
 ```
 
-To rephrase, using ptrace with PT_DENY_ATTACH, ensures that no other debugger can attach to the calling process; even if an attempt is made, the process will exit. 
+To rephrase, using `ptrace` with PT_DENY_ATTACH ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate.
 
-Before diving into the details, it is important to know that ptrace() is not part of public API on iOS. As per the appstore publishing policy, use of non-public API is prohibited and use of them may lead to rejection of the app from the AppStore (https://developer.apple.com/documentation/). Because of this, ptrace() is not called directly in the code, instead its called via obtaining ptrace() function pointer using dlsym. 
+Before diving into the details, it is important to know that `ptrace` is not part of the public iOS API. Non-public APIs are prohibited, and the AppStore may reject apps that include them (https://developer.apple.com/documentation/). Because of this, `ptrace` is not called directly in the code; it's called by getting a `ptrace` function pointer via `dlsym`.
 
-Programmatically the above logic will look like following:
+The following is an example implementation of the above logic:
 
 ```objective-C
 #import <dlfcn.h>
@@ -302,22 +302,23 @@ void anti_debug() {
 }
 ```
 
-The dis-assembly of the binary implementing this approach looks like following: 
-![Ptrace Disassembly](Images/Chapters/0x06j/ptraceDisassembly.png) 
+The following is an example of a disassembled binary that implements this approach:
+![Ptrace Disassembly](Images/Chapters/0x06j/ptraceDisassembly.png)
 
-To break down whats happening in the binary, `dlsym()` is called with `ptrace` as the 2nd argument (register R1) to the function. The return value, in register R0 is moved to register R6 at offset *0x1908A*. Eventually at offset *0x19098*, the pointer value in register R6 is called using BLX R6 instruction. In this case, to disable `ptrace()` call, all we need to do is to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with NOP (0x00 0xBF in Little Endian) instruction.  The code after patching looks like following: 
+Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset *0x1908A*. At offset *0x19098*, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with the NOP (0x00 0xBF in Little Endian) instruction. After patching, the code looks like the following:
 ![Ptrace Patched](Images/Chapters/0x06j/ptracePatched.png)
 
-[Armconverter.com](Armconverter.com) is a handy tool for conversion between bytecode and instruction mnemonics. 
+[Armconverter.com](Armconverter.com) is a handy tool for conversion between byte-code and instruction mnemonics.
 
-##### Using Sysctl 
-Another approach for detecting if the presence of debugger attached to the calling process is `sysctl()`. As per the Apple documentation:
+##### Using Sysctl
+
+Another approach for detecting a debugger attached to the calling process involves `sysctl`. According to the Apple documentation:
 
 ```
-The sysctl() function retrieves system information and allows processes with appropriate privileges to set system information. 
+The sysctl() function retrieves system information and allows processes with appropriate privileges to set system information.
 ```
 
-`Sysctl` can also be used to retrieve the information about the current process. Using `sysctl` one can determine whether the process is being debugged or not. Programmatically, as discussed [here](https://developer.apple.com/library/content/qa/qa1361/_index.html), looks like following: 
+`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I'm being run under the debugger?"):
 
 ```C
 #include <assert.h>
@@ -327,7 +328,7 @@ The sysctl() function retrieves system information and allows processes with app
 #include <sys/sysctl.h>
 
 static bool AmIBeingDebugged(void)
-    // Returns true if the current process is being debugged (either 
+    // Returns true if the current process is being debugged (either
     // running under the debugger or has a debugger attached post facto).
 {
     int                 junk;
@@ -335,7 +336,7 @@ static bool AmIBeingDebugged(void)
     struct kinfo_proc   info;
     size_t              size;
 
-    // Initialize the flags so that, if sysctl fails for some bizarre 
+    // Initialize the flags so that, if sysctl fails for some bizarre
     // reason, we get a predictable result.
 
     info.kp_proc.p_flag = 0;
@@ -360,15 +361,15 @@ static bool AmIBeingDebugged(void)
 }
 ```
 
-When above code is compiled, the disassembly for the later half of the code looks like following: 
+When the code above is compiled, the disassembled version of the second half of the code looks like the following:
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlOriginal.png)
 
-Patching the instruction at offset *0xC13C*, MOVNE R0, #1, and changing it to MOVNE R0,#0 (in bytecode: 0x00 0x20). The patched code will looks as below:
+After the instruction at offset *0xC13C*, MOVNE R0, #1 is patched and changed to MOVNE R0, #0 (0x00 0x20 in in byte-code), the patched code will resemble the following:
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
 
-Apart from patching the code, `sysctl` check can be bypassed by using the debugger itself, and setting the breakpoint on call of `sysctl`. This approach is demonstrated in the post [here](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/). 
+You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
 Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to identify that the device is jailbroken, it also searches for function names that may be used in the jailbreak detection process, and return false when the device is found to be jailbroken. The following command should be used to execute this module:
 
@@ -605,4 +606,3 @@ Any scheme based on these variants will be more secure the moment passcode and/o
 -	Frida - http://frida.re/
 - Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper
 - Appsync Unified - https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified
-
