@@ -225,7 +225,9 @@ We bought apples, oranges, and tomatoes from the store.
 Use straight double quotes, straight single quotes, and straight apostrophes (not curly quotes/apostrophes).
 
 **Technical Terms**
-In order of preference, spell/punctuate technical terms according to
+Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
+
+In order of preference, spell/punctuate **generic** technical terms according to
 1. Merriam Webster's Collegiate Dictionary, 11th edition.
 2. Microsoft Manual of Style, 4th edition
 3. foldoc.org (Free Online Dictionary of Computing)
@@ -236,12 +238,21 @@ In order of preference, spell/punctuate technical terms according to
 |  back end  |    backend      |
 |  Base64    |    Base64-      |
 | black box  |     *same*      |
+| Bundle ID  |      NA        |
 | byte-code  |       NA        |
 |client side |  client-side    |
 |  codebase  |     *same*      |
+|code signing|     *same*      |
 |command line|     *same*      |
 |disassembler|       NA        |
+|  end users |       NA        |
+| file name  |     *same*      |
+|   macOS    |      NA         |
+|   OS X     |      NA         |
 |  pentest   |     *same*      |
+|  PhoneGap  |       NA        |
+|   Python   |       NA        |
+| repackage  |       NA        |
 | server side|   server-side   |
 |snapshot length|    NA        |
 | use case   |    *same*       |
@@ -277,6 +288,26 @@ $ echo 'Hello World'
 ```
 **In-text keywords**
 
-When they do not occur in a code block, place the following code-related keywords in backticks (``): function names, method names, commands, class names, block names, flag names, and file names. If these are plural, place the "s" after the second backtick (e.g. `RuntimeException`s). Do not add parentheses, brackets, or other punctuation to any keywords in backticks (e.g., `main` not `main()`).
+When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 
-Put the text of system errors and command options in double quotation marks (e.g., "segmentation fault," the "help" option).
+|    Backticks    | Quotation Marks | No Punctuation |
+| --------------- | --------------- | -------------- |
+| function names  |  section titles | application name |
+|   method names  |  chapter titles | folder names  |
+|    commands     |    book titles  | navigation (e.g., Home -> Menu)|
+|   class names   | flags values (e.g., "true," lowercase) | ID #s |
+|   block names   | command options (e.g., "help" option)||
+|   flag names    | single menu item (e.g., "Home" menu)||
+|   file names    | system error msgs.|
+|  package names  ||
+|   file paths    ||
+|   passwords     ||
+|  port numbers   ||
+|   binary names  ||
+|method/function arguments||
+|  property names ||
+|  object names   ||
+|    API calls    ||
+| interface names ||
+
+If nouns in backticks are plural, place the "s" after the second backtick (e.g. `RuntimeException`s). Do not add parentheses, brackets, or other punctuation to any keywords that are in backticks (e.g., `main` not `main()`).
