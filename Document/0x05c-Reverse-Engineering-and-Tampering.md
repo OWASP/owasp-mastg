@@ -927,20 +927,18 @@ To bypass the pinning check, add the `return-void` opcode to the first line of e
   invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 ```
 
-##### Patch a React Native application
+##### Patching React Native applications
 
-If the [React Native](http://facebook.github.io/react-native) framework has been used to develop the application then the main application code is located into the file `assets/index.android.bundle`, it contains JavaScript code. Most of the time, the JavaScript code into this file is minified and uglyfied then the tool [JStillery
-](https://mindedsecurity.github.io/jstillery) can be used to obtains a human readable version of the file allowing code analysis.
+If the [React Native](http://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
 
 The following approach can be used in order to patch the JavaScript file:
 
 1. Unpack the APK archive using `APKTool` tool.
 2. Copy the content of the file `assets/index.android.bundle` into a temporary file.
 3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
-4. Identify an interesting location where the code should be patched into the temporary file.
-5. Code the patch in the temporary file to facilitate the implementation of the patch.
-6. Put the *patching code* on a single line and report it in the original `assets/index.android.bundle` file.
-7. Repack the APK archive using `APKTool` tool and sign it before to install it on the target device/emulator.
+4. Identify where the code should be patched in the temporary file and implement the changes.
+5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
+6. Repack the APK archive using `APKTool` tool and sign it before to install it on the target device/emulator.
 
 #### Hooking Java Methods with Xposed
 
