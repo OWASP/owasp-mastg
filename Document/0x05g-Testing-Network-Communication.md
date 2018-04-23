@@ -107,7 +107,7 @@ In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` sect
 
 In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
-If you are interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
+If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 
 
 ### Testing Custom Certificate Stores and Certificate Pinning
@@ -303,7 +303,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 Patching Asynchronously:
 
 ```java
-//This is the mainactivity/first activity of the application that is there long enough to make the async installing of the securityprovider work.
+//This is the mainactivity/first activity of the application that's there long enough to make the async installing of the securityprovider work.
 public class MainActivity extends Activity
     implements ProviderInstaller.ProviderInstallListener {
 
