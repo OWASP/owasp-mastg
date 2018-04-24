@@ -107,9 +107,7 @@ Package: com.android.mms.service
   - android.permission.INTERACT_ACROSS_USERS
   Defines Permissions:
   - None
-  
 ```
-
 
 When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt to contain the required permission:
 
