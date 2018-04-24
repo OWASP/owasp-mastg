@@ -107,7 +107,9 @@ Package: com.android.mms.service
   - android.permission.INTERACT_ACROSS_USERS
   Defines Permissions:
   - None
+  
 ```
+
 
 When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt to contain the required permission:
 
@@ -727,7 +729,7 @@ Steps:
 
 The following example shows a Activity that extends this activity :
 
-```Java
+```
 public class MyPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -782,7 +784,7 @@ Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
-The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") can be downloaded. 
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") can be downloaded.
 
 
 ### Testing Object Persistence
@@ -1015,5 +1017,3 @@ There are various steps one can take for dynamic analysis:
 #### Tools
 
 - Drozer - https://github.com/mwrlabs/drozer
-
-
