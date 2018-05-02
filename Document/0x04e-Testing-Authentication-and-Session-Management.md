@@ -375,7 +375,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
-Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
 
 ##### Tampering with the Hashing Algorithm
 
