@@ -488,6 +488,27 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
+###### Patching React Native applications
+
+If the [React Native](http://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.
+
+At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app` thus the main application JavaScript file can be modified at this location.
+
+To identify the exact location of the application folder, the tool [ipainstaller](http://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller") can be used in this way:
+
+1. Use the command `ipainstaller -l` to list the applications installed on the device and get the name of the target application from the printed list.
+2. Use the command `ipainstaller -i [APP_NAME]` to display the information about the target application including the installation and data folders locations.
+3. Take the path referenced at the line starting by `Application:`.
+
+The following approach can be used then in order to patch the JavaScript file:
+
+1. Move to the application folder location.
+2. Copy the content of the file `Payload/[APP].app/main.jsbundle` into a temporary file.
+3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
+4. Identify where the code should be patched in the temporary file and implement the changes.
+5. Put the *patched code* on a single line and copy it in the original `Payload/[APP].app/main.jsbundle` file.
+6. Close and restart the application.
+
 #### Installing and Running an App
 
 Now you should be ready to run the modified app. Deploy and run the app on the device as follows:
