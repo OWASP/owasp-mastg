@@ -1046,6 +1046,11 @@ $ frida --version
 $ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
 ~~~
 
+Or you can run the following command to automatically detect frida version and download the right frida-server binary:
+
+```bash
+$ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
+```
 Copy frida-server to the device and run it:
 
 ~~~
