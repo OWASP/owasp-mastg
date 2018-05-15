@@ -266,7 +266,7 @@ This app is not exactly spectacular—all it does is show a label with the text 
 Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
 
 ```bash
-$ wget https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/03_Examples/01_Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+$ wget wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 $ apkx HelloWord-JNI.apk
 Extracting HelloWord-JNI.apk to HelloWord-JNI
 Converting: classes.dex -> classes.jar (dex2jar)
