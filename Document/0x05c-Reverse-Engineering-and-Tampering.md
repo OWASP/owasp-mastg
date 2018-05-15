@@ -390,7 +390,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 ###### Repackaging
 
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `&lt;application&gt;` element. This is the typical configuration of Android devices shipped to end users.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
 When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0," Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool— being able to inspect the run time state of a program makes understanding the program *a lot* easier.
 
@@ -601,7 +601,7 @@ Once you "Force Step Into," the debugger will stop at the beginning of the next 
 
 <img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="700px" />
 
-This method searches for the "su" binary within a list of directories (`/system/xbin’ and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
+This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
 <img src="Images/Chapters/0x05c/variables.png" width="700px" />
 
