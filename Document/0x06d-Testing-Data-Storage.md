@@ -69,7 +69,7 @@ iOS 9 only supports ECC with length of 256 bits. Furthermore, you still need to 
 
 ###### Keychain Data Persistence 
 
-On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical abiity to perform.
+On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
 
 When performing an assessment of an iOS application, Keychain data persistence should be checked, this is normally achieved by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, and reinstalling the application to check if the data is retained between application installs. It can also be identified using the iOS security assessment framework Needle to read the Keychain, which is demonstrated in the following Needle commands below:
 
