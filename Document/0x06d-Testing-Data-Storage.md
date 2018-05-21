@@ -48,13 +48,13 @@ The [KeyChain API](https://developer.apple.com/library/content/documentation/Sec
 
 Data stored in the Keychain is protected through a class structure that is similar to the one used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted using a 128 bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data are not meant to be saved directly in the Keychain - that's what the Data Protection API is for. Data protection for Keychain items is configured by setting the `kSecAttrAccessible` key in the `SecItemAdd` or `SecItemUpdate` call. The following [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") can be configured and are the Keychain Data Protection classes:
 
+- `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
+- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`: The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
-- `kSecAttrAccessibleAlways`: The data in the keychain item can always be accessed regardless of whether the device is locked.
-- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
-- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the keychain item can always be accessed regardless of whether the device is locked. The data will not be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleWhenUnlocked`: The data in the keychain item can be accessed only while the device is unlocked by the user.
 - `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the keychain item can be accessed only while the device is unlocked by the user. The data will not be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device. The data will not be included in an iCloud or iTunes backup.
 
 Next to the Data Protection classes, there are `AccessControlFlags` that define with which mechanism a user  can authenticate to unlock the key (`SecAccessControlCreateFlags`):
 - `kSecAccessControlDevicePasscode`: access the item using a passcode.
