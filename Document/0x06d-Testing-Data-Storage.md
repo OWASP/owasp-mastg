@@ -377,7 +377,7 @@ Proceed to a page on the iOS application that contains input fields which prompt
 tail -f /var/log/syslog
 ```
 
-- Connect your iOS device via USB and launch Xcode. Navigate to Windows > Devices, select your device and the respective application.
+- Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
 
 Proceed to complete the input fields prompt and if sensitive data is displayed in the output of the above command, it fails this test.
 
