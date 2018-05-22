@@ -392,7 +392,7 @@ Log files can also be monitored using Needle, to capture the logs of an iOS appl
 
 Different 3rd party services are available that can be embedded into the app to implement different features. These features can vary from tracker services to monitor the user behavior within the app, selling banner advertisements or to create a better user experience. Interacting with these services abstracts the complexity and neediness to implement the functionality on its own and to reinvent the wheel.
 
-The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more information as needed is sent to the service and that no sensitive information is disclosed.
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more than the information needed is sent to the service and that no sensitive information is disclosed.
 
 3rd party services are mostly implemented in two ways:
 - By using a standalone library.
