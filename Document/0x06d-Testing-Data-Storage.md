@@ -592,7 +592,7 @@ Masking of sensitive data, by showing asterisk or dots instead of clear text sho
 A text field that masks the input can be configured in two ways:
 
 **Storyboard**
-In the storyboard of the iOS project, open the configuration of the text field that is asking for sensitive data. Check that the option is "Secure Text Entry" is ticked. If this is activated dots are shown in the UI instead of the text keyed in.
+In the storyboard of the iOS project, open the configuration of the text field that is asking for sensitive data. Check that the option "Secure Text Entry" is ticked. If this is activated, dots are shown in the UI instead of the text keyed in.
 
 **Source Code**
 If the text field is defined in source code, check that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set. This obscures the text being entered by showing dots.
