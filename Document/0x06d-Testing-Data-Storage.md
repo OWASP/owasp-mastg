@@ -681,9 +681,8 @@ The following is a [sample code for excluding a file from backup](https://develo
 After the app data has been backed up, review the data content of the backup files and folders. Specifically, the following directories should be reviewed to check if they contain any sensitive data:
 
 - Documents/
-- Library/Caches/
 - Library/Application Support/
-- tmp/
+- Library/Preferences/
 
 Refer to the overview of this section to read up more on the purpose of each of the mentioned directories and the type of information they store.
 
