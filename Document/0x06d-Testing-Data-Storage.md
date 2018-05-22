@@ -617,7 +617,7 @@ Since iOS backs up installed apps and their data, an obvious concern is whether 
 
 ##### How the Keychain is Backed Up
 
-When a user backs up their iPhone, the keychain data is backed up as well, but the secrets in the keychain remain encrypted. The class keys needed to decrypt the keychain data that are not included in the backup. To restore the keychain data, the backup must be restored to a device, and the device must be unlocked with the same passcode.
+When a user backs up their iPhone, the keychain data is backed up as well, but the secrets in the keychain remain encrypted. The class keys needed to decrypt the keychain data are not included in the backup. To restore the keychain data, the backup must be restored to a device, and the device must be unlocked with the same passcode.
 
 Keychain items with the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute set can be decrypted only if the backup is restored to the same device. An evildoer trying to extract this Keychain data from the backup would be unable to decrypt it without access to the crypto hardware inside the originating device.
 
