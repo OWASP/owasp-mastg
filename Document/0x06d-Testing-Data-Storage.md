@@ -795,7 +795,7 @@ It is possible to dump the process memory of the app with [objection](https://gi
 
 ##### Objection (No Jailbreak needed)
 
-With objection it is possible to dump all memory of the running processes on the iPhone.
+With objection it is possible to dump all memory of the running process on the device.
 
 ```
 (virtual-python3) ➜ objection explore
