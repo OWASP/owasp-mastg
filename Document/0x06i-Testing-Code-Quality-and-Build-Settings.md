@@ -108,7 +108,7 @@ In Objective-C, developers can use pre-processor macro's to filter out debug cod
 #endif
 ```
 
-In Swift 2, using xCode 7, one has to set custom compiler flags for every target, where the compiler flag has to start with -D. So, when the debug flag -DMSTG-DEBUG is set, you can use the following annotations:
+In Swift 2, using Xcode 7, one has to set custom compiler flags for every target, where the compiler flag has to start with -D. So, when the debug flag -DMSTG-DEBUG is set, you can use the following annotations:
 
 ```swift
 #if MSTG-DEBUG
@@ -116,7 +116,7 @@ In Swift 2, using xCode 7, one has to set custom compiler flags for every target
 #endif
 ```
 
-In swift 3, using xCode 8, you can set Active Compilation Conditions in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the conditions defined:
+In swift 3, using Xcode 8, you can set Active Compilation Conditions in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the conditions defined:
 
 ```swift
 #if DEBUG_LOGGING
@@ -250,7 +250,7 @@ There are a few things a developer can do:
 
 #### Overview
 
-Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
+Although Xcode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
 
 -	**ARC** - Automatic Reference Counting - memory management feature
 	-	adds retain and release messages when required
@@ -259,7 +259,7 @@ Although XCode set all binary security features by default, it still might be re
 
 #### Static Analysis
 
-##### XCode Project Settings
+##### Xcode Project Settings
 
 -	Stack smashing protection
 
