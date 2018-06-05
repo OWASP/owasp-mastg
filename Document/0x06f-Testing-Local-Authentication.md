@@ -15,13 +15,13 @@ Developers have two options for incorporating Touch ID authentication:
 
 ##### Local Authentication Framework
 
-The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class. 
+The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class. 
 
 Two available policies define acceptable forms of authentication:
 
-- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C): When available, the user is prompted to perform TouchID authentication. If TouchID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
+- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C): When available, the user is prompted to perform Touch ID authentication. If Touch ID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
 
-- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where the user is prompted for TouchID.
+- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where the user is prompted for Touch ID.
 
 The `evaluatePolicy` function returns a boolean value indicating whether the user has authenticated successfully.
 
@@ -43,7 +43,7 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 	// User authenticated successfully, take appropriate action
 }
 ```
-*TouchID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
+*Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
 
 #####  Using Keychain Services for Local Authentication
 
@@ -201,12 +201,12 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - Enter the submenu "Select Target Apps"
 - Enable the target app
 - Close the app and start it again
-- When the TouchID prompt shows click "cancel"
-- If the application flow continues without requiring the touchID then the bypass has worked.
+- When the Touch ID prompt shows click "cancel"
+- If the application flow continues without requiring Touch ID then the bypass has worked.
 
 If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses cycript instead of frida is also available in Needle.
 
-Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
+Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
 Needle can be used to bypass insecure biometric authentication in iOS platforns. Needle utilizes frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
 
