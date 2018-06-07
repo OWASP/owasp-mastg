@@ -313,7 +313,7 @@ Infrastructure as Code also facilitates the construction of the environments req
 
 Infrastructure as Code is commonly used for projects that have Cloud-based resources because many vendors provide APIs that can be used for provisioning items (such as virtual machines, storage spaces, etc.) and working on configurations (e.g., modifying memory sizes or the number of CPUs used by virtual machines). These APIs provide alternatives to administrators' performing these activities from monitoring consoles.
 
-The main tools in this domain are Puppet ([Puppet](https://puppet.com/ "Puppet")) and Chef ([Chef](https://www.chef.io/chef/ "Chef")).
+The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"),  [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
 
 ###### Deployment
 
