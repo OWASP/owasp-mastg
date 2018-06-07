@@ -73,7 +73,7 @@ Ideally, in such a system the user's context is compared to previously recorded 
 
 Perform the following steps when testing authentication and authorization:
 
-- Identify the additional authentication factors the app uses. 
+- Identify the additional authentication factors the app uses.
 - Locate all endpoints that provide critical functionality.
 - Verify that the additional factors are strictly enforced on all server-side endpoints.
 
@@ -115,8 +115,7 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-
-Verify the existences of a password policy and password complexity requirements. Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
 Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
 
@@ -311,7 +310,7 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 
 - Verify that the HMAC is checked for all incoming requests containing a token;
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)_Cheat_Sheet_for_Java).
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_\(JWT\)_Cheat_Sheet_for_Java).
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
@@ -402,7 +401,7 @@ If access and refresh tokens are used with stateless authentication, they should
 
 #### Dynamic Analysis
 
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly. 
+Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
 
 1.  Log into the application.
 2.  Perform a couple of operations that require authentication inside the application.
