@@ -15,7 +15,8 @@ The data protection architecture is based on a hierarchy of keys. The UID and th
 Every file stored on the iOS file system is encrypted with its own per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with the class key corresponding to the protection class the app selected when creating the file.
 
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
-*[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")*
+
+*[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")
 
 
 Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
@@ -47,13 +48,14 @@ The [Keychain API](https://developer.apple.com/library/content/documentation/Sec
 
 Data stored in the Keychain is protected via a class structure that is similar to the class structure used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted with a 128-bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data aren't meant to be saved directly in the Keychain-that's what the Data Protection API is for. You can configure data protection for Keychain items by setting the `kSecAttrAccessible` key in the call to `SecItemAdd` or `SecItemUpdate`. The following configurable [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") are the Keychain Data Protection classes:
 
+- `kSecAttrAccessibleAlways`: The data in the Keychain item can always be accessed, regardless of whether the device is locked.
+- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the Keychain item can always be accessed, regardless of whether the device is locked. The data won't be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the Keychain item can't be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`: The data in the Keychain item can't be accessed after a restart until the device has been unlocked once by the user. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
-- `kSecAttrAccessibleAlways`: The data in the Keychain item can always be accessed, regardless of whether the device is locked.
-- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the Keychain can be accessed only when the device is unlocked. This protection class is only available if a passcode is set on the device. The data won't be included in an iCloud or iTunes backup.
-- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the Keychain item can always be accessed, regardless of whether the device is locked. The data won't be included in an iCloud or iTunes backup.
 - `kSecAttrAccessibleWhenUnlocked`: The data in the Keychain item can be accessed only while the device is unlocked by the user.
 - `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the Keychain item can be accessed only while the device is unlocked by the user. The data won't be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the Keychain can be accessed only when the device is unlocked. This protection class is only available if a passcode is set on the device. The data won't be included in an iCloud or iTunes backup.
+
 
 `AccessControlFlags` define the mechanisms with which users can authenticate the key (`SecAccessControlCreateFlags`):
 - `kSecAccessControlDevicePasscode`: Access the item via a passcode.
@@ -68,7 +70,7 @@ iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key i
 
 ###### Keychain Data Persistence
 
-When an application is uninstalled from iOS, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox. If a user sells their device without performing a factory reset, the buyer may be able to access the previous user's application accounts and data by reinstalling applications used by the previous user. This would require no technical ability.
+On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
 
 When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
 
@@ -372,7 +374,7 @@ Navigate to a screen that displays input fields that take sensitive user informa
 tail -f /var/log/syslog
 ```
 
-2. Connect your iOS device via USB and launch Xcode. Navigate to Windows > Devices, then select your device and the respective application.
+2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
 
 After starting either method one or two, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
@@ -387,6 +389,8 @@ To capture the logs of an iOS application, you can monitor log files with Needle
 
 Various third-party services can be embedded in the app. The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 The downside to third-party services is that developers don't know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
+
+The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more than the information needed is sent to the service and that no sensitive information is disclosed.
 
 Most third-party services are implemented in two ways:
 - with a standalone library
@@ -673,9 +677,8 @@ The following is [sample Swift code for excluding a file from a backup](https://
 After the app data has been backed up, review the data that's in the backed up files and folders. The following directories should be reviewed for sensitive data:
 
 - Documents/
-- Library/Caches/
 - Library/Application Support/
-- tmp/
+- Library/Preferences/
 
 Refer to the overview of this section for more on the purpose of each of these directories.
 
@@ -683,7 +686,7 @@ Refer to the overview of this section for more on the purpose of each of these d
 
 #### Overview
 
-Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application on a jailbroken device or someone who steals the device.
+Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application with a sandbox bypass exploit or someone who steals the device.
 
 #### Static Analysis
 
@@ -788,7 +791,8 @@ On a non-jailbroken device, you can dump the app's process memory with [objectio
 
 ##### Objection (No Jailbreak needed)
 
-With objection, you can dump the memory of running iPhone processes.
+With objection it is possible to dump all memory of the running process on the device.
+
 
 ```
 (virtual-python3) ➜ objection explore
