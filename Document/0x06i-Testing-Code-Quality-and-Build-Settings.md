@@ -1,14 +1,14 @@
 ## Code Quality and Build Settings for iOS Apps
 
-### Verifying that the App is Properly Signed
+### Making Sure that the App Is Properly Signed
 
 #### Overview
 
-Code signing your app assures users that it is from a known source and the app hasn’t been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
+Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide")
 
-It is possible to retrieve the signing certificate information on the application .app file using [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
+You can retrieve the signing certificate information from the application's .app file with [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
-After obtaining the application .ipa file, rename it to zip and decompress the file. Navigate to the `Payload` directory and the application .app file will be present.
+After you get the application's .ipa file, re-save it as a ZIP file and decompress the ZIP file. Navigate to the Payload directory, where the application's .app file will be.
 
 Execute the following `codesign` command:
 
@@ -34,13 +34,13 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
-### Testing for Debugging Symbols
+### Finding Debugging Symbols
 
 #### Overview
 
-As a general rule of thumb, as little explanative information as possible should be provided along with the compiled code. Some metadata such as debugging information, line numbers and descriptive function or method names make the binary or bytecode easier to understand for the reverse engineer, but isn’t actually needed in a release build and can therefore be safely discarded without impacting the functionality of the app.
+Generally, as little explanatory information as possible should be provided with the compiled code. Some metadata (such as debugging information, line numbers, and descriptive function or method names) makes the binary or byte-code easier for the reverse engineer to understand but isn't necessary in a release build. This metadata can therefore be discarded without impacting the app's functionality.
 
-These symbols can be saved either in "Stabs" format or the DWARF format. When using the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. With the DWARF format, debugging symbols are stored in a special "\_\_DWARF" segment within the binary. DWARF debugging symbols can also be saved as a separate debug-information file. In this test case, you verify that no debug symbols are contained in the release binary itself (either in the symbol table, or the \_\_DWARF segment).
+These symbols can be saved in "Stabs" format or the DWARF format. In the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. In the DWARF format, debugging symbols are stored in a special "\_\_DWARF" segment within the binary. DWARF debugging symbols can also be saved as a separate debug-information file. In this test case, you make sure that no debug symbols are contained in the release binary itself (in neither the symbol table nor the \_\_DWARF segment).
 
 #### Static Analysis
 
@@ -52,31 +52,35 @@ In archive MyTargetApp:
 
 armv5te:     file format mach-o-arm
 
-
 aarch64:     file format mach-o-arm64
 ```
 
-Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and can be installed via Homebrew on Mac OS X.
+Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and can be installed on macOS via Homebrew.
 
 #### Dynamic Analysis
 
-Not applicable.
+Dynamic analysis is not applicable for finding debugging symbols.
 
 #### Remediation
 
-Ensure that debugging symbols are stripped when the application is being build for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty for reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to YES in the build settings of the project.
+Make sure that debugging symbols are stripped when the application is being built for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty of reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to "YES" via the project's build settings.
 
-It is possible to still have a proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html) as it does not require any symbols in the application binary.
+A proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html) is possible because the system doesn't require any symbols in the application binary.
 
-### Testing for Debugging Code and Verbose Error Logging
+### Finding Debugging Code and Verbose Error Logging
 
 #### Overview
 
-Developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, `debugPrint`) about responses from their APIs, about the progress and/or state of their application in order to speed up verification and get a better understand on errors. Furthermore, there can be debugging code in terms of a "management-functionality" which is used by the developer to set state of the application, mock responses from an API, et cetera. This information can easily be used by the reverse-engineer to track back what is happening with the application. Therefore, the debugging code should be removed from the release version of the application.
+To speed up verification and get a better understanding of errors, developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, and `debugPrint`) about responses from their APIs and about their application's progress and/or state. Furthermore, there may be debugging code for "management-functionality," which is used by developers to set the application's state or mock responses from an API. Reverse engineers can easily use this information to track what's happening with the application. Therefore, debugging code should be removed from the application's release version.
 
 #### Static Analysis
 
-For static analysis, you can take the following approach regarding the logging statements: 1. Import the code of the application into Xcode. 2. Do a search over the code on the following printing functions:`NSLog`, `println`, `print`, `dump`, `debugPrint`. 3. When one of them is found, please check whether the developers used a wrapping function around the logging function for better markup of the to be logged statements, start adding that function to your search. 4. For every occurrence found in step 2 and 3, verify whether Macro's or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how objective-C can make use of pre-processor macro's:
+You can take the following static analysis approach for the logging statements:
+
+1.	Import the application's code into Xcode.
+2.	Search the code for the following printing functions: `NSLog`, `println`, `print`, `dump`, `debugPrint`.
+3.	When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
+4.	For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
 
 ```objc
 #ifdef DEBUG
@@ -84,23 +88,31 @@ For static analysis, you can take the following approach regarding the logging s
 #endif
 ```
 
-Whereas in Swift this has changed: there you need to set either environment-variables in your scheme or as custom flags in the Build settings of a target to make this work. Please note that the following functions, which allow to check on whether the app is build in release-configuration in Swift 2.1, should be recommended against (As Xcode 8 & Swift3 do not support them): `_isDebugAssertConfiguration()`, `_isReleaseAssertConfiguration()`, `_isFastAssertConfiguration()`.
+The procedure for enabling this behavior in Swift has changed: you need to either set environment variables in your scheme or set them as custom flags in the target's build settings. Please note that the following functions (which allow you to determine whether the app was built in the Swift 2.1. release-configuration) aren't recommended, as Xcode 8 and Swift 3 don't support these functions:
 
-Please note that there are more logging functions, depending on the setup of the application, for instance, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, then the static analysis is a bit different.
+-	`_isDebugAssertConfiguration`
+-	`_isReleaseAssertConfiguration`
+-	`_isFastAssertConfiguration`.
 
-On the "debug-management" code which is built in: inspect the storyboards to see if there are any flows and/or view-controllers that provide different functionality than the ones that should be supported by the application. This can be anything: from debug views, to error-messages printed. From having custom stub-response configurations to logging written to files on the application file system or to a remote-server.
+Depending on the application's setup, there may be more logging functions. For example, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, static analysis is a bit different.
+
+For the "debug-management" code (which is built-in): inspect the storyboards to see whether there are any flows and/or view-controllers that provide functionality different from the functionality the application should support. This functionality can be anything from debug views to printed error messages, from custom stub-response configurations to logs written to files on the application's file system or a remote server.
 
 #### Dynamic Analysis
 
-The dynamic analysis should be executed on both a simulator as well as a device, as we sometimes see that developers use target-based functions (instead of release/debug-mode based functions) to execute the debugging code or not. 1. Run the application on a simulator, check if you can find any output during the execution of the app in the console. 2. Attach a device to your Mac, run the application on the device via Xcode and verify whether you can find any output during the execution of the app in the console.
+Dynamic analysis should be executed on both a simulator and a device because developers sometimes use target-based functions (instead of functions based on a release/debug-mode) to execute the debugging code.
+1.	Run the application on a simulator and check for output in the console during the app's execution.
+2.	 Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution in the console.
 
-For the other "manager-based" debug code: click through the application on both a simulator and device and see if you can find any functionality which allows for pre-setting profiles for an app, for selecting the actual server, for selecting possible responses from the API, et cetera.
+For the other "manager-based" debug code: click through the application on both a simulator and a device to see if you can find any functionality that allows an app's profiles to be pre-set, allows the actual server to be selected or allows responses from the API to be selected.
 
 #### Remediation
 
-As a developer, it should not be a problem to incorporate debug statements in your debug version of the application as long as you realize that the statements made for debugging should never: - have impact on the actual computational results in such a way that the code should be present in the release version of the application; - end up in the release-configuration of the application.
+As a developer, incorporating debug statements into your application's debug version should not be a problem if you realize that the debugging statements should never
+1.	be present in the application's release version or
+2.	end up in the application's release configuration.
 
-In Objective-C, developers can use pre-processor macro's to filter out debug code:
+In Objective-C, developers can use preprocessor macros to filter out debug code:
 
 ```objc
 #ifdef DEBUG
@@ -108,7 +120,7 @@ In Objective-C, developers can use pre-processor macro's to filter out debug cod
 #endif
 ```
 
-In Swift 2, using xCode 7, one has to set custom compiler flags for every target, where the compiler flag has to start with -D. So, when the debug flag -DMSTG-DEBUG is set, you can use the following annotations:
+In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D." So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
 ```swift
 #if MSTG-DEBUG
@@ -116,7 +128,7 @@ In Swift 2, using xCode 7, one has to set custom compiler flags for every target
 #endif
 ```
 
-In swift 3, using xCode 8, you can set Active Compilation Conditions in Build settings / Swift compiler - Custom flags. Swift3 does not use a pre-processor, but instead makes use of [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the conditions defined:
+In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the defined conditions:
 
 ```swift
 #if DEBUG_LOGGING
@@ -128,18 +140,19 @@ In swift 3, using xCode 8, you can set Active Compilation Conditions in Build se
 
 #### Overview
 
-Exceptions can often occur when an application gets into a non-normal or erroneous state.
-Testing exception handling is about reassuring that the application will handle the exception and get to a safe state without exposing any sensitive information at both the UI and the logging mechanisms used by the application.
+Exceptions often occur after an application enters an abnormal or erroneous state.
+Testing exception handling is about making sure that the application will handle the exception and get into a safe state without exposing any sensitive information via its logging mechanisms or the UI.
 
-However, bear in mind that exception handling in objective-C is quite different than in Swift. Bridging the two concepts to one another in application that has both legacy objective-C code and Swift-code can be problematic.
+Bear in mind that exception handling in Objective-C is quite different from exception handling in Swift. Bridging the two approaches in an application that is written in both legacy Objective-C code and Swift code can be problematic.
 
 ##### Exception handling in Objective-C
 
-Objective-C has two types of errors :
+Objective-C has two types of errors:
 
 **NSException**
-`NSException` is used for handling programming or low-level errors (e.g. divided by 0, out-of-bounds array access).
-An `NSException` can either be raised by `raise()` or thrown with `@throw`, unless caught, will invoke the unhandled exception handler where you can log the statement and then the program will be halted, `@catch` allows you to recover from it if you are using a `@try`-`@catch`-block:
+`NSException` is used to handle programming and low-level errors (e.g., division by 0 and out-of-bounds array access).
+An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless caught, this exception will invoke the unhandled exception handler, with which you can log the statement (logging will halt the program). `@catch` allows you to recover from the exception if you're using a `@try`-`@catch`-block:
+
 ```obj-c
  @try {
  	//do work here
@@ -153,24 +166,24 @@ An `NSException` can either be raised by `raise()` or thrown with `@throw`, unle
  	//cleanup
 ```
 
-Bear in mind that using NSException comes with pitfalls regarding memory management: you need to [cleanup allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF "Raising exceptions")  from the try block in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html "Handling Exceptions"). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` at the `@catch` block.
+Bear in mind that using `NSException` comes with memory management pitfalls: you need to [clean up allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF "Raising exceptions") from the try block that are in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html "Handling Exceptions"). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` in the `@catch` block.
 
 **NSError**
-`NSError` is used for all other type of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some APIs of the Cocoa frameworks provide them as an object in their failure callback in case something went wrong, otherwise a pointer to an `NSError` object is passed by reference. It can be a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object and originally not having a return value a return type (to indicate a success or failure). If there is a return type, then make sure to return nil in case of an error. So in case of NO or nil, you can inspect the error/reason for failure.
+`NSError` is used for all other types of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some Cocoa framework APIs provide errors as objects in their failure callback in case something goes wrong; those that don't provide them pass a pointer to an `NSError` object by reference. It is a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object to indicate success or failure. If there's a return type, make sure to return "nil" for errors. If "NO" or "nil" is returned, it allows you to inspect the error/reason for failure.
 
-##### Exception handling in Swift
+##### Exception Handling in Swift
 
-Exception handing in Swift (2~4) is quite different. Even-though there is a try-catch block, it is not there to handle NSException. Instead, it is used to handle errors that conform to the `Error` (Swift3, `ErrorType` in Swift2) protocol. This can be challenging when combining Objective-C and Swift code in the same application. Therefore, using `NSError` is recommended above using `NSException` in programs with both the languages involved. Furthermore, in Objective-C error-handling is opt-in, but in Swift you have to explicitly handle the `throws`. For conversion on the error throwing, have a look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
-Methods that can throw an error use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
+Exception handing in Swift (2 - 4) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
+Methods that can throw errors use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
 
-- You can propagate the error from a function to the code that calls that function: in this case there is no do-catch, there is only a `throw` throwing the actual error or there is a `try` to execute the method that throws. The method containing the `try` will need the `throws` keyword as well:
+- Propagate the error from a function to the code that calls that function. In this situation, there's no `do-catch`; there's only a `throw` throwing the actual error or a `try` to execute the method that throws. The method containing the `try` also requires the `throws` keyword:
 
 ```swift
 func dosomething(argumentx:TypeX) throws {
 	try functionThatThrows(argumentx: argumentx)
 }
 ```
-- Handle the error using a do-catch statement: here you can use the following pattern:
+- Handle the error with a `do-catch` statement. You can use the following pattern:
 
 ```swift
 do {
@@ -192,103 +205,103 @@ do {
 	let x = try? functionThatThrows()
 	//In this case the value of x is nil in case of an error.
 ```  
-- Assert that the error will not occur: by using the `try!` expression.
+- Use the `try!` expression to assert that the error won't occur.
 
 #### Static Analysis
 
-Review the source code to understand/identify how the application handles various types of errors (IPC communications, remote services invocation, etc). Here are some examples of the checks to be performed at this stage per language.
+Review the source code to understand how the application handles various types of errors (IPC communications, remote services invocation, etc.). The following sections list examples of what you should check for each language at this stage.
 
 ##### Static Analysis in Objective-C
 
-Here you can verify that:
+Make sure that
 
-- The application uses a well-designed and unified scheme to handle exceptions and errors.
-- The exceptions from the Cocoa frameworks are handled correctly.
-- The allocated memory in the `@try` blocks are released in the `@finally` blocks.
-- For every `@throw` the calling method has a proper `@catch` on either the calling method level or at the level of the `NSApplication` / `UIApplication` objects in order to clean up any sensitive information and possibly try to recover from the issue.
-- That the application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
-- That any confidential information, such as keying material and/or authentication information is always wiped at the `@finally` blocks in case of a high risk application.
-- That `raise()` is only used in rare occasions when termination of the program without any further warning is required.
-- That `NSError` objects do not contain information that might leak any sensitive information.
+- the application uses a well-designed and unified scheme to handle exceptions and errors,
+- the Cocoa framework exceptions are handled correctly,
+- the allocated memory in the `@try` blocks is released in the `@finally` blocks,
+- for every `@throw`, the calling method has a proper `@catch` at the level of either the calling method or the `NSApplication`/`UIApplication` objects to clean up sensitive information and possibly recover,
+- the application doesn't expose sensitive information while handling errors in its UI or in its log statements, and the statements are verbose enough to explain the issue to the user,
+- high-risk applications' confidential information, such as keying material and authentication information, is always wiped during the execution of `@finally` blocks,
+- `raise` is rarely used (it's used when the program must be terminated without further warning),
+- `NSError` objects don't contain data that might leak sensitive information.
 
 ##### Static Analysis in Swift
 
-Here you can verify that:
+Make sure that
 
-- The application uses a well-designed and unified scheme to handle errors.
-- The application doesn't expose sensitive information while handling errors in its UI or in its log-statements, but are still verbose enough to explain the issue to the user.
-- That any confidential information, such as keying material and/or authentication information is always wiped at the `defer` blocks in case of a high risk application.
-- That `try!` is only used with proper guarding up front, so it is programmatically verified that indeed no error can be thrown by the method that is called using `try!`.
+- the application uses a well-designed and unified scheme to handle errors,
+- the application doesn't expose sensitive information while handling errors in its UI or in its log statements, and the statements are verbose enough to explain the issue to the user,
+- high-risk applications' confidential information, such as keying material and authentication information, is always wiped during the execution of `defer` blocks,
+- `try!` is used only with proper guarding up front (to programmatically verify that the method that's called with `try!` can't throw an error).
 
 #### Dynamic Testing
 
-There are various methods for dynamic analysis:
+There are several dynamic analysis methods:
 
-- Provide unexpected values to UI fields in the iOS application.
-- Test the custom url-schemes, pasteboard and other inter-app communication controls by providing values that are unexpected or could raise an exception.
-- Tamper the network communication and/or the files stored by the application.
-- In case of Objective-C, you can use cycript to hook into methods and provide them with arguments that could possibly make the callee throw an exception.
+- Enter unexpected values in the iOS application's UI fields.
+- Test the custom URL schemes, pasteboard, and other inter-app communication controls by providing unexpected or exception-raising values.
+- Tamper with the network communication and/or the files stored by the application.
+- For Objective-C, you can use Cycript to hook into methods and provide them arguments that may cause the callee to throw an exception.
 
-In most cases, the application should not crash, but instead, it should:
+In most cases, the application should not crash. Instead, it should
 
-- Recover from the error or get into a state in which it can inform the user that it is not able to continue.
-- If necessary, inform the user in an informative message to make him/her take appropriate action. The message itself should not leak sensitive information.
-- Not provide any information in logging mechanisms used by the application.
+- recover from the error or enter a state from which it can inform the user that it can't continue,
+- provide a message (which shouldn't leak sensitive information) to get the user to take appropriate action,
+- withhold information from the application's logging mechanisms.
 
 #### Remediation
 
-There are a few things a developer can do:
+Developers can implement proper error handling in several ways:
 
-- Ensure that the application use a well-designed and unified scheme to handle errors.
-- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
-- For Objective-C, in case of a high-risk application: create your own exception handler which cleans out any secret that should not be easily retrieved. The handler that can be set through `NSSetUncaughtExceptionHandler`.
-- When using Swift, make sure that you do not use `try!` unless you have made sure that there really cannot be any error in the method the throwing method that is being called.
-- When using Swift, make sure that the error does not propagate too far off through intermediate methods.
+- Make sure that the application uses a well-designed and unified scheme to handle errors.
+- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging."
+- For a high-risk application written in Objective-C: create an exception handler that  removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
+- Refrain from using `try!` in Swift unless you're certain that there's no error in the throwing method that's being called.
+- Make sure that the Swift error doesn't propagate into too many intermediate methods.
 
 
-### Verify That Free Security Features Are Activated
+### Make Sure That Free Security Features Are Activated
 
 #### Overview
 
-Although XCode set all binary security features by default, it still might be relevant to some old application or to check compilation options misconfiguration. The following features are applicable:
+Although Xcode enables all binary security features by default, it may be relevant to verify this for an old application or to check for the misconfiguration of compilation options. The following features are applicable:
 
 -	**ARC** - Automatic Reference Counting - memory management feature
 	-	adds retain and release messages when required
--	**Stack Canary** - helps preventing buffer overflow attacks
+-	**Stack Canary** - helps prevent buffer overflow attacks
 -	**PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis
 
-##### XCode Project Settings
+##### Xcode Project Settings
 
--	Stack smashing protection
+- Stack-smashing protection
 
-Steps for enabling Stack smashing protection within an iOS application:
+Steps for enabling Stack-smashing protection in an iOS application:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "–fstack-protector-all" option is selected under "Other C Flags" section.
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2.	Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
 
-3.	PIE support
+3.	Make sure that Position Independent Executables (PIE) support is enabled.
 
 Steps for building an iOS application as PIE:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	For iOS apps, set iOS Deployment Target to iOS 4.3 or later.
-3.	Verify that "Generate Position-Dependent Code" is set at its default value of NO.
-4.	Verify that Don't "Create Position Independent Executables" is set at its default value of NO.
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2.	Set the iOS Deployment Target to iOS 4.3 or later.
+3.	Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
+4.	Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
 
-5.	ARC protection
+- ARC protection
 
-Steps for enabling ACR protection within an iOS application:
+Steps for enabling ACR protection for an iOS application:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view its settings.
-2.	Verify that "Objective-C Automatic Reference Counting" is set at its default value of YES.
+1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2.	Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
 
-See also the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
+See the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
 ##### With otool
 
-Below are examples on how to check for these features. Please note that all of them are enabled in these examples:
+Below are procedures for checking the binary security features described above. All the features are enabled in these examples.
 
 -   PIE:
 
@@ -308,7 +321,7 @@ MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
 WEAK_DEFINES BINDS_TO_WEAK PIE
 ```
 
--   Stack Canary:
+-   stack canary:
 
 ```shell
 $ otool -Iv DamnVulnerableIOSApp | grep stack
@@ -339,7 +352,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 
 ##### With idb
 
-IDB automates the process of checking for both stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
+IDB automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
@@ -351,7 +364,7 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 #### OWASP MASVS
 
-- V7.1: "The app is signed and provisioned with valid certificate."
+- V7.1: "The app is signed and provisioned with a valid certificate."
 - V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.6: "The app catches and handles possible exceptions."
 - V7.7: "Error handling logic in security controls denies access by default."
@@ -361,8 +374,3 @@ IDB automates the process of checking for both stack canary and PIE support. Sel
 
 - idb - https://github.com/dmayer/idb
 - Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
-
-
-
-
-
