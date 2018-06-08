@@ -292,8 +292,6 @@ The second part of the token is the *payload*, which contains so-called claims. 
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
 
-Signature
-
 The signature is created by applying the algorithm specified in the JWT header to the encoded header, encoded payload, and a secret value. For example, when using the HMAC SHA256 algorithm the signature is created in the following way:
 
 ```
@@ -304,7 +302,7 @@ Note that the secret is shared between the authentication server and the back en
 
 #### Static Analysis
 
-Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities .
+Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities.
 
 Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
 
