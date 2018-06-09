@@ -66,6 +66,7 @@ The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If yo
 
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
 
+- [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
 - [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
 - [Redmond Pie](http://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
@@ -78,7 +79,8 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 #### Jailbroken Device Setup
 
-<img src="Images/Chapters/0x06b/cydia.png" width="500px"/>
+![Cydia Store](Images/Chapters/0x06b/cydia.png)
+
 - *Cydia Store*
 
 Once you've jailbroken your iOS device and Cydia has been installed (as shown in the screenshot above), proceed as follows:
@@ -420,186 +422,10 @@ PID  Name
 (...)
 ```
 
-We'll demonstrate a few more uses for Frida below, but let's first look at what you should do if you're forced to work on a non-jailbroken device.
-
-### Dynamic Analysis on Non-Jailbroken Devices
-
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the app store).
-
-Thanks to Apple's confusing provisioning and code signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Suffice it to say, getting the OS to run a binary that hasn't been built the default way (via Xcode) can be a daunting process.
-
-We will use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
-
-To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument it with Frida.
-
-> Please note that the following steps are applicable to macOS only, as Xcode is only available for macOS.
-
-#### Getting a Developer Provisioning Profile and Certificate
-
-The *provisioning profile* is a plist file signed by Apple. It whitelists your code signing certificate on one or more devices. In other words, this represents Apple's explicitly allowing your app to run for certain reasons, such as debugging on selected devices (in a development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
-
-Depending on whether you're registered as an iOS developer, you can obtain a certificate and provisioning profile in one of the following ways:
-
-**With an iOS developer account:**
-
-If you've developed and deployed iOS apps with Xcode before, you already have your own code signing certificate installed. Use the *security* tool to list your signing identities:
-
-```shell
-$ security find-identity -p codesigning -v
-  1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Vantage Point Security Pte. Ltd."
-  2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
-```
-
-Log into the Apple Developer portal to issue a new App ID, then issue and download the profile. An App ID is a two-part string consisting of a Team ID supplied by Apple and a Bundle ID search string that you can set to an arbitrary value, such as `com.example.myapp`. Note that you can use a single App ID to re-sign multiple apps. Make sure you create a *development* profile and not a *distribution* profile so that you can debug the app.
-
-In the examples below, we use our own signing identity, which is associated with our company's development team. I created the app-id "sg.vp.repackaged" and the provisioning profile "AwesomeRepackaging" for these examples. I ended up with the file `AwesomeRepackaging.mobileprovision`-replace this with your own file name in the shell commands below.
-
-**With a Regular iTunes Account:**
-
-Apple will issue you a free development provisioning profile even if you're not a paying developer. You can obtain the profile with Xcode and your regular Apple account: Simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
-
-Once you've obtained the provisioning profile, you can check its contents with the `security` command. Besides the allowed certificates and devices, you'll find the entitlements granted to the app in the profile. You'll need those for code signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
-
-```shell
-$ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
-$ /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' profile.plist > entitlements.plist
-$ cat entitlements.plist
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>application-identifier</key>
-	<string>LRUD9L355Y.sg.vantagepoint.repackage</string>
-	<key>com.apple.developer.team-identifier</key>
-	<string>LRUD9L355Y</string>
-	<key>get-task-allow</key>
-	<true/>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>LRUD9L355Y.*</string>
-	</array>
-</dict>
-</plist>
-```
-
-Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is valid only for the app that has this app id. The "get-task-allow" key is also important-when set to "true," other processes (such as the debugging server) are allowed to attach to the app (consequently, this key would be set to "false" in a distribution profile).
-
-#### Other Preparations
-
-To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can automate this process:
-
-```shell
-$ git clone https://github.com/alexzielenski/optool.git
-$ cd optool/
-$ git submodule update --init --recursive
-$ xcodebuild
-$ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
-```
-
-We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows you to debug and deploy iOS apps without Xcode:
-
-```shell
-$ git clone https://github.com/phonegap/ios-deploy.git
-$ cd ios-deploy/
-$ xcodebuild
-$ cd build/Release
-$ ./ios-deploy
-$ ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-deploy
-```
-
-The last lines in the optool and ios-deploy examples create a symbolic link and make the executable available system-wide.
-
-Reload your shell to make the new commands available:
-
-```shell
-zsh: # . ~/.zshrc
-bash: # . ~/.bashrc
-```
-
-To follow the examples below, you also need `FridaGadget.dylib`:
-
-```shell
-$ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
-```
-
-Besides the tools listed above, we'll be using standard tools that come with macOS and Xcode. Make sure you have the [Xcode command line developer tools](http://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
-
-#### Patching, Repackaging, and Re-Signing
-
-Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any zip tool to unpack the archive. Copy `FridaGadget.dylib` into the app directory and use optool to add a load command to the `UnCrackable Level 1` binary.
-
-```shell
-$ unzip UnCrackable_Level1.ipa
-$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
-$ optool install -c load -p "@executable_path/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
-Found FAT Header
-Found thin header...
-Found thin header...
-Inserting a LC_LOAD_DYLIB command for architecture: arm
-Successfully inserted a LC_LOAD_DYLIB command for arm
-Inserting a LC_LOAD_DYLIB command for architecture: arm64
-Successfully inserted a LC_LOAD_DYLIB command for arm64
-Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
-```
-
-Of course such blatant tampering invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and `FridaGadget.dylib` with the certificate listed in the profile.
-
-First, let's add our own provisioning profile to the package:
-
-```shell
-$ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
-```
-
-Next, we need to make sure that the Bundle ID in `Info.plist` matches the one specified in the profile because the `codesign` tool will read the Bundle ID from `Info.plist` during signing; the wrong value will lead to an invalid signature.
-
-```shell
-$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
-```
-
-Finally, we use `codesign` to re-sign both binaries. Instead of "8004380F331DCA22CC1B47FB1A805890AE41C938," you need to use your signing identity, which you can output by executing the command `security find-identity -p codesigning -v`.
-
-```shell
-$ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
-Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
-```
-
-`entitlements.plist` is the file you created earlier, for your empty iOS project.
-
-```shell
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
-Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
-```
-
-#### Installing and Running an App
-
-Now you should be ready to run the modified app. Deploy and run the app on the device as follows:
-
-```shell
-$ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
-```
-
-If everything went well, the app should launch in debugging mode with lldb attached. Frida should now be able to attach to the app as well. You can verify this with the `frida-ps` command:
-
-```shell
-$ frida-ps -U
-PID  Name
----  ------
-499  Gadget
-```
-
-![Frida on non-JB device](Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device")
-
-#### Troubleshooting
-
-When something goes wrong (and it usually does), mismatches between the provisioning profile and code signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") will help you understand the code signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting ") is also a useful resource.
-
-#### Automated Repackaging with Objection
-
-[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on [Frida](http://www.frida.re). One of the best things about Objection is that it works even with non-jailbroken devices. It does this by automating the process of app repackaging with `FridaGadget.dylib`.
-We won't cover Objection in detail in this guide, but you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") and [how to repackage an IPA](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Apps").
+We`ll demonstrate a few more uses for Frida below.
 
 ### Method Tracing with Frida
+
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
 
 In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app.
@@ -670,8 +496,6 @@ frida_code = """
         pool.release();
       }
     });
-
-
 """
 
 process = frida.get_usb_device().attach("Safari")
@@ -684,7 +508,7 @@ sys.stdin.read()
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
 
-<img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
+![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
@@ -701,8 +525,7 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 
 To save the console output to a text file, go to the bottom right and click the circular downward-pointing-arrow icon.
 
-<img src="Images/Chapters/0x06b/device_console.jpg" width="500px"/>
-- *Monitoring console logs through Xcode*
+![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
 ### Setting up a Web Proxy with Burp Suite
 

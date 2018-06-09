@@ -553,8 +553,6 @@ When dealing with obfuscated apps, you'll often find that developers purposely "
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a *native* method.
 
-<!-- TODO [Example for Bypassing Debugger Detection] -->
-
 ```java
 package sg.vantagepoint.uncrackable2;
 
@@ -575,6 +573,8 @@ public class CodeCheck {
         System.loadLibrary("foo");
     }
 ```
+
+Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in Github. 
 
 #### Effectiveness Assessment
 

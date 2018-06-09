@@ -2,7 +2,7 @@
 
 By now, you should have a basic understanding of the way Android apps are structured and deployed. In this chapter, we'll talk about setting up a security testing environment and describe basic testing processes you'll be using. This chapter is the foundation for the more detailed testing methods discussed in later chapters.
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS. 
+You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS.
 
 #### Software Needed on the Host PC or Mac
 
@@ -17,7 +17,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 - API 25: Android 7.1
 - API 26: Android 8.0
 
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>
+![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
 
 Installed SDKs are on the following paths:
 
@@ -333,7 +333,7 @@ $ drozer console connect
     `dz> run app.broadcast.info -a (package name)`
 
 * To send a message to a Broadcast receiver, execute the following command:
-    
+
 	`dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
 **Using Modules:**
@@ -441,8 +441,7 @@ $ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="350px"/>
-
+![Wireshark](Images/Chapters/0x05b/Android_Wireshark.png)
 
 #### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -519,7 +518,7 @@ If the app implements certificate pinning, C.509 certificates provided by an int
 There are several ways to bypass certificate pinning for a black box test, for example, [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") and [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller"). Certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a framework or library that those tools don't yet implement, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
 
 There are two ways to manually deactivate SSL Pinning:
-- Dynamic Patching with [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI") while running the app 
+- Dynamic Patching with [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi "ADBI") while running the app
 - [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
 
 Deactivating SSL Pinning satisfies the prerequisites for dynamic analysis, after which the app's communication can be investigated.
@@ -528,7 +527,6 @@ See the test case "Testing Custom Certificate Stores and Certificate Pinning" fo
 
 ##### Root Detection
 
-Root detection can be implemented with custom checks or pre-made libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer"). An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
+An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
-

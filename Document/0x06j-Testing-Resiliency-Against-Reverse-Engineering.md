@@ -171,9 +171,7 @@ Please note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which corre
 
 Frida is a very powerful and versatile tool. Refer to the [documentation](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
 
--- TODO [a generic Frida script that catches many JB detection methods] --
-
-Python script for hooking Objective-C methods and native functions:
+Please see below a Python script for hooking Objective-C methods and native functions:
 
 ```python
 import frida

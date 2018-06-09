@@ -6,7 +6,7 @@ Like the Apple desktop operating system macOS (formerly OS X), iOS is based on D
 
 However, iOS apps run in a more restricted environment than their desktop counterparts do. iOS apps are isolated from each other at the file system level and are significantly limited in terms of system API access.
 
-To protect users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. The Apple App store is the only official application distribution platform. There developers can offer their apps and consumers can buy, download, and install apps. This distribution style differs from Android, which supports several app stores and sideloading (installing an app on your iOS device without using the official App store). 
+To protect users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. The Apple App store is the only official application distribution platform. There developers can offer their apps and consumers can buy, download, and install apps. This distribution style differs from Android, which supports several app stores and sideloading (installing an app on your iOS device without using the official App store).
 
 In the past, sideloading was  possible only with a jailbreak or complicated workarounds. With iOS 9 or higher, it is possible to [sideload via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8").
 
@@ -28,8 +28,8 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" width="400px"/>
-- *iOS Security Architecture*
+![iOS Security Architecture](Images/Chapters/0x06a/iOS_Security_Architecture.png)
+
 
 #### Hardware Security
 
@@ -54,7 +54,7 @@ Developers need to register with Apple, join the [Apple Developer Program](https
 
 #### Encryption and Data Protection
 
-*FairPlay Code Encryption* is applied to apps downloaded from the App Store. FairPlay was developed as a DRM for multimedia content purchased through iTunes. Originally, Fairplay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account -- TODO [Be more specific] --. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").
+*FairPlay Code Encryption* is applied to apps downloaded from the App Store. FairPlay was developed as a DRM for multimedia content purchased through iTunes. Originally, Fairplay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").
 
 Apple has built encryption into the hardware and firmware of its iOS devices since the release of the iPhone 3GS. Every device has a dedicated hardware-based crypto engine that's based on the 256-bit AES, which works with a SHA-1 cryptographic hash function. In addition, there's a unique identifier (UID) built into each device's hardware with an AES 256-bit key fused into the application processor. This UID is unique and not recorded elsewhere. At the time of writing, neither software nor firmware can directly read the UID. Because the key is burned into the silicon chip, it can't be tampered with or bypassed. Only the crypto engine can access it.
 
@@ -79,13 +79,13 @@ iOS implements address space layout randomization (ASLR) and eXecute Never (XN) 
 
 ASLR randomizes the memory location of the program's executable file, data, heap, and stack every time the program is executed. Because the shared libraries must be static to be accessed by multiple processes, the addresses of shared libraries are randomized every time the OS boots instead of every time the program is invoked. This makes specific function and library memory addresses hard to predict, thereby preventing attacks such as the return-to-libc attack, which involves the memory addresses of basic libc functions.
 
-The XN mechanism allows iOS to mark selected memory segments of a process as non-executable. On iOS, the process stack and heap of user-mode processes is marked non-executable. Pages that are writable cannot me marked executable at the same time. This prevent attackers to execute machine code injected into the stack or heap. 
+The XN mechanism allows iOS to mark selected memory segments of a process as non-executable. On iOS, the process stack and heap of user-mode processes is marked non-executable. Pages that are writable cannot me marked executable at the same time. This prevent attackers to execute machine code injected into the stack or heap.
 
 ### Software Development on iOS
 
 Like other platforms, Apple provides a Software Development Kit (SDK) that helps developers to develop, install, run, and test native iOS Apps. Xcode is an Integrated Development Environment (IDE) for Apple development. iOS applications are developed in Objective-C or Swift.
 
-Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS to develop desktop applications and on iOS to develop mobile applications. Swift is the successor of Objective-C and allows interoperability with Objective-C. 
+Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to the C programming language. It is used on macOS to develop desktop applications and on iOS to develop mobile applications. Swift is the successor of Objective-C and allows interoperability with Objective-C.
 
 Swift was introduced with Xcode 6 in 2014.
 
@@ -96,7 +96,7 @@ On a non-jailbroken device, there are two ways to install an application without
 
 ### Apps on iOS
 
-iOS apps are distributed in IPA (iOS App Store Package) archives. The IPA file is a ZIP-compressed archive that contains all the code and resources required to execute the app. 
+iOS apps are distributed in IPA (iOS App Store Package) archives. The IPA file is a ZIP-compressed archive that contains all the code and resources required to execute the app.
 
 IPA files have a built-in directory structure. The example below shows this structure at a high level:
 
@@ -122,8 +122,7 @@ A language.lproj folder exists for each language that the application supports. 
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
-<img src="Images/Chapters/0x06a/iOS_project_folder.png" width="500px"/>
-- *iOS App Folder Structure*
+![iOS App Folder Structure](Images/Chapters/0x06a/iOS_project_folder.png)
 
 On a jailbroken device, you can recover the IPA for an installed iOS app with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
 
@@ -137,9 +136,7 @@ Starting with iOS 8, the way applications are stored on the device changed. Prev
 - `/var/mobile/Containers/Data/Application/[UUID]/tmp` contains temporary files which aren't needed between application launches.
 
 The following figure represents the application folder structure:
-
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" width="500px"/>
-- *iOS App Folder Structure*
+![iOS App Folder Structure](Images/Chapters/0x06a/iOS_Folder_Structure.png)
 
 #### The Installation Process
 

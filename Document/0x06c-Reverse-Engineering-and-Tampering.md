@@ -1,9 +1,5 @@
 ## Tampering and Reverse Engineering on iOS
 
-<!-- ### Environment and Toolset -->
-
-<!-- TODO [Environment Overview] -->
-
 ### Swift and Objective-C
 
 Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
@@ -600,7 +596,7 @@ sys.stdin.read()
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
 
-<img src="Images/Chapters/0x06b/frida-xcode-log.jpg" width="500px"/>
+![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples") of Frida usage on iOS.
 

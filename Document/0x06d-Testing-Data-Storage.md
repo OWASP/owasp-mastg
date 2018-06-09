@@ -14,7 +14,7 @@ The data protection architecture is based on a hierarchy of keys. The UID and th
 
 Every file stored on the iOS file system is encrypted with its own per-file key, which is contained in the file metadata. The metadata is encrypted with the file system key and wrapped with the class key corresponding to the protection class the app selected when creating the file.
 
-<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
+![Key Hierarchy iOS](Images/Chapters/0x06d/key_hierarchy_apple.jpg)
 
 *[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")
 

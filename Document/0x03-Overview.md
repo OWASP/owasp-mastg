@@ -42,7 +42,7 @@ There are three things you should never bring up in polite conversations: religi
 
 ## The OWASP Mobile AppSec Verification Standard
 
-This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. Both documents map to the same basic set of security requirements, and depending on the context they can be used individually or combined to achieve different objectives.
+This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. Both documents map to the same basic set of security requirements and depending on the context they can be used individually or combined to achieve different objectives.
 
 ![Document Overview](Images/Chapters/0x03/owasp-mobile-overview.jpg)
 

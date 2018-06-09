@@ -368,7 +368,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Token Storage on the client:
   * The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication"). See the tools section for details.
+  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
@@ -431,7 +431,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
+![Abstract Protocol Flow](Images/Chapters/0x04e/abstract_oath2_flow.png)
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -525,7 +525,7 @@ For additional best practices and detailed information please refer to the follo
 
 - Free and Professional Burp Suite editions - https://portswigger.net/burp/
 Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 - [jwtbrute](https://github.com/jmaxxz/jwtbrute)
 - [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
 - [John the ripper](https://github.com/magnumripper/JohnTheRipper)

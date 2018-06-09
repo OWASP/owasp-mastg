@@ -26,14 +26,12 @@ Other tools are really a matter of preference and budget. A ton of free and comm
 
 Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
 
-- API 21: Android 5.0
-- API 22: Android 5.1
 - API 23: Android 6.0
 - API 24: Android 7.0
 - API 25: Android 7.1
-- API 26: Android O Developer Preview
+- API 26: Android 8.0
 
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" width="500px"/>
+![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
 
 Installed SDKs are found at the following locations:
 
@@ -128,9 +126,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/
 $ adb install UnCrackable-Level1.apk
 ```
 
-<!-- <img src="Images/Chapters/0x05c/crackme-1.jpg" align="left" width="45%"/> -->
-<img src="Images/Chapters/0x05c/crackme-2.jpg" width="350px"/>
-
+![Crackme](Images/Chapters/0x05c/crackme-1.jpg)
 
 Seems like we're expected to find some kind of secret code!
 
@@ -181,21 +177,21 @@ You should now find the decompiled sources in the directory `Uncrackable-Level1/
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1," which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="650px" />
+![IntelliJ](Images/Chapters/0x05c/intellij_new_project.jpg)
 
 In the next dialog, pick any API number; you don't actually want to compile the project, so the number doesn't matter. Click "next" and choose "Add no Activity," then click "finish."
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-<img src="Images/Chapters/0x05c/delete_package.jpg" width="400px"/>
+![Delete default package](Images/Chapters/0x05c/delete_package.jpg)
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-<img src="Images/Chapters/0x05c/drag_code.jpg" width="700px" />
+![Drag source code](Images/Chapters/0x05c/drag_code.jpg)
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-<img src="Images/Chapters/0x05c/final_structure.jpg" width="400px"/>
+![Final Structure](Images/Chapters/0x05c/final_structure.jpg)
 
 As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of obfuscation that makes the bytecode a little more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
@@ -261,7 +257,7 @@ $ adb install HelloWord-JNI.apk
 
 This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
 
-<img src="Images/Chapters/0x05c/helloworld.jpg" width="300px" />
+![Hello World](Images/Chapters/0x05c/helloworld.jpg)
 
 Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
 
@@ -303,7 +299,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on.
 
-<img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
+![Architectures](Images/Chapters/0x05c/archs.jpg)
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -326,15 +322,15 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
-<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="700px" />
+![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
 
 Once the file is open, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="700px" />
+![Hello World Disassembly](Images/Chapters/0x05c/helloworld_stringfromjni.jpg)
 
 Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table—an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
-<img src="Images/Chapters/0x05c/JNI_interface.png" width="700px" />
+![JNI Interface](Images/Chapters/0x05c/JNI_interface.png)
 
 With that in mind, let's have a look at each line of assembly code.
 
@@ -448,11 +444,11 @@ The UnCrackable App is not stupid: it notices that it has been run in debuggable
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
-<img src="Images/Chapters/0x05c/debugger_detection.jpg" width="350px" />
+![Debugger Detection](Images/Chapters/0x05c/debugger_detection.jpg)
 
 In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
 
-<img src="Images/Chapters/0x05c/developer-options.jpg" width="350px" />
+![Developer Options](Images/Chapters/0x05c/developer-options.jpg)
 
 Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
 
@@ -581,33 +577,33 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "wait for a debugger" mode.
 
-<img src="Images/Chapters/0x05c/waitfordebugger.png" width="350px" />
+![Waiting for Debugger](Images/Chapters/0x05c/waitfordebugger.png)
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
-<img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="700px" />
+![Set breakpoint and attach debugger](Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png)
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-<img src="Images/Chapters/0x05c/Choose_Process.png" width="300px" />
+![Choose Process](Images/Chapters/0x05c/Choose_Process.png)
 
 After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate()` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate()` method. That's why setting a breakpoint on the `onCreate()` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
 Next, single-step through the `onCreate()` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
-<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="700px" />
+![Force Step Into](Images/Chapters/0x05c/Force_Step_Into.png)
 
 Once you "Force Step Into," the debugger will stop at the beginning of the next method, which is the `a()` method of the class `sg.vantagepoint.a.c`.
 
-<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="700px" />
+![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
-<img src="Images/Chapters/0x05c/variables.png" width="700px" />
+![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a()` method .
 
-<img src="Images/Chapters/0x05c/step_over.png" width="700px" />
+![Step Over](Images/Chapters/0x05c/step_over.png)
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
@@ -615,33 +611,33 @@ After you get the colon-separated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea  once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
-<img src="Images/Chapters/0x05c/step_out.png" width="700px" />
+![Step Out](Images/Chapters/0x05c/step_out.png)
 
 After the `a()` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the varibales holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
-<img src="Images/Chapters/0x05c/set_value.png" width="700px" />
+![Set Value](Images/Chapters/0x05c/set_value.png)
 
-<img src="Images/Chapters/0x05c/modified_binary_name.png" width="700px" />
+![Modified Binary Name](Images/Chapters/0x05c/modified_binary_name.png)
 
 Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
-<img src="Images/Chapters/0x05c/file_exists_false.png" width="700px" />
+![File Exists False](Images/Chapters/0x05c/file_exists_false.png)
 
 This defeats the first root detection control of Uncrackable App Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="350px" />
+![Anti Debugging and Tampering Defeated](Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png)
 
-<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="700px" />
+![MainActivity Verify](Images/Chapters/0x05c/MainActivity_verify.png)
 
 The secret code is verified by the method `a()` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a()` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
-<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="700px" />
+![Set Breakpoint](Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png)
 
 You can see the secret string in the "Variables" view when you reach the `String.equals` method call.
 
-<img src="Images/Chapters/0x05c/secret_code.png" width="700px" />
+![Secret String](Images/Chapters/0x05c/secret_code.png)
 
-<img src="Images/Chapters/0x05c/success.png" width="350px" />
+![Success](Images/Chapters/0x05c/success.png)
 
 ##### Debugging Native Code
 
@@ -1381,10 +1377,7 @@ Creating a dedicated virtual environment with Virtualenv is recommended because 
 
 Comprehensive Angr documentation, including an installation guide, tutorials, and usage examples [5], is available on Gitbooks. A complete API reference is also available [6].
 
-#### Using the Disassembler Backends
-
-<a name="symbolicexec"></a>
-#### Symbolic Execution
+#### Using the Disassembler Backends - Symbolic Execution
 
 Symbolic execution allows you to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
 
@@ -1754,13 +1747,13 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the "kernel version" field.
 
-<img src="Images/Chapters/0x05c/custom_kernel.jpg" width="350px" />
+![Custom Kernel](Images/Chapters/0x05c/custom_kernel.jpg)
 
 #### System Call Hooking with Kernel Modules
 
 System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality . With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You [1].
 
-<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="700px"/>
+![Syscall Hooking](Images/Chapters/0x05c/syscall_hooking.jpg)
 
 You first need the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers aren't so lucky). You can look up the address in the /proc/kallsyms file:
 
