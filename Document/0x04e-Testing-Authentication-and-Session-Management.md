@@ -3,11 +3,11 @@
 
 The following chapter outlines authentication and session management requirements of the MASVS into technical test cases. Test cases listed in this chapter are focused on server side and therefore are not relying on a specific implementation on iOS or Android.  
 
-For all of the test cases below, it need to be investigated first what kind of authentication mechanism is used. There are different mechanisms available, to implement server side authentication, either:
+For all of the test cases below, it needs to be investigated first what kind of authentication mechanism is used. There are different mechanisms available, to implement server side authentication, either:
 - Cookie-Based Authentication using a session ID or
 - Token-Based Authentication.
 
-Cookie-Based Authentication is the traditional authentication mechanism used in web applications, which is stateful. In order to adopt to the different requirements of mobile apps, a shift to stateless authentication or Token-Based Authentication can be seen. A prominent example for this is JSON Web Token or [JWT](https://tools.ietf.org/html/rfc7519 "RFC 7519 JSON Web Token (JWT)") which can be part of an OAuth2 authentication and authorization framework.
+Cookie-Based Authentication is the traditional authentication mechanism used in web applications, which is stateful. In order to adopt the different requirements of mobile apps, a shift to stateless authentication or Token-Based Authentication can be seen. A prominent example for this is JSON Web Token or [JWT](https://tools.ietf.org/html/rfc7519 "RFC 7519 JSON Web Token (JWT)") which can be part of an OAuth2 authentication and authorization framework.
 
 #### OAuth2
 
@@ -30,7 +30,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 2. If the user authorized the request, the application receives an authorization grant. The authorization grant might have different forms (explicit, implicit, etc).
 3. The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant.
 4. If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. The access token might have a companion refresh token. Authorization is complete.
-5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used on different ways (e.g., as a bearer token).
+5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token might be used in different ways (e.g., as a bearer token).
 6. If the access token is valid, the resource server (API) serves the resource to the application.
 
 These are some of the common best practices for OAuth2 on native apps:
@@ -49,7 +49,7 @@ Type of grant:
 
 Client secrets:
 
-- No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in secure local storage.
+- No shared secret should be used as proof of the client's identity as this could lead to client impersonation ("client_id" already serves this purpose). If for some reason they do use client secrets, be sure that they are stored in a secure local storage.
 
 End-User credentials:
 
@@ -335,7 +335,7 @@ The following best practices should be considered, when implementing JWT:
 
 Reducing the lifetime of session identifiers and tokens to a minimum decreases the likelihood of a successful account hijacking attack. The scope for this test case is to validate that the application has a logout functionality and it effectively terminates the session on client and server side or invalidates a stateless token.
 
-One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker get’s in possession of valid authentication information he can continue using it and hijack a user account.
+One of the most common errors done when implementing a logout functionality is simply not destroying the session object or invalidating the token on server side. This leads to a state where the session or token is still alive even though the user logs out of the application. If an attacker gets in possession of valid authentication information he can continue using it and hijack a user account.
 
 ##### Static Analysis 
 
@@ -597,7 +597,7 @@ First, all privileged endpoints a user can only access with step-up authenticati
 
 The recorded requests should also be replayed without providing any authentication information, in order to check for a complete bypass of authentication mechanisms.
 
-Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply bruterorcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
+Another attack is related to the case "Testing Excessive Login Attempts" - given that many OTPs are just numeric values, if the accounts are not locked after N unsuccessful attempts on this stage, an attacker can bypass second factor by simply brute forcing the values within the range at the lifespan of the OTP. For 6-digit values and 30-second time step there's more than 90% probability to find a match within 72 hours.
 
 #### Remediation
 
@@ -613,7 +613,7 @@ Regardless of 2FA or step-up authentication, additionally it should be supplemen
 - IP address
 - Time of day
 
-Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparent for the user, but can become a powerful control in order to stop attackers.
+Ideally the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This is all happening transparently for the user, but can become a powerful control in order to stop attackers.
 
 An additional control to ensure that an authorized user is using the app on an authorized device is to verify if device binding controls are in place. Please check also "Testing Device Binding" for iOS and Android.
 
@@ -665,7 +665,7 @@ An additional control to ensure that an authorized user is using the app on an a
 
 ##### OWASP MASVS
 
-- 4.11: "The app informs the user of all login activities with his or her account. Users are able view a list of devices used to access the account, and to block specific devices."
+- 4.11: "The app informs the user of all login activities with his or her account. Users are able to view a list of devices used to access the account, and to block specific devices."
 
 ##### CWE
 
