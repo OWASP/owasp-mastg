@@ -29,7 +29,7 @@ To perform security testing different tools are available in order to be able to
 #### Reverse Engineering and Static Analysis
 
 - [Androguard](https://github.com/androguard/androguard) - Androguard is a python based tool, which can use to disassemble and  decompile android apps.
-- [Android Debug Bridge - adb](https://developer.android.com/studio/command-line/adb.html) - Android Debug Bridge (adbis a versatile command line tool that lets you communicate with an emulator instance or connected Android device.
+- [Android Debug Bridge - adb](https://developer.android.com/studio/command-line/adb.html) - Android Debug Bridge (adb is a versatile command line tool that lets you communicate with an emulator instance or connected Android device.
 - [APKInspector](https://github.com/honeynet/apkinspector/) - APKinspector is a powerful GUI tool for analysts to analyze the Android applications.
 - [APKTool](http://ibotpeaches.github.io/Apktool/) - A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications.
 - [android-classyshark](https://github.com/google/android-classyshark) - ClassyShark is a standalone binary inspection tool for Android developers.
@@ -53,7 +53,7 @@ To perform security testing different tools are available in order to be able to
 - [logcat-color](https://github.com/marshall/logcat-color) - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
 - [Inspeckage](https://github.com/ac-pm/Inspeckage) - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 - [Frida](http://www.frida.re) - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
-- [Diff-GUI](https://github.com/antojoseph/diff-gui) - A Web framework to start instrumenting with the avaliable modules, hooking on native, inject JavaScript using Frida.
+- [Diff-GUI](https://github.com/antojoseph/diff-gui) - A Web framework to start instrumenting with the available modules, hooking on native, inject JavaScript using Frida.
 - [AndBug](https://github.com/swdunlop/AndBug) - AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers.
 - [Cydia Substrate: Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
 - [Drozer](https://www.mwrinfosecurity.com/products/drozer/) - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
@@ -90,6 +90,7 @@ To perform security testing different tools are available in order to be able to
 - [Radare2](http://www.radare.org/) - Radare2 is a unix-like reverse engineering framework and command line tools.
 - [iRET](https://www.veracode.com/iret-ios-reverse-engineering-toolkit) - The iOS Reverse Engineering Toolkit is a toolkit designed to automate many of the common tasks associated with iOS penetration testing.
 - [Plutil](https://www.theiphonewiki.com/wiki/Plutil) - plutil is a program that can convert .plist files between a binary version and an XML version.
+- [Passionfruit](https://github.com/chaitin/passionfruit) - iOS app blackbox assessment tool
 
 #### Dynamic and Runtime Analysis
 
@@ -116,13 +117,13 @@ To perform security testing different tools are available in order to be able to
 - [Tcpdump](http://www.androidtcpdump.com) - A command line packet capture utility.
 - [Wireshark](https://www.wireshark.org/download.html) - An open-source packet analyzer.
 - [Canape](http://www.contextis.com/services/research/canape/) - A network testing tool for arbitrary protocols.
-- [Mallory](https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTM\)) that is used to monitor and manipulate traffic on mobile devices and applications.
+- [Mallory](https://intrepidusgroup.com/insight/mallory/) - A Man in The Middle Tool (MiTM\)) that is used to monitor and manipulate traffic on mobile devices and applications.
 
 ### Interception Proxies
 
 - [Burp Suite](https://portswigger.net/burp/download.html) - Burp Suite is an integrated platform for performing security testing of applications.
 - [OWASP ZAP](https://github.com/zaproxy/zaproxy) - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
-- [Fiddler](http://www.telerik.com/fiddler) - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
+- [Fiddler](http://www.telerik.com/fiddler) - Fiddler is an HTTP debugging proxy server application which captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
 - [Charles Proxy](http://www.charlesproxy.com) - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
 
 ### IDEs
