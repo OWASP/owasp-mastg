@@ -277,11 +277,11 @@ $ adb install drozer.apk
 
 You should now have the Drozer console installed on your host machine, and the Agent running on your USB-connected device or emulator. Now, you need to connect the two and you’re ready to start exploring.
 
-Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start a Embedded Server.
+Open the drozer application in running emulator and click the OFF button in the bottom of the app which will start an Embedded Server.
 
 ![alt text](Images/Chapters/0x05b/server.png "Drozer")
 	   
-By default the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
+By default, the server listens on port 31415. Forward this port to the localhost interface using adb, then run drozer on the host to connect to the agent.
 
 ```bash
 $ adb forward tcp:31415 tcp:31415
@@ -308,7 +308,7 @@ To show the list of all Drozer modules that can be executed in the current sessi
  
   	`dz> run app.package.attacksurface (package name)`
 
-* To identify the the list of Activities exported in the target application,execute the following command:
+* To identify the list of Activities exported in the target application, execute the following command:
 
   	`run app.activity.info -a (package name)`
 
