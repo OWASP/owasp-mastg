@@ -48,11 +48,9 @@ We will work with the [OMTG app][OMTGApp]. For this to work we will use Android 
   ./frida-server-11.0.3-android-x86 &
   ```
 
->Note: if we run this version on Android 7 we will get this Exception:
->```
-  android.security.keystore.AndroidKeystoreRSAPrivateKey cannot be cast to java.security.interfaces.RSAPrivateKey
-  ```
->I was working with Sven to fix this and he updated the code so if you get the last version it will run on Android 7.
+Note: if we run this version on Android 7 we will get this Exception:
+`android.security.keystore.AndroidKeystoreRSAPrivateKey cannot be cast to java.security.interfaces.RSAPrivateKey`
+I was working with Sven to fix this and he updated the code so if you get the last version it will run on Android 7.
 
 You can get both APKs here, both for the emulator and for real devices:
 
@@ -401,6 +399,7 @@ if (opmode == 2){
   //console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
   console.log("[*] Private Key encoded: " + priv_key.getEncoded());
 ```
+
 > Note that we commented out the first call to getPrivateExponent because it is throwing the exception and this breaks the script. I made this for simplicity, normally you will handle the exceptions in your javascript scripts.
 
 Output:
@@ -534,10 +533,10 @@ We can also verify that both the public exponent as well as the modulus are the 
 [*] key modulus: 26495568082206244173649469706305918246838313385359331398724978945465506341665951290493778801259416540286329379556845776505481398074467617269794707688853240403204215416194308987107727462842744294614925414414905979124814093165582594632176536010453668292524078994531305019434023144116572380347938647301369880231616210005277263662446448301511635565803020915749213943100214444734872059913408725945258265989516104409186654011048149783773489719936532452426398183261176160254380855063689237225968819411931353577474454010045704279861068417686809912170611519699127687195529522437204573348421439338441847261241515264706107460201
 ```
 
-> A final note about the javascript exceptions. If you use try catch blocks you will get more valuable information:
->
-> Running this:
-> ```
+A final note about the javascript exceptions. If you use try catch blocks you will get more valuable information:
+
+Running this:
+```
  try {
   console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
 }
@@ -545,12 +544,12 @@ catch (err){
   console.log("[*] Exception in priv_key.getPrivateExponent(): " + err.message);
 }
 ```
->Gives:
->```
+Gives:
+```
 [*] Exception in priv_key.getPrivateExponent(): java.lang.NullPointerException: privateExponent == null
 ```
->
->If we don't do this we don't even get a log because the exception is thrown and breaks `console.log`.
+
+If we don't do this we don't even get a log because the exception is thrown and breaks `console.log`.
 
 ## Android 7
 The current code for this is in [OMTG_DATAST_001_KeyStore][] (commit 86840fd).
