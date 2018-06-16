@@ -354,15 +354,16 @@ Then configure ProGuard to strip its calls.
 
 ```
 afterEvaluate {
-    project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
+  project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
       task.dependsOn('removeLogs')
-}
+  }
 
   task removeLogs() {
     doLast {
       fileTree(dir: project.file('src')).each { File file ->
         def out = file.getText("UTF-8").replaceAll("((android\\.util\\.)*Log\\.([ewidv]|wtf)\\s*\\([\\S\\s]*?\\)\\s*;)", "/*\$1*/")
         file.write(out);
+      }
     }
   }
 }
