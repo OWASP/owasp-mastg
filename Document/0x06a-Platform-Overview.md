@@ -14,7 +14,7 @@ iOS apps are isolated from each other via the Apple sandbox (historically called
 
 Uniform hardware and tight hardware/software integration create another security advantage. Every iOS device offers security features, such as secure boot, hardware-backed keychain, and file system encryption. iOS updates are usually quickly rolled out to a large percentage of users, decreasing the need to support older, unprotected iOS versions.
 
-In spite of the numerous strengths of iOS, iOS app developers still need to worry about security. Data protection, Keychain, TouchID authentication, and network security still leave a large margin for errors. In the following chapters, we describe iOS security architecture, explain a basic security testing methodology, and provide reverse engineering how-tos.
+In spite of the numerous strengths of iOS, iOS app developers still need to worry about security. Data protection, Keychain, Touch ID authentication, and network security still leave a large margin for errors. In the following chapters, we describe iOS security architecture, explain a basic security testing methodology, and provide reverse engineering how-tos.
 
 
 ### iOS Security Architecture

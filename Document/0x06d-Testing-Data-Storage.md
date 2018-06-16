@@ -59,11 +59,11 @@ Data stored in the Keychain is protected via a class structure that is similar t
 
 `AccessControlFlags` define the mechanisms with which users can authenticate the key (`SecAccessControlCreateFlags`):
 - `kSecAccessControlDevicePasscode`: Access the item via a passcode.
-- `kSecAccessControlTouchIDAny`: Access the item via one of the fingerprints registered to TouchID. Adding or removing a fingerprint won't invalidate the item.
-- `kSecAccessControlTouchIDCurrentSet`: Access the item via one of the fingerprints registered to TouchID. Adding or removing a fingerprint _will_ invalidate the item.
-- `kSecAccessControlUserPresence`: Access the item via either one of the registered fingerprints (using TouchID) or fallback to the passcode.
+- `kSecAccessControlTouch IDAny`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint won't invalidate the item.
+- `kSecAccessControlTouch IDCurrentSet`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint _will_ invalidate the item.
+- `kSecAccessControlUserPresence`: Access the item via either one of the registered fingerprints (using Touch ID) or fallback to the passcode.
 
-Please note that keys secured by TouchID (via `kSecAccessControlTouchIDCurrentSet` or `kSecAccessControlTouchIDAny`) are protected by the Secure Enclave: The Keychain holds a token only, not the actual key. The key resides in the Secure Enclave.
+Please note that keys secured by Touch ID (via `kSecAccessControlTouch IDCurrentSet` or `kSecAccessControlTouch IDAny`) are protected by the Secure Enclave: The Keychain holds a token only, not the actual key. The key resides in the Secure Enclave.
 
 Starting with iOS 9, you can do ECC-based signing operations in the Secure Enclave. In that scenario, the private key and the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key in the Keychain because it can't be stored in the Secure Enclave. After the key is created, you can use the `kSecAttrKeyType` to indicate the type of algorithm you want to use the key with.
@@ -123,7 +123,7 @@ When you have access to the source code of an iOS app, try to spot sensitive dat
 
 The encryption must be implemented so that the secret key is stored in the Keychain with secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`. This ensures the usage of hardware-backed storage mechanisms. Make sure that the `AccessControlFlags` are set according to the security policy of the keys in the KeyChain.
 
-[Generic examples of using the KeyChain](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 "GenericKeyChain") to store, update, and delete data can be found in the official Apple documentation. The official Apple documentation also includes an example of using [TouchID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouchID/Listings/KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouchID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10 "KeychainTouchID").
+[Generic examples of using the KeyChain](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 "GenericKeyChain") to store, update, and delete data can be found in the official Apple documentation. The official Apple documentation also includes an example of using [Touch ID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouch ID/Listings/KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10 "KeychainTouch ID").
 
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
@@ -607,7 +607,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 #### Overview
 
-iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and TouchID settings.
+iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes"-but only if the app insecurely stores sensitive data in the first place.
 
