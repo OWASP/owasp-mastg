@@ -1,4 +1,4 @@
-<a href="https://leanpub.com/mobile-security-testing-guide-preview"><img width=180px align="right" style="float: right;" src="Document/Images/summit_preview.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg"></a>
 
 # OWASP Mobile Security Testing Guide
 
