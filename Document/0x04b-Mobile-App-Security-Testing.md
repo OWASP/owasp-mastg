@@ -303,7 +303,7 @@ The following sections provide more details about these three points.
 
 ###### Infrastructure as Code
 
-Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make is more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
+Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
 
 Infrastructure as Code practices facilitate collaboration between development and operations teams, with the following results:
 - Devs better understand infrastructure from a familiar point of view and can prepare resources that the running application will require.
