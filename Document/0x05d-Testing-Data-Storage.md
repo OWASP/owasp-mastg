@@ -27,7 +27,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 The following code snippets demonstrate bad practices that disclose sensitive information. They also illustrate Android storage mechanisms in detail. For more information, check out the [Security Tips for Storing Data](http://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
 
 ##### Shared Preferences
-The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declated world-readable (accessible to all apps) or private.
+The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
 ```java
