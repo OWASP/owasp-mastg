@@ -115,7 +115,7 @@ Let's take a closer look at the different files in the IPA container. Apple uses
 - **Info.plist**: Configuration information, such as bundle ID, version number, and application display name.
 - **Launch images**: Images showing the initial application interface in a specific orientation. The system uses one of the provided launch images as a temporary background until the application is fully loaded.
 - **MainWindow.nib**: Default interface objects that are loaded when the application is launched. Other interface objects are then either loaded from other nib files or created programmatically by the application.
-- **Settings.bundle**: Application-specific preferences to be displayd in the Settings app.
+- **Settings.bundle**: Application-specific preferences to be displayed in the Settings app.
 - **Custom resource files**: Non-localized resources are placed in the top-level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources include nib files, images, sound files, configuration files, strings files, and any other custom data files the application uses.
 
 A language.lproj folder exists for each language that the application supports. It contains a storyboard and strings file.
