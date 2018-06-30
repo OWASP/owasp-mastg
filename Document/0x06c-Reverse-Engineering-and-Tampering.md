@@ -561,29 +561,34 @@ import frida
 // JavaScript to be injected
 frida_code = """
 
-   // Obtain a reference to the initWithURL: method of the NSURLRequest class
-   var URL = ObjC.classes.NSURLRequest["- initWithURL:];
+    // Obtain a reference to the initWithURL: method of the NSURLRequest class
+    var URL = ObjC.classes.NSURLRequest["- initWithURL:"];
 
-   // Intercept the method
-   Interceptor.attach(URL.implementation, {
-     onEnter: function(args) {
+    // Intercept the method
+    Interceptor.attach(URL.implementation, {
+        onEnter: function(args) {
+            // Get a handle on NSString
+            var NSString = ObjC.classes.NSString;
 
-        // We should always initialize an autorelease pool before interacting with Objective-C APIs
+            // Obtain a reference to the NSLog function, and use it to print the URL value
+            // args[2] refers to the first method argument (NSURL *url)
+            var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
 
-       var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
+            // We should always initialize an autorelease pool before interacting with Objective-C APIs
+            var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
 
-       var NSString = ObjC.classes.NSString;
+            try {
+                // Creates a JS binding given a NativePointer.
+                var myNSURL = new ObjC.Object(args[2]);
 
-       // Obtain a reference to the NSLog function, and use it to print the URL value
-       // args[2] refers to the first method argument (NSURL *url)
-
-       var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
-
-       NSLog(args[2].absoluteString_());
-
-       pool.release();
-     }
-   });
+                // Create an immutable ObjC string object from a JS string object.
+                var str_url = NSString.stringWithString_(myNSURL.toString());
+                NSLog(str_url); 
+            } finally {
+                pool.release();
+            }
+        }
+    });
 """
 
 process = frida.get_usb_device().attach("Safari")
