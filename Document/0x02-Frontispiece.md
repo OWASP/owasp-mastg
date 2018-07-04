@@ -23,7 +23,7 @@ Bernhard is a cyber security specialist with a talent for hacking systems of all
 
 #### Sven Schleier
 
-Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive apps build on the MEAN stack. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
+Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 
 ### Co-Authors
 

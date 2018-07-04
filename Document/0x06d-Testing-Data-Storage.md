@@ -283,6 +283,30 @@ The path to the Keychain file is
 
 On a non-jailbroken device, you can use objection to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
 
+
+##### Dynamic Analysis with Xcode and iOS simulator
+
+> This test is only available on macOS, as Xcode and the iOS simulator is needed.
+
+For testing the local storage and verifying what data is stored within it, it's not mandatory to have an iOS device. With access to the source code and Xcode the app can be build and deployed in the iOS simulator. The file system of the current device of the iOS simulator is available in `~/Library/Developer/CoreSimulator/Devices`.
+
+Once the app is started in the iOS simulator, you can navigate to the directory with the following command:
+
+```bash
+$ cd ~/Library/Developer/CoreSimulator/Devices/$(
+ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
+awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
+```
+
+The command above will automatically find the UUID of the latest device started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
+
+```bash
+$ grep -iRn keyword .
+```
+
+Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
+
+
 ##### Dynamic Analysis with Needle
 
 On a jailbroken device, you can use the iOS security assessment framework Needle to find vulnerabilities caused by the application's data storage mechanism.
