@@ -390,8 +390,6 @@ Found 99 services:
 - Delivering a broadcast
     - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
 
-Intents are components for sending messages between apps and components. An app can use them to send information to its own components (for instance, to start a new activity inside the app), to other apps, or to the operating system. Intents can be used to start Activities and services, run actions on given data, and broadcast messages to the whole system.
-
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
 ```Java
