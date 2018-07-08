@@ -3,5 +3,8 @@
 
   "structure": { 
     "readme": "Foreword.md"
-  } 
+  }
+  
+  "plugins" : [ "anchors" ]
+ 
 }
