@@ -555,7 +555,7 @@ class a$b
 - GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
 
 
-### Checking for weaknesses in third party dependencies
+### Checking for weaknesses in third party libraries/depdendencies
 
 #### Overview
 Android applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
@@ -564,12 +564,55 @@ Android applications often make use of third party libraries. These third party 
 
 These libraries can have the following two classes of unwanted side-effects:
 - A library can contain a vulnerability, which will make the application vulnerable. A good example is `OKhttp 2.6.4` in which TLS chain polution was possible to bypass pinning.
-- A library can use a license, such as <insert license type here>, which requires the application author to open-source the application code, which will endanger the IP of the application.
+- A library can use a license, such as <#TODO: insert license type here>, which requires the application author to open-source the application code, which will endanger the IP of the application.
 
 #### Static Analysis
+#### Detecting vulnerabilities of third party libraries
+Detecting vulnerabilities in third party dependencies can be done by means of the OWASP Dependency checker. This is best done by using a gradle plugin, such as `dependency-check-gradle`.
+In order to use the plugin, the following steps need to be applied:
+Install the plugin from Maven central repo by adding the following script to your build.gradle:
 
+``groovy
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:3.2.0'
+    }
+}
 
-[Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
+apply plugin: 'org.owasp.dependencycheck'
+```
+
+Once gradle has invoked the plugin, you can create a report by running
+```sh
+gradle assemble
+gradle dependencyCheckAnalyze --info
+```
+The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. If the library containing the vulnerability is not part of the production app, then check what the implications can be given the build pipeline of the applciation. If the library containing the vulnerability is part of the production app, then check whether there is a fix availiable or an alternative given the severity and nature of the vulnerability.
+
+Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
+
+Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as <#TODO: add library checkers here>. The actual result of using either the owasp dependency checker or another tool varies on the type of (NDK related or SDK related) libraries. 
+
+Lastly, please note that for hybrid applications, one will have to check the javascript dependencies. Similarly for <#TODO insert ms stuff here>, one will have to check the C# dependencies.
+
+#### Detecting the licenses used by the libraries of the application
+In order to ensure that the copyright laws are not infringed, one can best check the dependencies by using a plugin which can iterate over the different libraries, such as `License Gradle Plugin`. This plugin can be used by taking the following steps.
+
+In your `build.gradle` file add:
+
+```groovy
+plugins {
+    i id "com.github.hierynomus.license-report" version"{license_plugin_version"
+}
+```
+Now, after the plugin is picked up, use the following commands:
+```sh
+gradle assemble
+gradle downloadLicenses --info
+```
 
 #### Dynamic Analysis
 
