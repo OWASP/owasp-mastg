@@ -590,7 +590,7 @@ Once gradle has invoked the plugin, you can create a report by running
 gradle assemble
 gradle dependencyCheckAnalyze --info
 ```
-The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. If the library containing the vulnerability is not part of the production app, then check what the implications can be given the build pipeline of the applciation. If the library containing the vulnerability is part of the production app, then check whether there is a fix availiable or an alternative given the severity and nature of the vulnerability.
+The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. <#TODO: move to remediation> If the library containing the vulnerability is not part of the production app, then check what the implications can be given the build pipeline of the applciation. If the library containing the vulnerability is part of the production app, then check whether there is a fix availiable or an alternative given the severity and nature of the vulnerability.
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
@@ -611,8 +611,13 @@ plugins {
 Now, after the plugin is picked up, use the following commands:
 ```sh
 gradle assemble
-gradle downloadLicenses --info
+gradle downloadLicenses 
 ```
+
+Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.
+
+Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as <#TODO: add library checkers here>. 
+Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist. 
 
 #### Dynamic Analysis
 
