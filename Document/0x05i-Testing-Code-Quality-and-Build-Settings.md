@@ -567,7 +567,9 @@ These libraries can have the following two classes of unwanted side-effects:
 - A library can use a license, such as <#TODO: insert license type here>, which requires the application author to open-source the application code, which will endanger the IP of the application.
 
 #### Static Analysis
-#### Detecting vulnerabilities of third party libraries
+
+##### Detecting vulnerabilities of third party libraries
+
 Detecting vulnerabilities in third party dependencies can be done by means of the OWASP Dependency checker. This is best done by using a gradle plugin, such as `dependency-check-gradle`.
 In order to use the plugin, the following steps need to be applied:
 Install the plugin from Maven central repo by adding the following script to your build.gradle:
@@ -590,7 +592,7 @@ Once gradle has invoked the plugin, you can create a report by running
 gradle assemble
 gradle dependencyCheckAnalyze --info
 ```
-The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. <#TODO: move to remediation> If the library containing the vulnerability is not part of the production app, then check what the implications can be given the build pipeline of the applciation. If the library containing the vulnerability is part of the production app, then check whether there is a fix availiable or an alternative given the severity and nature of the vulnerability.
+The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. See remediation on what to do given the vulnerabilities found with the libraries.
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
@@ -598,7 +600,8 @@ Alternatively there are commercial tools which might have a better coverage of t
 
 Lastly, please note that for hybrid applications, one will have to check the javascript dependencies. Similarly for <#TODO insert ms stuff here>, one will have to check the C# dependencies.
 
-#### Detecting the licenses used by the libraries of the application
+##### Detecting the licenses used by the libraries of the application
+
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies by using a plugin which can iterate over the different libraries, such as `License Gradle Plugin`. This plugin can be used by taking the following steps.
 
 In your `build.gradle` file add:
@@ -624,26 +627,30 @@ Note: If in doubt about the implications of a license model used by a third part
 The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 #### Remediation
+When a library is found to contain vulnerabilities, then the following reasoning applies
+- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
-[Describe the best practices that developers should follow to prevent this issue.]
+When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
 #### References
 
 ##### OWASP Mobile Top 10 2016
-
+<#TODO: FIX>
 - MX - Title - Link
+- M10: Extraneous Functionality
 - M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
-
+<#TODO: FIX>
 - VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
 
 ##### CWE
-
+<#TODO: FIX>
 - CWE-XXX - Title
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Tools
-
+<#TODO: FIX>
 - Tool - Link
 - [Enjarify](https://github.com/google/enjarify "Enjarify")
