@@ -564,7 +564,7 @@ Android applications often make use of third party libraries. These third party 
 
 These libraries can have the following two classes of unwanted side-effects:
 - A library can contain a vulnerability, which will make the application vulnerable. A good example is `OKhttp 2.6.4` in which TLS chain polution was possible to bypass pinning.
-- A library can use a license, such as <#TODO: insert license type here>, which requires the application author to open-source the application code, which will endanger the IP of the application.
+- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should the be allowed to be redistributed with modifications to its sourcecode. This can endanger the IP of the application.
 
 #### Static Analysis
 
@@ -649,5 +649,6 @@ When a library contains a license in which the application IP needs to be open-s
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Tools
+<#TODO: FIX (add commercial items)>
 - [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
 - [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
