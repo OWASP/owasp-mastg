@@ -642,8 +642,8 @@ When a library contains a license in which the application IP needs to be open-s
 - M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
 
 ##### OWASP MASVS
-<#TODO: FIX>
-- VX.Y: "Requirement text, e.g. 'the keyboard cache is disabled on text inputs that process sensitive data'."
+
+- V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
 
 ##### CWE
 <#TODO: FIX>
