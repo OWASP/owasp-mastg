@@ -558,17 +558,22 @@ class a$b
 ### Checking for weaknesses in third party dependencies
 
 #### Overview
-Android applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. Well known third party libraries are, for instance, Okhttp from Square, 
+Android applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+- Libraries that are not (or should not) be packed within the actual production application, such as `Mockito` used for testing and libraries like `JavaAssist` used to compile certain other libraries.
+- Libraries that are packed within the actual production application, such as `Okhttp3`.
 
-[Provide a general description of the issue.]
+These libraries can have the following two classes of unwanted side-effects:
+- A library can contain a vulnerability, which will make the application vulnerable. A good example is `OKhttp 2.6.4` in which TLS chain polution was possible to bypass pinning.
+- A library can use a license, such as <insert license type here>, which requires the application author to open-source the application code, which will endanger the IP of the application.
 
 #### Static Analysis
+
 
 [Describe how to assess this given either the source code or installer package (APK/IPA/etc.), but without running the app. Tailor this to the general situation (e.g., in some situations, having the decompiled classes is just as good as having the original source, in others it might make a bigger difference). If required, include a subsection about how to test with or without the original sources.]
 
 #### Dynamic Analysis
 
-[Describe how to test for this issue by running and interacting with the app. This can include everything from simply monitoring network traffic or aspects of the app’s behavior to code injection, debugging, instrumentation, etc.]
+The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 #### Remediation
 
