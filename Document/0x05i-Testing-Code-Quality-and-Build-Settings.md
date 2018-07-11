@@ -651,6 +651,5 @@ When a library contains a license in which the application IP needs to be open-s
 - CWE-312 - Cleartext Storage of Sensitive Information
 
 ##### Tools
-<#TODO: FIX>
-- Tool - Link
-- [Enjarify](https://github.com/google/enjarify "Enjarify")
+- [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
+- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
