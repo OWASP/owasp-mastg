@@ -636,10 +636,8 @@ When a library contains a license in which the application IP needs to be open-s
 #### References
 
 ##### OWASP Mobile Top 10 2016
-<#TODO: FIX>
-- MX - Title - Link
-- M10: Extraneous Functionality
-- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+
+-	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 ##### OWASP MASVS
 
