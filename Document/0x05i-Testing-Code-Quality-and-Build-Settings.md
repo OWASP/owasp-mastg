@@ -604,6 +604,8 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
+<#TODO add analysis when source is not available>
+
 ##### Detecting the licenses used by the libraries of the application
 
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies by using a plugin which can iterate over the different libraries, such as `License Gradle Plugin`. This plugin can be used by taking the following steps.
@@ -627,6 +629,8 @@ Similar to dependency checking, there are commercial tools which are able to che
 Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist. 
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
+
+<#TODO add analysis when source is not available>
 
 #### Dynamic Analysis
 

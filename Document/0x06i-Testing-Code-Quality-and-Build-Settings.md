@@ -392,10 +392,11 @@ Note: there are two widely used package management tools: Carthage and Cocoapods
 
 ##### Detecting vulnerabilities of third party libraries
 <#TODO write for both carthage and cocoapods>
+<#TODO add analysis when source is not available>
 
 ##### Detecting the licenses used by the libraries of the application
 <#TODO write for both carthage and cocoapods>
-
+<#TODO add analysis when source is not available>
 
 #### Dynamic Analysis
 
