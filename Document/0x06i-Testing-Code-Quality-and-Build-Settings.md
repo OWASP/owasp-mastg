@@ -374,3 +374,68 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 - idb - https://github.com/dmayer/idb
 - Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
+
+### Checking for weaknesses in third party libraries/depdendencies
+
+#### Overview
+iOS applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+- Libraries that are not (or should not) be packed within the actual production application, such as `OHHTTPStubs` used for testing.
+- Libraries that are packed within the actual production application, such as `Alomofire`.
+
+These libraries can have the following two classes of unwanted side-effects:
+- A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to man in the middle applications using the library to connect to their APIs.
+- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should the be allowed to be redistributed with modifications to its sourcecode. This can endanger the IP of the application.
+
+Note: there are two widely used package management tools: Carthage and Cocoapods.
+
+#### Static Analysis
+
+##### Detecting vulnerabilities of third party libraries
+<#TODO write for both carthage and cocoapods>
+<#TODO add analysis when source is not available>
+
+##### Detecting the licenses used by the libraries of the application
+When the application sources are available and Cocoapods is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Podfile is located, type
+``` sh 
+sudo gem install cocoapods
+pod install
+```
+2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
+
+When the application sources are avialable and Carthage is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Cartfile is located, type
+```sh
+brew install carthage
+carthage update --platform iOS
+```
+2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+
+When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
+
+Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
+
+
+<#TODO add analysis when source is not available>
+
+#### Dynamic Analysis
+
+The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+-	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+
+- V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+
+##### CWE
+- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
+
+##### Tools
+<#TODO: UPDATE>
+Carthage, Cocoapods
+- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
