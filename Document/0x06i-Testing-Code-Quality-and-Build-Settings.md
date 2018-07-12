@@ -394,15 +394,40 @@ Note: there are two widely used package management tools: Carthage and Cocoapods
 ##### Detecting vulnerabilities of third party libraries
 In order to ensure that the libraries used by the developers are not carrying vulnerabilities, one can best check the dependencies installed by Cocoapods or Carthage.
 
-In order to check the dependencies managed by Cocoapods, one can either do the manual approach
+In case Cocoapods is used for third party dependencies, the following steps can be taken to analyse the third party libraries for vulnerabilities:
+1. At the root of the project, where the Podfile is located, type
+``` sh 
+sudo gem install cocoapods
+pod install
+```
+2. Now that the dependency tree has bene built, you can create an overview of the dpendencies and their versions by running the following code:
+```sh
+sudo gem install cocoapods-dependencies
+pod dependencies
+```
+3. The result of the step above can now be used as input for searching the vulnerability feeds for given vulnerabilities.
 
-<#TODO write for both carthage and cocoapods>
+Note:, if the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental Cocoapods podspec checker.
+Note-2:, if the project uses Cocaopods in combination with Objective-C, SourceClear can be used.
+Note-3: Using Cocoapods with `http` based links instead of `https` might allow for Man in the middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
+
+In case Carthage is used for third party dependencies, then the following steps can be taken to analyse the third party libraries for vulnerabilities:
+1. At the root of the project, where the Cartfile is located, type
+```sh
+brew install carthage
+carthage update --platform iOS
+```
+2. now check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+
+Note, at the time of writing of this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
+
+When a library is found to contain vulnerabilities, then the following reasoning applies:
+- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+
+Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
 
-Note: Using Cocoapods with `http` based links instead of `https` might allow for Man in the middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
-Note-2: Understanding the relationships between the installed pods can be daunting with larger projects. In that case it is easier to install the cocoapods-dependencies plugin in order to print a dependency graph.
-
-<#TODO add analysis when source is not available>
 
 ##### Detecting the licenses used by the libraries of the application
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by Cocoapods or Carthage.
@@ -428,7 +453,7 @@ When a library contains a license in which the application IP needs to be open-s
 Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
 
 
-<#TODO add analysis when source is not available>
+<#TODO add analysis when source is not available/check mobsf and otherwise check runtime decomposition tooling! >
 
 #### Dynamic Analysis
 
@@ -448,7 +473,7 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
-<#TODO: UPDATE>
-Carthage, Cocoapods, Sourceclear (Cocoapods)
-- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
-https://github.com/segiddins/cocoapods-dependencies
+- [Carthage](https://github.com/carthage/carthage "Carthage")
+- [Cocoapods](https://cocoapods.org "Cocoapods")
+- [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
+- [Sourceclear](https://sourceclear.com "Sourceclear")
