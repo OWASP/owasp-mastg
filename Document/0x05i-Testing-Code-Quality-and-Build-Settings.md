@@ -630,7 +630,7 @@ Note: If in doubt about the implications of a license model used by a third part
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
-In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
+Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
 
 When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 

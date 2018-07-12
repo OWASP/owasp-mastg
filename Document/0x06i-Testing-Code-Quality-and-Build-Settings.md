@@ -388,13 +388,25 @@ These libraries can have the following two classes of unwanted side-effects:
 
 Note: there are two widely used package management tools: Carthage and Cocoapods.
 
+
 #### Static Analysis
 
 ##### Detecting vulnerabilities of third party libraries
+In order to ensure that the libraries used by the developers are not carrying vulnerabilities, one can best check the dependencies installed by Cocoapods or Carthage.
+
+In order to check the dependencies managed by Cocoapods, one can either do the manual approach
+
 <#TODO write for both carthage and cocoapods>
+
+
+Note: Using Cocoapods with `http` based links instead of `https` might allow for Man in the middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
+Note-2: Understanding the relationships between the installed pods can be daunting with larger projects. In that case it is easier to install the cocoapods-dependencies plugin in order to print a dependency graph.
+
 <#TODO add analysis when source is not available>
 
 ##### Detecting the licenses used by the libraries of the application
+In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by Cocoapods or Carthage.
+
 When the application sources are available and Cocoapods is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Podfile is located, type
 ``` sh 
@@ -437,5 +449,6 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 
 ##### Tools
 <#TODO: UPDATE>
-Carthage, Cocoapods
+Carthage, Cocoapods, Sourceclear (Cocoapods)
 - [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
+https://github.com/segiddins/cocoapods-dependencies
