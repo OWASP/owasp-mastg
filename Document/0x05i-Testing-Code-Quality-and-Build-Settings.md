@@ -604,7 +604,7 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
-<#TODO add analysis when source is not available>
+When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
 
 ##### Detecting the licenses used by the libraries of the application
 
@@ -630,7 +630,7 @@ Note: If in doubt about the implications of a license model used by a third part
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
-<#TODO add analysis when source is not available>
+When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
 #### Dynamic Analysis
 
@@ -655,3 +655,4 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
 - [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
 - [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
+- [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF, "MobSF")
