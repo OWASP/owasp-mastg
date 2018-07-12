@@ -379,11 +379,11 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 #### Overview
 iOS applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
-- Libraries that are not (or should not) be packed within the actual production application, such as <#TODO add library here> used for testing.
+- Libraries that are not (or should not) be packed within the actual production application, such as `OHHTTPStubs` used for testing.
 - Libraries that are packed within the actual production application, such as `Alomofire`.
 
 These libraries can have the following two classes of unwanted side-effects:
-- A library can contain a vulnerability, which will make the application vulnerable. A good example is <#TODO: ADD EXAMPLE HERE>.
+- A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to man in the middle applications using the library to connect to their APIs.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should the be allowed to be redistributed with modifications to its sourcecode. This can endanger the IP of the application.
 
 Note: there are two widely used package management tools: Carthage and Cocoapods.
@@ -395,7 +395,27 @@ Note: there are two widely used package management tools: Carthage and Cocoapods
 <#TODO add analysis when source is not available>
 
 ##### Detecting the licenses used by the libraries of the application
-<#TODO write for both carthage and cocoapods>
+When the application sources are available and Cocoapods is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Podfile is located, type
+``` sh 
+sudo gem install cocoapods
+pod install
+```
+2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
+
+When the application sources are avialable and Carthage is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Cartfile is located, type
+```sh
+brew install carthage
+carthage update --platform iOS
+```
+2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+
+When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
+
+Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
+
+
 <#TODO add analysis when source is not available>
 
 #### Dynamic Analysis

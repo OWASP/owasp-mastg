@@ -563,7 +563,7 @@ Android applications often make use of third party libraries. These third party 
 - Libraries that are packed within the actual production application, such as `Okhttp3`.
 
 These libraries can have the following two classes of unwanted side-effects:
-- A library can contain a vulnerability, which will make the application vulnerable. A good example is `OKhttp 2.6.4` in which TLS chain polution was possible to bypass SSL pinning.
+- A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain polution was possible to bypass SSL pinning.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should the be allowed to be redistributed with modifications to its sourcecode. This can endanger the IP of the application.
 
 #### Static Analysis
@@ -625,10 +625,12 @@ gradle downloadLicenses
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.
 
-Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as SourceClear or Blackduck. 
+Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as SourceClear, Snyk or Blackduck. 
 Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist. 
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
+
+In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
 
 When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
@@ -653,6 +655,7 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 ##### Tools
 - [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
 - [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
+- [Snyk](https://snyk.io/ "snyk")
 - [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
 - [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
 - [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF, "MobSF")
