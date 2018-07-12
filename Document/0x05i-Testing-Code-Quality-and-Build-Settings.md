@@ -596,9 +596,13 @@ The report will be in `build/reports` unless otherwise configured. Use the repor
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
-Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as <#TODO: add library checkers here>. The actual result of using either the owasp dependency checker or another tool varies on the type of (NDK related or SDK related) libraries. 
+Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as Sourceclear or Blackduc. The actual result of using either the owasp dependency checker or another tool varies on the type of (NDK related or SDK related) libraries. 
 
-Lastly, please note that for hybrid applications, one will have to check the javascript dependencies. Similarly for <#TODO insert ms stuff here>, one will have to check the C# dependencies.
+Lastly, please note that for hybrid applications, one will have to check the javascript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
+
+When a library is found to contain vulnerabilities, then the following reasoning applies
+- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 ##### Detecting the licenses used by the libraries of the application
 
@@ -619,19 +623,15 @@ gradle downloadLicenses
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.
 
-Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as <#TODO: add library checkers here>. 
+Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as SourceClear or Blackduck. 
 Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist. 
+
+When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
 #### Dynamic Analysis
 
 The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-#### Remediation
-When a library is found to contain vulnerabilities, then the following reasoning applies
-- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check wehther the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar funcitonality, but without the vulnerabilities.
-- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
-
-When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
 #### References
 
@@ -644,11 +644,10 @@ When a library contains a license in which the application IP needs to be open-s
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
 
 ##### CWE
-<#TODO: FIX>
-- CWE-XXX - Title
-- CWE-312 - Cleartext Storage of Sensitive Information
+- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
-<#TODO: FIX (add commercial items)>
+- [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
+- [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
 - [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
 - [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
