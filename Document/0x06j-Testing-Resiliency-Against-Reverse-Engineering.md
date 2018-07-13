@@ -381,7 +381,7 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 ```
 
 
-#### File Integrity Checks
+### File Integrity Checks
 
 #### Overview
 
