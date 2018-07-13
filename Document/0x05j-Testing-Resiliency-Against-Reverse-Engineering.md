@@ -574,7 +574,7 @@ public class CodeCheck {
     }
 ```
 
-Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in Github. 
+Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in Github.
 
 #### Effectiveness Assessment
 
@@ -1362,16 +1362,18 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP MASVS
 
+- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
 - V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
 - V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
 - V8.5: "The app detects, and responds to, being run in an emulator."
 - V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
 - V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
 - V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that's both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
+- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+
 
 #### Tools
 
-- frida - https://www.frida.re/
+- Frida - https://www.frida.re/
 - ADB & DDMS

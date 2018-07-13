@@ -264,7 +264,7 @@ sys.stdin.read()
 ```
 
 
-#### Anti-Debugging Checks
+### Anti-Debugging Checks
 
 #### Overview
 Debugging and exploring applications are helpful during reversing. Using a debugger, a reverse engineer can not only track critical variables but also read and modify memory.
@@ -381,7 +381,7 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 ```
 
 
-#### File Integrity Checks
+### File Integrity Checks
 
 #### Overview
 
