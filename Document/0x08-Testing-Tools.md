@@ -11,12 +11,12 @@ To perform security testing different tools are available in order to be able to
 - [Mobisec](http://sourceforge.net/projects/mobisec/) - Mobile security testing live environment.
 - [Santoku](https://santoku-linux.com/) - Santoku is an OS and can be run outside a VM as a standalone operating system.
 - [Vezir Project](https://github.com/oguzhantopgul/Vezir-Project) - Mobile Application Pentesting and Malware Analysis Environment.
+- [Nathan](https://github.com/mseclab/nathan) - Nathan is a AOSP Android emulator customized to perform mobile security assessment.
 
 ### Static Source Code Analysis
 
 - [Checkmarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) - Static Source Code Scanner that also scans source code for Android and iOS.
 - [Fortify](https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security) - Static source code scanner that also scans source code for Android and iOS.
-- [Acccenture](https://digitalsecurity.accenture.com) - Static source code scanner that also scans source code for Android and iOS.
 - [Veracode](https://www.veracode.com/products/binary-static-analysis-sast "Veracode Static Analysis") - Static Analysis of iOS and Android binary
 
 ### All-in-One Mobile Security Frameworks
@@ -24,6 +24,7 @@ To perform security testing different tools are available in order to be able to
 - [Mobile Security Framework - MobSF](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF) - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOS) automated pen-testing framework capable of performing static and dynamic analysis.
 - [Needle](https://github.com/mwrlabs/needle) - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
 - [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps.
+- [objection](https://github.com/sensepost/objection) - objection is a runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android.
 
 
 ### Tools for Android
@@ -43,10 +44,11 @@ To perform security testing different tools are available in order to be able to
 - [Qark](https://github.com/linkedin/qark) - This tool is designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs.
 - [SUPER](https://github.com/SUPERAndroidAnalyzer/super) - SUPER is a command-line application that can be used in Windows, MacOS X and Linux, that analyzes .apk files in search for vulnerabilities. It does this by decompressing APKs and applying a series of rules to detect those vulnerabilities.
 - [AndroBugs](https://github.com/AndroBugs/AndroBugs_Framework) - AndroBugs Framework is an efficient Android vulnerability scanner that helps developers or hackers find potential security vulnerabilities in Android applications. No need to install on Windows.
-- [Simplify](https://github.com/CalebFenton/simplify - A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file.
+- [Simplify](https://github.com/CalebFenton/simplify) - A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file.
 - [ClassNameDeobfuscator](https://github.com/HamiltonianCycle/ClassNameDeobfuscator) - Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines.
 - [Android backup extractor](https://github.com/nelenkov/android-backup-extractor) - Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP.
 - [VisualCodeGrepper](https://sourceforge.net/projects/visualcodegrepp/) - Static Code Analysis Tool for several programming languages including Java
+- [ByteCodeViewer](http://bytecodeviewer.com/) - Five different Java Decompiles, Two Bytecode Editors, A Java Compiler, Plugins, Searching, Supports Loading from Classes, JARs, Android APKs and More.
 
 #### Dynamic and Runtime Analysis
 
@@ -64,7 +66,7 @@ To perform security testing different tools are available in order to be able to
 #### Bypassing Root Detection and Certificate Pinning
 
 - [Xposed Module: Just Trust Me](https://github.com/Fuzion24/JustTrustMe) - Xposed Module to bypass SSL certificate pinning.
-- [Xposed Module: SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed - Android Xposed Module to bypass SSL certificate validation (Certificate Pinning\)).
+- [Xposed Module: SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed) - Android Xposed Module to bypass SSL certificate validation (Certificate Pinning\)).
 - [Cydia Substrate Module: Android SSL Trust Killer](https://github.com/iSECPartners/Android-SSL-TrustKiller) - Blackbox tool to bypass SSL certificate pinning for most applications running on a device.
 - [Cydia Substrate Module: RootCoak Plus](https://github.com/devadvance/rootcloakplus) - Patch root checking for commonly known indications of root.
 - [Android-ssl-bypass](https://github.com/iSECPartners/android-ssl-bypass) - an Android debugging tool that can be used for bypassing SSL, even when certificate pinning is implemented, as well as other debugging tasks. The tool runs as an interactive console.
@@ -86,7 +88,7 @@ To perform security testing different tools are available in order to be able to
 - [Dumpdecrypted](https://github.com/stefanesser/dumpdecrypted) - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 - [class-dump](http://stevenygard.com/projects/class-dump/) - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
 - [Flex2](http://cydia.saurik.com/package/com.fuyuchi.flex2/) - Flex gives you the power to modify apps and change their behavior.
-- [Weak Classdump] (https://github.com/limneos/weak_classdump) - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
+- [Weak Classdump](https://github.com/limneos/weak_classdump) - A Cycript script that generates a header file for the class passed to the function. Most useful when you cannot classdump or dumpdecrypted , when binaries are encrypted etc.
 - [IDA Pro](https://www.hex-rays.com/products/ida/index.shtml) - IDA is a Windows, Linux or Mac OS X hosted multi-processor disassembler and debugger that offers so many features it is hard to describe them all.
 - [HopperApp](http://hopperapp.com/) - Hopper is a reverse engineering tool for OS X and Linux, that lets you disassemble, decompile and debug your 32/64bits Intel Mac, Linux, Windows and iOS executables.
 - [Radare2](http://www.radare.org/) - Radare2 is a unix-like reverse engineering framework and command line tools.
@@ -118,7 +120,7 @@ To perform security testing different tools are available in order to be able to
 - [Tcpdump](http://www.androidtcpdump.com) - A command line packet capture utility.
 - [Wireshark](https://www.wireshark.org/download.html) - An open-source packet analyzer.
 - [Canape](http://www.contextis.com/services/research/canape/) - A network testing tool for arbitrary protocols.
-- [Mallory](https://intrepidusgroup.com/insight/mallory/ - A Man in The Middle Tool (MiTM\)) that is used to monitor and manipulate traffic on mobile devices and applications.
+- [Mallory](https://intrepidusgroup.com/insight/mallory/) - A Man in The Middle Tool (MiTM\)) that is used to monitor and manipulate traffic on mobile devices and applications.
 
 ### Interception Proxies
 
@@ -129,5 +131,7 @@ To perform security testing different tools are available in order to be able to
 
 ### IDEs
 
+- [Android Studio](https://developer.android.com/studio/index.html) -  is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
 - [IntelliJ](https://www.jetbrains.com/idea/download/) - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
 - [Eclipse](https://eclipse.org/) - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
+- [Xcode](https://developer.apple.com/xcode/) - Xcode is an integrated development environment (IDE) available only for macOS to create apps for iOS, watchOS, tvOS and macOS.

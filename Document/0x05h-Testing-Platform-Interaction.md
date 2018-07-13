@@ -1,31 +1,31 @@
-## Testing Platform Interaction on Android
+## Android Platform APIs
 
 ### Testing App Permissions
 
 #### Overview
 
-Android assigns every installed app with a distinct system identity (Linux user ID and group ID). Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data outside their sandbox. They request this access by declaring the permissions they need to use certain system data and features. Depending on how sensitive or critical the data or feature is, Android system will grant the permission automatically or ask the user to approve the request.
+Android assigns a distinct system identity (Linux user ID and group ID) to every installed app. Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data that are outside their sandbox. They request this access by declaring the permissions they need to use system data and features. Depending on how sensitive or critical the data or feature is, the Android system will grant the permission automatically or ask the user to approve the request.
 
-Android permissions are classified in four different categories based on the protection level it offers.
+Android permissions are classified into four different categories on the basis of the protection level they offer:
 
--	**Normal**: This permission gives apps access to isolated application-level features, with minimal risk to other apps, the user or the system. It is granted during the installation of the App. If no protection level is specified, normal is the default value. Example: `android.permission.INTERNET`
--	**Dangerous**: This permission usually gives the app control over user data or control over the device that impacts the user. This type of permission may not be granted at installation time, leaving it to the user to decide whether the app should have the permission or not. Example: `android.permission.RECORD_AUDIO`
--	**Signature**: This permission is granted only if the requesting app was signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted. Example: `android.permission.ACCESS_MOCK_LOCATION`
--	**SystemOrSignature**: Permission only granted to applications embedded in the system image or that were signed using the same certificate as the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
+-	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. It is granted during the app's installation. Normal is the default permission. Example: `android.permission.INTERNET`
+-	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
+-	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. Example: `android.permission.ACCESS_MOCK_LOCATION`
+-	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-A full list of all permissions can be found in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
+A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
 **Custom Permissions**
 
-Android allow apps to expose their services/components to other apps and custom permissions are required to restrict which app can access the exposed component. [Custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") can be defined in `AndroidManifest.xml`, by creating a permission tag with two mandatory attributes:
+Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
 - `android:name` and
 - `android:protectionLevel`.
 
-It is crucial to create custom permission that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose with meaningful and accurate label and description.
+It is crucial to create custom permissions that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose, with a meaningful and accurate label and description.
 
-Below is an example of a custom permission called `START_MAIN_ACTIVITY` that is required when launching the `TEST_ACTIVITY` Activity.
+Below is an example of a custom permission called `START_MAIN_ACTIVITY`, which is required when launching the `TEST_ACTIVITY` Activity.
 
-The first code block defines the new permission which is self-explanatory. The label tag is a summary of the permission and description is a more detailed description of the summary. The protection level can be set based on the types of permission it is granting. Once you have defined your permission, it can be enforced on the component by specifying it in the application’s manifest. In our example, the second block is the component that we are going to restrict with the permission we created. It can be enforced by adding the `android:permission` attributes.
+The first code block defines the new permission, which is self-explanatory. The label tag is a summary of the permission, and the description is a more detailed version of the summary. You can set the protection level according to the types of permissions that will be granted. Once you've defined your permission, you can enforce it by adding it to the application's manifest. In our example, the second block represents the component that we are going to restrict with the permission we created. It can be enforced by adding the `android:permission` attributes.
 
 ```xml
 <permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"
@@ -42,10 +42,10 @@ The first code block defines the new permission which is self-explanatory. The l
 </activity>
 ```
 
-Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it using the `uses-permission` tag in the `AndroidManifest.xml` file. Any application can now launch the `TEST_ACTIVITY` if it is granted with the custom permission `START_MAIN_ACTIVITY`.
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`.
 
 ```xml
-<uses-permission android:name=“com.example.myapp.permission.START_MAIN_ACTIVITY”/>
+<uses-permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"/>
 ```
 
 #### Static Analysis
@@ -53,15 +53,15 @@ Now that the new permission `START_MAIN_ACTIVTY` is created, apps can request it
 
 **Android Permissions**
 
-Permissions should be checked if they are really needed within the App and removed otherwise. For example in order for an Activity to load a web page into a WebView the `INTERNET` permission in the Android Manifest file is needed.
+Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-It is always recommended to run through the permissions with the developer together to identify the intention of every permission set and remove those that are not needed.
+Go through the permissions with the developer to identify the purpose of every permission set and remove unnecessary permissions.
 
-Alternatively, Android Asset Packaging tool can be used to examine permissions.
+Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool to examine permissions.
 
 ```bash
 $ aapt d permissions com.owasp.mstg.myapp
@@ -73,17 +73,17 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 **Custom Permissions**
 
-Apart from enforcing custom permissions via application manifest file, they can also be checked programmatically. This is not recommended however, as it is more error prone and can be bypassed more easily, e.g. using runtime instrumentation. Whenever you see code like the following, you should also make sure that the same permissions are enforced in the manifest file.
+Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
 
 ```java
-int canProcess = checkCallingOrSelfPermission(“com.example.perm.READ_INCOMING_MSG”);
+int canProcess = checkCallingOrSelfPermission("com.example.perm.READ_INCOMING_MSG");
 if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
 ```
 
 #### Dynamic Analysis
 
-Permissions of applications installed on a device can be retrieved using Drozer. The following extract demonstrates how to examine the permissions used by an application, in addition to the custom permissions defined by the app:
+Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
 
 ```bash
 dz> run app.package.info  -a com.android.mms.service
@@ -109,57 +109,35 @@ Package: com.android.mms.service
   - None
 ```
 
-When Android applications expose IPC components to other applications, they can define permissions to limit access to the component to certain applications. To communicate with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt to contain the required permission:
+When Android applications expose IPC components to other applications, they can define permissions to control which applications can access the components. For communication with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt so that it includes the required permission:
 
 ```
 $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
-Note that this method cannot be used for `signature` level permissions, as Drozer would need to be signed by the same certificate as the target application.
-
-#### References
-
-- [#JeffSix] - Jeff Six, An In-Depth Introduction to
-the Android Permission Model - https://www.owasp.org/images/c/ca/ASDC12-An_InDepth_Introduction_to_the_Android_Permissions_Modeland_How_to_Secure_MultiComponent_Applications.pdf
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.1: "The app only requests the minimum set of permissions necessary."
-
-##### CWE
-
--	CWE-250 - Execution with Unnecessary Privileges
-
-##### Tools
-
--	AAPT - http://elinux.org/Android_aapt
--	Drozer - https://github.com/mwrlabs/drozer
+Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
 
 
 ### Testing Custom URL Schemes
 
 #### Overview
 
-Both Android and iOS allow inter-app communication through the use of custom URL schemes. These custom URLs allow other applications to perform specific actions within the application hosting the custom URL scheme. Much like a standard web URL that might start with `https://`, custom URIs can begin with any scheme prefix and usually define an action to take within the application and parameters for that action.
+Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs allow other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
 
-As a contrived example, consider: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a web page in their mobile browser, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to:
+Consider this contrived example: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a mobile device, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to
 
-- financial loss for the victims if messages are sent to premium services or
-- disclosing the phone number if messages are sent to predefined addresses that collect phone numbers.
+- financial loss for the victim if messages are sent to premium services or
+- disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
 
-Once a URL scheme is defined, multiple apps can register for any available scheme. For any application, each of these custom URL schemes needs to be enumerated, and the actions they perform need to be tested.
+Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](http://mobiledeeplinking.org "Mobile Deeplinking"), which is a widespread and convenient method for launching a native mobile app via a link and doesn't represent a risk by itself.
+URL schemes can be used for [deep linking](http://mobiledeeplinking.org "Mobile Deeplinking"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
 
-Nevertheless data coming in through URL schemes which is processed by the app should be validated, as described in the test case "Testing Input Validation and Sanitization".
+Nevertheless, data that's processed by the app and comes in through URL schemes should be validated, as described in the test case "Testing Input Validation and Sanitization."
 
 #### Static Analysis
 
-Investigate if custom URL schemes are defined. This can be done in the AndroidManifest file inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+Determine whether custom URL schemes are defined. This can be done in the AndroidManifest.xml file, inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
 
 ```xml
 <activity android:name=".MyUriActivity">
@@ -173,9 +151,9 @@ Investigate if custom URL schemes are defined. This can be done in the AndroidMa
 
 ```
 
-The example above is specifying a new URL scheme called `myapp://`. The category `browsable` will allow to open the URI within a browser.
+The example above specifies a new URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser.
 
-Data can then be transmitted trough this new scheme, by using for example the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
+Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
 
 ```Java
 Intent intent = getIntent();
@@ -186,11 +164,11 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Verify also the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()"), that might also be used in this context.
+Verify the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()"), which may also be used in this context.
 
 #### Dynamic Analysis
 
-To enumerate URL schemes within an app that can be called by a web browser, the Drozer module `scanner.activity.browsable` should be used:
+To enumerate URL schemes within an app that can be called by a web browser, use the Drozer module `scanner.activity.browsable`:
 
 ```
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
@@ -202,13 +180,13 @@ Package: com.google.android.apps.messaging
     com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
 ```
 
-Custom URL schemes can be called using the Drozer module `app.activity.start`:
+You can call custom URL schemes with the Drozer module `app.activity.start`:
 
 ```
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
-When calling a defined schema (myapp://someaction/?var0=string&var1=string), it might be used to send data to the app as in the example below.
+When used to call a defined schema (myapp://someaction/?var0=string&var1=string), the module may also be used to send data to the app, as in the example below.
 
 ```Java
 Intent intent = getIntent();
@@ -219,33 +197,15 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Defining your own URL scheme and using it can become a risk in this case, if data is sent to it from an external party and processed in the app.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
-
-##### CWE
-
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
-
-##### Tools
-
--	Drozer - https://github.com/mwrlabs/drozer
+Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing Input Validation and Sanitization."
 
 
 
-### Testing For Sensitive Functionality Exposure Through IPC
+### Testing for Sensitive Functionality Exposure Through IPC
 
 #### Overview
 
-During development of a mobile application, traditional techniques for IPC might be applied like usage of shared files or network sockets. As mobile application platforms implement their own system functionality for IPC, these mechanisms should be applied as they are much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
+During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 
@@ -258,22 +218,22 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 
 #### Static Analysis
 
-We start by looking at the AndroidManifest, where all activities, services and content providers included in the source code must be declared (otherwise the system will not recognize them and they will not run). However, broadcast receivers can be either declared in the manifest or created dynamically. You will want to identify elements such as:
+We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the source code must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
 
 -	[`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
 -	[`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
 -	[`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
 -	[`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
 
-Making an activity, service or content provided as "exported" means that it can be accessed by other apps. There are two common ways to set a component as exported. The obvious one is to set the export tag to true `android:exported="true"`. The second way is to define an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When doing this, the export tag is automatically set to "true". If not strictly required, be sure that the IPC component element does not have the `android:exported="true"` value in the `AndroidManifest.xml` file nor an `<intent-filter>`, to prevent all other apps on Android from being able to interact with it.
+An "exported" activity, service, or content  can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true." To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
 
-Apart from that, remember that using the permission tag (`android:permission`) will also limit the exposure of a component to other applications. If your IPC is intended to be accessible to other applications, you can apply a security policy by using the `<permission>` element and set a proper `android:protectionLevel`. When using `android:permission` in a service declaration, other applications will need to declare a corresponding `<uses-permission>` element in their own manifest to be able to start, stop, or bind to the service.
+Remember that using the permission tag (`android:permission`) will also limit other applications' access to a component. If your IPC is intended to be accessible to other applications, you can apply a security policy with the `<permission>` element and set a proper `android:protectionLevel`. When `android:permission` is used in a service declaration, other applications must declare a corresponding `<uses-permission>` element in their own manifest to start, stop, or bind to the service.
 
-For more information about the content providers, please refer to the test case "Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms" in chapter "Testing Data Storage".
+For more information about the content providers, please refer to the test case "Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms" in chapter "Testing Data Storage."
 
-Once you identify a list of IPC mechanisms, review the source code in order to detect if they leak any sensitive data when used. For example, content providers can be used to access database information, while services can be probed to see if they return data. Also broadcast receivers can leak sensitive information if probed or sniffed.
+Once you identify a list of IPC mechanisms, review the source code to see whether sensitive data is leaked when the mechanisms are used. For example, content providers can be used to access database information, and services can be probed to see if they return data. Broadcast receivers can leak sensitive information if probed or sniffed.
 
-In the following we will use two example apps and give examples on how to identify vulnerable IPC components:
+In the following, we use two example apps and give examples of identifying vulnerable IPC components:
 
 - ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
 - ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2 "Android Insecure Bank V2")
@@ -282,7 +242,7 @@ In the following we will use two example apps and give examples on how to identi
 
 ##### Inspect the AndroidManifest
 
-In the "Sieve" app we can find three exported activities identified by `<activity>`:
+In the "Sieve" app, we find three exported activities, identified by `<activity>`:
 
 ```xml
 <activity android:excludeFromRecents="true" android:label="@string/app_name" android:launchMode="singleTask" android:name=".MainLoginActivity" android:windowSoftInputMode="adjustResize|stateVisible">
@@ -298,13 +258,13 @@ In the "Sieve" app we can find three exported activities identified by `<activit
 
 ##### Inspect the source code
 
-By inspecting the `PWList.java` activity we see that it offers options to list all keys, add, delete, etc. If we invoke it directly we will be able to bypass the LoginActivity. More on this can be found below in the dynamic analysis.
+By inspecting the `PWList.java` activity, we see that it offers options to list all keys, add, delete, etc. If we invoke it directly, we will be able to bypass the LoginActivity. More on this can be found in the dynamic analysis below.
 
 ##### Services
 
 ##### Inspect the AndroidManifest
 
-In the "Sieve" app we can find two exported services identified by `<service>`:
+In the "Sieve" app, we find two exported services, identified by `<service>`:
 
 ```xml
 <service android:exported="true" android:name=".AuthService" android:process=":remote"/>
@@ -315,7 +275,7 @@ In the "Sieve" app we can find two exported services identified by `<service>`:
 
 Check the source code for the class `android.app.Service`:
 
-By reversing the target application, we can see the service `AuthService` provides functionality to change the password and PIN protecting the target app.
+By reversing the target application, we can see that the service `AuthService` provides functionality for changing the password and PIN-protecting the target app.
 
 ```
    public void handleMessage(Message msg) {
@@ -350,7 +310,7 @@ By reversing the target application, we can see the service `AuthService` provid
 
 ##### Inspect the AndroidManifest
 
-In "Android Insecure Bank" app we can find a broadcast receiver in the manifest identified by `<receiver>`:
+In the "Android Insecure Bank" app, we find a broadcast receiver in the manifest, identified by `<receiver>`:
 
 ```xml
 <receiver android:exported="true" android:name="com.android.insecurebankv2.MyBroadCastReceiver">
@@ -362,13 +322,13 @@ In "Android Insecure Bank" app we can find a broadcast receiver in the manifest 
 
 ##### Inspect the source code
 
-Search in the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, `sendStickyBroadcast` and verify that the application doesn't send any sensitive data.
+Search the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, and `sendStickyBroadcast`. Make sure that the application doesn't send any sensitive data.
 
-If an Intent is only broadcast/received in the same application, `LocalBroadcastManager` can be used so that, by design, other apps cannot receive the broadcast message. This reduces the risk of leaking sensitive information. `LocalBroadcastManager.sendBroadcast()`.
+If an Intent is broadcasted and received within the application only, `LocalBroadcastManager` can be used to prevent other apps from receiving the broadcast message. This reduces the risk of leaking sensitive information.
 
-In order to know more about what the receiver is intended to do we have to go deeper in our static analysis and search for usages of the class `android.content.BroadcastReceiver` and the `Context.registerReceiver()` method used to dynamically create receivers.
+To understand more about what the receiver is intended to do, we have to go deeper in our static analysis and search for usage of the class `android.content.BroadcastReceiver` and the `Context.registerReceiver` method, which is used to dynamically create receivers.
 
-In the extract below taken from the source code of the target application, we can see that the broadcast receiver triggers a SMS message to be sent containing the decrypted password of the user.
+The following extract of the target application's source code shows that the broadcast receiver triggers transmission of an SMS message containing the user's decrypted password.
 
 ```
 public class MyBroadCastReceiver extends BroadcastReceiver {
@@ -398,14 +358,12 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
 ```
 
-BroadcastReceivers should make use of the `android:permission` attribute, as otherwise any other application can invoke them. `Context.sendBroadcast(intent, receiverPermission);` can be used to specify permissions a receiver needs to be able to [read the broadcast](https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent\ "SendBroadcast")). You can also set an explicit application package name that limits the components this Intent will resolve to. If left to the default value of null, all components in all applications will considered. If non-null, the Intent can only match the components in the given application package.
+BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://developer.android.com/reference/android/content/Context.html#sendBroadcast(android.content.Intent\ "SendBroadcast")). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
 
 
 #### Dynamic Analysis
 
-<!-- TODO - Editing and improve examples -->
-
-IPC components can be enumerated using Drozer. To list all exported IPC components, the module `app.package.attacksurface` should be used:
+You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
 
 ```
 dz> run app.package.attacksurface com.mwr.example.sieve
@@ -419,7 +377,7 @@ Attack Surface:
 
 ##### Content Providers
 
-The "Sieve" application implements a vulnerable content provider. To list of content providers exported by the Sieve app execute the following command:
+The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
 ```
 dz> run app.provider.finduri com.mwr.example.sieve
@@ -434,7 +392,7 @@ content://com.mwr.example.sieve.DBContentProvider/Passwords
 content://com.mwr.example.sieve.DBContentProvider/Keys
 ```
 
-Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be great if sensitive keys and passwords could simply be queried from the provider!
+Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
 
 ```
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
@@ -447,7 +405,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 | SuperPassword1234 | 1234 |
 ```
 
-This content provider can be accessed without any permission.
+This content provider can be accessed without permission.
 
 ```
 dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
@@ -458,7 +416,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 ##### Activities
 
-To list activities exported by an application the module `app.activity.info` should be used. Specify the target package with `-a` or leave blank to target all apps on the device:
+To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
 
 ```
 dz> run app.activity.info -a com.mwr.example.sieve
@@ -471,17 +429,17 @@ Package: com.mwr.example.sieve
     Permission: null  
 ```
 
-By enumerating activities in the vulnerable password manager "Sieve", the activity `com.mwr.example.sieve.PWList` is found to be exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
+Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
 
 ```
 dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
 ```
 
-Since the activity was called directly, the login form protecting the password manager was bypassed, and the data contained within the password manager could be accessed.
+Since the activity is called directly in this example, the login form protecting the password manager would be bypassed, and the data contained within the password manager could be accessed.
 
 ##### Services
 
-Services can be enumerated using the Drozer module `app.service.info`:
+Services can be enumerated with the Drozer module `app.service.info`:
 
 ```
 dz> run app.service.info -a com.mwr.example.sieve
@@ -492,9 +450,9 @@ Package: com.mwr.example.sieve
     Permission: null
 ```
 
-To communicate with a service, static analysis must first be used to identify the required inputs.
+To communicate with a service, you must first use static analysis to identify the required inputs.
 
-Since this service is exported, it is possible to use the module `app.service.send` to communicate with the service and change the password stored in the target application:
+Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
 ```
 dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
@@ -507,7 +465,7 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 ##### Broadcast Receivers
 
-Broadcasts can be enumerated using the Drozer module `app.broadcast.info`, the target package should be specified using the `-a` parameter:
+Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
 
 ```
 dz> run app.broadcast.info -a com.android.insecurebankv2
@@ -516,9 +474,9 @@ Package: com.android.insecurebankv2
     Permission: null
 ```
 
-In the example app "Android Insecure Bank", we can see that one broadcast receiver is exported, not requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, static analysis must also be used to understand the functionality of the broadcast receiver as we did before.
+In the example app "Android Insecure Bank", one broadcast receiver is exported without requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, you must also use static analysis to understand the functionality of the broadcast receiver, as we did before.
 
-Using the Drozer module `app.broadcast.send`, it is possible to formulate an intent to trigger the broadcast and send the password to a phone number within our control:
+With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
 
 ```
 dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
@@ -532,9 +490,9 @@ Updated Password from: SecretPassword@ to: 12345
 
 ###### Sniffing Intents
 
-If an Android application broadcasts intents without setting a required permission or specifying the destination package, the intents are susceptible to monitoring by any application on the device.
+If an Android application broadcasts intents without setting a required permission or specifying the destination package, the intents can be monitored by any application that runs on the device.
 
-To register a broadcast receiver to sniff intents, the Drozer module `app.broadcast.sniff` should be used, specifying the action to monitor with the `--action` parameter:
+To register a broadcast receiver to sniff intents, use the Drozer module `app.broadcast.sniff` and specify the action to monitor with the `--action` parameter:
 
 ```
 dz> run app.broadcast.sniff  --action theBroadcast
@@ -547,35 +505,16 @@ Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)
 ```
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-
-##### OWASP MASVS
-
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
-
-##### CWE
-
-- CWE-749 - Exposed Dangerous Method or Function
-
-##### Tools
-
--	Drozer - https://github.com/mwrlabs/drozer
-
-
 
 ### Testing JavaScript Execution in WebViews
 
 #### Overview
 
-In web applications, JavaScript can be injected in many ways by leveraging reflected, stored or DOM based Cross-Site Scripting (XSS). Mobile apps are executed in a sandboxed environment and when implemented natively do not possess this attack vector. Nevertheless, WebViews can be part of a native app to allow viewing of web pages. Every app has it's own cache for WebViews and doesn't share it with the native Browser or other apps. WebViews in Android are using the WebKit rendering engine to display web pages but are stripped down to a minimum of functions, as for example no address bar is available. If the WebView is implemented too lax and allows the usage of JavaScript it can be used to attack the app and gain access to it's data.
+JavaScript can be injected into web applications via reflected, stored, or DOM-based Cross-Site Scripting (XSS). Mobile apps are executed in a sandboxed environment and don't have this vulnerability when implemented natively. Nevertheless, WebViews may be part of a native app to allow web page viewing. Every app has its own WebView cache, which isn't shared with the native Browser or other apps. On Android, WebViews use the WebKit rendering engine to display web pages, but the pages are stripped down to minimal functions, for example, pages don't have address bars. If the WebView implementation is too lax and allows usage of JavaScript, JavaScript can be used to attack the app and gain access to its data.
 
 #### Static Analysis
 
-The source code need to be checked for usage and implementations of the WebView class. To create and use a WebView, an instance of the class WebView need to be created.
+The source code must be checked for usage and implementations of the WebView class. To create and use a WebView, you must create an instance of the WebView class.
 
 ```Java
 WebView webview = new WebView(this);
@@ -583,84 +522,71 @@ setContentView(webview);
 webview.loadUrl("https://www.owasp.org/");
 ```
 
-Different settings can be applied to the WebView of which one is to activate and deactivate JavaScript. By default JavaScript is disabled in a WebView, so it need to be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled(boolean\) "setJavaScriptEnabled in WebViews") to check if JavaScript is activated.
+Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled(boolean\) "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
 
 ```Java
 webview.getSettings().setJavaScriptEnabled(true);
 ```
 
-This allows the WebView to interpret JavaScript. It should only be enabled if needed to reduce the attack surface and potential threats to the app. If JavaScript is needed it should be ensured:
+This allows the WebView to interpret JavaScript. It should be enabled only if necessary to reduce the attack surface to the app. If JavaScript is necessary, you should make sure that
 
-- that the communication relies consistently on HTTPS to protect HTML and JavaScript from tampering while in transit.
-- that JavaScript and HTML is only loaded locally from within the app data directory or from trusted web servers.
+- the communication to the endpoints consistently relies on HTTPS (or other protocols that allow encryption) to protect HTML and JavaScript from tampering during transmission
+- JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
 
-The cache of the WebView should also be cleared in order to remove all JavaScript and locally stored data, by using [`clearCache()`](https://developer.android.com/reference/android/webkit/WebView.html#clearCache(boolean\) "clearCache() in WebViews") when closing the App.
+To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://developer.android.com/reference/android/webkit/WebView.html#clearCache(boolean\) "clearCache() in WebViews") when the app closes.
 
-Devices running platforms older than Android 4.4 (API level 19) use a version of Webkit that has a number of security issues. As a workaround, if the app is supporting these devices, it must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices").
+Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
 #### Dynamic Analysis
 
-A Dynamic Analysis depends on different surrounding conditions, as there are different possibilities to inject JavaScript into a WebView of an app:
+Dynamic Analysis depends on operating conditions. There are several ways to inject JavaScript into an app's WebView:
 
-- Stored Cross-Site Scripting (XSS) vulnerabilities in an endpoint, where the exploit will be sent to the WebView of the mobile app when navigating to the vulnerable function.
-- Man-in-the-middle (MITM) position by an attacker where he is able to tamper the response by injecting JavaScript.
-- Malware tampering local files that are loaded by the WebView.
+- Stored Cross-Site Scripting vulnerabilities in an endpoint; the exploit will be sent to the mobile app's WebView when the user navigates to the vulnerable function.
+- Attacker takes a man-in-the-middle (MITM) position and tampers with the response by injecting JavaScript.
+- Malware tampering with local files that are loaded by the WebView.
 
-In order to address these attack vectors, the outcome of the following checks should be verified:
+To address these attack vectors, check the following:
 
-- All functions offered by the endpoint need to be free of [stored XSS](https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002\) "Stored Cross-Site Scripting").
-- The HTTPS communication need to be implemented according to best practices to avoid MITM attacks. This means:
-  - whole communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
-  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification") and/or
-  - the certificate is even pinned (see "Testing Custom Certificate Stores and SSL Pinning")
-- Only files within the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
+- All functions offered by the endpoint should be free of [stored XSS](https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002\) "Stored Cross-Site Scripting").
+- Only files that are in the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
-
-##### CWE
-
--	CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
+  - all communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
+  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
+  - the certificate should be pinned (see "Testing Custom Certificate Stores and SSL Pinning").
 
 
 ### Testing WebView Protocol Handlers
 
 #### Overview
 
-Several [schemas](https://developer.android.com/guide/appendix/g-app-intents.html "Intent List") are available by default in an URI on Android and can be triggered within a WebView, e.g:
+Several default [schemas](https://developer.android.com/guide/appendix/g-app-intents.html "Intent List") are available for Android URLs. They can be triggered within a WebView with the following:
 
 -	http(s)://
 -	file://
 -	tel://
 
-WebViews can load content remotely, but can also load it locally from the app data directory or external storage. If the content is loaded locally it should not be possible by the user to influence the filename or path where the file is loaded from or should be able to edit the loaded file.
+WebViews can load remote content from an endpoint, but they can also load local content from the app data directory or external storage. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
 
 #### Static Analysis
 
-Check the source code for the usage of WebViews. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") are available to control access to different resources:
+Check the source code for WebView usage. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") control resource access:
 
--	`setAllowContentAccess()`: Content URL access allows WebView to load content from a content provider installed in the system. The default is enabled.
--	`setAllowFileAccess()`: Enables or disables file access within a WebView. File access is enabled by default. Note that this enables or disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Assets and resources are still accessible using `file:///android_asset` and `file:///android_res`.
--	`setAllowFileAccessFromFileURLs()`: Sets whether JavaScript running in the context of a file scheme URL should be allowed to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below, and false for API level 16 (Jelly Bean) and above.
--	`setAllowUniversalAccessFromFileURLs()`: Sets whether JavaScript running in the context of a file scheme URL should be allowed to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below, and false for API level 16 (Jelly Bean) and above.
+-	`setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
+-	`setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
+-	`setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
+-	`setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
 
-If one or all of the methods above can be identified and they are activated it should be verified if it is really needed for the app to work properly.
+If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-If a WebView instance can be identified check if local files are loaded through the method [`loadURL()`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String\) "loadURL() in WebView").
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String\) "loadURL() in WebView") method.
 
 ```Java
-WebView webview = new WebView(this);
+WebView = new WebView(this);
 webView.loadUrl("file:///android_asset/filename.html");
 ```
 
-It needs to be verified where the HTML file is loaded from. For example if it's loaded from the external storage the file is read and writable by everybody and considered a bad practice. Instead they should be placed in the assets directory of the App.
+The location from which the HTML file is loaded must be verified. If the file is loaded from external storage, for example, the file is readable and writable by everyone. This is considered a bad practice. Instead, the file should be placed in the app's assets directory.
 
 ```java
 webview.loadUrl("file:///" +
@@ -668,12 +594,12 @@ Environment.getExternalStorageDirectory().getPath() +
 "filename.html");
 ```
 
-The URL specified in `loadURL()` should be checked, if any dynamic parameters are used that can be manipulated, which may lead to local file inclusion.
+The URL specified in `loadURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
 
-Set the following [code snippet and best practices](https://github.com/nowsecure/secure-mobile-development/blob/master/en/android/webview-best-practices.md#remediation "WebView best practices") in order to deactivate protocol handlers, if applicable:
+Use the following [code snippet and best practices](https://github.com/nowsecure/secure-mobile-development/blob/master/en/android/webview-best-practices.md#remediation "WebView best practices") to deactivate protocol handlers, if applicable:
 
 ```java
-//Should an attacker somehow find themselves in a position to inject script into a WebView, then they could exploit the opportunity to access local resources. This can be somewhat prevented by disabling local file system access. It is enabled by default. The Android WebSettings class can be used to disable local file system access via the public method setAllowFileAccess.
+//If attackers can inject script into a WebView, they could access local resources. This can be prevented by disabling local file system access, which is enabled by default. You can use the Android WebSettings class to disable local file system access via the public method `setAllowFileAccess`.
 webView.getSettings().setAllowFileAccess(false);
 
 webView.getSettings().setAllowFileAccessFromFileURLs(false);
@@ -683,47 +609,33 @@ webView.getSettings().setAllowUniversalAccessFromFileURLs(false);
 webView.getSettings().setAllowContentAccess(false);
 ```
 
-- Create a white-list that defines the web pages and it's protocols that are allowed to be loaded locally and remotely.
-- Create checksums of the local HTML/JavaScript files and check it during start up of the App. Minify JavaScript files in order to make it harder to read them.
+- Create a whitelist that defines local and remote web pages and protocols that are allowed to be loaded.
+- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. Minify JavaScript files to make them harder to read.
 
 #### Dynamic Analysis
 
-While using the app look for ways to trigger phone calls or accessing files from the file system to identify usage of protocol handlers.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-##### OWASP MASVS
-
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
-
-##### CWE
-
-N/A
+To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
 
 
-### Testing Whether Java Objects Are Exposed Through WebViews
+### Determining Whether Java Objects Are Exposed Through WebViews
 
 #### Overview
 
-Android offers a way that enables JavaScript executed in a WebView to call and use native functions within an Android App called [`addJavascriptInterface()`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()").
+Android offers a way for JavaScript executed in a WebView to call and use native functions of an Android app: [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()").
 
-The `addJavascriptInterface()` method allows to expose Java Objects to WebViews. When using this method in an Android app it is possible for JavaScript code in a WebView to invoke native methods of the Android App.
+The `addJavascriptInterface` method allows you to expose Java Objects to WebViews. When you use this method in an Android app, JavaScript in a WebView can invoke the Android app's native methods.
 
-Before Android 4.2 Jelly Bean (API Level 17) [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface()`, by using reflection that leads to remote code execution when injecting malicious JavaScript in a WebView.
+Before Android 4.2 Jelly Bean (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
 
-With API Level 17 this vulnerability was fixed and the access granted to methods of a Java Object for JavaScript was changed. When using `addJavascriptInterface()`, methods of a Java Object are only accessible for JavaScript when the annotation `@JavascriptInterface` is explicitly added. Before API Level 17 all methods of the Java Object were accessible by default.
+This vulnerability was fixed by API Level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API Level 17, all Java Object methods were accessible by default.
 
-An app that is targeting an Android version before Android 4.2 is still vulnerable to the identified flaw in `addJavascriptInterface()` and should only be used with extreme care. Therefore several best practices should be applied in case this method is needed.
+An app that targets an Android version older than Android 4.2 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
 
 #### Static Analysis
 
-It need to be verified if and how the method `addJavascriptInterface()` is used and if it's possible for an attacker to inject malicious JavaScript.
+You need to determine whether the method `addJavascriptInterface` is used, how it is used, and whether an attacker can inject malicious JavaScript.
 
-The following example shows how `addJavascriptInterface` is used in a WebView to bridge a Java Object to JavaScript:
+The following example shows how `addJavascriptInterface` is used to bridge a Java Object and JavaScript in a WebView:
 
 ```Java
 WebView webview = new WebView(this);
@@ -737,7 +649,7 @@ myWebView.loadURL("http://example.com/file.html");
 setContentView(myWebView);
 ```
 
-In Android API level 17 and above, an annotation called `JavascriptInterface` is used to explicitly allow the access from JavaScript to a Java method.
+In Android API levels 17 and above, an annotation called `JavascriptInterface` explicitly allows JavaScript to access a Java method.
 
 ```Java
 public class MSTG_ENV_008_JS_Interface {
@@ -762,19 +674,19 @@ public class MSTG_ENV_008_JS_Interface {
 }
 ```
 
-If the annotation `@JavascriptInterface` is used, this method can be called from JavaScript. If the app is targeting API level < 17, all methods of the Java Object are exposed to JavaScript and can be called.
+If the annotation `@JavascriptInterface` is defined for a method, it can be called by JavaScript. If the app targets API level < 17, all Java Object methods are exposed by default to JavaScript and can be called.
 
-In JavaScript the method `returnString()` can now be called and the return value can be stored in the parameter `result`.
+The method `returnString` can then be called in JavaScript in order to retrieve the return value. The value is then stored in the parameter `result`.
 
 ```Javascript
 var result = window.Android.returnString();
 ```
 
-If an attacker has access to the JavaScript code, for example through stored XSS or a MITM attack, he can directly call the exposed Java methods in order to exploit them.
+With access to the JavaScript code, via, for example, stored XSS or a MITM attack, an attacker can directly call the exposed Java methods.
 
-If `addJavascriptInterface()` is needed, only JavaScript provided with the APK should be allowed to call it but no JavaScript loaded from remote endpoints.
+If `addJavascriptInterface` is necessary, only JavaScript provided with the APK should be allowed to call it; no JavaScript should be loaded from remote endpoints.
 
-Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the app. For these API levels, only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed from JavaScript.
+Another solution is limiting the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed via JavaScript at these API levels.
 
 ```xml
 <uses-sdk android:minSdkVersion="17" />
@@ -785,35 +697,107 @@ Another compliant solution is to define the API level to 17 (JELLY_BEAN_MR1) and
 
 #### Dynamic Analysis
 
-The dynamic analysis of the app can determine what HTML or JavaScript files are loaded and if known vulnerabilities are present. The procedure to exploit the vulnerability is to produce a JavaScript payload and then inject it into the file that the app is requesting for. The injection could be done either though a MITM attack, or by modifying directly the file in case it is stored on the external storage. The whole process could be done through Drozer that using weasel (MWR's advanced exploitation payload) which is able to install a full agent, injecting a limited agent into a running process, or connecting a reverse shell to act as a Remote Access Tool (RAT).
+Dynamic analysis of the app can show you which HTML or JavaScript files are loaded and which vulnerabilities are present. The procedure for exploiting the vulnerability starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via a MITM attack or direct modification of the file if it is stored in external storage. The whole process can be accomplished via Drozer and weasel (MWR's advanced exploitation payload), which can install a full agent, injecting a limited agent into a running process or connecting a reverse shell as a Remote Access Tool (RAT).
 
-A full description of the attack can be found in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
+A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
-#### References
 
-##### OWASP Mobile Top 10 2016
 
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+### Testing for Fragment Injection
 
-##### OWASP MASVS
+#### Overview
 
-- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
 
-##### CWE
+This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
 
--	CWE-749 - Exposed Dangerous Method or Function
+The first field is expected to contain the `Fragment` class name, and the second one is expected to contain the input bundle passed to the `Fragment`.
 
+Because the `PreferenceActivity` uses reflection to load the fragment, an arbitrary class may be loaded inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
+
+With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a java.lang.CastException, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
+
+To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
+
+The default implementation returns true on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
+
+
+#### Static Analysis
+
+Steps:
+- Find the package `minSDKVersion` to determine the behavior of the class.
+- Find exported Activities that extend the `PreferenceActivity` class.
+- Determine whether the method isValidFragment has been overridden.
+
+The following example shows an Activity that extends this activity:
+
+```
+public class MyPreferences extends PreferenceActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+```
+
+The following examples show the isValidFragment method being overridden with an implementation that allows the loading of MyPreferenceFragment only:
+
+```Java
+@Override
+protected boolean isValidFragment(String fragmentName)
+{
+return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
+}
+
+```
+
+#### Example of Vulnerable App and Exploitation
+
+MainActivity.class
+```Java
+public class MainActivity extends PreferenceActivity {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+MyFragment.class
+```Java
+public class MyFragment extends Fragment {
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragmentLayout, null);
+        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
+        return v;
+    }
+}
+```
+To exploit this vulnerable Activity, you can create an application with the following code:
+
+```Java
+Intent i = new Intent();
+i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
+i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
+Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+startActivity(i);
+```
+
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
 
 ### Testing Object Persistence
 
 #### Overview
 
-There are various ways to persist an object within Android:
+There are several ways to persist an object on Android:
 
 ##### Object Serialization
 
-An object and its data can be represented as a sequence of bytes. In Java, this is possible using [object serialization](https://developer.android.com/reference/java/io/Serializable.html "Serializable"). Serialization is not secure by default and is just a binary format or representation that can be used to store data locally as .ser file. It is possible to encrypt and sign/HMAC serialized data as long as the keys are stored safely. To deserialize an object, the same version of the class is needed as when it was serialized. When classes are changed, the `ObjectInputStream` will not be able to create objects from older .ser files. The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.
+An object and its data can be represented as a sequence of bytes. This is done in Java via [object serialization](https://developer.android.com/reference/java/io/Serializable.html "Serializable"). Serialization is not inherently secure. It is just a binary format (or representation) for locally storing data in a .ser file. Encrypting and signing HMAC-serialized data is possible as long as the keys are stored safely. Deserializing an object requires a class of the same version as the class used to serialize the object. After classes have been changed, the `ObjectInputStream` can't create objects from older .ser files. The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.
 
 ```java
 import java.io.Serializable;
@@ -834,11 +818,12 @@ public class Person implements Serializable {
 
 ```
 
-Now in another class, you can read/write the object using an `ObjectInputStream`/`ObjectOutputStream`.
+Now you can read/write the object with `ObjectInputStream`/`ObjectOutputStream` in another class.
 
 ##### JSON
 
-There are various ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. Next there is a wide variety of libraries which can be used, such as [GSON](https://github.com/google/gson "Google Gson") or [Jackson](https://github.com/FasterXML/jackson-core "Jackson core"). They mostly differ in whether they use reflection to compose the object, whether they support annotations and the amount of memory they use. Note that almost all the JSON representations are String based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory. JSON itself can be stored somewhere, e.g. (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g. encrypted/HMACed). See the data storage chapter for more details. Here is a simple example of how JSON can be written and read using GSON from the GSON User Guide. In this sample, the contents of an instance of the `BagOfPrimitives` is serialized into JSON:
+There are several ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. A wide variety of libraries, including [GSON](https://github.com/google/gson "Google Gson") or [Jackson](https://github.com/FasterXML/jackson-core "Jackson core"), can also be used. The main differences between the libraries are whether they use reflection to compose the object, whether they support annotations, and the amount of memory they use. Note that almost all the JSON representations are String-based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory.
+JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the data storage chapter for more details. A simple example (from the GSON User Guide) of writing and reading JSON with GSON follows. In this example, the contents of an instance of the `BagOfPrimitives` is serialized into JSON:
 
 ```java
 class BagOfPrimitives {
@@ -861,17 +846,17 @@ String json = gson.toJson(obj);
 
 ##### ORM
 
-There are libraries that provide the functionality to store the contents of an object directly into a database and then instantiate the objects based on the database content again. This is called Object-Relational Mapping (ORM). There are libraries that use SQLite as a database, such as:
+There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
 - [OrmLite](http://ormlite.com/ "OrmLite"),
 - [SugarORM](http://satyan.github.io/sugar/ "Sugar ORM"),
 - [GreenDAO](http://greenrobot.org/greendao/ "GreenDAO") and
 - [ActiveAndroid](http://www.activeandroid.com/ "ActiveAndroid").
 
-[Realm](https://realm.io/docs/java/latest/ "Realm Java") on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide mostly relies on whether the database is encrypted. See the data storage chapter for more details. A nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid "OrmLite example") can be found on their website.
+[Realm](https://realm.io/docs/java/latest/ "Realm Java"), on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide depends primarily on whether the database is encrypted. See the data storage chapter for more details. The Realm website includes a nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid "OrmLite example").
 
 ##### Parcelable
 
-[`Parcelable`](https://developer.android.com/reference/android/os/Parcelable.html "Parcelable") is an interface for classes whose instances can be written to and restored from a [`Parcel`](https://developer.android.com/reference/android/os/Parcel.html "Parcel"). A parcel is often used to pack a class as part of a `Bundle` content for an `Intent`. Here's an example from the Android developer documentation that implements `Parcelable`:
+[`Parcelable`](https://developer.android.com/reference/android/os/Parcelable.html "Parcelable") is an interface for classes whose instances can be written to and restored from a [`Parcel`](https://developer.android.com/reference/android/os/Parcel.html "Parcel"). Parcels are often used to pack a class as part of a `Bundle` for an `Intent`. Here's an Android developer documentation example that implements `Parcelable`:
 
 ```java
 public class MyParcelable implements Parcelable {
@@ -902,22 +887,22 @@ public class MyParcelable implements Parcelable {
  }
 ```
 
-As the mechanisms with Parcels and Intents might change over time, and the `Parcelable` might contain `IBinder` pointers, it is not recommended to store any data on disk using `Parcelable`.
+Because this mechanism that involves Parcels and Intents may change over time, and the `Parcelable` may contain `IBinder` pointers, storing data to disk via `Parcelable` is not recommended.
 
 #### Static Analysis
 
-In general: if the object persistence is used for persisting any sensitive information on the device, then make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, you need to make sure that obtaining the keys to decrypt and verify are only obtainable if the user is authenticated. Security checks should be made at the correct positions as defined in [best practices](https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
+If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager "SER04-J. Don't allow serialization and deserialization to bypass the security manager").
 
-There are a few generic remediation steps one can always take:
+There are a few generic remediation steps that you can always take:
 
-1.	Make sure that sensitive data after serialization/persistence has been encrypted and HMACed/signed. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
-2.	Make sure that keys used for step 1 cannot be extracted easily. Instead, the user and/or application instance should be properly authenticated/authorized to obtain the keys to use the data. See the data storage chapter for more details.
-3.	Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g. no exploit of business/application logic).
+1.	Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
+2.	Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the data storage chapter for more details.
+3.	Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
 
-In case of a high-risk application with a focus on availability, we would recommend to only use `Serializable` when the classes that are serialized are stable. Second, we would recommend to rather not use reflection based persistence because:
+For high-risk applications that focus on availability, we recommend that you use `Serializable` only when the serialized classes are stable. Second, we recommend not using reflection-based persistence because
 
-- The attacker could possibly find the signature of the method due to the String based argument
-- The attacker might be able to manipulate the reflection based steps in order to execute business logic.
+- the attacker could find the method's signature via the String-based argument
+- the attacker might be able to manipulate the reflection-based steps to execute business logic.
 
 See the anti-reverse-engineering chapter for more details.
 
@@ -930,7 +915,7 @@ Search the source code for the following keywords:
 
 ##### JSON
 
-Static analysis depends on the library being used. In case of the need to counter memory-dumping, make sure that highly sensitive information is not stored in JSON as you cannot guarantee any anti-memory dumping techniques with the standard libraries. You can check for the following keywords per library:
+If you need to counter memory-dumping, make sure that very sensitive information is not stored in the JSON format because you can't guarantee prevention of anti-memory dumping techniques with the standard libraries. You can check for the following keywords in the corresponding libraries:
 
 **`JSONObject`** Search the source code for the following keywords:
 
@@ -944,7 +929,7 @@ Static analysis depends on the library being used. In case of the need to counte
 -	`import com.google.gson.reflect`
 -	`import com.google.gson.stream`
 -	`new Gson();`
--	Annotations such as: `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, `@Until`
+-	Annotations such as `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, and `@Until`
 
 **`Jackson`** Search the source code for the following keywords:
 
@@ -953,7 +938,7 @@ Static analysis depends on the library being used. In case of the need to counte
 
 ##### ORM
 
-When using an ORM library, verify that the data is stored in an encrypted database or that the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords per library:
+When you use an ORM library, make sure that the data is stored in an encrypted database and the class representations are individually encrypted before storing it. See the chapters on data storage and cryptographic management for more details. You can check for the following keywords in the corresponding libraries:
 
 **`OrmLite`** Search the source code for the following keywords:
 
@@ -998,112 +983,40 @@ Make sure that `QUERY_LOG` is set to false.
 
 ##### Parcelable
 
-Verify that, when sensitive information is stored in an Intent using a Bundle containing a Parcelable, the appropriate security measures are taken. Make sure to use explicit intents and reassure proper additional security controls in case of application level IPC (e.g. signature verification, intent-permissions, crypto).
+Make sure that appropriate security measures are taken when sensitive information is stored in an Intent via a Bundle that contains a Parcelable. Use explicit Intents and verify proper additional security controls when using application-level IPC (e.g., signature verification, intent-permissions, crypto).
 
 #### Dynamic Analysis
 
-There are various steps one can take for dynamic analysis:
+There are several ways to perform dynamic analysis:
 
-1.	Regarding the actual persistence: use the techniques described in the data storage chapter.
-2.	Regarding the reflection based approaches: use Xposed to hook into the de-serialization methods or add extra unprocessable information to the serialized objects to see how they are handled (e.g. Will the application crash? Or can you extract extra information by enriching the objects?).
+1.	For the actual persistence: Use the techniques described in the data storage chapter.
+2.	For reflection-based approaches: Use Xposed to hook into the de-serialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### Android Fragment Injection
+
+- https://www.synopsys.com/blogs/software-security/fragment-injection/
+- https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
+
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
+- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
-##### CWE
+#### CWE
 
-N/A
+- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-749 - Exposed Dangerous Method or Function
 
+#### Tools
 
-
-### Testing Root Detection
-
-#### Overview
-
-Checking the integrity of the environment where the app is running is getting more and more common on the Android platform. Due to the usage of rooted devices several fundamental security mechanisms of Android are deactivated or can easily be bypassed by any app. Apps that process sensitive information or have built in largely intellectual property (IP), like gaming apps, might want to avoid to run on a rooted phone to protect data or their IP.
-
-Keep in mind that root detection is not protecting an app from attackers, but can slow down an attacker dramatically and higher the bar for successful local attacks. Root detection should be considered as part of a broad security-in-depth strategy, to be more resilient against attackers and make analysis harder.
-
-#### Static Analysis
-
-Root detection can either be implemented by leveraging existing root detection libraries, such as [`Rootbeer`](https://github.com/scottyab/rootbeer "RootBeer"), or by implementing manually checks.
-
-Check the source code for the string `rootbeer` and also the `gradle` file, if a dependency is defined for Rootbeer:
-
-```java
-dependencies {
-    compile 'com.scottyab:rootbeer-lib:0.0.4'
-}
-```
-
-If this library is used, code like the following might be used for root detection.
-
-```java
-        RootBeer rootBeer = new RootBeer(context);
-        if(rootBeer.isRooted()){
-            //we found indication of root
-        }else{
-            //we didn't find indication of root
-        }
-```
-
-If the root detection is implemented from scratch, the following should be checked to identify functions that contain the root detection logic. The following checks are the most common ones for root detection:
-
-- Checking for settings/files that are available on a rooted device, like verifying the BUILD properties for test-keys in the parameter `android.os.build.tags`.
-- Checking permissions of certain directories that should be read-only on a non-rooted device, but are read/write on a rooted device.
-- Checking for installed apps that allow or support rooting of a device, like verifying the presence of *Superuser.apk*.
-- Checking available commands, like is it possible to execute `su` and being root afterwards.
-
-The following approach can be used to identify elements mentioned just above:
-* Decompile sources code using the tool [`JADX`](https://github.com/skylot/jadx "JADX") using the command line `jadx -d SOURCES --deobf APP.apk` in order to obtain the decompiled sources in a folder named **SOURCES**.
-* From the folder **SOURCES**, use the following set of expressions in the command template `grep -ir [EXPRESSION] *` in order to identify root detection materials usage:
-  * "test-keys"
-  * "Build.TAGS"
-  * "/su\""
-  * "Runtime.getRuntime().exec"
-  * "superuser"
-  * "RootBeer"
-  * "de.robv.android.xposed"
-  * "com.saurik.substrate"
-  * "com.mwr.dz"
-  * "busybox"
-
-To implement root detection within an Android app, libraries can be used like `RootBeer`. The root detection should either trigger a warning to the user after start, to remind him that the device is rooted and that the user can only proceed on his own risk. Alternatively, the app can terminate itself in case a rooted environment is detected. This decision is depending on the business requirements and the risk appetite of the stakeholders.
-
-#### Dynamic Analysis
-
-A debug build with deactivated root detection should be provided in a white box test to be able to apply all test cases to the app.
-
-In case of a black box test, an implemented root detection can be challenging if for example the app is immediately terminated because of a rooted phone. Ideally, a rooted phone is used for black box testing and might also be needed to disable SSL Pinning. To deactivate SSL Pinning and allow the usage of an interception proxy, the root detection needs to be defeated first in that case. Identifying the implemented root detection logic without source code in a dynamic scan can be fairly hard.
-
-By using the Xposed module `RootCloak` it is possible to run apps that detect root without disabling root. Nevertheless, if a root detection mechanism is used within the app that is not covered in RootCloak, this mechanism needs to be identified and added to RootCloak in order to disable it.
-
-Other options are dynamically patching the app with Friday or repackaging the app. This can be as easy as deleting the function in the smali code and repackage it, but can become difficult if several different checks are part of the root detection mechanism. Dynamically patching the app can also become difficult if countermeasures are implemented that prevent runtime manipulation/tampering.
-
-Otherwise it should be switched to a non-rooted device in order to use the testing time wisely and to execute all other test cases that can be applied on a non-rooted setup. This is of course only possible if the SSL Pinning can be deactivated for example in smali and repackaging the app.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
--	M8 - Code Tampering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
-
-##### OWASP MASVS
-
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-
-##### CWE
-
-N/A
-
-##### Tools
-
--	RootCloak - http://repo.xposed.info/module/com.devadvance.rootcloak2
+- Drozer - https://github.com/mwrlabs/drozer

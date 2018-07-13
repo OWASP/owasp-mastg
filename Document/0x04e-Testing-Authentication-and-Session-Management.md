@@ -1,6 +1,12 @@
-## Testing Authentication on the Back End
+## Mobile App Authentication Architectures
+
+Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the back end service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
+
+Since the basic concepts are identical on iOS and Android, we'll discuss prevalent authentication and authorization architectures and pitfalls in this generic guide. OS-specific authentication issues, such as local and biometric authentication, will be discussed in the respective OS-specific chapters.
+
+### Stateful vs. Stateless Authentication
 
 You'll usually find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so there must be a way to associate a user's subsequent HTTP requests with that user—otherwise, the user's log in credentials would have to be sent with every request. Also, both the server and client need to keep track of user data (e.g., the user's privileges or role). This can be done in two different ways:
 
@@ -15,13 +21,61 @@ Web applications commonly use stateful authentication with a random session ID t
 
 As a mobile security tester, you should be familiar with both types of authentication.
 
-In this chapter, we discuss authentication and authorization on an OS-independent level. You'll find OS-specific mobile security discussions (local and biometric authentication) in the respective OS-specific chapters.
+### Verifying that Appropriate Authentication is in Place
 
-### Common Issues
+There's no one-size-fits-all approach to authentication. When reviewing the authentication architecture of an app, you should first consider whether the authentication method(s) used are appropriate in the given context. Authentication can be based on one or more of the following:
 
-Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project"). Before diving into concrete testing instructions, we'll look at some of the most common issues.
+- Something the user knows (password, PIN, pattern, etc.)
+- Something the user has (SIM card, one-time password generator, or hardware token)
+- A biometric property of the user (fingerprint, retina, voice)
 
-#### Authentication Bypass
+The number of authentication procedures implemented by mobile apps depends on the sensitivity of the functions or accessed resources. Refer to industry best practices when reviewing authentication functions. Username/password authentication (combined with a reasonable password policy) is generally considered sufficient for apps that have a user login and aren't very sensitive. This form of authentication is used by most social media apps.
+
+For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leech Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
+
+You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following authentication requirements:
+
+- If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
+- A password policy exists and is enforced at the remote endpoint.
+- The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times.
+
+For sensitive apps ("Level 2"), the MASVS adds the following:
+
+- A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
+- Step-up authentication is required to enable actions that deal with sensitive data or transactions.
+
+#### 2-Factor Authentication and Step-up Authentication
+
+Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
+
+- One-Time password via SMS (SMS-OTP)
+- One-time Code via phone call
+- Hardware or software token
+- Push notifications in combination with PKI and local authentication
+
+The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
+
+#### Transaction Signing with Push Notifications and PKI
+
+Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
+
+#### Supplementary Authentication
+
+Authentication schemes are sometimes supplemented by [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+
+- Geolocation
+- IP address
+- Time of day
+
+Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
+
+### Testing Authentication
+
+Perform the following steps when testing authentication and authorization:
+
+- Identify the additional authentication factors the app uses.
+- Locate all endpoints that provide critical functionality.
+- Verify that the additional factors are strictly enforced on all server-side endpoints.
 
 Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state. While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested.
 
@@ -43,113 +97,7 @@ Security experts used to recommend using session-based authentication and mainta
 
 To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/) We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
-In the following sections, we will list testing methods and best practices for session-based and stateless authentication.
-
-### Verifying that Appropriate Authentication is in Place
-
-#### Overview
-
-There's no one-size-fits-all approach to authentication. You should first consider whether the authentication method(s) used are appropriate for the app. Authentication can be based on one or more of the following:
-
-- Something the user knows (password, PIN, pattern, etc.)
-- Something the user has (SIM card, one-time password generator, or hardware token)
-- A biometric property of the user (fingerprint, retina, voice)
-
-The number of authentication procedures implemented by mobile apps depends on the sensitivity of the functions or accessed resources.
-
-#### Assessing the Authentication Architecture
-
-Refer to industry best practices when reviewing authentication functions. Username/password authentication (combined with a reasonable password policy) is generally considered sufficient for apps that have a user login and aren't very sensitive. This form of authentication is used by most social media apps.
-
-For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leech Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
-
-You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following authentication requirements:
-
-- If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
-- A password policy exists and is enforced at the remote endpoint.
-- The remote endpoint implements an exponential back-off, or temporarily locks the user account, when incorrect authentication credentials are submitted an excessive number of times.
-
-For sensitive apps ("Level 2"), the MASVS adds the following:
-
-- A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
-- Step-up authentication is required to enable actions that deal with sensitive data or transactions.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-
-
-### Testing 2-Factor Authentication and Step-up Authentication
-
-#### Overview
-
-Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
-
-- One-Time password via SMS (SMS-OTP)
-- One-time Code via phone call
-- Hardware or software token
-- Push notifications in combination with PKI and local authentication
-
-The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
-
-##### Transaction Signing with Push Notifications and PKI
-
-Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
-
-##### Supplementary Schemes
-
-You may supplement an authentication scheme with [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
-
-- Geolocation
-- IP address
-- Time of day
-
-Ideally, the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
-
-#### Static Analysis
-
-Identify the additional authentication factors the app uses. Locate all endpoints that provide critical functionality. Verify that the additional factors are strictly enforced on all server-side endpoints.
-
-#### Dynamic Analysis
-
-Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
-
-##### Brute-Force Attacks
-
-Given that many OTPs are just numeric values, an attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
-
-Attempt a brute-force attack on the OTP verification endpoint using BURP Intruder or a similar tool (see also [Testing Excessive Login Attempts](#user-content-testing-excessive-login-attempts)).
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
-- V4.10: "Sensitive transactions require step-up authentication."
-
-##### CWE
-
-- CWE-287: Improper Authentication
-- CWE-308: Use of Single-factor Authentication
-
-
-### Testing the Password Policy
-
-#### Overview
+#### Best Practices for Passwords
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible.
 
@@ -167,9 +115,7 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-#### Static Analysis
-
-Verify the existences of a password policy and password complexity requirements. Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
 Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
 
@@ -217,55 +163,7 @@ function(password) {
 
 For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength is. It is available for many programming languages.
 
-#### Dynamic Analysis
-
-Attempt to pass weak passwords to registration and password reset functions, such as:
-
-- Self-registration function for new users, which allows users to set passwords
-- "Forgot Password" function, which allows users to set a new password
-- "Change Password" function, which allows logged-in users to set a new password
-
-When you're black-box testing, use a dictionary attack to detect weak passwords (this is described in more detail in the next chapter).
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.5: "A password policy exists and is enforced at the remote endpoint."
-
-##### CWE
-
-- CWE-521: Weak Password Requirements
-
-
-### Testing Excessive Login Attempts
-
-#### Overview
-
-Password-guessing attacks are a common and well-known hacking technique. Hackers use a dictionary of common passwords to guess the correct password for user accounts. This kind of attack doesn’t require much technical knowledge of the target: there are ready-made tools that automatically generate the required requests from word lists and smart rule sets.
-
-The common way to block this attack is to lock accounts after a specific number of incorrect login attempts ("login throttling"). Account lockouts may last for a specific amount of time (temporary lockout), such as a few minutes, or until an administrator manually unlocks the account (permanent lockout). The recommended defense, however, is an exponential back-off algorithm: exponentially increasing the time between subsequent login attempts . Such a scheme has a negligible effect on usability while slowing down automated attacks significantly.
-
-> Always check whether an account locking mechanism is in place before attempting to perform a brute-force attack on a client’s system. If account locking is in place, refrain from brute-forcing the passwords of legitimate users.
-
-#### Static Analysis
-
-Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
-
-Observe the following best practices when implementing anti-brute-force controls:
-
-- After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
-- A five-minute account lock is commonly used for temporary account locking.
-- The controls must be implemented on the server because client-side controls are easily bypassed.
-- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
-
-Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
-
-#### Dynamic Analysis
+##### Running a Password Dictionary Attack
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -289,32 +187,24 @@ In this example, you can identify the successful attempt by length (password = "
 
 > Tip: Append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without locking the account, that means the account isn't protected against brute force attacks.
 
-#### References
+##### Login Throttling
 
-##### OWASP Mobile Top 10 2016
+Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+Observe the following best practices when implementing anti-brute-force controls:
 
-##### OWASP MASVS
+- After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
+- A five-minute account lock is commonly used for temporary account locking.
+- The controls must be implemented on the server because client-side controls are easily bypassed.
+- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
 
-- V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
-##### CWE
-
-- CWE-307: Improper Restriction of Excessive Authentication Attempts
-
-##### Tools
-
-- Free and Professional Burp Suite editions - https://portswigger.net/burp/
-Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-
+When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
 ### Testing Stateful Session Management
 
-#### Overview
-
-Session-based authentication is characterized by authentication records on both the client and server. The authentication flow is as follows:
+Stateful (or "session-based") authentication is characterized by authentication records on both the client and server. The authentication flow is as follows:
 
 1. The app sends a request with the user's credentials to the backend server.
 2. The server verifies the credentials If the credentials are valid, the server creates a new session along with a random session ID.
@@ -324,7 +214,7 @@ Session-based authentication is characterized by authentication records on both 
 
 When sessions are improperly managed, they are vulnerable to a variety of attacks that may compromise the session of a legitimate user, allowing the attacker to impersonate the user. This may result in lost data, compromised confidentiality, and illegitimate actions.
 
-#### Static Analysis
+#### Session Management Best Practices
 
 Locate any server-side endpoints that provide sensitive information or functions and verify the consistent enforcement of authorization. The backend service must verify the user's session ID or token and make sure that the user has sufficient privileges to access the resource. If the session ID or token is missing or invalid, the request must be rejected.
 
@@ -359,7 +249,7 @@ Refer to the framework documentation for examples of session timeout configurati
 
 #### Dynamic Analysis
 
-First, manually or automatically crawl the application to make sure that all privileged actions and data are secure and to determine whether a valid session ID is required. Record the requests in your proxy.
+You can use dynamic analysis to verify that authorization is consistently enforced on all remote endpoints. First, manually or automatically crawl the application to make sure that all privileged actions and data are secure and to determine whether a valid session ID is required. Record the requests in your proxy.
 
 Then, replay the crawled requests while manipulating the session IDs as follows:
 
@@ -373,32 +263,14 @@ To verify session timeout:
 2. Perform a couple of operations that require authentication.
 3. Leave the session idle until it expires. After session expiry, attempt to use the same session ID to access authenticated functionality.
 
-Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more session management test cases.
+##### Verifying that 2FA is Enforced
 
-#### References
+Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
-
-##### CWE
-
-- CWE-613: Insufficient Session Expiration
-
-##### Tools
-
-- OWASP ZAP (Zed Attack Proxy)
-- Burp Suite
+Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
 
 
 ### Testing Stateless (Token-Based) Authentication
-
-#### Overview
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
@@ -420,8 +292,6 @@ The second part of the token is the *payload*, which contains so-called claims. 
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
 
-Signature
-
 The signature is created by applying the algorithm specified in the JWT header to the encoded header, encoded payload, and a secret value. For example, when using the HMAC SHA256 algorithm the signature is created in the following way:
 
 ```
@@ -432,13 +302,13 @@ Note that the secret is shared between the authentication server and the back en
 
 #### Static Analysis
 
-Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities .
+Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities.
 
 Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
 
 - Verify that the HMAC is checked for all incoming requests containing a token;
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java).
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_\(JWT\)_Cheat_Sheet_for_Java).
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
@@ -498,35 +368,46 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Token Storage on the client:
   * The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication"). See the tools section for details.
+  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
-Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
 
 ##### Tampering with the Hashing Algorithm
 
 Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
-#### References
 
-##### OWASP Mobile Top 10 2016
+### User Logout and Session Timeouts
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking. The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
 
-##### OWASP MASVS
+Failing to destroy the server-side session is one of the most common logout functionality implementation errors . This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user account.
 
-- V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
+Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
 
-##### CWE
+##### Verifying Best Practices
 
-- CWE-287: Improper Authentication
+If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
 
-##### Tools
+- Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
+- Ruby on Rails -  http://guides.rubyonrails.org/security.html
+- PHP - http://php.net/manual/en/function.session-destroy.php
 
-- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
-- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
-- [John the ripper](https://github.com/magnumripper/JohnTheRipper)
+If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
+
+#### Dynamic Analysis
+
+Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
+
+1.  Log into the application.
+2.  Perform a couple of operations that require authentication inside the application.
+3.  Log out.
+4.  Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
+ 
+If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
+The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
 
 ### Testing OAuth 2.0 Flows
@@ -550,7 +431,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
+![Abstract Protocol Flow](Images/Chapters/0x04e/abstract_oath2_flow.png)
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -561,7 +442,7 @@ Here is a more [detailed explanation](https://www.digitalocean.com/community/tut
 5. The application requests the resource from the resource server (API) and presents the access token for authentication. The access token may be used in several ways (e.g., as a bearer token).
 6. If the access token is valid, the resource server (API) serves the resource to the application.
 
-#### Static Analysis
+#### OAUTH 2.0 Best Practices
 
 Verify that the following best practices are followed:
 
@@ -600,7 +481,7 @@ Using an *external user agent* is the method of choice for apps that need to int
 
 - The user's credentials are never directly exposed to the app. This guarantees that the app cannot obtain the credentials during the login process ("credential phishing").
 
-- Almost no authentication logic must be added to the add itself, preventing coding errors.
+- Almost no authentication logic must be added to the app itself, preventing coding errors.
 
 On the negative side, there is no way to control the behavior of the browser (e.g. to activate certificate pinning).
 
@@ -614,70 +495,37 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-#### Remediation
+### References
 
-#### References
-
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
+- V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
+- V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
+- V4.5: "A password policy exists and is enforced at the remote endpoint."
+- V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
+- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
+- V4.10: "Sensitive transactions require step-up authentication."
 
-##### CWE
+#### CWE
 
+- CWE-287: Improper Authentication
+- CWE-307: Improper Restriction of Excessive Authentication Attempts
+- CWE-308: Use of Single-factor Authentication
+- CWE-521: Weak Password Requirements
 - CWE-613: Insufficient Session Expiration
 
 ##### Tools
 
-- OWASP ZAP (Zed Attack Proxy)
-- Burp Suite
-
-
-### Testing User Logout
-
-#### Overview
-
-Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking. The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
-
-Failing to destroy the server-side session is one of the most common logout functionality implementation errors . This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user account.
-
-Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
-
-##### Static Analysis 
-
-If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
-
-- Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
-- Ruby on Rails -  http://guides.rubyonrails.org/security.html
-- PHP - http://php.net/manual/en/function.session-destroy.php
-
-If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
-
-#### Dynamic Analysis
-
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly. 
-
-1.  Log into the application.
-2.  Perform a couple of operations that require authentication inside the application.
-3.  Log out.
-4.  Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
- 
-If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-##### OWASP MASVS
-
-- V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
-
-##### CWE
-
-- CWE-613: Insufficient Session Expiration
+- Free and Professional Burp Suite editions - https://portswigger.net/burp/
+Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
+- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
+- [John the ripper](https://github.com/magnumripper/JohnTheRipper)

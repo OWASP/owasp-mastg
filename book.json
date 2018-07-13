@@ -1,7 +1,10 @@
 { 
   "root" : "./Document",
+  "plugins" : [ "anchors" ],
 
   "structure": { 
     "readme": "Foreword.md"
-  } 
+  }
+  
+ 
 }

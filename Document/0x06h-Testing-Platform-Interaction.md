@@ -1,4 +1,4 @@
-## Testing Platform Interaction on iOS
+## iOS Platform APIs
 
 ### Testing Custom URL Schemes
 
@@ -28,13 +28,15 @@ In a compiled application, registered protocol handlers are found in the file `I
 $ strings <yourapp> | grep "myURLscheme://"
 ```
 
+You should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
+
 #### Dynamic Analysis
 
 Once you've identified the custom URL schemes the app has registered, open the URLs on Safari and observe how the app behaves.
 
 If the app parses parts of the URL, you can perform input fuzzing to detect memory corruption bugs. For this you can use [IDB](http://www.idbtool.com/):
 
-- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](http://www.idbtool.com/documentation/setup.html). 
+- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](http://www.idbtool.com/documentation/setup.html).
 - Go to the `URL Handlers` section. In `URL schemes`, click `Refresh` , and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking `Open`, on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
 - To find out whether custom URI schemes contain any bugs, try to fuzz them. In the `URL Handlers` section, go to the `Fuzzer` tab. On the left side default IDB payloads are listed. The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers fuzzing dictionaries. Once your payload list is ready, go to the `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
@@ -44,52 +46,52 @@ myURLscheme://$@$
 
 While the URL scheme is being fuzzed, watch the logs (in Xcode, go to `Window -> Devices ->` *click on your device* `->` *bottom console contains logs*) to observe the impact of each payload. The history of used payloads is on the right side of the IDB `Fuzzer` tab .
 
-#### Remediation
+Needle can be used to test custom URL schemes, manual fuzzing can be performed against the URL scheme to identify input validation and memory corruption bugs. The following Needle module should be used to perform these attacks:
 
-You should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
+```
+[needle] > 
+[needle] > use dynamic/ipc/open_uri
+[needle][open_uri] > show options
 
-#### References
+  Name  Current Value  Required  Description
+  ----  -------------  --------  -----------
+  URI                  yes       URI to launch, eg tel://123456789 or http://www.google.com/
 
-##### OWASP Mobile Top 10 2016
-- M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+[needle][open_uri] > set URI "myapp://testpayload'"
+URI => "myapp://testpayload'"
+[needle][open_uri] > run
 
-##### OWASP MASVS
-- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
-
-##### CWE
-- CWE-939: Improper Authorization in Handler for Custom URL Scheme
-
-##### Tools
-- IDB - http://www.idbtool.com/
-
+```
 
 ### Testing iOS WebViews
 
 #### Overview
 
-WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. 
+WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface.
 
 iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. Starting from iOS version 7.0, Apple also introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
 
 Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
+
+WebViews support different URL schemas, like for example tel. Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html "Phone Links on iOS") in the HTML page and will then not be interpreted by the WebView.
 
 #### Static Analysis
 
 Look out for usages of the following components that implement WebViews:
 
 - [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
-- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later) 
+- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later)
 - [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
 
 `UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
 
-- `WKWebView` is the appropriate choice for extending app functionality, controlling displayed content  (i.e., prevent the user from navigating to arbitrary URLs), and customizing.
-- `SafariViewController` should be used to provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari. 
+- `WKWebView` is the appropriate choice for extending app functionality, controlling displayed content  (i.e., prevent the user from navigating to arbitrary URLs) and customizing.
+- `SafariViewController` should be used to provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari.
 
 `WKWebView` comes with several security advantages over `UIWebView`:
 
-- The `JavaScriptEnabled` property can be used to completely disable JavaScipt in the WKWebView. This prevents all script injection flaws. 
-- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups. 
+- The `JavaScriptEnabled` property can be used to completely disable JavaScript in the WKWebView. This prevents all script injection flaws.
+- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
 - the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - WKWebView implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
@@ -125,11 +127,11 @@ As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly 
 }
 ```
 
-JavaScript cannot be disabled in `SafariViewController` (this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface).
+JavaScript cannot be disabled in `SafariViewController` and this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface.
 
 ##### Exposure of Native Objects
 
-Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView. 
+Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
 
 ###### UIWebView
 
@@ -168,11 +170,11 @@ Check the source code for WebViews usage. If you can identify a WebView instance
 {
     [super viewDidLoad];
     WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
-        
+
     self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, CGRectGetWidth([UIScreen mainScreen].bounds) - 20, CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
     self.webView.navigationDelegate = self;
     [self.view addSubview:self.webView];
-    
+
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"example_file" ofType:@"html"];
     NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
@@ -187,22 +189,27 @@ To simulate an attack, inject your own JavaScript into the WebView with an inter
 
 In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
+- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 
-##### CWE
+#### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
-##### Info
+#### Info
 
-- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition. 
+- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
 
-
+#### Tools
+- IDB - http://www.idbtool.com/

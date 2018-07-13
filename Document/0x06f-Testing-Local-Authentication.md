@@ -1,14 +1,12 @@
-## Testing Local Authentication in iOS Apps
+## Local Authentication on iOS
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
 ### Testing Local Authentication
 
-#### Overview
-
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication) provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html) for implementing local authentication.
 
-Fingerprint authentication on iOS is known as *Touch ID*. The fingerprint ID sensor is operated by the [SecureEnclave security coprocessor](http://mista.nu/research/sep-paper.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system. 
+Fingerprint authentication on iOS is known as *Touch ID*. The fingerprint ID sensor is operated by the [SecureEnclave security coprocessor](http://mista.nu/research/sep-paper.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system.
 
 Developers have two options for incorporating Touch ID authentication:
 
@@ -17,19 +15,19 @@ Developers have two options for incorporating Touch ID authentication:
 
 ##### Local Authentication Framework
 
-The Local Authentication framework provides facilities for requesting a passphrase or TouchID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class. 
+The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class.
 
 Two available policies define acceptable forms of authentication:
 
-- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C): When available, the user is prompted to perform TouchID authentication. If TouchID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
+- `deviceOwnerAuthentication`(Swift) or `LAPolicyDeviceOwnerAuthentication`(Objective-C): When available, the user is prompted to perform Touch ID authentication. If Touch ID is not activated, the device passcode is requested instead. If the device passcode is not enabled, policy evaluation fails.
 
-- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where user the is prompted for TouchID.
+- `deviceOwnerAuthenticationWithBiometrics` (Swift) or `LAPolicyDeviceOwnerAuthenticationWithBiometrics`(Objective-C): Authentication is restricted to biometrics where the user is prompted for Touch ID.
 
 The `evaluatePolicy` function returns a boolean value indicating whether the user has authenticated successfully.
 
 The Apple Developer website offers code samples for both [Swift](https://developer.apple.com/documentation/localauthentication) and [Objective-C](https://developer.apple.com/documentation/localauthentication?language=objc). A typical implementation in Swift looks as follows.
 
-```
+```swift
 let context = LAContext()
 var error: NSError?
 
@@ -45,19 +43,19 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 	// User authenticated successfully, take appropriate action
 }
 ```
-*TouchID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
+*Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
 
 #####  Using Keychain Services for Local Authentication
 
-The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app requests either a secret authentication token or another piece of secret data identifying the user stored by the Keychain. In order to authenticate a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data. 
+The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data.
 
-The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user will pass Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
+The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such fallback is allowed by attribute parameters).
 
 In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
 
 **Swift**
 
-```
+```swift
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
@@ -92,7 +90,7 @@ if status == noErr {
 
 **Objective-C**
 
-```
+```objective-c
 // 1. create AccessControl object that will represent authentication settings
 CFErrorRef *err = nil;
 
@@ -122,7 +120,7 @@ Now we can request the saved item from the Keychain. Keychain Services will pres
 
 **Swift**
 
-```
+```swift
 // 1. define query
 var query = [String: Any]()
 query[kSecClass as String] = kSecClassGenericPassword
@@ -147,7 +145,7 @@ if status == noErr {
 
 **Objective-C**
 
-```
+```objective-c
 // 1. define query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,
@@ -170,11 +168,11 @@ if (status == noErr){
 
 Usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using otool:
 
-```
+```shell
 $ otool -L <AppName>.app/<AppName>
 ```
 
-If `LocalAuhentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuhentication.framework` uses `Security.framework` under the hood):
+If `LocalAuthentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuthentication.framework` uses `Security.framework` under the hood):
 
 ```
 /System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication
@@ -192,7 +190,7 @@ It is important to remember that Local Authentication framework is an event-base
 
 #### Dynamic Analysis
 
-On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") can be used to bypass LocalAuthentication. Swizzler uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Install Swizzler2 and follow the steps below to activate this feature:
+On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
 
 - Settings->Swizzler
 - Enable "Inject Swizzler into Apps"
@@ -203,21 +201,32 @@ On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 
 - Enter the submenu "Select Target Apps"
 - Enable the target app
 - Close the app and start it again
-- When the TouchID prompt shows click "cancel"
-- If the application flow continues without requiring the touchID then the bypass has worked.
+- When the Touch ID prompt shows click "cancel"
+- If the application flow continues without requiring the Touch ID then the bypass has worked.
 
-Alternatively, you can use [objection to bypass TouchID](https://github.com/sensepost/objection/wiki/Understanding-the-TouchID-Bypass "Understanding the TouchID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
+If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses cycript instead of frida is also available in Needle.
 
-#### References
+Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-Touch-ID-Bypass "Understanding the Touch ID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
-##### OWASP Mobile Top 10 2016
+Needle can be used to bypass insecure biometric authentication in iOS platforms. Needle utilizes frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
+
+```
+[needle][container] > use hooking/frida/script_touch-id-bypass
+[needle][script_touch-id-bypass] > run
+```
+
+If vulnerable, the module will automatically bypass the login form.
+
+### References
+
+#### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 
-##### CWE
+#### CWE
 
 - CWE-287 - Improper Authentication
