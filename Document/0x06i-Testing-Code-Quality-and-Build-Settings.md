@@ -453,11 +453,23 @@ When a library contains a license in which the application IP needs to be open-s
 Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
 
 
-<#TODO add analysis when source is not available/check mobsf and otherwise check runtime decomposition tooling! >
-
 #### Dynamic Analysis
 
-The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
+The dynamic analysis of this secion comprises two parts: the actual license verification and checking which libraries are involved in case of missing sources. 
+
+When validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
+
+When no source-code is available for library analysis, you can find some of the frameworks being used with otool and mobSF. 
+After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
+```shell
+otool -L <Executable>
+``` 
+However, these do not include all the libraries being used. Next, with Class-dump (for Objective-C) 
+```shell
+./class-dump <Executable> -r
+```
+you can generate a subset of the headerfiles used and derive which librareis are involved. But not detect the version of the library.
+
 
 #### References
 
@@ -477,3 +489,5 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - [Cocoapods](https://cocoapods.org "Cocoapods")
 - [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
 - [Sourceclear](https://sourceclear.com "Sourceclear")
+- [Class-dump](https://github.com/nygard/class-dump "Class-dump")
+- [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
