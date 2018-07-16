@@ -565,7 +565,7 @@ Android apps often make use of third party libraries. These third party librarie
 
 These libraries can have the following two classes of unwanted side-effects:
 - A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain polution was possible to bypass SSL pinning.
-- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intelectual property (IP) of the application.
+- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
 
 #### Static Analysis
 
@@ -588,7 +588,7 @@ buildscript {
 apply plugin: 'org.owasp.dependencycheck'
 ```
 
-Once gradle has invoked the plugin, you can create a report by running: 
+Once gradle has invoked the plugin, you can create a report by running:
 
 ```sh
 gradle assemble
@@ -599,7 +599,7 @@ The report will be in `build/reports` unless otherwise configured. Use the repor
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
-Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as SourceClear or Blackduck. The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries. 
+Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as SourceClear or Blackduck. The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries.
 
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
@@ -631,8 +631,8 @@ gradle downloadLicenses
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.
 
 Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as SourceClear, Snyk or Blackduck.
- 
-> Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist. 
+
+> Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist.
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
