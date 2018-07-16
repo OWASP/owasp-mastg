@@ -2,6 +2,10 @@
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
+<#TODO: ADD NOTE HERE ABOUT DON'T TOUCH ME THAT WAY, THAT IT IS BETTER TO WORK WITH A KEY THAN WITH EVENTS.>
+
+<#TODO: ADD NOTES HERE ABOUT CHECKING WHETHER THE PASSCODE IS ENABLED OR NOT>
+
 ### Testing Local Authentication
 
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication) provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html) for implementing local authentication.
@@ -226,6 +230,7 @@ If vulnerable, the module will automatically bypass the login form.
 #### OWASP MASVS
 
 - V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- 2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 
