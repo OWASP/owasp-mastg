@@ -374,3 +374,130 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 - idb - https://github.com/dmayer/idb
 - Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
+
+### Checking for weaknesses in third party libraries
+
+#### Overview
+
+iOS applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+- Libraries that are not (or should not) be packed within the actual production application, such as `OHHTTPStubs` used for testing.
+- Libraries that are packed within the actual production application, such as `Alomofire`.
+
+These libraries can have the following two classes of unwanted side-effects:
+- A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute man-in-the-middle attacks against apps that are using the library to connect to their APIs.
+- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
+
+Note: there are two widely used package management tools: Carthage and CocoaPods.
+
+
+#### Static Analysis
+
+##### Detecting vulnerabilities of third party libraries
+
+In order to ensure that the libraries used by the apps are not carrying vulnerabilities, one can best check the dependencies installed by CocoaPods or Carthage.
+
+In case CocoaPods is used for managing third party dependencies, the following steps can be taken to analyse the third party libraries for vulnerabilities:
+
+1. At the root of the project, where the Podfile is located, execute the following commands:
+``` sh
+sudo gem install CocoaPods
+pod install
+```
+
+2. Now that the dependency tree has bene built, you can create an overview of the dependencies and their versions by running the following commands:
+```sh
+sudo gem install CocoaPods-dependencies
+pod dependencies
+```
+
+3. The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
+
+> Note:
+1. If the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental CocoaPods podspec checker.
+2. If the project uses CocaoPods in combination with Objective-C, SourceClear can be used.
+3. Using CocoaPods with `http` based links instead of `https` might allow for man-in-the-middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
+
+In case Carthage is used for third party dependencies, then the following steps can be taken to analyse the third party libraries for vulnerabilities:
+1. At the root of the project, where the Cartfile is located, type
+```sh
+brew install carthage
+carthage update --platform iOS
+```
+
+2. Check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+
+> Note, at the time of writing of this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
+
+When a library is found to contain vulnerabilities, then the following reasoning applies:
+- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+
+Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
+
+
+##### Detecting the licenses used by the libraries of the application
+In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by CocoaPods or Carthage.
+
+When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Podfile is located, type
+``` sh
+sudo gem install CocoaPods
+pod install
+
+```
+2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
+
+When the application sources are available and Carthage is used, then execute the following steps to get the different licenses:
+1. At the root of the project, where the Cartfile is located, type
+```sh
+brew install carthage
+carthage update --platform iOS
+```
+
+2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+
+When a library contains a license in which the app's IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
+
+Note: In case of a hybrid app, please check the build-tools used: most of them do have a license enumeration plugin to find the licenses being used.
+
+
+#### Dynamic Analysis
+
+The dynamic analysis of this section comprises of two parts: the actual license verification and checking which libraries are involved in case of missing sources.
+
+It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
+
+When no source-code is available for library analysis, you can find some of the frameworks being used with otool and MobSF.
+After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
+
+```shell
+otool -L <Executable>
+```
+
+However, these do not include all the libraries being used. Next, with Class-dump (for Objective-C) you can generate a subset of the headerfiles used and derive which libraries are involved. But not detect the version of the library.
+
+```shell
+./class-dump <Executable> -r
+```
+
+
+#### References
+
+##### OWASP Mobile Top 10 2016
+
+-	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+
+##### OWASP MASVS
+
+- V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+
+##### CWE
+- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
+
+##### Tools
+- [Carthage](https://github.com/carthage/carthage "Carthage")
+- [CocoaPods](https://CocoaPods.org "CocoaPods")
+- [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
+- [Sourceclear](https://sourceclear.com "Sourceclear")
+- [Class-dump](https://github.com/nygard/class-dump "Class-dump")
+- [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
