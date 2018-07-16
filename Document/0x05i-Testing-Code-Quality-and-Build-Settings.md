@@ -575,7 +575,7 @@ Detecting vulnerabilities in third party dependencies can be done by means of th
 In order to use the plugin, the following steps need to be applied:
 Install the plugin from Maven central repo by adding the following script to your build.gradle:
 
-``groovy
+```groovy
 buildscript {
     repositories {
         mavenCentral()
@@ -588,11 +588,13 @@ buildscript {
 apply plugin: 'org.owasp.dependencycheck'
 ```
 
-Once gradle has invoked the plugin, you can create a report by running
+Once gradle has invoked the plugin, you can create a report by running: 
+
 ```sh
 gradle assemble
 gradle dependencyCheckAnalyze --info
 ```
+
 The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. See remediation on what to do given the vulnerabilities found with the libraries.
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
@@ -615,13 +617,15 @@ In your `build.gradle` file add:
 
 ```groovy
 plugins {
-    i id "com.github.hierynomus.license-report" version"{license_plugin_version"
+    id "com.github.hierynomus.license-report" version"{license_plugin_version}"
 }
 ```
+
 Now, after the plugin is picked up, use the following commands:
+
 ```sh
 gradle assemble
-gradle downloadLicenses 
+gradle downloadLicenses
 ```
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.
@@ -632,7 +636,7 @@ Similar to dependency checking, there are commercial tools which are able to che
 
 When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
-In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
+Note: In case of a hybrid app, please check the buildtools used: most of them do have a license enumeration plugin to find the licenses being used.
 
 When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
