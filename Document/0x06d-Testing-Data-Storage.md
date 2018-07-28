@@ -2,8 +2,6 @@
 
 The protection of sensitive data, such as authentication tokens and private information, is key for mobile security. In this chapter, you'll learn about the iOS APIs for local data storage, and best practices for using them.
 
-<#TODO: SEE WHERHE #918 FITS BEST OR AS A REFERENCE TO 0X06F>
-
 ### Testing Local Data Storage
 
 As little sensitive data as possible should be saved in permanent local storage. However, in most practical scenarios, at least some user data must be stored. Fortunately, iOS offers secure storage APIs, which allow developers to use the cryptographic hardware available on every iOS device. If these APIs are used correctly, sensitive data and files can be secured via hardware-backed 256-bit AES encryption.
@@ -34,8 +32,6 @@ Files can be assigned to one of four different protection classes, which are exp
 All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can happen only on the device itself and requires the correct passcode.
 
 Since iOS 7, the default data protection class is "Protected Until First User Authentication."
-
-#TODO: ADD MISSING ITEMS HERE!
 
 ##### The Keychain
 
@@ -72,7 +68,13 @@ Please note that keys secured by Touch ID (via `kSecAccessControlTouch IDCurrent
 Starting with iOS 9, you can do ECC-based signing operations in the Secure Enclave. In that scenario, the private key and the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key in the Keychain because it can't be stored in the Secure Enclave. After the key is created, you can use the `kSecAttrKeyType` to indicate the type of algorithm you want to use the key with.
 
-#TODO: ADD CHECK HERE AGAIN (OR REFERENCE TO CHECK ON WHETHER DEVICECODE IS SET@)
+In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. This can be done by one of the following options:
+1. Check whether you can write and read code from the protected keychain using the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute:
+//todo: provide sample here:
+
+2. Check with the `LAContext` class:
+//todo: provide sample here:
+
 
 ###### Keychain Data Persistence
 

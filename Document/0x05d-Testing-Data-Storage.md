@@ -251,7 +251,7 @@ You can use stored keys in one of two modes:
 - Reassure that the lockscreen is set:
 
 ```java
-  mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+   KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
    if (!mKeyguardManager.isKeyguardSecure()) {
             // Show a message that the user hasn't set up a lock screen.
    }
