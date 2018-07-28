@@ -247,6 +247,7 @@ You can protect keys stored in the Android KeyStore with user authentication. Th
 You can use stored keys in one of two modes:
 
 1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid.
+#TODO: ADD CONFIRM CREDENTIAL HERE!
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 

@@ -22,6 +22,12 @@ Make sure to verify the authentication logic. For the authentication to be succe
 
 Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
 
+The permission must be requested in the Android Manifest:
+
+```xml
+	<uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
+```
 - Fingerprint hardware must be available:
 
 ```Java
@@ -34,7 +40,7 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 ```Java
 	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();
+	 keyguardManager.isKeyguardSecure(); 
 ```
 
 - At least one finger should be registered:
