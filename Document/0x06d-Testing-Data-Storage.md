@@ -292,7 +292,7 @@ On a non-jailbroken device, you can use objection to [dump the Keychain items](h
 
 For testing the local storage and verifying what data is stored within it, it's not mandatory to have an iOS device. With access to the source code and Xcode the app can be build and deployed in the iOS simulator. The file system of the current device of the iOS simulator is available in `~/Library/Developer/CoreSimulator/Devices`.
 
-Once the app is started in the iOS simulator, you can navigate to the directory with the following command:
+Once the app is running in the iOS simulator, you can navigate to the directory of the latest simulator started with the following command:
 
 ```bash
 $ cd ~/Library/Developer/CoreSimulator/Devices/$(
@@ -300,7 +300,7 @@ ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
 awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 ```
 
-The command above will automatically find the UUID of the latest device started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
+The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
 ```bash
 $ grep -iRn keyword .
