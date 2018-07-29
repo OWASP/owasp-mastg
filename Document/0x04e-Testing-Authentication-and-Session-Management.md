@@ -43,6 +43,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
+- The app informs the user of the recent activities with their account when they log in.
 
 #### 2-Factor Authentication and Step-up Authentication
 
@@ -66,6 +67,7 @@ Authentication schemes are sometimes supplemented by [passive contextual authent
 - Geolocation
 - IP address
 - Time of day
+- The device being used
 
 Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
 
@@ -314,7 +316,7 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 
 ##### Enforcing the Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
 
@@ -322,7 +324,7 @@ For example, in Java applications, the expected algorithm should be requested ex
 // HMAC key - Block serialization and storage as String in JVM memory
 private transient byte[] keyHMAC = ...;
 
-//Create a verification context for the token requesting explicitly the use of the HMAC-256 hashing algorithm
+//Create a verification context for the token requesting explicitly the use of the HMAC-256 hmac generation
 
 JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 
@@ -495,6 +497,10 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
+### Testing blocking of devices
+
+For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". It is recommended that this TODO ADD TESTING HERE
+
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -509,9 +515,10 @@ For additional best practices and detailed information please refer to the follo
 - V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
 - V4.5: "A password policy exists and is enforced at the remote endpoint."
 - V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
-- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
-- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
+- v4.7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
+- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 - V4.10: "Sensitive transactions require step-up authentication."
+- v4.11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices"
 
 #### CWE
 
