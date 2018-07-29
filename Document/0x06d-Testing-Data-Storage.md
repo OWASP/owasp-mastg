@@ -68,13 +68,25 @@ Please note that keys secured by Touch ID (via `kSecAccessControlTouch IDCurrent
 Starting with iOS 9, you can do ECC-based signing operations in the Secure Enclave. In that scenario, the private key and the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key in the Keychain because it can't be stored in the Secure Enclave. After the key is created, you can use the `kSecAttrKeyType` to indicate the type of algorithm you want to use the key with.
 
-In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. This can be done by one of the following options:
-1. Check whether you can write and read code from the protected keychain using the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute:
-//todo: provide sample here:
+In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. In iOS 8, you will need to check whether you can read/write from an item in the Keychain protected by the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute. From iOS 9 onward you can check whether a losckscreen is set, using `LAContext`:
 
-2. Check with the `LAContext` class:
-//todo: provide sample here:
+```swift
 
+  public func devicePasscodeEnabled() -> Bool {
+        return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+    }
+
+```
+
+```obj-c
+  -(BOOL)devicePasscodeEnabled:(LAContex)context{
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
+          return true;
+      } else {
+          creturn false;
+      }
+  }
+```
 
 ###### Keychain Data Persistence
 
