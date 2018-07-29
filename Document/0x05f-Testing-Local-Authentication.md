@@ -2,11 +2,15 @@
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
 As described earlier in 0x04e: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
+In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
-### Testing local authentication based on the lockscreen
+
+### Testing Confirm Credentials
 
 #### Overview
-TODO: FINISH THIS PART!
+The confirm credential flow is avaiable since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lockscreen-protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
+
+Note that the security of Confirm Credentials is only as strong as the protection set at the lockscreen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
 #### Static Analysis
 
@@ -19,7 +23,7 @@ Reassure that the lockscreen is set:
    }
 ```
 
-- Create the key protected by the lockscreen:
+- Create the key protected by the lockscreen (assuring the the user was unlocking his device within the last 30 seconds, or he will have to unlock again):
 
 ```java
   try {
@@ -74,7 +78,7 @@ Reassure that the lockscreen is set:
 
 ```
 #### Dynamic Analysis
-TODO: add content here
+Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 ### References
 
