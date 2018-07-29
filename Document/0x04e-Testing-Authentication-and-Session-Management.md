@@ -499,7 +499,7 @@ For additional best practices and detailed information please refer to the follo
 
 ### Testing blocking of devices
 
-For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". TODO: ADD RECOMMENDATIONS HERE!
+For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". TODO: CONTINUE HERE! 1. explain last login info and why, 2. explain why other devices can best be managed from a portal, 3: test it by trying ot authenticate with burp instead of device (or with testcode), try to authenticate and block device and auth again/continue again.
 
 ### References
 
