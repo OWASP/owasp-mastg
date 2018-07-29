@@ -1,7 +1,96 @@
 ## Local Authentication on Android
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
-As described earlier in 0x04e: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is TODO: finish!
+As described earlier in 0x04e: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
+
+### Testing local authentication based on the lockscreen
+
+#### Overview
+TODO: FINISH THIS PART!
+
+#### Static Analysis
+
+Reassure that the lockscreen is set:
+
+```java
+   KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+   if (!mKeyguardManager.isKeyguardSecure()) {
+            // Show a message that the user hasn't set up a lock screen.
+   }
+```
+
+- Create the key protected by the lockscreen:
+
+```java
+  try {
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+        keyStore.load(null);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+
+        // Set the alias of the entry in Android KeyStore where the key will appear
+        // and the constrains (purposes) in the constructor of the Builder
+        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
+                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                .setUserAuthenticationRequired(true)
+                        // Require that the user has unlocked in the last 30 seconds
+                .setUserAuthenticationValidityDurationSeconds(30)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .build());
+        keyGenerator.generateKey();
+    } catch (NoSuchAlgorithmException | NoSuchProviderException
+            | InvalidAlgorithmParameterException | KeyStoreException
+            | CertificateException | IOException e) {
+        throw new RuntimeException("Failed to create a symmetric key", e);
+    }
+
+```
+
+- setup the lockscreen to confirm:
+```java
+  private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
+  Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
+        if (intent != null) {
+            startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
+        }
+```
+
+
+- use the key after lockscreen
+```java
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
+            // Challenge completed, proceed with using cipher
+            if (resultCode == RESULT_OK) {
+                //use the key for the actual authentication flow
+            } else {
+                // The user canceled or didn’t complete the lock screen
+                // operation. Go to error/cancellation flow.
+            }
+        }
+    }
+
+```
+#### Dynamic Analysis
+TODO: add content here
+
+### References
+
+#### OWASP Mobile Top 10 2016
+
+- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+
+#### OWASP MASVS
+- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+
+
+#### CWE
+
+- CWE-287 - Improper Authentication
+- CWE-604 - Use of Client-Side Authentication
+
 
 ### Testing Biometric Authentication
 
@@ -23,7 +112,7 @@ Make sure to verify the authentication logic. For the authentication to be succe
 
 Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
 
-The permission must be requested in the Android Manifest:
+- The permission must be requested in the Android Manifest:
 
 ```xml
 	<uses-permission
@@ -41,7 +130,7 @@ The permission must be requested in the Android Manifest:
 
 ```Java
 	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure(); 
+	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lockscreen
 ```
 
 - At least one finger should be registered:
@@ -179,6 +268,7 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 #### OWASP MASVS
 
 - V4.8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 

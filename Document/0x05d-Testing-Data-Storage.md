@@ -242,77 +242,11 @@ buildTypes {
 
 The [Android KeyStore](http://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android KeyStore") supports relatively secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
 
-You can protect keys stored in the Android KeyStore with user authentication. The user's lock screen credentials (pattern, PIN, password, or fingerprint) are used for authentication.
+You can protect keys stored in the Android KeyStore with user authentication in a confirm credential flow. The user's lock screen credentials (pattern, PIN, password, or fingerprint) are used for authentication.
 
 You can use stored keys in one of two modes:
 
-1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid. This flow is often setup as confirm credentials. This flow consists of the following steps:
-
-- Reassure that the lockscreen is set:
-
-```java
-   KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-   if (!mKeyguardManager.isKeyguardSecure()) {
-            // Show a message that the user hasn't set up a lock screen.
-   }
-```
-
-- Create the key protected by the lockscreen:
-
-```java
-  try {
-        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-        keyStore.load(null);
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(
-                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-
-        // Set the alias of the entry in Android KeyStore where the key will appear
-        // and the constrains (purposes) in the constructor of the Builder
-        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
-                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setUserAuthenticationRequired(true)
-                        // Require that the user has unlocked in the last 30 seconds
-                .setUserAuthenticationValidityDurationSeconds(30)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .build());
-        keyGenerator.generateKey();
-    } catch (NoSuchAlgorithmException | NoSuchProviderException
-            | InvalidAlgorithmParameterException | KeyStoreException
-            | CertificateException | IOException e) {
-        throw new RuntimeException("Failed to create a symmetric key", e);
-    }
-
-```
-
-- setup the lockscreen to confirm:
-```java
-  private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
-  Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
-        if (intent != null) {
-            startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
-        }
-```
-
-
-- use the key after lockscreen
-```java
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
-            // Challenge completed, proceed with using cipher
-            if (resultCode == RESULT_OK) {
-                //use the key fo ryour owrk
-            } else {
-                // The user canceled or didn’t complete the lock screen
-                // operation. Go to error/cancellation flow.
-            }
-        }
-    }
-
-```
-
-
+1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid. 
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 

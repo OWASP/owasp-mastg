@@ -499,7 +499,7 @@ For additional best practices and detailed information please refer to the follo
 
 ### Testing blocking of devices
 
-For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". It is recommended that this TODO ADD TESTING HERE
+For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". TODO: ADD RECOMMENDATIONS HERE!
 
 ### References
 
