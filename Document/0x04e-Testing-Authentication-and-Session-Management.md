@@ -497,9 +497,20 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-### Testing blocking of devices
+### Login Activity and Device Blocking
 
-For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". TODO: CONTINUE HERE! 1. explain last login info and why, 2. explain why other devices can best be managed from a portal, 3: test it by trying ot authenticate with burp instead of device (or with testcode), try to authenticate and block device and auth again/continue again.
+For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". This can take part in various scenaios:
+
+1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
+2. The application provides an overview of the last session after login, if the previous session was with a different configuration (e.g. location, device, app-version) then the user his current configuration. The user then has the option to report suspicious activities and block devices used in the previous session.
+3. The application provides an overview of the last session after login at all times.
+4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
+
+In all cases, the pentester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can`Settings.Secure.ANDROID_ID` to identify an application instance. This togeter iwth keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a pentester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+
+Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
+Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authenticaiton on a new device. Instead: warn the user already when a second instance of the app is registered.
+
 
 ### References
 
