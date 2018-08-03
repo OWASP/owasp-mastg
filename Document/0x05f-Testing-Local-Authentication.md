@@ -1,14 +1,14 @@
 ## Local Authentication on Android
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
-As described earlier in 0x04e: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
+As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
 
 ### Testing Confirm Credentials
 
 #### Overview
-The confirm credential flow is avaiable since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lockscreen-protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
+The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lockscreen-protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lockscreen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
@@ -79,21 +79,6 @@ Reassure that the lockscreen is set:
 ```
 #### Dynamic Analysis
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
-
-### References
-
-#### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
-
-#### OWASP MASVS
-- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-
-
-#### CWE
-
-- CWE-287 - Improper Authentication
-- CWE-604 - Use of Client-Side Authentication
 
 
 ### Testing Biometric Authentication
@@ -264,6 +249,7 @@ Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean in
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 ### References
+
 
 #### OWASP Mobile Top 10 2016
 
