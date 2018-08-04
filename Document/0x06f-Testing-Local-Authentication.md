@@ -106,14 +106,16 @@ if status == noErr {
 		err);
 
 	// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
-	NSDictionary* query = @{ (\_\_bridge id)kSecClass: (\_\_bridge id)kSecClassGenericPassword,
-		(\_\_bridge id)kSecAttrLabel: @"com.me.myapp.password",
-		(\_\_bridge id)kSecAttrAccount: @"OWASP Account",
-		(\_\_bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
-		(\_\_bridge id)kSecAttrAccessControl: (\_\_bridge_transfer id)sacRef };
+	NSDictionary* query = @{
+		(_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+		(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
+		(__bridge id)kSecAttrAccount: @"OWASP Account",
+		(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
+		(__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
+	};
 
 	// 3. save item
-	OSStatus status = SecItemAdd((\_\_bridge CFDictionaryRef)query, nil);
+	OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
 
 	if (status == noErr) {
 		// successfully saved
@@ -153,18 +155,18 @@ if status == noErr {
 
 ```objective-c
 // 1. define query
-NSDictionary *query = @{(\_\_bridge id)kSecClass: (\_\_bridge id)kSecClassGenericPassword,
-    (\_\_bridge id)kSecReturnData: @YES,
-    (\_\_bridge id)kSecAttrAccount: @"My Name1",
-    (\_\_bridge id)kSecAttrLabel: @"com.me.myapp.password",
-    (\_\_bridge id)kSecUseOperationPrompt: @"Please, pass authorisation to enter this area" };
+NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+    (__bridge id)kSecReturnData: @YES,
+    (__bridge id)kSecAttrAccount: @"My Name1",
+    (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
+    (__bridge id)kSecUseOperationPrompt: @"Please, pass authorisation to enter this area" };
 
 // 2. get item
 CFTypeRef queryResult = NULL;
-OSStatus status = SecItemCopyMatching((\_\_bridge CFDictionaryRef)query, &queryResult);
+OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &queryResult);
 
 if (status == noErr){
-    NSData* resultData = ( \_\_bridge_transfer NSData* )queryResult;
+    NSData* resultData = ( __bridge_transfer NSData* )queryResult;
     NSString* password = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     NSLog(@"%@", password);
 } else {
