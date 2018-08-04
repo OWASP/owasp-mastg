@@ -82,7 +82,7 @@ You can take the following static analysis approach for the logging statements:
 3.	When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
 4.	For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
 
-```objc
+```objectivec
 #ifdef DEBUG
     // Debug-only code
 #endif
@@ -114,7 +114,7 @@ As a developer, incorporating debug statements into your application's debug ver
 
 In Objective-C, developers can use preprocessor macros to filter out debug code:
 
-```objc
+```objectivec
 #ifdef DEBUG
     // Debug-only code
 #endif

@@ -47,7 +47,7 @@
 
 Другой возможной проверкой будет попытка записи по пути, за пределами песочницы приложения. Это может быть сделано с помощью попытки создания файла, например, в директории /private. Если файл успешно создается, то это значит что устройство взломано.
 
-```objective-c
+```objectivec
 NSError *error;
 NSString *stringToBeWritten = @"This is a test.";
 [stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
@@ -294,7 +294,7 @@ PT_DENY_ATTACH
 
 Далее идет пример применения описанной выше логики:
 
-```objective-C
+```objectivec
 #import <dlfcn.h>
 #import <sys/types.h>
 #import <stdio.h>

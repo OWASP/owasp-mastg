@@ -93,7 +93,7 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
+```objectivec
 // 1. create AccessControl object that will represent authentication settings
 CFErrorRef *err = nil;
 
@@ -148,7 +148,7 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
+```objectivec
 // 1. define query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,

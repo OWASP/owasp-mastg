@@ -95,7 +95,7 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
+```objectivec
 
 	// 1. create AccessControl object that will represent authentication settings
 	CFErrorRef *err = nil;
@@ -107,7 +107,7 @@ if status == noErr {
 
 	// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 	NSDictionary* query = @{
-		(_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 		(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
 		(__bridge id)kSecAttrAccount: @"OWASP Account",
 		(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
@@ -153,7 +153,7 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
+```objectivec
 // 1. define query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,

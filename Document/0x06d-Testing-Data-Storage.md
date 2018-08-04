@@ -195,7 +195,7 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 
 The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
 
-```objective-c
+```objectivec
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -463,7 +463,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 - Search through the source code for similar implementations, such as
 
-```ObjC
+```objectivec
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
 ```
@@ -472,7 +472,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to "YES."
 
-```ObjC
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -487,7 +487,7 @@ If a jailbroken iPhone is available, execute the following steps:
 `/private/var/mobile/Library/Keyboard/`
 4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
 
-```objective-c
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
