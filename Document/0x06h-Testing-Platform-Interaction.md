@@ -99,7 +99,7 @@ Look out for usages of the following components that implement WebViews:
 
 As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly required. The following code sample shows a sample configuration.
 
-```objectivec
+```objc
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
 @interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -165,7 +165,7 @@ WebViews can load content remotely and locally from the app data directory. If t
 
 Check the source code for WebViews usage. If you can identify a WebView instance, check whether any local files have been loaded ("example_file.html" in the below example).
 
-```objectivec
+```objc
 - (void)viewDidLoad
 {
     [super viewDidLoad];

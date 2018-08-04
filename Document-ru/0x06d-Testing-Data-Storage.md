@@ -180,7 +180,7 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
 Пример ниже показывает как создать безопасно зашифрованный файл, используя метод `createFileAtPath`:
 
-```objectivec
+```objc
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -450,7 +450,7 @@ tail -f /var/log/syslog
 
 - Поищите в предоставляемом исходном коде конструкции, похожие на:
 
-```objectivec
+```objc
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
 ```
@@ -459,7 +459,7 @@ tail -f /var/log/syslog
 
 В приложении любая чувствительная информация, вводимая в поля ввода, не должна кэшироваться. Этого можно достигнуть, отключив это свойство программно, воспользовавшись директивой `textObject.autocorrectionType = UITextAutocorrectionTypeNo` для необходимых UITextFields, UITextViews и UISearchBars. Для данных, таких как PIN или пароли, необходимо скрывать ввод -  выставите `textObject.secureTextEntry` значение `YES`.
 
-```objectivec
+```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -477,7 +477,7 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 4. Поищите чувствительную информацию: имена пользователей, пароли, почтовые адреса, номера кредитных карт и т.д. Если данную информацию можно найти через кэш клавиатуры, то тест провален.
 
-```objectivec
+```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -511,14 +511,14 @@ sushi2k <sven@bsddaemon.org>
 
 Поищите подклассы `UITextField`, в предоставленном исходном коде.
 
-```objectivec
+```objc
 @interface name_of_sub_class : UITextField
 action == @select(cut:)
 action == @select(copy:)
 ```
 Один из возможных способов для [отключения буфера обмена в iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") может быть найден ниже:
 
-```objectivec
+```objc
 @interface NoSelectTextField : UITextField
 
 @end
@@ -548,7 +548,7 @@ action == @select(copy:)
 
 Для очистки pasteboard , используя [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral") можете воспользоваться следующим куском кода:
 
-```objectivec
+```objc
 UIPasteboard *pb = [UIPasteboard generalPasteboard];
 [pb setValue:@"" forPasteboardType:UIPasteboardNameGeneral];
 ```
@@ -681,7 +681,7 @@ iOS создает копии всех установленных приложе
 
 Далее следует [пример кода для исключения файлов из бекапа](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") на iOS 5.1 и старше (Objective-C):
 
-```objectivec
+```objc
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
 {
     NSURL* URL= [NSURL fileURLWithPath: filePathString];
