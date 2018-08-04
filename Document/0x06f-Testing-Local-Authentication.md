@@ -107,7 +107,7 @@ if status == noErr {
 
 	// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 	NSDictionary* query = @{
-		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+		(_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 		(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
 		(__bridge id)kSecAttrAccount: @"OWASP Account",
 		(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
@@ -234,7 +234,7 @@ If vulnerable, the module will automatically bypass the login form.
 #### OWASP MASVS
 
 - V4.8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
-- 2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 
