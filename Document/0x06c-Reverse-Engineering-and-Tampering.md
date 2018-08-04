@@ -544,7 +544,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
 
-```objective-c
+```objc
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
