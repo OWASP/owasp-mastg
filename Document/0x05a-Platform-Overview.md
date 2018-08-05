@@ -142,6 +142,8 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human-readable representation of the Dalvik executable.
+
+
 Every app also has a data directory for storing data created during run time. This directory is at `/data/data/[package-name]` and has the following structure:
 
 ```bash
