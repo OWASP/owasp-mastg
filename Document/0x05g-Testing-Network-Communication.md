@@ -245,9 +245,9 @@ Dynamic analysis can be performed by launching a MITM attack with your preferred
 ### Testing the Network Security Configuration settings
 
 #### Overview
-Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as Custom trust anchors and Certificate pinning.
+Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
 
-Along side with this feature, all apps that target API Levels 24+ and are runing on an Android device with versions 7+, will not trust in user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+Along side with this feature, all apps that target API Levels 24+ and are running on an Android device with versions 7+, will not trust in user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
 
 This protection can be bypassed by using a custom trust anchor indicating that the app will trust user supplied CA's.
 
