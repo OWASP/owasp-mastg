@@ -247,9 +247,9 @@ Dynamic analysis can be performed by launching a MITM attack with your preferred
 #### Overview
 Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
 
-Along side with this feature, all apps that target API Levels 24+ and are running on an Android device with versions 7+, will not trust in user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+When apps target API Levels 24+ and are running on an Android device with versions 7+, they used a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
 
-This protection can be bypassed by using a custom trust anchor indicating that the app will trust user supplied CA's.
+This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CA's.
 
 #### Static Analysis
 
@@ -271,7 +271,26 @@ If there are custom <trust-anchors> present in a <base-config> or <domain-config
 
 #### Dynamic Analysis
 
-In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api Level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+
+
+### Testing Default Network Security Configuration
+
+#### Overview
+As mentioned in the previous topic, apps that target API levels 24+, unless otherwise defined, will implement a default Network Security Configuration that no longer trust user supplied CA's.
+
+In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, will not use this feature, therefore still trusting in user supplied CA's.
+
+#### Static Analysis
+
+
+
+#### Dynamic Analysis
+
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, the app is running on a Android device with version 7+ and there is no custom Network Security Configuration implemented, this is an indicator that the targetSDK is set to API levels below 24, assuming that the app correctly validates certificates.
+
+
+
 
 ### Testing the Security Provider
 
