@@ -242,6 +242,35 @@ For further information, please check the [OWASP certificate pinning guide](http
 
 Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
 
+### Testing the Network Security Configuration settings
+
+#### Overview
+Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as Custom trust anchors and Certificate pinning.
+
+Along side with this feature, all apps that target API Levels 24+ and are runing on an Android device with versions 7+, will not trust in user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+
+This protection can be bypassed by using a custom trust anchor indicating that the app will trust user supplied CA's.
+
+#### Static Analysis
+
+The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
+
+If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains.
+    
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+```
+
+#### Dynamic Analysis
+
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK >=24 and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
 
 ### Testing the Security Provider
 
