@@ -255,13 +255,14 @@ This protection can be bypassed by using a custom trust anchor indicating that t
 
 The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
 
-If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains.
+If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
     
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <base-config>
         <trust-anchors>
+            <certificates src="system"/>
             <certificates src="user"/>
         </trust-anchors>
     </base-config>
@@ -270,7 +271,7 @@ If there are custom <trust-anchors> present in a <base-config> or <domain-config
 
 #### Dynamic Analysis
 
-In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK >=24 and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api Level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
 
 ### Testing the Security Provider
 
