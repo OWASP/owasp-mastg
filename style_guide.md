@@ -77,9 +77,10 @@ When presenting your content in a list format:
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
-- Punctuate and capitalize list items consistently.
+- Punctuate and capitalize list items consistently (CMOS 6.124–6.126).
 - - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
-- - Use appropriate capitalization and punctuation for list items that individually form complete sentences.
+- - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
+- - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
 
 
@@ -220,19 +221,42 @@ Use a serial comma before "and" for the last item in a run-in list of three or m
 
 We bought apples, oranges, and tomatoes from the store.
 
+**Quote Marks and Apostrophes**
+Use straight double quotes, straight single quotes, and straight apostrophes (not curly quotes/apostrophes).
+
 **Technical Terms**
+Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
+
+In order of preference, spell/punctuate **generic** technical terms according to
+1. Merriam Webster's Collegiate Dictionary, 11th edition.
+2. Microsoft Manual of Style, 4th edition
+3. foldoc.org (Free Online Dictionary of Computing)
 
 | Noun Form  | Adjectival Form |
 | ---------  | --------------- |
-|  back end  |  backend        |
-|  Base64    | Base64-         |
-| black box  |   *same*        |
-|client side | client-side     |
+| App Store  |       NA       |
+|  back end  |    backend      |
+|  Base64    |    Base64-      |
+| black box  |     *same*      |
+| Bundle ID  |      NA        |
+| byte-code  |       NA        |
+|client side |  client-side    |
+|  codebase  |     *same*      |
+|code signing|     *same*      |
 |command line|     *same*      |
-| server side| server-side     |
-|snapshot length| NA|
-| use case   |   *same*        |
-| white box  |   *same*        |
+|disassembler|       NA        |
+|  end users |       NA        |
+| file name  |     *same*      |
+|   macOS    |      NA         |
+|   OS X     |      NA         |
+|  pentest   |     *same*      |
+|  PhoneGap  |       NA        |
+|   Python   |       NA        |
+| repackage  |       NA        |
+| server side|   server-side   |
+|snapshot length|    NA        |
+| use case   |    *same*       |
+| white box  |    *same*       |
 
 ## Comments
 
@@ -264,4 +288,26 @@ $ echo 'Hello World'
 ```
 **In-text keywords**
 
-When they do not occur in a large code block, place the following code-related keywords in backticks (``): function names, method names, commands, class names.
+When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
+
+|    Backticks    | Quotation Marks | No Punctuation |
+| --------------- | --------------- | -------------- |
+| function names  |  section titles | application name |
+|   method names  |  chapter titles | folder names  |
+|    commands     |    book titles  | navigation (e.g., Home -> Menu)|
+|   class names   | flags values (e.g., "true," lowercase) | ID #s |
+|   block names   | command options (e.g., "help" option)||
+|   flag names    | single menu item (e.g., "Home" menu)||
+|   file names    | system error msgs.|
+|  package names  ||
+|   file paths    ||
+|   passwords     ||
+|  port numbers   ||
+|   binary names  ||
+|method/function arguments||
+|  property names ||
+|  object names   ||
+|    API calls    ||
+| interface names ||
+
+If nouns in backticks are plural, place the "s" after the second backtick (e.g. `RuntimeException`s). Do not add parentheses, brackets, or other punctuation to any keywords that are in backticks (e.g., `main` not `main()`).

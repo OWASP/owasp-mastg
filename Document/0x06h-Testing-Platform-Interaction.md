@@ -46,7 +46,22 @@ myURLscheme://$@$
 
 While the URL scheme is being fuzzed, watch the logs (in Xcode, go to `Window -> Devices ->` *click on your device* `->` *bottom console contains logs*) to observe the impact of each payload. The history of used payloads is on the right side of the IDB `Fuzzer` tab .
 
+Needle can be used to test custom URL schemes, manual fuzzing can be performed against the URL scheme to identify input validation and memory corruption bugs. The following Needle module should be used to perform these attacks:
 
+```
+[needle] > 
+[needle] > use dynamic/ipc/open_uri
+[needle][open_uri] > show options
+
+  Name  Current Value  Required  Description
+  ----  -------------  --------  -----------
+  URI                  yes       URI to launch, eg tel://123456789 or http://www.google.com/
+
+[needle][open_uri] > set URI "myapp://testpayload'"
+URI => "myapp://testpayload'"
+[needle][open_uri] > run
+
+```
 
 ### Testing iOS WebViews
 
@@ -84,7 +99,7 @@ Look out for usages of the following components that implement WebViews:
 
 As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly required. The following code sample shows a sample configuration.
 
-```objective-c
+```objc
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
 @interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -150,7 +165,7 @@ WebViews can load content remotely and locally from the app data directory. If t
 
 Check the source code for WebViews usage. If you can identify a WebView instance, check whether any local files have been loaded ("example_file.html" in the below example).
 
-```objective-c
+```objc
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -173,7 +188,6 @@ Check the `baseURL` for dynamic parameters that can be manipulated (leading to l
 To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
 In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
-
 
 ### References
 

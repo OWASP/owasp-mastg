@@ -1,6 +1,6 @@
 ## Android Cryptographic APIs
 
-In the chapter [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
+In the chapter [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
@@ -201,19 +201,6 @@ public static void main (String args[]) {
 
 Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](http://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
-#### References
-
-- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
-
-##### OWASP MASVS
-- V3.6: "All random values are generated using a sufficiently secure random number generator."
-
-##### OWASP Mobile Top 10 2016
-- M6 - Broken Cryptography
-
-##### CWE
-- CWE-330: Use of Insufficiently Random Values
-
 
 ### Testing Key Management
 
@@ -284,6 +271,8 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 ### References
 
+- [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
+
 ##### OWASP Mobile Top 10
 
 - M6 - Broken Cryptography
@@ -299,3 +288,4 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 - CWE-321: Use of Hard-coded Cryptographic Key
 - CWE-326: Inadequate Encryption Strength
+- CWE-330: Use of Insufficiently Random Values

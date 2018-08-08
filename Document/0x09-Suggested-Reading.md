@@ -1,11 +1,5 @@
 ## Suggested Reading
 
-<!--
-### Basic Knowledge
-
--- TODO [Add suggested reading on Basic Knowledge ] --
--->
-
 ### Mobile App Security
 
 #### Android
@@ -18,7 +12,7 @@
 
 - Charlie Miller, Dionysus Blazakis, Dino Dai Zovi, Stefan Esser, Vincenzo Iozzo, Ralf-Philipp Weinmann (2012) *iOS Hacker's Handbook*. Wiley. Available at: http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118204123.html
 - David Thiel (2016) *iOS Application Security, The Definitive Guide for Hackers and Developers*. no starch press. Available at: https://www.nostarch.com/iossecurity
-- Jonathan Levin (2013), *Mac OS X and iOS Internals*, Wiley. Available at: http://newosxbook.com/index.php
+- Jonathan Levin (2017), *Mac OS X and iOS Internals*, Wiley. Available at: http://newosxbook.com/index.php
 
 #### Misc
 

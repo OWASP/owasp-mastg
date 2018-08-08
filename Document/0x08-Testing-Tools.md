@@ -4,29 +4,23 @@ To perform security testing different tools are available in order to be able to
 
 ### Mobile Application Security Testing Distributions
 
-- [Appie](https://manifestsecurity.com/appie) - Android Pentesting Portable Integrated Environment. A portable software package for Android Pentesting and an awesome alternative to existing Virtual machines.
-- [Android Tamer](https://androidtamer.com/) - Android Tamer is a Debian-based Virtual/Live Platform for Android Security professionals.
-- [AppUse](https://appsec-labs.com/AppUse/) - AppUse is a VM (Virtual Machine) developed by AppSec Labs.
 - [Androl4b](https://github.com/sh4hin/Androl4b) - A Virtual Machine For Assessing Android applications, Reverse Engineering and Malware Analysis
-- [Mobisec](http://sourceforge.net/projects/mobisec/) - Mobile security testing live environment.
+- [Android Tamer](https://androidtamer.com/) - Android Tamer is a Debian-based Virtual/Live Platform for Android Security professionals.
+- [AppUse](https://appsec-labs.com/AppUse/) - AppUse is a Virtual Machine developed by AppSec Labs.
 - [Santoku](https://santoku-linux.com/) - Santoku is an OS and can be run outside a VM as a standalone operating system.
-- [Vezir Project](https://github.com/oguzhantopgul/Vezir-Project) - Mobile Application Pentesting and Malware Analysis Environment.
-- [Nathan](https://github.com/mseclab/nathan) - Nathan is a AOSP Android emulator customized to perform mobile security assessment.
 
 ### Static Source Code Analysis
 
 - [Checkmarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) - Static Source Code Scanner that also scans source code for Android and iOS.
 - [Fortify](https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security) - Static source code scanner that also scans source code for Android and iOS.
-- [Acccenture](https://digitalsecurity.accenture.com) - Static source code scanner that also scans source code for Android and iOS.
 - [Veracode](https://www.veracode.com/products/binary-static-analysis-sast "Veracode Static Analysis") - Static Analysis of iOS and Android binary
 
 ### All-in-One Mobile Security Frameworks
 
+- [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps.
 - [Mobile Security Framework - MobSF](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF) - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOS) automated pen-testing framework capable of performing static and dynamic analysis.
 - [Needle](https://github.com/mwrlabs/needle) - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
-- [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps.
-- [objection](https://github.com/sensepost/objection) - objection is a runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android.
-
+- [objection](https://github.com/sensepost/objection) - objection is a runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android, due to the usage of Frida. 
 
 ### Tools for Android
 
@@ -135,3 +129,4 @@ To perform security testing different tools are available in order to be able to
 - [Android Studio](https://developer.android.com/studio/index.html) -  is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
 - [IntelliJ](https://www.jetbrains.com/idea/download/) - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
 - [Eclipse](https://eclipse.org/) - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
+- [Xcode](https://developer.apple.com/xcode/) - Xcode is an integrated development environment (IDE) available only for macOS to create apps for iOS, watchOS, tvOS and macOS.

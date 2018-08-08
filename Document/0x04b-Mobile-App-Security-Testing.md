@@ -4,7 +4,7 @@ In the following sections we'll provide a brief overview of general security tes
 
 Throughout the guide, we use "mobile app security testing" as a catchall phrase to refer to the evaluation of mobile app security via static and dynamic analysis. Terms such as "mobile app penetration testing" and "mobile app security review" are used somewhat inconsistently in the security industry, but these terms refer to roughly the same thing. A mobile app security test is usually part of a larger security assessment or penetration test that encompasses the client-server architecture and server-side APIs used by the mobile app.
 
-In this guide, we cover mobile app security testing in two contexts. The first is the "classical" security test completed near the end of the development life cycle. In this context, the tester accesses a nearly finished or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is characterized by the implementation of requirements and the automation of security tests from the beginning of the software development life cycle onwards. The same basic requirements and test cases apply to both contexts, but the high-level method and the level client interaction differ.
+In this guide, we cover mobile app security testing in two contexts. The first is the "classical" security test completed near the end of the development life cycle. In this context, the tester accesses a nearly finished or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is characterized by the implementation of requirements and the automation of security tests from the beginning of the software development life cycle onwards. The same basic requirements and test cases apply to both contexts, but the high-level method and the level of client interaction differ.
 
 ### Principles of Testing
 
@@ -12,9 +12,9 @@ In this guide, we cover mobile app security testing in two contexts. The first i
 
 Let's start by defining the concepts:
 
-- Black-box testing is conducted without the tester's having any information about the app being tested. This process is sometimes called "zero-knowledge testing." The main purpose of this test is allowing the tester to behave like a real attacker in the sense of exploring possible uses for publicly available and discoverable information.
-- White-box testing (sometimes called "full knowledge testing") is the total opposite of black-box testing in the sense that the tester has full knowledge of the app. The knowledge may encompass source code, documentation, and diagrams. Although much easier and faster than black-box testing, white-box testing doesn't allow for as many test cases. White-box testing is generally more useful for protecting the app against internal attackers.
-- Gray-box testing is all testing that falls in between the two aforementioned testing types: some information is provided to the tester, and other information is intended to be discovered. This type of testing is an interesting compromise in the number of test cases, the cost, the speed, and the scope of testing. Gray-box testing is the most common kind of testing in the security industry.
+- **Black-box testing** is conducted without the tester's having any information about the app being tested. This process is sometimes called "zero-knowledge testing." The main purpose of this test is allowing the tester to behave like a real attacker in the sense of exploring possible uses for publicly available and discoverable information.
+- **White-box testing** (sometimes called "full knowledge testing") is the total opposite of black-box testing in the sense that the tester has full knowledge of the app. The knowledge may encompass source code, documentation, and diagrams. Although much easier and faster than black-box testing, white-box testing doesn't allow for as many test cases. White-box testing is generally more useful for protecting the app against internal attackers.
+- **Gray-box testing** is all testing that falls in between the two aforementioned testing types: some information is provided to the tester (usually credentials only), and other information is intended to be discovered. This type of testing is an interesting compromise in the number of test cases, the cost, the speed, and the scope of testing. Gray-box testing is the most common kind of testing in the security industry.
 
 We strongly advise that you request the source code so that you can use the testing time as efficiently as possible. The tester's code access obviously doesn't simulate an external attack, but it simplifies the identification of vulnerabilities by allowing the tester to verify every identified anomaly or suspicious behavior at the code level. A white-box test is the way to go if the app hasn't been tested before.
 
@@ -54,7 +54,7 @@ Automated analysis tools can be used to speed up the review process of Static Ap
 
 Although some static code analysis tools incorporate a lot of information about the rules and semantics required to analyze mobile apps, they may produce many false positives, particularly if they are not configured for the target environment. A security professional must therefore always review the results.
 
-The chapter "Testing tools" includes a list of static analysis tools.
+The chapter "Testing tools", at the end of this book, includes a list of static analysis tools.
 
 #### Dynamic Analysis
 
@@ -64,9 +64,11 @@ Dynamic analysis is usually used to check for security mechanisms that provide s
 
 #### Avoiding False Positives
 
+##### Automated Scanning Tools
+
 Automated testing tools' lack of sensitivity to app context is a challenge. These tools may identify a potential issue that's irrelevant. Such results are called "false positives."
 
-For example, security testers commonly report vulnerabilities that are exploitable in a web browser but aren't relevant to the mobile app. This false positive occurs because automated tools used to scan the back-end service are based on regular browser-based web applications. Issues such as CSRF (Cross-site Request Forgery) and missing security headers are reported accordingly.
+For example, security testers commonly report vulnerabilities that are exploitable in a web browser but aren't relevant to the mobile app. This false positive occurs because automated tools used to scan the back-end service are based on regular browser-based web applications. Issues such as CSRF (Cross-site Request Forgery) and Cross-Site Scripting (XSS) are reported accordingly.
 
 Let's take CSRF as an example. A successful CSRF attack requires the following:
 
@@ -75,9 +77,22 @@ Let's take CSRF as an example. A successful CSRF attack requires the following:
 
 Mobile apps don't fulfill these requirements: even if Webviews and cookie-based session management are used, any malicious link the user clicks opens in the default browser, which has a separate cookie store.
 
-Stored Cross-Site Scripting (CSS) can be an issue if the app includes Webviews, and it may even lead to command execution if the app exports JavaScript interfaces. However, reflected cross-site scripting is rarely an issue for the reason mentioned above (even though whether they should exist at all is arguable—escaping output is simply a best practice).
+Stored Cross-Site Scripting (XSS) can be an issue if the app includes Webviews, and it may even lead to command execution if the app exports JavaScript interfaces. However, reflected cross-site scripting is rarely an issue for the reason mentioned above (even though whether they should exist at all is arguable—escaping output is simply a best practice).
 
 In any case, consider exploit scenarios when you perform the risk assessment; don't blindly trust your scanning tool's output.
+
+##### Clipboard
+
+When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
+
+Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only, which reduces the attack surface of password sniffing from the clipboard dramatically.
+
+For [Android there was a PoC exploit released](https://arstechnica.com/information-technology/2014/11/using-a-password-manager-on-android-it-may-be-wide-open-to-sniffing-attacks/ "Password Sniffing") in order to demonstrate the attack vector if passwords are stored within the clipboard. [Disabling pasting in passwords input fields](https://github.com/OWASP/owasp-masvs/issues/106 "Disabling Pasting for Password Input Fields") was a requirement in the MASVS 1.0, but was removed due to several reasons:
+
+- Preventing pasting into input fields of an app, does not prevent that a user will copy sensitive information anyway. Since the information has already been copied before the user notices that it's not possible to paste it in, a malicious app has already sniffed the clipboard.
+- If pasting is disabled on password fields users might even choose weaker passwords that they can remember and they cannot use password managers anymore, which would contradict the original intention of making the app more secure.
+
+When using an app you should still be aware that other apps are reading the clipboard continuously, as the [Facebook app](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard "Facebook Is Spying On Your Clipboard") did. Still, copy-pasting passwords is a security risk you should be aware of, but also cannot be solved by an app.
 
 #### Penetration Testing (a.k.a. Pentesting)
 
@@ -121,7 +136,7 @@ There are three general states from which data may be accessible:
 
 - **At rest** - the data is sitting in a file or data store
 - **In use** - an application has loaded the data into its address space
-- **In transit** - data has been sent between consuming processes, e.g., during IPC (Inter-Process Communication)
+- **In transit** - data has been exchanged between mobile app and endpoint or consuming processes on the device, e.g., during IPC (Inter-Process Communication)
 
 The degree of scrutiny that's appropriate for each state may depend on the data's importance and likelihood of being accessed. For example, data held in application memory may be more vulnerable than data on web servers to access via core dumps because attackers are more likely to gain physical access to mobile devices than to web servers.
 
@@ -303,7 +318,7 @@ The following sections provide more details about these three points.
 
 ###### Infrastructure as Code
 
-Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make is more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
+Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
 
 Infrastructure as Code practices facilitate collaboration between development and operations teams, with the following results:
 - Devs better understand infrastructure from a familiar point of view and can prepare resources that the running application will require.
@@ -313,7 +328,7 @@ Infrastructure as Code also facilitates the construction of the environments req
 
 Infrastructure as Code is commonly used for projects that have Cloud-based resources because many vendors provide APIs that can be used for provisioning items (such as virtual machines, storage spaces, etc.) and working on configurations (e.g., modifying memory sizes or the number of CPUs used by virtual machines). These APIs provide alternatives to administrators' performing these activities from monitoring consoles.
 
-The main tools in this domain are Puppet ([Puppet](https://puppet.com/ "Puppet")) and Chef ([Chef](https://www.chef.io/chef/ "Chef")).
+The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"),  [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
 
 ###### Deployment
 
@@ -342,7 +357,7 @@ Once again, the answer is automation and tooling: by implementing these two conc
 The security of an application developed with DevOps must be considered during operations. The following are examples:
 
 - Scanning should take place regularly (at both the infrastructure and application level).
-- Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. Cf the section on Penetration Testing for more details.)
+- Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
 ![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg)

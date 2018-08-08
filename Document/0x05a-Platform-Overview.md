@@ -1,4 +1,4 @@
-# Android Platform Overview
+## Android Platform Overview
 
 This section introduces the Android platform from the architecture point of view. The following four key areas are discussed:
 
@@ -9,11 +9,11 @@ This section introduces the Android platform from the architecture point of view
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
-## Android Security Architecture
+### Android Security Architecture
 
 Android is a Linux-based open source platform developed by Google as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other "smart" devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
-Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services. 
+Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
 ![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
 
@@ -23,7 +23,7 @@ Android apps are usually written in Java and compiled to Dalvik bytecode, which 
 
 ![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
 
-The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik and ART is the way the bytecode is executed. 
+The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik and ART is the way the bytecode is executed.
 
 In Dalvik, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. JIT compilation adversely affects performance: the compilation must be performed every time the app is executed. To improve performance, ART introduced *ahead-of-time* (AOT) compilation. As the name implies, apps are precompiled before they are executed for the first time. This precompiled machine code is used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption.
 
@@ -47,9 +47,10 @@ For example, Android Nougat defines the following system users:
     #define AID_APP          10000  /* first app user */
 	...
 ```
-## Android Application Structure
 
-### Communication with the Operating System
+### Android Application Structure
+
+#### Communication with the Operating System
 
 Android apps interact with system services via the Android Framework, an abstraction layer that offers high-level Java APIs. The majority of these services are invoked via normal Java method calls and are translated to IPC calls to system services that are running in the background. Examples of system services include:
 
@@ -140,7 +141,9 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 - apktool.yml: file containing information about the output of apktool
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources
-- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human-readable representation of the Dalvik executable. 
+- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human-readable representation of the Dalvik executable.
+
+
 Every app also has a data directory for storing data created during run time. This directory is at `/data/data/[package-name]` and has the following structure:
 
 ```bash
@@ -163,7 +166,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
    * x86: compiled code for x86 processors only
    * x86_64: compiled code for x86_64 processors only
    * mips: compiled code for MIPS processors
-- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html). 
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
 
 #### Linux UID/GID for Normal Applications
 
@@ -195,7 +198,7 @@ The relationship between group IDs and permissions is defined in the file [frame
 
 Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. This separation adds a layer of security.
 
-Installation of a new app creates a new directory named after the app package— `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID. 
+Installation of a new app creates a new directory named after the app package— `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
@@ -226,7 +229,7 @@ In Android, the lifetime of an app process is controlled by the operating system
 - A visible process is a process that the user is aware of, so killing it would have a noticeable negative impact on user experience. One example is running an activity that's visible to the user on-screen but not in the foreground.
 
 - A service process is a process hosting a service that has been started with the `startService` method. Though these processes aren't directly visible to the user, they are generally things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there's insufficient memory to retain all foreground and visible processes.
-- A cached process is a process that's not currently needed, so the system is free to kill it when memory is needed. 
+- A cached process is a process that's not currently needed, so the system is free to kill it when memory is needed.
 Apps must implement callback methods that react to a number of events; for example, the `onCreate` handler is called when the app process is first created. Other callback methods include `onLowMemory`, `onTrimMemory` and `onConfigurationChanged`.
 
 ##### Manifest
@@ -318,7 +321,7 @@ A fragment represents a behavior or a portion of the user interface within the a
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own lifecycle, which is tied to the lifecycles of the Activities that implement them.
 
-Because fragemnts have their own lifecycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+Because fragments have their own lifecycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
@@ -389,8 +392,6 @@ Found 99 services:
 - Delivering a broadcast
     - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
 
-Intents are components for sending messages between apps and components. An app can use them to send information to its own components (for instance, to start a new activity inside the app), to other apps, or to the operating system. Intents can be used to start Activities and services, run actions on given data, and broadcast messages to the whole system. 
-
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
 ```Java
@@ -431,7 +432,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 	</receiver>
 ```
 
-After receiving an implicit intent, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps. 
+After receiving an implicit intent, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps.
 
 An interesting feature of Broadcast Receivers is that they are assigned a priority; this way, an intent will be delivered to all authorized receivers according to their priority.
 
@@ -481,7 +482,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 ```
 ###### Declaring Permissions
 
-Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html)  or define its own. A new permission is declared with the <permission>element. 
+Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html)  or define its own. A new permission is declared with the <permission>element.
 The example below shows an app declaring a permission:
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -524,9 +525,9 @@ The original version of app signing implements the signed APK as a standard sign
 ##### APK Signature Scheme (v2 Scheme)
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
-<img src="Images/Chapters/0x05a/apk-validation-process.png" width="600px"/>
+![Preparation](Images/Chapters/0x05a/apk-validation-process.png)
+[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
 
-*[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
 ##### Creating Your Certificate
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
 App creators can either reuse an existing private/public key pair that is in an available keystore or generate a new pair.

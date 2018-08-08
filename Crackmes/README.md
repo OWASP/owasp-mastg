@@ -10,7 +10,7 @@ Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reve
 
 This app holds a secret inside. Can you find it?
 
-- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 
 ### Installation
@@ -31,7 +31,7 @@ $ adb install UnCrackable-Level1.apk
 
 This app holds a secret inside. May include traces of native code.
 
-- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 - Special thanks to Michael Helwig for finding and fixing an oversight in the anti-tampering mechanism.
 
@@ -51,7 +51,7 @@ $ adb install UnCrackable-Level2.apk
 
 The crackme from hell!
 
-- Objective: A secret string is hidden somewhere in this app. Find a way to extract it. 
+- Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 - Special thanks to Eduardo Novella for testing, feedback and pointing out flaws in the initial build(s).
 
@@ -68,7 +68,7 @@ $ adb install UnCrackable-Level3.apk
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/)
 
-A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available! 
+A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available!
 
 - Objective: Generate a valid serial key that is accepted by this app.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
@@ -103,7 +103,7 @@ Objective: A secret string is hidden somewhere in this binary. Find a way to ext
 
 ### Installation
 
-Open the "Device" window in XCode and drag the IPA file into the list below "Installed Apps". 
+Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
 
 Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
 
@@ -120,11 +120,11 @@ This app holds a secret inside - and this time it won't be tampered with!
 
 Objective: Find the secret code - it is related to alcoholic beverages.
 
-Note: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution. 
+Note: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution.
 
 ### Installation
 
-Open the "Device" window in XCode and drag the IPA file into the list below "Installed Apps". 
+Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
 
 Note: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
 

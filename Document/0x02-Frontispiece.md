@@ -8,12 +8,12 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 ## Copyright and License
 
-![license](Images/license.png)
-Copyright © 2017 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). For any reuse or distribution, you must make clear to others the license terms of this work.
+![license](Images/license.jpg)
+Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). For any reuse or distribution, you must make clear to others the license terms of this work.
 
 ## Acknowledgements
 
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). We manually update the table every few weeks, so be patient if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). We manually update the table, so be patient if you're not listed immediately.
 
 ### Authors
 
@@ -23,7 +23,7 @@ Bernhard is a cyber security specialist with a talent for hacking systems of all
 
 #### Sven Schleier
 
-Sven is an experienced penetration tester and security architect who specializes in implementing secure SDLC for web applications, iOS apps, and Android apps. He is a project leader for the OWASP Mobile Security Testing Guide and the creator of OWASP Mobile Hacking Playground. Sven also supports the community with free, hands-on workshops about web and mobile app security testing. He has published several security advisories and white papers about HSTS.
+Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 
 ### Co-Authors
 
@@ -55,7 +55,7 @@ Top contributors have consistently contributed quality content and have at least
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpa, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
+Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 

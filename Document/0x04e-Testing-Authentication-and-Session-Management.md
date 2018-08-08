@@ -43,6 +43,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 - A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced.
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
+- The app informs the user of the recent activities with their account when they log in.
 
 #### 2-Factor Authentication and Step-up Authentication
 
@@ -66,6 +67,7 @@ Authentication schemes are sometimes supplemented by [passive contextual authent
 - Geolocation
 - IP address
 - Time of day
+- The device being used
 
 Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
 
@@ -73,7 +75,7 @@ Ideally, in such a system the user's context is compared to previously recorded 
 
 Perform the following steps when testing authentication and authorization:
 
-- Identify the additional authentication factors the app uses. 
+- Identify the additional authentication factors the app uses.
 - Locate all endpoints that provide critical functionality.
 - Verify that the additional factors are strictly enforced on all server-side endpoints.
 
@@ -115,8 +117,7 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-
-Verify the existences of a password policy and password complexity requirements. Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
 Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
 
@@ -293,8 +294,6 @@ The second part of the token is the *payload*, which contains so-called claims. 
 {"sub":"1234567890","name":"John Doe","admin":true}
 ```
 
-Signature
-
 The signature is created by applying the algorithm specified in the JWT header to the encoded header, encoded payload, and a secret value. For example, when using the HMAC SHA256 algorithm the signature is created in the following way:
 
 ```
@@ -305,19 +304,19 @@ Note that the secret is shared between the authentication server and the back en
 
 #### Static Analysis
 
-Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities .
+Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities.
 
 Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
 
 - Verify that the HMAC is checked for all incoming requests containing a token;
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java).
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_\(JWT\)_Cheat_Sheet_for_Java).
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
 ##### Enforcing the Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the hashing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
 
@@ -325,7 +324,7 @@ For example, in Java applications, the expected algorithm should be requested ex
 // HMAC key - Block serialization and storage as String in JVM memory
 private transient byte[] keyHMAC = ...;
 
-//Create a verification context for the token requesting explicitly the use of the HMAC-256 hashing algorithm
+//Create a verification context for the token requesting explicitly the use of the HMAC-256 hmac generation
 
 JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 
@@ -371,11 +370,11 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Token Storage on the client:
   * The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication"). See the tools section for details.
+  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
-Also, make sure to check out the OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT\)\_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
 
 ##### Tampering with the Hashing Algorithm
 
@@ -402,7 +401,7 @@ If access and refresh tokens are used with stateless authentication, they should
 
 #### Dynamic Analysis
 
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly. 
+Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
 
 1.  Log into the application.
 2.  Perform a couple of operations that require authentication inside the application.
@@ -434,7 +433,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="450px"/>
+![Abstract Protocol Flow](Images/Chapters/0x04e/abstract_oath2_flow.png)
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -498,6 +497,21 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
+### Login Activity and Device Blocking
+
+For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". This can be broken down into various scenarios:
+
+1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
+2. The application provides an overview of the last session after login, if the previous session was with a different configuration (e.g. location, device, app-version) then the user his current configuration. The user then has the option to report suspicious activities and block devices used in the previous session.
+3. The application provides an overview of the last session after login at all times.
+4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
+
+In all cases, the pentester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance. This togeter with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a pentester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+
+Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
+Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authenticaiton on a new device. Instead: warn the user already when a second instance of the app is registered.
+
+
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -512,9 +526,10 @@ For additional best practices and detailed information please refer to the follo
 - V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
 - V4.5: "A password policy exists and is enforced at the remote endpoint."
 - V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
-- V4.8: "Sessions and access tokens are invalidated at the remote endpoint after a predefined period of inactivity."
-- V4.9: "A second factor of authentication exists at the remote endpoint, and the 2FA requirement is consistently enforced."
+- v4.7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
+- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 - V4.10: "Sensitive transactions require step-up authentication."
+- v4.11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices"
 
 #### CWE
 
@@ -528,7 +543,7 @@ For additional best practices and detailed information please refer to the follo
 
 - Free and Professional Burp Suite editions - https://portswigger.net/burp/
 Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 - [jwtbrute](https://github.com/jmaxxz/jwtbrute)
 - [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
 - [John the ripper](https://github.com/magnumripper/JohnTheRipper)
