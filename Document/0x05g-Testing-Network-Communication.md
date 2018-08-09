@@ -466,3 +466,7 @@ When you do not have the source code:
 - CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
 - CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+
+##### Android Developer Documentation
+
+- Network Security Config - https://developer.android.com/training/articles/security-config
