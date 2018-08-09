@@ -169,6 +169,9 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
+#### Static Analysis
+ * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
+
 ##### TrustManager
 
 Implementing certificate pinning involves three main steps:
@@ -266,7 +269,46 @@ If there are custom <trust-anchors> present in a <base-config> or <domain-config
             <certificates src="user"/>
         </trust-anchors>
     </base-config>
+    <domain-config>
+        <domain includeSubdomains="true">owasp.org</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </domain-config>
 </network-security-config>
+```
+Is important to understand the precedence of entries. If a value is not set in a \<domain-config\> entry or in a parent \<domain-config\>, the configurations in place will be based on the \<base-config\>, and lastly if not defined in this entry, the default configuration will be used.
+
+The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="false">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
 ```
 
 #### Dynamic Analysis
