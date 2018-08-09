@@ -279,18 +279,16 @@ In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the 
 #### Overview
 As mentioned in the previous topic, apps that target API levels 24+, unless otherwise defined, will implement a default Network Security Configuration that no longer trust user supplied CA's.
 
-In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, will not use this feature, therefore still trusting in user supplied CA's.
+In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, it will not use this feature, therefore still trusting in user supplied CA's.
 
 #### Static Analysis
 
-
+* Use a decompiler (Ex. Jadx) to confirm the targetSDK present in the AndroidManifest.xml file
+* Use apktool to decode the app and confirm the targetSDK present in the file apktool.yml of the output folder.
 
 #### Dynamic Analysis
 
 In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, the app is running on a Android device with version 7+ and there is no custom Network Security Configuration implemented, this is an indicator that the targetSDK is set to API levels below 24, assuming that the app correctly validates certificates.
-
-
-
 
 ### Testing the Security Provider
 
