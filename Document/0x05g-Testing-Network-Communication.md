@@ -274,7 +274,7 @@ Normally a function is created to check the certificate(s) and return the boolea
 
 In this particular example we are pinning the intermediate CA of the certificate chain.
 
-Sample Xamarin app with the previous example can be obtained [here](https://github.com/clviper/owasp-mstg/blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true).
+Sample Xamarin app with the previous example can be obtained [here](./blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true).
 
 #### Static Analysis
 
