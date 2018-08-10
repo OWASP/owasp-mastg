@@ -272,7 +272,7 @@ Normally a function is created to check the certificate(s) and return the boolea
         }
 ```
 
-In this particular example we are pinning the intermediate CA of the certificate chain.
+In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
 
 Sample Xamarin app with the previous example can be obtained [here](/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true).
 
