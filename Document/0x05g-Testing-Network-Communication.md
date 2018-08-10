@@ -145,7 +145,7 @@ The Network Security Configuration feature can also be used to pin [declarative 
     <domain-config>
         <!-- Use certificate pinning for OWASP website access including sub domains -->
         <domain includeSubdomains="true">owasp.org</domain>
-        <pin-set>
+        <pin-set expiration="2018/8/10">
             <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
             the Intermediate CA of the OWASP website server certificate -->
             <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
@@ -168,6 +168,8 @@ If a certificate pinning validation check has failed, the following event will b
 ```
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
+
+As defined in the previous example, a \<pin-set\> can have a defined expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains. Be aware of this behavior.
 
 #### Static Analysis
  * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
@@ -292,9 +294,15 @@ Dynamic analysis can be performed by launching a MITM attack with your preferred
 #### Overview
 Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
 
-When apps target API Levels 24+ and are running on an Android device with versions 7+, they used a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+##### Trust Anchors
+
+When apps target API Levels 24+ and are running on an Android device with versions 7+, they use a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
 
 This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CA's.
+
+##### Pin-set Expiration Date
+
+Pin-set contain a set of public key pins. Each set can define a expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains. Be aware of this behavior.
 
 #### Static Analysis
 
@@ -312,11 +320,19 @@ If there are custom <trust-anchors> present in a <base-config> or <domain-config
         </trust-anchors>
     </base-config>
     <domain-config>
-        <domain includeSubdomains="true">owasp.org</domain>
+        <domain includeSubdomains="false">owasp.org</domain>
         <trust-anchors>
             <certificates src="system"/>
             <certificates src="user"/>
         </trust-anchors>
+        <pin-set expiration="2018/8/10">
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Intermediate CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Root CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+        </pin-set>
     </domain-config>
 </network-security-config>
 ```
