@@ -272,6 +272,10 @@ Normally a function is created to check the certificate(s) and return the boolea
         }
 ```
 
+In this particular example we are pinning the intermediate CA of the certificate chain.
+
+Sample Xamarin app with the previous example can be obtained here.
+
 #### Static Analysis
 
 After decompressing the APK file, use a .NET decompiler (Ex. dotPeak,ILSpy,dnSpy) to decompile the app dlls stored inside the Assemblies folder and confirm the usage of the ServicePointManager.
@@ -550,3 +554,8 @@ When you do not have the source code:
 ##### Android Developer Documentation
 
 - Network Security Config - https://developer.android.com/training/articles/security-config
+
+##### Xamarin Certificate Pinning
+
+- Certificate and Public Key Pinning with Xamarin - https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin
+- ServicePointManager - https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx
