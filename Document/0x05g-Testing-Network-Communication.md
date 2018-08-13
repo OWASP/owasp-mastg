@@ -169,8 +169,6 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
-As defined in the previous example, a \<pin-set\> can have a defined expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains. Be aware of this behavior.
-
 #### Static Analysis
  * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
@@ -251,22 +249,25 @@ Normally a function is created to check the certificate(s) and return the boolea
 [Activity(Label = "XamarinPinning", MainLauncher = true)]
     public class MainActivity : Activity
     {
-
+        // SupportedPublicKey - Hexadecimal value of the public key.
+        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin. 
         private const string SupportedPublicKey = "3082010A02820101009CD30CF05AE52E47B7725D3783B3686330EAD735261925E1BDBE35F170922FB7B84B4105ABA99E350858ECB12AC468870BA3E375E4E6F3A76271BA7981601FD7919A9FF3D0786771C8690E9591CFFEE699E9603C48CC7ECA4D7712249D471B5AEBB9EC1E37001C9CAC7BA705EACE4AEBBD41E53698B9CBFD6D3C9668DF232A42900C867467C87FA59AB8526114133F65E98287CBDBFA0E56F68689F3853F9786AFB0DC1AEF6B0D95167DC42BA065B299043675806BAC4AF31B9049782FA2964F2A20252904C674C0D031CD8F31389516BAA833B843F1B11FC3307FA27931133D2D36F8E3FCF2336AB93931C5AFC48D0D1D641633AAFA8429B6D40BC0D87DC3930203010001";
 
-        private static bool ValidateServerCertficate(
+        private static bool ValidateServerCertificate(
                 object sender,
                 X509Certificate certificate,
                 X509Chain chain,
                 SslPolicyErrors sslPolicyErrors
             )
         {
+            //Log.Debug("Xamarin Pinning",chain.ChainElements[X].Certificate.GetPublicKeyString());
+            //return true;
             return SupportedPublicKey == chain.ChainElements[1].Certificate.GetPublicKeyString();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += ValidateServerCertficate;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += ValidateServerCertificate;
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Main);
             TesteAsync("https://security.claudio.pt");
@@ -276,11 +277,11 @@ Normally a function is created to check the certificate(s) and return the boolea
 
 In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
 
-Sample Xamarin app with the previous example can be obtained [here](/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true).
+Sample Xamarin app with the previous example can be obtained at https://github.com/owasp-mstg/blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true
 
 #### Static Analysis
 
-After decompressing the APK file, use a .NET decompiler (Ex. dotPeak,ILSpy,dnSpy) to decompile the app dlls stored inside the Assemblies folder and confirm the usage of the ServicePointManager.
+After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
 
 For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
@@ -302,7 +303,7 @@ This protection can be bypassed by using a custom Network Security Configuration
 
 ##### Pin-set Expiration Date
 
-Pin-set contain a set of public key pins. Each set can define a expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains. Be aware of this behavior.
+Pin-set contain a set of public key pins. Each set can define a expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains.
 
 #### Static Analysis
 
