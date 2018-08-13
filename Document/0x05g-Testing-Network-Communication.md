@@ -169,6 +169,9 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
+#### Static Analysis
+ * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
+
 ##### TrustManager
 
 Implementing certificate pinning involves three main steps:
@@ -242,6 +245,92 @@ For further information, please check the [OWASP certificate pinning guide](http
 
 Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
 
+### Testing the Network Security Configuration settings
+
+#### Overview
+Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
+
+When apps target API Levels 24+ and are running on an Android device with versions 7+, they used a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+
+This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CA's.
+
+#### Static Analysis
+
+The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
+
+If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
+    
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
+    <domain-config>
+        <domain includeSubdomains="true">owasp.org</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+```
+Is important to understand the precedence of entries. If a value is not set in a \<domain-config\> entry or in a parent \<domain-config\>, the configurations in place will be based on the \<base-config\>, and lastly if not defined in this entry, the default configuration will be used.
+
+The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="false">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
+```
+
+#### Dynamic Analysis
+
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+
+
+### Testing Default Network Security Configuration
+
+#### Overview
+As mentioned in the previous topic, apps that target API levels 24+, unless otherwise defined, will implement a default Network Security Configuration that no longer trust user supplied CA's.
+
+In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, it will not use this feature, therefore still trusting in user supplied CA's.
+
+#### Static Analysis
+
+* Use a decompiler (Ex. Jadx) to confirm the targetSDK present in the AndroidManifest.xml file
+* Use apktool to decode the app and confirm the targetSDK present in the file apktool.yml of the output folder.
+
+#### Dynamic Analysis
+
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, the app is running on a Android device with version 7+ and there is no custom Network Security Configuration implemented, this is an indicator that the targetSDK is set to API levels below 24, assuming that the app correctly validates certificates.
 
 ### Testing the Security Provider
 
@@ -419,3 +508,7 @@ When you do not have the source code:
 - CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
 - CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
 - CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+
+##### Android Developer Documentation
+
+- Network Security Config - https://developer.android.com/training/articles/security-config
