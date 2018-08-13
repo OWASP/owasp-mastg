@@ -1,0 +1,14 @@
+{
+  "name": "publisher",
+  "version": "0.1.0",
+  "description": "Publisher used for creating pdfs of mstg and masvs",
+  "main": "genpdf.js",
+  "scripts": {
+    "test": "-h"
+  },
+  "author": "Jeroen Willemsen",
+  "license": "MIT",
+  "dependencies": {
+    "markdown-pdf": "9.0.0"
+  }
+}
