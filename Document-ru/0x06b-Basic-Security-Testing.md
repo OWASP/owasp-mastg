@@ -634,7 +634,7 @@ Started tracing 248 functions. Press Ctrl+C to stop.
 
 Мы можем посмотреть объявление этого метода на [сайте Apple Developer](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
 
-```objective-c
+```objc
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
