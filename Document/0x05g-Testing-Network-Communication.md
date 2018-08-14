@@ -169,7 +169,7 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
-#### Static Analysis
+##### Static Analysis
  * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
 ##### TrustManager
@@ -279,7 +279,7 @@ In this particular example we are pinning the intermediate CA of the certificate
 
 Sample Xamarin app with the previous example can be obtained at https://github.com/owasp-mstg/blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true
 
-#### Static Analysis
+##### Static Analysis
 
 After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
