@@ -250,6 +250,9 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 ### References
 
+- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
+- Security Flaw with UIWebView - (https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c "Security Flaw with UIWebView")
+
 #### OWASP Mobile Top 10 2016
 
 - M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
@@ -266,9 +269,6 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 - CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
-#### Info
-
-- [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-
 #### Tools
+
 - IDB - http://www.idbtool.com/
