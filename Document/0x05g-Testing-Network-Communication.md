@@ -330,7 +330,7 @@ cordova.plugin.http.setSSLCertMode('pinned', function() {
 });
 ```
 
-The pinned certificates are located in the folder as DER encoded certificates with .cer extension.
+The pinned certificates are located in the 'assets' folder of the app, as DER encoded certificates with .cer extension.
 
 ##### Static Analysis
 
