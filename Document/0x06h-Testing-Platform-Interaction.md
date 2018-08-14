@@ -63,6 +63,65 @@ URI => "myapp://testpayload'"
 
 ```
 
+### Testing WebView Protocol Handlers
+
+#### Overview
+
+Several default schemas are available that are being interpreted in a WebViews. The following schemas can be used within a WebView on iOS:
+
+-	http(s)://
+-	file://
+-	tel://
+
+WebViews can load remote content from an endpoint, but they can also load local content from the app data directory. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
+
+#### Static Analysis
+
+Check the source code for WebView usage. The following WebView settings control resource access:
+
+- `allowFileAccessFromFileURLs`
+- `allowUniversalAccessFromFileURLs`
+- `allowingReadAccessToURL`
+
+Example of setting `allowFileAccessFromFileURLs` in a WebView:
+
+Objective-C:
+```
+[webView.configuration.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
+```
+
+Swift:
+```
+webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+```
+
+By default WKWebView disables file access. If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
+
+> Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
+
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL") method.
+
+Objective-C:
+```
+[self.wk_webview loadFileURL:url allowingReadAccessToURL:readAccessToURL];
+```
+
+Swift:
+```
+webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
+```
+
+The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
+
+Use the following best practices as defensive-in-depth measures:
+- Create a whitelist that defines local and remote web pages and protocols that are allowed to be loaded.
+- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. Minify JavaScript files to make them harder to read.
+
+#### Dynamic Analysis
+
+To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
+
+
 ### Testing iOS WebViews
 
 #### Overview
