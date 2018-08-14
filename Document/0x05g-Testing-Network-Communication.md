@@ -293,7 +293,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
 
 ```javascript
   var server = "https://build.phonegap.com";
-  //SHA56 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
+  //SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
   var fingerprint = "C6 2D 93 39 C2 9F 82 8E 1E BE FD DC 2D 7B 7D 24 31 1A 59 E1 0B 4B C8 04 6E 21 F6 FA A2 37 11 45";
 
   window.plugins.sslCertificateChecker.check(
@@ -330,13 +330,12 @@ cordova.plugin.http.setSSLCertMode('pinned', function() {
 });
 ```
 
-The certificates that are pinned are located in 
-
+The pinned certificates are located in the folder as DER encoded certificates with .cer extension.
 
 ##### Static Analysis
 
 * After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used.
-* We will need to search 
+* We will need to search for this methods in the Javascript code of the application to confirm its usage. 
 
 
 For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
