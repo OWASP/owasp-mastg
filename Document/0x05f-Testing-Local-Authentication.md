@@ -1,6 +1,85 @@
 ## Local Authentication on Android
 
-During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
+During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
+As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
+In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
+
+
+### Testing Confirm Credentials
+
+#### Overview
+The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lockscreen-protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
+
+Note that the security of Confirm Credentials is only as strong as the protection set at the lockscreen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
+
+#### Static Analysis
+
+Reassure that the lockscreen is set:
+
+```java
+   KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+   if (!mKeyguardManager.isKeyguardSecure()) {
+            // Show a message that the user hasn't set up a lock screen.
+   }
+```
+
+- Create the key protected by the lockscreen (assuring the the user was unlocking his device within the last 30 seconds, or he will have to unlock again):
+
+```java
+  try {
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+        keyStore.load(null);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+
+        // Set the alias of the entry in Android KeyStore where the key will appear
+        // and the constrains (purposes) in the constructor of the Builder
+        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
+                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                .setUserAuthenticationRequired(true)
+                        // Require that the user has unlocked in the last 30 seconds
+                .setUserAuthenticationValidityDurationSeconds(30)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .build());
+        keyGenerator.generateKey();
+    } catch (NoSuchAlgorithmException | NoSuchProviderException
+            | InvalidAlgorithmParameterException | KeyStoreException
+            | CertificateException | IOException e) {
+        throw new RuntimeException("Failed to create a symmetric key", e);
+    }
+
+```
+
+- setup the lockscreen to confirm:
+```java
+  private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
+  Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
+        if (intent != null) {
+            startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
+        }
+```
+
+
+- use the key after lockscreen
+```java
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
+            // Challenge completed, proceed with using cipher
+            if (resultCode == RESULT_OK) {
+                //use the key for the actual authentication flow
+            } else {
+                // The user canceled or didn’t complete the lock screen
+                // operation. Go to error/cancellation flow.
+            }
+        }
+    }
+
+```
+#### Dynamic Analysis
+Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
+
 
 ### Testing Biometric Authentication
 
@@ -22,6 +101,12 @@ Make sure to verify the authentication logic. For the authentication to be succe
 
 Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
 
+- The permission must be requested in the Android Manifest:
+
+```xml
+	<uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
+```
 - Fingerprint hardware must be available:
 
 ```Java
@@ -34,7 +119,7 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 ```Java
 	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();
+	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lockscreen
 ```
 
 - At least one finger should be registered:
@@ -165,13 +250,15 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 ### References
 
+
 #### OWASP Mobile Top 10 2016
 
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 #### OWASP MASVS
 
-- V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- V4.8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 

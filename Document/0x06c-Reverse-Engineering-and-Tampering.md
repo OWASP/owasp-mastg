@@ -362,7 +362,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the *security* tool to list your signing identities:
 
 ```shell
-$ security find-identity -p codesigning -v
+$ security find-identity -v
  1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Vantage Point Security Pte. Ltd."
  2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
 ```
@@ -473,7 +473,7 @@ Next, we need to make sure that the BundleID in `Info.plist` matches the one spe
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ```
 
-Finally, we use the codesign tool to re-sign both binaries. You need to use *your* signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -p codesigning -v`.
+Finally, we use the codesign tool to re-sign both binaries. You need to use *your* signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
 
 ```shell
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
@@ -544,7 +544,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
 
-```objective-c
+```objc
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 

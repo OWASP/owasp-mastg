@@ -103,7 +103,7 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
 - assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the AssetManager can retrieve
 - classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing libraries that are part of the APK, for example, the third-party libraries that aren't part of the Android SDK
+- lib: directory containing 3rd party libraries that are part of the APK.
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
@@ -142,6 +142,8 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human-readable representation of the Dalvik executable.
+
+
 Every app also has a data directory for storing data created during run time. This directory is at `/data/data/[package-name]` and has the following structure:
 
 ```bash
