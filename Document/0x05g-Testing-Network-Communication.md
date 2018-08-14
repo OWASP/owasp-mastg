@@ -320,7 +320,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
 
 ###### Cordova Advanced HTTP
 
-The setSSLCertMode() method is called to set the mode to 'pinned', enabling certificate pinning.
+The setSSLCertMode() method is called to set the mode to 'pinned', enabling certificate pinning. (Old versions of the plugin might still use the enableSSLPinning() method, that as been deprecated since version 2.0.0)  
 
 ```javascript
 cordova.plugin.http.setSSLCertMode('pinned', function() {
