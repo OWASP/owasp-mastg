@@ -283,6 +283,61 @@ Sample Xamarin app with the previous example can be obtained at https://github.c
 
 After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
+##### Cordova/Phonegap Applications
+
+Hybrid applications based on Cordova/Phonegap do not support Certificate Pinning natively, so plugins are used to achieve this. The most common ones are PhoneGap SSL Certificate Checker and Cordova Advanced HTTP.
+
+###### PhoneGap SSL Certificate Checker
+
+The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
+
+```javascript
+  var server = "https://build.phonegap.com";
+  //SHA56 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
+  var fingerprint = "C6 2D 93 39 C2 9F 82 8E 1E BE FD DC 2D 7B 7D 24 31 1A 59 E1 0B 4B C8 04 6E 21 F6 FA A2 37 11 45";
+
+  window.plugins.sslCertificateChecker.check(
+          successCallback,
+          errorCallback,
+          server,
+          fingerprint);
+
+   function successCallback(message) {
+     alert(message);
+     // Message is always: CONNECTION_SECURE.
+     // Now do something with the trusted server.
+   }
+
+   function errorCallback(message) {
+     alert(message);
+     if (message === "CONNECTION_NOT_SECURE") {
+       // There is likely a man in the middle attack going on, be careful!
+     } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
+       // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
+     }
+   }
+```
+
+###### Cordova Advanced HTTP
+
+The setSSLCertMode() method is called to set the mode to 'pinned', enabling certificate pinning.
+
+```javascript
+cordova.plugin.http.setSSLCertMode('pinned', function() {
+  console.log('success!');
+}, function() {
+  console.log('error :(');
+});
+```
+
+The certificates that are pinned are located in 
+
+
+##### Static Analysis
+
+* After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used.
+* We will need to search 
+
 
 For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
 
