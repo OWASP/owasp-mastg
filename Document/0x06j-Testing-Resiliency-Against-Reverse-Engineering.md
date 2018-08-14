@@ -47,7 +47,7 @@ Check for files and directories typically associated with jailbreaks, such as
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
-```objective-c
+```objc
 NSError *error;
 NSString *stringToBeWritten = @"This is a test.";
 [stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
@@ -264,7 +264,7 @@ sys.stdin.read()
 ```
 
 
-#### Anti-Debugging Checks
+### Anti-Debugging Checks
 
 #### Overview
 Debugging and exploring applications are helpful during reversing. Using a debugger, a reverse engineer can not only track critical variables but also read and modify memory.
@@ -292,7 +292,7 @@ Before diving into the details, it is important to know that `ptrace` is not par
 
 The following is an example implementation of the above logic:
 
-```objective-C
+```objc
 #import <dlfcn.h>
 #import <sys/types.h>
 #import <stdio.h>
@@ -381,7 +381,7 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 ```
 
 
-#### File Integrity Checks
+### File Integrity Checks
 
 #### Overview
 

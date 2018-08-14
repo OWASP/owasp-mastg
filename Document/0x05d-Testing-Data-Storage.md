@@ -27,7 +27,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 The following code snippets demonstrate bad practices that disclose sensitive information. They also illustrate Android storage mechanisms in detail. For more information, check out the [Security Tips for Storing Data](http://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
 
 ##### Shared Preferences
-The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declated world-readable (accessible to all apps) or private.
+The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
 ```java
@@ -242,11 +242,11 @@ buildTypes {
 
 The [Android KeyStore](http://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android KeyStore") supports relatively secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
 
-You can protect keys stored in the Android KeyStore with user authentication. The user's lock screen credentials (pattern, PIN, password, or fingerprint) are used for authentication.
+You can protect keys stored in the Android KeyStore with user authentication in a confirm credential flow. The user's lock screen credentials (pattern, PIN, password, or fingerprint) are used for authentication.
 
 You can use stored keys in one of two modes:
 
-1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid.
+1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid. 
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 
@@ -354,15 +354,16 @@ Then configure ProGuard to strip its calls.
 
 ```
 afterEvaluate {
-    project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
+  project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
       task.dependsOn('removeLogs')
-}
+  }
 
   task removeLogs() {
     doLast {
       fileTree(dir: project.file('src')).each { File file ->
         def out = file.getText("UTF-8").replaceAll("((android\\.util\\.)*Log\\.([ewidv]|wtf)\\s*\\([\\S\\s]*?\\)\\s*;)", "/*\$1*/")
         file.write(out);
+      }
     }
   }
 }
@@ -437,54 +438,6 @@ The code for all input fields that take sensitive information should include thi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-
-### Finding Sensitive Data on the Clipboard
-
-#### Overview
-
-While users are typing data in input fields, they can use the [clipboard](https://developer.android.com/guide/topics/text/copy-paste.html "Copy and Paste in Android") to copy and paste data. The device's apps share the clipboard, so malicious apps can misuse it to access sensitive data.
-
-#### Static Analysis
-
-Identify input fields that take sensitive information and countermeasures that mitigate the risk of clipboard access. Overwriting input field functions is a general best practice that disables the clipboard for those functions.
-
-```Java
-EditText  etxt = (EditText) findViewById(R.id.editText1);
-etxt.setCustomSelectionActionModeCallback(new Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {                  
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-```
-
-`longClickable` should be deactivated for the input field.
-
-```xml
-android:longClickable="false"
-```
-
-#### Dynamic Analysis
-
-Start the app and click in the input fields that take sensitive data. If you are shown the copy/paste menu, the clipboard functionality has not been disabled for these fields.
-
-You can use the Drozer module `post.capture.clipboard` to extract data from the clipboard:
-
-```
-dz> run post.capture.clipboard
-[*] Clipboard value: ClipData.Item { T:Secretmessage }
-```
 
 ### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
 
@@ -814,7 +767,13 @@ Run the following command to convert the .ab file to tar.
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
-The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is an alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
+
+```bash
+dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
+```
+
+The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
 java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
@@ -1129,6 +1088,7 @@ You can implement checks on the Android device by querying  [_Settings.Secure_](
 
 The dynamic analysis depends on the checks enforced by the app and their expected behavior. If the checks can be bypassed, they must be validated.
 
+
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -1144,12 +1104,12 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - V2.3: "No sensitive data is written to application logs."
 - V2.4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 - V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
-- V2.6: "The clipboard is deactivated on text fields that may contain sensitive data."
-- V2.7: "No sensitive data is exposed via IPC mechanisms."
-- V2.8: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-- V2.9: "No sensitive data is included in backups generated by the mobile operating system."
-- V2.10: "The app removes sensitive data from views when backgrounded."
-- V2.11: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
+- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
+- V2.9: "The app removes sensitive data from views when backgrounded."
+- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 

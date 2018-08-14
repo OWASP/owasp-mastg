@@ -2,6 +2,8 @@
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
+As stated before in chapter Testing Authentication and Session Management: the tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
+
 ### Testing Local Authentication
 
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication) provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html) for implementing local authentication.
@@ -12,6 +14,8 @@ Developers have two options for incorporating Touch ID authentication:
 
 - `LocalAuthentication.framework` is a high-level API that can be used to authenticate the user via Touch ID. The app can't access any data associated with the enrolled fingerprint and is notified only whether authentication was successful.
 - `Security.framework` is a lower level API to access [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services"). This is a secure option if your app needs to protect some secret data with biometric authentication, since the access control is managed on a system-level and can not easily be bypassed. `Security.framework` has a C API, but there are several [open source wrappers available](https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id "How To Secure iOS User Data: The Keychain and Touch ID"), making access to the Keychain as simple as to NSUserDefaults. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
+
+Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lidner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM) for more details.
 
 ##### Local Authentication Framework
 
@@ -56,6 +60,7 @@ In the following example we will save the string "test_strong_password" to the K
 **Swift**
 
 ```swift
+
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
@@ -90,30 +95,33 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
-// 1. create AccessControl object that will represent authentication settings
-CFErrorRef *err = nil;
+```objc
 
-SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-	kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-	kSecAccessControlUserPresence,
-	err);
+	// 1. create AccessControl object that will represent authentication settings
+	CFErrorRef *err = nil;
 
-// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
-NSDictionary *query = @{ (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-	(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
-	(__bridge id)kSecAttrAccount: @"OWASP Account",
-	(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
-	(__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef };
+	SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
+		kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+		kSecAccessControlUserPresence,
+		err);
 
-// 3. save item
-OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
+	// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+	NSDictionary* query = @{
+		(_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+		(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
+		(__bridge id)kSecAttrAccount: @"OWASP Account",
+		(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
+		(__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
+	};
 
-if (status == noErr) {
-	// successfully saved
-} else {
-	// error while saving
-}
+	// 3. save item
+	OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
+
+	if (status == noErr) {
+		// successfully saved
+	} else {
+		// error while saving
+	}
 ```
 
 Now we can request the saved item from the Keychain. Keychain Services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
@@ -145,7 +153,7 @@ if status == noErr {
 
 **Objective-C**
 
-```objective-c
+```objc
 // 1. define query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,
@@ -158,8 +166,8 @@ CFTypeRef queryResult = NULL;
 OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &queryResult);
 
 if (status == noErr){
-    NSData *resultData = ( __bridge_transfer NSData *)queryResult;
-    NSString *password = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
+    NSData* resultData = ( __bridge_transfer NSData* )queryResult;
+    NSString* password = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     NSLog(@"%@", password);
 } else {
     NSLog(@"Something went wrong");
@@ -225,7 +233,8 @@ If vulnerable, the module will automatically bypass the login form.
 
 #### OWASP MASVS
 
-- V4.7: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- V4.8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- v2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 

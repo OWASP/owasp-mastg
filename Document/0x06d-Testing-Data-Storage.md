@@ -68,6 +68,26 @@ Please note that keys secured by Touch ID (via `kSecAccessControlTouch IDCurrent
 Starting with iOS 9, you can do ECC-based signing operations in the Secure Enclave. In that scenario, the private key and the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key in the Keychain because it can't be stored in the Secure Enclave. After the key is created, you can use the `kSecAttrKeyType` to indicate the type of algorithm you want to use the key with.
 
+In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. In iOS 8, you will need to check whether you can read/write from an item in the Keychain protected by the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute. From iOS 9 onward you can check whether a losckscreen is set, using `LAContext`:
+
+```swift
+
+  public func devicePasscodeEnabled() -> Bool {
+        return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+    }
+
+```
+
+```obj-c
+  -(BOOL)devicePasscodeEnabled:(LAContex)context{
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
+          return true;
+      } else {
+          creturn false;
+      }
+  }
+```
+
 ###### Keychain Data Persistence
 
 On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
@@ -175,7 +195,7 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 
 The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
 
-```objective-c
+```objc
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -282,6 +302,30 @@ The path to the Keychain file is
 ```
 
 On a non-jailbroken device, you can use objection to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
+
+
+##### Dynamic Analysis with Xcode and iOS simulator
+
+> This test is only available on macOS, as Xcode and the iOS simulator is needed.
+
+For testing the local storage and verifying what data is stored within it, it's not mandatory to have an iOS device. With access to the source code and Xcode the app can be build and deployed in the iOS simulator. The file system of the current device of the iOS simulator is available in `~/Library/Developer/CoreSimulator/Devices`.
+
+Once the app is running in the iOS simulator, you can navigate to the directory of the latest simulator started with the following command:
+
+```bash
+$ cd ~/Library/Developer/CoreSimulator/Devices/$(
+ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
+awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
+```
+
+The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
+
+```bash
+$ grep -iRn keyword .
+```
+
+Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
+
 
 ##### Dynamic Analysis with Needle
 
@@ -419,7 +463,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 - Search through the source code for similar implementations, such as
 
-```ObjC
+```objc
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
 ```
@@ -428,7 +472,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to "YES."
 
-```ObjC
+```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -443,7 +487,7 @@ If a jailbroken iPhone is available, execute the following steps:
 `/private/var/mobile/Library/Keyboard/`
 4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
 
-```objective-c
+```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -453,73 +497,6 @@ If you must use a non-jailbroken iPhone:
 2. Key in all sensitive data.
 3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.
 
-
-### Checking the Clipboard for Sensitive Data
-
-#### Overview
-
-When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
-
-Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only.
-
-#### Static Analysis
-
-Search the source code for subclasses of `UITextField`.
-
-```#ObjC
-@interface name_of_sub_class : UITextField
-action == @select(cut:)
-action == @select(copy:)
-```
-
-One way to [disable the clipboard on iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") is demonstrated below:
-
-```ObjC
-@interface NoSelectTextField : UITextField
-
-@end
-
-@implementation NoSelectTextField
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-    if (action == @selector(paste:) ||
-        action == @selector(cut:) ||
-        action == @selector(copy:) ||
-        action == @selector(select:) ||
-        action == @selector(selectAll:) ||
-        action == @selector(delete:) ||
-        action == @selector(makeTextWritingDirectionLeftToRight:) ||
-        action == @selector(makeTextWritingDirectionRightToLeft:) ||
-        action == @selector(toggleBoldface:) ||
-        action == @selector(toggleItalics:) ||
-        action == @selector(toggleUnderline:)
-        ) {
-            return NO;
-    }
-    return [super canPerformAction:action withSender:sender];
-}
-
-@end
-```
-
-To clear the pasteboard with [UIPasteboardNameGeneral](https://developer.apple.com/reference/uikit/uipasteboardnamegeneral?language=objc "UIPasteboardNameGeneral"), use the following code snippet:
-
-```ObjC
-UIPasteboard *pb = [UIPasteboard generalPasteboard];
-[pb setValue:@"" forPasteboardType:UIPasteboardNameGeneral];
-```
-
-#### Dynamic Analysis
-
-Navigate to a screen in the app that has input fields that take sensitive information, such as a username, password, or credit card number. Enter a value and double tap on the input field. If the "Select," "Select All," and "Paste" options show up, tap on "Select" or "Select All"; you should be allowed to "Cut," "Copy," "Paste," or "Define." The "Cut" and "Copy" options should be disabled for sensitive input fields; otherwise, someone could retrieve the input value by pasting it. If the sensitive input fields allow you to "Cut" or "Copy" the values, the app fails this test.
-
-You can use Needle to check for sensitive data written to the clipboard on jailbroken devices. Launch the following Needle module to start passively monitoring the clipboard (all clipboard data will be written to the specified output file):
-
-```
-[needle] > use dynamic/monitor/pasteboard
-[needle] > set OUTPUT "./clipboard-logs.txt"
-[needle] > run
- ```
 
 ### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms
 
@@ -909,12 +886,12 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 - V2.3: "No sensitive data is written to application logs."
 - V2.4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 - V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
-- V2.6:	"The clipboard is deactivated on text fields that may contain sensitive data."
-- V2.7: "No sensitive data is exposed via IPC mechanisms."
-- V2.8:	"No sensitive data, such as passwords or pins, is exposed through the user interface."
-- V2.9: "No sensitive data is included in backups generated by the mobile operating system."
-- V2.10: "The app removes sensitive data from views when backgrounded."
-- V2.11:	"The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- V2.6: "No sensitive data is exposed via IPC mechanisms."
+- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
+- V2.9: "The app removes sensitive data from views when backgrounded."
+- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- v2.11:  "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 
