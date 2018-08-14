@@ -338,11 +338,11 @@ The pinned certificates are located in the folder as DER encoded certificates wi
 * We will need to search for this methods in the Javascript code of the application to confirm its usage. 
 
 
-For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
-
 #### Dynamic Analysis
 
 Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
+
+For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
 
 ### Testing the Network Security Configuration settings
 
