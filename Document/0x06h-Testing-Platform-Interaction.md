@@ -49,7 +49,7 @@ While the URL scheme is being fuzzed, watch the logs (in Xcode, go to `Window ->
 Needle can be used to test custom URL schemes, manual fuzzing can be performed against the URL scheme to identify input validation and memory corruption bugs. The following Needle module should be used to perform these attacks:
 
 ```
-[needle] > 
+[needle] >
 [needle] > use dynamic/ipc/open_uri
 [needle][open_uri] > show options
 
@@ -86,18 +86,18 @@ Check the source code for WebView usage. The following WebView settings control 
 Example of setting `allowFileAccessFromFileURLs` in a WebView:
 
 Objective-C:
-```
+```objc
 [webView.configuration.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
 ```
 
 Swift:
-```
+```swift
 webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 ```
 
 By default WKWebView disables file access. If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-> Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
+Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
 
 If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL") method.
 
@@ -113,14 +113,19 @@ webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
 
 The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
 
+Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html "Phone Links on iOS") in the HTML page and will then not be interpreted by the WebView.
+
 Use the following best practices as defensive-in-depth measures:
-- Create a whitelist that defines local and remote web pages and protocols that are allowed to be loaded.
+- Create a whitelist that defines local and remote web pages and schemas that are allowed to be loaded.
 - Create checksums of the local HTML/JavaScript files and check them while the app is starting up. Minify JavaScript files to make them harder to read.
 
 #### Dynamic Analysis
 
-To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
+To identify the usage of protocol handlers, look for ways to access files from the file system and trigger phone calls while you're using the app.
 
+If it's possible to load local files via a WebView, the app might be vulnerable to directory traversal attacks. This would allow access to all files within the sandbox or even to escape the sandbox with full access to the file system (if the device is jailbroken).  
+
+It should therefore be verified if a user can change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
 
 ### Testing iOS WebViews
 
@@ -132,11 +137,9 @@ iOS WebViews support JavaScript execution by default, so script injection and cr
 
 Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
 
-WebViews support different URL schemas, like for example tel. Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html "Phone Links on iOS") in the HTML page and will then not be interpreted by the WebView.
-
 #### Static Analysis
 
-Look out for usages of the following components that implement WebViews:
+Look out for usages of the following classes that implement WebViews:
 
 - [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
 - [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later)
@@ -145,7 +148,9 @@ Look out for usages of the following components that implement WebViews:
 `UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
 
 - `WKWebView` is the appropriate choice for extending app functionality, controlling displayed content  (i.e., prevent the user from navigating to arbitrary URLs) and customizing.
-- `SafariViewController` should be used to provide a generalized web viewing experience. Note that `SafariViewController` shares cookies and other website data with Safari.
+- `SafariViewController` should be used to provide a generalized web viewing experience.
+
+> Note that `SafariViewController` shares cookies and other website data with Safari.
 
 `WKWebView` comes with several security advantages over `UIWebView`:
 
@@ -153,6 +158,8 @@ Look out for usages of the following components that implement WebViews:
 - The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
 - the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - WKWebView implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
+
+WKWebView also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#THIEL].
 
 ##### JavaScript Configuration
 
@@ -198,7 +205,7 @@ Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the
 
 A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
-``objective-c
+``objc
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
 ``
 
@@ -241,6 +248,10 @@ Check the source code for WebViews usage. If you can identify a WebView instance
 ```
 
 Check the `baseURL` for dynamic parameters that can be manipulated (leading to local file inclusion).
+
+##### `hasOnlySecureContent`
+
+In WKWebViews it is possible to detect mixed content or content that was completely loaded via HTTP. By using the method `hasOnlySecureContent` it can be ensured that only content via HTTPS is show, otherwise an alert is shown to the user, see page 159 and 160 in [#THIEL] for an example.  
 
 #### Dynamic Analysis
 
