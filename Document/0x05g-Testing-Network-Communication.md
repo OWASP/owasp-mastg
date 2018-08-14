@@ -283,9 +283,9 @@ Sample Xamarin app with the previous example can be obtained at https://github.c
 
 After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
-##### Cordova/Phonegap Applications
+##### Cordova Applications
 
-Hybrid applications based on Cordova/Phonegap do not support Certificate Pinning natively, so plugins are used to achieve this. The most common ones are PhoneGap SSL Certificate Checker and Cordova Advanced HTTP.
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common ones are PhoneGap SSL Certificate Checker and Cordova Advanced HTTP.
 
 ###### PhoneGap SSL Certificate Checker
 
@@ -630,3 +630,8 @@ When you do not have the source code:
 
 - Certificate and Public Key Pinning with Xamarin - https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin
 - ServicePointManager - https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx
+
+##### Cordova Certificate Pinning
+
+Cordova Advanced HTTP - https://github.com/silkimen/cordova-plugin-advanced-http
+PhoneGap SSL Certificate Checker plugin - https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin
