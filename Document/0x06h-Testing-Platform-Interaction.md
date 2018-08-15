@@ -95,7 +95,7 @@ Swift:
 webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 ```
 
-> By default WKWebView disables file access. If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
+By default WKWebView disables file access. If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
 Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
 
