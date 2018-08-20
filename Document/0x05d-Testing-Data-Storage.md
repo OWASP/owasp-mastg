@@ -386,6 +386,11 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 $ adb logcat > logcat.log
 ```
 
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name. 
+
+```bash
+$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+```
 
 ### Determining Whether Sensitive Data is Sent to Third Parties
 
