@@ -285,7 +285,7 @@ After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dn
 
 ##### Cordova Applications
 
-Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common ones are PhoneGap SSL Certificate Checker and Cordova Advanced HTTP.
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker.
 
 ###### PhoneGap SSL Certificate Checker
 
@@ -317,20 +317,6 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
-
-###### Cordova Advanced HTTP
-
-The setSSLCertMode() method is called to set the mode to 'pinned', enabling certificate pinning. (Old versions of the plugin might still use the enableSSLPinning() method, that as been deprecated since version 2.0.0)  
-
-```javascript
-cordova.plugin.http.setSSLCertMode('pinned', function() {
-  console.log('success!');
-}, function() {
-  console.log('error :(');
-});
-```
-
-The pinned certificates are located in the 'assets' folder of the app, as DER encoded certificates with .cer extension.
 
 ##### Static Analysis
 
