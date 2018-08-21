@@ -169,8 +169,7 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
-##### Static Analysis
- * Use a decompiler (Ex. Jadx) or apktool to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
+Using a decompiler (Ex. Jadx) or apktool we will be able to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
 ##### TrustManager
 
@@ -279,8 +278,6 @@ In this particular example we are pinning the intermediate CA of the certificate
 
 Sample Xamarin app with the previous example can be obtained at https://github.com/owasp-mstg/blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true
 
-##### Static Analysis
-
 After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
 ##### Cordova Applications
@@ -292,9 +289,10 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
 The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
-  var server = "https://build.phonegap.com";
+  //Endpoint to verify against certiticate pinning.
+  var server = "https://www.owasp.org";
   //SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
-  var fingerprint = "C6 2D 93 39 C2 9F 82 8E 1E BE FD DC 2D 7B 7D 24 31 1A 59 E1 0B 4B C8 04 6E 21 F6 FA A2 37 11 45";
+  var fingerprint = "D8 EF 3C DF 7E F6 44 BA 04 EC D5 97 14 BB 00 4A 7A F5 26 63 53 87 4E 76 67 77 F0 F4 CC ED 67 B9";
 
   window.plugins.sslCertificateChecker.check(
           successCallback,
@@ -317,12 +315,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
-
-##### Static Analysis
-
-* After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used.
-* We will need to search for this methods in the Javascript code of the application to confirm its usage. 
-
+After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage. 
 
 #### Dynamic Analysis
 
