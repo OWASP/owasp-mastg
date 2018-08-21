@@ -619,5 +619,4 @@ When you do not have the source code:
 
 ##### Cordova Certificate Pinning
 
-Cordova Advanced HTTP - https://github.com/silkimen/cordova-plugin-advanced-http
 PhoneGap SSL Certificate Checker plugin - https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin
