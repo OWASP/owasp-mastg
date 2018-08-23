@@ -455,7 +455,7 @@ int xyz(char *dst) {
 
 ##### Пример реализации - хранилище
 
-Когда заходит речь и проверках целостности хранилища приложения, как такового, вы можете создать HMAC или же подпись, на основе данной пары ключ-значение или же на основе файла, храняшегося на устройстве. Когда вы создаете HMAC, лучше всего использовать реализации в CommonCrypto. В случае необходимости шифрования: пожалуйста, обедитесь, что вы шифруете, а затем применяете HMAC, как описано в [Authenticated Encryption](http://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+Когда заходит речь и проверках целостности хранилища приложения, как такового, вы можете создать HMAC или же подпись, на основе данной пары ключ-значение или же на основе файла, храняшегося на устройстве. Когда вы создаете HMAC, лучше всего использовать реализации в CommonCrypto. В случае необходимости шифрования: пожалуйста, обедитесь, что вы шифруете, а затем применяете HMAC, как описано в [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 Когда производите генерацию HMAC с CC:
 

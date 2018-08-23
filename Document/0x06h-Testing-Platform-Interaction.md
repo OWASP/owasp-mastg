@@ -34,9 +34,9 @@ You should carefully validate any URL before calling it. You can whitelist appli
 
 Once you've identified the custom URL schemes the app has registered, open the URLs on Safari and observe how the app behaves.
 
-If the app parses parts of the URL, you can perform input fuzzing to detect memory corruption bugs. For this you can use [IDB](http://www.idbtool.com/):
+If the app parses parts of the URL, you can perform input fuzzing to detect memory corruption bugs. For this you can use [IDB](https://www.idbtool.com/):
 
-- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](http://www.idbtool.com/documentation/setup.html).
+- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](https://www.idbtool.com/documentation/setup.html).
 - Go to the `URL Handlers` section. In `URL schemes`, click `Refresh` , and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking `Open`, on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
 - To find out whether custom URI schemes contain any bugs, try to fuzz them. In the `URL Handlers` section, go to the `Fuzzer` tab. On the left side default IDB payloads are listed. The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers fuzzing dictionaries. Once your payload list is ready, go to the `Fuzz Template` section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
@@ -282,4 +282,4 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 #### Tools
 
-- IDB - http://www.idbtool.com/
+- IDB - https://www.idbtool.com/

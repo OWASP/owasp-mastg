@@ -57,7 +57,7 @@ v1SigningEnabled true
 v2SigningEnabled true
 ```
 
-Several best practices for [configuring the app for release](http://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
+Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
 
 #### Dynamic Analysis
 
@@ -118,7 +118,7 @@ $ run-as com.vulnerable.app id
 uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
 ```
 
-[Android Studio](http://developer.android.com/tools/debugging/debugging-studio.html "Debugging with Android Studio") can also be used to debug an application and verify debugging activation for an app.
+[Android Studio](https://developer.android.com/tools/debugging/debugging-studio.html "Debugging with Android Studio") can also be used to debug an application and verify debugging activation for an app.
 
 Another method for determining whether an application is debuggable is attaching `jdb` to the running process. If this is successful, debugging will be activated.
 
@@ -238,7 +238,7 @@ Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition i
 
 To determine whether `StrictMode` is enabled, you can look for the `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` methods. Most likely, they will be in the `onCreate` method.
 
-The [detection methods for the thread policy](http://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The [detection methods for the thread policy](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
 
 ```
 detectDiskWrites()
@@ -246,7 +246,7 @@ detectDiskReads()
 detectNetwork()
 ```
 
-The [penalties for thread policy violation](http://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The [penalties for thread policy violation](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
 
 ```
 penaltyLog() // Logs a message to LogCat

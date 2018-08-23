@@ -2,7 +2,7 @@
 
 ## Mobile App Taxonomy
 
-The term "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](http://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of internet-capable applications](http://www.idc.com/promo/smartphone-market-share/os).
+The term "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of internet-capable applications](https://www.idc.com/promo/smartphone-market-share/os).
 
 > In this guide, we'll use the term "app" as a general term for referring to any kind of application running on popular mobile OSes.
 
@@ -32,14 +32,14 @@ A web-to-native abstraction layer enables access to device capabilities for *hyb
 
 Following is a non-exhaustive list of more popular frameworks for developing *hybrid apps*:
 
-- [Apache Cordova](https://cordova.apache.org/)
-- [Framework 7](http://framework7.io/)
-- [Ionic](https://ionicframework.com/)
-- [jQuery Mobile](https://jquerymobile.com/)
-- [Native Script](https://www.nativescript.org/)
-- [Onsen UI]( https://onsen.io/)
-- [React Native](http://www.reactnative.com/)
-- [Sencha Touch](https://www.sencha.com/products/touch/)
+- [Apache Cordova](https://cordova.apache.org/ "Apache Cordova")
+- [Framework 7](https://framework7.io/ "Framework 7")
+- [Ionic](https://ionicframework.com/ "Ionic")
+- [jQuery Mobile](https://jquerymobile.com/ "jQuery Mobile")
+- [Native Script](https://www.nativescript.org/ "Native Script")
+- [Onsen UI]( https://onsen.io/ "Onsen UI")
+- [React Native](https://www.reactnative.com/ "React Native")
+- [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
 
 
 ### Progressive Web App

@@ -131,7 +131,7 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](http://mobiledeeplinking.org "Mobile Deeplinking"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated, as described in the test case "Testing Input Validation and Sanitization."
 
@@ -848,7 +848,7 @@ String json = gson.toJson(obj);
 
 There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
 - [OrmLite](http://ormlite.com/ "OrmLite"),
-- [SugarORM](http://satyan.github.io/sugar/ "Sugar ORM"),
+- [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
 - [GreenDAO](http://greenrobot.org/greendao/ "GreenDAO") and
 - [ActiveAndroid](http://www.activeandroid.com/ "ActiveAndroid").
 
@@ -891,7 +891,9 @@ Because this mechanism that involves Parcels and Intents may change over time, a
 
 #### Static Analysis
 
-If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://www.securecoding.cert.org/confluence/display/java/SER04-J.+Do+not+allow+serialization+and+deserialization+to+bypass+the+security+manager "SER04-J. Don't allow serialization and deserialization to bypass the security manager").
+If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager).
+
+"SER04-J. Don't allow serialization and deserialization to bypass the security manager"
 
 There are a few generic remediation steps that you can always take:
 

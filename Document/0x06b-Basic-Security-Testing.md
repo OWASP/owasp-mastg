@@ -68,7 +68,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 - [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
 - [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
-- [Redmond Pie](http://www.redmondpie.com/ "Redmone Pie")
+- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
 > Note that OWASP and the MSTG won't be responsible if you end up bricking your iOS device!
@@ -109,7 +109,7 @@ The following are some useful packages you can install from Cydia to get started
 
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
-- [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
 - Substrate: A platform that makes developing third-party iOS add-ons easier.
 - cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes.
@@ -120,14 +120,14 @@ The following are some useful packages you can install from Cydia to get started
 Your workstation should have at least the following installed:
 
 - an SSH client
-- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp).
+- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
 
 Other useful tools we'll be referring throughout the guide:
 
-- [Introspy](https://github.com/iSECPartners/Introspy-iOS)
-- [Frida](http://www.frida.re)
-- [IDB](http://www.idbtool.com)
-- [Needle](https://github.com/mwrlabs/needle)
+- [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS")
+- [Frida](https://www.frida.re "Frida")
+- [IDB](https://www.idbtool.com "IDBTool")
+- [Needle](https://github.com/mwrlabs/needle "Needle")
 
 ### Static Analysis
 
@@ -306,7 +306,7 @@ You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecur
 
 #### App Folder Structure
 
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
+System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
 
 ```shell
 iPhone:~ root# ipainstaller -l
