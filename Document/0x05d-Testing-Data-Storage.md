@@ -854,7 +854,7 @@ SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
 secretKey.destroy();
 ```
 
-Overwriting the backing byte-array from `secretKey.getEncoded` doesn't remove the key either; the SecretKeySpec-based key returns a copy of the backing byte-array. See the "Remediation" section for the proper way to remove a `SecretKey` from memory.
+Overwriting the backing byte-array from `secretKey.getEncoded` doesn't remove the key either; the SecretKeySpec-based key returns a copy of the backing byte-array. See the sections below for the proper way to remove a `SecretKey` from memory.
 
 The RSA key pair is based on the `BigInteger` type and therefore resides in memory after its first use outside the `AndroidKeyStore`. Some ciphers (such as the AES `Cipher` in `BouncyCastle`) do not properly clean up their byte-arrays.
 
