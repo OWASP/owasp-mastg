@@ -90,6 +90,16 @@ Before you start contributing, please read our brief [style guide](https://githu
 
 If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 
+
+### Contributing
+
+- Fork it ( https://github.com/[my-github-username]/owasp-mstg/ )
+- Create your feature branch (git checkout -b my-new-feature)
+- Commit your changes (git commit -am 'Add some feature')
+- Push to the branch (git push origin my-new-feature)
+- Create a new Pull Request
+- The project leaders will QA and give feedback before it's merged. 
+
 ## Authoring Credit
 
 Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names is sorted by the number of lines added. Authors are categorized as follows:
