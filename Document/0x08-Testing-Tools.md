@@ -8,6 +8,7 @@ To perform security testing different tools are available in order to be able to
 - [Android Tamer](https://androidtamer.com/) - Android Tamer is a Debian-based Virtual/Live Platform for Android Security professionals.
 - [AppUse](https://appsec-labs.com/AppUse/) - AppUse is a Virtual Machine developed by AppSec Labs.
 - [Santoku](https://santoku-linux.com/) - Santoku is an OS and can be run outside a VM as a standalone operating system.
+- [Mobile Security Toolchain](https://github.com/xebia/mobilehacktools) - A project used to install many of the tools mentioned in this section both for Android and iOS at a machine running Mac OSX. The project installs the tools via Ansible
 
 ### Static Source Code Analysis
 
@@ -20,7 +21,7 @@ To perform security testing different tools are available in order to be able to
 - [Appmon](https://github.com/dpnishant/appmon/) - AppMon is an automated framework for monitoring and tampering system API calls of native macOS, iOS and android apps.
 - [Mobile Security Framework - MobSF](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF) - Mobile Security Framework is an intelligent, all-in-one open source mobile application (Android/iOS) automated pen-testing framework capable of performing static and dynamic analysis.
 - [Needle](https://github.com/mwrlabs/needle) - Needle is an open source, modular framework to streamline the process of conducting security assessments of iOS apps including Binary Analysis, Static Code Analysis, Runtime Manipulation using Cycript and Frida hooking, and so on.
-- [objection](https://github.com/sensepost/objection) - objection is a runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android, due to the usage of Frida. 
+- [objection](https://github.com/sensepost/objection) - objection is a runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android, due to the usage of Frida.
 
 ### Tools for Android
 
