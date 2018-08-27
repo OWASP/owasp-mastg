@@ -4,7 +4,7 @@
 
 #### Overview
 
-In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html): file transfer through AirDrop and custom URL schemes.
+In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html "Inter-App Communication"): file transfer through AirDrop and custom URL schemes.
 
 Custom URL schemes allow apps to communicate via a custom protocol. An app must declare support for the scheme and handle incoming URLs that use the scheme. Once the URL scheme is registered, other apps can open the app that registered the scheme, and pass parameters by creating appropriately formatted URLs and opening them with the `openURL` method.
 
@@ -257,7 +257,7 @@ In WKWebViews it is possible to detect mixed content or content that was complet
 
 To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting\)\_Prevention_Cheat_Sheet "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
 ### References
 

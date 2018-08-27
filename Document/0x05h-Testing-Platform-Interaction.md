@@ -522,7 +522,7 @@ setContentView(webview);
 webview.loadUrl("https://www.owasp.org/");
 ```
 
-Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled(boolean\) "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
+Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://goo.gl/G9spo2 "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
 
 ```Java
 webview.getSettings().setJavaScriptEnabled(true);
@@ -533,7 +533,7 @@ This allows the WebView to interpret JavaScript. It should be enabled only if ne
 - the communication to the endpoints consistently relies on HTTPS (or other protocols that allow encryption) to protect HTML and JavaScript from tampering during transmission
 - JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
 
-To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://developer.android.com/reference/android/webkit/WebView.html#clearCache(boolean\) "clearCache() in WebViews") when the app closes.
+To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://goo.gl/7dnhdi "clearCache() in WebViews") when the app closes.
 
 Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
@@ -547,7 +547,7 @@ Dynamic Analysis depends on operating conditions. There are several ways to inje
 
 To address these attack vectors, check the following:
 
-- All functions offered by the endpoint should be free of [stored XSS](https://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OTG-INPVAL-002\) "Stored Cross-Site Scripting").
+- All functions offered by the endpoint should be free of [stored XSS](https://goo.gl/6MWZkb "Stored Cross-Site Scripting").
 - Only files that are in the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 - The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
@@ -579,7 +579,7 @@ Check the source code for WebView usage. The following [WebView settings](https:
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl(java.lang.String\) "loadURL() in WebView") method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://goo.gl/4vdSQM "loadURL() in WebView") method.
 
 ```Java
 WebView = new WebView(this);
@@ -891,9 +891,9 @@ Because this mechanism that involves Parcels and Intents may change over time, a
 
 #### Static Analysis
 
-If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager).
+If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
 
-"SER04-J. Don't allow serialization and deserialization to bypass the security manager"
+
 
 There are a few generic remediation steps that you can always take:
 

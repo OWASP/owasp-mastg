@@ -247,7 +247,7 @@ Refer to the framework documentation for examples of session timeout configurati
 - [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
 - [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
-- [ASP.Net](https://msdn.microsoft.com/en-us/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx "ASP.NET")
+- [ASP.Net](https://goo.gl/qToQuL "ASP.NET")
 
 #### Dynamic Analysis
 
@@ -310,7 +310,7 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 
 - Verify that the HMAC is checked for all incoming requests containing a token;
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_\(JWT\)_Cheat_Sheet_for_Java).
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
@@ -374,7 +374,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
-Also, make sure to check out the [OWASP JWT Cheat Sheet](https://www.owasp.org/index.php/JSON_Web_Token_(JWT)_Cheat_Sheet_for_Java "OWASP JWT Cheat Sheet").
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
 
 ##### Tampering with the Hashing Algorithm
 
