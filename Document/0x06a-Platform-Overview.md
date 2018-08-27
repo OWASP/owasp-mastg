@@ -140,13 +140,13 @@ The following figure represents the application folder structure:
 
 #### The Installation Process
 
-Different methods exist for installing an IPA package onto an iOS device. The easiest method is iTunes, which is Apple's default media player. iTunes is available for macOS and Windows. iTunes allows users to download applications from the App Store and install them to an iOS device. You can also use [iTunes to install an IPA file to a device](https://www.youtube.com/watch?v=nNn85Qvznug "How to install an app via iTunes").
+Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
-On Linux, you can use [libimobiledevice](http://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux, you can alternatively use [libimobiledevice](http://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
 On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store. It contains numerous useful applications that leverage jailbreak-provided root privileges  to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
 
-The IPA can also be directly installed at the command line by with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After you copy the IPA to the device using, for example, scp (secure copy), you can execute the ipainstaller with the IPA's filename:
+The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
 ```bash
 $ ipainstaller App_name.ipa
