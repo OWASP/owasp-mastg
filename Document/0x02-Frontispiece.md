@@ -2,9 +2,9 @@
 
 ## About the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
+The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up for the Slack channel at [http://owasp.herokuapp.com/](http://owasp.herokuapp.com/).
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel at [https://owasp.herokuapp.com/](https://owasp.herokuapp.com/ "Slack channel sign up").
 
 ## Copyright and License
 
@@ -13,7 +13,7 @@ Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative 
 
 ## Acknowledgements
 
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). We manually update the table, so be patient if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
 
 ### Authors
 

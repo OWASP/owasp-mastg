@@ -148,7 +148,7 @@ Unusual permissions on system directories may indicate a customized or rooted de
 
 **Checking for custom Android builds**
 
-Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](http://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion/ "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
+Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
 
 ```
 private boolean isTestKeyBuild()
@@ -611,7 +611,7 @@ Integrity checks often calculate a checksum or hash over selected files. Commonl
 - class files *.dex,
 - native libraries (*.so).
 
-The following [sample implementation from the Android Cracking Blog](http://androidcracking.blogspot.sg/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
+The following [sample implementation from the Android Cracking Blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
 
 
 ```java
@@ -638,7 +638,7 @@ private void crcTest() throws IOException {
 
 When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
 
-When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](http://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 Complete the following procedure when generating an HMAC with BouncyCastle:
 
@@ -1073,7 +1073,7 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 **Detecting tampering with the Java Runtime**
 
-This detection code is from the [dead && end blog](http://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
+This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
 ```java
 try {

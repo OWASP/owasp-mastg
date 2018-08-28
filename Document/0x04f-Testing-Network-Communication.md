@@ -64,7 +64,7 @@ sudo apt-get install ettercap
 Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
 
 - [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [tshark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark")) and
-- [tcpdump](http://www.tcpdump.org/tcpdump_man.html "tcpdump")
+- [tcpdump](https://www.tcpdump.org/tcpdump_man.html "tcpdump")
 
 Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
 
@@ -295,7 +295,7 @@ Make sure that critical operations enforce the use of at least one additional ch
 
 #### Tools
 
-- Tcpdump - http://www.androidtcpdump.com/
+- Tcpdump - https://www.androidtcpdump.com/
 - Wireshark - https://www.wireshark.org/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 - Burp Suite - https://portswigger.net/burp/

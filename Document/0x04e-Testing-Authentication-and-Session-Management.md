@@ -62,7 +62,7 @@ Transaction signing requires authentication of the user's approval of critical t
 
 #### Supplementary Authentication
 
-Authentication schemes are sometimes supplemented by [passive contextual authentication](http://www.mtechpro.com/2016/newsletter/may/Ping_Identity_best-practices-stepup-mfa-3001.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
 
 - Geolocation
 - IP address
@@ -231,10 +231,10 @@ Make sure that:
 
 Authentication shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made authentication and session management functionality. If the app uses framework APIs for authentication, check the framework security documentation for best practices. Security guides for common frameworks are available at the following links:
 
-- [Spring (Java)](https://projects.spring.io/spring-security)
-- [Struts (Java)](https://struts.apache.org/docs/security.html)
-- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html)
+- [Spring (Java)](https://projects.spring.io/spring-security "Spring (Java)")
+- [Struts (Java)](https://struts.apache.org/docs/security.html "Struts (Java)")
+- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication "Laravel (PHP)")
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
@@ -244,10 +244,10 @@ In most popular frameworks, you can set the session timeout via configuration op
 
 Refer to the framework documentation for examples of session timeout configuration:
 
-- [Spring (Java)](http://docs.spring.io/spring-session/docs/current/reference/html5/)
-- [Ruby on Rails](http://guides.rubyonrails.org/security.html#session-expiry)
-- [PHP](http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
-- [ASP.Net](https://msdn.microsoft.com/en-us/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx)
+- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
+- [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
+- [ASP.Net](https://msdn.microsoft.com/en-us/library/system.web.sessionstate.httpsessionstate.timeout(v=vs.110).aspx "ASP.NET")
 
 #### Dynamic Analysis
 
@@ -393,9 +393,9 @@ Many mobile apps don't automatically log users out because it is inconvenient fo
 
 If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
 
-- Spring (Java) -  http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html
-- Ruby on Rails -  http://guides.rubyonrails.org/security.html
-- PHP - http://php.net/manual/en/function.session-destroy.php
+- [Spring (Java)](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
+- [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
 
 If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
 
@@ -414,7 +414,7 @@ The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Test
 
 ### Testing OAuth 2.0 Flows
 
-[OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/). It is used in a variety of applications, including user authentication applications.
+[OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/ "OAuth 2.0 delegation protocols"). It is used in a variety of applications, including user authentication applications.
 
 Common uses for OAuth2 include:
 

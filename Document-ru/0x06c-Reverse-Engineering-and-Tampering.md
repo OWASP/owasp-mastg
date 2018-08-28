@@ -64,7 +64,7 @@ npm install -g itms-services
 
 ###### На джейлбрейк устройствах
 
-Вы можете использовать [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"), написанную Saurik'ом, для восстановления IPA из приложений, установленных на устройстве. Для этого установите `IPA Installer Console` через Cydia. Затем, войдите через ssh на устройство и найдите идентификатор пакета целевого приложения. Например:
+Вы можете использовать [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"), написанную Saurik'ом, для восстановления IPA из приложений, установленных на устройстве. Для этого установите `IPA Installer Console` через Cydia. Затем, войдите через ssh на устройство и найдите идентификатор пакета целевого приложения. Например:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -439,7 +439,7 @@ bash: # . ~/.bashrc
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-Помимо перечисленных выше инструментов, мы будем использовать стандартные инструменты, которые поставляются с macOS и Xcode. Убедитесь, что у вас есть [Xcode command line developer tools](http://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools").
+Помимо перечисленных выше инструментов, мы будем использовать стандартные инструменты, которые поставляются с macOS и Xcode. Убедитесь, что у вас есть [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools").
 
 #### Патч, переупакова, переподпись
 
@@ -613,11 +613,11 @@ sys.stdin.read()
 
 #### Патч приложений на React Native
 
-Если библиотека [React Native](http://facebook.github.io/react-native "React Native") была использована для разработки, основной код приложения находится в файле `Payload/[APP].app/main.jsbundle`. В этом файле лежит JavaScript. В основном, код JavaScript минифицирован в данном файле. Используя инструмент [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), можно получить читайемый код, тем самым открывая возможность для статического анализа. [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") или же локальный сервер должен быть предпочтительным выбором, вместо использования онлайн версии, иначе исходный код будет отправлен третьей стороне.
+Если библиотека [React Native](https://facebook.github.io/react-native "React Native") была использована для разработки, основной код приложения находится в файле `Payload/[APP].app/main.jsbundle`. В этом файле лежит JavaScript. В основном, код JavaScript минифицирован в данном файле. Используя инструмент [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), можно получить читайемый код, тем самым открывая возможность для статического анализа. [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") или же локальный сервер должен быть предпочтительным выбором, вместо использования онлайн версии, иначе исходный код будет отправлен третьей стороне.
 
 Во время установки, архив приложения распаковывается в папку `/private/var/containers/Bundle/Application/[GUID]/[APP].app`, следовательно основной JavaScript файл приложения может быть изменен здесь.
 
-Чтобы определить точное местоположение папки с приложением, инструмент  [ipainstaller](http://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller") может быть использован следующим образом:
+Чтобы определить точное местоположение папки с приложением, инструмент  [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller") может быть использован следующим образом:
 
 1. Используйте команду `ipainstaller -l`, чтобы отобразить список установленных на девайсе приложений и получить имя целевого приложения из выведенного списка.
 2. Используйте команду `ipainstaller -i [APP_NAME]`, чтобы отобразить информацию о целевом приложении, включая путь до папки установки приложения и папок с данными.
