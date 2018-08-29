@@ -65,7 +65,7 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 To generate the epub version you can use the following command
 
 ```bash
-$ gitbook epub ./ Generated/MSTG.epub 
+$ gitbook epub ./ Generated/MSTG.epub
 ```
 
 3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
@@ -98,7 +98,7 @@ If there's something you really want to see in the guide, or you want to suggest
 - Commit your changes (git commit -am 'Add some feature')
 - Push to the branch (git push origin my-new-feature)
 - Create a new Pull Request
-- The project leaders will QA and give feedback before it's merged. 
+- The project leaders will QA and give feedback before it's merged.
 
 ## Authoring Credit
 
@@ -113,4 +113,4 @@ Contributors are added to the acknowledgements table based on their contribution
 
 Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
 
-If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) for more information.
+If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) or Jeroen Willemsen (Slack: *jeroenwillemsen*) for more information.
