@@ -15,6 +15,7 @@ This app holds a secret inside. Can you find it?
 
 ### Installation
 
+This app is compatible with Android 4.4 and up.
 ```
 $ adb install UnCrackable-Level1.apk
 ```
@@ -37,6 +38,8 @@ This app holds a secret inside. May include traces of native code.
 
 ### Installation
 
+This app is compatible with Android 4.4 and up.
+
 ```
 $ adb install UnCrackable-Level2.apk
 ```
@@ -56,6 +59,8 @@ The crackme from hell!
 - Special thanks to Eduardo Novella for testing, feedback and pointing out flaws in the initial build(s).
 
 ### Installation
+
+This app is compatible with Android 4.4 and up.
 
 ```
 $ adb install UnCrackable-Level3.apk
@@ -131,3 +136,9 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 ### Solutions
 
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html)
+
+## Mobile Security testing playground
+Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG-playground") and find out!
+
+## Issues with the Crackmes
+Currently, the code is being maintained by [@commjoen](https://github.com/commjoen "Jeroen Willemsen"). If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/commjoen/uncrackable_app "uncrackable_app repo").
