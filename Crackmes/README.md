@@ -139,6 +139,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 ## Mobile Security testing playground
 Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG-playground") and find out!
+Having troubles with getting through the playground challenges, check the Write-ups folder right here!
 
 ## Issues with the Crackmes
 Currently, the code is being maintained by [@commjoen](https://github.com/commjoen "Jeroen Willemsen"). If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/commjoen/uncrackable_app "uncrackable_app repo").
