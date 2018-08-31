@@ -69,7 +69,7 @@ Jailbreak Pangu 1.3.0 доступен для 64-разрядных устрой
 
 - [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
 - [Вики iPhone] (https://www.theiphonewiki.com/ "Викитека для iPhone")
-- [Redmond Pie] (http://www.redmondpie.com/ "Redmond Pie")
+- [Redmond Pie] (https://www.redmondpie.com/ "Redmond Pie")
 - [Reddit Jailbreak] (https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
 > Обратите внимание, что OWASP и MSTG не будут нести ответственность, если вы в конце концов превратите свое iOS устройство в кирпич!
@@ -108,7 +108,7 @@ http://repo.hackyouriphone.org
 
 - BigBoss Recommended Tools: Устанавливает множество полезных инструментов командной строки для тестирования безопасности, включая стандартные утилиты Unix, отсутствующие в iOS, включая wget, unrar, less и sqlite3 client.
 - adv-cmds: расширенная командная строка. Включает в себя finger, fingerd, last, lsvfs, md и ps.
-- [Консоль установщика IPA] (http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): инструмент для установки приложений IPA из командной строки. Имя пакета - `com.autopear.installipa`.
+- [Консоль установщика IPA] (https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): инструмент для установки приложений IPA из командной строки. Имя пакета - `com.autopear.installipa`.
 - Class Dump: инструмент командной строки для проверки информации о среде исполнения Objective-C, хранящейся в файлах Mach-O.
 - Substrate: платформа, которая упрощает разработку сторонних твиков для iOS.
 - Сycript: Cycript - это встроенный, оптимизирующий компилятор Cycript-to-JavaScript и консольная среда режима реального времени, которая может быть внедрена в запущенные процессы.
@@ -124,8 +124,8 @@ http://repo.hackyouriphone.org
 Другие полезные инструменты, на которые мы будем ссылаться в руководстве:
 
 - [Introspy](https://github.com/iSECPartners/Introspy-iOS)
-- [Frida](http://www.frida.re)
-- [IDB](http://www.idbtool.com)
+- [Frida](https://www.frida.re)
+- [IDB](https://www.idbtool.com)
 - [Needle](https://github.com/mwrlabs/needle)
 
 ### Статический анализ
@@ -303,7 +303,7 @@ iPhone:~ root#
 
 #### Структура папки с приложением
 
-Системные приложения находятся в каталоге `/Applications`. Вы можете использовать [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") , чтобы определить папку установки для установленных пользователем приложений (доступно в разделе `/private/var/mobile/Containers/` с iOS 9). Подключитесь к устройству через SSH и запустите команду `ipainstaller` (делает то же самое, что и `installipa`) следующим образом:
+Системные приложения находятся в каталоге `/Applications`. Вы можете использовать [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") , чтобы определить папку установки для установленных пользователем приложений (доступно в разделе `/private/var/mobile/Containers/` с iOS 9). Подключитесь к устройству через SSH и запустите команду `ipainstaller` (делает то же самое, что и `installipa`) следующим образом:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -522,7 +522,7 @@ bash: # . ~/.bashrc
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-Помимо перечисленных выше инструментов, мы будем использовать стандартные инструменты, которые поставляются с macOS и Xcode. Убедитесь, что у вас есть [Xcode command line developer tools](http://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools").
+Помимо перечисленных выше инструментов, мы будем использовать стандартные инструменты, которые поставляются с macOS и Xcode. Убедитесь, что у вас есть [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools").
 
 #### Патч, переупакова, переподпись
 
@@ -596,7 +596,7 @@ PID  Name
 
 #### Автоматическое переподписывание с использованием Objection
 
-[Objection](https://github.com/sensepost/objection "Objection") -это набор инструментов исследования мобильной среды исполнения, основанный на [Frida](http://www.frida.re). Одно из лучших свойств Objection заключается в том, что он работает даже с устройствами, не имеющими джейлбрейка. Он делает это, автоматизируя процесс переупаковки приложений с помощью `FridaGadget.dylib`.
+[Objection](https://github.com/sensepost/objection "Objection") -это набор инструментов исследования мобильной среды исполнения, основанный на [Frida](https://www.frida.re). Одно из лучших свойств Objection заключается в том, что он работает даже с устройствами, не имеющими джейлбрейка. Он делает это, автоматизируя процесс переупаковки приложений с помощью `FridaGadget.dylib`.
 Мы не будем подробно останавливаться на Objection в этом руководстве, но вы можете найти исчерпывающую документацию на [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation") и [how to repackage an IPA](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Apps").
 --->
 Ниже будут продемонстрированы другие варианты использования Frida.
