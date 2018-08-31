@@ -1,4 +1,8 @@
-var markdownpdf = require("markdown-pdf");
+var markdownpdf = require("markdown-pdf")
+  , fs = require("fs")
+  , split = require("split")
+  , through = require("through")
+  , duplexer = require("duplexer");
 //try to fix images https://github.com/alanshaw/markdown-pdf/issues/65
 var lang = "";
 var help = false;
@@ -23,7 +27,36 @@ if (!help) {
 }
 
 function runFrontispiece(){
-  
+
+}
+
+function preProcessMd () {
+  // Split the input stream by lines
+  var splitter = split()
+
+  var replacer = through(function (data) {
+    this.queue(data.replace("[date]", setDate())+"\n")
+  })
+
+  splitter.pipe(replacer)
+  return duplexer(splitter, replacer)
+}
+
+function setDate(){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if(dd<10) {
+      dd = '0'+dd
+  }
+
+  if(mm<10) {
+      mm = '0'+mm
+  }
+
+  return mm + '/' + dd + '/' + yyyy;
 }
 
 function runPDF() {
@@ -68,7 +101,7 @@ function runPDF() {
     ],
     bookPath = "./test.pdf";
 
-  markdownpdf()
+  markdownpdf({preProcessMd: preProcessMd})
     .concat.from(mdDocs)
     .to(bookPath, function() {
       console.log("Created", bookPath);
