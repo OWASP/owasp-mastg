@@ -100,9 +100,10 @@ function runPDF() {
 // 2. fix/add TOC
 // 3. add changelog
 // 4. Fix date to version-tag
-// 5. make sure doc + pdf + html is uploaded by travis
-// 6. make sure a markdown linter runs at PR!
-// 7. update gitbook automatically
+// 5. Fix page numering
+// A. make sure doc + pdf + html is uploaded by travis
+// B. make sure a markdown linter runs at PR!
+// C. update gitbook automatically
 
   markdownpdf({preProcessMd: preProcessMd})
     .concat.from(mdDocs)
