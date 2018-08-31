@@ -20,7 +20,7 @@ if (!help) {
   if (lang == "" || lang == null) {
     lang = "../document/";
   } else {
-    lang = "../document-" + lang+"/";
+    lang = "../document-" + lang +"/";
   }
   console.log("printing for " + lang);
   runPDF();
@@ -35,7 +35,7 @@ function preProcessMd () {
   var splitter = split()
 
   var replacer = through(function (data) {
-    this.queue(data.replace("[date]", setDate())+"\n")
+    this.queue(data.replace("[date]", setDate()).replace("Images/", lang+"/Images/") + "\n")
   })
 
   splitter.pipe(replacer)
