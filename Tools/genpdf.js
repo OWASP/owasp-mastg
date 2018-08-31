@@ -3,7 +3,6 @@ var markdownpdf = require("markdown-pdf")
   , split = require("split")
   , through = require("through")
   , duplexer = require("duplexer");
-//try to fix images https://github.com/alanshaw/markdown-pdf/issues/65
 var lang = "";
 var help = false;
 
@@ -24,10 +23,6 @@ if (!help) {
   }
   console.log("printing for " + lang);
   runPDF();
-}
-
-function runFrontispiece(){
-
 }
 
 function preProcessMd () {
@@ -100,6 +95,14 @@ function runPDF() {
       lang+"0x09-Suggested-Reading.md"
     ],
     bookPath = "./test.pdf";
+// todo:
+// 1. fix new page after before h1 starts
+// 2. fix/add TOC
+// 3. add changelog
+// 4. Fix date to version-tag
+// 5. make sure doc + pdf + html is uploaded by travis
+// 6. make sure a markdown linter runs at PR!
+// 7. update gitbook automatically
 
   markdownpdf({preProcessMd: preProcessMd})
     .concat.from(mdDocs)
