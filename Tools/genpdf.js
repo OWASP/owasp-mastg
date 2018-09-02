@@ -94,7 +94,7 @@ function runPDF() {
       lang+"0x08-Testing-Tools.md",
       lang+"0x09-Suggested-Reading.md"
     ],
-    bookPath = "./test.pdf";
+    bookPath = "./../generated/MSTG.pdf";
 // todo:
 // 1. fix new page after before h1 starts
 // 2. fix/add TOC
