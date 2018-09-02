@@ -1,6 +1,10 @@
 #!/bin/bash
 type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not installed.  Aborting."; exit 1; }
 # How to generate Docx
+# TODO:
+# 1. add changelog
+# 2. add [Date] to tag+tag of Date
+
 cd ../Document
 pandoc -f markdown_github --toc -N --columns 10000 --reference-doc ../Tools/reference.docx -t docx -o ../Generated/MSTG.docx \
 0x00-Header.md \
