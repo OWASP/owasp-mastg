@@ -397,6 +397,13 @@ $ mount -o rw,remount /system;
 $ cp /data/local/tmp/tcpdump /system/xbin/
 ```
 
+If you get the follwoing error, you need to fix the permissions for tcpdump. 
+
+```bash
+# cd /system/xbin/
+# chmod 755 tcpdump
+```
+
 > Remember: To use tcpdump, you need root privileges on the phone!
 
 Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
