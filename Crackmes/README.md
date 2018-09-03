@@ -12,7 +12,7 @@ This app holds a secret inside. Can you find it?
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
-- Maintainer: [Jeroen Willemsen](https://github.com/commjoen)
+- Maintained by the OWASP MSTG leaders [Jeroen Willemsen](https://github.com/commjoen) & [Sven Schleier](https://github.com/sushi2k)
 
 ### Installation
 
@@ -36,7 +36,7 @@ This app holds a secret inside. May include traces of native code.
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/b-mueller)
 - Special thanks to Michael Helwig for finding and fixing an oversight in the anti-tampering mechanism.
-- Maintainer: [Jeroen Willemsen](https://github.com/commjoen)
+- Maintained by the OWASP MSTG leaders [Jeroen Willemsen](https://github.com/commjoen) & [Sven Schleier](https://github.com/sushi2k)
 
 ### Installation
 
@@ -79,6 +79,7 @@ $ adb install UnCrackable-Level3.apk
 A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available!
 
 - Objective: Generate a valid serial key that is accepted by this app.
+- Author: [Bernhard Mueller](https://github.com/b-mueller)
 - Maintained by the OWASP MSTG leaders [Jeroen Willemsen](https://github.com/commjoen) & [Sven Schleier](https://github.com/sushi2k)
 
 ### Installation
