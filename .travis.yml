@@ -1,0 +1,10 @@
+language: node_js
+before_install:
+  - rvm install 2.2.2
+  - sudo apt-get install pandoc
+  - gem install asciidoctor
+install:
+  - cd Tools; npm install
+script:
+  - ./Tools/generate_document.sh
+  - cd Tools; node genpdf.js
