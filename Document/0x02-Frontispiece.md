@@ -29,13 +29,13 @@ Sven is an experienced web and mobile penetration tester and assessed everything
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
-#### Romuald Szkudlarek
-
-Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
-
 #### Jeroen Willemsen
 
 Jeroen is a full-stack developer specializing in IT security at Xebia with a passion for mobile and risk management. Driven by a love for explaining technical subjects, he began as a PHP teacher to undergrad students before moving on to discussing security, risk management, and programming issues to anyone willing to listen and learn.
+
+#### Romuald Szkudlarek
+
+Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
 
 ### Top Contributors
 
