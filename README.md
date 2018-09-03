@@ -114,3 +114,6 @@ Contributors are added to the acknowledgements table based on their contribution
 Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
 
 If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) or Jeroen Willemsen (Slack: *jeroenwillemsen*) for more information.
+
+## Crackmes
+In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the readme at the Crackmes folder.
