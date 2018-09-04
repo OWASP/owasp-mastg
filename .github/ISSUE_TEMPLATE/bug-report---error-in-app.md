@@ -1,5 +1,5 @@
 ---
-name: Bug report / error in MSTG report
+name: Bug report / error in MSTG crackmes / challenges
 about: Create a report to help us improve the crackmes and other challenges
 
 ---

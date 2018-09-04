@@ -4,7 +4,7 @@ about: Request about testing cases
 
 ---
 
-Platform:
+**Platform:**
 Put the platform here for which you want to see the testcase (iOS, Android, etc.)
-Description: 
-Describe the type of testcase that you want to add.
+**Description:**
+Describe the type of testcase that you are missing.
