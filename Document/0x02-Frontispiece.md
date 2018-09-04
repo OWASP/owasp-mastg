@@ -25,6 +25,10 @@ Bernhard is a cyber security specialist with a talent for hacking systems of all
 
 Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 
+#### Jeroen Willemsen
+
+Jeroen is a principal security architect at Xebia with a passion for mobile security and risk management. He has supported companies as a security coach, a security engineer and as a full-stack developer, which makes him a jack of all trades. He loves explaining technical subjects: from security issues to programming challenges.
+
 ### Co-Authors
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
@@ -33,10 +37,6 @@ Co-authors have consistently contributed quality content and have at least 2,000
 
 Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
 
-#### Jeroen Willemsen
-
-Jeroen is a full-stack developer specializing in IT security at Xebia with a passion for mobile and risk management. Driven by a love for explaining technical subjects, he began as a PHP teacher to undergrad students before moving on to discussing security, risk management, and programming issues to anyone willing to listen and learn.
-
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
@@ -44,18 +44,21 @@ Top contributors have consistently contributed quality content and have at least
 - Pawel Rzepa
 - Francesco Stillavato
 - Andreas Happe
-- Alexander Anthuk
 - Henry Hoggard
+- Andreas Happe
+- Alexander Anthuk
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
+- Cláudio André
 - Slawomir Kosowski
 
 ### Contributors
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
+Jin Kung Ong, Sjoerd Langkemper,
+Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Kyle Benac, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
