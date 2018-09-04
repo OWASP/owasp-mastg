@@ -2,14 +2,17 @@
 type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not installed.  Aborting."; exit 1; }
 # How to generate Docx
 # TODO:
+# 0. fix position of TOC: https://stackoverflow.com/questions/25591517/pandoc-inserting-pages-before-generated-table-of-contents
 # 1. add changelog
 # 2. add [Date] to tag+tag of Date
 
 cd ../Document
-pandoc -f markdown_github --toc -N --columns 10000 --reference-doc ../Tools/reference.docx -t docx -o ../Generated/MSTG.docx \
+pandoc -f markdown_github -N --columns 10000 --reference-doc ../Tools/reference.docx -o ../Generated/pre_part.docx \
 0x00-Header.md \
 Foreword.md \
-0x02-Frontispiece.md \
+0x02-Frontispiece.md
+
+pandoc -f markdown_github -B ./0x00-Header.md ./Foreword.md ./0x02-Frontispiece.md --toc -N --columns 10000 --reference-doc ../Tools/reference.docx -t docx -o ../Generated/MSTG.docx \
 0x03-Overview.md \
 0x04-General-Testing-Guide.md \
 0x04a-Mobile-App-Taxonomy.md \
