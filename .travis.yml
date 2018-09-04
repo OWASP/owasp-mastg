@@ -4,5 +4,4 @@ before_install:
   - sudo apt-get install pandoc
   - gem install asciidoctor
 script:
-  - ./Tools/generate_document.sh
-  - ./Tools/genpdf.sh
+  - ./Tools/gendocs.sh
