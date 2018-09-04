@@ -1,27 +1,17 @@
 ---
 name: Bug report / error in MSTG report
-about: Create a report to help us improve
+about: Create a report to help us improve the MSTG document
 
 ---
 
-**Describe the bug**
+**Describe the issue**
 A clear and concise description of what the bug is.
 
-**Testcase or app**
-Describe the app or testcase description which is wrong
+**Testcase or section**
+Describe the testcase or section which has an issue.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Explain issue**
+A clear and concise description of what is wrongly formulated, whether it is spelling (why not a PR directly?) or whether the method is nog longer effective (in detecting or remediation).
 
 **Additional context**
 Add any other context about the problem here.
