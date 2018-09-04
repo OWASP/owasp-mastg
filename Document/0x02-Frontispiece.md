@@ -25,13 +25,13 @@ Bernhard is a cyber security specialist with a talent for hacking systems of all
 
 Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 
+#### Jeroen Willemsen
+
+Jeroen is a principal security architect at Xebia with a passion for mobile security and risk management. He has supported companies as a security coach, a security engineer and as a full-stack developer, which makes him a jack of all trades. He loves explaining technical subjects: from security issues to programming challenges.
+
 ### Co-Authors
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
-
-#### Jeroen Willemsen
-
-Jeroen is a full-stack developer specializing in IT security at Xebia with a passion for mobile and risk management. Driven by a love for explaining technical subjects, he began as a PHP teacher to undergrad students before moving on to discussing security, risk management, and programming issues to anyone willing to listen and learn.
 
 #### Romuald Szkudlarek
 
