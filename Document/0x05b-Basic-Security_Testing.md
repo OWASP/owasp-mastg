@@ -437,7 +437,7 @@ With the pipe (`|`), we sent all output from tcpdump to netcat, which opens a li
 To access port 11111, you need to forward the port to your machine via adb.
 
 ```
-$ adb forward tcp:11111
+$ adb forward tcp:11111 tcp:11111
 ```
 
 The following command connects you to the forwarded port via netcat and piping to Wireshark.

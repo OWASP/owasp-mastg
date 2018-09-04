@@ -94,6 +94,7 @@ http://owasp.herokuapp.com/
 Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) which contains a few basic writing rules.
 
 If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
+If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones).
 
 
 ### Contributing
@@ -121,4 +122,4 @@ Please ping us or create a pull request if you are missing from the table or in 
 If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) or Jeroen Willemsen (Slack: *jeroenwillemsen*) for more information.
 
 ## Crackmes
-In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the readme at the Crackmes folder.
+In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the [README.md](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md) at the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes).
