@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "7"
 before_install:
-  - rvm install 2.2.2
+  - rvm install ruby --latest
   - sudo apt-get install pandoc
   - gem install asciidoctor
 script:
