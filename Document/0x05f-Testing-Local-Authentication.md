@@ -4,6 +4,24 @@ During local authentication, an app authenticates the user against credentials s
 As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
+### Testing App Permissions
+
+#### Overview
+If an application needs to access information or resources outside of its sandbox the app manifest declares the additional permissions. Some permissions depending on the protection level will be granted at run time. Permission protection levels "normal" and "signature" are granted at runtime while "dangerous" is explicitly approved by the user.
+
+If a dangerous permission is needed it must be granted, you must check every time that operation is performed.
+It is recommended that the `ContextCompat.checkSelfPermission()` method is called to check if an activity has permission.
+
+```java
+if (ContextCompat.checkSelfPermission(secureActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+            //else permission not granted. To do.
+        }
+
+```
+
+Add more to the example and possible exploit if not checked or implimented incorrectly tomorrow.
+
 
 ### Testing Confirm Credentials
 
