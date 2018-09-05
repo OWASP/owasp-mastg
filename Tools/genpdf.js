@@ -17,9 +17,9 @@ if (process.argv.includes("-h")) {
 
 if (!help) {
   if (lang == "" || lang == null) {
-    lang = "../document/";
+    lang = "../Document/";
   } else {
-    lang = "../document-" + lang +"/";
+    lang = "../Document-" + lang +"/";
   }
   console.log("printing for " + lang);
   runPDF();
