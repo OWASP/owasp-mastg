@@ -27,16 +27,45 @@ If a dangerous permission is needed it must be granted, you must check every tim
 It is recommended that the `ContextCompat.checkSelfPermission()` method is called to check if an activity has permission.
 
 ```java
-if (ContextCompat.checkSelfPermission(secureActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED) {
-        } else {
+            //!= stands for not equals PERMISSION_GRANTED
             printf("Permission denied.");
         }
 
 ```
 
-Add more to the example and possible exploit if not checked or implimented incorrectly tomorrow.
+### Requesting Permissions
 
+If your application has permissions that need to be requested at runtime, the application must call a requestPermissions() method in order to obtain the correct permissions. The app passes the permissions and a integer request code you specify to the user asynchronously, returning right away after the user responds to the prompt. After the user response is returned the same request code is passed to the requestPermissions() method. 
+
+```java
+
+// We start by checking the permission of the current Activity
+if (ContextCompat.checkSelfPermission(secureActivity.this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+
+    // Permission is not granted
+    // Should we show an explanation?
+    if (ActivityCompat.shouldShowRequestPermissionRationale(secureActivity.this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        // Asynchronous call goes here waiting for the users response.
+        // Explain why the permissions are needed.
+    } else {
+        // Request a permission that doesn't need to be explained.
+        ActivityCompat.requestPermissions(secureActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        // MY_PERMISSIONS_REQUEST_WRITE_EXTERAL_STORAGE will be the app-defined int constant.
+        // The callback method gets the result of the request.
+    }
+} else {
+    // Permission already granted debug message printed in terminal.
+    printf("Permission already granted.");
+}
+
+```
 
 ### Testing Confirm Credentials
 
