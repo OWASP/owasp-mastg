@@ -9,13 +9,28 @@ In Android, there are two mechanisms supported by the Android Runtime for local 
 #### Overview
 If an application needs to access information or resources outside of its sandbox the app manifest declares the additional permissions. Some permissions depending on the protection level will be granted at run time. Permission protection levels "normal" and "signature" are granted at runtime while "dangerous" is explicitly approved by the user.
 
+Please note that the permission must be declared before the `<application>` tag or permission will always be denied.
+
+```java
+
+<manifest>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        <application>
+            <activity>
+            </activity>
+        </application>
+</manifest>
+
+```
+
 If a dangerous permission is needed it must be granted, you must check every time that operation is performed.
 It is recommended that the `ContextCompat.checkSelfPermission()` method is called to check if an activity has permission.
 
 ```java
 if (ContextCompat.checkSelfPermission(secureActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED) {
-            //else permission not granted. To do.
+        } else {
+            printf("Permission denied.");
         }
 
 ```
