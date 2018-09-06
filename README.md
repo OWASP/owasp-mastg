@@ -81,6 +81,15 @@ $ cd owasp-mstg/Tools/
 $ ./generate_document.sh
 ```
 
+4. Clone the repository and run the [javascript pdf generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/genpdf.js) (requires [node 6](http://nodejs.org)). This produces a pdf file in the "Generated" subdirectory.
+
+```bash
+$ git clone https://github.com/OWASP/owasp-mstg/
+$ cd owasp-mstg/Tools/
+$ npm install
+$ node genpdf.js
+```
+
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
 
 ## Contributions, feature requests and feedback
@@ -95,6 +104,9 @@ Before you start contributing, please read our brief [style guide](https://githu
 
 If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues) or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones).
+
+### Translating
+We are currently in progress for making a new release every 6 months. Releases that have been tagged can then be translated into preferred languages.
 
 
 ### Contributing
