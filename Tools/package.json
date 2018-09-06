@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "duplexer": "^0.1.1",
+    "eslint": "^5.5.0",
     "fs": "0.0.1-security",
     "markdown-pdf": "9.0.0",
     "split": "^1.0.1",
