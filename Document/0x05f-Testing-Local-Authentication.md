@@ -37,7 +37,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.permission.W
 
 #### Requesting Permissions
 
-If your application has permissions that need to be requested at runtime, the application must call a requestPermissions() method in order to obtain the correct permissions. The app passes the permissions and a integer request code you specify to the user asynchronously, returning right away after the user responds to the prompt. After the user response is returned the same request code is passed to the requestPermissions() method. 
+If your application has permissions that need to be requested at runtime, the application must call a requestPermissions() method in order to obtain them. The app passes the permissions needed and a integer request code you have specified to the user asynchronously, returning right away in the same thread upon user response. After the response is returned the same request code is passed to the app's callback method. 
 
 ```java
 
