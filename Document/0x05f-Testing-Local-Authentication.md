@@ -66,6 +66,38 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
 }
 
 ```
+Please note If you need to provide any information or explanation to the user it needs to be done before the call to requestPermissions(), since the system dialog box can not be altered once called.
+
+#### Handling the permissions response
+
+Now your app has to override the system method `onRequestPermissionResult()` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions()`. 
+
+The following callback method may be used for `WRITE_EXTERNAL_STORAGE`.
+
+```java
+@Override //Needed to override system method onRequestPermissionResult()
+public void onRequestPermissionsResult(int requestCode, //requestCode is what you specified in requestPermissions()
+        String permissions[], int[] permissionResults) {
+    switch (requestCode) {
+        case MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+            if (grantResults.length > 0
+                && permissionResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 0 is a cancelled request, if int array equals requestCode permission is granted.
+            } else {
+                // permission denied code goes here.
+                printf("Permission denied.");
+            }
+            return;
+        }
+        // Other switch cases can be added here for multiple permission checks.
+    }
+}
+
+```
+Permissions should be explicitly requested for every permission needed. Android application code should not group permissions together and assume that the user is ok with that. 
+
+This means if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permission is granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically grant permissions without user interaction because they are in the same group and not explicitly requested. 
+
 
 ### Testing Confirm Credentials
 
