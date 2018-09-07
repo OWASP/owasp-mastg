@@ -37,7 +37,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.permission.W
 
 #### Requesting Permissions
 
-If your application has permissions that need to be requested at runtime, the application must call a requestPermissions() method in order to obtain them. The app passes the permissions needed and a integer request code you have specified to the user asynchronously, returning right away in the same thread upon user response. After the response is returned the same request code is passed to the app's callback method. 
+If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and a integer request code you have specified to the user asynchronously, returning right away in the same thread upon user response. After the response is returned the same request code is passed to the app's callback method. 
 
 ```java
 
@@ -66,7 +66,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
 }
 
 ```
-Please note If you need to provide any information or explanation to the user it needs to be done before the call to requestPermissions(), since the system dialog box can not be altered once called.
+Please note If you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
 
 #### Handling the permissions response
 
@@ -94,9 +94,9 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 }
 
 ```
-Permissions should be explicitly requested for every permission needed. Android application code should not group permissions together and assume that the user is ok with that. 
+Permissions should be explicitly requested for every permission needed. Android applications should not request permissions in the same group as these groups may change in the future. Also permissions may be granted without user approval automatically. 
 
-This means if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permission is granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically grant permissions without user interaction because they are in the same group and not explicitly requested. 
+For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested. 
 
 
 ### Testing Confirm Credentials
@@ -358,3 +358,7 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 - CWE-287 - Improper Authentication
 - CWE-604 - Use of Client-Side Authentication
+
+#### Request App Permissions
+
+https://developer.android.com/training/permissions/requesting
