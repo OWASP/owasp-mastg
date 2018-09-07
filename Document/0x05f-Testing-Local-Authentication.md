@@ -94,7 +94,7 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 }
 
 ```
-Permissions should be explicitly requested for every permission needed. Android applications should not request permissions in the same group as these groups may change in the future. Also permissions may be granted without user approval automatically. 
+Permissions should be explicitly requested for every permission needed. Android applications should not request permissions in the same group unexplicitly as these groups may change in the future. Also permissions may be granted without user approval automatically. 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested. 
 
@@ -361,4 +361,4 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 #### Request App Permissions
 
-https://developer.android.com/training/permissions/requesting
+- Runtime Permissions - https://developer.android.com/training/permissions/requesting
