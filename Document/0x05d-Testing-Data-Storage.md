@@ -783,7 +783,16 @@ The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extr
 ```bash
 java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
 ```
+if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
+```bash
+unpack:	abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
+```
+[password]: is the password when your android device asked you earlier. For example here is: 123
+
+```bash
+java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab backup.tar 123
+```
 Extract the tar file to your working directory.
 
 ```bash
