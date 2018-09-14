@@ -31,9 +31,11 @@ if (process.argv.includes("-lang")) {
 }
 if (process.argv.includes("-tag")) {
   tag = process.argv[process.argv.indexOf("-tag") + 1];
-} else {
-  tag = setDate();
 }
+if (tag!=""){
+  tag = tag+" ";
+}
+tag = tag + "Date: " setDate();
 
 if (process.argv.includes("-relnotes")) {
   releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1];
