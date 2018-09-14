@@ -16,9 +16,6 @@ deploy:
     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.doc"
   skip_cleanup: true
   overwrite: true
-  body: "First automated release body"
-  name: "Test release"
-  draft: true
   on:
     repo: OWASP/owasp-mstg
     branch: 964/versioning_releasing
