@@ -781,9 +781,18 @@ dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
-java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab
+java -jar abe.jar unpack backup.ab
 ```
+if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
+```bash
+abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
+```
+[password]: is the password when your android device asked you earlier. For example here is: 123
+
+```bash
+java -jar abe.jar unpack backup.ab backup.tar 123
+```
 Extract the tar file to your working directory.
 
 ```bash
