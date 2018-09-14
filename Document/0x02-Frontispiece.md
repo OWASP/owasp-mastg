@@ -77,9 +77,7 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Others
 
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on GitHub:
-
-https://github.com/OWASP/owasp-mstg/graphs/contributors
+Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors Github).
 
 ### Older Versions
 

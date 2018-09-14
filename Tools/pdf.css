@@ -1,0 +1,4 @@
+body {
+    font-size: 0.625em;
+}
+h1:not(:first-of-type) {page-break-before: always;}

@@ -1,3 +1,9 @@
+/**
+ * This is a first attempt in making a PDF using markdownpdf .
+ * Please note that it is done in my spare time as a quick prototype: tackling one issue after another
+ * Feel free to rewrite it as the core of this project is the actual resulting PDF, not necessary this javascript.
+ * Author: Jeroen Willemsen
+ */
 var markdownpdf = require("markdown-pdf"),
   fs = require("fs"),
   split = require("split"),
@@ -5,10 +11,14 @@ var markdownpdf = require("markdown-pdf"),
   duplexer = require("duplexer");
 var Remarkable = require("remarkable");
 var replace = require("replace-in-file");
+var toc = require("markdown-toc");
+var fs = require("fs");
+
 var lang = "";
 var langdir = "";
 var tag = "";
 var help = false;
+var releaseNotes = "";
 
 if (process.argv.includes("-h")) {
   console.log("Helptext here");
@@ -25,6 +35,12 @@ if (process.argv.includes("-tag")) {
   tag = setDate();
 }
 
+if (process.argv.includes("-relnotes")) {
+  releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1];
+} else {
+  releaseNotes = setDate();
+}
+
 if (!help) {
   if (lang == "" || lang == null) {
     lang = "EN";
@@ -37,10 +53,10 @@ if (!help) {
 }
 
 function preProcessRunningJs() {
-  const options = {
+  var options = {
     files: "running.js",
     from: "[DATE]",
-    to: "["+tag+"]"
+    to: "[" + tag + "]"
   };
   try {
     const changes = replace.sync(options);
@@ -53,7 +69,7 @@ function preProcessRunningJs() {
 function postProcessRunningJS() {
   const options = {
     files: "running.js",
-    from: "["+tag+"]",
+    from: "[" + tag + "]",
     to: "[DATE]"
   };
   try {
@@ -67,11 +83,14 @@ function postProcessRunningJS() {
 function preProcessMd() {
   // Split the input stream by lines
   var splitter = split();
-
+  var tocRendered = getToc();
   var replacer = through(function(data) {
     this.queue(
-      data.replace("[date]", tag).replace("Images/", langdir + "/Images/") +
-        "\n"
+      data
+        .replace("[date]", tag)
+        .replace("[RELEASE_NOTES]", releaseNotes)
+        .replace("[TOCCCC]", tocRendered)
+        .replace("Images/", langdir + "/Images/") + "\n"
     );
   });
 
@@ -96,70 +115,80 @@ function setDate() {
   return mm + "/" + dd + "/" + yyyy;
 }
 
-function runPDF() {
-  var mdDocs = [
-      langdir + "0x00-Header.md",
-      langdir + "Foreword.md",
-      langdir + "0x02-Frontispiece.md",
-      langdir + "0x03-Overview.md",
-      langdir + "0x04-General-Testing-Guide.md",
-      langdir + "0x04a-Mobile-App-Taxonomy.md",
-      langdir + "0x04b-Mobile-App-Security-Testing.md",
-      langdir + "0x04c-Tampering-and-Reverse-Engineering.md",
-      langdir + "0x04e-Testing-Authentication-and-Session-Management.md",
-      langdir + "0x04f-Testing-Network-Communication.md",
-      langdir + "0x04g-Testing-Cryptography.md",
-      langdir + "0x04h-Testing-Code-Quality.md",
-      langdir + "0x05-Android-Testing-Guide.md",
-      langdir + "0x05a-Platform-Overview.md",
-      langdir + "0x05b-Basic-Security_Testing.md",
-      langdir + "0x05d-Testing-Data-Storage.md",
-      langdir + "0x05e-Testing-Cryptography.md",
-      langdir + "0x05f-Testing-Local-Authentication.md",
-      langdir + "0x05g-Testing-Network-Communication.md",
-      langdir + "0x05h-Testing-Platform-Interaction.md",
-      langdir + "0x05i-Testing-Code-Quality-and-Build-Settings.md",
-      langdir + "0x05c-Reverse-Engineering-and-Tampering.md",
-      langdir + "0x05j-Testing-Resiliency-Against-Reverse-Engineering.md",
-      langdir + "0x06-iOS-Testing-Guide.md",
-      langdir + "0x06a-Platform-Overview.md",
-      langdir + "0x06b-Basic-Security-Testing.md",
-      langdir + "0x06d-Testing-Data-Storage.md",
-      langdir + "0x06e-Testing-Cryptography.md",
-      langdir + "0x06f-Testing-Local-Authentication.md",
-      langdir + "0x06g-Testing-Network-Communication.md",
-      langdir + "0x06h-Testing-Platform-Interaction.md",
-      langdir + "0x06i-Testing-Code-Quality-and-Build-Settings.md",
-      langdir + "0x06c-Reverse-Engineering-and-Tampering.md",
-      langdir + "0x06j-Testing-Resiliency-Against-Reverse-Engineering.md",
-      langdir + "0x07-Appendix.md",
-      langdir + "0x08-Testing-Tools.md",
-      langdir + "0x09-Suggested-Reading.md"
-    ],
-    bookPath = "./../generated/MSTG-" + lang + ".pdf";
-  // todo:
-  // 1. fix new page after before h1 starts
-  // 2. fix/add TOC
-  // 3. add changelog
-  // A. make sure doc + pdf + html is uploaded by travis
-  // B. make sure a markdown linter runs at PR!
-  // C. update gitbook automatically
-  preProcessRunningJs();
-  var md = new Remarkable();
+function getPreDocSet() {
+  return [langdir + "0x00-Header.md", langdir + "Foreword.md"];
+}
+function getPostDocSet() {
+  return [
+    "changelog_and_toc.md",
+    langdir + "0x02-Frontispiece.md",
+    langdir + "0x03-Overview.md",
+    langdir + "0x04-General-Testing-Guide.md",
+    langdir + "0x04a-Mobile-App-Taxonomy.md",
+    langdir + "0x04b-Mobile-App-Security-Testing.md",
+    langdir + "0x04c-Tampering-and-Reverse-Engineering.md",
+    langdir + "0x04e-Testing-Authentication-and-Session-Management.md",
+    langdir + "0x04f-Testing-Network-Communication.md",
+    langdir + "0x04g-Testing-Cryptography.md",
+    langdir + "0x04h-Testing-Code-Quality.md",
+    langdir + "0x05-Android-Testing-Guide.md",
+    langdir + "0x05a-Platform-Overview.md",
+    langdir + "0x05b-Basic-Security_Testing.md",
+    langdir + "0x05d-Testing-Data-Storage.md",
+    langdir + "0x05e-Testing-Cryptography.md",
+    langdir + "0x05f-Testing-Local-Authentication.md",
+    langdir + "0x05g-Testing-Network-Communication.md",
+    langdir + "0x05h-Testing-Platform-Interaction.md",
+    langdir + "0x05i-Testing-Code-Quality-and-Build-Settings.md",
+    langdir + "0x05c-Reverse-Engineering-and-Tampering.md",
+    langdir + "0x05j-Testing-Resiliency-Against-Reverse-Engineering.md",
+    langdir + "0x06-iOS-Testing-Guide.md",
+    langdir + "0x06a-Platform-Overview.md",
+    langdir + "0x06b-Basic-Security-Testing.md",
+    langdir + "0x06d-Testing-Data-Storage.md",
+    langdir + "0x06e-Testing-Cryptography.md",
+    langdir + "0x06f-Testing-Local-Authentication.md",
+    langdir + "0x06g-Testing-Network-Communication.md",
+    langdir + "0x06h-Testing-Platform-Interaction.md",
+    langdir + "0x06i-Testing-Code-Quality-and-Build-Settings.md",
+    langdir + "0x06c-Reverse-Engineering-and-Tampering.md",
+    langdir + "0x06j-Testing-Resiliency-Against-Reverse-Engineering.md",
+    langdir + "0x07-Appendix.md",
+    langdir + "0x08-Testing-Tools.md",
+    langdir + "0x09-Suggested-Reading.md"
+  ];
+}
+function getDocSet() {
+  return getPreDocSet().concat(getPostDocSet());
+}
 
-  md.set({
-    html: true,
-    breaks: true
+function getToc() {
+  var resultString = "";
+  var docSet = getPostDocSet();
+  docSet.forEach(function(filename) {
+    resultString = resultString + fs.readFileSync(filename, "utf8");
   });
+  var renderedToc = toc(resultString, { maxdepth: 3 }).content;
+  return renderedToc;
+}
+
+function runPDF() {
+  var mdDocs = getDocSet(),
+    bookPath = "./../generated/MSTG-" + lang + ".pdf";
+
+  preProcessRunningJs();
   markdownpdf({
     preProcessMd: preProcessMd,
-    remarkable: md,
-    runningsPath: "running.js"
+    remarkable: {
+      html: true,
+      breaks: true
+    },
+    runningsPath: "running.js",
+    cssPath: "pdf.css"
   })
     .concat.from(mdDocs)
     .to(bookPath, function() {
       console.log("Created", bookPath);
       postProcessRunningJS();
     });
-
 }
