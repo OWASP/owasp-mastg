@@ -65,13 +65,13 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 1. Read it on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats, once you have checked out this repo.
 
-To generate the epub version you can use the following command
+To generate the epub version you can use the following command:
 
 ```bash
 $ gitbook epub ./ Generated/MSTG.epub
 ```
 
-2. Check the [releases](URLHERE!). Here you can find a PDF, an epub and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag. More work needs to be done to improve the assets (especially on the DocX).
+2. Check the [releases](URLHERE!). Here you can find a PDF, the sources zipped and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
 3. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
