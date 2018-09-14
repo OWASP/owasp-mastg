@@ -32,15 +32,15 @@ if (process.argv.includes("-lang")) {
 if (process.argv.includes("-tag")) {
   tag = process.argv[process.argv.indexOf("-tag") + 1];
 }
-if (tag!=""){
-  tag = tag+" ";
+if (tag != ""){
+  tag = tag + " ";
 }
-tag = tag + "Date: " setDate();
+tag = tag + "Date: " + setDate();
 
 if (process.argv.includes("-relnotes")) {
   releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1];
 } else {
-  releaseNotes = setDate();
+  releaseNotes = "To be defined.";
 }
 
 if (!help) {
