@@ -791,7 +791,7 @@ unpack:	abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
 ```bash
-java -jar android-backup-extractor-20160710-bin/abe.jar unpack backup.ab backup.tar 123
+java -jar abe.jar unpack backup.ab backup.tar 123
 ```
 Extract the tar file to your working directory.
 
