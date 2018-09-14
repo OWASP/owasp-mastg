@@ -3,22 +3,31 @@ var markdownpdf = require("markdown-pdf"),
   split = require("split"),
   through = require("through"),
   duplexer = require("duplexer");
+var Remarkable = require("remarkable");
+var replace = require("replace-in-file");
 var lang = "";
 var langdir = "";
+var tag = "";
 var help = false;
 
 if (process.argv.includes("-h")) {
   console.log("Helptext here");
   help = true;
-} else if (process.argv.includes("-lang")) {
+}
+if (process.argv.includes("-lang")) {
   lang = process.argv[process.argv.indexOf("-lang") + 1];
 } else if (process.argv.includes("-l")) {
   lang = process.argv[process.argv.indexOf("-l") + 1];
 }
+if (process.argv.includes("-tag")) {
+  tag = process.argv[process.argv.indexOf("-tag") + 1];
+} else {
+  tag = setDate();
+}
 
 if (!help) {
   if (lang == "" || lang == null) {
-    lang = "EN"
+    lang = "EN";
     langdir = "../Document/";
   } else {
     langdir = "../Document-" + lang + "/";
@@ -27,13 +36,41 @@ if (!help) {
   runPDF();
 }
 
+function preProcessRunningJs() {
+  const options = {
+    files: "running.js",
+    from: "[DATE]",
+    to: "["+tag+"]"
+  };
+  try {
+    const changes = replace.sync(options);
+    console.log("Modified files:", changes.join(", "));
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+function postProcessRunningJS() {
+  const options = {
+    files: "running.js",
+    from: "["+tag+"]",
+    to: "[DATE]"
+  };
+  try {
+    const changes = replace.sync(options);
+    console.log("Modified files:", changes.join(", "));
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
 function preProcessMd() {
   // Split the input stream by lines
   var splitter = split();
 
   var replacer = through(function(data) {
     this.queue(
-      data.replace("[date]", setDate()).replace("Images/", lang + "/Images/") +
+      data.replace("[date]", tag).replace("Images/", langdir + "/Images/") +
         "\n"
     );
   });
@@ -99,20 +136,30 @@ function runPDF() {
       langdir + "0x08-Testing-Tools.md",
       langdir + "0x09-Suggested-Reading.md"
     ],
-    bookPath = "./../generated/MSTG" + lang + ".pdf";
+    bookPath = "./../generated/MSTG-" + lang + ".pdf";
   // todo:
   // 1. fix new page after before h1 starts
   // 2. fix/add TOC
   // 3. add changelog
-  // 4. Fix date to version-tag
-  // 5. Fix page numering
   // A. make sure doc + pdf + html is uploaded by travis
   // B. make sure a markdown linter runs at PR!
   // C. update gitbook automatically
+  preProcessRunningJs();
+  var md = new Remarkable();
 
-  markdownpdf({ preProcessMd: preProcessMd })
+  md.set({
+    html: true,
+    breaks: true
+  });
+  markdownpdf({
+    preProcessMd: preProcessMd,
+    remarkable: md,
+    runningsPath: "running.js"
+  })
     .concat.from(mdDocs)
     .to(bookPath, function() {
       console.log("Created", bookPath);
+      postProcessRunningJS();
     });
+
 }

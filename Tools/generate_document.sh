@@ -7,8 +7,11 @@ type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not install
 # 2. add [Date] to tag+tag of Date
 
 cd ../Document
-
-pandoc -f gfm --toc -N --columns 10000 --self-contained --reference-doc ../Tools/reference.docx -t docx  -o ../Generated/MSTG_2.docx \
+# ../Tools/metadata.yml \
+pandoc -f gfm --toc -N --columns 10000 --self-contained -s --reference-doc ../Tools/reference.docx -t docx  -o ../Generated/MSTG.docx \
+0x00-Header.md \
+Foreword.md \
+0x02-Frontispiece.md \
 0x03-Overview.md \
 0x04-General-Testing-Guide.md \
 0x04a-Mobile-App-Taxonomy.md \
@@ -43,15 +46,6 @@ pandoc -f gfm --toc -N --columns 10000 --self-contained --reference-doc ../Tools
 0x07-Appendix.md \
 0x08-Testing-Tools.md \
 0x09-Suggested-Reading.md
-
-pandoc -f gfm -N --columns 10000 --reference-doc ../Tools/reference.docx -o ../Generated/MSTG_1.docx \
-0x00-Header.md \
-Foreword.md \
-0x02-Frontispiece.md
-
-pandoc -f docx -N --columns 10000 --reference-doc ../Tools/reference.docx -o ../Generated/MSTG.docx \
-../Generated/MSTG_1.docx \
-../Generated/MSTG_2.docx
 
 # cd ../Document-ru
 #
