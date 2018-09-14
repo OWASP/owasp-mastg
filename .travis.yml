@@ -16,6 +16,8 @@ deploy:
     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.docx"
   skip_cleanup: true
   overwrite: true
+  name: "Intermediate update $TRAVIS_TAG"
+  body: "Intermediate update ($TRAVIS_TAG). $TRAVIS_COMMIT_MESSAGE"
   on:
     repo: OWASP/owasp-mstg
-    branch: 964/versioning_releasing
+    tags: true
