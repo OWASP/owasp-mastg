@@ -2,8 +2,23 @@ sudo: required
 language: objective-c
 osx_image: xcode9.3
 before_install:
-  - rvm install 2.5.1 --disable-binary
-  - brew install pandoc
-  - gem install asciidoctor
+- rvm install 2.5.1 --disable-binary
+- brew install pandoc
+- gem install asciidoctor
 script:
-  - ./Tools/gendocs.sh
+- "./Tools/gendocs.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: j4QpDxsikvUz6T+FCtnlvCTFOH2KtsnTfcnkhgWX3/+yR4I3qXvJGNYSkgLS4Nxos9J7WO/w8QyqwRbMjgw3zTCI243wSX65K+fP/6D76L1uaBiw97CbHAkEm8SfCCWq3+/fX75Grufqzha25LrU6F2ZE0Q55t4GqBRU5/moyo7jhEA0qIYe+t6uOu/9Yq7vBybUPJ7Z3TxZzK6kV79nKPpjiDAxQ4Uii1NLfPiGiMVWAdXRvbO1Ghv7Zq1aPCpACl75VfBRhFPxNW0T3cpIeIOUyNVrqkoHVsy8Knfv+tB4bJ8N6q0usxmd4lV/q+LTIuZ5ZZGIKOqb/Q2t5CYFlbHUf240KsjTEsfL4VFP87vIwclV02Gp4YZnUKHRt+3QCQfIjsJQT2f7g9RyQ0mevchEMwKhis7N8iIDePwGKXm8AJKqvcRlEbxZgidN10IgskYPIn2mit9jPXZAiF12dIw2D8hwILxYx1XqF120aJjLHKjoYm1cPTXoht4UCeEsACOm7PhCiV3aEvvlVNJHb/HmbyWU2dz5stCNhhS8xXd/3QkhbKdTwXJ+/VHvpNBO8l1mxHsF44FPp+WFWsGo/vWocFjrGisTOL03JLkHr8UpA9yfcIVTWYtt1n95Gmwq3iBy2QcnLAyzXlPoMioeOAfNK8kHHZpU+3/D43OkaxM=
+  file:
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.pdf"
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.doc"
+  skip_cleanup: true
+  overwrite: true
+  body: "First automated release body"
+  name: "Test release"
+  draft: true
+  on:
+    repo: OWASP/owasp-mstg
+    branch: 964/versioning_releasing
