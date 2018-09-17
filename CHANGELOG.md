@@ -1,0 +1,1284 @@
+
+1.0.1 17 Sept 2018:
+- Updated guiding documentation (README, PR templates, issue templates).
+- Added automated build of the pdf and DocX.
+- Updated Frontispiece (given new contributor stats).
+- Updated Crackmes and guiding documentation.
+- Updated tooling commands (ADB, ABE, etc.).
+- Improved urls for GitBook using goo.gl in case of urls with odd syntax.
+- Added sections for SSL pinning for Cordova, Xamarin and updated the public key pinning sections.
+- Removed no longer working guides (e.g. using itunes to install apps)
+- Updated a lot of URLs (using TLS wherever possible)
+- Updated tests regarding WebViews
+- Added new testing toolsuites in the toolssection, such as the mobile hacktools and various dependency checkers.
+- Updated testcases regarding protocol handlers (added missing MASVS 6.6 for iOS).
+- Many small updates in terms of wording
+
+3ec01cb3a458081f179ca614584ae4ba91f77940 Merge pull request #938 from ryantzj/patch-4
+8cf0f22faaadf13d8874a78b820f063e53593b24 Update 0x05a-Platform-Overview.md
+202da81952ce74d286b140a4c7195fc9bdd36bd5 Merge pull request #937 from OWASP/918/setting_device_passcode
+5646325f375faa4dcadab1a40725848cb39e324b #918: last fixes
+0f0a0f58d358df8288d1f992789338dcea60f69f moving again
+848701695988076bd9b5adc461075571a290b4ee #918 changing to objectivec
+e335dec622efa2469d5f17d910609df26e3e0754 #918: __ fix
+8539ca9df30e6c41f9cfeaad22a949e7a1e9a894 #918 apparently __ has to be \_\_ now
+de191e8f0b2f4a2f3b953efe7591a1e30d6e8d4e #918:Fixed another set of feedback items
+d98e7bfab4aa4b533211c4c37593df5033aa90e3 fixed a few small feedback items
+caf4eb890a5cff168f3b13d6374ae82c43a3af0a Small typo/sentence fix
+ff1a47c441db6901bde8a9e09afadd00f9cd98dd checklist in spanish
+4aafcaf44f6080b81e567f1dedaed589f584c3f2 First setup of #918, #935, #936
+8a4002a70ae042ce06ba46be6c6dc9d151a25ff0 shortened security cmd for macOS
+0cd90937d79bc52da1b35f68340ab73efa2a5ad5 First fix for #935
+e42fc5fc2b65768858c76c80b1c3e309231df933 First input for #936
+28255e0a21dda99ca8073dd3416e7705f90e4689 WIP at #918 and #936
+08dff07259e62eb973b166297436f71d2f94ffdd WIP for #935, 936 and #918
+90da503beec08e5b419f40939a08ffaca19b66c7 Merge branch '918/setting_device_passcode' of github.com:OWASP/owasp-mstg into 918/setting_device_passcode
+f7f73a539d6aca1994b062c4b2c922f68ab44fb6 wip at #936
+aab15dac79df886cff5fa28491a8d7bf89f94825 wip at #918 and 936
+85dfe97075e268f7b2933ab867b7253f71a46fb8 #918: wip
+5244c37809695b9f44ae3970b3dc470403be8532 #918: added confirm credential example from Google samples
+5559e33fde370dc43e1b90ac02ce9d0d8866e61e Added last todo's for #918 to complete the implementaiton of the issue
+c4f0817c28f4b3929ec733e1dc8c7bcbf7922312 Merge branch 'master' into 918/setting_device_passcode
+d33b1c910c961ad72fba892ecf56998a8837c299 Merge pull request #933 from kysokzla/add_Ru_translation_iOS_chapters0x06
+03479b5e99e21262fce0b0ae289ca3fba273e1c1 Added Russian translation of iOS related chapters(0x06).
+3b2ab1bc021ad94ff5f300345654f7c326fd2be4 small fixes
+9fc5af1d71ab5351e8e7f86632f0a950fe3790a9 918: Added totos for #918
+699624e8cde3652eeba1ddddf18e76425d0af1b0 Fix README
+c179f20be2a20f458dbc984b16f4e3312e84d38a update xls checklist
+7d0624e96f9a2090563f52f67c1a1927d225f91f Merge remote-tracking branch 'upstream/master'
+d65ec867ae5ebcc41d5a61d12760f2c399d71a24 QA check 3rd party lib
+6aa498955f25cf5f3492c9d9526eaafa70de16cf Merge pull request #931 from OWASP/919/vulnchecking
+64dc68e36643d9c699e3ad564a42b92ced201f65 #919: added ios parts for third party dependency analysis without sources
+20931adc54746d3fed29550c699934a10b6f8aae typo
+70c75bc9eecb9b7bcfa646a45f55f79290b71997 Merge branch 'master' into 919/vulnchecking
+f9b56612601b30fcc92cb2375dafcb612ef26ece Removed remediation from the testcase template
+e702b2de7e9ac08b475ffc32ee8bd7d1ec86a411 updated checklist to new gitbook links
+da43899a21cbec19ec9f9889966a00a7f9deaf80 qa, fix typo
+00102d7c047993275444c20728e8f9291f1a638d qa, fix typo
+2553f194d77b8bce6f38d7c2f7f246698e385649 #919: fixed a few android items & added base static code analysis for vulenrabilities for ios (todo: add method without sources
+edd00e78f373008ff2d95721c9b2c95d5b465134 Merge branch 'master' into 919/vulnchecking
+ecd7c3c1a4e974e97492f02bebda8da6580cdf59 #919: additional fixes
+cee0936c8aa62f2f7a38dc8863249350a935e467 QA 3rd party libraries
+790078f13be422b1282ae286da51ddf13bc14633 Merge pull request #921 from OWASP/919/vulnchecking
+89963ce5fe82314c388db0b3d357cb5359273355 #919: small android fixes and finalized license materials for ios
+22c328d6f862139c30fda3f7c3655181117d7cad #919 first version of android done
+080acbbeae9d62d8c2e297ad770e2950a5af648d #919: added todo's to do last steps
+e0f7838f1fccf3a15d1822c6b5ef28c279d79416 #919: initial commit for ios
+5050a8b37f89fdc040684ba6cbd7b413b14261a5 #919: wip @ feedback
+3de8b206246ab7644e9a7e048ef659f273a1a399 #919: fixed todo's and part of feedback, still need to add ios and static analysis using mobsf
+de5dcabf0e342dd95cdea583ef2c74f3c1101e45 #919: identified last todos
+6b098562a9f819c976b3a60fd3945f5e9f28504d #919: added mobile top 10 reference
+3842c2fc292ca6076fd97552ab93ef6c63c127e4 #919: added tools
+70df4a546ea0786652a20dc5707ea4fd620ef402 #919: added MASVS link
+65dbb3ba49a71d2f330fd782b25624e96ea3c6a3 #919: Added remediation
+49a76a0890b1820225a64a1560aee4a886d7bc60 #919: WIP at static analysis
+b35934e89b58c7ece43e3bca0218773a9faf10fa #919: WIP at static analysis
+6b0bd55e42457e6f976ab4eb8762431fccbf97f8 #919: added dynamic analysis part, added overview
+f7891930cc7de282f2955623be8c03332157d0f9 #919: Initial commit for #919
+ec032df367dda019cec5a6e7a28bf61335d06498 Merge remote-tracking branch 'upstream/master'
+1b27e5338a882a6887fc3cddd2907b90472ebd48 remove clipboard test case in android
+8ca34a2081aa070d493b327a005e8cd6862b20d7 changed gitbooks link
+adc69e7c68fc6febf9205720981389cdb8c54346 fixed book.json
+5d0675a222b948e9494c9c41dfadaa3572a0e9d4 fix book.json
+0284db67d9804598f03bfabcb88cd4bd2d9f4361 fix excel checklist
+43914b9ef253ff5f760811a92e0d6170fb71b076 add anchor for gitbook
+1ea03552d1e89b5783582b0162478dfcb329acfb remove clipboard test from iOS and Android
+13eff98b8444fc4cd07bc1aa6a04c3e2b149659b update of excel checklist
+8266c4e12b7069156c0ed38ced66621866c5281b remove duplicate of intents explanation
+06600d03f5cd04bcf627b02f9c15eeb039564ff0 QA Overview
+e3e6d87b8c38fa4946e110cfba3a29a47722cf17 Adding testing for Local storage by using iOS Simulator
+5e107f60941032e45d086634b010d9b5ea8d3d18 typo
+48dc8de0e9ce42ebc6ed58deb53936f2c6db2fc6 Merge pull request #914 from Obaied/fix_frida_script
+dc03860c3519d43b737c3350565e32e1260b7da9 Merge pull request #916 from bzqt/master
+28b6226b3aa93140ea0bf8dd63dcb1210c63013b Fixed a small typo in section "Shared Preferences"
+be1764aa7890983da5612b387f7bae6ef6b545ae Fix Frida URL listener script
+d6659eeace7aa71413c153275d4839b01a63ca06 typo
+893d8cb985096e7c0a1e36dec29e3e0bd2956673 Merge branch 'master' of github.com:OWASP/owasp-mstg
+61c8fc596eb17e4629daae28b68950e4ceee2827 fixe typo
+53a2f0856630c22615913a02a51f1210e167fa9f Update 0x05d-Testing-Data-Storage.md
+078e3a9d108f3f9409653871d1ada21041d02fe7 fix for Sejpal
+62aa73f91ffe82bb89080fbc0d889a23073f2651 Added Jeroen Beckers
+1c82de4d85e731b27d6822196b4183fe54ec9f50 Merge branch 'master' of github.com:OWASP/owasp-mstg
+24ff3d52f5ac969e886478934d64928b85388173 changed cover
+f137c31756577956552ab11802d55eaaa3bc2d8f changed cover
+98d20046853f3ba7c183cb29d907dbed67dd00fb Merge pull request #909 from knilch0r/patch-1
+f34e69ae473175aed69fc20802fbeb2fe1b19c65 Merge pull request #908 from cpholguera/master
+1500f8e133a6ac030f437ba6eee8cc425c147e7a add missing closing bracket '}' in gradle example
+8a00a60052651169b18a7dd7897af91ebd29c8e4 Fixed markdown for github
+1e5d747ef75b517f186d03ef73bf5f2847e1e29e typo
+395d3621490c080a98707cbf81cc50902ae0c66d typos
+463c7af07ee9a513549291cd89649d3e08017588 typo
+cfa9860ac11bf3f10d729847c74c30a88600a29d Merge pull request #900 from bugwrangler/patch-1
+a81b07f362a735a692025a16814f3c897cc0cce3 Merge pull request #902 from cpholguera/master
+f0e8f4cc803edaffdef5e86c625904ce2b010965 typo
+57a5d9f71146ca60324f1f6ec26bd6143da8f6fe update readme
+cbcaabadaa546b26442bc6d4dc41012313cd7588 cover for gitbook
+7598a79dd89409489ae6e344536090dcc1f5e0ea update frontispiece
+a053d393e761c30ad7b16f07a25c195f2934e2c5 added OMTG-Android-App wirte-up and frida scripts that demonstrate if crypto-keys extraction is possible.
+5f0f45b83183dff491a99d1c1fa4b4cd66fa0046 added new write-ups folder and its README.
+ad189192c2853620ce47f1ae4c4573325893023a fixing typos, QA etc.
+6387e309ed2a7c2813437d1731331a39e7ddb755 QA
+7e00a1c1f90c8a9959f7b34ce31e6e50eb00863b Update 0x02-Frontispiece.md
+7889df4c214380504f8c08221455b3d3db601864 CC pic smaller
+fd58a62f32982f4070c94edc799979357d2df1f3 CC license pic
+72d9a3da661071a1cf9f1278b08daac3acdc89a8 QA
+81a565d6c48fba32def51c4d971abce9c17af332 QA
+e3344f504387fb506e22479eda4c195b89815fe3 QA suggested reading
+05021c84a35172cdf41f378c35087f3e149c5194 Added Xcode
+f0bca70a2808f6ae9f26e7fb4288326de9e8bb12 Removed Toold from Accenture, dead link
+4e973ef9fd32bae0ea72b7d59e5135c7e60fcdc1 Merge branch 'master' of github.com:OWASP/owasp-mstg
+68c9d84036f43ab37284528271ede2db4ed80dc9 QA iOS Testing Resiliency
+5d8cefb94b9b61485760897af9c05da1a91f8333 Merge pull request #899 from OWASP/898_add_terraform
+39eb4b23f8ed9f0cae2970f6c60c52e6b093a099 Update 0x04b-Mobile-App-Security-Testing.md
+5bae809787be7f5ddffe571ac1f6065e9bf8bf9e Update 0x04b-Mobile-App-Security-Testing.md
+224b89b455fadc5d4a4374511663b4de9e9937f5 Fix for #898: added other tools there
+136eb88bbe234c586295469ee51897e34b918add QA iOS Tampering and RE
+002fe12bfaa23cd172f1fec867c5e06406e490e4 Merge branch 'master' of github.com:OWASP/owasp-mstg
+72ad7ba90b2dc7492d6ef424fbbe7d9063e16ea8 QA Android Reverse Engineering
+5eac2e4807615fc32e8ce74d8dbd17a2819128c6 Merge pull request #890 from hduarte/master
+9fe376466dbafd7f234f48d39b5d575e4ef0ffb7 Merge branch 'master' into master
+7873675054b505bf5aacbdb8162024400494b75f QA iOS Crypto
+0166db826897a9b3926a4bfa5c7e20386bb19138 QA Data Storage
+9de1244fb5afc48e1668be3717c9820cf7b55fcc Merge branch 'master' of github.com:OWASP/owasp-mstg
+fd21c7d9205d9a1a74791f80b2b53fc30e1b88d1 QA Data Storage
+f8fc589d3b2c42adc532ab590da0c30f89d030c8 Update 0x05d-Testing-Data-Storage.md
+57b5a7cd68ee63ff4fc93c51b92fa7f46f623c47 Update 0x06d-Testing-Data-Storage.md
+05e60096f54ca302246dcaabc6d5a6064299b5a8 Update 0x06d-Testing-Data-Storage.md
+f4988dc9701f5ce55f616e3d66a5f021e2b0dae1 Update 0x06d-Testing-Data-Storage.md
+91e0220d974e676a2fea30d945a1c47b6431f0d6 Update 0x06d-Testing-Data-Storage.md
+0d925bee5f34fbce8503df5af4e8c6787fd9bf2f Update 0x06d-Testing-Data-Storage.md
+b17fed6e6a484753ce387ab6edf5903d9b0b6465 Update 0x06d-Testing-Data-Storage.md
+e265e7e449356c41abf28dd9b0a8079723b49e95 Update 0x06d-Testing-Data-Storage.md
+ad95341962a120374b384e182c3da4c1cf6ff4c7 Update 0x06d-Testing-Data-Storage.md
+3ff340427f1b72b9884a132e06850ac1f986408d Update 0x06d-Testing-Data-Storage.md
+1278e9991629302e1075fa9aa5f09affc9f964fb Update 0x06d-Testing-Data-Storage.md
+6e2cd0613dfd254c4c6c3a6ea3a2c013fb650acf Update 0x06d-Testing-Data-Storage.md
+6704757d2c9e7bf050e26aa4530bf9a03b0968c6 Update 0x06d-Testing-Data-Storage.md
+bd1b1140034db9d2897d9ebaf3b2f6f8ecbace3d fix of 2 times wget
+ca2d46c3ba6f9422ec50a1a61e2537a8943e47fa Merge pull request #886 from Chan9390/patch-3
+c74e2eecb7560c19b1c13f98c1dcbb21213c00f9 Merge pull request #887 from Chan9390/patch-1
+cf779f280fa4c77847f8a95a0be5f891f0e4e27b Merge pull request #888 from Chan9390/patch-2
+36eaaafd58d6510efcaca08bc794e63a48aa2376 QA Android Code Quality
+5f616dd6b9f15ccfb3827c2a9f4f3017be971154 QA Android Code Quality
+5add048ae91813151c09b6ad18a5f7e63e5290d6 QA iOS basic security testing
+a12b50dfcb600b99e147bb94e1e9a518e7c18224 Added frida-server download command
+4c2b2d329c53199e9ebae40db91667fa98dcc975 Updated mistake
+bb5f7649ff3bc7db1945bc6cdaaa8b42fa30ea33 Updated HelloWord-JNI.apk URL
+8a0bd247d26ed7566f253d257798bd89030b4358 Merge pull request #875 from righettod/master
+ce413f22445863a84b329452ebd9a29bb049f07e Merge pull request #885 from Chan9390/patch-2
+91bc082f9d1b69646428fd7ad613c62e4ccb967b Merge pull request #884 from Chan9390/patch-1
+cc2d2c6cb5dc359a13287221d78d9c7873fa5ab7 Updated mistake
+e4baf1a1f99510213743b0032c6e402c96a3803c Updated OWASP JWT Cheat Sheet Link
+e4c634b4b6691d30985b1c4c73c5a23ba186a3ea QA from technical editor - Android Platform interaction
+008db4fe41513b3d60bd46b9ba55f697002752fc test
+71657a93940d3f790e09cb0d4527ddd486adb6a1 test
+d6d1218013aeb57e5288685ba657aef069d91971 fixed on excel checklist
+e6af138950b218cdecb7358671e07430784833b8 small fixes
+0267efbe4960d3228e9b8a222bc1ff157a479dfe Merge pull request #879 from stivalet/0x05c-Reverse-Engineering-and-Tampering.md
+c474e6e1c0e334a237d32121dabdafb4582b3336 Update 0x05c-Reverse-Engineering-and-Tampering.md
+f08320f449fb229c463799bb65c0087ac835e200 remove duplicate of strlcat
+613df2caf354b938ecc46e3c1ddf840431286ad1 changed css to xss
+d8fde35d7df83794c7cce670205f0dae5463e256 iOS with the React Native framework
+fd342af504cdb07ac28ffe438006ed3e2af47a84 QA React
+87e077842122bc07fd0eb3257482bfe946857711 Merge pull request #874 from righettod/master
+29468f81a317a20012d8f26e46e170d8441536fb Android with the React Native framework
+daf7a9ec2d7d3ac307e342445ed4fac092f0311e Merge pull request #871 from hlhodges/patch-7
+e5b000b28be319d7317994219b8e86b599030d41 Update style_guide.md
+443679709765eef34e95d8a9f06fbb1b04c59b80 Merge pull request #870 from hlhodges/patch-6
+bd4b1d8c758c365249578f1ddb9232e3a498b80b Update style_guide.md
+61ae6ec896e17ba334faef259fb8aa7a70072f4d QA by Technical editor
+fe537ddb2a2066c2963b4b2aee5cb42fc1aecb45 Merge pull request #868 from su-vikas/master
+3a13b084531f31d5ab9a3ecdd76021c6c25f096f Merge branch 'master' into master
+f14cce9409bd477cddc05e6244ba2605009d63db Merge pull request #864 from B3nac/master
+5e62294d63dba43d53ba6e3be36accde54788dc8 Fixing SQL injection type.
+1d2ea03cafa3f37cf8ac470add340836f72485c0 Fixing SQL injection type.
+50815ec008e9657fabdecad7d1b95ea0c57ae730 Fixed injection type.
+c7155bd08edc4555e8a351866b86f1bbd161d320 Fixing injection type.
+599db7481ecad53622006c4048d6bc55a2204f05 Fixed injection type.
+5aa33def3085a48b48573c451f3ed9db54723bbb Merge pull request #869 from HenryHoggard/master
+59e17a97d6883ccdcecb5087a24a1c9e37001002 Needle description amendment
+4c03b8fbbae3ce0bd88dfbc866cc879779f0e1a5 Needle anti tamper
+0eefdced677c3dfbc8fbb8615b03d33426a84a9b Needle platform interaction testing
+231164f1be3a92b2b2acb00377a2eb3cc4fb3f98 Needle local auth testing
+58f7512bf592fa0ebde7dd5e85960aac0c96fbd6 Needle data storage testing
+acb52b32d99f5d46dd453712f5bd89a876292ef5 iOS Needle Usages
+84ff25b76d8a059f41e0ef68811df8ec8417e85b Merge pull request #1 from OWASP/master
+a4155f91e0464b84ae5c86efbe752bbcf6f50f90 Update 0x04e-Testing-Authentication-and-Session-Management.md
+8e9a928e0937a08ab10b8f771bd95ef1a5ec36bc Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+0e11c2b65c769c1dce7a5ca77c0acd9c3beb0358 test
+54339ca50b4437c497d09247c5a8c016b6a9caa3 Review by Heaven
+4fbefa936d7e8fc948aef5080f67e24c7483952b fixed offset in sysctl
+24068f2189608002293f9fb07546b9545ef8c760 fixed bytecode in sysctl
+ef74fbea736f9607a3a9dd1176be063a4c1b70e4 fixed language
+2ee8999b40ed0db60a665aaafb55d6ab2f8d9830 added to anti-debug technique for sysctl
+69e139912966a41b3f2c541aef97387fcabd8cd0 fixed image rendering in ptrace anti-debugging
+c2d939c903d6726027b6099a8e0f8330e064438c Images for ptrace added
+784e9025a09ae438d53e55e4a9ed4a41d08fff75 fixed image rendering in ptrace anti-debugging
+2f7a301dcbeac71380d8ffddb00edb767b5c9534 added content to ptrace anti-debugging
+d86035ec5c673cac57f95fa77f826e1cc1b10082 QA 0x05g
+f6bfa741761d3dd415c56fc356bd09a352a1e067 Update Gitbook links
+92ff04f5f01ef68250079b6d88d1eb794c1ddc6e update checklist to version 1.0
+d7f3e9e2140a8a0ed435aedca38e249598240fa8 review fragment injection
+9edc7878c7c33e4e2ffafdd2ab091b36733cbc15 Merge pull request #862 from clviper/master
+522627644a1b78670fdcd7a4674fddb995b04435 updated checklist requirements
+aec1dc66dbff67afd2cd10a94daba2e93f0774a7 Merge pull request #866 from juan-dambra/anti_debugging_typos
+a2617cb52702017cbcc034173af6152e8af840f9 Merge pull request #865 from juan-dambra/root_detection_typos
+8f7b50d16cf7dd697b46c129e27b8d63409464d5 Update README.md
+a98f76bd69e5fdaec80a8e560b0946be55982cfa Update 0x05j-Testing-Resiliency-Against-Reverse-Engineering.md
+8e7313f9893fc1df1f930b48aa7ad246bbf1828f Update 0x05j-Testing-Resiliency-Against-Reverse-Engineering.md
+683917c9539322651b2568271c1488414a0bc340 Merge pull request #863 from juan-dambra/patch-1
+368aa539050c670e0c983bc97d9aad159bb100b2 Add SQL injection examples.
+fc77a42abba324e4ca61144502a444ccc07c0bdb Add SQL examples.
+6b1138e6f42a6c637832b274449b9bace878d404 Merge branch 'master' of https://github.com/B3nac/owasp-mstg
+16934af4d3f1ccdfb4b45c0649ddba00192e3580 Add SQL examples.
+118e847911d225ab8aa3a16f520dcfa1044ca9a1 Merge pull request #1 from OWASP/master
+5c82bbb08e01878d34256d9c935cc08b0c6c9820 Update 0x05j-Testing-Resiliency-Against-Reverse-Engineering.md
+31721886df1524d2f2c4128d63732110a88c3f95 Update 0x05j-Testing-Resiliency-Against-Reverse-Engineering.md
+92e41d441fe9b1d4ed01496d1d8de3bd4b68ffe9 Updated references.
+dd7828d99c830e056d0040e0f94c7c9c589a03e7 Update 0x05h-Testing-Platform-Interaction.md
+d0a38a036dbe8a7325a3aed47169a2f045b71596 Update 0x05h-Testing-Platform-Interaction.md
+4c8f77ed3ba7e40ed5638b7faa0bda6d55ee9bc4 Update 0x05h-Testing-Platform-Interaction.md
+16f2b4a351e590182145fb5080fa54d59005b6ed Update 0x05h-Testing-Platform-Interaction.md
+fba63ec474eaaf901d18426dbc7581be46c18d7b Add sub topic regarding Fragment Injection
+5f215302081116b88e4904c68a430f48955a50ff Merge pull request #3 from OWASP/master
+69988f2e28fdd7d0bf1cf75be0becd25f344862b Merge pull request #859 from magicansk/patch-6
+0bbd46be06137cff0b079e1c435df90d5609cd4a Update 0x04h-Testing-Code-Quality.md
+020cf2bcbea5161aac8c125e513b01a2916c30cd Add sponsors image
+397ca22e630f6ae9e4fb8ec44d4c04d219f49cb9 Update book title page
+dff624c329676ff233d89e3331451386bc49e5d6 Merge pull request #858 from Mohanad-k/patch-1
+ab878e597c51fd98a5ad4420235991a43a58e2af Update 0x05e-Testing-Cryptography.md
+e398af710e53a0547e749a6284bee99acdfba8e4 Merge pull request #857 from raulsiles/patch-8
+384dc423f5f3abd0f5e84c8995334844c4b6332d Updated IPA installer references
+7fbda222a50a080fda06e5a92c99542adcd1aae9 App sandbox dirs updates and IPA installer references
+80d70c2f490166155e89327f2233bafeae4c1413 Merge pull request #856 from B3nac/master
+d8041d008649f66e63baa7e0318e6f78ac40325f Adding an XSS example
+39e6d20f15f457987708391fe46eb732d21b7a81 Adding an XSS example.
+a10fe334a1ec63ce295b38fc8d5a06f8ee806455 Adding an XSS example
+cefda0a473658ddf9960906084e9ddeac03c5bee Merge pull request #853 from romualdszkudlarek/patch-97
+2398a2c764e919c24b459ea36a994c70876b3521 Merge pull request #854 from B3nac/master
+7543e2f18dec5bc706cb6d216142efa7a028b385 Add Android Studio
+2eea7f9c518231c8f47d06db42fd154920cfc563 0x2 - Add CCSP credentials to my profile
+009a73bb8a5a12f3fe663166b6cf98b582327f21 Fix TOC in SUMMARY.md
+a8462e8aebc5dd587e49db58e22a6a9980181452 Edits and cleanup
+7d4b3dfd70f12874fb508d0299befea48ac5c2aa Edits & ToC updates
+173da878507c200231aed16c45b82415bd7933d7 Edit crypto
+cb7596810651c988d7f3903256cc7fd7bb05825d Merge pull request #850 from B3nac/master
+807e9dbac5a496b769c9ea3e9879f6536b46f04a Add broadcast info
+f4faf918463d8d7003a7c076e522e5b83b4a9905 Update ToC
+aa7ea7dca07f0b6f08a116bae1484eb75a0cd9ca Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+977dbdbc7c2b9fd7344a27dd95e566d26e54f6af Edits
+4e3c32c9e03c3e9501ec0276d521b12234ddaf17 Update README.md
+67c000d51f4bd946081e3f79d0c90a2b5409c7dc Edit general crypto
+12f3da574f85f27b2d54d7530c64176a14a0a194 Edit code quality
+0aa46b3fa8f660107de071682f66db43440c7d66 small fixes
+4ff0b0a0b858ca8ab9c730c9045cd6bedeea877b Added references for Crypto chapters
+cced404ba126c24c89d295e6e489ef4a302ed09d Added iOS Test case for sensitive data disclosure in UI
+6068df85f56279c9606917a69eace05ac32a19a8 add dummy for user interface test case in iOS
+40d0034f35583657813dd1041aa592de5d769a3f Update 0x06b-Basic-Security-Testing.md
+f8fd2c70f99ca9de0064ec2055b4e50b422d8dfc Update 0x04e-Testing-Authentication-and-Session-Management.md
+6196e8ddb963fc0ef1e93dd02310ae7b3440ec1f Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+3ed2c010be61735164682f9f837b40aeede87b95 Edits: Authentication
+2fc3e9aa3b24e6820a5cdc294bb565943ba34aa9 Update 0x04e-Testing-Authentication-and-Session-Management.md
+1147aa5a3f17ffaf9c8d13cd32068c49303fc968 Edits
+bd61542bd42c98e7d64568e4c4ee863aee0a8a2e Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+82c7b54779e8e09407a731b83ca6ec5f35a476e1 Edits chapter 01-03
+9591f8dc627623332f4933913cb70deead2ab6dd Merge pull request #842 from Chan9390/links-patch-1
+d92880aadead6ce68bd05d34bee9dc74696f8609 Fix image filenames
+14f3edd07a451aadda6dcb3197e5652a9c6be0fb Another editing round
+eb9543b3e92efbc704fbd733cf047285937ec487 Update book summary
+84ab8946ab0a64e6bf311b21b5dfddf455820479 Edits by Bernhard
+59e32b72b757a48383bad4af83d8ce57464002af Edits by Heaven Hodges
+b8c7b56f984a314fdf8d8169b85553e1bc06d693 Corrected some markdown link mistakes
+44d6f7badeac96e8799fb5546170a92fc202c401 Merge pull request #840 from magicansk/patch-4
+1bc38acd09158108067a23889dbb353199a33593 Update 0x06b-Basic-Security-Testing.md
+0063dbb531bb4704b391094496ecd157a52eff9a Merge pull request #841 from magicansk/patch-5
+ad11a8aa6e326f5c18125f7664dd85bc7415d778 Merge pull request #839 from magicansk/patch-3
+a19d3f575801353013f7c89732e5529f3f91b786 Update 0x06f-Testing-Local-Authentication.md
+eba38ed18da9c2996ab6696f375dc40d025c8d10 Update 0x06b-Basic-Security-Testing.md
+6fafb23217d8e2e2a965eb0d23e2c0000f6e6712 Update 0x06c-Reverse-Engineering-and-Tampering.md
+99df5aa2593864c778a3daa19f6822c85cdfc9d7 QA iOS Network
+fd83a8d30a87f529c4e51466a1243ec62ee633e0 QA iOS Crypto
+22a8b8a346b61ed17afc256706443714c8de2f49 QA Data Storage iOS
+00fbee081bb53b661eade1326dc2c1f0f4e908fb Merge pull request #838 from magicansk/patch-2
+ddaade8b53a200c5e55b5bc2bde92214a904171c Update 0x06i-Testing-Code-Quality-and-Build-Settings.md
+719539bf74b93041489441fb70b1a168fa7ce48b QA of logging, keyboard cache for iOS Data Storage
+34b07abdba28332b60715b5f477ee867ecc7ed81 QA Data Storage iOS
+4f97c1e066520a913c0722603873e98f6a8bf6dd QA Data Storage iOS
+f5849d3d4fc764e2d0aaa3288f8f3c7a5f2ae8a9 Edit iOS crypto
+4773f6e51ea9823322c2739ba68050902327ffd9 Update credits
+aa288587cef7602920640c431066dc5b7bd94a1a Update contributors
+50d2df796e39af85ab79f5820f090f99b4b70639 Edits
+fdff09bf2c789321512d50ab5ed73258028dbcd5 Editing
+02d66d4ad06cc7458e09ef46f1315c8daa2a518b Merge pull request #833 from nafarlee/patch-2
+8653701593f8232c2aa14895166a235ab369948a Merge pull request #834 from nafarlee/patch-1
+53755a797eb9b433017130be431e4c0bd0942cb7 Merge pull request #835 from andrew659/patch-2
+9c940dd5ce2cb88c755e7c466b8bdae07b8f583d Restructure references
+e2b4aec7be1f955795df1c274f74674217f5da2e Restructure references
+8a02bb1b4a2cce9a129a6655bd815ad00329380b Re-do references
+3fe16d7e0e134184c6274612734de79f20f23807 Edits by Heaven and Bernhard
+e7446abff84591cdeef2f80a3fdfa8c0233d9ad2 Typos in the testing code quality section
+660bcfeb5dd275f82518700c64b1d68d48306ae2 QA Data Storage iOS
+ef253895780f92bbc58d5af63c5e74164ec1835c Add missing 'to'
+d2afe9a8c18dbe3f79b63eec3fd322763352245e Fix typo
+ee8e905ccfda6885fb6ccb73f0c9caa1eca60b86 Dynamic and Static Analysis iOS Data Storage QA
+f912407775898b62822b7c28eae6af6f6fd530d7 Dynamic and Static Analysis iOS Data Storage QA
+38ed38393fd1c3b8b5228968071a59ae679f3595 Merge pull request #831 from leonjza/jni_syntax_patch
+5295f31f773a311491fc8c25930a7fff47ba95b9 Merge pull request #832 from nafarlee/patch-1
+f0e74cf4963fc4d04f36e4aa37afa7059b3a4dd6 Remove unnecessary extra word
+94d2903b7862403027f5cfdcff6c464431b413c3 Fix syntax for PTRACE monitor to compile with CMake.
+e8f70a6b71e0e013c28d971ff92d2eb8508918dc Update 0x05b-Basic-Security_Testing.md
+daa30e559aed6c6c56711015300d012f5ce59c82 Edits by Heaven Hodges
+f2f19e94c743e0abaa8ab80c3287a663bf9fee75 Merge references, formatting
+5b5bc473f8f3c65042e7de8c65c07df6076cadc4 Edit security testing
+34d9381f1858d6e7bea51a201eda26e68b134905 Edit security testing
+2543848bb0aa084bf8fdcf11b039d151581a44e0 Edit security testing
+14ecd461e4204abf85a4d35acc9d3af9ad420e69 Edit data storage
+9641579a24c76e7d3b3ae86c2929b8a089434a36 Edit data storage
+1be8fc550e430a516b5104861a1d1e0afd18a4d7 QA KeyChain
+771f1c19632b557a405ee927f6b4eb7f5cfeee40 QA KeyChain
+90ebac2b20b3bd304d8027c4115b63fed1340547 Update of Data Storage iOS Data Protection API
+f9fb065a9f2d21cb119ed0a5c2cc98d40e21c777 Merge pull request #829 from hlhodges/patch-4
+5708cd2e43aa6e1ea0407e8641db6d8fd30d9d91 Update style_guide.md
+ee4a684a302c2c2bdc8ef6865bb0793aa83618cc Merge pull request #828 from romualdszkudlarek/patch-96
+739aebef6a06f9b03fecf95cb9037aa62c79eb80 0x4b - Remove redundant content
+b654c5373caf9cab3fac1210b34f6c5088a3b022 syntax fix
+89b536dad06f6e181e796cc549c5b4b322d4d741 Edits: Merge references and improve formatting
+1cd1090527f096a875164f234728d034f93faf72 Edit Mobile App Security Testing
+3052003c3380c23a858354098bcba0981e2cdfa9 Edit Mobile App Security Testing
+1c795707f0b9ba2ae2f17030f4fbd43ff8ee9f8b Edits by Heaven and Bernhard
+e700164c33572f7f3f4541fada2858aa2b80adbe Merge pull request #823 from raulsiles/patch-5
+1e6bfe7f6f8ec4cf67c15f5ef83625a4b9aff90c Merge pull request #826 from romualdszkudlarek/patch-95
+9152b1a0388701c3edf852813b234ee485b2e47d 0x4b - Improve wording
+5030b0966607f0565f431f4c8ad891dde337aa93 0x4b - Minor fixes to "Security Testing and the SDLC"
+b977d35058675b3244a0de0e8f6acfa92c714ae0 Merge pull request #822 from xep624/master
+f4886b127846be724df5ae022ffbf3b540ae7993 Merge pull request #821 from raulsiles/patch-4
+17aba2172e1d5ab5c6cf5cffb3b63c3ddb98123c Merge pull request #824 from raulsiles/patch-6
+080e89b47eab3251e9707fe25929c8eb2b0a8e00 Merge pull request #825 from raulsiles/patch-7
+31999b78f84b555237381964df031de2d49e5afc Level01 solution moved from Android to iOS
+df1ad0ed573419dabf46057ad29893d6769edd90 cosmetic change
+572d6f3c14dab1c104e5f47f3687e9167b5b0cb2 Update 0x05c-Reverse-Engineering-and-Tampering.md
+e539ed71be112335c73eecc95b533f882e94da37 0x05c-Reverse-Engineering-and-Tampering.md - Frida
+6a80deaa88a322ed98cf30b29f454da1412dba68 adding screenshots
+2c7192a315ba7c47f98f5eca70460a8147ae2e6e adding guide to configure proxy, device and install CA certificate
+651598c67b0e58c7de992c5b0f9bed1510e32fc0 0x05c-Reverse-Engineering-and-Tampering.md - Frida Stalker
+de35b011ae1a67332f677bd2960fbff2b3347010 Edit network communication
+94c20519a9f9123cc669f39bff25d08e3a62d55c Edit authentication
+dfb8ec8c1b404e64e3555b9b5a286eb06f58d44d Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+2eff703113be5a5cfd6bb6a071856fe77152ceef Edit testing code quality
+d9920b74515b5adb607672988773e97abd2a58e4 Fix punctuation
+b0e022e9d9682188b6007f0cb7efa272f24bf559 Edit iOS basic testing
+ac3b47fa02f1230de42d03387e835581efa581d5 Merge pull request #809 from raulsiles/patch-1
+0c32f1d18489dff8ba78605437de8c8a811c2192 Merge pull request #808 from romualdszkudlarek/patch-92
+93b7b1b8ea0af9378ee7b5e685f525dab204eb9c Merge pull request #692 from pmilosev/ios-data-in-memory-patch1
+b387bea49c7fcf41d03828ea95c1831de7760fd4 Merge pull request #810 from romualdszkudlarek/patch-93
+4536c8db7e0dae33925b2e52dd29f35c71dc732b Merge pull request #811 from romualdszkudlarek/patch-94
+eafbedbbaef488e2de3c31cbc0db6225b1256b06 Merge pull request #817 from raulsiles/patch-2
+f508417d59ea31732fd6cd3a4cb1254b626aac1b Merge pull request #818 from raulsiles/patch-3
+888d10d72e51b8c83c0e54dd8a90b09452771fe9 Update 0x05c-Reverse-Engineering-and-Tampering.md
+704decfe3f32fc693bee7a7288c617dcc19fd86c Merge pull request #816 from colman-mbuya/patch-1
+8e7c02fa21ec24f3987e4b08ac1bde566a07ccea Update 0x06f-Testing-Local-Authentication.md
+d7225fe80770130d187bce4ec0fda4707f7a4b29 Update 0x05c-Reverse-Engineering-and-Tampering.md
+9ef2ee9e68e35f1dcd71c5cc923017f97ca9a0e9 Update 0x05c-Reverse-Engineering-and-Tampering.md
+f420aa9d5f29bd9c2a6ad9483d9ae55ed17b0765 Update 0x06f-Testing-Local-Authentication.md
+87683458c8bc675d705ad3c9b271cc0e2ffb0a7b Merge pull request #815 from colman-mbuya/patch-1
+16963030b09c8a6938a33a8d3685b53421f28c49 0x05f-Testing-Local-Authentication.md
+2739c24f27ba29e1c1d25c239a177b2d61732cea 0x4b - change after review
+882c52cd5d410ed9c5e17b22247dba55c44b40c4 Merge pull request #807 from romualdszkudlarek/patch-91
+5ced12032b5c3ad6dce7d60ac9045dd2cb940ad3 Edit basic testing on iOS
+3db2d7c5c292ede0a223251c184800586e165d01 Edit basic testing on iOS
+01cb0691172f64ce213389731754e1f1f4e0a87c Upload new pics
+fad934687dbe57c37a9822e47327c88f9ae0c56f Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+28b640bd1d0b76d179e46cb93270d833e579ff19 Edit iOS basic testing
+c0e068c8ed908141ff578121feabd75cb2e46643 Fix command
+569e5f22cf8e862b3a4d87397074722b088a868b Edit iOS basic testing
+9e87441382cdba78c14824e7b84b71e208f8e24b Add frida example code
+2617987dda72362ae3ae14b4a1958b11c20afdaa Add devsecops image
+22b74a52d7650feee2123a7e458083a12f90c487 0x4b - Develop paragraph on DevSecOps
+0771f517278194de976b66d2027166d38c2b6ca0 Add DevSecOps image
+cf67935c4f68a4270e710feb5522a5e2da1c5298 0x4b - Improve and develop intro on DevSecOps
+268c394900e0239426b17863b4e0d09f6889fa02 Edit & add SDLC image
+f8a7be463025ffd90bca9dd70131c8ac0a78bc2a Update 0x05c-Reverse-Engineering-and-Tampering.md
+e916bed0175a84a77d443ce7604c72fa490ec703 0x4b - Fix reference
+7adad0956d110ba758f6948f37653eb9aeab3c0c Ox4b - Add an image describing SDLC + minor updates
+4faa9587df74fc28b66c771ba133d5b396a00a50 Edit iOS basic testing
+b376b6044964589dfee5eaea931519bbd3cf79f1 Edit iOS testing and reversing
+019261d396df3572c5331afa900c0a8799b4f5ee Edit basic testing on iOS
+ba9d4a0cabb09c78c5207d3d13ee31ae7aad4dc4 Merge pull request #798 from whoot/master
+3ab8c03aa2806a5b96c010694d382e8de7219edb Merge pull request #799 from whoot/patch-1
+fd5b705edda9bdd97106b68ab83646ab3ef04d80 Merge pull request #800 from whoot/patch-2
+3d523bf01ab64e84295704c518d3653f7abd110f Merge pull request #801 from leonjza/master
+427a970806a3a0ab48ae704bc6c0d532030de00c Add objection
+d10bcf313c8224991c49a8812dd857d56a0cb3f1 Update 0x05b-Basic-Security_Testing.md
+eb7e0cf724e6968686f0ae6658751fc785138829 Update 0x08-Testing-Tools.md
+46ec247339e1177749d9e8a56685dee80ef90f95 Update 0x06d-Testing-Data-Storage.md
+6b02fb97ac911e6970858c4dc22a3c240acc41da Update 0x06d-Testing-Data-Storage.md
+2adb0ed8544f7ea59013791ab729c7594b47f96f Update 0x06d-Testing-Data-Storage.md
+85e454c96bac8579c52fd50c1bda625ede28500e Update 0x06d-Testing-Data-Storage.md
+9682d37b83fd8f7844fd4d581d5d5135210ff701 Update 0x06d-Testing-Data-Storage.md
+d2634cf7419bca6deb86f53c7a80ec22bce90356 Update 0x06d-Testing-Data-Storage.md
+98a0c0d53e1322b77f116d1a5a78dcbad4f41bef Update 0x06b-Basic-Security-Testing.md
+71524b0697bba27c418ff06b2cc5bbdb8dc00a85 Merge branch 'master' into master
+16021792bbc9599d7be68db092f39805b315ce89 Update 0x06a-Platform-Overview.md
+e6e6987c23060bf94f54fa6cd80999dca9806d27 Update 0x06b-Basic-Security-Testing.md
+50825be8f3bf94f3fd0889d90978d63a7905738a Update 0x06a-Platform-Overview.md
+66972dfd444fe780810e483038b3445dc7dc182b Fix typo
+befef0d25ad1e83a73be666abae488b37867d258 Merge pull request #793 from whoot/master
+13c3e1d1499910b0ccb4231497c86bf8b243f875 Edit basic testing
+8b51443502ba463cb00123f9e862be8d53a1be04 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+3b12e72e8948da73dbcf894f24cb8a3eaa6e06c4 Edit Android basic testing
+76b5ec47b326c3502c6fce9c37a3917cc160be11 Update 0x04f-Testing-Network-Communication.md
+fcc91c825ed7eae28f156a1f0dc3ad95c19eaae0 Merge edits by Bernhard and Heaven
+e8f3662c412c1fede583b7a18e9fbe9e344319d6 Edits by Heaven Hodges
+a213691572284228915fa57acf15df3afa1edb26 Edit network communication
+537f02da03889f2b957710889cc2e73231155daa Update 0x05h-Testing-Platform-Interaction.md
+6a327e81e054a96789d295a25af7366ee40e9f98 Edit basic testing on iOS
+2a92f5da690b44ddc166c5fe52239652819b5735 Merge pull request #791 from romualdszkudlarek/patch-90
+4c531429770502735219604e8e9060ca9bf19bbd 0x4b - Minor changes : proofreading, some rephrasing, ...
+4fe9ff34da53f90aced8c23a4046f4b287cb763b Update 0x05d-Testing-Data-Storage.md
+5bcf5f817a10bebbf8a44a5abb7f89e3fd7ea272 Edit crypto chapters
+235120585db70f45aa4394df28ed87ea232d2112 Update 0x05d-Testing-Data-Storage.md
+57fc0ab835ba7a3e26416ee02327b791bcd383e4 Edit Android Basic Testing
+d389db911422a09d0b6c871afd6e6366aea13c5c Merge pull request #787 from romualdszkudlarek/patch-89
+ef58aee4937dbbf038ae243cb7f76b74181feebf Merge pull request #784 from OWASP/0x06c-swift
+10c6b1deb47de227850709f920928161614e2526 Merge pull request #786 from whoot/master
+5cdd4cf171d5b86f2d911f160bca4c36da593cd8 Edit with suggestions from Caitlin
+9a02ebb6be4f7b396d1a15e2e94b89e09c4f7852 Edits by Heaven Hodges
+43354857500f5768cb6e79a9a0d1d05e7b0e745b 0x4b - Merge "security testing" and "sdlc" chapters
+b8252c54155ce6ea5820c0abf122e5da53b77734 Update 0x05d-Testing-Data-Storage.md
+509d96a06d03b461f80d94fb1b7e3da1a38a4c64 Update 0x05b-Basic-Security_Testing.md
+1ff65bb983e0a8a6c7a199a1af3c2eb5866043ec Edit iOS Basic Testing
+2a16daf62b68167f4937f7056b07454d78c5f874 Merge pull request #678 from DarioI/master
+cc5568a7c52b97a88f1a85057958d0f752e72285 0x06c - expand intro on swift and objective-c
+ee9c8776465d324d17d7da24668ea9f5cea2209e Fix formatting
+582ddf57c865fadfc1e7ea9d5df6b858fe119942 Edit network communication
+f61b8a37a0e82948447ced68807b9fd6a4877f5c Edit network communication
+2d89564721801c9fefcd72552ebfa0cf656dd4c9 Edit basic Android testing
+61a8685895c5bec5fb1ee1116a2cb26332d369a2 Edit network communcation
+b0e25205c37a7a37c3e7b895fd0c4062b7f4e381 Restructuring
+d008c4043a262ca49870da5fa0665b89665ab779 More edits in cryptography
+64fb9c0bb20103d1da8f1c5bf429d528c979aec9 Merge pull request #758 from caitlinandrews/patch-7
+3bb48982c1006edf136219aecd46326108f0bbdc Incorporated some feedback
+9c284d57be81208dca563d425a3a43145d1894b3 Merge pull request #763 from Ali-Yazdani/patch-9
+779d52e771a3fa034e3680fc1a5f35ec2be30e14 Update 0x08-Testing-Tools.md
+eedad11a338f2e69cd83041969c3ab37b4315a39 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+1444597a98e543ee11fe65ce220d754a9a4a0db3 Remove broken chapters from book.json
+8bee36338f1629219fda048fc2bf8ff0f835d92f Edits by Heaven Hodges
+9ac5d250ff9c6e926927e90fba19147eec16ced8 Edit: Remove user education controls
+7740bbd4879063f35205eae7a939cba3e1972b95 Edit iOS basic testing
+5dd3855b02e4ab9389662d1f71933ba20638bc8c Edit iOS basic testing
+df401d5910609224348115cf0b40bb3a46155b56 Fix image link
+2c209ec6717470d695f6152bae8b5292460f2cca Edit iOS basic testing
+6d8ff5c7888e326421264b63e8b91968495add97 Edit basic security testing
+f7dfa9d0cc23ac0acd95d076788f94727cff24d2 Edit basic security testing
+2dde05d9f65ea5aaa9e0a1e2a07fd45086c225d0 Edit iOS overview
+06f6cf463158a90af45c1c152b4ddf6ec17a13c7 Edit iOS platform overview
+40761de904233263a6767234a244a51be7a75415 Edit Android overview
+254f2493cff78fb0863a92340ba424d82d4bc9fa Edit Android overview
+ea5ae5dae0f71c2359280b84b18680eafc6ec5c2 Edit Android platfrom overview
+831e24947d337ec0401a03c9695d8f6ca879dba6 Edit Android platform overview
+d4f580ea959d1bcccb223f35026492407cd24418 Edit Android platform overview
+f04c31d740fdf3b3412bcb6e4175b052a24e5b8b Merge pull request #755 from TommyJ1994/patch-4
+c0ccd61fc313f3dd917d16d64ea1301d8292e4fa Better wording and typos fixed according to the review by Sjord.
+a733390d6a004a116edbf3dd683fc3b6e39967c4 Merge branch 'master' into ios-data-in-memory-patch1
+f2d77444a683a9d89b838d0ce2992176e341be8f improve sentence
+ede462e56a91d7792314a1dbb7037935ddb529b7 improve sentence structure
+add4c9b8640ff02e60d2b20d1a8298c80e6d59a4 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+c9242405cb1c2fbce24e94a7e4fe014623c9dac4 Merge pull request #754 from TommyJ1994/patch-3
+4ad06fbb9c76a28728deacddd0670fd0a172f457 Update anti-reversing schemes
+a6177cbfa301ffbd7d018707fee7c6b62ccc1ad0 Update anti-reversing schemes
+50b87369d61a8bba061d2797ce41fa9f07a997e7 Edit iOS reversing
+da20e21525df5f09ed019bd463bbb45dd793d12f Edit iOS security testing
+2b0b2510aca7bbbb59fe9f9d2149b6cc0dee72e1 fix typos
+d3571cebb6790150c60e5b896915dab2e315819c Merge pull request #753 from TommyJ1994/patch-2
+34128814f445a94be6913bd5269cdf1b235b0cb7 Fix typo in Platform Overview - Zygote Section
+13c765f0a5575a290644308feb3381ad30853d52 Edit platform overview
+a872b1344df4b4f2187a290da2489eef20a4d289 Merge pull request #744 from AnnaSzk/patch-7
+a97e053ebfaa315f6f34f6a5ad2730d7443351fd Merge pull request #745 from AnnaSzk/patch-8
+ba1ac317bfeba0811dbd203250c2be1f8f63fd01 Merge pull request #746 from AnnaSzk/patch-9
+57b7c9f015da4fd02af1da5ad17eb987977991c7 Merge pull request #747 from AnnaSzk/patch-10
+c8ae65bffb49642173c0c971333b5a4d7179ec12 Merge pull request #748 from AnnaSzk/patch-12
+c82ba7c1201d9287a7df52eaf3dfe35c9cf7bd51 Merge pull request #749 from AnnaSzk/patch-13
+647d31d5556285fdbb0dd7945ad92324db32182b Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+61ad4c8b264781961c9c109b7cd8baa4948d36d9 Edit iOS Basic Security Testing
+759a3343a8a03700de0445c9bc3bb2b487b7eb5b Merge pull request #751 from TommyJ1994/patch-1
+55261c3f55033fc990f703b5cc52aed6c5c77b48 Resolve conflicts
+91d9c5550cf9c8aa6f596150d4d2fa7b4154f540 1st round of edits and questions in Testing-Cryptography
+2243d65d4f484c56d0fcf080b94e423a7bcc05a5 Fix typo
+18a91b976829c9fdc2c4a476a21637cff53563fc Edit iOS platform interaction
+a7ecd2fdecbe8043d61fe665133d544f493913c6 Edits by Heaven Hodges
+5e0b24ff8f6985d2d9bde09978bdc5f6d916d888 0x05a-Platform-Overview line 558 - end
+18bf67e6ae66b65e48b76c378d2f12a6099f6b9d 0x05a-Platform-Overview line 366 - 558
+2fc80543fb366c4703236c7e7444c2b60c489972 0x05a-Platform-Overview line 252-366
+15d1a8d68d335d5ce25bd9dd89c648451579591f 0x05a-Platform-Overview line 130 - 252
+18facbe94a3f4fdcf6afa8b5ebe5d6d3f6c0ab47 0x05a-Platform-Overview line 30-130
+053d2e17b9092463f12ecdf5cdadafea343e6d03 0x05a-Platform-Overview - line 1-30
+a83bfbf396bce094776fc1dad42adea9a5e8252a Edit Web Views
+24bcbc6fbf5aa6d41f8e97caaf258965492bf1e9 Edit iOS platform interaction
+98082cef5c871bf3716d4780d16766edef3dff0c Merge pull request #742 from xep624/master
+8bee83bfc1142baab372604848efe616545ab953 More edits
+565d61995eb208fd254db1085164ee5d0f96602a Edit iOS code quality
+0538a7c4932e220064b34504aed2e0082d363565 Edit iOS network comm.
+5ab9d044c4391521cdf340e9171f08c2ae957696 adding section Testing WebView Protocol Handlers
+33f053c58ea0194d097e4604653baaf68d67b9a7 Update book.json
+ff05548d4215d46aeb64933daa9a4ad2e7afa260 Fix grammar
+f9c33f4d9e6b8b3e9185ee7c6055358f3bf6ea59 Edit platform interaction
+457a5d5c8c21afec26612046fcd4836bce37e80c Resolve conflicts
+6cc764d4403f102b918bdb4edeecd93f2d98c456 Edit iOS platform interaction
+9bfc7a1d0e545d1720669fea6dc869f4af48c205 Remove Serialization
+77e3a64436599940cdca0f18fa7376d58358bd88 Edit iOS platform interaction
+e342e9fcd81f832939acebeaaf0da7696e477eee Update 0x04e-Testing-Authentication-and-Session-Management.md
+abbfa6f4ef139747365722ca9a7345bf03d7f8b1 Update 0x04e-Testing-Authentication-and-Session-Management.md
+20bdb05272781dc3bf57cfdf8fbb6d79dd6cfbb5 Edit authentication
+7233e95e05aaef01136568568e353531fb92acc0 Edit authentication
+d881027dccd3d1aec4bfe305cc8eb8ecd12d63eb Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+fa004c64689d1ef75056e4d90e10052b1c2f5b11 Update platform interaction
+31cfbe19d0707d6f82bc43b10cf7bb5ff85dea59 Merge pull request #731 from xep624/master
+61b6b6fc59b04daf2928bb156046155effc03c96 adding fixes from Sjord
+4576b7ccdb2d61446f5e2c3b99bddfea4382ef02 Updated Checklist with latest changes of MASVS
+5868ddb7874239f4f67c3825de00bbdac98ad9fb Merge pull request #736 from allRiceOnMe/master
+e051c0fb07699e5de5d53367e89460d5039fd95e Update 0x06d-Testing-Data-Storage.md
+04b9713c1169992f63d15e01a896c180d230eedd QA of 6a
+121d19c77e5337348b7cf755493220918354fa3d Merge pull request #716 from AnnaSzk/patch-5
+a338ab5082622eb1c0f226869d68f95ef5051f55 Merge branch 'master' into patch-5
+9526833d47d82a2486c71fe227ffe756c0e9d3f7 Merge pull request #734 from hlhodges/patch-3
+29de6ee822a2d6152b9856fbea4ed588b717c393 QA of JDB
+8db45b188f3f782befe2678d0b4c7158df5531c3 Merge pull request #735 from righettod/master
+aa401ea292f6c756e94d8a573396c1cfba51056e Add a mini procedure about attaching jdb to a PID
+bf1a7463ab9e1ba8da7b498912b732320c0d3e02 Update style_guide.md
+710be746c29f6fe393ce1a35cbf9866e46d9176e small changes on JWT test case
+6fd2ba20b057f6c59d3340cebf1e9413fc69177b Edits by Heaven Hodges
+7e9c71a90a7e518cf288477cf01c184bc7ddcdb3 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+9a8d5ca3e24ec2088e3159f327fab0877a5459f3 Edit platform interaction
+95c5b026c1ccd34c0cc4fdcc76fbeec8807073da adding dynamic analysis instruction to Testing Custom URL Schemes
+65e924d6f8578ba14c45b55c9463f45c6c0fb25d Merge pull request #730 from jinkunong/master
+db76b5208437c9f5f76fca096c29ef3aa41a42e1 Merge pull request #1 from jinkunong/jinkunong-patch-1
+68e6949776c781bfd557892c775864399b5b9005 Update 0x06i-Testing-Code-Quality-and-Build-Settings.md
+7a3da5e4cea3d09b782f7480afaeccc3316d4fff Fix sentence
+ff18bc45e35024f7550b9818d893d0ba687a6ea7 Fix code formatting
+bfe0dee57d4670cadb4a7d9a599d1b72a65d60fd Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+e7da3bfe4cc5ad6f4413592bf25ec495a4e5c93c Edit iOS platform interaction
+d12d2faae10a09c4125cd3cb03b1b3a153355913 getting rid of remediation section in Android Resiliency
+839a96c9897598b492376a2f6d356b98ba9b7ae8 getting rid of remediation section in Android Code Quality
+fe7131ef539398d22184f5e4eca0cc4b19b27312 getting rid of remediation section in Android Platform Interaction
+de1b6169d5cab3140ed8d92fe09928b2c6ff4bdf getting rid of remediation section in Android Network
+b7e0d9d28634f797aab0e192f02549cf5f6feedc getting rid of remediation section in Android LocalAuth
+6217a2d072fd129e07d20dfe0bb1cb4df49f8fa8 getting rid of remediation section in Android Crypto
+e9079b6dd4a18ebec1f944c5b32971d07dd9d402 Merge pull request #728 from OWASP/fix-masvs-references
+3068da24a7619f9952a9d1e3280554af117fe160 Merge pull request #729 from caitlinandrews/patch-6
+32eef22fde2ac5eca714a1871c7ca862b8c63c31 just changing a "which" to a "that"
+9031a9b5e0decf5faaae14a6607023ef3de5b01e Fix references to OWASP MASVS
+8089499e55b5593f4db9a73ebe9dfbad27d1de28 Edit cryptography
+5d6f57ee458eacdef27a9db908e6a2f6783a2136 Edit crypto
+9ac061a76b13d940e3d23e3f246577004310dbd4 Edit crypto
+7fdfd380d7dfc61f700b76102cb03cbb6492ba02 Edit crypto
+2040b93e95d35cb2b50a1e67832a16f1b8915d18 Update 0x04g-Testing-Cryptography.md
+e87719b87e62a791bb4114d21bc102a4f78fef80 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+ae33a14bc5367022242288c6469babdde9dd8989 Edit crytography
+371a74e94005b4fb50c90c76f78b6d5062b91d90 Merge pull request #727 from righettod/master
+4636e48a6872d9eeb18adf1bf1298f96eb4300e0 Remove secure SDLC chapter
+0f91e07cf63b992a412f4d0232550e6e586f7c62 Add Romuald's images
+0ebb4ff0fd8a652b8876267f92c76bd2baba2f8b Edit crypto
+534189abe3f87b888d8412924e9c26f308026508 Edit cryptography
+b41f8b3e3bc9be2f306c471b5ea65cf1a154eac4 Add detection of Busybox toolkit
+708c53046ddfd1fe85797711eb4f5886a54e0e6c Add detection of Drozer
+07cb004cbe10a0cedb17128a2f347ba30bf219e8 Add set of expressions in order to identify detection of rooted device in decompiled sources
+f2ce5a6efce40372bf87149883552249df616d49 Edits
+60b2ac32cf3c6e8bcec238bccc3747442c678bf0 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+1fa0b26db7d0828a080e8ac14fe0ad6f3415bbf2 Exit authentication
+f5e508631d6d30ffadab5b85e9909401b4bf520d Update 0x03-Overview.md
+ac2705e2cb423371f9a5a0a737ac95178b6497d2 Merge pull request #717 from AnnaSzk/patch-6
+0cad3496146dae84d052b426a70ac0d77e504166 Some fixes
+afa148a1b93f92b3ac112deca2b1e46efc40f5a3 Merge pull request #726 from caitlinandrews/patch-5
+a85cb44acd2d2c819ba6d432eae44ddbf085fc05 Review/edit of 0x02-Frontispiece.md
+676bb80a01b68049aeba33dfbd6fc7477b102e10 changed title to Dictionary check
+28b8072887580f511b374aea5094363be03e13f8 Merge pull request #723 from romualdszkudlarek/patch-88
+3fd044e161df645aa3c598709eaa38378efc8936 Edit authentication
+df317e292c616c4ac884175df7bbed48dac56598 Update 0x06a-Platform-Overview.md
+e37669cd6ff55c85aded6161a5b42238fa543618 0x4e - Proposal for addition of dictionnaries when "Testing password policy"
+c001155bf3816afb576429b84083652ff08a420e Edits by Heaven Hodges
+1f992002684437988329171d0bdaab3902580d97 removing remediation for Data Storage Chatper (Android)
+a08ff93a18958c873b19652ef5da2842bceef9ee QA Brute Forcing
+797358b01865b62cf2d1a23166d82410663ef10c Merge pull request #712 from romualdszkudlarek/patch-85
+c71ccb6e6f363dadcc00ea645d143c4e59dc58db Merge pull request #718 from OWASP/fix-typos-in-0x04b
+59ced73efb2a7911ff1d65faed91731b42808f8f 0x4e - Fixes after comments
+8c30e1a31a0898678ef56b93e00ce335f7e20053 Fix typos in 0x04b-Mobile-App-Security-Testing.md
+234263c3499c0521cc3f09311bcc77bd0b68d941 Merge pull request #709 from AnnaSzk/patch-1
+e602a8a6db0d8fa6ad1d8319f327f2098c36ee4f Merge pull request #710 from AnnaSzk/patch-2
+3ee6001b2af82e926c03d4cea331d8d331edd1b5 Merge pull request #713 from romualdszkudlarek/patch-86
+a996d009b9fcfea78258ccdead5fd7e9e278ffec Merge pull request #714 from romualdszkudlarek/patch-87
+a99862e011fd42b12ff1a32db4db110b0519ade4 0x06a - App Structure - end - minor linguistic changes
+d9d9b797953e7dd570f23a465cb6b3c6eaef1c1e 0x06a - Gen Exploit Mitigations, SW Dev-t, Understanding Apps, IPA Payloads - linguistic changes
+1748e0daea787678d927dbc5523770b61cd75227 0x4b - Merge general Security Testing chapter with SDLC chapter
+8d496b7804b877b1b95c5ee36d38860b0dd2a9a5 0x4d - Standardize 'TODOs'
+52b74f01b430a9c39d7d39a07c70cb21c8c37607 0x4e - Quick guide on dynamic analysis, Testing Excessive Login Attempts
+42951219248c8b34744d5c5f921ab32c29f101f6 0x06a - iOS Security Architecture correcting basic linguistic issues
+3b4ed3772616a05c5f6aecae6601fae0604e6885 0x06a - iOS Platform Overview - linguistic improvements
+d1a067572f30f61dda3db256fda32cf3ddb5a14c Edit authentication
+81158c56aca6b211d5d64544b0a48c3434fbe723 Fix typo
+67221c0f2f0a1d11940694948ee2ec002f63054b Edit network comm
+a6bd06a14371cbdb2878ec7a4ab58a5a84322c35 Edit network comm.
+6b6308067c779ab270d289b1193de8989754e22c Update SSL pinning description
+d88b8cf92d9adf5358e564f94af7c88cf94df0b4 Edit / update authentication
+6259a6b67aa3d9854ed61fc4801161430cd7ff7d Edits
+91800cac7e4a759dde9dc9e2cd6b7a82b9dbfae7 Unify wording -> Certificate pinning
+fa58f682bb2c8bc80bf959ce7889e75c436c6b43 Replace <code> tags
+7a96b835427153dbdb8202fecb0c28ce9d7470b8 Fix code tags
+996f3f968e5fe08d50411dbdc6cfdde08fc4ba12 Fix code tags
+cfa83a2a009606279f761b6b4207e64dd6d2606e Fix code tags
+70b8218f4c07d53e93d104090ea23626c61df852 Fix code tags
+7004a48cc3e786433586544714ee9a7e99db23b7 Edits by Heaven Hodges
+4cf45b19412ab06fc4ebf76bdb5b35186a4f073b Remove inline ref. and add links
+2d01d2a63284601c854e51c6c324b0846ff832e9 Remove inline comments, final edits
+7de68dacd87f6ba6f8009dc5eab7a77dd8782954 Merge pull request #690 from caitlinandrews/patch-3
+3e1b60874eac8c6c2b374b71479e5858e42f2c1e Update 0x03-Overview.md
+89db2a145d6f0d6397eb41e239b579ff76fe0ed0 Fix typo
+8065d5d3f3a4aecb833c12a8055af7028828716e Some restructuring
+953d89130ccc59da48d7850abcc3a853035fb9f6 Update SUMMARY.md
+65abbf086784d531e4a699e8637596cf100d91f9 Edits
+53297df265c184086dde845591336d857f336d1e Edits
+82ce3ed1ffbb01acb2e75dc28ae9db5107283cf9 Edits
+67b258d777babe7350c7cc6c365f7285537f6568 ispell executed on 0x05d
+b7b9ccbed14008b50a99039f5a7e0636c8ae613b Update 0x03-Overview.md
+2f4b2d9ffd9aa890cdf267211d837be7742307f6 Update 0x03-Overview.md
+08e2fea308b4d10ea72fed52609466d59d5fbc8d Update 0x03-Overview.md
+f79a47c4c5782577f21a0b72afb81e987114635c Update 0x03-Overview.md
+2517672e9114320b35207fb145baa7c526efc07f Update 0x03-Overview.md
+11042c4ee1c7d3dcbf51304434e078032ce75971 Fix spelling
+89e3cbb71de0cddbc11a9a6ad1a3d883a2d635ed Merge pull request #675 from pmilosev/android-data-in-memory-patch1
+947c7201c86875a14678793fd96e19f3196f17c7 Update book summary
+b19d04c2322fe89ebceb3429f557009d68e00b4c Edit network communcation
+e1b59770a5bdb48da0fbf7b4d6a9dfb4325a4e70 Comment out Todo
+b1936305b67c46ccd6f4be4ec6086d64790b8003 Merge pull request #693 from OWASP/fix-typos-in-0x04h
+29767de4914c2a747c208377b76f72bf2df93795 Fix some typos in 0x04h-Testing-Code-Quality.md
+9cecbba0830281157c7712707c3d0552043ee799 Update code quality
+c0ba55748ff495d9fef1e8ee47a6a4ed8bbb525d Edit authentication
+bec02af8b5c06bcb4101400f5c133e39fe6396b2 Edit and update authentication
+84953b2f0c90586ed5b0ed5fe696f1323720556c Merge branch 'master' into master
+8390421b56f3953186a74c45c19a54f4cf28c970 add bouncycastle wrong key cleanup warning
+2edd71f393d61267e9192cc8ee48dbdfb37b4c2d Add static analysis example with screenshot
+9dec0e7db9d3c21050ecfee41bfa79d7e9d7d503 Fix typos
+29a073ec5b801198110717b76aa793625e117c52 Fix typos and links
+3e0297e0d8d710185c8b3b2d0b7f59f0184e342c Add KeyStore platform dependent issues
+bbbf3c1e6ce8d80d99dc9fb558f38c5f97e3234d Add PBKDFv2 example with extra information
+00aadf515b165911c35c8d8479b49a53d202d09d Remove ARM tutorial
+8b359f13f3567cff7731737a6d1ec676950b9e78 Edit and update authentication
+54cf319ac56a172efe63fc73469196725c13a0ec Edited Overview and Static Analysis
+cece184c358563b6fae8f588a0f208ae8040c210 fix link and typo
+bfab365b306fb75a09a59ce8149a6cb1cfae2223 QA Touch ID test case
+9a61ec5eebed18413f4ae63499def0fb67664852 Fix TouchID test case
+611559b27384908436c3a9305211bb778035c0d5 Add links, remove checklist reference
+d8625fed12b59b7be9b8467ff7a093ef30574c11 Merge pull request #689 from caitlinandrews/patch-1
+ec792b516c5f64129e1e2ecefe5563ff270e3415 Update 0x03-Overview.md
+7edd25815cf29b6d4ead2dd74d856e4e7daaafc6 remove remaining Info sections
+83e2d37fe40874d958fc1378889e66de358dd1e3 remove remaining Info sections
+4a5eebe508588938469d1de36ed7a733599c2329 Update 0x04e-Testing-Authentication-and-Session-Management.md
+8738a32713f9e06112a42132e89dd9a73d53290e Merge pull request #687 from OWASP/fix-typos-in-0x04e
+dfb760bcb9e4083c873c3789c6286722cf7be4ad Update style_guide.md
+afb8207ca300f626f522a4694378b4bcfa59acc1 Fix typos in Document/0x04e-Testing-Authentication-and-Session-Management.md
+b68c74cbdb7efec5f1156795e6ff9befb1456c87 Edit authentication
+46e51b96f2e9a5275511fca65a89085de2ec4538 Edit and Update authentication
+0777f54559a1141b38429a5200ee6cb43f6389c5 Fix grammar error
+b2c0c5312ce568774b8dd3bdb65bd9341fb68f20 Update ToC
+ded4bcb0992132659a71e4a9ffe88af31fe856c9 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+8c8828f7e0099082e378ca1149cbd9795696a4b0 Edit and update authentication
+5ac99a59e895aa0f86cc990825ef909943a70e13 Few corrections according to the review done so far.
+b1a8b16b0c75c57761d6d6bf56ce2a06a4ad6559 Merge pull request #686 from OWASP/fix-typos-in-0x06f
+627010e8c64c80478f5b57cd374bb9d8c0fd63d6 Fix some typos and grammar in 0x06f-Testing-Local-Authentication.md
+3cff485551c09317c2b04659d552869c12103d5a small changes memory test case
+dbda9e942402cbb3f98b12c3c5207889329d9ed8 reload of shell
+c5ed753621070a21293b90a6c81e6346050e2e99 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+98cbf15e17a7222e8581a7755998ced866e085e5 Edit & update authentication
+cc613b6e482fe9b18087bfbd6bdfbdba4cc703c0 Merge pull request #684 from jhscheer/patch-2
+6a89d170d3c79ed8a3f0c58cd1a6e8c93ddaf6cc Fixed some typos and added some code tags.
+6e3cc4e9e29993f18f5410f219c461593a2de0d2 Merge pull request #580 from abjurato/0x6f_bio_authentication
+38116fd825ea81fd0081070a297baae760af8090 Merge branch 'master' into 0x6f_bio_authentication
+fcd2007d1ce4a3e2461a93b1396a84ea30db259e Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+e4f7be5f61f01b41c6c59dc70cd2e6e321c2d60a Edit and update authentication
+f7b0ab8cb367ad94abe2a58d6d2c44680f55e32d Merge pull request #682 from jhscheer/patch-1
+1a0d2c00c48bebd9949beccf74bbd6c94ad7f619 Added note for apktool build
+e009ebdaed8e1a7b15239d97be733b6bddf34876 Fixed some Typos
+77ce48a26497604fe5650785ee30a878e4c0de89 Edit and update authentication chapter
+e2ed594e219e3127b7af13ef26096c220555e809 Add "code quality"
+a643f39d182ddf813fd5b6bbc7a53902db83ee89 Fix link
+6ba8100798d23312f4b667fa123e548af2900d39 Fix link
+a21cd839ec359fece5599b4e8bf421582e647713 Merge branch 'book_build' into master
+7324ae8e0199a5f47e1340b2353204e573fb90b4 Update SUMMARY.md
+efa84d2a60e9cecc48da7373d872d38ce2578608 Update 0x04e-Testing-Authentication-and-Session-Management.md
+68d84ef5e0425561bc370fcbc121725cb8d6a4cc Edit authentication
+fa2ea2ed1d21556be813a2a0c96d4de154e4acb7 Edit authentication
+3e0e5256c2c6924d42ca46a692e0f2913629344e Merge pull request #680 from OWASP/master
+e99f21de2840279658de1ddbcf5c6ff7e3b51c0f Edit & add content - authentication
+7dcf1ffd6b53594ec23423ab8b3c79073710f865 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+8e9c0465ab4fd5116cd61a820b523b5eb0179930 Merge pull request #676 from righettod/master
+73070d0ba3784766adc2823f6a83cd25b0c3681a Fix spelling and broken link
+c6ded5a94f0e4cdd0e4fbec8dd6204d0b00011d8 Edit authentication
+ef3968ccc71165c1845e8e24c15ef79fe1325c58 Remediation section cleanup.
+e70b884eeadb72235dfcfff3496f05e928c5b42f Edited second half of the Remediation section; Improved key handling; etc.
+3f48b7078af56d891f05c9e14e24f76f2d87dfa8 Some elaboration and improved examples of data overwriting in Remediation.
+f140ec57e6be17cf4306253e9e372c75fdb6caab Some polishing in the dynamic analysis section.
+d3c5e8d560064366e6dafdb47fa06747d9246709 Some polishing in the static analyzes section.
+d92dcdd272a2eab4e00970a16f44f4b59e3f4423 Take in account feedback from @sushi2k
+2c9c2f45af5ccf17405110873d78d5406246905c Edited and extended the Dynamic Analyzes section with OQL guidelines.
+71075fc0cb305cf735fa64430f0d799dd8f9a317 Merge pull request #679 from OWASP/update-masvs-references
+fbe4dc4e2f92efa7e05dda99f763edb56f3de2dc Update references to OWASP MASVS
+91df4fb4f16489c119a438bc6e4028e4a5ca9c92 Fix typos
+8b8cfe39ca7013d0636e0b022bb5724b4d1a8505 Add Crypto Key Management Android best practices
+4ec6a4c855a91ab41bbbe7c5898d5a400caaa4da Add info about handling of TLS certificate by Apache Cordova if application is in debug mode
+aab147c94592461cd4ac6667dfb1750c34c4bb03 Static analysis section edited. Summary added.
+ea1cdac1d57377434903768ecbde78b719459ecb Overview section edited.
+425aafa8d902109526cb601f7b9a8f19decb0d34 Edit authentication
+3ff3bd588847f10435878b11405856b546a9d118 Edits
+92fd4f207fd12b19fd48e4f4a8d08ef25a759d4b Start editing authentication chapter
+d83eafedc5b2d2cfa3f8f1f574d3742e1c82220b added fridump to dump memory of non-jailbroken iOS devices
+5540687d602c8a68a4b63d48faf850a9a874f281 Edited and extended the Overview and Static Anlysis sections in "Testing for sensitive data in memory" chapter.
+e2541b531bc0532f7eaabd405d85e5591ac001d5 small change for memory test case on iOS
+0103dda804e461df9c95195df153a9aef2795f9e Merge pull request #674 from OWASP/master
+e7d2ef422693e1154262922fcd56ef922e6e0dab More edits
+8bddec8c044718a27d523b2b03331bbec66c9df9 Merge pull request #673 from nick-epson/patch-5
+9cb73c7e35878fd341393f7b59db36067e3650fa Edits complete, question pending
+3848a4d8ccf06a3ea2fb1d953d09a51041fb7fd8 Move image to correct location
+27cb9f5d0b855f03ef02736bab49f7d895d65668 Edit authentication
+dc667bcf66eb0fd6f2844bd073d36fd366e1b35b Merge pull request #666 from andreashappe/crypto
+5f68bff730c089705288bafba49a4f5d8672447f add more references to IV usage
+aa06aaa93de563b864dc78dcf6502fbc1ffbb2eb use HTML for highlighting input differences in MD5 collisions
+9afcc44c3d03c3bc06d75069598d386b0fa61a02 Edit network communication
+ef46fc51535017ef0b6def46b989872de718ca73 fix typo
+f2c19fb181d41c40e9f7b9fa8574e56de39444e1 Edits
+acb9826cc7a1b0bf30a045b9507481d4e96c79eb fix typos and clarifications
+480adfbd250b29bb8797d60fd9c7bf25531e15f8 Merge pull request #672 from OWASP/master
+84e9beddeba40b8c309307857aabc8cd6d822b16 Merge branch 'master' of ssh://github.com/OWASP/owasp-mstg
+cab98c642553ce24f1bfc6a34ceab87ff6ae4068 Edit authentication
+a8f87777e07bfa36f34a5ef6a3e815b5e89012a6 Added objection to iOS memory test case
+001dbabd6b47632fa5cf498e2f0ab0db11dd42d6 Add objection to iOS Basic Testing
+9c4e24be45071bc56ec525cf8e27f3b203050ce4 Add objection to iOS Basic Testing
+5ceabbc8afcee3f64b1ea5e45426ac00d0dda1a3 Edits
+2082af64198bcca4d00f96f3fb568baa62b70db5 Edit authentication
+7d94b85abd21a15d79727494d8bf07b0e5197888 added tool to download ipa from itms link
+c6eb2be8bc3cf7209e7721b0a4b559bc8e5d0051 Merge pull request #671 from righettod/master
+5d57040f37d9bf2428350bc48048ef0c5e642f5b Implements feedback from @sushi2k
+47a5b07448616fe45cfd7099a11f7c6f3fb897b4 Add information about SSL Pinning for WebView and Network Security Configuration feature
+b3ea2497a55293d4dbe54bceb97d404db317191f QA of WebView Server Certificate Verification
+713df6732c5e3572115b076e1aabce2f2991691c Merge pull request #669 from righettod/master
+593b7f6efcab1d53f13f8d327cc44a0427ae46d5 Merge pull request #670 from OWASP/master
+5236029b7483111a93ecde9ffb9de20d43a86425 Fix a typo
+252d1c80d5ad3fe0e85a3463b9830efdc551c18e Add code samples for assymetric crypto
+4e31def19174b7f64c4e3af61ed4a6978b81a763 Add information about TLS error ignoring in the context of WebView usage.
+be69bcbc31711a7b980799424520d43b2f727838 Add asymetic crypto method
+f20906c6f7b2697116f3c9888ead0f4b2ddff451 Edit - remove Android-specific test case
+29fff75d5328d406e9a65a3a51663e0513897f73 More edits
+a653052cce94938b355232e2413e8ee4a5a17b1b More edits
+0579051d8c068ed1e4cd4dbe2620a4659ce9ec99 Edits 2
+35ff4f80c7ed44527a321219782d3bb40c5cbe66 Edits 1
+a81bbdd6c1fc98dbcef7798e96e07663a62e072d Merge pull request #668 from nick-epson/patch-4
+64b3b99fa1716121c31b14a2b5ae60cf7ba4ae7c Edits 3
+33b43550a0dd536b04c2726ea97ab33cfa92a8ef Edits 2
+c975ea292b635bec4520f0cb8af2da27dd436dc1 Edits 1
+0e9a8fa734bb2844d0295b1bc61429a718d71aa5 Merge pull request #667 from nick-epson/patch-3
+a6f59092eaa691dd650233fa790066c8349c0fc2 Edits for 0x05f complete
+6690fc16c4e5661113ea82f74a942cc83a35709c Edits complete
+7ee8a883e42ef3dae06834429ac3586e31b3ac32 you can detect some cryptographic issues without having access to the source code
+4ca9224d79b389377f8cb2ab7afe3cb02aeaf3ad Merge pull request #665 from OWASP/master
+069e44e8e4098bfe5d92c16b0a9ee586625d25f3 FInal edits
+95e27d686217b7b6466aad69a62aeca9a41768b4 Merge pull request #664 from nick-epson/patch-2
+cf1778c3252314c03827db7a25fa5a5af764cdd2 Update 0x04a-Mobile-App-Taxonomy.md
+4113647361651c1c97cd19eb3be201ad6054f95e QA ofDynamic Analysis on Non-Jailbroken Devices
+fada62a129cada8ffb3ad1d0fe3f93c53759f463 Removed book reference in chapters, as they are in Suggested Reading chapter
+5196d6639d74eea97bb7677ad5e366f502ec659b adding rvi for iOS to MITM attack
+bb2ec65767edd1cbd3b9721936af575156fae410 QA iOS Basic Testing
+bd6f8ea73d85a244ab416f007a991e241e183c09 Update 0x04a-Mobile-App-Taxonomy.md
+e4bc6c5f1831deb34300b193606850e0fa9e3061 First QA Basic Security TEsting iOS
+1e099de6317df5d2abc1323d7f6fadaf3ea568b0 Merge pull request #652 from romualdszkudlarek/patch-84
+1380082834c262da8713a6b05b1c513a8fa0df6d Merge pull request #663 from OWASP/fix-typos-in-0x05h
+7dd599b48fe422fe5d940ca78fd1dcd97c0a5318 0x4d - Remove space
+e5e61bdc22941654d14277154058755cee723384 Fix some typo's
+69ef48d7a4817cba2a98827de64385d4466830fc Merge pull request #662 from OWASP/master
+3a879d58534a2b6cf4182b34ea75e216a5f14967 Add introductionary paragraph
+dc1285ca4e8ade3dcabfdf5465c977973cc4a7a1 Merge pull request #661 from OWASP/update-masvs-references
+790baf6b89ae20da672ca32fa7ba558d373f7f3e Update all references to MASVS
+ff567be9a0dc78e2711a760498c3f8c964bb3e95 Add code quality chapter
+ae4ac5b71144b3945011a0a6075f1e62b3905d94 Merge pull request #660 from OWASP/master
+fe45c32958ed18728e7410abdca277fddf40359b Update 0x05a-Platform-Overview.md
+3e7c43acebc1049e9372bbe0d497121916d831fe Merge pull request #659 from OWASP/master
+df28f6908056ed04affda5605f8cee247aea5c0f More writeup on SQLI and XXE
+e796ea10530f75a6cff62454e33840ca542cda22 Edits from Nick
+cea1d986371619270f6e6e04b02954e9c690eaa1 Merge pull request #657 from OWASP/fix-0x06b-typos
+e4c0a05b984a4c7109d7e98f35516b4ae4d10aa3 done QA 0x06a
+226cae895a992762b87827622562c23434a38bd9 Fix some typo's and grammar in 0x06b
+54d8a2c802ea9791136d4416293964deac14a949 codde → code
+32549238d02fbcce07391deca3577e33e222d4d3 Merge pull request #656 from LucasParsy/master
+ee513900c41e10bb2b08d1670a6aed3fcf76e2ae Update SQL injection
+e6557068139c281126632f1e080a6e7a92aef65d Update formatting
+e6e6248d6ce379ba350acd780a54a9dd5f6404a4 Update formatting
+a4b73da17795d08b88d6ee056023befdcda40f13 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+e3a11c69003a5d8cae2d6228d7f477d5cc738427 Update formatting
+bdd626f5fe79868dcacfc63130ae88c0623fc2f6 rephrased sentence whith 'of the to' grammar artifacts
+e58fffd9f7db58590ef7a066dca8348af81b447b removed useless 'is this' words
+55ffd7bf81b197ac1bb59faf36c1279fcc27fc54 0x4d - Fixes after comments
+850256c7e924693b22c31f681bbffaf76bc31761 Merge pull request #649 from romualdszkudlarek/patch-81
+a61a2d4b3e65570bd3448f60995fc7dc6f4fcf51 0x2 - Fix typo
+63c9d689dba58d89c157401bf4383192f774f6a9 Merge pull request #655 from OWASP/master
+10637d8e9accd8f5ad15d95d32b3dd4e337b2b0f Merge pull request #654 from LucasParsy/master
+27f1f9b87b55d065590215c0d72c829d35c54b43 added parenthesis to sentence
+ce311bed66dbec2af1ccd9d658897638ed6b2c8f remove useless 'the' word
+3fef266e878a6c51d921447de9f0e1d333d2bfd0 replace 'fast' by 'fact' in 'the fact is' sentence
+41a305fb2bf1941bac2f4c9b8703123083c44381 Update license to CC-4.0
+27e962b52da3b197f946eaf6e32e3934be7aa318 first QA of 0x06a
+146bbc30286ccf5d9c63cc34464e039c8db0b674 change dir of pic
+48e90f84362a23149689e6f9edae3eaf197972bb Add files via upload
+c9acbe069fb972cda1972553de1cc744c8021de3 Merge pull request #648 from reactivemobile/patch-1
+fc2cc7c54056db706fe2f403d7d22850c0c24f98 Update 0x05a-Platform-Overview.md
+7d252db6d02b696a3065f212e7d32eff5f7c96ab cleaning of issues
+57f86c55b095ed73b01c86b890378e0b1f72c5b6 Draft Network Monitoring
+b7368e97bc3eb36776c474e73dfa5d844957b06d Update code quality
+4854d9c08a13596abb55d30189057d7192f3362d Merge pull request #653 from OWASP/master
+984ba922768c9b3a906f3099de79704fb4f4ea33 Table formatting
+b9e8fbbc522a7f5dcfb30111d4bf3716669e7d12 Fix formatting
+0133dee0a116c90194e1de9f8356e34e33e19c89 Update 0x04h-Testing-Code-Quality.md
+c6d7a00565043e5b6907da1dee5d699533edeb26 Update code quality
+d34f47ce806cf6d0e60d169ce8522c26e9120ce7 changed MASVS req for OAuth2 test case
+e97c6484d4424f3a8db5d3ff1756af73a0a1f05d Merge pull request #650 from romualdszkudlarek/patch-82
+5cf882abe17d73442320fc7987b5f08b712dbc00 Merge pull request #651 from romualdszkudlarek/patch-83
+9693da883ee0b12c68cd51a7589d3575074c621e 0x4d - Updates, fixes and editing
+9e2af6d9e1bb831d5beea975176f5a7614b7753e 0x4d - Removed General Considerations section
+facfb3cc331a3d9125e0308cc88719b1cb3a267c 0x4d - Add IoT to the list
+2cf756a7a7dc588f8217eec2e1c131c1ea1c6af9 0x2 - Update description of my profile
+3880ec4efd973cd7983c480365cdde6cafdaced9 Edit & update code quality
+2f009e5261e4e096becaed34d3640f6e7374ab4c Update XSS content
+c3c39cedb9ad56b4572d162055f027d7f2f2fcdc Typos and added more info on signing + publishing
+ac7fed02eed8fdd27c335409bab7afb3abd79d32 Update generic XSS
+71fe34e6d51b28f98e3be78ae352015924788f09 Update memory corruption bugs
+579a48e992fec97fcc95e76f47afefc35ea6a9dc Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+51518f6654cc2dc090de111dd7f3a831a42d6b22 Add content on memory corruption bugs
+8827f8cd58fb225ca73331962e5d0fb472273336 Merge pull request #647 from OWASP/master
+0119ece2eb1e767881627fd37e49f2f3cb9b2587 Update Foreword.md
+063ab3b86b14fa0e69b539511a9ac22073a7d968 changing network monitoring title
+bca44ea3df828f6343974f1651b16652e2475c74 Merge pull request #646 from feedthedogs/patch-1
+050512832a9aa15456f04d095ccabbcdddb5621c replace is with are
+cab8d5d91d5186a7735acf2dc46c6b98b8646b6d Add out-of-bounds-access
+b1e22945ec320eb48541be65c6ae0b122bd64222 fix error in list
+7a8fcecedaa8810735f483958eb21573b17265cf QA iOS network sniffing
+0a44fe7cfdeb85b8b628a5f4a3ad549b810d590c network monitoring
+7a86a8279c60f2cd23b95dfb8d647032ac3871df network monitoring
+3285282dcf042f5757f9597882ab9ce01a0a3bd0 Merge pull request #645 from jinkunong/master
+df080211a58e309393f2edc79f2fa95fe7fa8858 foo
+3e6bc87561f71cca7fa41c3bbe1423283b846592 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+cd1407f8cbc0e48546d534fdb5a4ceb19c1a5187 Some content on iOS XML injection
+9bd0cca1b93ed848b6846a63eac53ac80af56b1b Merge pull request #644 from OWASP/master
+d309ba16b75812c3c3426ecee336c3dd97e9a104 QA of iMazing on iOS
+6ccb1f5f840b3f61f5d265dff7fa50eefd1df2cd Merge pull request #643 from jinkunong/master
+7c35b79e745ed1237adf3b6aa85963848b79df8d Memory corruption bugs
+4850f5634189c7e73c1387e661e52825b3549e4c f00
+1d33c89e90ac4653922ff02f569f6059e21f684b adding network sniffing for Android
+8184f13b0ea769fdbd02868978f70171f24b3943 Add files via upload
+b0771a2cdb6f0326a018c5353c39b130443a473a Update injection writeup
+00b8f9142d4ee8dc50246fc89c09ac377472b4e5 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+d3655064645bf5803c151a4d1851cd3588d74712 Update injection flaws
+8c5186e8994f849e78d2573f843f8f8ca875cd7a Added todo for testing data storage iOS
+a6f3b69cb8ae32a0cf1c02f81341dc57278ab4c8 typo
+20cefa10a53ba06992c3946e0e81f86fa4b33fa5 change links for Frida
+ccf3e337d21f5f43dc8e05db8824482f988d4bf6 Merge pull request #634 from yog3shsharma/master
+59134bfdf4631e8cccf7c742ad5cd77bb3a7ec77 Update MASVS references
+da4e8392e1a25cc48553050d903252ef57c5f50f merged two test cases in platform interaction Android due to changes in MASVS
+fbee1fc6094e8bd4115d94513dbcf03484c1c2d4 Update 0x06c-Reverse-Engineering-and-Tampering.md
+bbdfa9f263cbf484d7e3873c970c0f30d935275e fixing typos
+88b1e5081d3ecbc82f91be535b371fd68c0e90cd fixing typos
+8e5dc6315d466786c76e1f3e7dbacddab32c81a5 fixing typos
+e8fcbda5cf8eeb77d8b1e7cbb8e9564de4224cce Update style_guide.md
+41e034b44515a701570a8ff516f408bde3093e85 Merge pull request #640 from OWASP/master
+e75fd83f6e17a2ebdd5cda7db92af130d0fd575e Fix typo
+633e058c433bd83f556bda28dc647c646729bfc3 Edit: Remove input fuzzing (moved)
+a7835c082de5b2d9d406d2792df76971e4ee361d Remove png from root directory
+e75aca06992de3bf9682965814ec305df8b3bcfc Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+5b53eaf014f5ebe3fba33b271b38a1f08d4fa9e8 Rewrite fuzzing portion
+3e9cf1eb73198a2808805896238a6cc2d2aa7f68 search and replace asterisk to dash
+c57d8078334d139d81471f49be34d53c4ca6a8b0 Update 0x06c-Reverse-Engineering-and-Tampering.md
+1a4a6286fc0f365c63bf353a4b943fecbdae6d72 Update 0x06b-Basic-Security-Testing.md
+0a391eb2b0da43f185f387925d2bb25380f04e50 Merge pull request #637 from OWASP/master
+1cc85c0f8c7fe467d5187332b8e78a8df556c183 Merge branch 'book_build' into master
+b558db255f1f6526e7e22aa50c8efaf791a5a7f5 Update injection flaws
+12dd8c652f278e91541879b4383ba109c30f5265 Update ebook cover
+287605cad2349e46bb031d51e98424a2574d166a update references due to MASVS change, deleted requirement 6.7
+263eda157a335aed15b3fc27d0085ac901207521 QA of Testing Custom URL Schemes iOS
+604653ecee092289b6b2dc45d4c895231c90c6f5 Merge pull request #608 from xep624/master
+ea533b96ec24b668a79e08b6551b40ea0b5c6c8a Merge branch 'master' into master
+063b3d9bb9f620655c1ca845e31d32120651e734 Merge branch 'master' into master
+ec591377c9416d2ec36ce5a2dcb375eba487e610 restructuring 0x6b
+c31936b3e398368a9660f74da0d25072df4233da wrong URL
+f0e699bbf19980846cf966ed32d49449b86f931f wrong URL
+2231fd85b9c929b989eee767aad800fc207bc4d6 Merge pull request #633 from kryptoknight13/master
+38242ff6d59448b545149a3879bed95cf291faaf Update 0x06c-Reverse-Engineering-and-Tampering.md
+5d7e5e7b19a111780cf1091a04b8945d48b4cdc8 adding TODOs to Testing WebView Protocol Handlers
+4ed0de4ed4f94b26b7eb34eb10613807f7d494a3 alpha version of Testing Custom URL Schemes
+cdf7d5a2741a795964d614862104b2c42c320d23 Update 0x06c-Reverse-Engineering-and-Tampering.md
+211280a29494618f47c3c2d0e26eb65c74b5cee3 Update 0x06c-Reverse-Engineering-and-Tampering.md
+62851494d55a15e92ab75ef23b5ead14e6dab1a4 Add files via upload
+b3629e5bcac338d363f9c758fd5e6695a75f91c1 Update 0x06b-Basic-Security-Testing.md
+f551823a90b66bb1884ead8b4fe1dd2382a0da0f Update 0x06c-Reverse-Engineering-and-Tampering.md
+de8a6b0a5e4c70219d9fe94d5040ce79d07b4aee Update 0x06b-Basic-Security-Testing.md
+363d28aeec84b2ab62c6925eaf580c2c59564219 Fix ToC
+9db767c73ed5e8ab487abafa62045f657eea3ecd Update SUMMARY.md
+c50225215131d95b1ddb13631e0817b35f0174e3 Update SUMMARY.md
+f523e748af4c9fee4e4e0a10225b071b33872625 Update SUMMARY.md
+28c2bda4116708794f2584f4afcac6326d9e5127 Merge pull request #635 from OWASP/master
+a214d82830d48a4ec89ad4d49d4416018efebbab Comment out unfinished section
+28cba35b052fbcb586d1a17d3878c3fec344115c Comment out unfinished section
+4646ea5f97abb5c9dc87429e0671a1cac587ec2f Fix book ToC
+a84bc0cc936e52cab8f07c3169490a2a9dbc64a6 Edits
+4320207cedec52c80816379e3c2d2f6f4f23b0aa Update 0x06b-Basic-Security-Testing.md
+32b9fd2677202d7c1cca818b7b0ed9007fdae032 Update 0x06b-Basic-Security-Testing.md
+bad48f5586ab643e9ecaed68c3e449dcb3d0f832 Merge branch 'master' into master
+d84884a5fa8350e5838e5437be3ca438b62aacea Update 0x06d-Testing-Data-Storage.md
+6ee9d4c09260d047e80badcbfdfa84638444ceb8 Update 0x06d-Testing-Data-Storage.md
+1533a3bc297515bfce0e160a7eaa942224fa7e47 Merge pull request #632 from kryptoknight13/master
+44b28537427606da3ff521e07400ab0b86f23e3d reference wrong
+49878cc0003b8dc341c4bdf8540ae898f1a5df63 Update 0x06d-Testing-Data-Storage.md
+d4b3d1add7581ac5ade05da9e310bb39dac09c5f QA Auth Android
+2bb20b4e31c9492ed49f92aa3441b2f22bca35b6 Edits
+eb713504849699a059616e3bc2efab91b7d34801 Edit: Move 'input fuzzing'
+fa787452997ce70812da10ace6f877c5683243e7 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+6b7bba92d8f1a0ca71e610aff8279eb02e081b19 Add bits about XSS & false positives
+7c64da7347d5009ee5e224be3d7bfddcea610acb updating format of TEsting tools
+6b4da99bc36e4b9c190b421000f236bd6964702e Merge pull request #631 from yog3shsharma/master
+af3b903c384e29b0c9d4c667f28a35cb374e9ff6 Merge branch 'master' into master
+e31344d26f669ca8acf1213efb316114cbe7dd3a Update 0x08-Testing-Tools.md
+6f500134a115218ce40b5b8dc3d6db8961ec5828 Update 0x08-Testing-Tools.md
+6e9fa959172a061ea8b00e80dcc9e41294137d32 Merge pull request #630 from OWASP/master
+7850d13157539dad526458dea48289b2c56ac1ee Merge pull request #613 from cpholguera/iOS_Jailbreak
+2149a8953bdb273184976cb24f394b1dd6ef8500 Merge branch 'master' into iOS_Jailbreak
+ec4fcfe60b20012490d017f52ab7554131259d4e Merge pull request #628 from TheDauntless/inlineref2
+ef6f1b5dfeebcc7221a8c8addee7d1caf7eda40f Merge branch 'master' into inlineref2
+ebbe80c1550efea5db6ad8d3c19a8131c36e6c8c getting rid of the last sup tags
+3d1eaaf8a5560ceeeecb0d2e9ecd9ede9b73f045 getting rid of the last sup tags
+6e0d359db86af9eabe16adf10365a4b86a77dd49 Adding Client certificate validation, was removed before
+2068ef11f50274d66cca869cc6c59ab1ab21637a QA and change references to inline
+96cef877a027d21987ae63f04716b177d3b2ebc2 QA and change references to inline
+812202512c317f2103434263fa9318d010cb6a48 Update style_guide.md
+093e467d8422fdb1eab35bdba9b0b3281022902f Merge pull request #629 from OWASP/dont-use-caps
+769ca09e6513f982624a34c04aa61e3d70c626f9 QA and chaning references to inline references
+864ece21218b2121f084187b6662085f6439a6cb worked on PR comments by @Sjord
+8404237a97eafcf7f5637732b288c306fbf95870 Merge branch 'master' of https://github.com/OWASP/owasp-mstg into iOS_Jailbreak
+703aba855664f57b6c20174a826823d1c409ac98 Change word from all-caps to normal caps
+11be84470051eca7034cbab01040628f6236bffa Remove the caps-rule from the styleguide
+0d10f358d0df44fa9aed47d069f20b2c4b4e6171 Merge remote-tracking branch 'upstream/master' into inlineref2
+39bae1bda49e359010658ea4c05959b7cf9ec2f3 Inline references
+72051ae471b002c2a47119941ec66d042e52b2d4 Merge branch 'inlineref2' of github.com:TheDauntless/owasp-mstg into inlineref2
+6a4f0d523f3c5caa8b7656d02d97c94304419a54 Minor typo fixes
+8675d5bd5aa6b9d252e052e7ca39daaa718b6f7a Merge pull request #626 from OWASP/master
+2513df7d2427ac44894d9ea97ddb04557390c4ca Merge pull request #624 from TheDauntless/inlineref2
+77ff098239b46d4dfd5082780aed8dd88f30af09 Merge branch 'master' into inlineref2
+c361170eaa5e1ff0489978257bd3ed17c52608d5 Merge pull request #625 from OWASP/change-references-0x07d
+248e47a512d8273446893c169ac77b3c40110c70 Remove TODO
+239d3a6dbc4b6f87cd0185b6efabe0a972c84af2 Update second MASVS requiremnt
+b2028d793e9393fa57a39e5c8d142756b31d879e Change code block to quote block for MASVS quote
+48dffc21ab4c7d8af02f63337b16183a224b7093 Change references to inline references in 0x07d
+73f78f505bab0c674ebc722ab66e8f8cb080486c QA and updating of inline references
+d019bd1e9c34da61c407f1b471aa604ddd15f73f inline references
+3bad5de32ec7f7ffdf2da4a0a17537ab83de5428 inline references
+a120fb08643e9d6fb5faa2c0b3bec01e5ac3aa20 inline references
+86ae13980ca4d9ed4243311692f70fa952e53fc8 Remove unwanted temp file
+3122b054a147f64c1c4fd9d614cbc78814191ad3 Update .gitignore
+830ed97689d7cf66dd7fa05dfe084f68963adf90 Merge pull request #623 from OWASP/master
+236fdc3fa17320b64ae7817f5bede4d68d52100e Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+6436981a11504150c58bf9cf6dee18603e7b3e3b Update SUMMARY.md
+3bed9a8d156cbd2cfafa408b23b9ef8118970c24 Merge pull request #622 from OWASP/master
+b12819007eac3fd241702366274910b598673efd Merge pull request #621 from OWASP/code_quality
+a2f40f4ca45ef6ccb7abcbdc588070fa80bbfc70 Restructure code quality
+afb247ebb5e7301ac291846435e1e7b352181dda some fixes after code review
+881706d95dcb129015e2150959be2182758baadb Update Data Storage iOS - QA and Inline References
+7ce9d11c3c73144111cee682868acf1c867a6b06 Merge pull request #617 from OWASP/master
+fefe5cf013bd0387067e75f3e69e6135a83a68a1 Update SUMMARY.md
+8a39c92a81ce8d8f3dcef45318356935fb8c5fdf Updated Excel Sheet and aligned it with MASVS
+e3a83a8a4206106b93836ce93c514f73f669ac2b Update document generator
+30fdf86d26e0fa6b434fcb60e970e5b5026fb75f Merge pull request #616 from OWASP/master
+90115ab4a6c48228ff0acc42a55907a6fb834bb8 Restructuring cont.
+eb513632536f5efe58e61931d8e7697dbd3dc5ee Restructuring cont.
+051379c761e0220546cd17d702c4974d4b7168ee Restrcturing
+65573ee6e559d3f8ff1c2b6ac7f24cbce10a0efc QA Code Quality Android and change to inline references
+b18e74d63acf720f842edd3333f478df17c52564 minor format fix.
+fe1f3eb6a18f1490433a462c511b2c7997b54056 Fixed conflicts from master
+bf6dbacb535cdb44745de9f6a7c584726282b4e9 Formatting fixes
+652d0cc762ca537d28aa220372e20066fd125e5f Edit: Remove test case
+76124afe3c9589d44ea2b2060a2c19e3fdfdcd4a iOS permissions
+b19e8da549e351621ff6bc2917ce188a40553022 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+ea363fdab66df9614a51bf6c56e382dccbddc306 Jailbreaking iOS section edited and enhanced. Removed from 0x06c and merged to 0x06b.
+18a1c60ebb043f1852a48a48c37268ab6328bc36 Jailbreaking iOS version edited and enhanced.
+d5112a39857781a07cc09d9bc1314624c32a9bbb Merge pull request #612 from OWASP/master
+9e774e9f716e32e6b7196306bb9b38fb669cd7f6 Add CWE reference
+2f1c1c49e6d0cc578eb5df2529de0aaf50a316de change inline reference
+cdc99fc4851b078e704b98f29f0656b76b847231 Merge pull request #571 from OWASP/c0rdis-patch-9
+1dfd6876bb3f70356be7fb81c6a381451abcf3a3 Editing & updates
+e57a6e42e565b60609383c6f0a4d914cb89404c9 Merge pull request #611 from bolot/0x06e/ext-refs-style
+349834597a32e0cf3c9fe7085afe385126e587b3 Remove macOS link
+aac3406cfea213948253f88c01fb19ba88faf951 Better reference location, spelling fix
+80f01b66497668374d17b944de89563e50b460d1 Convert references to the external ref style
+df488e16afa06766c8293ddc9d0966c84df7eb21 iOS Local Auth
+23be67e54f3bdb29a24a2bd5d95c58c5dff40a61 New content & edits
+7a622c22f3b08d85fcd371efd0b5adb9bbb3595f QA and align references to new format
+990b95f0ed44c7c4d1ec69bb590cd2a9d1dcf5fa QA, new format for references
+5b562a85269e51c1751c487aa78fe0a1366f8ccd cleaning
+af564a67699cfa1fb31b675fb0c139cc30e96c5b Typo
+62567d42e7e8506269622772d530b3d62c83f120 Merge pull request #610 from TheDauntless/inlineref2
+009e669eb2ad25197c63eeed5dbf208dd47bb599 Update 0x07c-Testing-Cryptography.md
+c92949707f8eb23b3089a339a10fc9ad118a8210 Merge pull request #607 from bolot/0x07c/restore-ecb-test
+44ea5927e9a6b205139d4ffbccaea8b18d4a31be Inlining
+907dacc1fbb10b11a2dc469bee058f39820abdd1 Inline references
+642c24ddca22f94a3fe5aff1404490727526e511 Merge pull request #609 from OWASP/master
+1c351672d1737e5893bfc1743a4e62ec5d047f02 Switch to inline references
+64e1d3d830b1ddb1bb259b8aea837f04d9000c19 finished section Testing WebView Protocol Handlers
+308752c28305842ab5256bc33bd16730b46b0fe7 Restore the ECB mode test
+0ec32a37b94b2bbae37c5f9a2dc164df1878fc0a typo
+df1edbfdbf6daa77d3a74faf5f1468a2d675d83a typo
+fbfebb0194729a40609a76c92edd02082639af5e typo
+0dbf809fc9c6c07fe086ac0cc4525b2d6ade3ffd Merge pull request #606 from OWASP/fix-typos-in-0x05j
+2aba725da7341deb2fc41d6d0ec75dd9a5719235 Fix some typos in 0x05j-Testing-Resiliency-Against-Reverse-Engineering
+f16f2e6b930779194dc9c2cd15a8e371b361db64 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+37d9b5145c4f5c1e1bc3ebcec6ef9e6e491503d6 Start writeup on iOS local auth
+c97a134f25b213b3481544ce63ce1a396fc9c85d Merge pull request #605 from OWASP/allow-long-lines
+7506b0f22ee8b4d6ec7435159738f8c6b4467cd7 Update 0x06j-Testing-Resiliency-Against-Reverse-Engineering.md
+782f8a731ca4ee0cd28377db4058da441b10caf1 adding new format for links
+ea6caab4faf13e1b541c7a41ceab88cd13b526a9 Remove styleguide rule about line length
+eba5f9e79ae2bb232d5b83c40cf63f9327928a81 cleaning
+d663c9492ca8a69d727dda6b0a19bea0d2b6547a quick QA
+10ae3cd38b9318054ec9e44466d759654cead86c QA Crypto
+203014ed8be718f2d6d6d87be2e8f3d1d0ca6334 QA Crypto
+4d8ae01f214e75e28560a62f56a507399fb2f887 Inline refs & editing
+3db2fb025c71a201f0e62b32143e740634ca5ec1 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+0944b0848ea787d0a3fc2d560cd7b1f37568e8b0 Inline refs
+1f61f3be06f73f08190110485f9076c64149a579 Merge pull request #602 from OWASP/fix-typos-in-0x05d
+c89a30df3c0f5b74baca763169e07632bf227ba2 Fix some typos in 0x05d-Testing-Data-Storage
+73567abcb795d6e277cf09487ed20066316350d0 replaced asterisk with dash
+2ec54a353f32b72ced553b79cb96f115b749365c Merge pull request #601 from OWASP/fix-typos-in-0x05c
+c68fc9464f80c9968d01e5435dea4a2c5aee3b50 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+44a23da3122f014c0efebefa54d5b3ad3a764351 Inline refs
+95b9d99c9dea4bfe8b7c3f79ac03cc31924a04bf New link format finished for Android Data Storage
+7d8063f43019c3c63c81da7312dfe91a40943dd8 Fix some typo's in 0x05c-Reverse-Engineering-and-Tampering
+967dd56771850af85c06655544def12a322d39e8 Inline refs
+24cdb643f64a514f6627bf098209864e0a40ef4a Inline refs
+7e5588fc92e09988b3b1885fc783f6c7fb67d9e8 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+8ded9d8f01bcfaded3728272ca52c6cb39bcec16 Inline refernces
+2a855b05d3eecf750df4e9d84de368f6fd5c916a Inline refernces
+baa62c95d67b7cad69cfa558457637f3eb3cb697 QA Android Data Storage, adding new link format
+d241f9c2712aa5a60e39b629b1486d921dfbd27a Editing: Local authentication
+7ef5cc2c42fc1d231b160e5d379a707098164a2d Inline references
+639fd168192203d3d05758c8be3cc8e7b3b19641 Inline references
+c1cddd8c9a90d38cee3cb90a2d6f45bca094167d Merge pull request #600 from OWASP/master
+032d1a0fba257e4c5d37c5c76aecb83aba3a2fe8 Update & edit iOS overview
+d6eada7572cf524ffbcb3e4619b50c68e8798697 Inline reference
+4487995da73c43b8b3e417b7e30274170ca2ac47 Typo
+66d9055057a9e9bf9e299899d7f64e6dcb150fbe Merge pull request #599 from OWASP/write-out-numbers
+81ad4013dc73e6d297ca2aad42f9c8568c769e71 Write out small numbers
+538c13a09c0034d56c8c184fbbc9adc208e1fd83 Changed Links to new format, QA
+62a3af508b1982a44e0cfe2a809414983a8a8199 added iOS test case for JavaScript Access to Native Methdos
+3e292a643c12fe9299c8ca068d965fa3d3fb8a11 Merge pull request #597 from OWASP/master
+1b9c947c377f8ef9fcde868060f79dd1f5a8d72e Update Android IPC
+8d9a67335d84aa0d8ced3c190fdd514dfe5a181d Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+8ba3f7c8bd243abeeba52ae5ec160178b46d1c26 Editing
+96d54c0a1124d4a55f407afc5956875e34ad761a Merge pull request #596 from kryptoknight13/master
+448eba0446ef21602c1259a390c934856f52b35b Flex2
+f4a5da029bede59183cf074b237283aa9c88a567 Inline references
+351425de2145b46d3771ffd3d9adc5adea9ac7f9 Merge pull request #594 from OWASP/master
+6f78d6369759b1f2d52f27c7503f37e69fceb103 Update 0x05b-Basic-Security_Testing.md
+99b70479bc96b4ca65f2864a8741825f54dc5464 Inline references
+f2b079b68187c7e9e3af9cd1b25b30706596bc1a Merge pull request #593 from OWASP/master
+a8128b2458e31f79c1b31385f4f34c8025f077f3 Edit and update Android IPC
+7d726a2da6eba85fabba7f33097637314c192405 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+e04da4a27b61d0d578e897340605c80130560ad7 Update iOS IPC
+222a921a0dedf07dfca085d3e9ad02c9131a7c0f Merge pull request #592 from OWASP/master
+018f52624beb80ab6c682517438cdcd6b89c2f41 Fix formatting
+bbe41fa467cfb5fe75b4d589a58a3ba7187b5908 Merge pull request #591 from OWASP/master
+4987d8aab5263f4ddd8e86a43c503dbbb204113e Merge branch 'book_build' into master
+ccf465f9b376032fd02d3092020c478c28403c0d Fix formatting
+ce9e60331574d53f97958efcffc39b88c956677b Update references style
+12b92e62480ba12c0d802a2aba3d073621aeff32 Inline references
+65c0d177e5ba187e29d1dcb188fad9c81bf420f5 Inline references
+4cd2de7362298eee4611a2f15a93a02cc8431e34 Inline references
+cb3c6b0c0b67729038c6c70d7ae4cbef4909b6de Direct references test
+17728ee8f7ddf7cb5284342ffa037e58deb6a250 Experimental
+ab579e356eeea3054a01a7c6e62d3022b63f0a96 Merge pull request #589 from OWASP/master
+20826a1f3edf2d7270ff42d3f04ceb7bd03d6b00 Remove artefact
+9b48f105c860954f5059b189ae0b032d349c5762 Experimental
+92a170519488ccf55fb54f922500526038ddae56 Experimental
+34e5daba9da7dac220cdee525974725e5e01d3e2 Update 0x04a-Mobile-App-Taxonomy.md
+5d8589391ee9f88962d5ea8cf36bc08023683a13 Update 0x04a-Mobile-App-Taxonomy.md
+4ef50dfc5edc7e193b8927acca2e03d1df372daa Update 0x04a-Mobile-App-Taxonomy.md
+4172ee3403556197aefa910c6dd8972c91b7c290 Experimental
+f6a6541ca449252895d6617fc7b1446cb873871e Fix typo
+8dc85a4214f9664355143506af644fdc50ad8b25 Merge pull request #588 from OWASP/master
+e2d489b8ebef152ba599f2ea189d8c9bc927d79b Merge pull request #587 from OWASP/bugwrangler-master
+563ed6bd2e891c9e24752337d2b5f7c5d2959e5a Fix image and formatting
+53c26955c31d1ff79ca3c5a0344890d63af66b2c Some edits
+426a7e9f226a11527f899f9a8d7061081294d3f7 Merge content from PR #585
+bca5a00d6d4393ac383b93c0e3ad3415d8645c90 Merge content from PR #585
+1b3595a93b79cbcceb8f9ab41eacf5ebc4e8f5c9 Merge content from PR #585
+df6b85e53c5d01d5dc2ccebe10e731b0c0cf587a Merge pull request #586 from OWASP/master
+12685d89468d73ef40635991001773c6a27055ba Merge pull request #583 from pmilosev/review-android-data-storage
+77c488b437284674e29c3920f3d9024149555a1e Fix formatting
+99276fab224f49882728335ac5e192d74e4d3128 Fix references
+d283ac9d5b993bb29cc88a123514841682ba69ee Add drozer install instructions for Mac
+8c7a00b58a953841ee72b12a7433489dc316eea8 Update 0x05b-Basic-Security_Testing.md
+2520cf9d1915845808a6cbf52fdd64ad54619efc Update 0x05b-Basic-Security_Testing.md
+1db68220baffddb54f7515d874d868486531637c Adding Images for Android guide - Drozer
+05288d5fea6b0e1f874e0962de4d7ab01f4b2dd6 Update 0x05b-Basic-Security_Testing.md
+13f61881621dc4271c3a4299fc0e90409e2cf7f1 Update 0x08-Testing-Tools.md
+d5f4ad9ff8df7cd36d96a749f9a9568bef070fe5 Update 0x08-Testing-Tools.md
+8c263f0fbb938bad46c1530e44553019f17062f5 Further elaboration on the ProGaurd log stripping issue and spell check.
+a6bbcb168d8ac0be50f0820d278977711fa2b073 Merge pull request #584 from OWASP/master
+2c68ceeef9d58ca1a214195428ce6dd5fe55d0f4 Edit and update Drozer install howto
+6a9bf669f8bee8d09e9fb6b24d618b87c557cb64 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+cd91737dda3c03f81a9d12e3452726887cd52c03 Edits
+1bf88a803aac5a15f939d946fc51dc30ca14e0b5 Added reference to an issue regarding log stripping with ProGuard. Added alternative approach based on commenting out log statements with Gradle.
+6d2ac732dc7269a870afe914250713a4862d139b Update README.md
+5a4879e2f814430e037729bce30ba8cf5ab6dcb7 Merge pull request #577 from Sjord/the-the
+54480e8e8a9923459eb5442277594b05de1ad65e Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+bbad07d37c6d4265b7591128fbe80d8d581e849e Update mini cover
+b69959562006cfb969d96e49a26150949be96a73 Editing and formatting fix
+b6372365141bc4b8062958fd1db91dd1de7e5c3e Merge pull request #582 from OWASP/master
+8eb5828dc248efa801f28ff3c65382f760559c78 Edits
+c15b756dfe9288ac9bedde1e89c7391e97642f81 Clean up references
+ebd3dabadb843b11dcae2a9a4cf32df55e82b007 Fix typo
+110776a468ce8acfec80f864ca59c8b1b5a37fae Remove more double words
+a2a0d96d85fe8c41441f9aee579a072947c58f3b Merge branch 'master' into the-the
+2df30fe5b454e37c7234c7518353a82c6ee4647d Edit & clean up references
+215b10d7214adcdca55cea55be770f9f702ef28c Edits
+8aca7eaaad6ad99306b0458153a60c93233e96ec Edits
+9658950a6ab8e57e2559448c24620ca217cfe4df Some edits
+e76dd0e40db1a0bb4024c1ec1b535f02fc3b56bb Some edits
+5dbc4f584ee940a33cd6903657ffff6c7d39fdc8 Merge pull request #572 from OWASP/0x05h/android_deserialization
+bb3800a085297fde75fef77ae9934e509db71497 Merge pull request #581 from OWASP/master
+57c3726c1e62fb08a47cfecf75e06604f090b75b Edit Android platform overview
+0795686c1bf528c0b077e391c715e6f62b11fb34 Update mobile app security testing
+4cb6a6bf71bc31eb6ec1d0d58ef3021a9f9a5814 iOS Testing Biometric Authentication
+45bb38b5677c5576173ef6336a0a370e7ae6209b Merge pull request #579 from OWASP/master
+fe3af5a3a40580744453826ac14bbaec3d466cb7 Fix typocs
+651b813ed8eb3e07a94d5beca5fb29b2a8dac1e6 Fix formatting
+005cbdc42dd01f3bdf9726eb5417b626a05fca78 Editing - Remove 'review'
+4650ddff4c5779b213edce9565ff8869c05758a4 Editing: Remove todos
+03060eb01e0782e944246f48fdeb399ece89db77 Editing
+57ec75a989fb97bcfde8fc27b465b91f84f68b96 Editing
+c91c2b534d835b9fbf3c12fa61defc96ff97ce5d Merge pull request #578 from OWASP/master
+f095f96c88bac1b2fdbe751ff7855b3a03c50a09 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+60a88f0b683f450c8bc4ea36f29260f067d2ef4d Editing - remove paragraph
+f393159ea21bb0e475a4beb2dc6796230e7636fb Remove double "the"
+37b8c1ecb7618438ae0f7184ebe49e1128aa1b9f Fixed indentation, and updated the reflection based remediation
+60008ddd4a79f98f6a3ca541f4a8200a047600e2 Update README.md
+47607d029f0dddb25ddfa60f3f2a7da3980e1a63 Merge pull request #576 from OWASP/master
+4848d43ca15cb72bb241673b7573ed64b9f28c57 Update README.md
+76b410fa67d77e990d1dd895a17551419fea6b61 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+19926d06d504ed42d646ea9bb78f23893de38817 Update ToC for book build
+1294329ea2eb2922ad52cb1cfe0184b61981d95d Update gitbooks URLs
+1025b60fac47b87b1f89f1104c48cce499137218 Merge pull request #574 from OWASP/master
+fd961c91f794a59f02cc3c9b98e9672df8ac8a3e Remove backup file
+91f07b8f8cfa0fe96c56020ea1bc343fc890b190 Update foreword
+287a60da2f15fb68777eaaaa330aec70b996628d Edit fingerprint auth
+a5ef3cfa2bd8ef7091539d85b231ce41a0af78db Edit basic testing on Android
+64e289e429568647b0ba3f45dca263516bb6ed1a Fixed more of the feedback on persistence
+404ce340c4d5ba986ba00d9048bf13a3c72a9e78 Fixed some of the feedback
+5876713fc46513342866182c508ca9387c6ced02 Update p. on platform interaction
+067175eeed7c870582c1c67b54718ad024b6feb3 Merge branch 'master' into 0x05h/android_deserialization
+1c8ec03acac68e9e0e1bf57e78208040c0bad851 Edit iOS testing
+8969734f0b5c8bcd31311c7bbf2c36f171f00911 iOS testing: Editing and updates
+2ea0f0cf08a1ba002f9db6df1a97d257a02dfb08 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+ab184538759422219c51e6813c4033961d07e967 Add content to 'test environment'
+32712735a822f25c56c5d70b3c0d10937d3a6d96 Merge pull request #573 from Sjord/spell-fixes
+aa4abb2e13209e5359b61eafd3e783fdbc7d2066 Merge branch 'master' into spell-fixes
+31b42b90fb54741cd6cfd093ad4b2890373f63ab Remove image
+500101a9f9420ff8506560b743166b5c29499496 Edit & update content
+0c2127c12ab20ad97b560107644b5baa8dc312b7 Small spelling fixes
+eb8191d18becfbdcbf528cacfff371ce63b9e7ae Merge pull request #567 from cpholguera/master
+6b81f4b1026fb735677b43d8317f0f1ff759ecf6 corrections suggested by Sjord
+e7cdf6606953544c4b7e8a7d38b4cd278218a2de Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+286321c6d0fa85d1d18b9103f8e3b623d8ac0c2e Update image
+291634ee488ff89ed9bafdea695816dd5d978e4c Resize image & fix formatting
+6b2be247991a3a93cad3ffeea1645e24e32fc836 Update README.md
+15750e1bcb5394dd578a61e16af48987ad2ba31e Update image
+5baad920331453406c17f62681031124d6f030b2 Add summit preview
+ea26ea2a53fb1ccf978fe0bf963fe37f3a319aa9 Merge pull request #562 from OWASP/URLScheme
+52b2830d3a0603a7a3b64e37d5d1bbcf495eda8b QA URL Scheme
+905661c3e940f251a1f8ac7435a340940342c76e added first iteration of remediation and dynamic analysis
+4cd4776af13b1cdda005467c39138b7871a144a2 Added static analysis for the other libraries
+d4eab8ecd963459f3e52ae4bfad92f71f2d0f279 OAuth2 lack of verification attack scheme
+9052bbb4d7194154028af680ee4d53d755745a28 Update of URL Scheme after QA
+9921435a6e4b39e8e5d4106cbcfeb1e3f3edb057 Updated general info on OAuth2 implementation
+05fc35f1288cd8b2505e50291c5ac47ea31e5880 Fixed OAuth2 image link
+cbe24785f9d347de31d12c91de92b8f70297bfdd Merge pull request #569 from OWASP/c0rdis-patch-8
+382dec002013acec310ed5e6b20f85292581b8de Secured place for "Testing OAuth2 implementation"
+893affa79c5b468e0245fdaa5cdbd193d7ad2a5b typos corrected and display of jdb session fixed.
+de6f1a9a0db2fcd6c4d7f4705938f7d17e9e3aa7 0x2 - A few updates to the description of my profile
+d83f3b69abc6a7738dcc6040857c53001f83695a WIP for ORM
+98d8f2fa5938e7b90a03a803549aa522c8f5950c added part of ORM (WIP)
+75c302b1130a8507e0f880d630ca299f34ba9769 Merge branch 'master' into master
+6fb11ef2116f238792e15b59578cbb058061c28b IPC Tests finished, examples enhanced (old ones with no public source code replaced), references corrected.
+8f26290a811392d1c581fb4fa747c0661697b9f9 added static analysis for json
+7dfcaf259439df94b4ca06d80f3e2553a20c6c35 Merge pull request #566 from bolot/edits-grammar/0x05b-02
+e3ba2a3d867975bd3efe1ccf0261c33effcf632b Merge pull request #565 from bolot/0x07c/2-to-power-typo-fix
+2fda3158b80c87b961f84dae63e5f25a27d15354 Update 0x02-Frontispiece.md
+94a826294d7271db9eded2921fc6e22897c54533 Update credits
+de169f790b460f87ff36bad583005bbbb83a6c7c Edits to the second section of 0x05b
+6a0c6f12adca615d92dd021dc49b17b6e24f254d Update contributors
+a9ed2b62f9e61a3629ca221e92431c0245be54a0 A small typo fix
+eda8a1dfa6b501ab09a0455ad87c891fa327f4fd added samples and some of the feedback
+fdde08cf89d34f0e86c155d13eb9e0533d59844d Merge pull request #564 from OWASP/0x05h/android_deserialization
+07c0c946451789ed987cf692fd62406cb5e7c4a8 updated the content with references
+1597136a50a3655c2c202dd2f3280f656ba8e19c Added ORM
+9e1766e20b33151d91c95e6a3a214178c679bd7b Added description for Json
+9ffada6a2b8f770f6dc392ab5d6c29098468b5db WIP: Added structure and continue pointer on 0x05h
+4b5e50b807468a44985346408037f14c1e656f71 Changed title of serialization to object persisntance as there are multiple ways of doing this
+432250c6b076bbe55a374c3fa4927f2b5536eee7 Update of Code Quality (Android) and data storage (Andorid) due to update of issues
+42d86abb1bba798bb2cedd6e6b21f8751a7aab5e Update of Crypto (Android) and data storage (iOS) due to update of issues
+d8f49261809163d031e95ebf462ab7ed33c53ed3 added URL scheme test case
+e497a91b84e7ed4a49d862f66c92c7364ed3bfe9 remove URL scheme to create PR
+3795a889861545ad7a2f756d2a6e8e0f2e79dfd3 iSpell check of 0x05i
+8e5ed59386176e90b14141966eae28b380c88702 iSpell check of 0x05i
+d6a93119bd6fc0e76d385ce908e007ddf0558799 Merge pull request #560 from bolot/bolot/style-guide-01
+2c232482e35f176f5986d587122a9194f68e9315 Update style_guide.md
+de09a63ff483aa5f5167b8c23cdf18ff9d079710 IPC Tests restructured, the ones in data storage were overlapping the ones from platform interaction. Editing still required.
+c8298ff3e2ae0b6b615d3873eb4df0b9ac746e8f Revert the code block example changes
+3e56c853122b875f2e65d39a79d8be422051e068 Clean up
+91461d81fb8c2e91e0392c02408906ccd9882b22 Merge pull request #555 from OWASP/0x6e/ios_keymanagement
+c8b661cea55f267a04dbcc6a06519d84b1e8d654 Merge branch 'master' into 0x6e/ios_keymanagement
+82b2e8856edeb8f06d33004a5c7a6ca1b9b19e66 QA Crypto
+a3154d59121fbc8bfbc90f21f38ce193debb7f5e QA Crypto
+3d54c555a3eedbd92634a0a5a12c168af6004455 added necessary dashes in info
+81ef3052afb54170c8e8eeaee1863417e65692a8 Merge pull request #559 from bolot/edits-grammar/0x05b-01
+bb098da277d8849350b547dba1eeb6edc393e746 QA Crypto
+75c793d763e816098b55e9834a878a979a0aa410 Merge branch 'master' into 0x6e/ios_keymanagement
+2a9c7e368ffabbaa7f29a8373344007165f31426 Edits, section 01
+bb5a9628c0c25f761846bb324d343e0628ed083d Small formatting, spelling, terminology fixes
+1c5eda5011b0ec85eea060ecd1df9bcb0b18f9df Create style_guide.md
+60406add32460e728e8ee0f60cb5354402147741 fixed feedback
+5beba70c4772035f87935cb93c17c341f08097d1 Merge pull request #550 from dpilipchuk/patch-1
+7baa333d146d5cf7451ccf2ee05d8e36ee0749f6 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+b252b2c4763aec7fe66027cc9b2f153520d15043 Spell check & editing
+3bf54da86abe1d596dd292e8b1de83650d94858b Merge pull request #554 from OWASP/0x05d/realm_sensitivedata
+0444ed2964ac41872a6171ea17c20c8a90facf7d Merge pull request #553 from diamonddocumentation/master
+852d343255a4c9c34083e04d063b27c0cea2bea0 Merge pull request #556 from bolot/0x05g/openssl-ban
+27db87173fba3ee992e8c33111a9fd618e969331 Merge pull request #538 from diamonddocumentation/patch-2
+4e4b7d4d8e77e257db5565f7f3903a6d903b33bc Merge pull request #558 from IlVerz/master
+21568a1b9c072c56a84002fe78fc77d25c1332fb Merge branch 'master' into master
+3fa1374a9bc05e44e2fed31b1322dd1f79d3645d Merge pull request #547 from OWASP/c0rdis-patch-7
+2a06b297a4730d695c90b9cad3e3794ff62f8c19 Merge pull request #557 from OWASP/InputValidation
+2701d719801a921d3880cc2287c234a3333361a7 Merge branch 'master' into InputValidation
+afd91965aa403d9c6f602f37f9572aebe4fbd6f1 QA Platform Interaction
+5407be0399e12423ad88356acef6a54971197d48 A note about app rejections due to invalid OpenSSL
+0384526b04ed4a69dbc6c3a7ba4b561b301ff9ac Editing & spellcheck
+9deb484fa0ee9248a9118d6cc57137cb7b4d2149 Merge branch 'master' of https://github.com/OWASP/owasp-mstg
+b519c0c09436454560ae613647c857a4925254a9 Spellcheck and editing
+a162e8b139269c06fb38730e1fe9fdc9beca91d0 Testing Whether Java Objects Are Exposed Through WebViews
+45418ca28d3ccc0d5fbaa07214d3d70f04c72eae Merge pull request #549 from OWASP/InputValidation
+f8a797c0ca7f0f95f684872fa3c5f3deff04703a Input Validation update
+63260717e60f67cc49b859754cab7c87521899a0 Edit and fix typos
+f359035752bbb725aae37b9ef54fd29da49fb097 enriched remediation for ios
+b8a4c50b7027c34426a42cea34fbe8f917c8b3ae Updated analysis for keychain items
+2b7425c42c76100467f94ee92c89e2ac17e7a07e Added Protection classes and AccessControlFlags for ios keychain
+622a131eae278492ef7c2ee163e9cbc5df626cf4 Added code snippet URL Scheme
+90d727fb7a0b36b19baa482b0e0f092b624fc35e Create 0x07a-Testing-Authentication-and-Session-Management.md
+0ea2d9cb210f7edd6f55380ac8113aecc34caa52 Added Realm data for both android and iOS as described in https://github.com/OWASP/owasp-mstg/issues/541
+a9189e4210c3a0e5e821da042c24c525743297cc Create style_guide.md
+7d026983d344466a63818b7630a2d95ac5419738 Create style_guide.md
+411f9460781d8ad0b15a122193cf636830480598 Fix formatting
+481b1f282a48ef9c6359c8dc76e02efb5f60b13f Create 0x07c-Testing-Cryptography.md
+4752dbb491efc7760d7117346dd844dccafbaef3 Merge pull request #548 from OWASP/sec_providers_android
+7afdd5fc0ac4377bf284dc66a989e7f5877cc3a9 fixed additional feedback regarding backend
+c20d5725903ed7f57fe7e6286fce3ed1a4530792 Fixed all the feedback regarding security providers and patching from Lobot
+
+1.0 15 Jun 2018 : First release
