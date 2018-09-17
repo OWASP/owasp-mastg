@@ -2,12 +2,12 @@
 
 
 # OWASP Mobile Security Testing Guide
-[![Creative Commons License](https://i.creativecommons.org/l/by-sa/3.0/88x31.png)](http://creativecommons.org/licenses/by-sa/3.0/)
+[![Creative Commons License](https://i.creativecommons.org/l/by-sa/3.0/88x31.png)](http://creativecommons.org/licenses/by-sa/3.0/ "CC-by-SA 3")
 [![OWASP Labs](https://img.shields.io/badge/owasp-incubator%20project-f7b73c.svg)](https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory)
 [![Build Status](https://travis-ci.com/OWASP/owasp-mstg.svg?branch=master)](https://travis-ci.com/OWASP/owasp-mstg)
 
 
-This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs). You can also read the MSTG on [Gitbook](https://sushi2k.gitbooks.io/the-owasp-mobile-security-testing-guide/content/) or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview).
+This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"). You can also read the MSTG on [Gitbook](https://sushi2k.gitbooks.io/the-owasp-mobile-security-testing-guide/content/ "Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "e-book").
 
 ## Table-of-Contents
 
@@ -63,7 +63,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 The release 1.0 of the MSTG was published in June 2018. You can get intermediate builds in multiple formats.
 
-1. Read it on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats, once you have checked out this repo.
+1. Read it on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "Gitbook"). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats, once you have checked out this repo.
 
 To generate the epub version you can use the following command:
 
@@ -71,12 +71,12 @@ To generate the epub version you can use the following command:
 $ gitbook epub ./ Generated/MSTG.epub
 ```
 
-2. Check the [releases](URLHERE!). Here you can find a PDF, the sources zipped and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
+2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
-3. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
+3. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
 
-3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh) (requires [pandoc](http://pandoc.org)). This produces docx and html files in the "Generated" subdirectory.
+3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and html files in the "Generated" subdirectory.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
@@ -84,7 +84,7 @@ $ cd owasp-mstg/Tools/
 $ ./generate_document.sh
 ```
 
-4. Clone the repository and run the [javascript pdf generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/genpdf.js) (requires [node 6](http://nodejs.org)). This produces a pdf file in the "Generated" subdirectory.
+4. Clone the repository and run the [javascript pdf generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/genpdf.js "javascript docgenerator") (requires [node 6](http://nodejs.org "node 6")). This produces a pdf file in the "Generated" subdirectory.
 
 ```bash
 $ git clone https://github.com/OWASP/owasp-mstg/
@@ -93,7 +93,7 @@ $ npm install
 $ node genpdf.js
 ```
 
-You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) to navigate the master branch of the MSTG.
+You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
 
 ## Contributions, feature requests and feedback
 
@@ -109,7 +109,7 @@ If there's something you really want to see in the guide, or you want to suggest
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones).
 
 ### Translating
-We are currently in progress for making a new release every 6 months. Releases that have been tagged can then be translated into preferred languages.
+We are currently in progress of making a new release every 6 months. Releases that have been tagged can then be translated into preferred languages.
 
 
 ### Contributing
