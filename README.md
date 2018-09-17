@@ -109,7 +109,8 @@ If there's something you really want to see in the guide, or you want to suggest
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
 
 ### Translating
-We are currently in progress of making a new release every 6 months. Releases that have been tagged can then be translated into preferred languages.
+We are currently in progress of making a new minor every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
+(Note we use symantic versioning: major.minor.patch)
 
 
 ### Contributing
