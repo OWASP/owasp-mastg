@@ -729,6 +729,13 @@ Steps:
 - Find exported Activities that extend the `PreferenceActivity` class.
 - Determine whether the method isValidFragment has been overridden.
 
+More: 
+- Check if targetSdkVersion less than 19 and does not implement isValidFragment
+
+- If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
+
+- In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as describing below.
+
 The following example shows an Activity that extends this activity:
 
 ```
@@ -748,6 +755,8 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 }
 
 ```
+
+
 
 #### Example of Vulnerable App and Exploitation
 
