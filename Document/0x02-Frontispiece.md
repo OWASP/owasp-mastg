@@ -4,7 +4,7 @@
 
 The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel at [https://owasp.herokuapp.com/](https://owasp.herokuapp.com/ "Slack channel sign up").
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this invite](https://join.slack.com/t/owasp/shared_invite/enQtNDI5MzgxMDQ2MTAwLTEyNzIzYWQ2NDZiMGIwNmJhYzYxZDJiNTM0ZmZiZmJlY2EwZmMwYjAyNmJjNzQxNzMyMWY4OTk3ZTQ0MzFhMDY "Slack channel sign up"). (Please open a PR if the invite has expired.)
 
 ## Copyright and License
 
@@ -77,9 +77,7 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Others
 
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on GitHub:
-
-https://github.com/OWASP/owasp-mstg/graphs/contributors
+Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors Github "contributors").
 
 ### Older Versions
 

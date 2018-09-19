@@ -1,0 +1,23 @@
+sudo: required
+language: objective-c
+osx_image: xcode9.3
+before_install:
+- rvm install 2.5.1 --disable-binary
+- brew install pandoc
+- gem install asciidoctor
+script:
+- "./Tools/gendocs.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: U99LVZFmIhWeXlpFeePdnDTrX4IGmmfrI8/LVht91P6YAQMhxIlOar/ba2AGGzuZX6ZSkSFKaATd6m1fEUmNexSwMfoVStQnRNctZN6l6PPylo8tvrZfgbAryMwHMTnjYIm/Ym0iCsZrwa9+GiJ03/JKdqE30QKK0PLQ4VRvBIUyblsLjDdPai/UqchE5AnYzCVXB5YKDX5U1y29DNdLRfd5CLjpwZOtgIkshOaK0FGuelciVNDT+hPZWbGWBBfCbDmdlW2GZPwnPGaa4BoA57VBXf8NgOACJT6GRbtw5m9x6H/xYB2/9I/ieccpi07gi0/X0TuvafU/LXOjhir2J4rTXRyNJ7WSQiVTSNYZS7IZ7OyiBVENH9BOrVWshIEXR4eQolo0RRnmJv1CcXTc9WyA8jiZWns/X3eCQo96t9s31etIOdQCBb2W6iBV31lzMHqseURH7DlXCKQ7imrID4mdCnzG2DdpV9/2aHmreKJKqu0DZMvwqdr9BYb9sJNJJkSD+BVL5OSCjGqvmmImIBcmIjhcbufZOTuRINLD1UfZJ41tV4TR3u8OC0zJeOosk5BqQwdJgsf1Z3CV7adiXE/tHHyRsyoE79W9DPVTX4R6NqxOhm9a7/IGJv532W65UnwXcvfRmYEctS5K2hGSTmVDn/wL90mr67YOceiKtj0=
+  file:
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.pdf"
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.docx"
+  skip_cleanup: true
+  overwrite: true
+  name: "Intermediate update $TRAVIS_TAG"
+  body: "Intermediate update ($TRAVIS_TAG)."
+  on:
+    repo: OWASP/owasp-mstg
+    tags: true
