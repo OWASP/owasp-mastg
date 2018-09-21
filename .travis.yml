@@ -17,7 +17,7 @@ deploy:
   skip_cleanup: true
   overwrite: true
   name: "Intermediate update $TRAVIS_TAG"
-  body: "Intermediate update ($TRAVIS_TAG)."
+  body: "Intermediate update ($TRAVIS_TAG). See CHANGELOG.md for updates on intermediate update releases."
   on:
     repo: OWASP/owasp-mstg
     tags: true
