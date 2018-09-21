@@ -8,9 +8,9 @@ Android assigns a distinct system identity (Linux user ID and group ID) to every
 
 Android permissions are classified into four different categories on the basis of the protection level they offer:
 
--	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. It is granted during the app's installation. Normal is the default permission. Example: `android.permission.INTERNET`
--	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
--	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. Example: `android.permission.ACCESS_MOCK_LOCATION`
+-	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. It is granted during the app's installation. Normal is the default permission. This permission is granted at runtime. Example: `android.permission.INTERNET`
+-	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example Dangerous permission: `android.permission.RECORD_AUDIO`
+-	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at runtime. Example Signature permission: `android.permission.ACCESS_MOCK_LOCATION`
 -	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
@@ -25,7 +25,7 @@ It is crucial to create custom permissions that adhere to the *Principle of Leas
 
 Below is an example of a custom permission called `START_MAIN_ACTIVITY`, which is required when launching the `TEST_ACTIVITY` Activity.
 
-The first code block defines the new permission, which is self-explanatory. The label tag is a summary of the permission, and the description is a more detailed version of the summary. You can set the protection level according to the types of permissions that will be granted. Once you've defined your permission, you can enforce it by adding it to the application's manifest. In our example, the second block represents the component that we are going to restrict with the permission we created. It can be enforced by adding the `android:permission` attributes.
+The first code block defines the new permission, which is self-explanatory. The label tag is a summary of the permission, and the description is a more detailed version of the summary. You can set the protection level according to the types of permissions that will be granted. Once you've defined your permission, you can enforce it by adding it to the application's manifest. In our example, the second block represents the component that we are going to restrict with the permission we created. It can be enforced by adding the `android:permission` attributes. 
 
 ```xml
 <permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"
@@ -42,10 +42,16 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`.
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note starting with api 24-28 the permission must be declared before the `<application>` tag or permission will always be denied.
 
 ```xml
+<manifest>
 <uses-permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"/>
+        <application>
+            <activity>
+            </activity>
+        </application>
+</manifest>
 ```
 
 #### Static Analysis
@@ -53,7 +59,7 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 **Android Permissions**
 
-Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView.
+Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. If a dangerous permission is needed it must be granted, you must check every time that operation is performed. 
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -73,20 +79,28 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 
 **Custom Permissions**
 
-Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
+Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the `ContextCompat.checkSelfPermission()` method is called to check if an activity has permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file. 
 
 ```java
 int canProcess = checkCallingOrSelfPermission("com.example.perm.READ_INCOMING_MSG");
 if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
 ```
+Or with `ContextCompat.checkSelfPermission()` which compares it to the manifest file.
 
+```java
+if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMING_MSG)
+        != PackageManager.PERMISSION_GRANTED) {
+            //!= stands for not equals PERMISSION_GRANTED
+            printf("Permission denied.");
+        }
+```
 #### Dynamic Analysis
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
 
 ```bash
-dz> run app.package.info  -a com.android.mms.service
+dz> run app.package.info -a com.android.mms.service
 Package: com.android.mms.service
   Application Label: MmsService
   Process Name: com.android.phone
