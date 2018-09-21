@@ -1,4 +1,16 @@
 body {
-    font-size: 0.625em;
+  font-size: 0.625em;
 }
-h1:not(:first-of-type) {page-break-before: always;}
+l,
+ol {
+  margin: 1em 0;
+  padding: 0 0 0 2em;
+}
+ul ul,
+ol ol {
+  margin: 0.3em 0;
+}
+
+h1:not(:first-of-type) {
+  page-break-before: always;
+}

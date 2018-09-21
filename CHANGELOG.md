@@ -1,5 +1,6 @@
 
 1.0.1 17 Sept 2018:
+
 - Updated guiding documentation (README, PR templates, improved styleguide, issue templates).
 - Added automated build of the pdf and DocX.
 - Updated Frontispiece (given new contributor stats).
@@ -9,7 +10,6 @@
 - Improved urls for GitBook using goo.gl in case of urls with odd syntax.
 - Updated Frontispiece to give credit to all that have helped out for this version.
 - Clarified the app taxonomy & security testing sections by a rewrite.
-
 - Added sections for network testing, certificate verificaiton & SSL pinning for Cordova, Webview, Xamarin, React-Native and updated the public key pinning sections.
 - Removed no longer working guides (e.g. using itunes to install apps).
 - Updated a lot of URLs (using TLS wherever possible).
