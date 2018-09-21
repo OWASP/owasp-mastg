@@ -733,7 +733,7 @@ Steps:
 
 - If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
 
-- In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as describing below.
+- In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as described.
 
 The following example shows an Activity that extends this activity:
 
