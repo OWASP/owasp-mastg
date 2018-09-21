@@ -725,12 +725,11 @@ The default implementation returns true on versions older than Android 4.4 KitKa
 #### Static Analysis
 
 Steps:
-- Find the package `minSDKVersion` to determine the behavior of the class.
-- Find exported Activities that extend the `PreferenceActivity` class.
-- Determine whether the method isValidFragment has been overridden.
+- Check if targetSdkVersion less than 19.
 
-More: 
-- Check if targetSdkVersion less than 19 and does not implement isValidFragment
+- Find exported Activities that extend the `PreferenceActivity` class.
+
+- Determine whether the method isValidFragment has been overridden.
 
 - If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
 
