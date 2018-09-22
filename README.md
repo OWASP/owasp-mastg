@@ -7,7 +7,8 @@
 [![Build Status](https://travis-ci.com/OWASP/owasp-mstg.svg?branch=master)](https://travis-ci.com/OWASP/owasp-mstg)
 
 
-This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "the MASVS"). You can also read the MSTG on [Gitbook](https://sushi2k.gitbooks.io/the-owasp-mobile-security-testing-guide/content/ "MSTG @ Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book").
+This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
+You can also read the MSTG on [Gitbook](https://sushi2k.gitbooks.io/the-owasp-mobile-security-testing-guide/content/ "MSTG @ Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book").
 
 ## Table-of-Contents
 
@@ -105,11 +106,14 @@ http://owasp.herokuapp.com/
 
 Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "Style Guide") which contains a few basic writing rules.
 
+Please note that the MSTG focuses primarely on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
+
 If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
 
 ### Translating
-We are currently in progress of making a new release every 6 months. Releases that have been tagged can then be translated into preferred languages.
+Our current goal is to publish one minor release every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
+(Note we use semantic versioning: major.minor.patch)
 
 
 ### Contributing

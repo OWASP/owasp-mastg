@@ -32,7 +32,7 @@ if (process.argv.includes("-lang")) {
 if (process.argv.includes("-tag")) {
   tag = process.argv[process.argv.indexOf("-tag") + 1];
 }
-if (tag != ""){
+if (tag != "") {
   tag = tag + " ";
 }
 tag = tag + "Date: " + setDate();
@@ -40,7 +40,7 @@ tag = tag + "Date: " + setDate();
 if (process.argv.includes("-relnotes")) {
   releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1];
 } else {
-  releaseNotes = "To be defined.";
+  releaseNotes = generateRelNotes();
 }
 
 if (!help) {
@@ -80,6 +80,11 @@ function postProcessRunningJS() {
   } catch (error) {
     console.error("Error occurred:", error);
   }
+}
+
+function generateRelNotes(){
+
+  return fs.readFileSync("../CHANGELOG.md", "utf8");
 }
 
 function preProcessMd() {
