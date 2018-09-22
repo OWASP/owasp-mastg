@@ -7,10 +7,10 @@
 - Updated Crackmes and guiding documentation.
 - Updated tooling commands (ADB, ABE, iMazing, Needle, IPAinstaller, etc.).
 - Added first russian translations of the 1.0 documents for iOS.
-- Improved urls for GitBook using goo.gl in case of urls with odd syntax.
+- Improved URLs for GitBook using goo.gl in case of URLs with odd syntax.
 - Updated Frontispiece to give credit to all that have helped out for this version.
 - Clarified the app taxonomy & security testing sections by a rewrite.
-- Added sections for network testing, certificate verificaiton & SSL pinning for Cordova, Webview, Xamarin, React-Native and updated the public key pinning sections.
+- Added sections for network testing, certificate verification & SSL pinning for Cordova, Webview, Xamarin, React-Native and updated the public key pinning sections.
 - Removed no longer working guides (e.g. using itunes to install apps).
 - Updated a lot of URLs (using TLS wherever possible).
 - Updated tests regarding WebViews.
@@ -21,7 +21,7 @@
 - Updated the XLS Checklist given MASVS 1.1.0.
 - Removed the clipboard test from iOS and Android.
 - Removed duplicates on local storage Testing and updated data storage testcases.
-- Added writeups from the mobile security sessions at the OWASP summit
+- Added writeups from the mobile security sessions at the OWASP summit.
 - Added anti-debugging bypass section for iOS.
 - Added SQL injection and XML injection samples & improved mitigation documentation.
 - Added Needle documentation for iOS.
@@ -35,7 +35,7 @@
 - Updated (anti) reverse-engineering sections for Android and iOS.
 - Updated data storage chapters given newer tooling.
 - Merged SDLC and security testing chapters.
-- Updated cryptography & key-management testing sections for both Android and iOS (up to Android Nougat/ios 11).
+- Updated cryptography & key-management testing sections for both Android and iOS (up to Android Nougat/iOS 11).
 - Updated general overview chapters for Android and iOS.
 - Updated Android and iOS IPC Testing.
 - Added missing overviews, references, etc. to various sections, such as 0x6i.
