@@ -95,6 +95,69 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
             printf("Permission denied.");
         }
 ```
+#### Requesting Permissions
+
+If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and a integer request code you have specified to the user asynchronously, returning right away in the same thread upon user response. After the response is returned the same request code is passed to the app's callback method. 
+
+```java
+
+// We start by checking the permission of the current Activity
+if (ContextCompat.checkSelfPermission(secureActivity.this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+
+    // Permission is not granted
+    // Should we show an explanation?
+    if (ActivityCompat.shouldShowRequestPermissionRationale(secureActivity.this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        // Asynchronous call goes here waiting for the users response.
+        // Explain why the permissions are needed.
+    } else {
+        // Request a permission that doesn't need to be explained.
+        ActivityCompat.requestPermissions(secureActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        // MY_PERMISSIONS_REQUEST_WRITE_EXTERAL_STORAGE will be the app-defined int constant.
+        // The callback method gets the result of the request.
+    }
+} else {
+    // Permission already granted debug message printed in terminal.
+    printf("Permission already granted.");
+}
+
+```
+Please note If you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
+
+#### Handling the permissions response
+
+Now your app has to override the system method `onRequestPermissionResult()` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions()`. 
+
+The following callback method may be used for `WRITE_EXTERNAL_STORAGE`.
+
+```java
+@Override //Needed to override system method onRequestPermissionResult()
+public void onRequestPermissionsResult(int requestCode, //requestCode is what you specified in requestPermissions()
+        String permissions[], int[] permissionResults) {
+    switch (requestCode) {
+        case MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+            if (grantResults.length > 0
+                && permissionResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 0 is a cancelled request, if int array equals requestCode permission is granted.
+            } else {
+                // permission denied code goes here.
+                printf("Permission denied.");
+            }
+            return;
+        }
+        // Other switch cases can be added here for multiple permission checks.
+    }
+}
+
+```
+Permissions should be explicitly requested for every permission needed. Android applications should not request permissions in the same group unexplicitly as these groups may change in the future. Also permissions may be granted without user approval automatically. 
+
+For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested. 
+
 #### Dynamic Analysis
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
