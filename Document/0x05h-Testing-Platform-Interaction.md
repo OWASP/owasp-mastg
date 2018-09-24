@@ -61,36 +61,6 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. If a dangerous permission is needed it must be granted, you must check every time that operation is performed. 
 
-Please reference this list for permissions that are considered dangerous.
-
-`
-READ_CALENDAR
-WRITE_CALENDAR	
-READ_CALL_LOG
-WRITE_CALL_LOG
-PROCESS_OUTGOING_CALLS	
-READ_CONTACTS
-WRITE_CONTACTS
-GET_ACCOUNTS	
-ACCESS_FINE_LOCATION
-ACCESS_COARSE_LOCATION	
-RECORD_AUDIO
-READ_PHONE_STATE
-READ_PHONE_NUMBERS
-CALL_PHONE
-ANSWER_PHONE_CALLS
-ADD_VOICEMAIL
-USE_SIP
-BODY_SENSORS
-SEND_SMS
-RECEIVE_SMS
-READ_SMS
-RECEIVE_WAP_PUSH
-RECEIVE_MMS
-READ_EXTERNAL_STORAGE
-WRITE_EXTERNAL_STORAGE
-`
-
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
@@ -106,6 +76,35 @@ uses-permission: android.permission.CHANGE_CONFIGURATION
 uses-permission: android.permission.SYSTEM_ALERT_WINDOW
 uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ```
+Please reference this list for permissions that are considered dangerous.
+
+`
+READ_CALENDAR,
+WRITE_CALENDAR,	
+READ_CALL_LOG,
+WRITE_CALL_LOG,
+PROCESS_OUTGOING_CALLS,	
+READ_CONTACTS,
+WRITE_CONTACTS,
+GET_ACCOUNTS,	
+ACCESS_FINE_LOCATION,
+ACCESS_COARSE_LOCATION,	
+RECORD_AUDIO,
+READ_PHONE_STATE,
+READ_PHONE_NUMBERS,
+CALL_PHONE,
+ANSWER_PHONE_CALLS,
+ADD_VOICEMAIL,
+USE_SIP,
+BODY_SENSORS,
+SEND_SMS,
+RECEIVE_SMS,
+READ_SMS,
+RECEIVE_WAP_PUSH,
+RECEIVE_MMS,
+READ_EXTERNAL_STORAGE,
+WRITE_EXTERNAL_STORAGE.
+`
 
 **Custom Permissions**
 
