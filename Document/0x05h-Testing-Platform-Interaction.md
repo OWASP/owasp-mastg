@@ -63,7 +63,7 @@ Check permissions to make sure that the app really needs them and remove unneces
 
 Please reference this list for permissions that are considered dangerous.
 
-```xml
+`
 READ_CALENDAR
 WRITE_CALENDAR	
 READ_CALL_LOG
@@ -89,7 +89,7 @@ RECEIVE_WAP_PUSH
 RECEIVE_MMS
 READ_EXTERNAL_STORAGE
 WRITE_EXTERNAL_STORAGE
-```
+`
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
