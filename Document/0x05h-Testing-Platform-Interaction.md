@@ -61,7 +61,7 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. If a dangerous permission is needed it must be granted, you must check every time that operation is performed. 
 
-Please reference this list for dangerous permissions.
+Please reference this list for permissions that are considered dangerous.
 
 ```xml
 READ_CALENDAR
