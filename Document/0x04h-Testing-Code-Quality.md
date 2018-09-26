@@ -93,8 +93,9 @@ One real-world instance of client-side SQL injection was discovered by Mark Wood
 
 In a *XML injection* attack, the attacker injects XML metacharacters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, as well as possibly allow an attacker to exploit the operation of the XML parser processing the content.
 
-A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSRF)](https://goo.gl/UknMCj "Cross-Site Request Forgery (CSRF)") attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following example for XXE](https://goo.gl/QGQkEX "Testing for XML Injection (OTG-INPVAL-008)"):
+A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing). Here, an attacker injects an external entity definition containing an URI into the input XML. During parsing, the XML parser expands the attacker-defined entity by accessing the resource specified by the URI. The integrity of the parsing application ultimately determines capabilities afforded to the attacker, where the malicious user could do any (or all) of the following: access local files, trigger HTTP requests to arbitrary hosts and ports, launch a [cross-site request forgery (CSRF)](https://goo.gl/UknMCj "Cross-Site Request Forgery (CSRF)") attack, and cause a denial-of-service condition. The OWASP web testing guide contains the [following examples for XXE](https://goo.gl/QGQkEX "Testing for XML Injection (OTG-INPVAL-008)"):
 
+In the example below, the local file `/dev/random` is opened where an endless stream of bytes is returned, potentially causing a denial-of-service:
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
  <!DOCTYPE foo [  
@@ -102,7 +103,15 @@ A popular variant of this attack is [XML Entity Injection (XXE)](https://www.owa
   <!ENTITY xxe SYSTEM "file:///dev/random" >]><foo>&xxe;</foo>
 ```
 
-In this example, the local file `/dev/random` is opened where an endless stream of bytes is returned, potentially causing a denial-of-service.
+In the example below, the local XML parser identifies an XML entity and attempts to load the content included within. This persuades the parser to perform a network request, causing Server-Side Request Forgery (SSRF). This can be used to perform port scans on segregated networks and wrappers like PHP's expect can also be used to perform operating system commands:
+```xml
+<?xml version="1.0" ?>
+<!DOCTYPE r [
+<!ELEMENT r ANY >
+<!ENTITY sp SYSTEM "http://x.x.x.x/some-testing-file.txt">
+]>
+<r>&sp;</r>
+```
 
 The current trend in app development focuses mostly on REST/JSON-based services as XML is becoming less common. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries, it could be interpreted by local XML parsers, such as NSXMLParser on iOS. As such, said input should always be validated and meta-characters should be escaped.
 
