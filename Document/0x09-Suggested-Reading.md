@@ -7,6 +7,7 @@
 - Dominic Chell, Tyrone Erasmus, Shaun Colley, Ollie Whitehous (2015) *Mobile Application Hacker's Handbook*. Wiley. Available at: http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118958500.html
 - Joshua J. Drake, Zach Lanier, Collin Mulliner, Pau Oliva, Stephen A. Ridley, Georg Wicherski (2014) *Android Hacker's Handbook*. Wiley. Available at: http://www.wiley.com/WileyCDA/WileyTitle/productCd-111860864X.html
 - Godfrey Nolan (2014) *Bulletproof Android*. Addison-Wesley Professional. Available at: https://www.amazon.com/Bulletproof-Android-Practical-Building-Developers/dp/0133993329
+- Nikolay Elenkov (2014) *Android Security Internals: An In-Depth Guide to Android's Security Architecture*. No Starch Press. Available at: https://nostarch.com/androidsecurity
 
 #### iOS
 
