@@ -23,7 +23,9 @@ The v2 signature, which is supported by Android 7.0 and above, offers improved s
 
 Make sure that the release build has been signed via both the v1 and v2 schemes and that the code-signing certificate in the APK belongs to the developer.
 
-APK signatures can be verified with the `apksigner` tool.
+APK signatures can be verified with the `apksigner` tool. 
+
+For Ubuntu, you can download `apksigner` tool [HERE](https://launchpad.net/ubuntu/cosmic/amd64/apksigner/0.8-1)
 
 ```bash
 $ apksigner verify --verbose Desktop/example.apk
