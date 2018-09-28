@@ -8,9 +8,9 @@ Android assigns a distinct system identity (Linux user ID and group ID) to every
 
 Android permissions are classified into four different categories on the basis of the protection level they offer:
 
--	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. It is granted during the app's installation. Normal is the default permission. This permission is granted at runtime. Example: `android.permission.INTERNET`
+-	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
 -	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
--	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at runtime. Example: `android.permission.ACCESS_MOCK_LOCATION`
+-	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
 -	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
@@ -42,7 +42,7 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note starting with api 24-28 the permission must be declared before the `<application>` tag or permission will always be denied.
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime.
 
 ```xml
 <manifest>
@@ -59,7 +59,7 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 **Android Permissions**
 
-Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. If a dangerous permission is needed it must be granted, you must check every time that operation is performed. 
+Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. Because a user can revoke an application's right to use a dangerous permission, the developer should check whether the application has the appropriate permission each time an action is performed that would require that permission.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -76,14 +76,15 @@ uses-permission: android.permission.CHANGE_CONFIGURATION
 uses-permission: android.permission.SYSTEM_ALERT_WINDOW
 uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ```
-Please reference this list for permissions that are considered dangerous.
+Please reference this [permissions overview](https://developer.android.com/guide/topics/permissions/overview#permission-groups) for descriptions of the listed permissions that are considered dangerous.
 
 `
 READ_CALENDAR,
 WRITE_CALENDAR,	
 READ_CALL_LOG,
 WRITE_CALL_LOG,
-PROCESS_OUTGOING_CALLS,	
+PROCESS_OUTGOING_CALLS,
+CAMERA,	
 READ_CONTACTS,
 WRITE_CONTACTS,
 GET_ACCOUNTS,	
@@ -108,9 +109,10 @@ WRITE_EXTERNAL_STORAGE.
 
 **Custom Permissions**
 
-Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the `ContextCompat.checkSelfPermission()` method is called to check if an activity has permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file. 
+Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the ContextCompat.checkSelfPermission() method is called to check if an activity has a specified permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file. 
 
 ```java
+private static final String TAG = "LOG";
 int canProcess = checkCallingOrSelfPermission("com.example.perm.READ_INCOMING_MSG");
 if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
@@ -121,7 +123,7 @@ Or with `ContextCompat.checkSelfPermission()` which compares it to the manifest 
 if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMING_MSG)
         != PackageManager.PERMISSION_GRANTED) {
             //!= stands for not equals PERMISSION_GRANTED
-            printf("Permission denied.");
+            Log.v(TAG, "Permission denied");
         }
 ```
 #### Requesting Permissions
@@ -129,7 +131,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
 If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and a integer request code you have specified to the user asynchronously, returning right away in the same thread upon user response. After the response is returned the same request code is passed to the app's callback method. 
 
 ```java
-
+private static final String TAG = "LOG";
 // We start by checking the permission of the current Activity
 if (ContextCompat.checkSelfPermission(secureActivity.this,
         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -138,9 +140,11 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
     // Permission is not granted
     // Should we show an explanation?
     if (ActivityCompat.shouldShowRequestPermissionRationale(secureActivity.this,
+        //Gets whether you should show UI with rationale for requesting permission.
+        //You should do this only if you do not have permission and the permission requested rationale is not communicated clearly to the user.
             Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-        // Asynchronous call goes here waiting for the users response.
-        // Explain why the permissions are needed.
+        // Asynchronous thread waits for the users response.
+        // After the user sees the explanation try requesting the permission again.
     } else {
         // Request a permission that doesn't need to be explained.
         ActivityCompat.requestPermissions(secureActivity.this,
@@ -151,20 +155,20 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
     }
 } else {
     // Permission already granted debug message printed in terminal.
-    printf("Permission already granted.");
+    Log.v(TAG, "Permission already granted.");
 }
 
 ```
-Please note If you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
+Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
 
 #### Handling the permissions response
 
-Now your app has to override the system method `onRequestPermissionResult()` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions()`. 
+Now your app has to override the system method `onRequestPermissionsResult()` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions()`. 
 
 The following callback method may be used for `WRITE_EXTERNAL_STORAGE`.
 
 ```java
-@Override //Needed to override system method onRequestPermissionResult()
+@Override //Needed to override system method onRequestPermissionsResult()
 public void onRequestPermissionsResult(int requestCode, //requestCode is what you specified in requestPermissions()
         String permissions[], int[] permissionResults) {
     switch (requestCode) {
@@ -174,7 +178,7 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
                 // 0 is a cancelled request, if int array equals requestCode permission is granted.
             } else {
                 // permission denied code goes here.
-                printf("Permission denied.");
+                Log.v(TAG, "Permission denied");
             }
             return;
         }
@@ -183,7 +187,7 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 }
 
 ```
-Permissions should be explicitly requested for every permission needed. Android applications should not request permissions in the same group unexplicitly as these groups may change in the future. Also permissions may be granted without user approval automatically. 
+Permissions should be explicitly requested for every permission needed. Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group may change in the future. Also permissions may be granted without user approval automatically. 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested. 
 
@@ -1106,6 +1110,12 @@ There are several ways to perform dynamic analysis:
 
 - https://www.synopsys.com/blogs/software-security/fragment-injection/
 - https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
+
+#### Android Permissions Documentation
+
+- https://developer.android.com/training/permissions/usage-notes
+- https://developer.android.com/training/permissions/requesting#java
+- https://developer.android.com/guide/topics/permissions/overview#permission-groups
 
 #### OWASP Mobile Top 10 2016
 
