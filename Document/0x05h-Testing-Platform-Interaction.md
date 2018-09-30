@@ -189,7 +189,8 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 ```
 Permissions should be explicitly requested for every permission needed. Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group may change in the future. Also permissions may be granted without user approval automatically. 
 
-For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested. 
+For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
+ 
 
 #### Dynamic Analysis
 
@@ -486,6 +487,24 @@ Attack Surface:
 ```
 
 ##### Content Providers
+
+Permissions are applied via `android:permission` attribute within <provider> tag restrict access to data in a ContentProvider. Content providers have an important additional security facility called URI permissions which is described next. Unlike the other components, ContentProviders have two separate permission attributes that can be set, `android:readPermission` restricts who can read from the provider, and `android:writePermission` restricts who can write to it. If a ContentProvider is protected with both read and write permissions, holding only the write permission does not also grant read permissions.
+
+The permissions are checked when you first retrieve a provider (if you don't have either permission, a SecurityException is thrown), and as you perform operations on the provider. Using ContentResolver.query() requires holding the read permission; using ContentResolver.insert(), ContentResolver.update(), ContentResolver.delete() requires the write permission. In all of these cases, not holding the required permission results in a SecurityException being thrown from the call.
+
+Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
+
+#### Content Provider URI Permissions
+The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
+
+The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
+the specific URI regardless if it has permissions to access to data from the content provider.
+
+This allows a common capability-style model where user interaction drives ad-hoc granting of fine-grained permission. This can be a key facility for reducing the permissions needed by apps to only those directly related to their behavior. Without this model in place malicous users may access other members email attachments or harvest contact lists for future use via unprotected URIs. In the manifest these tags `android:grantUriPermissions` attribute or <grant-uri-permissions> help restrict the URIs. 
+
+For further information on URI permissions please reference [grantUriPermission](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
+
+#### Static Analysis
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
@@ -1116,6 +1135,9 @@ There are several ways to perform dynamic analysis:
 - https://developer.android.com/training/permissions/usage-notes
 - https://developer.android.com/training/permissions/requesting#java
 - https://developer.android.com/guide/topics/permissions/overview#permission-groups
+- https://developer.android.com/guide/topics/manifest/provider-element#gprmsn
+- https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)
+- https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)
 
 #### OWASP Mobile Top 10 2016
 
