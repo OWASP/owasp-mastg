@@ -494,7 +494,7 @@ The permissions are checked when you first retrieve a provider (if you don't hav
 
 Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
 
-#### Content Provider URI Permissions
+##### Content Provider URI Permissions
 The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
 
 The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
@@ -504,7 +504,7 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 For further information on URI permissions please reference [grantUriPermission](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
 
-#### Static Analysis
+##### Static Analysis
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
