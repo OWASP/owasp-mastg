@@ -15,10 +15,10 @@ Android permissions are classified into four different categories on the basis o
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
-#### Activity permission enforcement
+#### Activity Permission Enforcement
 Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest restrict who can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call. 
 
-#### Service permission enforcement
+#### Service Permission Enforcement
 Permissions are applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService()`, `Context.stopService()` and `Context.bindService()`. Not holding the required permission results in a `SecurityException` being thrown from the call. 
 
 #### Broadcast Permission Enforcement
