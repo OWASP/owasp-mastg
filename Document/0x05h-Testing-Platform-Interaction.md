@@ -15,6 +15,37 @@ Android permissions are classified into four different categories on the basis o
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
+#### Activity permission enforcement
+Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest restrict who can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call. 
+
+#### Service permission enforcement
+Permissions are applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService()`, `Context.stopService()` and `Context.bindService()`. Not holding the required permission results in a `SecurityException` being thrown from the call. 
+
+#### Broadcast Permission Enforcement
+Permissions are applied via `android:permission` attribute within the `<receiver>` tag restrict access to send broadcasts to the associated BroadcastReceiver. The held permissions are checked after `Context.sendBroadcast()` returns, while trying to deliver the sent broadcast to the given receiver. Please note failure to hold proper permissions doesn't throw and exception, the result is an unsent broadcast. 
+
+A permission can be supplied to `Context.registerReceiver()` to control who can broadcast to a programmatically registered receiver. Going the other way, a permission can be supplied when calling `Context.sendBroadcast()` to restrict which broadcast receivers are allowed to receive the broadcast.
+
+Note that both a receiver and a broadcaster can require a permission. When this happens, both permission checks must pass for the intent to be delivered to the associated target. For more information, please reference [Restricting broadcasts with permissions](https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions).
+
+#### Content Provider Permission Enforcement
+
+Permissions are applied via `android:permission` attribute within the `<provider>` tag restrict access to data in a ContentProvider. Content providers have an important additional security facility called URI permissions which is described next. Unlike the other components, ContentProviders have two separate permission attributes that can be set, `android:readPermission` restricts who can read from the provider, and `android:writePermission` restricts who can write to it. If a ContentProvider is protected with both read and write permissions, holding only the write permission does not also grant read permissions.
+
+The permissions are checked when you first retrieve a provider (if you don't have either permission, a SecurityException is thrown), and as you perform operations on the provider. Using ContentResolver.query() requires holding the read permission; using ContentResolver.insert(), ContentResolver.update(), ContentResolver.delete() requires the write permission. In all of these cases, not holding the required permission results in a SecurityException being thrown from the call.
+
+Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
+
+#### Content Provider URI Permissions
+The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
+
+The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
+the specific URI regardless if it has permissions to access to data from the content provider.
+
+This allows a common capability-style model where user interaction drives ad-hoc granting of fine-grained permission. This can be a key facility for reducing the permissions needed by apps to only those directly related to their behavior. Without this model in place malicous users may access other members email attachments or harvest contact lists for future use via unprotected URIs. In the manifest these tags `android:grantUriPermissions` attribute or <grant-uri-permissions> help restrict the URIs. 
+
+For further information on URI permissions please reference [grantUriPermission()](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
+
 **Custom Permissions**
 
 Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
@@ -190,24 +221,6 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 Permissions should be explicitly requested for every permission needed. Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group may change in the future. Also permissions may be granted without user approval automatically. 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
-
-#### Content Provider Permission Enforcement
-
-Permissions are applied via `android:permission` attribute within <provider> tag restrict access to data in a ContentProvider. Content providers have an important additional security facility called URI permissions which is described next. Unlike the other components, ContentProviders have two separate permission attributes that can be set, `android:readPermission` restricts who can read from the provider, and `android:writePermission` restricts who can write to it. If a ContentProvider is protected with both read and write permissions, holding only the write permission does not also grant read permissions.
-
-The permissions are checked when you first retrieve a provider (if you don't have either permission, a SecurityException is thrown), and as you perform operations on the provider. Using ContentResolver.query() requires holding the read permission; using ContentResolver.insert(), ContentResolver.update(), ContentResolver.delete() requires the write permission. In all of these cases, not holding the required permission results in a SecurityException being thrown from the call.
-
-Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
-
-#### Content Provider URI Permissions
-The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
-
-The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
-the specific URI regardless if it has permissions to access to data from the content provider.
-
-This allows a common capability-style model where user interaction drives ad-hoc granting of fine-grained permission. This can be a key facility for reducing the permissions needed by apps to only those directly related to their behavior. Without this model in place malicous users may access other members email attachments or harvest contact lists for future use via unprotected URIs. In the manifest these tags `android:grantUriPermissions` attribute or <grant-uri-permissions> help restrict the URIs. 
-
-For further information on URI permissions please reference [grantUriPermission](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
 
 #### Dynamic Analysis
 
@@ -503,7 +516,8 @@ Attack Surface:
     is debuggable
 ```
 
-##### Static Analysis
+##### Content Providers
+
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
@@ -1137,6 +1151,7 @@ There are several ways to perform dynamic analysis:
 - https://developer.android.com/guide/topics/manifest/provider-element#gprmsn
 - https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)
 - https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)
+- https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions
 
 #### OWASP Mobile Top 10 2016
 
