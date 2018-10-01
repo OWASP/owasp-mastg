@@ -98,7 +98,7 @@ Incorrect serial (wrong format).
 
 ### Solutions
 
-- [Dynamic Symbolic Execution in the Android Reverse Engineering Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-symbolic-execution "Dynamic Symbolic Execution in the Android Reverse Engineering Guide" ) (by the author)
+- [Dynamic Symbolic Execution in the Android Reverse Engineering Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#binary-analysis-frameworks "Dynamic Symbolic Execution in the Android Reverse Engineering Guide" ) (by the author)
 
 # iOS
 
