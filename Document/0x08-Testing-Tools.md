@@ -49,7 +49,7 @@ To perform security testing different tools are available in order to be able to
 #### Dynamic and Runtime Analysis
 
 - [Cydia Substrate](http://www.cydiasubstrate.com) - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
-- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053)) - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
+- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053) - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
 - [logcat-color](https://github.com/marshall/logcat-color) - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
 - [Inspeckage](https://github.com/ac-pm/Inspeckage) - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 - [Frida](https://www.frida.re) - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
@@ -79,7 +79,7 @@ To perform security testing different tools are available in order to be able to
 
 #### Reverse Engineering and Static Analysis
 
-- [otool](https://www.unix.com/man-page/osx/1/otool/)) - The otool command displays specified parts of object files or libraries.
+- [otool](https://www.unix.com/man-page/osx/1/otool/) - The otool command displays specified parts of object files or libraries.
 - [Clutch](http://cydia.radare.org/) - Decrypted the application and dump specified bundleID into binary or .ipa file.
 - [Dumpdecrypted](https://github.com/stefanesser/dumpdecrypted) - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 - [class-dump](http://stevenygard.com/projects/class-dump/) - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
