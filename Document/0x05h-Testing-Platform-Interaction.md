@@ -75,7 +75,7 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime.
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the reference below based on https://developer.android.com/guide/topics/permissions/overview.
 
 ```xml
 <manifest>
@@ -87,6 +87,43 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 </manifest>
 ```
 
+This is an example of a Android manifest with properly nested attributes referenced from https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="1.0"
+    package="com.example.myapp">
+
+    <!-- Beware that these values are overridden by the build.gradle file -->
+    <uses-permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"/>
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- This name is resolved to com.example.myapp.MainActivity
+             based upon the package attribute -->
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:parentActivityName=".MainActivity" />
+    </application>
+</manifest>
+```
 #### Static Analysis
 
 
@@ -1154,6 +1191,8 @@ There are several ways to perform dynamic analysis:
 - https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)
 - https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)
 - https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions
+- https://developer.android.com/guide/topics/permissions/overview
+- https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct
 
 #### OWASP Mobile Top 10 2016
 
