@@ -75,7 +75,7 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the reference below based on https://developer.android.com/guide/topics/permissions/overview.
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below based on https://developer.android.com/guide/topics/permissions/overview.
 
 ```xml
 <manifest>
