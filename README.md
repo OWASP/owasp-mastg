@@ -102,7 +102,7 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 
-http://owasp.herokuapp.com/
+https://owasp.slack.com/
 
 Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "Style Guide") which contains a few basic writing rules.
 
