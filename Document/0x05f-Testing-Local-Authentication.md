@@ -4,7 +4,6 @@ During local authentication, an app authenticates the user against credentials s
 As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
-
 ### Testing Confirm Credentials
 
 #### Overview
@@ -264,3 +263,7 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 - CWE-287 - Improper Authentication
 - CWE-604 - Use of Client-Side Authentication
+
+#### Request App Permissions
+
+- Runtime Permissions - https://developer.android.com/training/permissions/requesting
