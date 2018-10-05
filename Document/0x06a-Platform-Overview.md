@@ -1,6 +1,12 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS.
+iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from the architecture point of view. The following five key areas are discussed:
+
+1. iOS security architecture
+2. iOS application structure
+3. Inter-process Communication (IPC)
+4. iOS application publishing
+5. iOS Attack Surface
 
 Like the Apple desktop operating system macOS (formerly OS X), iOS is based on Darwin, an open source Unix operating system developed by Apple. Darwin's  kernel is XNU ("X is Not Unix"), a hybrid kernel that combines components of the Mach and FreeBSD kernels.
 
@@ -175,3 +181,7 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Bluetooth sharing
 - Media Library
 - Social media accounts
+
+### iOS Attack Surface
+
+<TODO: add content here>
