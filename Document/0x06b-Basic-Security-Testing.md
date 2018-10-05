@@ -422,7 +422,7 @@ PID  Name
 (...)
 ```
 
-We`ll demonstrate a few more uses for Frida below.
+We will demonstrate a few more uses for Frida below.
 
 ### Method Tracing with Frida
 
@@ -466,6 +466,7 @@ We now have all the information we need to write a Frida script that intercepts 
 
 
 ```python
+
 import sys
 import frida
 
@@ -474,7 +475,7 @@ import frida
 frida_code = """
 
 	// Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest["- initWithURL:];
+    var URL = ObjC.classes.NSURLRequest[- initWithURL:];
 
     // Intercept the method
     Interceptor.attach(URL.implementation, {
@@ -504,6 +505,7 @@ script.on('message', message_callback)
 script.load()
 
 sys.stdin.read()
+
 ```
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
