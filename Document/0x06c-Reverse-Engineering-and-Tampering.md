@@ -222,49 +222,64 @@ Cydia Substrate (formerly called MobileSubstrate) is the standard framework for 
 First download, unpack, and install the SDK.
 
 ```bash
+
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
 $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
+
 ```
+
 To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
+
 ```bash
 $ cycyript
 cy#
+
 ```
 
 To inject into a running process, we first need to find the process ID (PID). Running "cycript -p" with the PID injects Cycript into the process. To illustrate, we will inject into SpringBoard.
 
 ```bash
+
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
+
 ```
 
 We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript. 		
 
 ```bash
+
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]
+
 ```
 ![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
 
 Find the document directory with Cycript:
+
 ```bash
+
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
+
 ```
 
 Use the following command to get the application's delegate class:
+
 ```bash
 cy# [UIApplication sharedApplication].delegate
 ```
+
 The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow is shown. The indentation space reflects the relationships between views. For example, UILabel, UITextField, and UIButton are subviews of UIView.
 
 ```
+
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
   | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>
@@ -583,7 +598,7 @@ frida_code = """
 
                 // Create an immutable ObjC string object from a JS string object.
                 var str_url = NSString.stringWithString_(myNSURL.toString());
-                NSLog(str_url); 
+                NSLog(str_url);
             } finally {
                 pool.release();
             }
