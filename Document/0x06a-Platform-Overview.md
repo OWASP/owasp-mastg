@@ -1,6 +1,12 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS.
+iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from the architecture point of view. The following five key areas are discussed:
+
+1. iOS security architecture
+2. iOS application structure
+3. Inter-process Communication (IPC)
+4. iOS application publishing
+5. iOS Application Attack Surface
 
 Like the Apple desktop operating system macOS (formerly OS X), iOS is based on Darwin, an open source Unix operating system developed by Apple. Darwin's  kernel is XNU ("X is Not Unix"), a hybrid kernel that combines components of the Mach and FreeBSD kernels.
 
@@ -175,3 +181,20 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Bluetooth sharing
 - Media Library
 - Social media accounts
+
+### iOS Application Attack surface
+
+The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application can be attacked by:
+- Having unsafe input by means of IPC communication or URL-schemes. See
+  - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
+- Having unsafe input by the user to input fields.
+- Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
+  HVG!!!
+  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews#testing-javascript-execution-in-webviews "Testing iOS webviews");
+- Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
+  - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
+- Having insecure or compromised storage. See:
+  - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
+- Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
+  - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")
