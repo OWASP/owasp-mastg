@@ -381,7 +381,7 @@ In the following, we use two example apps and give examples of identifying vulne
 - ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
 - ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2 "Android Insecure Bank V2")
 
-##### Activities
+#### Activities
 
 ##### Inspect the AndroidManifest
 
@@ -403,7 +403,7 @@ In the "Sieve" app, we find three exported activities, identified by `<activity>
 
 By inspecting the `PWList.java` activity, we see that it offers options to list all keys, add, delete, etc. If we invoke it directly, we will be able to bypass the LoginActivity. More on this can be found in the dynamic analysis below.
 
-##### Services
+#### Services
 
 ##### Inspect the AndroidManifest
 
