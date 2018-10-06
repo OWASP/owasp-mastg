@@ -6,14 +6,14 @@ Both items will be dealt with here. Please not that this is the MSTG project and
 
 
 ### Informing users on their private information
-When you need personal information from a user for your business process, the user needs to be informed on what you do with the data and why you need it. If there is a third party doing the actual processing of the data, the user should be informed about that too. Lastly, there are three processes you need to support:
+When you need personal information from a user for your business process, the user needs to be informed on what you do with the data and why you need it. If there is a third party doing the actual processing of the data, you should inform the user about that too. Lastly, there are three processes you need to support:
 - The right to be forgotten: A user needs to be able to request the deletion of his data, and be explained how to do so.
 - The right to correct data: The user should be able to correct his personal information at any time, and be explained how to do so.
 - The right to access user data: The user should be able to request all information that the application has on him, and the user should be explained how to request this information.
 
 Most of this can be covered in a privacy policy, but make sure that it is understandable by the user.
 
-When additional data needs to be processed, the user should be asked for consent again. During that consent request it needs to be made clear how the user can revert from sharing the additional data. Similarly, when existing datasets of a user need to be linked, the user should be asked for consent about it.
+When additional data needs to be processed, you should ask the user for consent again. During that consent request it needs to be made clear how the user can revert from sharing the additional data. Similarly, when existing datasets of a user need to be linked, you should ask the user's consent about it.
 
 
 ### Informing the user on the best security practices
@@ -24,7 +24,7 @@ Here is a list of best practices where a user could be informed of:
 - Application distribution: In case of a high-risk applicaton it is recommended to communicate what the official way of distributing the app is. Otherwise, users might use other channels in which they download a compromised version of the application.
 
 ### Other information you have to share (OSS information)
-Given copyright laws, the app developer must make sure he informs the user on any third party libraries that are used in the app. For each third party library the developer should consult the license to see if certain information (such as copyright, modifications, original author, ...) should be presented to the user. For this, it is best to request legal advice from a specialist. An example can be found at [this blogpost](https://www.bignerdranch.com/blog/open-source-licenses-and-android/ "Example on license overview").
+Given copyright laws, you must make sure you inform the user on any third party libraries that are used in the app. For each third party library you should consult the license to see if certain information (such as copyright, modifications, original author, ...) should be presented to the user. For this, it is best to request legal advice from a specialist. An example can be found at [this blogpost](https://www.bignerdranch.com/blog/open-source-licenses-and-android/ "Example on license overview"). Additionally, the website [TL;DR - Legal](https://tldrlegal.com/ "TL;DR - Legal") can help you in figuring out what is necessary for each license.
 
 ### References
 
