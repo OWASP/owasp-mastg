@@ -1,6 +1,6 @@
 ## Local Authentication on Android
 
-During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
+During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
 As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
@@ -22,7 +22,7 @@ Reassure that the lockscreen is set:
    }
 ```
 
-- Create the key protected by the lockscreen (assuring the the user was unlocking his device within the last 30 seconds, or he will have to unlock again):
+- Create the key protected by the lockscreen (assuring the the user was unlocking his device within the last 30 seconds, or he will have to unlock again), please note that if this time becomes too long, then it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
 
 ```java
   try {
@@ -76,6 +76,9 @@ Reassure that the lockscreen is set:
     }
 
 ```
+
+Make sure that you can see that the key is a necessity for the actual functioning of the application. If the key is just generated and is not necessary to: access the local storage, use functions of the app or to access a remote endpoint, then the confirm credential flow can probably be bypassed.
+
 #### Dynamic Analysis
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
