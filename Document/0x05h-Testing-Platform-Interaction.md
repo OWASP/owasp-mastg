@@ -280,9 +280,13 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
 
-Nevertheless, data that's processed by the app and comes in through URL schemes should be validated, as described in the test case "Testing custom url schemes."
+Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+- When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
+- Using the data for queries? Make sure you make parameterized queries.
+- Using the data to do authenticated actions? Make sure that the user is in an authenticated state before the data is processed.
+- If tampering of the data will influence the result of the calculations: add an HMAC to the data.
 
 #### Static Analysis
 
@@ -347,7 +351,6 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 ```
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
-
 
 
 ### Testing for Sensitive Functionality Exposure Through IPC
