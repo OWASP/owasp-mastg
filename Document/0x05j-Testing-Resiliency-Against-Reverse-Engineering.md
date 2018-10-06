@@ -1361,7 +1361,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 #### OWASP MASVS
-
+- V6.1: "The app only requests the minimum set of permissions necessary."
 - V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
 - V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."

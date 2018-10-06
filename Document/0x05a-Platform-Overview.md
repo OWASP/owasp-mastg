@@ -73,7 +73,8 @@ Noteworthy API versions:
 - Android 5.0 Lollipop (API 21) in November 2014 (ART used by default and many other features added)
 - Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
 - Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 O (API 26) beta (major security fixes expected)
+- Android 8.0 Oreo (API 26-27) in August 2017 (A lot of security improvements)
+- Android 9 Pie (API 28) in August 2018.
 
 #### App Folder Structure
 

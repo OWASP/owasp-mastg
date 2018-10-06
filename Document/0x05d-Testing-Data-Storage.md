@@ -246,7 +246,7 @@ You can protect keys stored in the Android KeyStore with user authentication in 
 
 You can use stored keys in one of two modes:
 
-1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid. 
+1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid.
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 
@@ -386,7 +386,7 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 $ adb logcat > logcat.log
 ```
 
-With the following command you can specifically grep for the log output of the app in scope, just insert the package name. 
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name.
 
 ```bash
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
@@ -1124,6 +1124,7 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - V2.9: "The app removes sensitive data from views when backgrounded."
 - V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- V6.1: "The app only requests the minimum set of permissions necessary."
 
 #### CWE
 
