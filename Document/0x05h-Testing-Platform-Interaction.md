@@ -224,6 +224,10 @@ Permissions should be explicitly requested for every needed permission, even if 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
 
+#### Permisson Analysis
+
+Always check whether the application is requesting sensible permissions. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+
 #### Dynamic Analysis
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
@@ -259,6 +263,8 @@ $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
 Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
+
+When doing the dynamic analysis: validate whether the permission requisted by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
 
 ### Testing Custom URL Schemes
@@ -1171,6 +1177,7 @@ There are several ways to perform dynamic analysis:
 
 #### OWASP MASVS
 
+- V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
