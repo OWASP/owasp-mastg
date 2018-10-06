@@ -30,6 +30,8 @@ Local Android SDK installations are managed through Android Studio. Create an em
 - API 24: Android 7.0
 - API 25: Android 7.1
 - API 26: Android 8.0
+- API 27: Android 8.1
+- API 28: Android 9
 
 ![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
 

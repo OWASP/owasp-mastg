@@ -1178,6 +1178,7 @@ There are several ways to perform dynamic analysis:
 #### OWASP MASVS
 
 - V6.1: "The app only requests the minimum set of permissions necessary."
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
