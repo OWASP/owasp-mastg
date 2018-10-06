@@ -1127,7 +1127,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 - M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 - M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-- M4 - Unintended Data Leakage
 
 #### OWASP MASVS
 
@@ -1148,18 +1147,18 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 #### CWE
 
 - CWE-117: Improper Output Neutralization for Logs
-- CWE-200 - Information Exposure
-- CWE-316 - Cleartext Storage of Sensitive Information in Memory
-- CWE-359 - Exposure of Private Information ('Privacy Violation')
-- CWE-524 - Information Exposure Through Caching
+- CWE-200: - Information Exposure
+- CWE-316: - Cleartext Storage of Sensitive Information in Memory
+- CWE-359: - Exposure of Private Information ('Privacy Violation')
+- CWE-524: - Information Exposure Through Caching
 - CWE-532: Information Exposure Through Log Files
 - CWE-534: Information Exposure Through Debug Log Files
-- CWE-311 - Missing Encryption of Sensitive Data
-- CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-522 - Insufficiently Protected Credentials
-- CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
-- CWE-634 - Weaknesses that Affect System Processes
-- CWE-922 - Insecure Storage of Sensitive Information
+- CWE-311: - Missing Encryption of Sensitive Data
+- CWE-312: - Cleartext Storage of Sensitive Information
+- CWE-522: - Insufficiently Protected Credentials
+- CWE-530: - Exposure of Backup File to an Unauthorized Control Sphere
+- CWE-634: - Weaknesses that Affect System Processes
+- CWE-922: - Insecure Storage of Sensitive Information
 
 #### Tools
 
