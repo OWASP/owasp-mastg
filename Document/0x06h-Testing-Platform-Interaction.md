@@ -278,7 +278,7 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-- CWE-939: Improper Authorization in Handler for Custom URL Scheme
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
 
 #### Tools
 
