@@ -1,5 +1,17 @@
 ## iOS Platform APIs
 
+
+### Testing App Permissions
+
+#### Overview
+
+permission list https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 
+
+
+#### Static analysis
+
+#### Dynamic Analysis
+
 ### Testing Custom URL Schemes
 
 #### Overview
