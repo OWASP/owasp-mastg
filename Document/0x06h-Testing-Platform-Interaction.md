@@ -9,141 +9,61 @@ http://www.icri-sc.org/fileadmin/user_upload/Group_TRUST/PubsPDF/sandscout-final
 On iOS, apps need to request permission to the user for accessing one of the following data or resources: Bluetooth peripherals, Calendar data, Camera,  Contacts, Health sharing, Health updating, HomeKit, Location, Microphone, Motion, Music and the media library, Photos, Reminders, Siri, Speech recognition, and the TV provider.<TODO: add reference to https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 >
 Even though Apple urges through various sources (such as <https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7>) to protect the privacy of the user, it can still be the case that an app requests too many permissions.
 
-Next to the resources for which permission is requested, there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at <TODO ADD REFERENCE TO https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 here!>. These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. They often do not provide indirect permission. <TODO: CHECK FOR WHICH THIS IS DIFFERENT, SUCH AS INTER-AP COMMUNICATION>.
+Next to the resources for which permission is requested, there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at <TODO ADD REFERENCE TO https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 here!>. These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. They often do not provide indirect permission. <TODO: CHECK FOR WHICH THIS IS DIFFERENT, SUCH AS INTER-AP COMMUNICATION>. Note that the actual available capabilities differ per type of developer profile used to sign the application (https://developer.apple.com/support/app-capabilities/).
 
 #### Static analysis
 
 Since iOS 10, there are three areas which you need to inspect for permssions:
-- the `info.plist` file,
-- the `<appname>.enttitlements` file, where <appname> is the name of the application,
+- the info.plist file,
+- the `<appname>.enttitlements` file, where <appname> is the name of the application, or the
 - the source-code.
 
 ##### Info.plist
-The `info.plist`file you can find one of the following HVG!!
+The info.plist contains the texts offered to users when requesting permissioin to access the protected data or resources. The [Apple Documentation](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permission") gives a clear instruction on how the user should be asked for permission to access the given resource. Following these guidelines should make it relatively simple to evaluate each and every entry in the info.plist file to check if the permission makes sense.
+For example, when you have a info.plist file, for a Solitair game which has, at least, the following content:
+
+```xml
+<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+<string>Share your health data with us!</string>
+<key>NSCameraUsageDescription</key>
+<string>We want to access your camera</string>
+
+```
+Should be suspicious as a normal solitair game probably does not have any need for accessing the camera nor a user his health-records.
+Note that from iOS 10 onward you need to provide explanation in terms of these \*Description fields. See table 1-2 at the [Apple app programming guide](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Apple app programming guide") for a more complete overview of different keys to look for.
+
+<TODO: QUESTION: SHOULD I CREATE A COPY OF THE TABLE REPRESENTED AT THE LINKS ABOVE? OR JUST REFER TO THEM?>
 
 ##### Entitlements file
+The entitlements file shows which capabilities are used. Some of these capabilities do not need any additional permissions provided by the user, but can still leak information to other apps. Take the App Groups capability https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html https://developer.apple.com/documentation/foundation/com_apple_security_application-groups?changes=_5&language=objc for instance. With this capability, one can share information between different apps through IPC or a shared file container (https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12), which means that data can be shared on the device directly between the apps. Here is an example of an application entitlement file with the app-group capability:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.security.application-groups</key>
+  <!-- Note: this array contains all the capabilities registered for the app. -->
+  <array/>
+</dict>
+</plist>
+
+```
+<TODO: QUESTION: SHOULD I CREATE A COPY OF THE TABLE REPRESENTED AT THE LINKS ABOVE? OR JUST REFER TO THEM?>
 
 ##### Source code inspection
-- check if the info plist reason is the same
-- check if capabiliteis used do not leak or are abused for other info for other reason than necessary.
+After having checked the <appname>.entitlements file and the info.plist file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code-review should be enough.
+Pay attention to:
+- whether the permission explanation in the info.plist file matches the programmatic implementation.
+- whether the capabilities registered are used in such a way that no confidential information is leaking.
 
-Bluetooth peripherals
-
-NSBluetoothPeripheralUsageDescription
-
-Use the state property of the CBCentralManager class to check system-authorization status for using Bluetooth peripherals.
-
-Calendar data
-
-NSCalendarsUsageDescription
-
-Use the authorizationStatusForEntityType: method of the EKEventStore class to check system-authorization status for accessing calendar data.
-
-Camera
-
-NSCameraUsageDescription
-
-Use the deviceInputWithDevice:error: method of the AVCaptureDeviceInput class to check system-authorization status for using device cameras.
-
-Contacts
-
-NSContactsUsageDescription
-
-Use the authorizationStatusForEntityType: method of the CNContactStore class to check system-authorization status for accessing contact data.
-
-Health sharing
-
-NSHealthShareUsageDescription
-
-Use the authorizationStatusForType: method of the HKHealthStore class to check system-authorization status for accessing health data.
-
-To request authorization, use the requestAuthorizationToShareTypes:readTypes:completion: method.
-
-Health updating
-
-NSHealthUpdateUsageDescription
-
-Use the authorizationStatusForType: method of the HKHealthStore class to check system-authorization status for accessing health data.
-
-To request authorization, use the requestAuthorizationToShareTypes:readTypes:completion: method.
-
-HomeKit
-
-NSHomeKitUsageDescription
-
-When your app first attempts to access a property of the HMHomeManager class, the system presents an authorization request to the user.
-
-Location
-
-NSLocationAlwaysUsageDescription, NSLocationWhenInUseUsageDescription
-
-Use the authorizationStatus method of the CLLocationManager class to check system-authorization status for accessing location data.
-
-To request authorization, use the requestWhenInUseAuthorization or the requestAlwaysAuthorization method.
-
-Microphone
-
-NSMicrophoneUsageDescription
-
-Use the recordPermission method of the AVAudioSession class to check system-authorization status for using device microphones.
-
-To request authorization, use the requestRecordPermission: method.
-
-Motion
-
-NSMotionUsageDescription
-
-Check for a CMErrorNotAuthorized error from the queryActivityStartingFromDate:toDate:toQueue:withHandler: method of the CMMotionActivityManager class to check system-authorization status for accelerometer access.
-
-Music and the media library
-
-NSAppleMusicUsageDescription
-
-Use the authorizationStatus method of the ALAssetsLibrary class to check system-authorization status for accessing media assets.
-
-Photos
-
-NSPhotoLibraryUsageDescription
-
-Use the authorizationStatus method of the PHPhotoLibrary class to check system-authorization status for accessing the photo library.
-
-Reminders
-
-NSRemindersUsageDescription
-
-Use the authorizationStatusForEntityType: method of the EKEventStore class to check system-authorization status for accessing reminder data.
-
-Siri
-
-NSSiriUsageDescription
-
-Use the siriAuthorizationStatus method of the INPreferences class to check system-authorization status for using Siri.
-
-To request authorization for your app to use SiriKit, use the requestSiriAuthorization: method.
-
-Speech recognition
-
-NSSpeechRecognitionUsageDescription
-
-Use the authorizationStatus authorizationStatus method of the SFSpeechRecognizer class to check system-authorization status for using speech recognition.
-
-To request authorization for your app to use speech recognition, use the requestAuthorization method.
-
-TV provider
-
-NSVideoSubscriberAccountUsageDescription
-
-Use the checkAccessStatusWithOptions:completionHandler: method of the VSAccountManager class to check system-authorization status for accessing the user’s video service subscription information.
-
-To request authorization, use the enqueueResourceAuthorizationRequest:completionHandler: method.
-
-Some data and resources are protected by the iOS permission model.
-
-
-
-
+Note that apps should crash if a capability is requried to use which requires a permission without the permission-explanation-text being registered at the info.plist file.
 
 #### Dynamic Analysis
+There are various steps in the analysis process:
+- <TODO: CHECK ENTITLEMENTS FILE ON THE JAILBROKEN DEVICE!!!>
+- Obtain the info.plist file 
+
 
 ### Testing Custom URL Schemes
 
