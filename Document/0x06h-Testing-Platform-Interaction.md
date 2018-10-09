@@ -62,7 +62,8 @@ Note that apps should crash if a capability is requried to use which requires a 
 #### Dynamic Analysis
 There are various steps in the analysis process:
 - <TODO: CHECK ENTITLEMENTS FILE ON THE JAILBROKEN DEVICE!!!>
-- Obtain the info.plist file 
+- Obtain the info.plist file
+- Go through the app and check for any interaction between ios-app-back-end to see if permissions are used for ill-purposes, or are over-asked/under-utilized.
 
 
 ### Testing Custom URL Schemes
