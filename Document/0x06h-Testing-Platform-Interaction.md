@@ -1,14 +1,147 @@
 ## iOS Platform APIs
 
-
 ### Testing App Permissions
 
 #### Overview
+iOS makes all mobile applications run under the `mobile` user. Each of these applications is sandboxed and limitted using policies enforced by the Trusted BSD mandatory access control framework. These policies are called profiles and all third-party applications use on generic sandbox profile: the container permission list. <TODO: ADD REFERENCE TO
+http://www.icri-sc.org/fileadmin/user_upload/Group_TRUST/PubsPDF/sandscout-final-ccs-2016.pdf >.
 
-permission list https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 
+On iOS, apps need to request permission to the user for accessing one of the following data or resources: Bluetooth peripherals, Calendar data, Camera,  Contacts, Health sharing, Health updating, HomeKit, Location, Microphone, Motion, Music and the media library, Photos, Reminders, Siri, Speech recognition, and the TV provider.<TODO: add reference to https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 >
+Even though Apple urges through various sources (such as <https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7>) to protect the privacy of the user, it can still be the case that an app requests too many permissions.
 
+Next to the resources for which permission is requested, there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at <TODO ADD REFERENCE TO https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 here!>. These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. They often do not provide indirect permission. <TODO: CHECK FOR WHICH THIS IS DIFFERENT, SUCH AS INTER-AP COMMUNICATION>.
 
 #### Static analysis
+
+Since iOS 10, there are three areas which you need to inspect for permssions:
+- the `info.plist` file,
+- the `<appname>.enttitlements` file, where <appname> is the name of the application,
+- the source-code.
+
+##### Info.plist
+The `info.plist`file you can find one of the following HVG!!
+
+##### Entitlements file
+
+##### Source code inspection
+- check if the info plist reason is the same
+- check if capabiliteis used do not leak or are abused for other info for other reason than necessary.
+
+Bluetooth peripherals
+
+NSBluetoothPeripheralUsageDescription
+
+Use the state property of the CBCentralManager class to check system-authorization status for using Bluetooth peripherals.
+
+Calendar data
+
+NSCalendarsUsageDescription
+
+Use the authorizationStatusForEntityType: method of the EKEventStore class to check system-authorization status for accessing calendar data.
+
+Camera
+
+NSCameraUsageDescription
+
+Use the deviceInputWithDevice:error: method of the AVCaptureDeviceInput class to check system-authorization status for using device cameras.
+
+Contacts
+
+NSContactsUsageDescription
+
+Use the authorizationStatusForEntityType: method of the CNContactStore class to check system-authorization status for accessing contact data.
+
+Health sharing
+
+NSHealthShareUsageDescription
+
+Use the authorizationStatusForType: method of the HKHealthStore class to check system-authorization status for accessing health data.
+
+To request authorization, use the requestAuthorizationToShareTypes:readTypes:completion: method.
+
+Health updating
+
+NSHealthUpdateUsageDescription
+
+Use the authorizationStatusForType: method of the HKHealthStore class to check system-authorization status for accessing health data.
+
+To request authorization, use the requestAuthorizationToShareTypes:readTypes:completion: method.
+
+HomeKit
+
+NSHomeKitUsageDescription
+
+When your app first attempts to access a property of the HMHomeManager class, the system presents an authorization request to the user.
+
+Location
+
+NSLocationAlwaysUsageDescription, NSLocationWhenInUseUsageDescription
+
+Use the authorizationStatus method of the CLLocationManager class to check system-authorization status for accessing location data.
+
+To request authorization, use the requestWhenInUseAuthorization or the requestAlwaysAuthorization method.
+
+Microphone
+
+NSMicrophoneUsageDescription
+
+Use the recordPermission method of the AVAudioSession class to check system-authorization status for using device microphones.
+
+To request authorization, use the requestRecordPermission: method.
+
+Motion
+
+NSMotionUsageDescription
+
+Check for a CMErrorNotAuthorized error from the queryActivityStartingFromDate:toDate:toQueue:withHandler: method of the CMMotionActivityManager class to check system-authorization status for accelerometer access.
+
+Music and the media library
+
+NSAppleMusicUsageDescription
+
+Use the authorizationStatus method of the ALAssetsLibrary class to check system-authorization status for accessing media assets.
+
+Photos
+
+NSPhotoLibraryUsageDescription
+
+Use the authorizationStatus method of the PHPhotoLibrary class to check system-authorization status for accessing the photo library.
+
+Reminders
+
+NSRemindersUsageDescription
+
+Use the authorizationStatusForEntityType: method of the EKEventStore class to check system-authorization status for accessing reminder data.
+
+Siri
+
+NSSiriUsageDescription
+
+Use the siriAuthorizationStatus method of the INPreferences class to check system-authorization status for using Siri.
+
+To request authorization for your app to use SiriKit, use the requestSiriAuthorization: method.
+
+Speech recognition
+
+NSSpeechRecognitionUsageDescription
+
+Use the authorizationStatus authorizationStatus method of the SFSpeechRecognizer class to check system-authorization status for using speech recognition.
+
+To request authorization for your app to use speech recognition, use the requestAuthorization method.
+
+TV provider
+
+NSVideoSubscriberAccountUsageDescription
+
+Use the checkAccessStatusWithOptions:completionHandler: method of the VSAccountManager class to check system-authorization status for accessing the user’s video service subscription information.
+
+To request authorization, use the enqueueResourceAuthorizationRequest:completionHandler: method.
+
+Some data and resources are protected by the iOS permission model.
+
+
+
+
 
 #### Dynamic Analysis
 
