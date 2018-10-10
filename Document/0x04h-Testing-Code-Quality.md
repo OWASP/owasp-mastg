@@ -216,6 +216,8 @@ webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
 Another example of XSS issues determined by user input is public overriden methods.
 
+Java
+
 ```java
 @Override
 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -223,6 +225,14 @@ public boolean shouldOverrideUrlLoading(WebView view, String url) {
     // parse the URL object and execute functions
   }
 }
+```
+Kotlin
+
+```kotlin
+    fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        if (url.substring(0, 6).equals("yourscheme:", ignoreCase = true)) {
+            // parse the URL object and execute functions
+        }
 ```
 
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
