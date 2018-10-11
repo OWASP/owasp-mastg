@@ -20,14 +20,15 @@ You can also read the MSTG on [Gitbook](https://mobile-security.gitbook.io/mobil
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
-- [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
 
 ### General Testing Guide
 
-- [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
-- [Cryptography in Mobile Apps](Document/0x04g-Testing-Cryptography.md)
 - [Mobile App Authentication Architectures](Document/0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](Document/0x04f-Testing-Network-Communication.md)
+- [Cryptography in Mobile Apps](Document/0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
+- [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
+- [Testing User Education](Document/0x04i-Testing-user-interaction.md)
 
 ### Android Testing Guide
 

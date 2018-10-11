@@ -43,9 +43,9 @@ Top contributors have consistently contributed quality content and have at least
 
 - Pawel Rzepa
 - Francesco Stillavato
-- Andreas Happe
 - Henry Hoggard
 - Andreas Happe
+- Kyle Benac
 - Alexander Anthuk
 - Wen Bin Kong
 - Abdessamad Temmar
@@ -58,7 +58,7 @@ Top contributors have consistently contributed quality content and have at least
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
 Jin Kung Ong, Sjoerd Langkemper,
-Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Kyle Benac, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
+Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, Vikas Gupta, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
@@ -78,6 +78,15 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 ### Others
 
 Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors Github "contributors").
+
+### Sponsors
+
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our sponsors for providing the funds to be able to hire technical editors. Note that their sponsorship does not influence the content of the MASVS or MSTG in any way. The sponsorship packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Sponsorship Packages").
+
+#### Honourable Benefactor
+
+[![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
+
 
 ### Older Versions
 
