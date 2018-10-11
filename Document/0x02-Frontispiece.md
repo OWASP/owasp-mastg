@@ -85,7 +85,7 @@ The Mobile Security Testing Guide could have never gotten the help of technical 
 
 #### Honourable Benefactor
 
-[![Now Secure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
+[![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
 
 
 ### Older Versions
