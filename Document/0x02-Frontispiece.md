@@ -55,7 +55,7 @@ Top contributors have consistently contributed quality content and have at least
 
 ### Contributors
 
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. 
+Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
 Jin Kung Ong, Sjoerd Langkemper,
 Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, Vikas Gupta, David Fern, Pishu Mahtani, Anuruddha E.
@@ -85,7 +85,8 @@ The Mobile Security Testing Guide could have never gotten the help of technical 
 
 #### Honourable Benefactor
 
-[![Now Secure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/)
+[![Now Secure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
+
 
 ### Older Versions
 
