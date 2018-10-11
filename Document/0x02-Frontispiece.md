@@ -43,9 +43,9 @@ Top contributors have consistently contributed quality content and have at least
 
 - Pawel Rzepa
 - Francesco Stillavato
-- Andreas Happe
 - Henry Hoggard
 - Andreas Happe
+- Kyle Benac
 - Alexander Anthuk
 - Wen Bin Kong
 - Abdessamad Temmar
@@ -55,10 +55,10 @@ Top contributors have consistently contributed quality content and have at least
 
 ### Contributors
 
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
+Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. 
 
 Jin Kung Ong, Sjoerd Langkemper,
-Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Kyle Benac, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
+Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, Vikas Gupta, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
