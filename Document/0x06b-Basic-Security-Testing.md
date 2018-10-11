@@ -574,7 +574,7 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 ip.addr == 192.168.1.1 && http
 ```
 
-### Allow application installation on an non-iPad device
+### Allow Application Installation on an Non-Ipad Device
 
 Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
 
