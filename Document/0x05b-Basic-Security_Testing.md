@@ -397,7 +397,7 @@ $ mount -o rw,remount /system;
 $ cp /data/local/tmp/tcpdump /system/xbin/
 ```
 
-If you get the follwoing error, you need to fix the permissions for tcpdump. 
+If you get the following error, you need to fix the permissions for tcpdump. 
 
 ```bash
 # cd /system/xbin/
