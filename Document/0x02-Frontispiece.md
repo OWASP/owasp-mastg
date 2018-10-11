@@ -79,6 +79,14 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors Github "contributors").
 
+### Sponsors
+
+The Mobile Security Testing Guide could have never gotten the help of technical editors if it was not for our sponsors. Currently, the sponsorship packages are described on the [Owasp Projeect Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "Owasp Mobile Security Testing Guide Sponsorship Packages").
+
+#### Honourable Benefactor
+
+[![Now Secure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/)
+
 ### Older Versions
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
