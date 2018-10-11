@@ -574,9 +574,9 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 ip.addr == 192.168.1.1 && http
 ```
 
-### Allow application installation on a non-iPad device
+### Allow application installation on an non-iPad device
 
-Sometimes an application can require to be used on a iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
+Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -593,6 +593,8 @@ Sometimes an application can require to be used on a iPad device. If you only ha
 </plist>  
 ```
 
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
+It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled. 
+
+This bypass might not work if the application requires capabilities that are specific to iPad device.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
