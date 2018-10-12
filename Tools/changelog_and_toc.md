@@ -1,6 +1,6 @@
 # Release notes
 
-Version: [date]
+Version: [DATE]
 
 [RELEASE_NOTES]
 

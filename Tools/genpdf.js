@@ -58,7 +58,7 @@ function preProcessRunningJs() {
   var options = {
     files: "running.js",
     from: "[DATE]",
-    to: "[" + tag + "]"
+    to: "[" + "OWASP Mobile Security Testing Guide: " + tag + "]"
   };
   try {
     const changes = replace.sync(options);
@@ -71,7 +71,7 @@ function preProcessRunningJs() {
 function postProcessRunningJS() {
   const options = {
     files: "running.js",
-    from: "[" + tag + "]",
+    from: "[" + "OWASP Mobile Security Testing Guide: " + tag + "]",
     to: "[DATE]"
   };
   try {
@@ -191,7 +191,6 @@ function runPDF() {
       html: true,
       breaks: true
     },
-
     runningsPath: "running.js",
     cssPath: "pdf.css"
   })

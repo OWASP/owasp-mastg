@@ -4,7 +4,7 @@ type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not install
 # TODO for later releases:
 # 0. fix position of TOC: https://stackoverflow.com/questions/25591517/pandoc-inserting-pages-before-generated-table-of-contents
 # 1. add changelog
-# 2. add [Date] to tag+tag of Date
+# 2. add [DATE] to tag+tag of Date
 
 cd ../Document
 # ../Tools/metadata.yml \
