@@ -133,6 +133,7 @@ It should therefore be verified if a user can change the filename or path from w
 
 #### Overview
 
+
 Starting from iOS version 7.0, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
 
 #### Static Analysis
