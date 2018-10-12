@@ -94,7 +94,7 @@ function preProcessMd() {
   var replacer = through(function(data) {
     this.queue(
       data
-        .replace("[date]", tag)
+        .replace("[DATE]", tag)
         .replace("[RELEASE_NOTES]", releaseNotes)
         .replace("[TOCCCC]", tocRendered)
         .replace("Images/", langdir + "/Images/") + "\n"
@@ -162,7 +162,8 @@ function getPostDocSet() {
     langdir + "0x06j-Testing-Resiliency-Against-Reverse-Engineering.md",
     langdir + "0x07-Appendix.md",
     langdir + "0x08-Testing-Tools.md",
-    langdir + "0x09-Suggested-Reading.md"
+    langdir + "0x09-Suggested-Reading.md",
+    langdir + "SUMMARY.md"
   ];
 }
 function getDocSet() {
@@ -190,6 +191,7 @@ function runPDF() {
       html: true,
       breaks: true
     },
+
     runningsPath: "running.js",
     cssPath: "pdf.css"
   })
