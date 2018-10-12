@@ -516,7 +516,7 @@ sushi2k <sven@bsddaemon.org>
 action == @select(cut:)
 action == @select(copy:)
 ```
-Один из возможных способов для [отключения буфера обмена в iOS](http://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") может быть найден ниже:
+Один из возможных способов для [отключения буфера обмена в iOS](https://stackoverflow.com/questions/1426731/how-disable-copy-cut-select-select-all-in-uitextview "Disable clipboard in iOS") может быть найден ниже:
 
 ```objc
 @interface NoSelectTextField : UITextField
@@ -571,13 +571,13 @@ Needle может быть использован для мониторинга 
 
 #### Обзор
 
-[Inter Process Communication (IPC)](http://nshipster.com/inter-process-communication/ "IPC on iOS")- это метод обмена сообщениями и данными между процессами. В случае, если двум процессам необходимо общение друг с другом, то доступны различные методы реализации IPC на iOS:
+[Inter Process Communication (IPC)](https://nshipster.com/inter-process-communication/ "IPC on iOS")- это метод обмена сообщениями и данными между процессами. В случае, если двум процессам необходимо общение друг с другом, то доступны различные методы реализации IPC на iOS:
 
 - **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC - это структутированная и асинхронная библиотека, предоставляющая базовую межпроцессную коммуникацию, а также управляемая `launchd`. Это самый безопасный и гибкий метод реализации IPC на iOS, он должен быть использован в первую очередь. Данный метод выполняется с максимально-возможной, строгой окружающей средой: минимальный доступ к файловой системе, сети, и нет эскалации привилегий до root. Существует два различных API:
   * NSXPCConnection API
   * XPC Services API
 - **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: вся коммуникация IPC очень сильно завязана на использование Mach Kernel API. Порты Mach разрешают только локальную коммуникацию(на одном устройстве). Они могут быть реализованы нативно или же используя обертки Core Foundation (CFMachPort) и Foundation (NSMachPort).
-- **NSFileCoordinator**: Класс NSFileCoordinator может быть использован для управления и обменом данных между приложениями, используя локальные файлы, которые доступны на локальной файловой системе различным процессам. Методы [NSFileCoordinator](http://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") выполняются синхронно, так что ваш код будет заблокирован до завершения их работы. Это удобно, потому что вам не придется ждать ответа от асинхронной функции, но, очевидно, что синхронный подход блокирует текущий поток.
+- **NSFileCoordinator**: Класс NSFileCoordinator может быть использован для управления и обменом данных между приложениями, используя локальные файлы, которые доступны на локальной файловой системе различным процессам. Методы [NSFileCoordinator](https://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") выполняются синхронно, так что ваш код будет заблокирован до завершения их работы. Это удобно, потому что вам не придется ждать ответа от асинхронной функции, но, очевидно, что синхронный подход блокирует текущий поток.
 
 #### Статический анализ
 

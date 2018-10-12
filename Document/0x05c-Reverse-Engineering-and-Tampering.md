@@ -18,7 +18,7 @@ Make sure that the following is installed on your system:
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
 
-In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Proycon]( http://proycon.com/en/ "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
+In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Proycon]( https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
 
@@ -99,7 +99,7 @@ If you don't mind looking at Smali instead of Java, you can use the [smalidea pl
 
 [APKTool](https://ibotpeaches.github.io/Apktool/ "APKTool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
-You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](http://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
+You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://nilocunger.github.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
 #### Commercial Tools
 
@@ -925,7 +925,7 @@ To bypass the pinning check, add the `return-void` opcode to the first line of e
 
 ##### Patching React Native applications
 
-If the [React Native](http://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
+If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
 
 The following approach can be used in order to patch the JavaScript file:
 
@@ -1014,7 +1014,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 ![Frida](Images/Chapters/0x04/frida.png)
 
-*FRIDA Architecture, source: http://www.frida.re/docs/hacking/*
+*FRIDA Architecture, source: https://www.frida.re/docs/hacking/*
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -1345,7 +1345,7 @@ michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepo
    . . . .       object?   -> Display information about 'object'
    . . . .       exit/quit -> Exit
    . . . .
-   . . . .   More info at http://www.frida.re/docs/home/
+   . . . .   More info at https://www.frida.re/docs/home/
 
 [*] Starting script
 [USB::Android Emulator 5554::sg.vantagepoint.uncrackable1]-> [*] onClick handler modified

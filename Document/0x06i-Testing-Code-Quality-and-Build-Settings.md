@@ -388,7 +388,7 @@ These libraries can have the following two classes of unwanted side-effects:
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
 Note: there are two widely used package management tools: Carthage and CocoaPods.
-Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview. Then the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps. 
+Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
 #### Static Analysis
 

@@ -2,9 +2,9 @@
 
 ## About the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
+The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/). You can sign up for the Slack channel at [http://owasp.herokuapp.com/](http://owasp.herokuapp.com/).
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this invite](https://join.slack.com/t/owasp/shared_invite/enQtNDI5MzgxMDQ2MTAwLTEyNzIzYWQ2NDZiMGIwNmJhYzYxZDJiNTM0ZmZiZmJlY2EwZmMwYjAyNmJjNzQxNzMyMWY4OTk3ZTQ0MzFhMDY "Slack channel sign up"). (Please open a PR if the invite has expired.)
 
 ## Copyright and License
 
@@ -13,7 +13,7 @@ Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative 
 
 ## Acknowledgements
 
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md). We manually update the table, so be patient if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
 
 ### Authors
 
@@ -25,6 +25,10 @@ Bernhard is a cyber security specialist with a talent for hacking systems of all
 
 Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 
+#### Jeroen Willemsen
+
+Jeroen is a principal security architect at Xebia with a passion for mobile security and risk management. He has supported companies as a security coach, a security engineer and as a full-stack developer, which makes him a jack of all trades. He loves explaining technical subjects: from security issues to programming challenges.
+
 ### Co-Authors
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
@@ -33,29 +37,28 @@ Co-authors have consistently contributed quality content and have at least 2,000
 
 Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
 
-#### Jeroen Willemsen
-
-Jeroen is a full-stack developer specializing in IT security at Xebia with a passion for mobile and risk management. Driven by a love for explaining technical subjects, he began as a PHP teacher to undergrad students before moving on to discussing security, risk management, and programming issues to anyone willing to listen and learn.
-
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
 - Pawel Rzepa
 - Francesco Stillavato
-- Andreas Happe
-- Alexander Anthuk
 - Henry Hoggard
+- Andreas Happe
+- Kyle Benac
+- Alexander Anthuk
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
+- Cláudio André
 - Slawomir Kosowski
 
 ### Contributors
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Denis Pilipchuk, Ryan Teoh, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Claudio André, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, David Fern, Pishu Mahtani, Anuruddha E.
+Jin Kung Ong, Sjoerd Langkemper,
+Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, Jeroen Beckers, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Daniel Ramirez Martin, Enrico Verzegnassi, Yogesh Sharma, Dominique Righetto, Raul Siles, Nick Epson, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Carlos Holguera, Vikas Gupta, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
@@ -74,9 +77,16 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Others
 
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on GitHub:
+Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors Github "contributors").
 
-https://github.com/OWASP/owasp-mstg/graphs/contributors
+### Sponsors
+
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our sponsors for providing the funds to be able to hire technical editors. Note that their sponsorship does not influence the content of the MASVS or MSTG in any way. The sponsorship packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Sponsorship Packages").
+
+#### Honourable Benefactor
+
+[![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
+
 
 ### Older Versions
 

@@ -1,11 +1,12 @@
 ## Android Platform Overview
 
-This section introduces the Android platform from the architecture point of view. The following four key areas are discussed:
+This section introduces the Android platform from the architecture point of view. The following five key areas are discussed:
 
 1. Android security architecture
 2. Android application structure
 3. Inter-process Communication (IPC)
 4. Android application publishing
+5. Android Application Attack Surface
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
@@ -480,6 +481,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
     <application>...</application>
 </manifest>
 ```
+
 ###### Declaring Permissions
 
 Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html)  or define its own. A new permission is declared with the <permission>element.
@@ -514,21 +516,31 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 - `android:grantUriPermissions`: true if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and false otherwise
 
 ### Signing and Publishing Process
+
 Once an app has been successfully developed, the next step is to publish and share it with others. However, apps can't simply be added to a store and shared, for several reasons—they must be signed. The cryptographic signature serves as a verifiable mark placed by the developer of the app. It identifies the app’s author and ensures that the app has not been modified since its initial distribution.
+
 #### Signing Process
+
 During development, apps are signed with an automatically generated certificate. This certificate is inherently insecure and is for debugging only. Most stores don't accept this kind of certificate for publishing; therefore, a certificate with more secure features must be created.
 When an application is installed on the Android device, the Package Manager ensures that it has been signed with the certificate included in the corresponding APK. If the certificate's public key matches the key used to sign any other APK on the device, the new APK may share a UID with the pre-existing APK. This facilitates interactions between applications from a single vendor. Alternatively, specifying security permissions for the Signature protection level is possible; this will restrict access to applications that have been signed with the same key.
+
 #### APK Signing Schemes
+
 Android supports two application signing schemes. Starting with Android 7.0, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, APKs signed with the v2 signature format can be installed on older Android devices as long as the former are also v1-signed. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+
 ##### JAR Signing (v1 Scheme)
+
 The original version of app signing implements the signed APK as a standard signed JAR, which must contain all the entries in `META-INF/MANIFEST.MF`. All files must be signed with a common certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback of this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and the verifier discards data the data structures don't cover. Also, the APK verifier must decompress all compressed files, which takes considerable time and memory.
+
 ##### APK Signature Scheme (v2 Scheme)
+
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
 ![Preparation](Images/Chapters/0x05a/apk-validation-process.png)
 [APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
 
 ##### Creating Your Certificate
+
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
 App creators can either reuse an existing private/public key pair that is in an available keystore or generate a new pair.
 In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory):
@@ -538,11 +550,13 @@ keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keysto
 
 Safely storing your secret key and making sure it remains secret during its entire lifecycle is of paramount importance. Anyone who gains access to the key will be able to publish updates to your apps with content that you don't control (thereby adding insecure features or accessing shared content with signature-based permissions). The trust that a user places in an app and its developers is based totally on such certificates; certificate protection and secure management are therefore vital for reputation and customer retention, and secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected with a password; such files are referred to as 'keystores'. Keystore passwords should be strong and known only to the key creator. For this reason, keys are usually stored on a dedicated build machine that developers have limited access to.
 An Android certificate must have a validity period that's longer than that of the associated app (including updated versions of the app). For example, Google Play will require  certificates to remain valid until Oct 22nd, 2033 at least.
+
 ##### Signing an Application
+
 The goal of the signing process is to associate the app file (.apk) with the developer's public key.  To achieve this, the developer calculates a hash of the APK file and encrypts it with their own private key. Third parties can then verify the app's authenticity (e.g., the fact that the app really comes from the user who claims to be the originator) by decrypting the encrypted hash with the author’s public key and verifying that it matches the actual hash of the APK file.
 
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; double-check this in case others are able to access such files and remove the information if necessary.
-Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API 24 and higher) or the Java JDK tool 'jarsigner' (for earlier Android versions). Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
+Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
 ```
 apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
 ```
@@ -561,3 +575,22 @@ Apps can be installed on an Android device from a variety of sources: locally vi
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this minimizes the time between the beginning of the publishing process and public app availability.
 
 Publishing an app is quite straightforward; the main operation is making the signed .apk file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available from the official Android documentation at https://developer.android.com/distribute/googleplay/start.html.
+
+### Android Application Attack surface
+
+The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application can be attacked by:
+- Having unsafe input by means of IPC communication or URL-schemes. See
+  - [Testing for Sensitivie functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc "Testing for Sensitivie functionality Exposure Through IPC");
+  - [Testing URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing URL Schemes").
+- Having unsafe input by the user to input fields.
+- Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
+  -  [Testing javascript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing javascript execution in webviews");
+  - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers "Testing WebView Protocol Handlers");
+  - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews "Determining Whether Java Objects Are Exposed Through WebViews").
+- Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
+  - [Android Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md#android-network-apis "Android Network APIs") .
+- Having insecure or compromised storage. See:
+  - [Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android").
+- Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
+  - [Android Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")

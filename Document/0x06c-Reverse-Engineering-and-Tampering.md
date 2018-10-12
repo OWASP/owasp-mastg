@@ -26,7 +26,7 @@ The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a s
 
 #### Reversing Frameworks
 
-[Radare2](http://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
+[Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
 
 #### Commercial Disassemblers
 
@@ -64,7 +64,7 @@ Save the IPA file locally with the following command:
 
 ###### From Jailbroken Devices
 
-You can use Saurik's [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install `IPA Installer Console` via Cydia. Then, SSH into the device and look up the bundle ID of the target app. For example through listing of the available apps:
+You can use Saurik's [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install `IPA Installer Console` via Cydia. Then, SSH into the device and look up the bundle ID of the target app. For example through listing of the available apps:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -222,49 +222,64 @@ Cydia Substrate (formerly called MobileSubstrate) is the standard framework for 
 First download, unpack, and install the SDK.
 
 ```bash
+
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
 $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
+
 ```
+
 To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
+
 ```bash
 $ cycyript
 cy#
+
 ```
 
 To inject into a running process, we first need to find the process ID (PID). Running "cycript -p" with the PID injects Cycript into the process. To illustrate, we will inject into SpringBoard.
 
 ```bash
+
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
+
 ```
 
 We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript. 		
 
 ```bash
+
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]
+
 ```
 ![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
 
 Find the document directory with Cycript:
+
 ```bash
+
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
+
 ```
 
 Use the following command to get the application's delegate class:
+
 ```bash
 cy# [UIApplication sharedApplication].delegate
 ```
+
 The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow is shown. The indentation space reflects the relationships between views. For example, UILabel, UITextField, and UIButton are subviews of UIView.
 
 ```
+
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
   | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>
@@ -439,7 +454,7 @@ To execute the examples below, you need `FridaGadget.dylib`:
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](http://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
+We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
 
 #### Patching, Repackaging, and Re-Signing
 
@@ -583,7 +598,7 @@ frida_code = """
 
                 // Create an immutable ObjC string object from a JS string object.
                 var str_url = NSString.stringWithString_(myNSURL.toString());
-                NSLog(str_url); 
+                NSLog(str_url);
             } finally {
                 pool.release();
             }
@@ -610,11 +625,11 @@ Please also take a look at the [Frida JavaScript API reference](https://www.frid
 
 ### Patching React Native Applications
 
-If the [React Native](http://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") and the local server are preferable to the online version because the latter discloses the source code to a third party.
+If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") and the local server are preferable to the online version because the latter discloses the source code to a third party.
 
 At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app`, so the main JavaScript application file can be modified at this location.
 
-To identify the exact location of the application folder, you can use the tool [ipainstaller](http://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller"):
+To identify the exact location of the application folder, you can use the tool [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller"):
 
 1. Use the command `ipainstaller -l` to list the applications installed on the device. Get the name of the target application from the output list.
 2. Use the command `ipainstaller -i [APP_NAME]` to display information about the target application, including the installation and data folder locations.

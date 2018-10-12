@@ -1,6 +1,12 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS.
+iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from the architecture point of view. The following five key areas are discussed:
+
+1. iOS security architecture
+2. iOS application structure
+3. Inter-process Communication (IPC)
+4. iOS application publishing
+5. iOS Application Attack Surface
 
 Like the Apple desktop operating system macOS (formerly OS X), iOS is based on Darwin, an open source Unix operating system developed by Apple. Darwin's  kernel is XNU ("X is Not Unix"), a hybrid kernel that combines components of the Mach and FreeBSD kernels.
 
@@ -140,13 +146,14 @@ The following figure represents the application folder structure:
 
 #### The Installation Process
 
-Different methods exist for installing an IPA package onto an iOS device. The easiest method is iTunes, which is Apple's default media player. iTunes is available for macOS and Windows. iTunes allows users to download applications from the App Store and install them to an iOS device. You can also use [iTunes to install an IPA file to a device](https://www.youtube.com/watch?v=nNn85Qvznug "How to install an app via iTunes").
+Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
-On Linux, you can use [libimobiledevice](http://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+
+On Linux, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
 On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store. It contains numerous useful applications that leverage jailbreak-provided root privileges  to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
 
-The IPA can also be directly installed at the command line by with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After you copy the IPA to the device using, for example, scp (secure copy), you can execute the ipainstaller with the IPA's filename:
+The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
 ```bash
 $ ipainstaller App_name.ipa
@@ -174,3 +181,20 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Bluetooth sharing
 - Media Library
 - Social media accounts
+
+### iOS Application Attack surface
+
+The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application can be attacked by:
+- Having unsafe input by means of IPC communication or URL-schemes. See
+  - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
+- Having unsafe input by the user to input fields.
+- Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
+  HVG!!!
+  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews#testing-javascript-execution-in-webviews "Testing iOS webviews");
+- Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
+  - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
+- Having insecure or compromised storage. See:
+  - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
+- Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
+  - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")

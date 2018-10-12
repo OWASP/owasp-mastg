@@ -68,7 +68,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 - [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
 - [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
-- [Redmond Pie](http://www.redmondpie.com/ "Redmone Pie")
+- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
 > Note that OWASP and the MSTG won't be responsible if you end up bricking your iOS device!
@@ -109,7 +109,7 @@ The following are some useful packages you can install from Cydia to get started
 
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
-- [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
 - Substrate: A platform that makes developing third-party iOS add-ons easier.
 - cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes.
@@ -120,14 +120,14 @@ The following are some useful packages you can install from Cydia to get started
 Your workstation should have at least the following installed:
 
 - an SSH client
-- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp).
+- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
 
 Other useful tools we'll be referring throughout the guide:
 
-- [Introspy](https://github.com/iSECPartners/Introspy-iOS)
-- [Frida](http://www.frida.re)
-- [IDB](http://www.idbtool.com)
-- [Needle](https://github.com/mwrlabs/needle)
+- [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS")
+- [Frida](https://www.frida.re "Frida")
+- [IDB](https://www.idbtool.com "IDBTool")
+- [Needle](https://github.com/mwrlabs/needle "Needle")
 
 ### Static Analysis
 
@@ -306,7 +306,7 @@ You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecur
 
 #### App Folder Structure
 
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](http://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
+System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -422,7 +422,7 @@ PID  Name
 (...)
 ```
 
-We`ll demonstrate a few more uses for Frida below.
+We will demonstrate a few more uses for Frida below.
 
 ### Method Tracing with Frida
 
@@ -466,6 +466,7 @@ We now have all the information we need to write a Frida script that intercepts 
 
 
 ```python
+
 import sys
 import frida
 
@@ -474,7 +475,7 @@ import frida
 frida_code = """
 
 	// Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest["- initWithURL:];
+    var URL = ObjC.classes.NSURLRequest[- initWithURL:];
 
     // Intercept the method
     Interceptor.attach(URL.implementation, {
@@ -504,6 +505,7 @@ script.on('message', message_callback)
 script.load()
 
 sys.stdin.read()
+
 ```
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
@@ -571,3 +573,28 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 ```shell
 ip.addr == 192.168.1.1 && http
 ```
+
+### Allow Application Installation on an Non-Ipad Device
+
+Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <key>UIDeviceFamily</key>
+  <array>
+    <integer>1</integer>
+  </array>
+
+</dict>
+</plist>  
+```
+
+It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled. 
+
+This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
+
+Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
