@@ -133,26 +133,30 @@ It should therefore be verified if a user can change the filename or path from w
 
 #### Overview
 
-Starting from iOS version 7.0, Apple also introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
+Starting from iOS version 7.0, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
 
 #### Static Analysis
 
 Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
 
-Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
+Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
-``objc
+```obj-c
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
-``
+```
 
-- Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function;
-- JSExport protocol: Properties, instance methods, and class methods declared in a JSExport-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
+There are two fundamental ways of how native code and JavaScript can communicate:
+
+- **JSContext**: When an Objective-C or Swift block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function;
+- **JSExport protocol**: Properties, instance methods, and class methods declared in a JSExport-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
 
 Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
 
 #### Dynamic Analysis
 
-Dynamic analysis of the app can show you which HTML or JavaScript files are loaded and which vulnerabilities are present. The procedure for exploiting the vulnerability starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via a MITM attack. See an example for a vulnerable iOS in [#THIEL] page 156 following. 
+Dynamic analysis of the app can show you which HTML or JavaScript files are loaded while using the app. You would need to find all webviews in the iOS app in order to get an overview of the potential attack surface.
+
+Usage of the JSContext and JSExport ideally should be identified through static analysis and also which functions are exposed and present in a webview. The procedure for exploiting the functions starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via a MITM attack. See an example for a vulnerable iOS app and function that is exposed to a webview in [#THIEL] page 156 following.
 
 
 ### Testing iOS WebViews
