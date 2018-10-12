@@ -226,7 +226,7 @@ For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are lis
 
 #### Permisson Analysis
 
-Always check whether the application is requesting sensible permissions. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
 #### Dynamic Analysis
 
