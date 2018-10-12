@@ -285,7 +285,7 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
 
-### Testing Local Storage for input validation
+### Testing Local Storage for Input Validation
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 > Note: Similar holds for private accessible data on a rooted device
 

@@ -3,13 +3,12 @@
 ### Testing App Permissions
 
 #### Overview
-iOS makes all mobile applications run under the `mobile` user. Each application is sandboxed and limited using policies enforced by the Trusted BSD mandatory access control framework. These policies are called profiles and all third-party applications use on generic sandbox profile: the container permission list. <TODO: ADD REFERENCE TO
-http://www.icri-sc.org/fileadmin/user_upload/Group_TRUST/PubsPDF/sandscout-final-ccs-2016.pdf >.
+iOS makes all mobile applications run under the `mobile` user. Each application is sandboxed and limited using policies enforced by the Trusted BSD mandatory access control framework. These policies are called profiles and all third-party applications use on generic sandbox profile: the container permission list. See the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html "Apple Developer Documentation on Sandboxing") and the [newer Apple Developer Security Documentation](https://developer.apple.com/documentation/security "Apple Developer Security Documentation") for more details.
 
-On iOS, apps need to request permission to the user for accessing one of the following data or resources: Bluetooth peripherals, Calendar data, Camera, Contacts, Health sharing, Health updating, HomeKit, Location, Microphone, Motion, Music and the media library, Photos, Reminders, Siri, Speech recognition, and the TV provider.<TODO: add reference to https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 >
-Even though Apple urges through various sources (such as <https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7>) to protect the privacy of the user, it can still be the case that an app requests too many permissions.
+On iOS, apps need to request permission to the user for accessing one of the following data or resources: Bluetooth peripherals, Calendar data, Camera, Contacts, Health sharing, Health updating, HomeKit, Location, Microphone, Motion, Music and the media library, Photos, Reminders, Siri, Speech recognition, and the TV provider. for more details, check the [Archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings") and the article [Protecting the User's Privacy at Apples Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy")
+Even though Apple urges to protect the privacy of the user and be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many permissions.
 
-Next to the resources for which permission is requested, there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at <TODO ADD REFERENCE TO https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 here!>. These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. They often do not provide implicit permission (TODO: EXPLAIN WHAT IMPLICIT IS: NO USER INTERACTION THERE!). <TODO: CHECK FOR WHICH THIS IS DIFFERENT, SUCH AS INTER-AP COMMUNICATION>. Note that the actual available capabilities differ per type of developer profile used to sign the application (https://developer.apple.com/support/app-capabilities/).
+Next to the resources for which permission is requested, there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 "UIRequiredDeviceCapabilities"). These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. Many of these capabilities do not require the user to provide permission. Note that the actual available capabilities differ per type of developer profile used to sign the application. See [the Apple Developer Documentation](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities") for more details.
 
 #### Static analysis
 
@@ -32,10 +31,8 @@ For example, when you have a info.plist file, for a Solitair game which has, at 
 Should be suspicious as a normal solitair game probably does not have any need for accessing the camera nor a user his health-records.
 Note that from iOS 10 onward you need to provide explanation in terms of these \*Description fields. See table 1-2 at the [Apple app programming guide](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Apple app programming guide") for a more complete overview of different keys to look for.
 
-<TODO: QUESTION: SHOULD I CREATE A COPY OF THE TABLE REPRESENTED AT THE LINKS ABOVE? OR JUST REFER TO THEM?>
-
 ##### Entitlements file
-The entitlements file shows which capabilities are used. Some of these capabilities do not need any additional permissions provided by the user, but can still leak information to other apps. Take the App Groups capability https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html https://developer.apple.com/documentation/foundation/com_apple_security_application-groups?changes=_5&language=objc for instance. With this capability, one can share information between different apps through IPC or a shared file container (https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12), which means that data can be shared on the device directly between the apps. Here is an example of an application entitlement file with the app-group capability:
+The entitlements file shows which capabilities are used. Some of these capabilities do not need any additional permissions provided by the user, but can still leak information to other apps. Take the App Groups capability for instance. As documented at [Apple Developer documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Handling Common Scenarios") and [App Groups Entitlement](https://developer.apple.com/documentation/foundation/com_apple_security_application-groups?changes=_5&language=objc "Appl Groups Entitlement"). With this capability, one can share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps. Here is an example of an application entitlement file with the app-group capability:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -49,7 +46,8 @@ The entitlements file shows which capabilities are used. Some of these capabilit
 </plist>
 
 ```
-<TODO: QUESTION: SHOULD I CREATE A COPY OF THE TABLE REPRESENTED AT THE LINKS ABOVE? OR JUST REFER TO THEM?>
+
+Note that this requirement is not always necessary to "bleed" information from one application to another. You can have a back-end as a medium between two applications to share information as well.
 
 ##### Source code inspection
 After having checked the <appname>.entitlements file and the info.plist file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code-review should be enough.
@@ -60,8 +58,8 @@ Pay attention to:
 Note that apps should crash if a capability is requried to use which requires a permission without the permission-explanation-text being registered at the info.plist file.
 
 #### Dynamic Analysis
-There are various steps in the analysis process:
-- <TODO: CHECK ENTITLEMENTS FILE ON THE JAILBROKEN DEVICE!!!>
+There are various steps in the analysis process: <TODO: fix the rest!)
+- Check the embedded.mobileprovision file and the <appname>.entitlements file.
 - Obtain the info.plist file
 - Go through the app and check for any interaction between ios-app-back-end to see if permissions are used for ill-purposes, or are over-asked/under-utilized.
 

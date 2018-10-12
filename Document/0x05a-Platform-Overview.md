@@ -200,7 +200,7 @@ The relationship between group IDs and permissions is defined in the file [frame
 
 Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. This separation adds a layer of security.
 
-Installation of a new app creates a new directory named after the app package— `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
+Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
