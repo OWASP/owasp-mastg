@@ -595,6 +595,6 @@ Sometimes an application can require to be used on an iPad device. If you only h
 
 It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled. 
 
-This bypass might not work if the application requires capabilities that are specific to iPad device.
+This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
