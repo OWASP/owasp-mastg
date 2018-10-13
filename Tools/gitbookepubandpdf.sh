@@ -10,3 +10,5 @@ gitbook install ../
 gitbook pdf ../ ../Generated/MSTG-eng.pdf
 gitbook epub ../ ../Generated/MSTG-eng.epub
 gitbook mobi ../ ../Generated/MSTG-eng.mobi
+
+echo "We are done: please do not forget to update the leanpub update!"
