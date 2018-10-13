@@ -1,91 +1,10 @@
 ## iOS Platform APIs
 
-### Testing App Permissions
-
-#### Overview
-iOS makes all mobile applications run under the `mobile` user. Each application is sandboxed and limited using policies enforced by the Trusted BSD mandatory access control framework. These policies are called profiles and all third-party applications use on generic sandbox profile: the container permission list. See the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html "Apple Developer Documentation on Sandboxing") and the [newer Apple Developer Security Documentation](https://developer.apple.com/documentation/security "Apple Developer Security Documentation") for more details.
-
-On iOS, apps need to request permission to the user for accessing one of the following data or resources:
-- Bluetooth peripherals,
-- Calendar data,
-- Camera,
-- Contacts,
-- Health sharing,
-- Health updating,
-- HomeKit,
-- Location,
-- Microphone,
-- Motion,
-- Music and the media library,
-- Photos,
-- Reminders,
-- Siri,
-- Speech recognition,
-- the TV provider.
-For more details, check the [Archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings") and the article [Protecting the User's Privacy at Apples Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy")
-Even though Apple urges to protect the privacy of the user and be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many permissions.
-
-Next to the resources for which permission is requested there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 "UIRequiredDeviceCapabilities"). These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. Many of these capabilities do not require the user to provide permission. Note that the actual available capabilities differ per type of developer profile used to sign the application. See [the Apple Developer Documentation](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities") for more details.
-
-#### Static analysis
-
-Since iOS 10, there are three areas which you need to inspect for permssions:
-- the Info.plist file,
-- the `<appname>.enttitlements` file, where <appname> is the name of the application
-- the source-code.
-
-##### Info.plist
-The Info.plist contains the texts offered to users when requesting permissioin to access the protected data or resources. The [Apple Documentation](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permission") gives a clear instruction on how the user should be asked for permission to access the given resource. Following these guidelines should make it relatively simple to evaluate each and every entry in the Info.plist file to check if the permission makes sense.
-For example, when you have a Info.plist file, for a Solitair game which has, at least, the following content:
-
-```xml
-<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
-<string>Share your health data with us!</string>
-<key>NSCameraUsageDescription</key>
-<string>We want to access your camera</string>
-
-```
-Should be suspicious as a normal solitair game probably does not have any need for accessing the camera nor a user's health-records.
-Note that from iOS 10 onward you need to provide explanation in terms of these \*Description fields. See table 1-2 at the [Apple app programming guide](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Apple app programming guide") for a more complete overview of different keys to look for.
-
-##### Entitlements file
-The entitlements file shows which capabilities are used. Some of these capabilities do not need any additional permissions provided by the user, but can still leak information to other apps. Take the App Groups capability for instance. As documented at [Apple Developer documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Handling Common Scenarios") and [App Groups Entitlement](https://developer.apple.com/documentation/foundation/com_apple_security_application-groups?changes=_5&language=objc "Appl Groups Entitlement"). With this capability, one can share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps. Here is an example of an application entitlement file with the app-group capability:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>com.apple.security.application-groups</key>
-  <!-- Note: this array contains all the capabilities registered for the app. -->
-  <array/>
-</dict>
-</plist>
-
-```
-
-Note that this requirement is not always necessary to "bleed" information from one application to another. You can have a back-end as a medium between two applications to share information as well.
-
-##### Source code inspection
-After having checked the <appname>.entitlements file and the Info.plist file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code-review should be enough.
-Pay attention to:
-- whether the permission explanation in the Info.plist file matches the programmatic implementation.
-- whether the capabilities registered are used in such a way that no confidential information is leaking.
-
-Note that apps should crash if a capability is requried to use which requires a permission without the permission-explanation-text being registered at the Info.plist file.
-
-#### Dynamic Analysis
-There are various steps in the analysis process:
-- Check the embedded.mobileprovision file and the <appname>.entitlements file and see which capbilities they contain.
-- Obtain the Info.plist file and check for which permissions it provided an explanation.
-- Go through the application and check whether the application communicates with other applications or with back-ends. Check whether the information retrieved using the permissions and capbilities are used for ill-purposed or are over-asked/under-utilized.
-
-
 ### Testing Custom URL Schemes
 
 #### Overview
 
-In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html): file transfer through AirDrop and custom URL schemes.
+In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html "Inter-App Communication"): file transfer through AirDrop and custom URL schemes.
 
 Custom URL schemes allow apps to communicate via a custom protocol. An app must declare support for the scheme and handle incoming URLs that use the scheme. Once the URL scheme is registered, other apps can open the app that registered the scheme, and pass parameters by creating appropriately formatted URLs and opening them with the `openURL` method.
 
@@ -97,7 +16,7 @@ Attackers exploited this vulnerability by putting an invisible `<iframe src="sky
 
 #### Static Analysis
 
-The first step to test custom URL schemes is finding out whether an application registers any protocol handlers. This information is in the file `Info.plist` in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to the `Info` tab, and open the `URL Types` section, presented in the screenshot below.
+The first step to test custom URL schemes is finding out whether an application registers any protocol handlers. This information is in the file `info.plist` in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to the `Info` tab, and open the `URL Types` section, presented in the screenshot below.
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
@@ -180,7 +99,7 @@ By default WKWebView disables file access. If one or more of the above methods i
 
 Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc) method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL") method.
 
 Objective-C:
 ```
@@ -194,7 +113,7 @@ webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
 
 The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
 
-Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html) in the HTML page and will then not be interpreted by the WebView.
+Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html "Phone Links on iOS") in the HTML page and will then not be interpreted by the WebView.
 
 Use the following best practices as defensive-in-depth measures:
 - Create a whitelist that defines local and remote web pages and schemas that are allowed to be loaded.
@@ -208,53 +127,22 @@ If it's possible to load local files via a WebView, the app might be vulnerable 
 
 It should therefore be verified if a user can change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
 
-
-
-### Determining Whether Native Methods Are Exposed Through WebViews
-
-#### Overview
-
-
-Starting from iOS version 7.0, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
-
-#### Static Analysis
-
-Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
-
-Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
-
-```obj-c
-[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
-```
-
-There are two fundamental ways of how native code and JavaScript can communicate:
-
-- **JSContext**: When an Objective-C or Swift block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function;
-- **JSExport protocol**: Properties, instance methods, and class methods declared in a JSExport-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
-
-Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
-
-#### Dynamic Analysis
-
-Dynamic analysis of the app can show you which HTML or JavaScript files are loaded while using the app. You would need to find all webviews in the iOS app in order to get an overview of the potential attack surface.
-
-Usage of the JSContext and JSExport ideally should be identified through static analysis and also which functions are exposed and present in a webview. The procedure for exploiting the functions starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via a MITM attack. See an example for a vulnerable iOS app and function that is exposed to a webview in [#THIEL] page 156 following.
-
-
 ### Testing iOS WebViews
 
 #### Overview
 
 WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface.
 
-iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
+iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. Starting from iOS version 7.0, Apple also introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C app. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
+
+Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
 
 #### Static Analysis
 
 Look out for usages of the following classes that implement WebViews:
 
-- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview) (for iOS versions 7.1.2 and older)
-- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview) (for iOS in version 8.0 and later)
+- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
+- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later)
 - [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
 
 `UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
@@ -307,6 +195,25 @@ As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly 
 
 JavaScript cannot be disabled in `SafariViewController` and this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface.
 
+##### Exposure of Native Objects
+
+Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
+
+###### UIWebView
+
+Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime.
+
+A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
+
+``objc
+[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
+``
+
+- Objective-C blocks. When an Objective-C block is assigned to an identifier in a JSContext, JavaScriptCore automatically wraps the block in a JavaScript function;
+- JSExport protocol: Properties, instance methods, and class methods declared in a JSExport-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
+
+Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
+
 ###### WKWebView
 
 In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system. JavaScript code can send messages back to the native app using the 'postMessage' method:
@@ -350,7 +257,7 @@ In WKWebViews it is possible to detect mixed content or content that was complet
 
 To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj ) and the chapter for more information.
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
 
 ### References
 
@@ -371,7 +278,7 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
+- CWE-939: Improper Authorization in Handler for Custom URL Scheme
 
 #### Tools
 
