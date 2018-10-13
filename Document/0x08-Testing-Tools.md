@@ -142,7 +142,7 @@ The applications listed below can be used as training materials.
 - [OMTG Android app](https://github.com/OWASP/MSTG-Hacking-Playground) - is a vulnerable Android application with vulnerabilities similar to the testcases described in this document.
 - [Digitalbank](https://github.com/CyberScions/Digitalbank) - a vulnerable app which comes from 2015, can be used on older Android platforms. Note: this is not tested by the authors.
 - [DIVA Android](https://github.com/payatu/diva-android) - is an App intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
-- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - is a vulnerable Android application is named and is made for security enthusiasts and developers to learn the Android insecurities by testing this vulnerable application. It has been updated in 2018 and contains over 25 vulnerabilities.
+- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 ) - is a vulnerable Android application is named and is made for security enthusiasts and developers to learn the Android insecurities by testing this vulnerable application. It has been updated in 2018 and contains over 25 vulnerabilities.
 - [DodoVulnerableBank](https://github.com/CSPF-Founder/DodoVulnerableBank) - An insecure Android app from 2015. Note: this is not tested by the authors.
 
 
@@ -151,5 +151,5 @@ The applications listed below can be used as training materials.
 
 - [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) - is a set of applications to test your iOS application hacking skills.
 - [Myriam](https://github.com/GeoSn0w/Myriam) - A vulnerable iOS app with iOS security challenges.
-- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/).
+- [DVIA](https://github.com/prateek147/DVIA ) - A vulnerable iOS app, written in objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/).
 - [DVIA-V2](https://github.com/prateek147/DVIA-v2) - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.

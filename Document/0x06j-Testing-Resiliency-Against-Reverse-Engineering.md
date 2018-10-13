@@ -132,7 +132,7 @@ Now, imagine that the application is closing immediately after detecting that th
 **[Frida](https://www.frida.re/)** is a dynamic instrumentation framework that allows you to use a JavaScript API to instrument apps. One feature that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
 1.	Make sure that `frida-server` is running on your iDevice.
-2.	Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
+2.	Make sure that `Frida` is [installed](https://www.frida.re/docs/installation/ ) on your workstation.
 3.	iOS device must be connected via USB cable.
 4.	Use `frida-trace` on your workstation:
 
@@ -530,7 +530,7 @@ A similar approach works. Answer the following questions:
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the keychain, or using Google's InstanceID for iOS. See the section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html ), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the keychain, or using Google's InstanceID for iOS. See the section for more details.
 
 #### Static Analysis
 

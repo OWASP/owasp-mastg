@@ -2,7 +2,7 @@
 
 ### Swift and Objective-C
 
-Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
+Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ ) and other reverse engineering tools) easy. This is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift).
 
@@ -14,7 +14,7 @@ The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a s
 
 #### Utilities
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump")
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ )
 
 - [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
@@ -30,13 +30,13 @@ The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a s
 
 #### Commercial Disassemblers
 
-IDA Pro can deal with iOS binaries. It has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, [Hopper]( https://www.hopperapp.com/ "Hopper") offers similar static analysis features.
+IDA Pro can deal with iOS binaries. It has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, [Hopper](https://www.hopperapp.com/ ) offers similar static analysis features.
 
 ### Reverse Engineering iOS Apps
 
 iOS reverse engineering is a mixed bag. On one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called via dynamic function pointers called "selectors," which are resolved by name during run time. The advantage of run-time name resolution is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also means that no direct cross-references between methods are available in the disassembler and constructing a flow graph is challenging.
 
-In this guide, we'll introduce static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the [OWASP UnCrackable Apps for iOS]( https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios "OWASP UnCrackable Apps for iOS"), so download them from the MSTG repository if you're planning to follow the examples.
+In this guide, we'll introduce static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the [OWASP UnCrackable Apps for iOS](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios ), so download them from the MSTG repository if you're planning to follow the examples.
 
 #### Static Analysis
 
@@ -351,7 +351,7 @@ We'll demonstrate a few more uses for Frida below, but let's first look at what 
 
 #### Automated Repackaging with Objection
 
-[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter.
+[Objection](https://github.com/sensepost/objection ) is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter.
 We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki).
 
 #### Manual Repackaging
@@ -360,7 +360,7 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, BundleIDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 
-We'll use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/) has described an alternative repackaging method.
+We'll use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ ). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/) has described an alternative repackaging method.
 
 To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
@@ -524,7 +524,7 @@ PID  Name
 
 #### Troubleshooting
 
-When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html) is also a useful resource.
+When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html ) helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html) is also a useful resource.
 
 
 ### Method Tracing with Frida
@@ -618,14 +618,14 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 ![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/) of Frida usage on iOS.
+Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ ) and [examples](https://www.frida.re/docs/examples/ios/) of Frida usage on iOS.
 
 Please also take a look at the [Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/).
 
 
 ### Patching React Native Applications
 
-If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/) and the local server are preferable to the online version because the latter discloses the source code to a third party.
+If the [React Native](https://facebook.github.io/react-native) framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/) and the local server are preferable to the online version because the latter discloses the source code to a third party.
 
 At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app`, so the main JavaScript application file can be modified at this location.
 

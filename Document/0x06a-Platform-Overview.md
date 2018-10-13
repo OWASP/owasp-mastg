@@ -130,7 +130,7 @@ A language.lproj folder exists for each language that the application supports. 
 
 ![iOS App Folder Structure](Images/Chapters/0x06a/iOS_project_folder.png)
 
-On a jailbroken device, you can recover the IPA for an installed iOS app with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/).
+On a jailbroken device, you can recover the IPA for an installed iOS app with [IPA Installer](https://github.com/autopear/ipainstaller). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/) or [Testflight](https://developer.apple.com/testflight/).
 
 #### App Structure on the iOS File System
 
@@ -146,10 +146,10 @@ The following figure represents the application folder structure:
 
 #### The Installation Process
 
-Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/).
+Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ ). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/).
 
 
-On Linux, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux), which provides a TCP tunnel over USB.
+On Linux, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ ), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux), which provides a TCP tunnel over USB.
 
 On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store. It contains numerous useful applications that leverage jailbreak-provided root privileges  to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
 

@@ -167,7 +167,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
    * x86: compiled code for x86 processors only
    * x86_64: compiled code for x86_64 processors only
    * mips: compiled code for MIPS processors
-- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs](https://developer.android.com/training/basics/data-storage/shared-preferences.html).
 
 #### Linux UID/GID for Normal Applications
 
@@ -220,7 +220,7 @@ Developers who want their apps to share a common sandbox can sidestep sandboxing
 
 ##### Zygote
 
-The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service for launching apps. The Zygote process is a process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket ` /dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
+The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run ). Zygote is a system service for launching apps. The Zygote process is a process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket ` /dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
 
 ##### App Lifecycle
 
@@ -586,7 +586,7 @@ The Android application attack surface consists of all components of the applica
 - Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
   -  [Testing javascript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews);
   - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers);
-  - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews "Determining Whether Java Objects Are Exposed Through WebViews").
+  - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews).
 - Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication);
   - [Android Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md#android-network-apis) .

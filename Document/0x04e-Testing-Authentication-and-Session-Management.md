@@ -33,7 +33,7 @@ The number of authentication procedures implemented by mobile apps depends on th
 
 For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leech Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
 
-You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md), the MASVS lists the following authentication requirements:
+You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md) as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following authentication requirements:
 
 - If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
 - A password policy exists and is enforced at the remote endpoint.
@@ -163,7 +163,7 @@ function(password) {
 },
 ```
 
-For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). [zxcvbn](https://github.com/dropbox/zxcvbn) is a common library that can be used for estimating password strength is. It is available for many programming languages.
+For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls ). [zxcvbn](https://github.com/dropbox/zxcvbn) is a common library that can be used for estimating password strength is. It is available for many programming languages.
 
 ##### Running a Password Dictionary Attack
 

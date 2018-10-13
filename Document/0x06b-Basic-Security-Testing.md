@@ -139,7 +139,7 @@ The static analysis instructions in the following chapters are based on the assu
 
 #### Automated Static Analysis Tools
 
-Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the appendix.
+Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) and [Needle](https://github.com/mwrlabs/needle) have some static and dynamic analysis functionality. Additional tools are listed in the 'Static Source Code Analysis' section of the appendix.
 
 Don't shy away from using automated scanners for your analysis-they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
@@ -512,7 +512,7 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 ![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS.
+Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/) and [examples](https://www.frida.re/docs/examples/ios/) for using Frida on iOS.
 
 ### Monitoring Console Logs
 
@@ -535,7 +535,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-Portswigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device).
+Portswigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp ) and a [tutorial on installing Burp's CA certificate to an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device).
 
 #### Bypassing Certificate Pinning
 
@@ -576,7 +576,7 @@ ip.addr == 192.168.1.1 && http
 
 ### Allow Application Installation on an Non-Ipad Device
 
-Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
+Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -593,7 +593,7 @@ Sometimes an application can require to be used on an iPad device. If you only h
 </plist>  
 ```
 
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled. 
+It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
 
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
 

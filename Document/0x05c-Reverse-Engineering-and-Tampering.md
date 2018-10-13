@@ -18,7 +18,7 @@ Make sure that the following is installed on your system:
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
 
-In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Proycon]( https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
+In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/), [JAD](http://www.javadecompilers.com/jad), [Proycon](https://bitbucket.org/mstrobel/procyon/overview), and [CFR](http://www.benf.org/other/cfr/). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
 
@@ -93,13 +93,13 @@ BAZ5ORFARKOZYDFA	device
 
 With a little effort, you can build a reasonable GUI-based reverse engineering environment for free.
 
-For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbrains.com/idea/ "IntelliJ IDEA"), a relatively lightweight IDE that works great for browsing code and allows basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow, and complicated to use, [Eclipse](https://eclipse.org/ide/) is the right IDE for you (based on the author's personal bias).
+For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbrains.com/idea/ ), a relatively lightweight IDE that works great for browsing code and allows basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow, and complicated to use, [Eclipse](https://eclipse.org/ide/) is the right IDE for you (based on the author's personal bias).
 
 If you don't mind looking at Smali instead of Java, you can use the [smalidea plugin for IntelliJ](https://github.com/JesusFreke/smali/wiki/smalidea) for debugging. Smalidea supports single-stepping through the bytecode and identifier renaming, and it watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
-[APKTool](https://ibotpeaches.github.io/Apktool/ "APKTool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+[APKTool](https://ibotpeaches.github.io/Apktool/ ) is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
-You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://nilocunger.github.io/). You'll find usage examples for many of these free tools and frameworks throughout the guide.
+You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org) and [Angr](https://nilocunger.github.io/). You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
 #### Commercial Tools
 
@@ -111,7 +111,7 @@ Although working with a completely free setup is possible, you should consider i
 
 ##### IDA Pro
 
-[IDA Pro]( https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
+[IDA Pro](https://www.hex-rays.com/products/ida/ ) is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
 
 ### Reverse Engineering
 
@@ -925,7 +925,7 @@ To bypass the pinning check, add the `return-void` opcode to the first line of e
 
 ##### Patching React Native applications
 
-If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/) or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
+If the [React Native](https://facebook.github.io/react-native) framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery) a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/) or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
 
 The following approach can be used in order to patch the JavaScript file:
 
@@ -938,7 +938,7 @@ The following approach can be used in order to patch the JavaScript file:
 
 #### Hooking Java Methods with Xposed
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a  Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/) to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
 
 To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
 
@@ -1005,7 +1005,7 @@ Just like regular Android apps, modules for Xposed are developed and deployed wi
 
 #### Dynamic Instrumentation with FRIDA
 
-[Frida](https://www.frida.re "frida") Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
+[Frida](https://www.frida.re ) Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
 
 Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
 In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app, Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a dynamically generated library file that contains the Frida agent and instrumentation code. The hijacked thread resumes after being restored to its original state, and process execution continues as usual.

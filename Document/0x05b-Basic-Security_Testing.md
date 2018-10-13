@@ -138,7 +138,7 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
 
-Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms).
+Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo) and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms).
 
 ### Testing Methods
 
@@ -379,7 +379,7 @@ This will install any module that matches your query. Newly installed modules ar
 
 #### Network Monitoring/Sniffing
 
- [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html):
+ [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ ). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html):
 
 ```
 # adb root
@@ -397,7 +397,7 @@ $ mount -o rw,remount /system;
 $ cp /data/local/tmp/tcpdump /system/xbin/
 ```
 
-If you get the following error, you need to fix the permissions for tcpdump. 
+If you get the following error, you need to fix the permissions for tcpdump.
 
 ```bash
 # cd /system/xbin/
@@ -522,10 +522,10 @@ Discuss with your project team the possibility of providing a debug build for th
 
 If the app implements certificate pinning, C.509 certificates provided by an interception proxy will be declined and the app will refuse to make any requests through the proxy. To perform an efficient white box test, use a debug build with deactivated certificate pinning.
 
-There are several ways to bypass certificate pinning for a black box test, for example, [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") and [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller). Certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a framework or library that those tools don't yet implement, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+There are several ways to bypass certificate pinning for a black box test, for example, [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed) and [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller). Certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a framework or library that those tools don't yet implement, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
 
 There are two ways to manually deactivate SSL Pinning:
-- Dynamic Patching with [Frida](https://www.frida.re/docs/android/ "Frida") or [ADBI](https://github.com/crmulliner/adbi) while running the app
+- Dynamic Patching with [Frida](https://www.frida.re/docs/android/) or [ADBI](https://github.com/crmulliner/adbi) while running the app
 - [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/)
 
 Deactivating SSL Pinning satisfies the prerequisites for dynamic analysis, after which the app's communication can be investigated.

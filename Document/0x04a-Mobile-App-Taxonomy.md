@@ -37,7 +37,7 @@ Following is a non-exhaustive list of more popular frameworks for developing *hy
 - [Ionic](https://ionicframework.com/)
 - [jQuery Mobile](https://jquerymobile.com/)
 - [Native Script](https://www.nativescript.org/)
-- [Onsen UI]( https://onsen.io/ "Onsen UI")
+- [Onsen UI](https://onsen.io/ )
 - [React Native](https://www.reactnative.com/)
 - [Sencha Touch](https://www.sencha.com/products/touch/)
 

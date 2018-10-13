@@ -246,7 +246,7 @@ You can protect keys stored in the Android KeyStore with user authentication in 
 
 You can use stored keys in one of two modes:
 
-1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid. 
+1. Users are authorized to use keys for a limited period of time after authentication. In this mode, all keys can be used as soon as the user unlocks the device. You can customize the period of authorization for each key. You can use this option only if the secure lock screen is enabled. If the user disables the secure lock screen, all stored keys will become permanently invalid.
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 
@@ -386,7 +386,7 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 $ adb logcat > logcat.log
 ```
 
-With the following command you can specifically grep for the log output of the app in scope, just insert the package name. 
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name.
 
 ```bash
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
@@ -705,7 +705,7 @@ Given its diverse ecosystem, Android supports many backup options:
 
  * [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html) (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
 
-  * [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+  * [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html ): With Android 6.0 (>= API level 23), Google added the This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 
@@ -778,7 +778,7 @@ In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can
 dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
-The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor) is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
 java -jar abe.jar unpack backup.ab
@@ -1096,7 +1096,7 @@ To test the device-access-security policy that the app enforces, a written copy 
 
 Check the source code for functions that implement the policy and determine whether it can be bypassed.
 
-You can implement checks on the Android device by querying  [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html "Settings.Secure") for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html) offers techniques for creating applications that can enforce password policies and device encryption.
+You can implement checks on the Android device by querying  [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html ) for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html) offers techniques for creating applications that can enforce password policies and device encryption.
 
 #### Dynamic Analysis
 

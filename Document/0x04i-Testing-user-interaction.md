@@ -24,7 +24,7 @@ Here is a list of best practices where a user could be informed of:
 - Application distribution: In case of a high-risk application it is recommended to communicate what the official way of distributing the app is. Otherwise, users might use other channels in which they download a compromised version of the application.
 
 ### Other information you have to share (OSS information)
-Given copyright laws, you must make sure you inform the user on any third party libraries that are used in the app. For each third party library you should consult the license to see if certain information (such as copyright, modifications, original author, ...) should be presented to the user. For this, it is best to request legal advice from a specialist. An example can be found at [this blog post](https://www.bignerdranch.com/blog/open-source-licenses-and-android/ "Example on license overview"). Additionally, the website [TL;DR - Legal](https://tldrlegal.com/) can help you in figuring out what is necessary for each license.
+Given copyright laws, you must make sure you inform the user on any third party libraries that are used in the app. For each third party library you should consult the license to see if certain information (such as copyright, modifications, original author, ...) should be presented to the user. For this, it is best to request legal advice from a specialist. An example can be found at [this blog post](https://www.bignerdranch.com/blog/open-source-licenses-and-android/). Additionally, the website [TL;DR - Legal](https://tldrlegal.com/) can help you in figuring out what is necessary for each license.
 
 ### References
 

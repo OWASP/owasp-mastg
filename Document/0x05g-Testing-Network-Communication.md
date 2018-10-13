@@ -3,7 +3,7 @@
 
 ### Testing Endpoint Identify Verification
 
-Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html).
+Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf ), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html).
 
 Two key issues should be addressed:
 
@@ -67,7 +67,7 @@ myWebView.setWebViewClient(new WebViewClient(){
 
 ##### Apache Cordova Certificate Verification
 
-Implementation of the Apache Cordova framework's internal WebView usage will ignore [TLS errors](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in the method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest. Therefore, make sure that the app is not debuggable. See the test case
+Implementation of the Apache Cordova framework's internal WebView usage will ignore [TLS errors](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java ) in the method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest. Therefore, make sure that the app is not debuggable. See the test case
 
 ##### Hostname Verification
 
@@ -107,7 +107,7 @@ In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` sect
 
 In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
-If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html).
+If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova) for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html).
 
 
 ### Testing Custom Certificate Stores and Certificate Pinning
@@ -249,7 +249,7 @@ Normally a function is created to check the certificate(s) and return the boolea
     public class MainActivity : Activity
     {
         // SupportedPublicKey - Hexadecimal value of the public key.
-        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin. 
+        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin.
         private const string SupportedPublicKey = "3082010A02820101009CD30CF05AE52E47B7725D3783B3686330EAD735261925E1BDBE35F170922FB7B84B4105ABA99E350858ECB12AC468870BA3E375E4E6F3A76271BA7981601FD7919A9FF3D0786771C8690E9591CFFEE699E9603C48CC7ECA4D7712249D471B5AEBB9EC1E37001C9CAC7BA705EACE4AEBBD41E53698B9CBFD6D3C9668DF232A42900C867467C87FA59AB8526114133F65E98287CBDBFA0E56F68689F3853F9786AFB0DC1AEF6B0D95167DC42BA065B299043675806BAC4AF31B9049782FA2964F2A20252904C674C0D031CD8F31389516BAA833B843F1B11FC3307FA27931133D2D36F8E3FCF2336AB93931C5AFC48D0D1D641633AAFA8429B6D40BC0D87DC3930203010001";
 
         private static bool ValidateServerCertificate(
@@ -270,7 +270,7 @@ Normally a function is created to check the certificate(s) and return the boolea
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Main);
             TesteAsync("https://security.claudio.pt");
-  
+
         }
 ```
 
@@ -315,7 +315,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
-After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage. 
+After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage.
 
 #### Dynamic Analysis
 
@@ -343,7 +343,7 @@ Pin-set contain a set of public key pins. Each set can define a expiration date.
 The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
 
 If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
-    
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -405,7 +405,7 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 #### Dynamic Analysis
 
-In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism.
 
 
 ### Testing Default Network Security Configuration

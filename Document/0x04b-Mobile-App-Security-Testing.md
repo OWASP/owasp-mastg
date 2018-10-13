@@ -86,7 +86,7 @@ When typing data into input fields, the clipboard can be used to copy in data. T
 
 Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only, which reduces the attack surface of password sniffing from the clipboard dramatically.
 
-For [Android there was a PoC exploit released](https://arstechnica.com/information-technology/2014/11/using-a-password-manager-on-android-it-may-be-wide-open-to-sniffing-attacks/ "Password Sniffing") in order to demonstrate the attack vector if passwords are stored within the clipboard. [Disabling pasting in passwords input fields](https://github.com/OWASP/owasp-masvs/issues/106) was a requirement in the MASVS 1.0, but was removed due to several reasons:
+For [Android there was a PoC exploit released](https://arstechnica.com/information-technology/2014/11/using-a-password-manager-on-android-it-may-be-wide-open-to-sniffing-attacks/ ) in order to demonstrate the attack vector if passwords are stored within the clipboard. [Disabling pasting in passwords input fields](https://github.com/OWASP/owasp-masvs/issues/106) was a requirement in the MASVS 1.0, but was removed due to several reasons:
 
 - Preventing pasting into input fields of an app, does not prevent that a user will copy sensitive information anyway. Since the information has already been copied before the user notices that it's not possible to paste it in, a malicious app has already sniffed the clipboard.
 - If pasting is disabled on password fields users might even choose weaker passwords that they can remember and they cannot use password managers anymore, which would contradict the original intention of making the app more secure.
@@ -324,7 +324,7 @@ Infrastructure as Code also facilitates the construction of the environments req
 
 Infrastructure as Code is commonly used for projects that have Cloud-based resources because many vendors provide APIs that can be used for provisioning items (such as virtual machines, storage spaces, etc.) and working on configurations (e.g., modifying memory sizes or the number of CPUs used by virtual machines). These APIs provide alternatives to administrators' performing these activities from monitoring consoles.
 
-The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"),  [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/).
+The main tools in this domain are [Puppet](https://puppet.com/), [Terraform](https://www.terraform.io/),  [Chef](https://www.chef.io/chef/) and [Ansible](https://www.ansible.com/).
 
 ###### Deployment
 
