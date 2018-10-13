@@ -102,7 +102,6 @@ function preProcessMd() {
   var replacer = through(function (data) {
     this.queue(
       data
-        //.replace("") //remove link markup!
         .replace("[DATE]", tag)
         .replace("[RELEASE_NOTES]", releaseNotes)
         .replace("[TOCCCC]", tocRendered)
@@ -151,6 +150,7 @@ function getPostDocSet() {
     langdir + "0x04f-Testing-Network-Communication.md",
     langdir + "0x04g-Testing-Cryptography.md",
     langdir + "0x04h-Testing-Code-Quality.md",
+    langdir + "0x04i-Testing-user-interaction.md",
     langdir + "0x05-Android-Testing-Guide.md",
     langdir + "0x05a-Platform-Overview.md",
     langdir + "0x05b-Basic-Security_Testing.md",
@@ -206,6 +206,7 @@ function runPDF() {
     preProcessMd: preProcessMd,
     remarkable: {
       html: true,
+      linkify: true,
       breaks: true
     },
     runningsPath: "running.js",

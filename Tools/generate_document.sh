@@ -21,6 +21,7 @@ Foreword.md \
 0x04f-Testing-Network-Communication.md \
 0x04g-Testing-Cryptography.md \
 0x04h-Testing-Code-Quality.md \
+0x04i-Testing-user-interaction.md \
 0x05-Android-Testing-Guide.md \
 0x05a-Platform-Overview.md \
 0x05b-Basic-Security_Testing.md \
@@ -45,7 +46,8 @@ Foreword.md \
 0x06j-Testing-Resiliency-Against-Reverse-Engineering.md \
 0x07-Appendix.md \
 0x08-Testing-Tools.md \
-0x09-Suggested-Reading.md
+0x09-Suggested-Reading.md \
+SUMMARY.md
 
 # cd ../Document-ru
 #

@@ -1,5 +1,5 @@
 body {
-  font-size: 0.625em;
+  font-size: 0.589em;
   font-family: Cambria, Arial;
 }
 
@@ -16,3 +16,22 @@ ol ol {
 h1 {
   page-break-before: always;
 }
+
+body {
+    counter-reset: h1counter h2counter;
+}
+
+/* h1:before:nth-of-type(n+4) {
+  content: counter(h1counter) ".\0000a0\0000a0";
+  counter-increment: h1counter;
+  counter-reset: h2counter;
+}
+h2:before:nth-of-type(n+4) {
+    content: counter(h1counter) "." counter(h2counter) ".\0000a0\0000a0";
+    counter-increment: h2counter;
+    counter-reset: h3counter;
+}
+h3:before {
+    content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    counter-increment: h3counter;
+} */
