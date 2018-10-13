@@ -12,7 +12,7 @@ In a basic sense, apps are designed to run either directly on the platform for w
 
 Mobile operating systems, including Android and iOS, come with a Software Development Kit (SDK) for developing applications specific to the OS. Such applications are referred to as *native* to the system for which they have been developed. When discussing an app, the general assumption is that it is a native app implemented in a standard programming language for the respective operating system - Objective-C or Swift for iOS, and Java or Kotlin for Android.
 
-Native apps inherently have the capability to provide the fastest performance with the highest degree of reliability. They usually adhere to platform-specific design principles (e.g. the [Android Design Principles](https://developer.android.com/design/get-started/principles.html "Android Design Principles")), which tends to result in a more consistent user interface (UI) compared to *hybrid* or *web* apps. Due to their close integration with the operating system, native apps can directly access almost every component of the device (camera, sensors, hardware-backed key stores, etc.).
+Native apps inherently have the capability to provide the fastest performance with the highest degree of reliability. They usually adhere to platform-specific design principles (e.g. the [Android Design Principles](https://developer.android.com/design/get-started/principles.html)), which tends to result in a more consistent user interface (UI) compared to *hybrid* or *web* apps. Due to their close integration with the operating system, native apps can directly access almost every component of the device (camera, sensors, hardware-backed key stores, etc.).
 
 Some ambiguity exists when discussing *native apps* for Android as the platform provides two development kits - the Android SDK and the Android NDK. The SDK, which is based on the Java and Kotlin programming language, is the default for developing apps. The NDK (or Native Development Kit) is a C/C++ development kit used for developing binary libraries that can directly access lower level APIs (such as OpenGL). These libraries can be included in regular apps built with the SDK. Therefore, we say that Android *native apps* (i.e. built with the SDK) may have *native* code built with the NDK.
 
@@ -32,14 +32,14 @@ A web-to-native abstraction layer enables access to device capabilities for *hyb
 
 Following is a non-exhaustive list of more popular frameworks for developing *hybrid apps*:
 
-- [Apache Cordova](https://cordova.apache.org/ "Apache Cordova")
-- [Framework 7](https://framework7.io/ "Framework 7")
-- [Ionic](https://ionicframework.com/ "Ionic")
-- [jQuery Mobile](https://jquerymobile.com/ "jQuery Mobile")
-- [Native Script](https://www.nativescript.org/ "Native Script")
+- [Apache Cordova](https://cordova.apache.org/)
+- [Framework 7](https://framework7.io/)
+- [Ionic](https://ionicframework.com/)
+- [jQuery Mobile](https://jquerymobile.com/)
+- [Native Script](https://www.nativescript.org/)
 - [Onsen UI]( https://onsen.io/ "Onsen UI")
-- [React Native](https://www.reactnative.com/ "React Native")
-- [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
+- [React Native](https://www.reactnative.com/)
+- [Sencha Touch](https://www.sencha.com/products/touch/)
 
 
 ### Progressive Web App
@@ -48,7 +48,7 @@ Progressive Web Apps (PWA) load like regular web pages, but differ from usual we
 
 PWAs combine different open standards of the web offered by modern browsers to provide benefits of a rich mobile experience. A Web App Manifest, which is a simple JSON file, can be used to configure the behaviour of the app after "installation".
 
-PWAs are supported by Android and iOS, but not all hardware features are yet available. For example Push Notifications, Face ID on iPhone X or ARKit for augmented reality is not available yet on iOS. An overview of PWA and supported features on each platform can be found in a [Medium article from Maximiliano Firtman](https://medium.com/@firt/progressive-web-apps-on-ios-are-here-d00430dee3a7 "Progressive Web Apps on iOS are here").
+PWAs are supported by Android and iOS, but not all hardware features are yet available. For example Push Notifications, Face ID on iPhone X or ARKit for augmented reality is not available yet on iOS. An overview of PWA and supported features on each platform can be found in a [Medium article from Maximiliano Firtman](https://medium.com/@firt/progressive-web-apps-on-ios-are-here-d00430dee3a7).
 
 ### What's Covered in the Mobile Testing Guide?
 

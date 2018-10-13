@@ -4,7 +4,7 @@
 
 #### Overview
 
-In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html "Inter-App Communication"): file transfer through AirDrop and custom URL schemes.
+In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers few options for communication between apps. In fact, there's no way for apps to communicate directly. Instead, Apple offers [two types of indirect communication](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html): file transfer through AirDrop and custom URL schemes.
 
 Custom URL schemes allow apps to communicate via a custom protocol. An app must declare support for the scheme and handle incoming URLs that use the scheme. Once the URL scheme is registered, other apps can open the app that registered the scheme, and pass parameters by creating appropriately formatted URLs and opening them with the `openURL` method.
 
@@ -99,7 +99,7 @@ By default WKWebView disables file access. If one or more of the above methods i
 
 Please also verify which WebView class is used. WKWebView should be used nowadays, as `UIWebView` is deprecated.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL") method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc) method.
 
 Objective-C:
 ```
@@ -113,7 +113,7 @@ webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
 
 The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
 
-Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html "Phone Links on iOS") in the HTML page and will then not be interpreted by the WebView.
+Detection of the [tel:// schema can be disabled](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html) in the HTML page and will then not be interpreted by the WebView.
 
 Use the following best practices as defensive-in-depth measures:
 - Create a whitelist that defines local and remote web pages and schemas that are allowed to be loaded.
@@ -172,8 +172,8 @@ iOS WebViews support JavaScript execution by default, so script injection and cr
 
 Look out for usages of the following classes that implement WebViews:
 
-- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older)
-- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later)
+- [UIWebView](https://developer.apple.com/reference/uikit/uiwebview) (for iOS versions 7.1.2 and older)
+- [WKWebView](https://developer.apple.com/reference/webkit/wkwebview) (for iOS in version 8.0 and later)
 - [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller)
 
 `UIWebView` is deprecated and should not be used. Make sure that either `WKWebView` or `SafariViewController` are used to embed web content:
@@ -269,7 +269,7 @@ In WKWebViews it is possible to detect mixed content or content that was complet
 
 To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter for more information.
 
 ### References
 

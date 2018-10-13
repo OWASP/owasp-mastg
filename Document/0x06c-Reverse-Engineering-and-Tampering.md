@@ -2,31 +2,31 @@
 
 ### Swift and Objective-C
 
-Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
+Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
-The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
+The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift).
 
 #### Xcode and iOS SDK
 
-Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools developed by Apple for developing software for macOS, iOS, watchOS, and tvOS. You can [download it from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
+Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools developed by Apple for developing software for macOS, iOS, watchOS, and tvOS. You can [download it from the official Apple website](https://developer.apple.com/xcode/ide/).
 
-The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a software development kit developed by Apple for developing native iOS applications. You can [download it from the official Apple website](https://developer.apple.com/ios/ "Apple iOS SDK") as well.
+The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a software development kit developed by Apple for developing native iOS applications. You can [download it from the official Apple website](https://developer.apple.com/ios/) as well.
 
 #### Utilities
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") "is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols."
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump")
 
-- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "Class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
+- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki) is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
-- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "Class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/) allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
 
-- [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
+- [MachoOView](https://sourceforge.net/projects/machoview/) is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
 - otool is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
 
 #### Reversing Frameworks
 
-[Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
+[Radare2](https://rada.re/r/) is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
 
 #### Commercial Disassemblers
 
@@ -48,7 +48,7 @@ During development, apps are sometimes provided to testers via over-the-air (OTA
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) tool to download the IPS from an OTA distribution URL. Install it via npm:
 
 ```
 npm install -g itms-services
@@ -64,7 +64,7 @@ Save the IPA file locally with the following command:
 
 ###### From Jailbroken Devices
 
-You can use Saurik's [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console") to recover IPAs from apps installed on the device. To do this, install `IPA Installer Console` via Cydia. Then, SSH into the device and look up the bundle ID of the target app. For example through listing of the available apps:
+You can use Saurik's [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/) to recover IPAs from apps installed on the device. To do this, install `IPA Installer Console` via Cydia. Then, SSH into the device and look up the bundle ID of the target app. For example through listing of the available apps:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -107,7 +107,7 @@ If the output contains cryptoff, cryptsize, and cryptid fields, the binary is en
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 
-You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/) to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
 ```shell
 $ unzip DamnVulnerableiOSApp.ipa
@@ -150,7 +150,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method that returns a BOOL type.
 A minus sign would mean that this is an instance method. Refer to later sections to understand the practical difference between these.
 
-Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/ "Hopper Disassembler"). All these steps would be executed automatically, and you'd be able to see the disassembled binary and class information.
+Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/). All these steps would be executed automatically, and you'd be able to see the disassembled binary and class information.
 
 The following command is listing shared libraries:
 
@@ -166,7 +166,7 @@ The XNU kernel implements the `ptrace` system call, but some of the call's funct
 
 ##### Using lldb
 
-iOS ships with the console app debugserver, which allows remote debugging via gdb or lldb. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+iOS ships with the console app debugserver, which allows remote debugging via gdb or lldb. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver).
 
 To obtain the executable, mount the following DMG image:
 
@@ -316,7 +316,7 @@ cy# printMethods ("AppDelegate")
 
 #### Installing Frida
 
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
+[Frida](https://www.frida.re) is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
 If you haven't already done so, install the Frida Python package on your host machine:
 
@@ -351,8 +351,8 @@ We'll demonstrate a few more uses for Frida below, but let's first look at what 
 
 #### Automated Repackaging with Objection
 
-[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter "Manual Repackaging".
-We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter.
+We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki).
 
 #### Manual Repackaging
 
@@ -360,9 +360,9 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, BundleIDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 
-We'll use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
+We'll use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/) has described an alternative repackaging method.
 
-To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
+To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01) from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
 > Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
 
@@ -388,7 +388,7 @@ In the examples below, I use my signing identity, which is associated with my co
 
 **With a Regular iTunes Account:**
 
-Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
+Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/) explains this process in great detail.
 
 Once you've obtained the provisioning profile, you can check its contents with the *security* tool. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
@@ -418,7 +418,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 #### Other Preparations
 
-To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
+To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool) can be used to automate this process:
 
 ```shell
 $ git clone https://github.com/alexzielenski/optool.git
@@ -428,7 +428,7 @@ $ xcodebuild
 $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 ```
 
-We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
+We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
 ```shell
 $ git clone https://github.com/phonegap/ios-deploy.git
@@ -454,7 +454,7 @@ To execute the examples below, you need `FridaGadget.dylib`:
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
+We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html) installed.
 
 #### Patching, Repackaging, and Re-Signing
 
@@ -524,7 +524,7 @@ PID  Name
 
 #### Troubleshooting
 
-When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
+When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html) is also a useful resource.
 
 
 ### Method Tracing with Frida
@@ -557,13 +557,13 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
 
-We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
+We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc):
 
 ```objc
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
@@ -618,18 +618,18 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 ![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples") of Frida usage on iOS.
+Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/) of Frida usage on iOS.
 
 Please also take a look at the [Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/).
 
 
 ### Patching React Native Applications
 
-If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") and the local server are preferable to the online version because the latter discloses the source code to a third party.
+If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/) and the local server are preferable to the online version because the latter discloses the source code to a third party.
 
 At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app`, so the main JavaScript application file can be modified at this location.
 
-To identify the exact location of the application folder, you can use the tool [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller"):
+To identify the exact location of the application folder, you can use the tool [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/):
 
 1. Use the command `ipainstaller -l` to list the applications installed on the device. Get the name of the target application from the output list.
 2. Use the command `ipainstaller -i [APP_NAME]` to display information about the target application, including the installation and data folder locations.

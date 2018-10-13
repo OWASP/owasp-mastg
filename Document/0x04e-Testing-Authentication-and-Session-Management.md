@@ -1,6 +1,6 @@
 ## Mobile App Authentication Architectures
 
-Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
+Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the back end service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
@@ -33,7 +33,7 @@ The number of authentication procedures implemented by mobile apps depends on th
 
 For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leech Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
 
-You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following authentication requirements:
+You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md), the MASVS lists the following authentication requirements:
 
 - If the app provides users with access to a remote service, an acceptable form of authentication such as username/password authentication is performed at the remote endpoint.
 - A password policy exists and is enforced at the remote endpoint.
@@ -62,7 +62,7 @@ Transaction signing requires authentication of the user's approval of critical t
 
 #### Supplementary Authentication
 
-Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf), which can incorporate:
 
 - Geolocation
 - IP address
@@ -81,7 +81,7 @@ Perform the following steps when testing authentication and authorization:
 
 Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state. While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested.
 
-Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
+Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
 
 ```
 http://www.site.com/page.asp?authenticated=no
@@ -89,7 +89,7 @@ http://www.site.com/page.asp?authenticated=no
 
 The client can arbitrarily change the GET parameters sent with the request. Nothing prevents the client from simply changing the value of the `authenticated` parameter to "yes," effectively bypassing authentication.
 
-Although this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. They assume that these parameters can't be tampered with. Consider, for example, the following [classic vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on the cookie "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access by simply setting the cookie value as follows:
+Although this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. They assume that these parameters can't be tampered with. Consider, for example, the following [classic vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on the cookie to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access by simply setting the cookie value as follows:
 
 ```
 isAdmin=True
@@ -97,7 +97,7 @@ isAdmin=True
 
 Security experts used to recommend using session-based authentication and maintaining session data on the server only. This prevents any form of client-side tampering with the session state. However, the whole point of using stateless authentication instead of session-based authentication is to *not* have session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In this case, seeing client-side parameters such as `isAdmin` is perfectly normal.
 
-To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/) We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
+To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/) We'll discuss this attack in more detail in the chapter.
 
 #### Best Practices for Passwords
 
@@ -117,9 +117,9 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
-Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
+Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test) uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
 
 ```javascript
 function(password) {
@@ -163,11 +163,11 @@ function(password) {
 },
 ```
 
-For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength is. It is available for many programming languages.
+For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). [zxcvbn](https://github.com/dropbox/zxcvbn) is a common library that can be used for estimating password strength is. It is available for many programming languages.
 
 ##### Running a Password Dictionary Attack
 
-Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
+Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html) to perform both wordlist-based and brute-force attacks.
 
 - Start Burp Suite.
 - Create a new project (or open an existing one).
@@ -200,7 +200,7 @@ Observe the following best practices when implementing anti-brute-force controls
 - The controls must be implemented on the server because client-side controls are easily bypassed.
 - Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
 
-Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks).
 
 When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
@@ -231,10 +231,10 @@ Make sure that:
 
 Authentication shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made authentication and session management functionality. If the app uses framework APIs for authentication, check the framework security documentation for best practices. Security guides for common frameworks are available at the following links:
 
-- [Spring (Java)](https://projects.spring.io/spring-security "Spring (Java)")
-- [Struts (Java)](https://struts.apache.org/docs/security.html "Struts (Java)")
-- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication "Laravel (PHP)")
-- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
+- [Spring (Java)](https://projects.spring.io/spring-security)
+- [Struts (Java)](https://struts.apache.org/docs/security.html)
+- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication)
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html)
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
@@ -244,10 +244,10 @@ In most popular frameworks, you can set the session timeout via configuration op
 
 Refer to the framework documentation for examples of session timeout configuration:
 
-- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
-- [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
-- [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
-- [ASP.Net](https://goo.gl/qToQuL "ASP.NET")
+- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/)
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry)
+- [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime)
+- [ASP.Net](https://goo.gl/qToQuL)
 
 #### Dynamic Analysis
 
@@ -269,14 +269,14 @@ To verify session timeout:
 
 Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
-Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
+Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management) for more information testing session management.
 
 
 ### Testing Stateless (Token-Based) Authentication
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
-JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
+JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger):
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
@@ -306,11 +306,11 @@ Note that the secret is shared between the authentication server and the back en
 
 Identify the JWT library that the server and client use. Find out whether the JWT libraries in use have any known vulnerabilities.
 
-Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
+Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way):
 
 - Verify that the HMAC is checked for all incoming requests containing a token;
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z).
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
@@ -335,9 +335,9 @@ DecodedJWT decodedToken = verifier.verify(token);
 
 ##### Token Expiration
 
-Once signed, a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the back end doesn't process expired tokens.
+Once signed, a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4) and the back end doesn't process expired tokens.
 
-A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
+A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
@@ -365,16 +365,16 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
 
-- Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
+- Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/):
   *  JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
 - Token Storage on the client:
   * The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
+  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/).
 - Information Disclosure:
   * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
-Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z).
 
 ##### Tampering with the Hashing Algorithm
 
@@ -393,11 +393,11 @@ Many mobile apps don't automatically log users out because it is inconvenient fo
 
 If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
 
-- [Spring (Java)](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
-- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
-- [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
+- [Spring (Java)](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html)
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html)
+- [PHP](https://php.net/manual/en/function.session-destroy.php)
 
-If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
+If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/).
 
 #### Dynamic Analysis
 
@@ -409,12 +409,12 @@ Use an interception proxy for dynamic application analysis. Use the following st
 4.  Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
  
 If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
+The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality)) includes a detailed explanation and more test cases.
 
 
 ### Testing OAuth 2.0 Flows
 
-[OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/ "OAuth 2.0 delegation protocols"). It is used in a variety of applications, including user authentication applications.
+[OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/). It is used in a variety of applications, including user authentication applications.
 
 Common uses for OAuth2 include:
 
@@ -435,7 +435,7 @@ Note: The API fulfills both the Resource Owner and Authorization Server roles. T
 
 ![Abstract Protocol Flow](Images/Chapters/0x04e/abstract_oath2_flow.png)
 
-Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
+Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2) of the steps in the diagram:
 
 1. The application requests user authorization to access service resources.
 2. If the user authorizes the request, the application receives an authorization grant. The authorization grant may take several forms (explicit, implicit, etc.).
@@ -493,9 +493,9 @@ For apps that operate within a closed ecosystem, *embedded authentication* is th
 
 For additional best practices and detailed information please refer to the following source documents:
 
-- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
-- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
-- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
+- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
+- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12)
+- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819)
 
 ### Login Activity and Device Blocking
 

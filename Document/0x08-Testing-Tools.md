@@ -14,7 +14,7 @@ To perform security testing different tools are available in order to be able to
 
 - [Checkmarx](https://www.checkmarx.com/technology/static-code-analysis-sca/) - Static Source Code Scanner that also scans source code for Android and iOS.
 - [Fortify](https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security) - Static source code scanner that also scans source code for Android and iOS.
-- [Veracode](https://www.veracode.com/products/binary-static-analysis-sast "Veracode Static Analysis") - Static Analysis of iOS and Android binary
+- [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) - Static Analysis of iOS and Android binary
 
 ### All-in-One Mobile Security Frameworks
 
@@ -106,50 +106,50 @@ To perform security testing different tools are available in order to be able to
 
 #### Bypassing Root Detection and SSL Pinning
 
-- [SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2") - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
-- [iOS TrustMe](https://github.com/intrepidusgroup/trustme "iOS TrustMe") - Disable certificate trust checks on iOS devices.
-- [Xcon](http://cydia.saurik.com/package/com.n00neimp0rtant.xcon/ "Xcon") - A tool for bypassing Jailbreak detection.
-- [tsProtector](http://cydia.saurik.com/package/kr.typostudio.tsprotector8 "tsProtector 8") - Another tool for bypassing Jailbreak detection.
+- [SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2) - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
+- [iOS TrustMe](https://github.com/intrepidusgroup/trustme) - Disable certificate trust checks on iOS devices.
+- [Xcon](http://cydia.saurik.com/package/com.n00neimp0rtant.xcon/) - A tool for bypassing Jailbreak detection.
+- [tsProtector](http://cydia.saurik.com/package/kr.typostudio.tsprotector8) - Another tool for bypassing Jailbreak detection.
 
 ### Tools for Network Interception and Monitoring
 
-- [Tcpdump](https://www.androidtcpdump.com "TCPDump") - A command line packet capture utility.
-- [Wireshark](https://www.wireshark.org/download.html "WireShark") - An open-source packet analyzer.
-- [Canape](https://github.com/ctxis/canape "Canape") - A network testing tool for arbitrary protocols.
-- [Mallory](https://intrepidusgroup.com/insight/mallory/ "Mallory") - A Man in The Middle Tool (MiTM)) that is used to monitor and manipulate traffic on mobile devices and applications.
+- [Tcpdump](https://www.androidtcpdump.com) - A command line packet capture utility.
+- [Wireshark](https://www.wireshark.org/download.html) - An open-source packet analyzer.
+- [Canape](https://github.com/ctxis/canape) - A network testing tool for arbitrary protocols.
+- [Mallory](https://intrepidusgroup.com/insight/mallory/) - A Man in The Middle Tool (MiTM)) that is used to monitor and manipulate traffic on mobile devices and applications.
 
 ### Interception Proxies
 
-- [Burp Suite](https://portswigger.net/burp/download.html "Burp Suite") - Burp Suite is an integrated platform for performing security testing of applications.
-- [OWASP ZAP](https://github.com/zaproxy/zaproxy "OWASP ZAP") - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
-- [Fiddler](https://www.telerik.com/fiddler "Fiddler") - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
-- [Charles Proxy](https://www.charlesproxy.com "Charles Proxy") - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
+- [Burp Suite](https://portswigger.net/burp/download.html) - Burp Suite is an integrated platform for performing security testing of applications.
+- [OWASP ZAP](https://github.com/zaproxy/zaproxy) - The OWASP Zed Attack Proxy (ZAPis a free security tools which can help you automatically find security vulnerabilities in your web applications and web services.
+- [Fiddler](https://www.telerik.com/fiddler) - Fiddler is an HTTP debugging proxy server application which can captures HTTP and HTTPS traffic and logs it for the user to review. Fiddler can also be used to modify HTTP traffic for troubleshooting purposes as it is being sent or received.
+- [Charles Proxy](https://www.charlesproxy.com) - HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.
 
 ### IDEs
 
-- [Android Studio](https://developer.android.com/studio/index.html "Android Studio") -  is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
-- [IntelliJ](https://www.jetbrains.com/idea/download/ "InteliJ") - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
-- [Eclipse](https://eclipse.org/ "Eclipse") - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
-- [Xcode](https://developer.apple.com/xcode/ "XCode") - Xcode is an integrated development environment (IDE) available only for macOS to create apps for iOS, watchOS, tvOS and macOS.
+- [Android Studio](https://developer.android.com/studio/index.html) -  is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
+- [IntelliJ](https://www.jetbrains.com/idea/download/) - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
+- [Eclipse](https://eclipse.org/) - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
+- [Xcode](https://developer.apple.com/xcode/) - Xcode is an integrated development environment (IDE) available only for macOS to create apps for iOS, watchOS, tvOS and macOS.
 
 
 ### Vulnerable applications
 The applications listed below can be used as training materials.
 
 #### Android
-- [DVHMA](https://github.com/logicalhacking/DVHMA "Damn Vulnerable Hybrid Mobile App") - is an hybrid mobile app (for Android) that intentionally contains vulnerabilities.
-- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - is a set of applications to test your Android application hacking skills.
+- [DVHMA](https://github.com/logicalhacking/DVHMA) - is an hybrid mobile app (for Android) that intentionally contains vulnerabilities.
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) - is a set of applications to test your Android application hacking skills.
 - [OMTG Android app](https://github.com/OWASP/MSTG-Hacking-Playground) - is a vulnerable Android application with vulnerabilities similar to the testcases described in this document.
-- [Digitalbank](https://github.com/CyberScions/Digitalbank "Android Digital Bank Vulnerable Mobile App") - a vulnerable app which comes from 2015, can be used on older Android platforms. Note: this is not tested by the authors.
-- [DIVA Android](https://github.com/payatu/diva-android "Damn insecure and vulnerable App") - is an App intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
-- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - is a vulnerable Android application is named "InsecureBankv2" and is made for security enthusiasts and developers to learn the Android insecurities by testing this vulnerable application. It has been updated in 2018 and contains over 25 vulnerabilities.
-- [DodoVulnerableBank](https://github.com/CSPF-Founder/DodoVulnerableBank "Dodo Vulnerable Bank") - An insecure Android app from 2015. Note: this is not tested by the authors.
+- [Digitalbank](https://github.com/CyberScions/Digitalbank) - a vulnerable app which comes from 2015, can be used on older Android platforms. Note: this is not tested by the authors.
+- [DIVA Android](https://github.com/payatu/diva-android) - is an App intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
+- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - is a vulnerable Android application is named and is made for security enthusiasts and developers to learn the Android insecurities by testing this vulnerable application. It has been updated in 2018 and contains over 25 vulnerabilities.
+- [DodoVulnerableBank](https://github.com/CSPF-Founder/DodoVulnerableBank) - An insecure Android app from 2015. Note: this is not tested by the authors.
 
 
 
 #### iOS
 
-- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - is a set of applications to test your iOS application hacking skills.
-- [Myriam](https://github.com/GeoSn0w/Myriam "Myriam iOS Security App") - A vulnerable iOS app with iOS security challenges.
-- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/ "DVIA propject website").
-- [DVIA-V2](https://github.com/prateek147/DVIA-v2 "Damn Vulnerable iOS App v2") - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) - is a set of applications to test your iOS application hacking skills.
+- [Myriam](https://github.com/GeoSn0w/Myriam) - A vulnerable iOS app with iOS security challenges.
+- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/).
+- [DVIA-V2](https://github.com/prateek147/DVIA-v2) - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.

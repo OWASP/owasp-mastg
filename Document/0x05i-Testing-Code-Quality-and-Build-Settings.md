@@ -8,9 +8,9 @@ Android requires all APKs to be digitally signed with a certificate before they 
 
 When an APK is signed, a public-key certificate is attached to it. This certificate uniquely associates the APK with the developer and the developer's private key. When an app is being built in debug mode, the Android SDK signs the app with a debug key created specifically for debugging purposes. An app signed with a debug key is not meant to be distributed and won't be accepted in most app stores, including the Google Play Store.
 
-The [final release build](https://developer.android.com/studio/publish/app-signing.html "Android Application Signing") of an app must be signed with a valid release key. In Android Studio, the app can be signed manually or via creation of a signing configuration that's assigned to the release build type.
+The [final release build](https://developer.android.com/studio/publish/app-signing.html) of an app must be signed with a valid release key. In Android Studio, the app can be signed manually or via creation of a signing configuration that's assigned to the release build type.
 
-All app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations "Android Signing Considerations"). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
+All app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
 
 Two APK signing schemes are available:
 - JAR signing (v1 scheme),
@@ -57,7 +57,7 @@ v1SigningEnabled true
 v2SigningEnabled true
 ```
 
-Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
+Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure) are available in the official Android developer documentation.
 
 #### Dynamic Analysis
 
@@ -69,7 +69,7 @@ Static analysis should be used to verify the APK signature.
 
 #### Overview
 
-The `android:debuggable` attribute in the [`Application`  element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") that is defined in the Android manifest determines whether the app can be debugged or not.
+The `android:debuggable` attribute in the [`Application`  element](https://developer.android.com/guide/topics/manifest/application-element.html) that is defined in the Android manifest determines whether the app can be debugged or not.
 
 #### Static Analysis
 
@@ -118,7 +118,7 @@ $ run-as com.vulnerable.app id
 uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
 ```
 
-[Android Studio](https://developer.android.com/tools/debugging/debugging-studio.html "Debugging with Android Studio") can also be used to debug an application and verify debugging activation for an app.
+[Android Studio](https://developer.android.com/tools/debugging/debugging-studio.html) can also be used to debug an application and verify debugging activation for an app.
 
 Another method for determining whether an application is debuggable is attaching `jdb` to the running process. If this is successful, debugging will be activated.
 
@@ -150,8 +150,8 @@ Initializing jdb ...
 ```
 
 A few notes about debugging:
-- The tool [`JADX`](https://github.com/skylot/jadx "JADX") can be used to identify interesting locations for breakpoint insertion.
-- Help with `jdb` is available [here](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB basic commands").
+- The tool [`JADX`](https://github.com/skylot/jadx) can be used to identify interesting locations for breakpoint insertion.
+- Help with `jdb` is available [here](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm).
 - If a "the connection to the debugger has been closed" error occurs while `jdb` is being binded to the local communication channel port, kill all `adb` sessions and start a single new session.
 
 ### Finding Debugging Symbols
@@ -210,7 +210,7 @@ Static analysis should be used to verify debugging symbols.
 
 StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
 
-Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread:
+Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html) with policies enabled for disk and network access to the main thread:
 
 ```Java
 public void onCreate() {
@@ -238,7 +238,7 @@ Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition i
 
 To determine whether `StrictMode` is enabled, you can look for the `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` methods. Most likely, they will be in the `onCreate` method.
 
-The [detection methods for the thread policy](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The [detection methods for the thread policy](https://javabeat.net/strictmode-android-1/) are
 
 ```
 detectDiskWrites()
@@ -246,7 +246,7 @@ detectDiskReads()
 detectNetwork()
 ```
 
-The [penalties for thread policy violation](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The [penalties for thread policy violation](https://javabeat.net/strictmode-android-1/) are
 
 ```
 penaltyLog() // Logs a message to LogCat
@@ -254,7 +254,7 @@ penaltyDeath() // Crashes application, runs at the end of all enabled penalties
 penaltyDialog() // Shows a dialog
 ```
 
-Have a look at the [best practices](https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581 "Android Best Practices: StrictMode") for using StrictMode.
+Have a look at the [best practices](https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581) for using StrictMode.
 
 #### Dynamic Analysis
 
@@ -333,12 +333,12 @@ public Cursor query(Uri uri, String[] projection, String selection,String[] sele
 }
 ```
 
-While the user is providing a STUDENT_ID at `content://sg.vp.owasp_mobile.provider.College/students`, the query statement is prone to SQL injection. Obviously [prepared statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet "OWASP SQL Injection Cheat Sheet") must be used to avoid SQL injection, but [input validation](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") should also be applied so that only input that the app is expecting is processed.
+While the user is providing a STUDENT_ID at `content://sg.vp.owasp_mobile.provider.College/students`, the query statement is prone to SQL injection. Obviously [prepared statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet "OWASP SQL Injection Cheat Sheet") must be used to avoid SQL injection, but [input validation](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet) should also be applied so that only input that the app is expecting is processed.
 
 All app functions that process data coming in through the UI should implement input validation:
 
-- For user interface input, [Android Saripaar v2](https://github.com/ragunathjawahar/android-saripaar "Android Saripaar v2") can be used.
-- For input from IPC or URL schemes, a validation function should be created. For example, the following determines whether the [string is alphanumeric](https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric "Input Validation"):
+- For user interface input, [Android Saripaar v2](https://github.com/ragunathjawahar/android-saripaar) can be used.
+- For input from IPC or URL schemes, a validation function should be created. For example, the following determines whether the [string is alphanumeric](https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric):
 
 ```java
 public boolean isAlphaNumeric(String s){
@@ -347,7 +347,7 @@ public boolean isAlphaNumeric(String s){
 }
 ```
 
-An alternative to validation functions is type conversion, with, for example, `Integer.parseInt` if only integers are expected. The [OWASP Input Validation Cheat Sheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") contains more information about this topic.
+An alternative to validation functions is type conversion, with, for example, `Integer.parseInt` if only integers are expected. The [OWASP Input Validation Cheat Sheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet) contains more information about this topic.
 
 #### Dynamic Analysis
 
@@ -377,8 +377,8 @@ Exceptions occur when an application gets into an abnormal or error state. Both 
 
 Review the source code to understand the application and identify how it handles different types of errors (IPC communications, remote services invocation, etc.). Here are some examples of things to check at this stage:
 
-- Make sure that the application uses a well-designed and unified scheme to [handle exceptions](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047 "Exceptional Behavior (ERR)").
-- Plan for standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) by creating proper null checks, bound checks, and the like. An [overview of the available subclasses of `RuntimeException`](https://developer.android.com/reference/java/lang/RuntimeException.html "Runtime Exception Class") can be found in the Android developer documentation. A child of `RuntimeException` should be thrown intentionally, and the intent should be handled by the calling method.
+- Make sure that the application uses a well-designed and unified scheme to [handle exceptions](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047).
+- Plan for standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) by creating proper null checks, bound checks, and the like. An [overview of the available subclasses of `RuntimeException`](https://developer.android.com/reference/java/lang/RuntimeException.html) can be found in the Android developer documentation. A child of `RuntimeException` should be thrown intentionally, and the intent should be handled by the calling method.
 - Make sure that for every non-runtime `Throwable` there's a proper catch handler, which ends up handling the actual exception properly.
 - When an exception is thrown, make sure that the application has centralized handlers for exceptions that cause similar behavior. This can be a static class. For exceptions specific to the method, provide specific catch blocks.
 - Make sure that the application doesn't expose sensitive information while handling exceptions in its UI or log-statements. Ensure that exceptions are still verbose enough to explain the issue to the user.
@@ -460,7 +460,7 @@ The application should never crash; it should
 
 Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. ProGuard offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
 
-Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
+Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
 
 #### Static Analysis
 
@@ -661,9 +661,9 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
-- [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
-- [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
-- [Snyk](https://snyk.io/ "snyk")
-- [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
-- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
-- [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF, "MobSF")
+- [Black Duck](https://www.blackducksoftware.com/)
+- [Sourceclear](https://www.sourceclear.com/)
+- [Snyk](https://snyk.io/)
+- [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin)
+- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle)
+- [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF,)
