@@ -8,11 +8,11 @@ Most modern mobile apps use variants of HTTP based web-services, as these protoc
 
 #### Overview
 
-[App Transport Security (ATS)](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys") is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection "API Reference NSURLConnection"), [NSURLSession](https://developer.apple.com/reference/foundation/urlsession "API Reference NSURLSession") and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7 "API Reference CFURL") to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
+[App Transport Security (ATS)](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html) is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection), [NSURLSession](https://developer.apple.com/reference/foundation/urlsession) and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7) to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
 
 ATS is enforced only when making connections to public hostnames. Therefore any connection made to an IP address, unqualified domain names or TLD of .local is not protected with ATS.
 
-The following is a summarized list of [App Transport Security Requirements](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys"):
+The following is a summarized list of [App Transport Security Requirements](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html):
 
 - No HTTP connections are allowed
 - The X.509 Certificate has a SHA256 fingerprint and must be signed with at least a 2048-bit RSA key or a 256-bit Elliptic-Curve Cryptography (ECC) key.
@@ -40,7 +40,7 @@ ATS restrictions can be disabled by configuring exceptions in the Info.plist fil
 - disable PFS or
 - allow connections to local domains.
 
-ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity")` dictionary.
+ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity)` dictionary.
 
 ```
 NSAppTransportSecurity : Dictionary {
@@ -60,9 +60,9 @@ NSAppTransportSecurity : Dictionary {
 }
 ```
 
-Source: [Apple Developer Documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys").
+Source: [Apple Developer Documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html).
 
-The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to [table 2 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW34 "App Transport Security dictionary primary keys").
+The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to [table 2 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW34).
 
 |  Key | Description |
 | -----| ------------|
@@ -71,7 +71,7 @@ The following table summarizes the global ATS exceptions. For more information a
 | `NSAllowsLocalNetworking` | Allow connection to unqualified domain names and .local domains |
 | `NSAllowsArbitraryLoadsForMedia` | Disable all ATS restrictions for media loaded through the AV Foundations framework |
 
-The following table summarizes the per-domain ATS exceptions. For more information about these exceptions, please refer to [table 3 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW44 "App Transport Security dictionary primary keys").
+The following table summarizes the per-domain ATS exceptions. For more information about these exceptions, please refer to [table 3 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW44).
 
 |  Key | Description |
 | -----| ------------|
@@ -88,7 +88,7 @@ Starting from January 1 2017, Apple App Store review requires justification if o
 - `NSExceptionAllowsInsecureHTTPLoads`
 - `NSExceptionMinimumTLSVersion`
 
-However this decline is extended later by Apple stating [“To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”](https://developer.apple.com/news/?id=12212016b "Apple Developer Portal Announcement - Supporting App Transport Security")
+However this decline is extended later by Apple stating [“To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”](https://developer.apple.com/news/?id=12212016b)
 
 #### Analyzing the ATS Configuration
 
@@ -114,7 +114,7 @@ $ unzip app-name.ipa
 
 `Info.plist` file can be found in the `Payload/BundleName.app/` directory of the extract. It’s a binary encoded file and has to be converted to a human readable format for the analysis.
 
-[`plutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html "OS X Man Pages - Plutil") is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
+[`plutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html) is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
 
 The following command shows how to convert the Info.plist file into XML format.
 
@@ -201,7 +201,7 @@ else {
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
 1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
-2. Now, install Burp certificate, as explained in [the portswigger user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed.
+2. Now, install Burp certificate, as explained in [the portswigger user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device). If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed.
 3. If executing instructions from previous step doesn't lead to traffic being proxied through burp, it means that certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to section "Basic Security Testing" for more information on this.
 
 ##### Client certificate validation

@@ -4,7 +4,7 @@
 
 #### Overview
 
-Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide")
+Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
 
 You can retrieve the signing certificate information from the application's .app file with [codesign.](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html) Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
@@ -55,7 +55,7 @@ armv5te:     file format mach-o-arm
 aarch64:     file format mach-o-arm64
 ```
 
-Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and can be installed on macOS via Homebrew.
+Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/) and can be installed on macOS via Homebrew.
 
 #### Dynamic Analysis
 
@@ -94,7 +94,7 @@ The procedure for enabling this behavior in Swift has changed: you need to eithe
 -	`_isReleaseAssertConfiguration`
 -	`_isFastAssertConfiguration`.
 
-Depending on the application's setup, there may be more logging functions. For example, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, static analysis is a bit different.
+Depending on the application's setup, there may be more logging functions. For example, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack) is used, static analysis is a bit different.
 
 For the "debug-management" code (which is built-in): inspect the storyboards to see whether there are any flows and/or view-controllers that provide functionality different from the functionality the application should support. This functionality can be anything from debug views to printed error messages, from custom stub-response configurations to logs written to files on the application's file system or a remote server.
 
@@ -128,7 +128,7 @@ In Swift 2 (with Xcode 7), you have to set custom compiler flags for every targe
 #endif
 ```
 
-In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the defined conditions:
+In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34) based on the defined conditions:
 
 ```swift
 #if DEBUG_LOGGING
@@ -166,15 +166,15 @@ An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless
  	//cleanup
 ```
 
-Bear in mind that using `NSException` comes with memory management pitfalls: you need to [clean up allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF "Raising exceptions") from the try block that are in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html "Handling Exceptions"). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` in the `@catch` block.
+Bear in mind that using `NSException` comes with memory management pitfalls: you need to [clean up allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF ) from the try block that are in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` in the `@catch` block.
 
 **NSError**
-`NSError` is used for all other types of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some Cocoa framework APIs provide errors as objects in their failure callback in case something goes wrong; those that don't provide them pass a pointer to an `NSError` object by reference. It is a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object to indicate success or failure. If there's a return type, make sure to return "nil" for errors. If "NO" or "nil" is returned, it allows you to inspect the error/reason for failure.
+`NSError` is used for all other types of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html ). Some Cocoa framework APIs provide errors as objects in their failure callback in case something goes wrong; those that don't provide them pass a pointer to an `NSError` object by reference. It is a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object to indicate success or failure. If there's a return type, make sure to return `nil` for errors. If `no` or is returned, it allows you to inspect the error/reason for failure.
 
 ##### Exception Handling in Swift
 
-Exception handing in Swift (2 - 4) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
-Methods that can throw errors use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):  
+Exception handing in Swift (2 - 4) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html).
+Methods that can throw errors use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html):  
 
 - Propagate the error from a function to the code that calls that function. In this situation, there's no `do-catch`; there's only a `throw` throwing the actual error or a `try` to execute the method that throws. The method containing the `try` also requires the `throws` keyword:
 
@@ -297,7 +297,7 @@ Steps for enabling ACR protection for an iOS application:
 1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2.	Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
 
-See the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
+See the [Technical Q&A QA1788 Building a Position Independent Executable](https://developer.apple.com/library/mac/qa/qa1788/_index.html ).
 
 ##### With otool
 
@@ -495,9 +495,9 @@ However, these do not include all the libraries being used. Next, with Class-dum
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
-- [Carthage](https://github.com/carthage/carthage "Carthage")
-- [CocoaPods](https://CocoaPods.org "CocoaPods")
+- [Carthage](https://github.com/carthage/carthage)
+- [CocoaPods](https://CocoaPods.org)
 - [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
-- [Sourceclear](https://sourceclear.com "Sourceclear")
-- [Class-dump](https://github.com/nygard/class-dump "Class-dump")
-- [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
+- [Sourceclear](https://sourceclear.com)
+- [Class-dump](https://github.com/nygard/class-dump)
+- [RetireJS](https://retirejs.github.io/retire.js/)

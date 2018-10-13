@@ -13,7 +13,7 @@ Android permissions are classified into four different categories on the basis o
 -	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
 -	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
+A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html).
 
 #### Activity Permission Enforcement
 Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
@@ -50,7 +50,7 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 **Custom Permissions**
 
-Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
+Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html) in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
 - `android:name` and
 - `android:protectionLevel`.
 
@@ -75,7 +75,7 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview "permission overview") and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct  "manifest-intro").
+Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview ) and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct ).
 
 ```xml
 <manifest>
@@ -280,7 +280,7 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
@@ -290,7 +290,7 @@ Nevertheless, data that's processed by the app and comes in through URL schemes 
 
 #### Static Analysis
 
-Determine whether custom URL schemes are defined. This can be done in the AndroidManifest.xml file, inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+Determine whether custom URL schemes are defined. This can be done in the AndroidManifest.xml file, inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest).
 
 ```xml
 <activity android:name=".MyUriActivity">
@@ -317,7 +317,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Verify the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()"), which may also be used in this context.
+Verify the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29), which may also be used in this context.
 
 #### Dynamic Analysis
 
@@ -361,21 +361,21 @@ During implementation of a mobile application, developers may apply traditional 
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 
--  [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
--  [Services](https://developer.android.com/guide/components/services.html "IPCServices")
--  [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
--  [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
--  [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
--  [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
+-  [Binders](https://developer.android.com/reference/android/os/Binder.html)
+-  [Services](https://developer.android.com/guide/components/services.html)
+-  [Bound Services](https://developer.android.com/guide/components/bound-services.html)
+-  [AIDL](https://developer.android.com/guide/components/aidl.html)
+-  [Intents](https://developer.android.com/reference/android/content/Intent.html)
+-  [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html)
 
 #### Static Analysis
 
 We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the source code must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
 
--	[`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
--	[`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
--	[`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
--	[`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
+-	[`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html)
+-	[`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html)
+-	[`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html)
+-	[`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html)
 
 An "exported" activity, service, or content  can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true." To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
 
@@ -387,8 +387,8 @@ Once you identify a list of IPC mechanisms, review the source code to see whethe
 
 In the following, we use two example apps and give examples of identifying vulnerable IPC components:
 
-- ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
-- ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2 "Android Insecure Bank V2")
+- ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk)
+- ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2)
 
 #### Activities
 
@@ -510,7 +510,7 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
 ```
 
-BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://goo.gl/ViRYPC "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
+BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://goo.gl/ViRYPC). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
 
 
 #### Dynamic Analysis
@@ -675,7 +675,7 @@ setContentView(webview);
 webview.loadUrl("https://www.owasp.org/");
 ```
 
-Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://goo.gl/G9spo2 "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
+Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://goo.gl/G9spo2) to check for JavaScript activation.
 
 ```Java
 webview.getSettings().setJavaScriptEnabled(true);
@@ -686,9 +686,9 @@ This allows the WebView to interpret JavaScript. It should be enabled only if ne
 - the communication to the endpoints consistently relies on HTTPS (or other protocols that allow encryption) to protect HTML and JavaScript from tampering during transmission
 - JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
 
-To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://goo.gl/7dnhdi "clearCache() in WebViews") when the app closes.
+To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://goo.gl/7dnhdi) when the app closes.
 
-Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
+Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView) if the app runs on these devices.
 
 #### Dynamic Analysis
 
@@ -700,7 +700,7 @@ Dynamic Analysis depends on operating conditions. There are several ways to inje
 
 To address these attack vectors, check the following:
 
-- All functions offered by the endpoint should be free of [stored XSS](https://goo.gl/6MWZkb "Stored Cross-Site Scripting").
+- All functions offered by the endpoint should be free of [stored XSS](https://goo.gl/6MWZkb).
 - Only files that are in the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 - The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
@@ -713,7 +713,7 @@ To address these attack vectors, check the following:
 
 #### Overview
 
-Several default [schemas](https://developer.android.com/guide/appendix/g-app-intents.html "Intent List") are available for Android URLs. They can be triggered within a WebView with the following:
+Several default [schemas](https://developer.android.com/guide/appendix/g-app-intents.html) are available for Android URLs. They can be triggered within a WebView with the following:
 
 -	http(s)://
 -	file://
@@ -723,16 +723,16 @@ WebViews can load remote content from an endpoint, but they can also load local 
 
 #### Static Analysis
 
-Check the source code for WebView usage. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") control resource access:
+Check the source code for WebView usage. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html) control resource access:
 
 -	`setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
--	`setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
+-	`setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29) only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
 -	`setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
 -	`setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://goo.gl/4vdSQM "loadURL() in WebView") method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://goo.gl/4vdSQM) method.
 
 ```Java
 WebView = new WebView(this);
@@ -749,7 +749,7 @@ Environment.getExternalStorageDirectory().getPath() +
 
 The URL specified in `loadURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
 
-Use the following [code snippet and best practices](https://github.com/nowsecure/secure-mobile-development/blob/master/en/android/webview-best-practices.md#remediation "WebView best practices") to deactivate protocol handlers, if applicable:
+Use the following [code snippet and best practices](https://github.com/nowsecure/secure-mobile-development/blob/master/en/android/webview-best-practices.md#remediation) to deactivate protocol handlers, if applicable:
 
 ```java
 //If attackers can inject script into a WebView, they could access local resources. This can be prevented by disabling local file system access, which is enabled by default. You can use the Android WebSettings class to disable local file system access via the public method `setAllowFileAccess`.
@@ -774,11 +774,11 @@ To identify the usage of protocol handlers, look for ways to trigger phone calls
 
 #### Overview
 
-Android offers a way for JavaScript executed in a WebView to call and use native functions of an Android app: [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()").
+Android offers a way for JavaScript executed in a WebView to call and use native functions of an Android app: [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29).
 
 The `addJavascriptInterface` method allows you to expose Java Objects to WebViews. When you use this method in an Android app, JavaScript in a WebView can invoke the Android app's native methods.
 
-Before Android 4.2 Jelly Bean (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
+Before Android 4.2 Jelly Bean (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/) in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
 
 This vulnerability was fixed by API Level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API Level 17, all Java Object methods were accessible by default.
 
@@ -839,7 +839,7 @@ With access to the JavaScript code, via, for example, stored XSS or a MITM attac
 
 If `addJavascriptInterface` is necessary, only JavaScript provided with the APK should be allowed to call it; no JavaScript should be loaded from remote endpoints.
 
-Another solution is limiting the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed via JavaScript at these API levels.
+Another solution is limiting the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614) can be accessed via JavaScript at these API levels.
 
 ```xml
 <uses-sdk android:minSdkVersion="17" />
@@ -852,7 +852,7 @@ Another solution is limiting the API level to 17 (JELLY_BEAN_MR1) and above in t
 
 Dynamic analysis of the app can show you which HTML or JavaScript files are loaded and which vulnerabilities are present. The procedure for exploiting the vulnerability starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via a MITM attack or direct modification of the file if it is stored in external storage. The whole process can be accomplished via Drozer and weasel (MWR's advanced exploitation payload), which can install a full agent, injecting a limited agent into a running process or connecting a reverse shell as a Remote Access Tool (RAT).
 
-A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
+A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/).
 
 
 
@@ -860,7 +860,7 @@ A full description of the attack is included in the [blog article by MWR](https:
 
 #### Overview
 
-Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
+Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html) to users, allowing the developers to extend and adapt this abstract class.
 
 This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
 
@@ -947,7 +947,7 @@ Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
-The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk ) and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk) are available for downloading.
 
 
 ### Testing Object Persistence
@@ -958,7 +958,7 @@ There are several ways to persist an object on Android:
 
 ##### Object Serialization
 
-An object and its data can be represented as a sequence of bytes. This is done in Java via [object serialization](https://developer.android.com/reference/java/io/Serializable.html "Serializable"). Serialization is not inherently secure. It is just a binary format (or representation) for locally storing data in a .ser file. Encrypting and signing HMAC-serialized data is possible as long as the keys are stored safely. Deserializing an object requires a class of the same version as the class used to serialize the object. After classes have been changed, the `ObjectInputStream` can't create objects from older .ser files. The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.
+An object and its data can be represented as a sequence of bytes. This is done in Java via [object serialization](https://developer.android.com/reference/java/io/Serializable.html). Serialization is not inherently secure. It is just a binary format (or representation) for locally storing data in a .ser file. Encrypting and signing HMAC-serialized data is possible as long as the keys are stored safely. Deserializing an object requires a class of the same version as the class used to serialize the object. After classes have been changed, the `ObjectInputStream` can't create objects from older .ser files. The example below shows how to create a `Serializable` class by implementing the `Serializable` interface.
 
 ```java
 import java.io.Serializable;
@@ -983,7 +983,7 @@ Now you can read/write the object with `ObjectInputStream`/`ObjectOutputStream` 
 
 ##### JSON
 
-There are several ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. A wide variety of libraries, including [GSON](https://github.com/google/gson "Google Gson") or [Jackson](https://github.com/FasterXML/jackson-core "Jackson core"), can also be used. The main differences between the libraries are whether they use reflection to compose the object, whether they support annotations, and the amount of memory they use. Note that almost all the JSON representations are String-based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory.
+There are several ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. A wide variety of libraries, including [GSON](https://github.com/google/gson ) or [Jackson](https://github.com/FasterXML/jackson-core), can also be used. The main differences between the libraries are whether they use reflection to compose the object, whether they support annotations, and the amount of memory they use. Note that almost all the JSON representations are String-based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory.
 JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the data storage chapter for more details. A simple example (from the GSON User Guide) of writing and reading JSON with GSON follows. In this example, the contents of an instance of the `BagOfPrimitives` is serialized into JSON:
 
 ```java
@@ -1008,16 +1008,16 @@ String json = gson.toJson(obj);
 ##### ORM
 
 There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
-- [OrmLite](http://ormlite.com/ "OrmLite"),
-- [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
-- [GreenDAO](http://greenrobot.org/greendao/ "GreenDAO") and
-- [ActiveAndroid](http://www.activeandroid.com/ "ActiveAndroid").
+- [OrmLite](http://ormlite.com/),
+- [SugarORM](https://satyan.github.io/sugar/),
+- [GreenDAO](http://greenrobot.org/greendao/) and
+- [ActiveAndroid](http://www.activeandroid.com/).
 
-[Realm](https://realm.io/docs/java/latest/ "Realm Java"), on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide depends primarily on whether the database is encrypted. See the data storage chapter for more details. The Realm website includes a nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid "OrmLite example").
+[Realm](https://realm.io/docs/java/latest/ ), on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide depends primarily on whether the database is encrypted. See the data storage chapter for more details. The Realm website includes a nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid).
 
 ##### Parcelable
 
-[`Parcelable`](https://developer.android.com/reference/android/os/Parcelable.html "Parcelable") is an interface for classes whose instances can be written to and restored from a [`Parcel`](https://developer.android.com/reference/android/os/Parcel.html "Parcel"). Parcels are often used to pack a class as part of a `Bundle` for an `Intent`. Here's an Android developer documentation example that implements `Parcelable`:
+[`Parcelable`](https://developer.android.com/reference/android/os/Parcelable.html ) is an interface for classes whose instances can be written to and restored from a [`Parcel`](https://developer.android.com/reference/android/os/Parcel.html). Parcels are often used to pack a class as part of a `Bundle` for an `Intent`. Here's an Android developer documentation example that implements `Parcelable`:
 
 ```java
 public class MyParcelable implements Parcelable {
@@ -1052,7 +1052,7 @@ Because this mechanism that involves Parcels and Intents may change over time, a
 
 #### Static Analysis
 
-If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
+If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager).
 
 
 

@@ -14,7 +14,7 @@ However, iOS apps run in a more restricted environment than their desktop counte
 
 To protect users from malicious applications, Apple restricts and controls access to the apps that are allowed to run on iOS devices. The Apple App store is the only official application distribution platform. There developers can offer their apps and consumers can buy, download, and install apps. This distribution style differs from Android, which supports several app stores and sideloading (installing an app on your iOS device without using the official App store).
 
-In the past, sideloading was  possible only with a jailbreak or complicated workarounds. With iOS 9 or higher, it is possible to [sideload via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/ "How to Sideload Apps on iPhone and iPad Running iOS 10 using Xcode 8").
+In the past, sideloading was  possible only with a jailbreak or complicated workarounds. With iOS 9 or higher, it is possible to [sideload via Xcode](https://www.igeeksblog.com/how-to-sideload-apps-on-iphone-ipad-in-ios-10/).
 
 iOS apps are isolated from each other via the Apple sandbox (historically called Seatbelt),s a mandatory access control (MAC) mechanisms describing the resources an app can and can't access. Compared to Android's extensive Binder IPC facilities, iOS offers very few IPC options, minimizing the potential attack surface.
 
@@ -25,7 +25,7 @@ In spite of the numerous strengths of iOS, iOS app developers still need to worr
 
 ### iOS Security Architecture
 
-The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide") consists of six core features:
+The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf) consists of six core features:
 
 - Hardware Security
 - Secure Boot
@@ -43,7 +43,7 @@ The iOS security architecture makes good use of hardware-based security features
 
 The GID is a value shared by all processors in a class of devices used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy that's used for device-level file system encryption. Because UIDs aren't recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
-To allow secure deletion of sensitive data on flash memory, iOS devices include a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
+To allow secure deletion of sensitive data on flash memory, iOS devices include a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
 
 #### Secure Boot
 
@@ -53,10 +53,10 @@ This entire process is called the "Secure Boot Chain". Its purpose is ensuring t
 
 #### Code Signing
 
-Apple has implemented an elaborate DRM system to make sure that only Apple-approved code runs on their devices. In other words, you won't be able to run any code on an iOS device that hasn't been jailbroken unless Apple explicitly allows it. End users are supposed to install apps through the official Apple app store only. For this reason (and others), iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms").
+Apple has implemented an elaborate DRM system to make sure that only Apple-approved code runs on their devices. In other words, you won't be able to run any code on an iOS device that hasn't been jailbroken unless Apple explicitly allows it. End users are supposed to install apps through the official Apple app store only. For this reason (and others), iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms).
 
 A developer profile and an Apple-signed certificate are required to deploy and run an application.
-Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
+Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/) and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
 
 #### Encryption and Data Protection
 
@@ -70,7 +70,7 @@ When data protection is enabled, each data file is associated with a specific cl
 
 #### Sandbox
 
-The [appsandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html "File System Basics") is an iOS access control technology. It is enforced at the kernel level. Its purpose is limiting system and user data damage that may occur when an app is compromised.
+The [appsandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html) is an iOS access control technology. It is enforced at the kernel level. Its purpose is limiting system and user data damage that may occur when an app is compromised.
 
 Sandboxing has been a core security feature since the first release of iOS. All third-party apps run under the same user (`mobile`), and only a few system applications and services run as `root`. Regular iOS apps are confined to a *container* that restricts access to the app's own files and a very limited number of system APIs. Access to all resources (such as files, network sockets, IPCs, and shared memory) are controlled by the sandbox. These restrictions work as follows [#levin]:
 
@@ -130,7 +130,7 @@ A language.lproj folder exists for each language that the application supports. 
 
 ![iOS App Folder Structure](Images/Chapters/0x06a/iOS_project_folder.png)
 
-On a jailbroken device, you can recover the IPA for an installed iOS app with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
+On a jailbroken device, you can recover the IPA for an installed iOS app with [IPA Installer](https://github.com/autopear/ipainstaller). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/) or [Testflight](https://developer.apple.com/testflight/).
 
 #### App Structure on the iOS File System
 
@@ -146,14 +146,14 @@ The following figure represents the application folder structure:
 
 #### The Installation Process
 
-Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+Different methods exist for installing an IPA package onto an iOS device. The easiest method is by using [Cydia Impactor](http://www.cydiaimpactor.com/ ). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/).
 
 
-On Linux, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ ), a cross-platform software protocol library and a set of tools for native communication with iOS devices. You can install packages over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux), which provides a TCP tunnel over USB.
 
 On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store. It contains numerous useful applications that leverage jailbreak-provided root privileges  to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
 
-The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
+The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
 ```bash
 $ ipainstaller App_name.ipa
@@ -161,11 +161,11 @@ $ ipainstaller App_name.ipa
 
 #### App Permissions
 
-In contrast to Android apps, iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during run time, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+In contrast to Android apps, iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during run time, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033).
 
 iOS developers can't set requested permissions directly—they indirectly request them with sensitive APIs. For example, when accessing a user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of data they need to access (e.g., NSContactsUsageDescription).
 
-The following APIs [require user permission](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
+The following APIs [require user permission](https://www.apple.com/business/docs/iOS_Security_Guide.pdf):
 
 - Contacts
 - Microphone
@@ -186,15 +186,15 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 
 The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application can be attacked by:
 - Having unsafe input by means of IPC communication or URL-schemes. See
-  - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
+  - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes).
 - Having unsafe input by the user to input fields.
 - Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
   HVG!!!
-  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews#testing-javascript-execution-in-webviews "Testing iOS webviews");
+  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews#testing-javascript-execution-in-webviews);
 - Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
-  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
-  - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication);
+  - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis) .
 - Having insecure or compromised storage. See:
-  - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
+  - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios).
 - Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
-  - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")
+  - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses)

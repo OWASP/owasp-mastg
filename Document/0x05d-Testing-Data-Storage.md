@@ -18,7 +18,7 @@ Sensitive data is vulnerable when it is not properly protected by the app that i
 
 Disclosing sensitive information has several consequences, including decrypted information. In general, an attacker may identify this information and use it for additional attacks, such as social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), and gathering information from apps that have a payment option (to attack and abuse them).
 
-[Storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential for many mobile apps. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently in several ways. The following list of storage techniques are widely used on the Android platform:
+[Storing data](https://developer.android.com/guide/topics/data/data-storage.html) is essential for many mobile apps. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently in several ways. The following list of storage techniques are widely used on the Android platform:
 
 - Shared Preferences
 - SQLite Databases
@@ -26,7 +26,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 - Internal Storage
 - External Storage
 
-The following code snippets demonstrate bad practices that disclose sensitive information. They also illustrate Android storage mechanisms in detail. For more information, check out the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
+The following code snippets demonstrate bad practices that disclose sensitive information. They also illustrate Android storage mechanisms in detail. For more information, check out the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData) in the Android developer's guide.
 
 ##### Shared Preferences
 The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
@@ -77,14 +77,14 @@ Once the activity has been called, the database file `privateNotSoSecure` will b
 
 The database's directory may contain several files besides the SQLite database:
 
-- [Journal files](https://www.sqlite.org/tempfiles.html "SQLite Journal files"): These are temporary files used to implement atomic commit and rollback.
-- [Lock files](https://www.sqlite.org/lockingv3.html "SQLite Lock Files"): The lock files are part of the locking and journaling feature, which was designed to improve SQLite concurrency and reduce the writer starvation problem.
+- [Journal files](https://www.sqlite.org/tempfiles.html): These are temporary files used to implement atomic commit and rollback.
+- [Lock files](https://www.sqlite.org/lockingv3.html): The lock files are part of the locking and journaling feature, which was designed to improve SQLite concurrency and reduce the writer starvation problem.
 
 Sensitive information should not be stored in unencrypted SQLite databases.
 
 ##### SQLite Databases (Encrypted)
 
-With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), SQLite databases can be password-encrypted.
+With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/), SQLite databases can be password-encrypted.
 
 ```java
 SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
@@ -102,7 +102,7 @@ Secure ways to retrieve the key include:
 
 ##### Realm Databases
 
-The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
+The [Realm Database for Java](https://realm.io/docs/java/latest/) is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
 //the getKey() method either gets the key from the server or from a Keystore, or is deferred from a password.
@@ -118,7 +118,7 @@ If the database is not encrypted, you should be able to obtain the data. If the 
 
 ##### Internal Storage
 
-You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
+You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
 The following code would persistently store sensitive data to internal storage:
 
 ```java
@@ -140,7 +140,7 @@ Search for the class `FileInputStream` to find out which files are opened and re
 
 ##### External Storage
 
-Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
+Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal). This storage may be removable (such as an SD card) or internal (non-removable).
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
 You can use the following code to persistently store sensitive information to external storage as the contents of the file `password.txt`:
 
@@ -242,7 +242,7 @@ buildTypes {
 
 ##### KeyStore
 
-The [Android KeyStore](https://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android KeyStore") supports relatively secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
+The [Android KeyStore](https://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/) supports relatively secure credential storage. As of Android 4.3, it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
 
 You can protect keys stored in the Android KeyStore with user authentication in a confirm credential flow. The user's lock screen credentials (pattern, PIN, password, or fingerprint) are used for authentication.
 
@@ -252,9 +252,9 @@ You can use stored keys in one of two modes:
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 
-The level of security afforded by the Android KeyStore depends on its implementation, which depends on the device. Most modern devices offer a hardware-backed KeyStore implementation: keys are generated and used in a Trusted Execution Environment (TEE) or a Secure Element (SE), and the operating system can't access them directly. This means that the encryption keys themselves can't be easily retrieved, even from a rooted device. You can determine whether the keys are inside the secure hardware by checking the return value of the `isInsideSecureHardware` method, which is part of the [`KeyInfo` class](https://developer.android.com/reference/android/security/keystore/KeyInfo.html "Class KeyInfo"). Note that the relevant KeyInfo indicates that secret keys and HMAC keys are insecurely stored on several devices despite private keys being correctly stored on the secure hardware.
+The level of security afforded by the Android KeyStore depends on its implementation, which depends on the device. Most modern devices offer a hardware-backed KeyStore implementation: keys are generated and used in a Trusted Execution Environment (TEE) or a Secure Element (SE), and the operating system can't access them directly. This means that the encryption keys themselves can't be easily retrieved, even from a rooted device. You can determine whether the keys are inside the secure hardware by checking the return value of the `isInsideSecureHardware` method, which is part of the [`KeyInfo` class](https://developer.android.com/reference/android/security/keystore/KeyInfo.html). Note that the relevant KeyInfo indicates that secret keys and HMAC keys are insecurely stored on several devices despite private keys being correctly stored on the secure hardware.
 
-The keys of a software-only implementation are encrypted with a [per-user encryption master key](https://nelenkov.blogspot.sg/2013/08/credential-storage-enhancements-android-43.html "Nikolay Elenvok - Credential storage enhancements in Android 4.3"). An attacker can access all keys stored on rooted devices that have this implementation in the folder `/data/misc/keystore/`. Because the user's lock screen pin/password is used to generate the master key, the Android KeyStore is unavailable when the device is locked.
+The keys of a software-only implementation are encrypted with a [per-user encryption master key](https://nelenkov.blogspot.sg/2013/08/credential-storage-enhancements-android-43.html). An attacker can access all keys stored on rooted devices that have this implementation in the folder `/data/misc/keystore/`. Because the user's lock screen pin/password is used to generate the master key, the Android KeyStore is unavailable when the device is locked.
 
 ##### Older KeyStore Implementations
 
@@ -265,7 +265,7 @@ Be aware that not all KeyStores properly protect the keys stored in the KeyStore
 
 ##### KeyChain
 
-The [KeyChain class](https://developer.android.com/reference/android/security/KeyChain.html "Android KeyChain") is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if something is being imported into the KeyChain for the first time. Note that the KeyChain is system-wide—every application can access the materials stored in the KeyChain.
+The [KeyChain class](https://developer.android.com/reference/android/security/KeyChain.html) is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if something is being imported into the KeyChain for the first time. Note that the KeyChain is system-wide—every application can access the materials stored in the KeyChain.
 
 Inspect the source code to determine whether native Android mechanisms identify sensitive information. Sensitive information should be encrypted, not stored in clear text. For sensitive information that must be stored on the device, several API calls are available to protect the data via the `KeyChain` class. Complete the following steps:
 
@@ -278,9 +278,9 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 - Identify development files, backup files, and old files that shouldn't be included with a production release.
 - Determine whether SQLite databases are available and whether they contain sensitive information. SQLite databases are stored in `/data/data/<package-name>/databases`.
-- Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Avoid using Shared Preferences and other mechanisms that can't protect data when you are storing sensitive information. Shared Preferences is insecure and unencrypted by default. You can use [secure-preferences](https://github.com/scottyab/secure-preferences "Secure-preferences encrypts the values of Shared Preferences") to encrypt the values stored in Shared Preferences, but the Android KeyStore should be your first choice for storing data securely.
+- Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Avoid using Shared Preferences and other mechanisms that can't protect data when you are storing sensitive information. Shared Preferences is insecure and unencrypted by default. You can use [secure-preferences](https://github.com/scottyab/secure-preferences) to encrypt the values stored in Shared Preferences, but the Android KeyStore should be your first choice for storing data securely.
 - Check the permissions of the files in `/data/data/<package-name>`. Only the user and group created when you installed the app (e.g., u0_a82) should have user read, write, and execute permissions (`rwx`). Other users should not have permission to access files, but they may have execute permissions for directories.
-- Determine whether a Realm database is available in `/data/data/<package-name>/files/`, whether it is unencrypted, and whether it contains sensitive information. By default, the file extension is `realm` and the file name is `default`. Inspect the Realm database with the [Realm Browser](https://github.com/realm/realm-browser-osx "Realm Browser for macOS").
+- Determine whether a Realm database is available in `/data/data/<package-name>/files/`, whether it is unencrypted, and whether it contains sensitive information. By default, the file extension is `realm` and the file name is `default`. Inspect the Realm database with the [Realm Browser](https://github.com/realm/realm-browser-osx).
 - Check external storage for data. Don't use external storage for sensitive data because it is readable and writeable system-wide.
 
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
@@ -309,8 +309,8 @@ In case other public storage mechanisms (than the `SharedPreferences.Editor`) ar
 There are many legitimate reasons to create log files on a mobile device, such as keeping track of crashes, errors, and usage statistics. Log files can be stored locally when the app is offline and sent to the endpoint once the app is online. However, logging sensitive data may expose the data to attackers or malicious applications, and it violates user confidentiality.
 You can create log files in several ways. The following list includes two classes that are available for Android:
 
-- [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class")
-- [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class")
+- [Log Class](https://developer.android.com/reference/android/util/Log.html)
+- [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html)
 
 Use a centralized logging class and mechanism and remove logging statements from the production release because other applications may be able to read them.
 
@@ -356,7 +356,7 @@ The compiled bytecode, however, is equivalent to the bytecode of the following l
 Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 
-ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
+ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation).
 
 This is a security risk because the (unused) string leaks plain text data into memory, which can be accessed via a debugger or memory dumping.
 
@@ -392,7 +392,7 @@ afterEvaluate {
 
 Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.  
 
-Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
+Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html). There are two ways to execute Logcat:
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) and Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
@@ -454,7 +454,7 @@ In the layout definition of an activity, you can define `TextViews` that have XM
         android:inputType="textNoSuggestions"/>
 ```
 
-The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions"):
+The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS):
 
 
 #### Dynamic Analysis
@@ -486,9 +486,9 @@ Inspect the source code to understand how the content provider is meant to be us
 
 > To avoid SQL injection attacks within the app, use parameterized query methods, such as `query`, `update`, and `delete`. Be sure to properly sanitize all method arguments; for example, the `selection` argument could lead to SQL injection if it is made up of concatenated user input.
 
- If you expose a content provider, determine whether parameterized [query methods](https://developer.android.com/reference/android/content/ContentProvider.html#query%28android.net.Uri%2C%20java.lang.String[]%2C%20java.lang.String%2C%20java.lang.String[]%2C%20java.lang.String%29 "Query method in Content Provider Class") (`query`, `update`, and `delete`) are being used to prevent SQL injection. If so, make sure all their arguments are properly sanitized.
+ If you expose a content provider, determine whether parameterized [query methods](https://developer.android.com/reference/android/content/ContentProvider.html#query%28android.net.Uri%2C%20java.lang.String[]%2C%20java.lang.String%2C%20java.lang.String[]%2C%20java.lang.String%29) (`query`, `update`, and `delete`) are being used to prevent SQL injection. If so, make sure all their arguments are properly sanitized.
 
-We will use the vulnerable password manager app [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve - Vulnerable Password Manager") as an example of a vulnerable content provider.
+We will use the vulnerable password manager app [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk) as an example of a vulnerable content provider.
 
 ##### Inspect the Android Manifest
 Identify all defined `<provider>` elements:
@@ -721,9 +721,9 @@ Given its diverse ecosystem, Android supports many backup options:
 
 - Two Backup APIs are available to app developers:
 
- * [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
+ * [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html) (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
 
-  * [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature." This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+  * [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html ): With Android 6.0 (>= API level 23), Google added the This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 
@@ -731,7 +731,7 @@ Given its diverse ecosystem, Android supports many backup options:
 
 ##### Local
 
-Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup`.
+Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup) to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup`.
 
 To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
 
@@ -752,9 +752,9 @@ Regardless of  whether you use key/value backup or auto backup, you must determi
 - whether the files contain sensitive information
 - whether sensitive information is encrypted before being sent to the cloud.
 
-> If you don't want to share files with Google Cloud, you can exclude them from [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles "Exclude files from Auto Backup"). Sensitive information stored at rest on the device should be encrypted before being sent to the cloud.
+> If you don't want to share files with Google Cloud, you can exclude them from [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#IncludingFiles). Sensitive information stored at rest on the device should be encrypted before being sent to the cloud.
 
-- **Auto Backup**: You configure Auto Backup via the boolean attribute `android:allowBackup` within the application's manifest file. [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup "Enabling AutoBackup") is enabled by default for applications that target Android 6.0 (API Level 23). You can use the attribute `android:fullBackupOnly` to activate auto backup when implementing a backup agent, but this attribute is available for Android versions 6.0 and above only. Other Android versions use key/value backup instead.
+- **Auto Backup**: You configure Auto Backup via the boolean attribute `android:allowBackup` within the application's manifest file. [Auto Backup](https://developer.android.com/guide/topics/data/autobackup.html#EnablingAutoBackup) is enabled by default for applications that target Android 6.0 (API Level 23). You can use the attribute `android:fullBackupOnly` to activate auto backup when implementing a backup agent, but this attribute is available for Android versions 6.0 and above only. Other Android versions use key/value backup instead.
 
 ```xml
 android:fullBackupOnly
@@ -769,8 +769,8 @@ android:backupAgent
 ```
 
 To implement key/value backup, extend one of the following classes:
-- [BackupAgent](https://developer.android.com/reference/android/app/backup/BackupAgent.html "BackupAgent")
--  [BackupAgentHelper](https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper")
+- [BackupAgent](https://developer.android.com/reference/android/app/backup/BackupAgent.html)
+-  [BackupAgentHelper](https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html)
 
 To check for key/value backup implementations, look for these classes in the source code.
 
@@ -796,7 +796,7 @@ In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can
 dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
-The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
+The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor) is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
 java -jar abe.jar unpack backup.ab
@@ -830,7 +830,7 @@ For example, capturing a screenshot of a banking application may reveal informat
 
  A screenshot of the current activity is taken when an Android app goes into background and displayed for aesthetic purposes when the app returns to the foreground. However, this may leak sensitive information.
 
-To determine whether the application may expose sensitive information via the app switcher, find out whether the [`FLAG_SECURE`](https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE "FLAG_SECURE Option") option has been set. You should find something similar to the following code snippet:
+To determine whether the application may expose sensitive information via the app switcher, find out whether the [`FLAG_SECURE`](https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE) option has been set. You should find something similar to the following code snippet:
 
 ```Java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -947,7 +947,7 @@ try{
 }
 ```
 
-For more information, take a look at [Securely Storing Sensitive Data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM").
+For more information, take a look at [Securely Storing Sensitive Data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/).
 
 In the "Static Analysis" section, we mentioned the proper way to handle cryptographic keys when you are using `AndroidKeyStore` or `SecretKey`.
 
@@ -1114,7 +1114,7 @@ To test the device-access-security policy that the app enforces, a written copy 
 
 Check the source code for functions that implement the policy and determine whether it can be bypassed.
 
-You can implement checks on the Android device by querying  [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html "Settings.Secure") for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html "Device Administration API") offers techniques for creating applications that can enforce password policies and device encryption.
+You can implement checks on the Android device by querying  [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html ) for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html) offers techniques for creating applications that can enforce password policies and device encryption.
 
 #### Dynamic Analysis
 

@@ -8,7 +8,7 @@ This section introduces the Android platform from the architecture point of view
 4. Android application publishing
 5. Android Application Attack Surface
 
-Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
+Visit the official [Android developer documentation website](https://developer.android.com/index.html) for more details about the Android platform.
 
 ### Android Security Architecture
 
@@ -34,7 +34,7 @@ Android apps don't have direct access to hardware resources, and each app runs i
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) includes a list of the predefined users and groups  system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h) includes a list of the predefined users and groups  system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html) on Android sandboxing.
 
 For example, Android Nougat defines the following system users:
 
@@ -168,7 +168,7 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
    * x86: compiled code for x86 processors only
    * x86_64: compiled code for x86_64 processors only
    * mips: compiled code for MIPS processors
-- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs](https://developer.android.com/training/basics/data-storage/shared-preferences.html).
 
 #### Linux UID/GID for Normal Applications
 
@@ -221,7 +221,7 @@ Developers who want their apps to share a common sandbox can sidestep sandboxing
 
 ##### Zygote
 
-The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service for launching apps. The Zygote process is a "base" process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket ` /dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
+The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run ). Zygote is a system service for launching apps. The Zygote process is a process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket ` /dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
 
 ##### App Lifecycle
 
@@ -238,7 +238,7 @@ Apps must implement callback methods that react to a number of events; for examp
 
 Every app has a manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s APK file.
 
-The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's  icon, version number, and theme. The file may list other information,  such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
+The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's  icon, version number, and theme. The file may list other information,  such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html).
 
 Here is an example of a manifest file, including the package name (the convention is a reversed  URL, but any string is acceptable). It also lists the app version, relevant SDKs, required permissions, exposed content providers, broadcast receivers used with intent filters, and a description of the app and its activities:
 ```
@@ -276,7 +276,7 @@ Here is an example of a manifest file, including the package name (the conventio
 </manifest>
 ```
 
-The full list of available manifest options is in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+The full list of available manifest options is in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html).
 
 #### App Components
 
@@ -323,7 +323,7 @@ A fragment represents a behavior or a portion of the user interface within the a
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own lifecycle, which is tied to the lifecycles of the Activities that implement them.
 
-Because fragments have their own lifecycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+Because fragments have their own lifecycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html) for more details.
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
@@ -527,7 +527,7 @@ When an application is installed on the Android device, the Package Manager ensu
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes. Starting with Android 7.0, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, APKs signed with the v2 signature format can be installed on older Android devices as long as the former are also v1-signed. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports two application signing schemes. Starting with Android 7.0, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, APKs signed with the v2 signature format can be installed on older Android devices as long as the former are also v1-signed. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/).
 
 ##### JAR Signing (v1 Scheme)
 
@@ -538,7 +538,7 @@ The original version of app signing implements the signed APK as a standard sign
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification.
 
 ![Preparation](Images/Chapters/0x05a/apk-validation-process.png)
-[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
+[APK signature verification process](https://source.android.com/security/apksigning/v2#verification)
 
 ##### Creating Your Certificate
 
@@ -581,17 +581,17 @@ Publishing an app is quite straightforward; the main operation is making the sig
 
 The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application can be attacked by:
 - Having unsafe input by means of IPC communication or URL-schemes. See
-  - [Testing for Sensitivie functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc "Testing for Sensitivie functionality Exposure Through IPC");
-  - [Testing URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing URL Schemes").
+  - [Testing for Sensitivie functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc);
+  - [Testing URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes).
 - Having unsafe input by the user to input fields.
 - Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
-  -  [Testing javascript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing javascript execution in webviews");
-  - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers "Testing WebView Protocol Handlers");
-  - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews "Determining Whether Java Objects Are Exposed Through WebViews").
+  -  [Testing javascript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews);
+  - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers);
+  - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews).
 - Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
-  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
-  - [Android Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md#android-network-apis "Android Network APIs") .
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication);
+  - [Android Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md#android-network-apis) .
 - Having insecure or compromised storage. See:
-  - [Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android").
+  - [Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#data-storage-on-android).
 - Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
-  - [Android Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")
+  - [Android Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses)

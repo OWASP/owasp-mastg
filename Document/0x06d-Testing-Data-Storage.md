@@ -16,10 +16,10 @@ Every file stored on the iOS file system is encrypted with its own per-file key,
 
 ![Key Hierarchy iOS](Images/Chapters/0x06d/key_hierarchy_apple.jpg)
 
-*[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide")
+*[iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf)
 
 
-Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
+Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf):
 
 - **Complete Protection (NSFileProtectionComplete)**: A key derived from the user passcode and the device UID protects this class key. The derived key is wiped from memory shortly after the device is locked, making the data inaccessible until the user unlocks the device.
 
@@ -27,7 +27,7 @@ Files can be assigned to one of four different protection classes, which are exp
 
 - **Protected Until First User Authentication (NSFileProtectionCompleteUntilFirstUserAuthentication)**: The file can be accessed as soon as the user unlocks the device for the first time after booting. It can be accessed even if the user subsequently locks the device and the class key is not removed from memory.
 
-- **No Protection (NSFileProtectionNone)**: The key for this protection class is protected with the UID only. The class key is stored in "[Effaceable Storage](https://www.safaribooksonline.com/library/view/hacking-and-securing/9781449325213/ch01s03.html "Effaceable Storage")," which is a region of flash memory on the iOS device that allows the storage of small amounts of data. This protection class exists for fast remote wiping (immediate deletion of the class key, which makes the data inaccessible).
+- **No Protection (NSFileProtectionNone)**: The key for this protection class is protected with the UID only. The class key is stored in "[Effaceable Storage](https://www.safaribooksonline.com/library/view/hacking-and-securing/9781449325213/ch01s03.html which is a region of flash memory on the iOS device that allows the storage of small amounts of data. This protection class exists for fast remote wiping (immediate deletion of the class key, which makes the data inaccessible).
 
 All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can happen only on the device itself and requires the correct passcode.
 
@@ -37,16 +37,16 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as an SQLite database that can be accessed through the Keychain APIs only.
 
-On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") of the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
+On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html ) is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html) of the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
 
-The [Keychain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "Keychain concepts") includes the following main operations:
+The [Keychain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html) includes the following main operations:
 
 - `SecItemAdd`
 - `SecItemUpdate`
 - `SecItemCopyMatching`
 - `SecItemDelete`
 
-Data stored in the Keychain is protected via a class structure that is similar to the class structure used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted with a 128-bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data aren't meant to be saved directly in the Keychain-that's what the Data Protection API is for. You can configure data protection for Keychain items by setting the `kSecAttrAccessible` key in the call to `SecItemAdd` or `SecItemUpdate`. The following configurable [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") are the Keychain Data Protection classes:
+Data stored in the Keychain is protected via a class structure that is similar to the class structure used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted with a 128-bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data aren't meant to be saved directly in the Keychain-that's what the Data Protection API is for. You can configure data protection for Keychain items by setting the `kSecAttrAccessible` key in the call to `SecItemAdd` or `SecItemUpdate`. The following configurable [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100) are the Keychain Data Protection classes:
 
 - `kSecAttrAccessibleAlways`: The data in the Keychain item can always be accessed, regardless of whether the device is locked.
 - `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the Keychain item can always be accessed, regardless of whether the device is locked. The data won't be included in an iCloud or iTunes backup.
@@ -143,7 +143,7 @@ When you have access to the source code of an iOS app, try to spot sensitive dat
 
 The encryption must be implemented so that the secret key is stored in the Keychain with secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`. This ensures the usage of hardware-backed storage mechanisms. Make sure that the `AccessControlFlags` are set according to the security policy of the keys in the KeyChain.
 
-[Generic examples of using the KeyChain](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 "GenericKeyChain") to store, update, and delete data can be found in the official Apple documentation. The official Apple documentation also includes an example of using [Touch ID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouch ID/Listings/KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10 "KeychainTouch ID").
+[Generic examples of using the KeyChain](https://developer.apple.com/library/content/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2 ) to store, update, and delete data can be found in the official Apple documentation. The official Apple documentation also includes an example of using [Touch ID and passcode protected keys](https://developer.apple.com/library/content/samplecode/KeychainTouch ID/Listings/KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m.html#//apple_ref/doc/uid/TP40014530-KeychainTouch ID_AAPLLocalAuthenticationTestsViewController_m-DontLinkElementID_10).
 
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
@@ -179,7 +179,7 @@ When checking an iOS app for insecure data storage, consider the following ways 
 
 ##### `NSUserDefaults`
 
-The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user  preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
+The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults) class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user  preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
 
 ##### File system
 
@@ -204,7 +204,7 @@ The following example shows how to create a securely encrypted file using the `c
 
 ##### CoreData
 
-[`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 "Core Data iOS") is a framework for managing the model layer of objects in your application. It provides general and automated solutions to common tasks associated with object life cycles and object graph management, including persistence. [Core Data can use SQLite as its persistent store](https://cocoacasts.com/what-is-the-difference-between-core-data-and-sqlite/ "What Is the Difference Between Core Data and SQLite"), but the framework itself is not a database.
+[`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 ) is a framework for managing the model layer of objects in your application. It provides general and automated solutions to common tasks associated with object life cycles and object graph management, including persistence. [Core Data can use SQLite as its persistent store](https://cocoacasts.com/what-is-the-difference-between-core-data-and-sqlite/), but the framework itself is not a database.
 
 ##### SQLite Databases
 
@@ -212,7 +212,7 @@ The SQLite 3 library must be added to an app if the app is to use SQLite. This l
 
 ##### Realm databases
 
-[Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") aren't supplied by Apple, but they are still worth noting. They store everything unencrypted, unless the configuration has encryption enabled.
+[Realm Objective-C](https://realm.io/docs/objc/latest/ ) and [Realm Swift](https://realm.io/docs/swift/latest/) aren't supplied by Apple, but they are still worth noting. They store everything unencrypted, unless the configuration has encryption enabled.
 
 The following example demonstrates how to use encryption with a Realm database:
 
@@ -230,11 +230,11 @@ do {
 
 ##### Couchbase Lite Databases
 
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL)  database engine that can be synced. It compiles natively for iOS and Mac OS.
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios) is a lightweight, embedded, document-oriented (NoSQL)  database engine that can be synced. It compiles natively for iOS and Mac OS.
 
 ##### YapDatabase
 
-[YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is a key/value store built on top of SQLite.
+[YapDatabase](https://github.com/yapstudios/YapDatabase) is a key/value store built on top of SQLite.
 
 #### Dynamic Analysis
 
@@ -247,7 +247,7 @@ The following steps can be used to determine how the application stores data loc
 3. Execute grep with the data that you've stored, for example: `grep -iRn "USERID"`.
 4. If the sensitive data is stored in plaintext, the app fails this test.
 
-You can analyze the app's data directory on a non-jailbroken iOS device by using third-party applications, such as [iMazing](https://imazing.com "iMazing").
+You can analyze the app's data directory on a non-jailbroken iOS device by using third-party applications, such as [iMazing](https://imazing.com).
 
 1. Trigger the functionality that stores potentially sensitive data.
 2. Connect the iOS device to your workstation and launch iMazing.
@@ -257,7 +257,7 @@ You can analyze the app's data directory on a non-jailbroken iOS device by using
 
 > Note that tools like iMazing don't copy data directly from the device. They try to extract data from the backups they create. Therefore, getting all the app data that's stored on the iOS device is impossible: not all folders are included in backups. Use a jailbroken device or repackage the app with Frida and use a tool like objection to access all the data and files.
 
-If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Basic Security Testing" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition").
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Basic Security Testing" chapter), you can use [objection](https://github.com/sensepost/objection ) to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition).
 
 Important file system locations are:
 
@@ -294,14 +294,14 @@ Important file system locations are:
   - Content in this directory is not backed up.
   - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
-The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS."
+The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ ) as described in the chapter
 
 The path to the Keychain file is
 ```
 /private/var/Keychains/keychain-2.db
 ```
 
-On a non-jailbroken device, you can use objection to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
+On a non-jailbroken device, you can use objection to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper) created and stored by the app.
 
 
 ##### Dynamic Analysis with Xcode and iOS simulator
@@ -454,7 +454,7 @@ All requests made to external services should be analyzed for embedded sensitive
 
 Several options for simplifying keyboard input are available to users. These options include autocorrection and spell checking. Most keyboard input is cached by default, in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
-The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UITextInputTraits protocol") is used for keyboard caching. The UITextField, UITextView, and UISearchBar classes automatically support this protocol and it offers the following properties:
+The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits) is used for keyboard caching. The UITextField, UITextView, and UISearchBar classes automatically support this protocol and it offers the following properties:
 
 - `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled during typing. When autocorrection is enabled, the text object tracks unknown words and suggests suitable replacements, replacing the typed text automatically unless the user overrides the replacement. The default value of this property is `UITextAutocorrectionTypeDefault`, which for most input methods enables autocorrection.
 - `var secureTextEntry: BOOL` determines whether text copying and text caching are disabled and hides the text being entered for `UITextField`. The default value of this property is "NO."
@@ -502,13 +502,13 @@ If you must use a non-jailbroken iPhone:
 
 #### Overview
 
-[Inter Process Communication (IPC)](https://nshipster.com/inter-process-communication/ "IPC on iOS") allows processes to send each other messages and data. For processes that need to communicate with each other, there are different ways to implement IPC on iOS:
+[Inter Process Communication (IPC)](https://nshipster.com/inter-process-communication/) allows processes to send each other messages and data. For processes that need to communicate with each other, there are different ways to implement IPC on iOS:
 
-- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html "XPC Services")**: XPC is a structured, asynchronous library that provides basic interprocess communication. It is managed by `launchd`. It is the most secure and flexible implementation of IPC on iOS and should be the preferred method. It runs in the most restricted environment possible: sandboxed with no root privilege escalation and minimal file system access and network access. Two different APIs are used with XPC Services:
+- **[XPC Services](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingXPCServices.html)**: XPC is a structured, asynchronous library that provides basic interprocess communication. It is managed by `launchd`. It is the most secure and flexible implementation of IPC on iOS and should be the preferred method. It runs in the most restricted environment possible: sandboxed with no root privilege escalation and minimal file system access and network access. Two different APIs are used with XPC Services:
   * NSXPCConnection API
   * XPC Services API
-- **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow local communication (intra-device communication) only. They can be implemented either natively or via Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
-- **NSFileCoordinator**: The class `NSFileCoordinator` can be used to manage and send data to and from apps via files that are available on the local file system to various processes. [NSFileCoordinator](https://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will be blocked until they stop executing. That's convenient because you don't have to wait for an asynchronous block callback, but it also means that the methods block the running thread.
+- **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport)**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow local communication (intra-device communication) only. They can be implemented either natively or via Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
+- **NSFileCoordinator**: The class `NSFileCoordinator` can be used to manage and send data to and from apps via files that are available on the local file system to various processes. [NSFileCoordinator](https://www.atomicbird.com/blog/sharing-with-app-extensions) methods run synchronously, so your code will be blocked until they stop executing. That's convenient because you don't have to wait for an asynchronous block callback, but it also means that the methods block the running thread.
 
 #### Static Analysis
 
@@ -523,11 +523,11 @@ Several classes may be to implement the NSXPCConnection API:
 - NSXPCListener
 - NSXPCListenerEndpoint
 
-You can set [security attributes](https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection "Security Attributes of NSXPCConnection") for the connection. The attributes should be verified.
+You can set [security attributes](https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection) for the connection. The attributes should be verified.
 
 Check for the following two files in the Xcode project for the XPC Services API (which is C-based):
 
-- [`xpc.h`](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h "xpc.h")
+- [`xpc.h`](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h)
 - `connection.h`
 
 ##### Mach Ports
@@ -568,7 +568,7 @@ A text field that masks its input can be configured in two ways:
 In the iOS project's storyboard, navigate to the configuration options for the text field that takes sensitive data. Make sure that the option "Secure Text Entry" is selected. If this option is activated, dots are shown in the text field in place of the text input.
 
 **Source Code**
-If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true." This option obscures the text input by showing dots.
+If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry ) is set to This option obscures the text input by showing dots.
 
 ```
 sensitiveTextField.isSecureTextEntry = true
@@ -598,17 +598,17 @@ The takeaway: If sensitive data is handled as recommended earlier in this chapte
 
 ##### Static Analysis
 
-An iTunes backup of a device on which a mobile application has been installed will include all subdirectories (except for `Library/Caches/`) and files in the [app's private directory](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
+An iTunes backup of a device on which a mobile application has been installed will include all subdirectories (except for `Library/Caches/`) and files in the [app's private directory](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12).
 
 Therefore, avoid storing sensitive data in plaintext within any of the files or folders that are in the app's private directory or subdirectories.
 
-Although all the files in `Documents/` and `Library/Application Support/` are always backed up by default, you can [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28 "Where You Should Put Your App's Files") by calling `NSURL setResourceValue:forKey:error:` with the `NSURLIsExcludedFromBackupKey` key.
+Although all the files in `Documents/` and `Library/Application Support/` are always backed up by default, you can [exclude files from the backup](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW28) by calling `NSURL setResourceValue:forKey:error:` with the `NSURLIsExcludedFromBackupKey` key.
 
-You can use the [NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey "NSURLIsExcludedFromBackupKey") and [CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey "kCFURLIsExcludedFromBackupKey") file system properties to exclude files and directories from backups. An app that needs to exclude many files can do so by creating its own subdirectory and marking that directory excluded. Apps should create their own directories for exclusion instead of excluding system-defined directories.
+You can use the [NSURLIsExcludedFromBackupKey](https://developer.apple.com/reference/foundation/nsurl#//apple_ref/c/data/NSURLIsExcludedFromBackupKey ) and [CFURLIsExcludedFromBackupKey](https://developer.apple.com/reference/corefoundation/cfurl-rd7#//apple_ref/c/data/kCFURLIsExcludedFromBackupKey) file system properties to exclude files and directories from backups. An app that needs to exclude many files can do so by creating its own subdirectory and marking that directory excluded. Apps should create their own directories for exclusion instead of excluding system-defined directories.
 
 Both file system properties are preferable to the deprecated approach of directly setting an extended attribute. All apps running on iOS version 5.1 and later should use these properties to exclude data from backups.
 
-The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
+The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html) on iOS 5.1 and later:
 
 ```#ObjC
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
@@ -626,7 +626,7 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 }
 ```
 
-The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
+The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html) on iOS 5.1 and later:
 
 ```
  func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
@@ -667,7 +667,7 @@ Manufacturers want to provide device users with an aesthetically pleasing effect
 
 #### Static Analysis
 
-While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
+While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview) to determine whether the application sanitizes the screen before being backgrounded.
 
 The following is a sample remediation method that will set a default screenshot:
 
@@ -764,7 +764,7 @@ In summary, when performing static analysis for sensitive data exposed via memor
 
 Several approaches and tools are available for dumping an iOS app's memory.
 
-On a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "Dynamic Analysis on Non-Jailbroken Devices," in the chapter "Basic Security Testing."
+On a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection) and [Fridump](https://github.com/Nightbringer21/fridump). To take advantage of these tools, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section 'Dynamic Analysis on Non-Jailbroken Devices,' in the chapter
 
 ##### Objection (No Jailbreak needed)
 
@@ -819,7 +819,7 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 
 The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
 
-If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
+If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump).
 
 ```
 ➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
@@ -910,7 +910,7 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 #### Tools
 
-- [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
-- [objection](https://github.com/sensepost/objection "objection")
+- [Fridump](https://github.com/Nightbringer21/fridump)
+- [objection](https://github.com/sensepost/objection)
 - [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 - [Burp Suite Professional](https://portswigger.net/burp)

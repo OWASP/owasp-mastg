@@ -4,7 +4,7 @@
 
 #### Overview
 
-Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. A [list of typical jailbreak detection techniques for iOS was published by Trustwave](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods on the Trustware Spiderlabs Blog").
+Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. A [list of typical jailbreak detection techniques for iOS was published by Trustwave](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/).
 
 ##### File-based Checks
 
@@ -127,12 +127,12 @@ false
 
 In this case we have bypassed the jailbreak detection of the application!
 
-Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") for how to do this; however, we will provide a potentially faster and more flexible approach.
+Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf) for how to do this; however, we will provide a potentially faster and more flexible approach.
 
-**[Frida](https://www.frida.re/ "Frida")** is a dynamic instrumentation framework that allows you to use a JavaScript API to instrument apps. One feature that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
+**[Frida](https://www.frida.re/)** is a dynamic instrumentation framework that allows you to use a JavaScript API to instrument apps. One feature that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
 1.	Make sure that `frida-server` is running on your iDevice.
-2.	Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
+2.	Make sure that `Frida` is [installed](https://www.frida.re/docs/installation/ ) on your workstation.
 3.	iOS device must be connected via USB cable.
 4.	Use `frida-trace` on your workstation:
 
@@ -169,7 +169,7 @@ Changing the return value to:0x0
 
 Please note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-Frida is a very powerful and versatile tool. Refer to the [documentation](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
+Frida is a very powerful and versatile tool. Refer to the [documentation](https://www.frida.re/docs/home/) for more details.
 
 Please see below a Python script for hooking Objective-C methods and native functions:
 
@@ -320,7 +320,7 @@ Another approach to detecting a debugger that's attached to the calling process 
 The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
 ```
 
-`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I'm being run under the debugger?"):
+`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html):
 
 ```C
 #include <assert.h>
@@ -371,7 +371,7 @@ After the instruction at offset *0xC13C*, MOVNE R0, #1 is patched and changed to
 
 ![Sysctl Disassembly](Images/Chapters/0x06j/sysctlPatched.png)
 
-You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
+You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/).
 
 Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns false when the device is jailbroken. Use the following command to execute this module:
 
@@ -454,7 +454,7 @@ int xyz(char *dst) {
 ##### Sample Implementation - Storage
 
 When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device.  The CommonCrypto implementation is best for creating an HMAC.
-If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html).
 
 When you generate an HMAC with CC:
 
@@ -530,7 +530,7 @@ A similar approach works. Answer the following questions:
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html ), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the keychain, or using Google's InstanceID for iOS. See the section for more details.
 
 #### Static Analysis
 
@@ -571,7 +571,7 @@ Take the following steps when you want to verify app-binding with two jailbroken
 3.	Retrieve the data from the jailbroken device:
    - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
   - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-  - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
+  - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
 4.	Install the application on the second jailbroken device.
 5.	Overwrite the application data extracted during step 3. The keychain data must be added manually.
 6.	Can you continue in an authenticated state? If so, then binding may not be working properly.
@@ -582,13 +582,13 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). These may not be available after you reinstall the application if no other applications from the same vendor are installed.
 - You can store something in the keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or touch-id requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
-- You can use Google and its Instance ID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
+- You can use Google and its Instance ID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation).
 
 Any scheme based on these methods will be more secure the moment a passcode and/or touch-id is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or touchid), `kSecAccessControlTouchIDAny` (Touch ID) or `kSecAccessControlTouchIDCurrentSet` (Touch ID: but current fingerprints only).
 
 ### References
 
--	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf "Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android")
+-	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf)
 
 #### OWASP Mobile Top 10 2016
 
