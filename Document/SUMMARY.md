@@ -49,5 +49,3 @@
 
 - [Testing Tools](0x08-Testing-Tools.md)
 - [Suggested Reading](0x09-Suggested-Reading.md)
-
-<img src='../Document/Images/OWASP_logo-bw.png' />

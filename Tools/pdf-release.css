@@ -1,0 +1,18 @@
+body {
+  font-size: 0.625em;
+  font-family: Cambria, Arial;
+}
+
+l,
+ol {
+  margin: 1em 0;
+  padding: 0 0 0 2em;
+}
+ul ul,
+ol ol {
+  margin: 0.3em 0;
+}
+
+h1 {
+  page-break-before: always;
+}

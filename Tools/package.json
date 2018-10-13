@@ -11,6 +11,7 @@
   "dependencies": {
     "ajv": "^6.5.3",
     "duplexer": "^0.1.1",
+    "easy-pdf-merge": "^0.2.0",
     "eslint": "^5.5.0",
     "fs": "0.0.1-security",
     "markdown-pdf": "9.0.0",
