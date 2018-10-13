@@ -7,8 +7,8 @@ sed -i.bak "s/\[\]/$1/g" ../book.json
 rm ../book.json.bak
 gitbook install ../
 
-gitbook pdf ../ ../Generated/MSTG-eng.pdf
-gitbook epub ../ ../Generated/MSTG-eng.epub
-gitbook mobi ../ ../Generated/MSTG-eng.mobi
+gitbook pdf ../ ../Generated/MSTG-EN.pdf
+gitbook epub ../ ../Generated/MSTG-EN.epub
+gitbook mobi ../ ../Generated/MSTG-EN.mobi
 
 echo "We are done: please do not forget to update the leanpub update!"
