@@ -1,8 +1,3 @@
-#Metadata
-
-##Version
-
-##Changelog
 1.0.1 17 Sept 2018:
 
 - Updated guiding documentation (README, PR templates, improved styleguide, issue templates).
