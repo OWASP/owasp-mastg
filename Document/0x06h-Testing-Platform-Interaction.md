@@ -133,7 +133,6 @@ It should therefore be verified if a user can change the filename or path from w
 
 #### Overview
 
-
 Starting from iOS version 7.0, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious script into the WebView (e.g., through a successful cross-site scripting attack).
 
 #### Static Analysis
@@ -164,9 +163,7 @@ Usage of the JSContext and JSExport ideally should be identified through static 
 
 #### Overview
 
-WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface.
-
-iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. Besides potential script injection, there's another fundamental WebViews security issue: the WebKit libraries packaged with iOS don't get updated out-of-band like the Safari web browser. Therefore, newly discovered WebKit vulnerabilities remain exploitable until the next full iOS update [#THIEL].
+WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. 
 
 #### Static Analysis
 
