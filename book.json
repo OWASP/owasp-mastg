@@ -1,7 +1,11 @@
 { 
   "root" : "./Document",
-  "plugins" : [ "anchors" ],
-
+  "plugins" : [ "anchors", "header" ],
+  "pluginsConfig": {
+    "layout": {
+      "headerPath" : "layouts/header.html"
+    }
+  }
   "structure": { 
     "readme": "Foreword.md"
   }
