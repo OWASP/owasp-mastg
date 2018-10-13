@@ -5,10 +5,8 @@
     "layout": {
       "headerPath" : "layouts/header.html"
     }
-  }
+  }, 
   "structure": { 
     "readme": "Foreword.md"
   }
-  
- 
 }
