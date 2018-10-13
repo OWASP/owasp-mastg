@@ -1,5 +1,17 @@
 This document is automatically generated at {{gitbook.time}}
 
+1.0.2 13 Oct 2018:
+
+- Updated uiding documentation (README)
+- Improved automated build of the pdf, epub and .mobi
+- Updated Frontispiece (given new contributor stats).
+- Added attack surface sections for Android and various
+- Added vulnerable apps for testing skills
+- Improved sections for testing App permissions for Android (given android Oreo/Pie), added section for testing permissions on iOS
+- Added fix for Fragment Injection on older Android versions
+- Improved sections on iOS webview related testing.
+
+
 1.0.1 17 Sept 2018:
 
 - Updated guiding documentation (README, PR templates, improved styleguide, issue templates).
