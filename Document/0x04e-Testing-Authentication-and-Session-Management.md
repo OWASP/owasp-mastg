@@ -533,11 +533,11 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 #### CWE
 
-- CWE-287: Improper Authentication
-- CWE-307: Improper Restriction of Excessive Authentication Attempts
-- CWE-308: Use of Single-factor Authentication
-- CWE-521: Weak Password Requirements
-- CWE-613: Insufficient Session Expiration
+- CWE-287 - Improper Authentication
+- CWE-307 - Improper Restriction of Excessive Authentication Attempts
+- CWE-308 - Use of Single-factor Authentication
+- CWE-521 - Weak Password Requirements
+- CWE-613 - Insufficient Session Expiration
 
 ##### Tools
 

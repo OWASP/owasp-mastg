@@ -1,5 +1,86 @@
 ## iOS Platform APIs
 
+### Testing App Permissions
+
+#### Overview
+iOS makes all mobile applications run under the `mobile` user. Each application is sandboxed and limited using policies enforced by the Trusted BSD mandatory access control framework. These policies are called profiles and all third-party applications use on generic sandbox profile: the container permission list. See the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html "Apple Developer Documentation on Sandboxing") and the [newer Apple Developer Security Documentation](https://developer.apple.com/documentation/security "Apple Developer Security Documentation") for more details.
+
+On iOS, apps need to request permission to the user for accessing one of the following data or resources:
+- Bluetooth peripherals,
+- Calendar data,
+- Camera,
+- Contacts,
+- Health sharing,
+- Health updating,
+- HomeKit,
+- Location,
+- Microphone,
+- Motion,
+- Music and the media library,
+- Photos,
+- Reminders,
+- Siri,
+- Speech recognition,
+- the TV provider.
+For more details, check the [Archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings") and the article [Protecting the User's Privacy at Apples Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy")
+Even though Apple urges to protect the privacy of the user and be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many permissions.
+
+Next to the resources for which permission is requested there is a set of capabilities, which can be required by the app developer in order to run the device. These capabilities (`UIRequiredDeviceCapabilities`) are listed at the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1 "UIRequiredDeviceCapabilities"). These capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed. Many of these capabilities do not require the user to provide permission. Note that the actual available capabilities differ per type of developer profile used to sign the application. See [the Apple Developer Documentation](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities") for more details.
+
+#### Static analysis
+
+Since iOS 10, there are three areas which you need to inspect for permssions:
+- the Info.plist file,
+- the `<appname>.enttitlements` file, where <appname> is the name of the application
+- the source-code.
+
+##### Info.plist
+The Info.plist contains the texts offered to users when requesting permissioin to access the protected data or resources. The [Apple Documentation](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permission") gives a clear instruction on how the user should be asked for permission to access the given resource. Following these guidelines should make it relatively simple to evaluate each and every entry in the Info.plist file to check if the permission makes sense.
+For example, when you have a Info.plist file, for a Solitair game which has, at least, the following content:
+
+```xml
+<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+<string>Share your health data with us!</string>
+<key>NSCameraUsageDescription</key>
+<string>We want to access your camera</string>
+
+```
+Should be suspicious as a normal solitair game probably does not have any need for accessing the camera nor a user's health-records.
+Note that from iOS 10 onward you need to provide explanation in terms of these \*Description fields. See table 1-2 at the [Apple app programming guide](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Apple app programming guide") for a more complete overview of different keys to look for.
+
+##### Entitlements file
+The entitlements file shows which capabilities are used. Some of these capabilities do not need any additional permissions provided by the user, but can still leak information to other apps. Take the App Groups capability for instance. As documented at [Apple Developer documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Handling Common Scenarios") and [App Groups Entitlement](https://developer.apple.com/documentation/foundation/com_apple_security_application-groups?changes=_5&language=objc "Appl Groups Entitlement"). With this capability, one can share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps. Here is an example of an application entitlement file with the app-group capability:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.security.application-groups</key>
+  <!-- Note: this array contains all the capabilities registered for the app. -->
+  <array/>
+</dict>
+</plist>
+
+```
+
+Note that this requirement is not always necessary to "bleed" information from one application to another. You can have a back-end as a medium between two applications to share information as well.
+
+##### Source code inspection
+After having checked the <appname>.entitlements file and the Info.plist file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code-review should be enough.
+Pay attention to:
+- whether the permission explanation in the Info.plist file matches the programmatic implementation.
+- whether the capabilities registered are used in such a way that no confidential information is leaking.
+
+Note that apps should crash if a capability is requried to use which requires a permission without the permission-explanation-text being registered at the Info.plist file.
+
+#### Dynamic Analysis
+There are various steps in the analysis process:
+- Check the embedded.mobileprovision file and the <appname>.entitlements file and see which capbilities they contain.
+- Obtain the Info.plist file and check for which permissions it provided an explanation.
+- Go through the application and check whether the application communicates with other applications or with back-ends. Check whether the information retrieved using the permissions and capbilities are used for ill-purposed or are over-asked/under-utilized.
+
+
 ### Testing Custom URL Schemes
 
 #### Overview
@@ -16,7 +97,7 @@ Attackers exploited this vulnerability by putting an invisible `<iframe src="sky
 
 #### Static Analysis
 
-The first step to test custom URL schemes is finding out whether an application registers any protocol handlers. This information is in the file `info.plist` in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to the `Info` tab, and open the `URL Types` section, presented in the screenshot below.
+The first step to test custom URL schemes is finding out whether an application registers any protocol handlers. This information is in the file `Info.plist` in the application sandbox folder. To view registered protocol handlers, simply open a project in Xcode, go to the `Info` tab, and open the `URL Types` section, presented in the screenshot below.
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
@@ -290,7 +371,7 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-- CWE-939: Improper Authorization in Handler for Custom URL Scheme
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
 
 #### Tools
 

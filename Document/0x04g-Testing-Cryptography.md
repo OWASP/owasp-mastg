@@ -141,6 +141,6 @@ While same basic cryptographic principles apply independent of the particular OS
 
 ##### CWE
 
-- CWE-326: Inadequate Encryption Strength
-- CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-- CWE-329: Not Using a Random IV with CBC Mode
+- CWE-326 - Inadequate Encryption Strength
+- CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
+- CWE-329 - Not Using a Random IV with CBC Mode

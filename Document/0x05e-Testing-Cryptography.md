@@ -286,6 +286,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 ##### CWE
 
-- CWE-321: Use of Hard-coded Cryptographic Key
-- CWE-326: Inadequate Encryption Strength
-- CWE-330: Use of Insufficiently Random Values
+- CWE-321 - Use of Hard-coded Cryptographic Key
+- CWE-326 - Inadequate Encryption Strength
+- CWE-330 - Use of Insufficiently Random Values

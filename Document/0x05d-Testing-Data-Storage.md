@@ -6,6 +6,8 @@ The guidelines for saving data can be summarized quite easily: Public data shoul
 
 Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "Identifying Sensitive Data" section of the chapter "Mobile App Security Testing."
 
+Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
+
 ### Testing Local Storage for Sensitive Data
 
 #### Overview
@@ -58,7 +60,6 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 ```
 
 > Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated with API 17. Although newer devices may not be affected by this, applications compiled with an android:targetSdkVersion value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (`JELLY_BEAN_MR1`).
-
 
 ##### SQLite Database (Unencrypted)
 
@@ -132,9 +133,10 @@ try {
    e.printStackTrace();
 }
 ```
-You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) are laxer and may pose a security risk.
+You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) may pose a security risk.
 
 Search for the class `FileInputStream` to find out which files are opened and read within the app.
+
 
 ##### External Storage
 
@@ -282,6 +284,22 @@ Install and use the app, executing all functions at least once. Data can be gene
 - Check external storage for data. Don't use external storage for sensitive data because it is readable and writeable system-wide.
 
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
+
+### Testing Local Storage for Input Validation
+For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
+> Note: Similar holds for private accessible data on a rooted device
+
+#### Static analysis
+
+##### Using Shared Preferences
+When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaning the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
+Using reflection based persistence? Check the section on "Testing Object Persistence" for Android to see how it should be validated.
+Using the `SharedPreferences.Editor` to store and read certificates or keys? Make sure you have patched your security provider given vulnerabilities such as found in [Bouncy Castle](https://www.cvedetails.com/cve/CVE-2018-1000613/ "Key reading vulnerability due to unsafe reflection").
+
+In all cases, having the content HMACed can help to ensure that no additions and/or changes have been applied.
+
+##### Using Other Storage Mechanisms
+In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
 
 ### Testing Logs for Sensitive Data
@@ -1109,7 +1127,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 - M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 - M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
-- M4 - Unintended Data Leakage
 
 #### OWASP MASVS
 
@@ -1124,16 +1141,18 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - V2.9: "The app removes sensitive data from views when backgrounded."
 - V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- V6.1: "The app only requests the minimum set of permissions necessary."
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 
 #### CWE
 
-- CWE-117: Improper Output Neutralization for Logs
+- CWE-117 - Improper Output Neutralization for Logs
 - CWE-200 - Information Exposure
 - CWE-316 - Cleartext Storage of Sensitive Information in Memory
 - CWE-359 - Exposure of Private Information ('Privacy Violation')
 - CWE-524 - Information Exposure Through Caching
-- CWE-532: Information Exposure Through Log Files
-- CWE-534: Information Exposure Through Debug Log Files
+- CWE-532 - Information Exposure Through Log Files
+- CWE-534 - Information Exposure Through Debug Log Files
 - CWE-311 - Missing Encryption of Sensitive Data
 - CWE-312 - Cleartext Storage of Sensitive Information
 - CWE-522 - Insufficiently Protected Credentials

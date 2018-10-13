@@ -73,7 +73,8 @@ Noteworthy API versions:
 - Android 5.0 Lollipop (API 21) in November 2014 (ART used by default and many other features added)
 - Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
 - Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 O (API 26) beta (major security fixes expected)
+- Android 8.0 Oreo (API 26-27) in August 2017 (A lot of security improvements)
+- Android 9 Pie (API 28) in August 2018.
 
 #### App Folder Structure
 
@@ -199,7 +200,7 @@ The relationship between group IDs and permissions is defined in the file [frame
 
 Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. This separation adds a layer of security.
 
-Installation of a new app creates a new directory named after the app package— `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
+Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
 ![Sandbox](Images/Chapters/0x05a/Selection_003.png)
 
