@@ -224,6 +224,10 @@ Permissions should be explicitly requested for every needed permission, even if 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
 
+#### Permisson Analysis
+
+Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+
 #### Dynamic Analysis
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
@@ -260,6 +264,8 @@ $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 
 Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
 
+When doing the dynamic analysis: validate whether the permission requisted by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+
 
 ### Testing Custom URL Schemes
 
@@ -274,9 +280,13 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
 
-Nevertheless, data that's processed by the app and comes in through URL schemes should be validated, as described in the test case "Testing custom url schemes."
+Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+- When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
+- Using the data for queries? Make sure you make parameterized queries.
+- Using the data to do authenticated actions? Make sure that the user is in an authenticated state before the data is processed.
+- If tampering of the data will influence the result of the calculations: add an HMAC to the data.
 
 #### Static Analysis
 
@@ -341,7 +351,6 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 ```
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
-
 
 
 ### Testing for Sensitive Functionality Exposure Through IPC
@@ -1171,6 +1180,8 @@ There are several ways to perform dynamic analysis:
 
 #### OWASP MASVS
 
+- V6.1: "The app only requests the minimum set of permissions necessary."
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 - V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
