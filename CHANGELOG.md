@@ -1,3 +1,4 @@
+This document is automatically generated at {{gitbook.time}}
 
 1.0.1 17 Sept 2018:
 

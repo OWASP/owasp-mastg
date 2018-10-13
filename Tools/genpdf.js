@@ -19,7 +19,7 @@ var langdir = "";
 var tag = "";
 var help = false;
 var releaseNotes = "";
-
+var genNextMajorRelease = false;
 if (process.argv.includes("-h")) {
   console.log("Helptext here");
   help = true;
@@ -32,13 +32,21 @@ if (process.argv.includes("-lang")) {
 if (process.argv.includes("-tag")) {
   tag = process.argv[process.argv.indexOf("-tag") + 1];
 }
+
+if (process.argv.includes("-genNextMajorRelease")) {
+  genNextMajorRelease = process.argv[process.argv.indexOf("-genNextMajorRelease") + 1];
+  if (genNextMajorRelease) {
+    console.log("Currently, you still have to replace the first page with the actual cover image as it requires manual work.");
+  }
+}
+
 if (tag != "") {
   tag = tag + " ";
 }
 tag = tag + "Date: " + setDate();
 
 if (process.argv.includes("-relnotes")) {
-  releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1];
+  releaseNotes = process.argv[process.argv.indexOf("-relnotes") + 1] + "\n" + generateRelNotes();
 } else {
   releaseNotes = generateRelNotes();
 }
@@ -58,7 +66,7 @@ function preProcessRunningJs() {
   var options = {
     files: "running.js",
     from: "[DATE]",
-    to: "[" + tag + "]"
+    to: "[" + "OWASP Mobile Security Testing Guide: " + tag + "]"
   };
   try {
     const changes = replace.sync(options);
@@ -71,7 +79,7 @@ function preProcessRunningJs() {
 function postProcessRunningJS() {
   const options = {
     files: "running.js",
-    from: "[" + tag + "]",
+    from: "[" + "OWASP Mobile Security Testing Guide: " + tag + "]",
     to: "[DATE]"
   };
   try {
@@ -82,7 +90,7 @@ function postProcessRunningJS() {
   }
 }
 
-function generateRelNotes(){
+function generateRelNotes() {
 
   return fs.readFileSync("../CHANGELOG.md", "utf8");
 }
@@ -91,14 +99,15 @@ function preProcessMd() {
   // Split the input stream by lines
   var splitter = split();
   var tocRendered = getToc();
-  var replacer = through(function(data) {
+  var replacer = through(function (data) {
     this.queue(
       data
-        .replace("[date]", tag)
+        .replace("[DATE]", tag)
         .replace("[RELEASE_NOTES]", releaseNotes)
         .replace("[TOCCCC]", tocRendered)
         .replace("Images/", langdir + "/Images/") + "\n"
     );
+
   });
 
   splitter.pipe(replacer);
@@ -123,6 +132,9 @@ function setDate() {
 }
 
 function getPreDocSet() {
+  if (genNextMajorRelease) {
+    return [langdir + "cover.md", langdir + "Foreword.md"]
+  }
   return [langdir + "0x00-Header.md", langdir + "Foreword.md"];
 }
 function getPostDocSet() {
@@ -138,6 +150,7 @@ function getPostDocSet() {
     langdir + "0x04f-Testing-Network-Communication.md",
     langdir + "0x04g-Testing-Cryptography.md",
     langdir + "0x04h-Testing-Code-Quality.md",
+    langdir + "0x04i-Testing-user-interaction.md",
     langdir + "0x05-Android-Testing-Guide.md",
     langdir + "0x05a-Platform-Overview.md",
     langdir + "0x05b-Basic-Security_Testing.md",
@@ -162,7 +175,8 @@ function getPostDocSet() {
     langdir + "0x06j-Testing-Resiliency-Against-Reverse-Engineering.md",
     langdir + "0x07-Appendix.md",
     langdir + "0x08-Testing-Tools.md",
-    langdir + "0x09-Suggested-Reading.md"
+    langdir + "0x09-Suggested-Reading.md",
+    langdir + "SUMMARY.md"
   ];
 }
 function getDocSet() {
@@ -172,7 +186,7 @@ function getDocSet() {
 function getToc() {
   var resultString = "";
   var docSet = getPostDocSet();
-  docSet.forEach(function(filename) {
+  docSet.forEach(function (filename) {
     resultString = resultString + fs.readFileSync(filename, "utf8");
   });
   var renderedToc = toc(resultString, { maxdepth: 3 }).content;
@@ -182,19 +196,25 @@ function getToc() {
 function runPDF() {
   var mdDocs = getDocSet(),
     bookPath = "./../generated/MSTG-" + lang + ".pdf";
-
+  var pdfCSS = "pdf.css";
+  var paperBorder = "2cm";
+  if (genNextMajorRelease) {
+    pdfCSS = "pdf-release.css";
+  }
   preProcessRunningJs();
   markdownpdf({
     preProcessMd: preProcessMd,
     remarkable: {
       html: true,
+      linkify: true,
       breaks: true
     },
     runningsPath: "running.js",
-    cssPath: "pdf.css"
+    cssPath: pdfCSS,
+    paperBorder: paperBorder
   })
     .concat.from(mdDocs)
-    .to(bookPath, function() {
+    .to(bookPath, function () {
       console.log("Created", bookPath);
       postProcessRunningJS();
     });

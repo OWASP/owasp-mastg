@@ -4,7 +4,7 @@ type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not install
 # TODO for later releases:
 # 0. fix position of TOC: https://stackoverflow.com/questions/25591517/pandoc-inserting-pages-before-generated-table-of-contents
 # 1. add changelog
-# 2. add [Date] to tag+tag of Date
+# 2. add [DATE] to tag+tag of Date
 
 cd ../Document
 # ../Tools/metadata.yml \
@@ -21,6 +21,7 @@ Foreword.md \
 0x04f-Testing-Network-Communication.md \
 0x04g-Testing-Cryptography.md \
 0x04h-Testing-Code-Quality.md \
+0x04i-Testing-user-interaction.md \
 0x05-Android-Testing-Guide.md \
 0x05a-Platform-Overview.md \
 0x05b-Basic-Security_Testing.md \
@@ -45,7 +46,8 @@ Foreword.md \
 0x06j-Testing-Resiliency-Against-Reverse-Engineering.md \
 0x07-Appendix.md \
 0x08-Testing-Tools.md \
-0x09-Suggested-Reading.md
+0x09-Suggested-Reading.md \
+SUMMARY.md
 
 # cd ../Document-ru
 #
