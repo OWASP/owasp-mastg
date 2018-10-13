@@ -70,8 +70,9 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 To generate the epub version you can use the following command:
 
 ```bash
-$ gitbook epub ./ Generated/MSTG.epub
+$ ./tools/gitbookandpdf.sh
 ```
+his produces PDF, Epub and Mobi files in the "Generated" subdirectory.
 
 2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "Our releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 

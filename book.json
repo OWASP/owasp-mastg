@@ -1,6 +1,6 @@
 {
   "root" : "./Document",
-  "plugins" : [ "anchors" ],
+  "plugins" : [ "anchors","numbered-headings" ],
 
   "structure": {
     "readme": "Foreword.md"
