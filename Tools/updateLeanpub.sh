@@ -1,3 +1,2 @@
 #!/bin/bash
-echo "Before you can run it, don't forget to update your apikey in ~/.leanpub.json. See https://leanpub.com/author_dashboard/settings for the api key."
-npm install -g leanpub-cli
+echo "Will be created when we have full support from leanpub. For now do it manullay at https://leanpub.com/mobile-security-testing-guide/upload"

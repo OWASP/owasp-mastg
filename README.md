@@ -87,8 +87,6 @@ $ cd owasp-mstg/Tools/
 $ ./gitbookandpdf.sh
 ```
 
-
-
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
 
 ## Contributions, feature requests and feedback
