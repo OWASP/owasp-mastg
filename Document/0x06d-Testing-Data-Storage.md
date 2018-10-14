@@ -78,7 +78,7 @@ In case you want to use these mechanisms, it is recommended to test whether the 
 
 ```
 
-```obj-c
+```objc
   -(BOOL)devicePasscodeEnabled:(LAContex)context{
     if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
           return true;

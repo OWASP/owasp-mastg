@@ -230,7 +230,7 @@ Both `UIWebView` and `WKWebView` provide a means of communication between the We
 
 Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
-```obj-c
+```objc
 
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
 
