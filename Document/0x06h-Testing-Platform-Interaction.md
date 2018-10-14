@@ -384,16 +384,12 @@ https://developer.apple.com/documentation/foundation/archives_and_serialization?
 https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
 ##### ORM
 
-##### Parse (?)
-
 
 #### Static Analysis
 
 ##### JSON
 
 ##### ORM
-
-##### Parse (?)
 
 #### Dynamic Analysis
 

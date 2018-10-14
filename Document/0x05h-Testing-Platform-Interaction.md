@@ -1004,6 +1004,10 @@ String json = gson.toJson(obj);
 // ==> json is {"value1":1,"value2":"abc"}
 
 ```
+##### XML
+
+There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "https://developer.android.com/training/basics/network-ops/xml") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [This blogpost](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
+Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the data storage chapter for more details. As stated earlier: the true danger in XML lies in the XML eXternal Entity attack (XXE) as it might allow for reading external data sources that are still acecssible within the application.
 
 ##### ORM
 
