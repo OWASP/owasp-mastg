@@ -54,7 +54,7 @@ Once the activity has been called, the file key.xml will be created with the pro
 
 - `MODE_WORLD_READABLE` allows all applications to access and read the contents of `key.xml`.
 
-```bash
+```shell
 root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 -rw-rw-r-- u0_a118    170 2016-04-23 16:51 key.xml
 ```
@@ -400,13 +400,13 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 
 - You can execute Logcat with adb to store the log output permanently:
 
-```bash
+```shell
 $ adb logcat > logcat.log
 ```
 
 With the following command you can specifically grep for the log output of the app in scope, just insert the package name.
 
-```bash
+```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
@@ -674,7 +674,7 @@ Vulnerable Providers:
 
 Note that `adb` can also be used to query content providers:
 
-```bash
+```shell
 $ adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
 Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
@@ -779,41 +779,41 @@ To check for key/value backup implementations, look for these classes in the sou
 
 After executing all available app functions, attempt to back up via `adb`. If the backup is successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
-```bash
+```shell
 $ adb backup -apk -nosystem <package-name>
 ```
 
 Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, the file _.ab_ will be in your working directory.
 Run the following command to convert the .ab file to tar.
 
-```bash
+```shell
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
 In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
 
-```bash
+```shell
 dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
-```bash
+```shell
 java -jar abe.jar unpack backup.ab
 ```
 if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
-```bash
+```shell
 abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ```
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
-```bash
+```shell
 java -jar abe.jar unpack backup.ab backup.tar 123
 ```
 Extract the tar file to your working directory.
 
-```bash
+```shell
 $ tar xvf mybackup.tar
 ```
 
@@ -1046,7 +1046,7 @@ For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer (
 
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
-```bash
+```shell
 ./hprof-conv memory.hprof memory-mat.hprof
 ```
 

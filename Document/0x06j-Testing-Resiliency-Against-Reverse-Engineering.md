@@ -152,7 +152,7 @@ This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJ
 
 This will provide the following output:
 
-```bash
+```shell
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
 
 Instrumenting functions...                                           `...

@@ -155,7 +155,7 @@ On the iOS device, the actual installation process is then handled by the instal
 
 The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
-```bash
+```shell
 $ ipainstaller App_name.ipa
 ```
 

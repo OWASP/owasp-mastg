@@ -102,7 +102,7 @@ Go through the permissions with the developer to identify the purpose of every p
 
 Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool to examine permissions.
 
-```bash
+```shell
 $ aapt d permissions com.owasp.mstg.myapp
 uses-permission: android.permission.WRITE_CONTACTS
 uses-permission: android.permission.CHANGE_CONFIGURATION
@@ -232,7 +232,7 @@ Always check whether the application is requesting permissions it actually needs
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
 
-```bash
+```shell
 dz> run app.package.info -a com.android.mms.service
 Package: com.android.mms.service
   Application Label: MmsService
