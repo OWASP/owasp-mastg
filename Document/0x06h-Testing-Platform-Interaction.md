@@ -168,12 +168,16 @@ Example of setting `allowFileAccessFromFileURLs` in a WebView:
 
 Objective-C:
 ```objc
+
 [webView.configuration.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
+
 ```
 
 Swift:
 ```swift
+
 webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+
 ```
 
 By default WKWebView disables file access. If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
@@ -183,13 +187,17 @@ Please also verify which WebView class is used. WKWebView should be used nowaday
 If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL") method.
 
 Objective-C:
-```
+```objc
+
 [self.wk_webview loadFileURL:url allowingReadAccessToURL:readAccessToURL];
+
 ```
 
 Swift:
-```
+```swift
+
 webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
+
 ```
 
 The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated; their manipulation may lead to local file inclusion.
@@ -223,7 +231,9 @@ Both `UIWebView` and `WKWebView` provide a means of communication between the We
 Since iOS 7, the JavaScriptCore framework provides an Objective-C wrapper to the WebKit JavaScript engine. This makes it possible to execute JavaScript from Swift and Objective-C, as well as making Objective-C and Swift objects accessible from the JavaScript runtime. A JavaScript execution environment is represented by a `JSContext` object. Look out for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews. In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
 ```obj-c
+
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
+
 ```
 
 There are two fundamental ways of how native code and JavaScript can communicate:
@@ -244,7 +254,7 @@ Usage of the JSContext and JSExport ideally should be identified through static 
 
 #### Overview
 
-WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them. 
+WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and cross-site scripting attacks can affect them.
 
 #### Static Analysis
 
@@ -275,6 +285,7 @@ WKWebView also increases the performance of apps that are using WebViews signifi
 As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly required. The following code sample shows a sample configuration.
 
 ```objc
+
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
 @interface ViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -300,6 +311,7 @@ As a best practice, disable JavaScript in a `WKWebView` unless it is explicitly 
     [self.view addSubview:_webView];
 
 }
+
 ```
 
 JavaScript cannot be disabled in `SafariViewController` and this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface.
@@ -309,7 +321,9 @@ JavaScript cannot be disabled in `SafariViewController` and this is one of the r
 In contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system. JavaScript code can send messages back to the native app using the 'postMessage' method:
 
 ```javascript
+
 window.webkit.messageHandlers.myHandler.postMessage()
+
 ````
 
 The `postMessage` API automatically serializes JavaScript objects into native Objective-C or Swift objects. Message Handler are configured using the `addScriptMessageHandler` method.
@@ -322,6 +336,7 @@ WebViews can load content remotely and locally from the app data directory. If t
 Check the source code for WebViews usage. If you can identify a WebView instance, check whether any local files have been loaded ("example_file.html" in the below example).
 
 ```objc
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -335,6 +350,7 @@ Check the source code for WebViews usage. If you can identify a WebView instance
     NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
 }
+
 ```
 
 Check the `baseURL` for dynamic parameters that can be manipulated (leading to local file inclusion).
@@ -348,6 +364,32 @@ In WKWebViews it is possible to detect mixed content or content that was complet
 To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
 In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a man-in-the-middle attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+
+### Testing Object Persistence
+
+#### Overview
+
+There are several ways to persist an object on iOS:
+
+##### Object Serialization with encoders and decoders
+
+##### JSON
+
+##### ORM
+
+##### Parse (?)
+
+#### Static Analysis
+
+##### JSON
+
+##### ORM
+
+##### Parse (?)
+
+#### Dynamic Analysis
+
+
 
 ### References
 
