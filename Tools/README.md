@@ -18,3 +18,12 @@ Files:
 - metadata.yml: used by pandoc for generating docx files with `generate_Document.sh`
 - omtg-pre-commit.sh: older not maintained hook for automatically triggering generate_toc.rb
 - reference.docx : templatefile used for generating the word doc using `generate_document.sh`.
+
+## Release process:
+1. Sync @sushi2k his repository
+2. Update the Changelog.md
+3. Commit the changes (with message "Release <version>")
+4. Push a tag with the new version (git tag -a <version> -m "Release message that will be on github")
+5. Update the Leanpub Files
+6. Update Owasp Wiki if necessary
+7. Tweet about it with @OWASP-MSTG.
