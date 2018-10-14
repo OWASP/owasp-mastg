@@ -137,19 +137,19 @@ To perform security testing different tools are available in order to be able to
 The applications listed below can be used as training materials.
 
 #### Android
-- [DVHMA](https://github.com/logicalhacking/DVHMA "Damn Vulnerable Hybrid Mobile App") - is an hybrid mobile app (for Android) that intentionally contains vulnerabilities.
-- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - is a set of applications to test your Android application hacking skills.
-- [OMTG Android app](https://github.com/OWASP/MSTG-Hacking-Playground) - is a vulnerable Android application with vulnerabilities similar to the testcases described in this document.
-- [Digitalbank](https://github.com/CyberScions/Digitalbank "Android Digital Bank Vulnerable Mobile App") - a vulnerable app which comes from 2015, can be used on older Android platforms. Note: this is not tested by the authors.
-- [DIVA Android](https://github.com/payatu/diva-android "Damn insecure and vulnerable App") - is an App intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
-- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - is a vulnerable Android application is named "InsecureBankv2" and is made for security enthusiasts and developers to learn the Android insecurities by testing this vulnerable application. It has been updated in 2018 and contains over 25 vulnerabilities.
+- [DVHMA](https://github.com/logicalhacking/DVHMA "Damn Vulnerable Hybrid Mobile App") - A hybrid mobile app (for Android) that intentionally contains vulnerabilities.
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - A set of apps to test your Android application hacking skills.
+- [OMTG Android app](https://github.com/OWASP/MSTG-Hacking-Playground) - A vulnerable Android app with vulnerabilities similar to the test cases described in this document.
+- [Digitalbank](https://github.com/CyberScions/Digitalbank "Android Digital Bank Vulnerable Mobile App") - A vulnerable app created in 2015, which can be used on older Android platforms. Note: this is not tested by the authors.
+- [DIVA Android](https://github.com/payatu/diva-android "Damn insecure and vulnerable App") - An app intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
+- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities.
 - [DodoVulnerableBank](https://github.com/CSPF-Founder/DodoVulnerableBank "Dodo Vulnerable Bank") - An insecure Android app from 2015. Note: this is not tested by the authors.
 
 
 
 #### iOS
 
-- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - is a set of applications to test your iOS application hacking skills.
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - A set of applications to test your iOS application hacking skills.
 - [Myriam](https://github.com/GeoSn0w/Myriam "Myriam iOS Security App") - A vulnerable iOS app with iOS security challenges.
-- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/ "DVIA propject website").
-- [DVIA-V2](https://github.com/prateek147/DVIA-v2 "Damn Vulnerable iOS App v2") - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.
+- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in Objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/ "DVIA project website").
+- [DVIA-v2](https://github.com/prateek147/DVIA-v2 "Damn Vulnerable iOS App v2") - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.
