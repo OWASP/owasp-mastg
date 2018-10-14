@@ -95,6 +95,12 @@ The following procedure, which works on the Android emulator that ships with And
 
 HTTP and HTTPS requests should now be routed over the proxy on the host machine. If not, try toggling airplane mode off and on.
 
+A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
+
+```bash
+$ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
+```
+
 ##### Installing a CA Certificate on the Virtual Device
 
 An easy way to install a CA certificate is to push the certificate to the device and add it to the certificate store via Security Settings. For example, you can install the PortSwigger (Burp) CA certificate as follows:
@@ -220,7 +226,6 @@ $ adb reverse tcp:8080 tcp:8080
 
 Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your laptop and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wifis that have client isolation.
 
-
 ##### Intercepting Non-Proxy Aware Apps
 
 Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This is mainly due to the following reasons:
@@ -274,7 +279,7 @@ $ iptables -t nat -F
 
 Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running ettercap.
 
-Your testing machine and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
+The machine where you run your proxy and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
 
 ```bash
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//

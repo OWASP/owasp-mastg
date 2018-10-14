@@ -47,13 +47,13 @@ For a full dynamic analysis of a mobile app, all network traffic should be inter
 
 Ettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your machine that will act as the MITM. On macOS it can be installed by using brew.
 
-```bash
+```shell
 $ brew install ettercap
 ```
 
 Ettercap can also be installed through `apt-get` on Debian based linux distributions.
 
-```bash
+```shell
 sudo apt-get install zlib1g zlib1g-dev
 sudo apt-get install build-essential
 sudo apt-get install ettercap
@@ -79,13 +79,13 @@ To be able to get a man-in-the-middle position your machine should be in the sam
 
 Start ettercap with the following command and replace the first IP addresses with the network gateway in the wireless network and the second one with the one of your mobile device.
 
-```bash
+```shell
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
 On the mobile phone start the browser and navigate to example.com, you should see output like the following:
 
-```bash
+```shell
 ettercap 0.8.2 copyright 2001-2015 Ettercap Development Team
 
 Listening on:
@@ -163,7 +163,7 @@ WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
 
 - Use ettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-```bash
+```shell
 $ echo "
 rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -

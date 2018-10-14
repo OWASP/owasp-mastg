@@ -288,7 +288,7 @@ Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it 
 
 Connect macOS to an iOS device by installing and starting iproxy:
 
-```bash
+```shell
 $ brew install libimobiledevice
 $ iproxy 2222 22
 waiting for connection
@@ -333,7 +333,7 @@ The random string in the URI is the application's GUID. Every app installation h
 
 App files are stored in the Data directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information (as shown previously):
 
-```bash
+```shell
 iPhone:~ root# ipainstaller -l
 ...
 sg.vp.UnCrackable1
@@ -351,7 +351,7 @@ Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1F
 
 You can now simply archive the Data directory and pull it from the device with `scp`:
 
-```bash
+```shell
 iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
@@ -361,7 +361,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 [Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
-```bash
+```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
 $ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
 $ ssh -p 2222 root@localhost
@@ -576,7 +576,7 @@ ip.addr == 192.168.1.1 && http
 
 ### Allow Application Installation on an Non-Ipad Device
 
-Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file. 
+Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -593,7 +593,7 @@ Sometimes an application can require to be used on an iPad device. If you only h
 </plist>  
 ```
 
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled. 
+It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
 
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
 

@@ -80,7 +80,7 @@ Noteworthy API versions:
 
 Installed Android apps are located at `/data/app/[package-name]`. For example, the YouTube app is located at:
 
-```bash
+```shell
 /data/app/com.google.android.youtube-1/base.apk
 ```
 
@@ -112,7 +112,7 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
 A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to Smali code – a feature that we’ll revisit later in this book).
 
-```bash
+```shell
 $ apktool d base.apk
 I: Using Apktool 2.1.0 on base.apk
 I: Loading resource table...
@@ -148,7 +148,7 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 
 Every app also has a data directory for storing data created during run time. This directory is at `/data/data/[package-name]` and has the following structure:
 
-```bash
+```shell
 drwxrwx--x u0_a65   u0_a65            2016-01-06 03:26 cache
 drwx------ u0_a65   u0_a65            2016-01-06 03:26 code_cache
 drwxrwx--x u0_a65   u0_a65            2016-01-06 03:31 databases
