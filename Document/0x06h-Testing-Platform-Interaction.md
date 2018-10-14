@@ -371,13 +371,21 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 There are several ways to persist an object on iOS:
 
-##### Object Serialization with encoders and decoders
-
+##### Object Serialization with NSCOding, NSSEcureCoding
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
+##### NSKeyedArchiver
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
+https://nshipster.com/nscoding/
 ##### JSON
-
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
+##### Property Lists
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
+##### XML
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
 ##### ORM
 
 ##### Parse (?)
+
 
 #### Static Analysis
 
