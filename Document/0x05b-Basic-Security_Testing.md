@@ -97,9 +97,10 @@ HTTP and HTTPS requests should now be routed over the proxy on the host machine.
 
 A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
 
-```bash
+```shell
 $ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 ```
+
 
 ##### Installing a CA Certificate on the Virtual Device
 
@@ -109,7 +110,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 
-```bash
+```shell
 $ adb push cacert.cer /sdcard/
 ```
 
@@ -122,13 +123,13 @@ You should then be prompted to confirm installation of the certificate (you'll a
 
 You can either start an AVD by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
 
-```bash
+```shell
 $ ./android avd
 ```
 
 Once the emulator is up and running, you can establish a root connection with the `adb` command.
 
-```bash
+```shell
 $ adb root
 $ adb shell
 root@generic_x86:/ $ id
@@ -155,7 +156,7 @@ During **black box testing**, you won't have access to the original form of the 
 
 The following pull the APK from the device:
 
-```bash
+```shell
 $ adb shell pm list packages
 (...)
 package:com.awesomeproject
@@ -175,7 +176,7 @@ $ sudo ./install.sh
 
 This should copy `apkx` to `/usr/local/bin`. Run it on the APK that you want to test as follows:
 
-```bash
+```shell
 $ apkx UnCrackable-Level1.apk
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
 Converting: classes.dex -> classes.jar (dex2jar)
@@ -220,7 +221,7 @@ What to do if the Wi-Fi we need for testing has client isolation?
 
 You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your laptop and use adb to make a reverse port forwarding:
 
-```bash
+```shell
 $ adb reverse tcp:8080 tcp:8080
 ```
 
@@ -241,13 +242,13 @@ In both scenarios you would need additional steps to finally being able to see t
 
 You can use iptables on the Android device to  redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
 
-```bash
+```shell
 $ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
 ```
 
 Verify the iptables settings and check the IP and port.
 
-```bash
+```shell
 $ iptables -t nat -L
 Chain PREROUTING (policy ACCEPT)
 target     prot opt source               destination
@@ -271,7 +272,7 @@ target     prot opt source               destination
 
 In case you want to reset the iptables configuration you can flush the rules:
 
-```bash
+```shell
 $ iptables -t nat -F
 ```
 
@@ -281,26 +282,26 @@ Read the chapter "Testing Network Communication" and the test case "Simulating a
 
 The machine where you run your proxy and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
 
-```bash
+```shell
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
 #### Network Monitoring/Sniffing
 
- [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+[Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
-```
-# adb root
-# adb remount
-# adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
+```shell
+$ adb root
+$ adb remount
+$ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
 If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
-```
-# adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
-# adb shell
-# su
+```shell
+$ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
+$ adb shell
+$ su
 $ mount -o rw,remount /system;
 $ cp /data/local/tmp/tcpdump /system/xbin/
 $ cd /system/xbin
@@ -311,8 +312,8 @@ $ chmod 755 tcpdump
 
 Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
 
-```
-# tcpdump
+```shell
+$ tcpdump
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 04:54:06.590751 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
@@ -326,7 +327,7 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 
 To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to `netcat` (nc):
 
-```
+```shell
 $ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
@@ -339,13 +340,13 @@ By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens 
 
 To access port 11111, you need to forward the port to your machine via adb.
 
-```
+```shell
 $ adb forward tcp:11111 tcp:11111
 ```
 
 The following command connects you to the forwarded port via netcat and piping to Wireshark.
 
-```
+```shell
 $ nc localhost 11111 | wireshark -k -S -i -
 ```
 
@@ -391,7 +392,7 @@ FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only po
 
 - Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
 
-```bash
+```shell
 $ echo "
 rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
@@ -407,7 +408,7 @@ For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-
 
 - Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
 
-```bash
+```shell
 $ echo "
 rdr pass inet proto tcp from any to any port 5235-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
@@ -508,7 +509,7 @@ Open the Drozer application in the running emulator and click the OFF button at 
 
 The server listens on port 31415 by default. Use adb to forward this port to the localhost interface, then run Drozer on the host to connect to the agent.
 
-```bash
+```shell
 $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
 ```
@@ -557,7 +558,7 @@ Out of the box, Drozer provides modules for investigating various aspects of the
 
 The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
 
-```bash
+```shell
 dz> module search tool
 kernelerror.tools.misc.installcert
 metall0id.tools.setup.nmap
