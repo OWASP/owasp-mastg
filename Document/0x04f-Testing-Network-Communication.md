@@ -245,15 +245,6 @@ Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You ca
 
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning". Tools like Vproxy can be used to redirect all HTTP(S) traffic to your machine to sniff and investigate it for unencrypted requests.
 
-- Capture all network traffic with Tcpdump. Consider this when Burp or OWASP ZAP do not recognize protocols (e.g. XMPP). You can begin live capturing via the command:
-
-```bash
-adb shell "tcpdump -s 0 -w - | nc -l -p 1234"
-adb forward tcp:1234 tcp:1234
-```
-
-You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application after you've intercepted it.
-
 
 ### Making Sure that Critical Operations Use Secure Communication Channels
 
