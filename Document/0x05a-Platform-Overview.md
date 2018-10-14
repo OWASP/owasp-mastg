@@ -1,12 +1,12 @@
 ## Android Platform Overview
 
-This section introduces the Android platform from the architecture point of view. The following five key areas are discussed:
+This section introduces the Android platform from an architecture point of view. The following five key areas are discussed:
 
 1. Android security architecture
 2. Android application structure
 3. Inter-process Communication (IPC)
 4. Android application publishing
-5. Android Application Attack Surface
+5. Android application attack surface
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
@@ -579,19 +579,19 @@ Publishing an app is quite straightforward; the main operation is making the sig
 
 ### Android Application Attack surface
 
-The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application can be attacked by:
-- Having unsafe input by means of IPC communication or URL-schemes. See
-  - [Testing for Sensitivie functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc "Testing for Sensitivie functionality Exposure Through IPC");
+The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
+- Validate all input by means of IPC communication or URL-schemes. See
+  - [Testing for Sensitive functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc "Testing for Sensitive functionality Exposure Through IPC");
   - [Testing URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing URL Schemes").
-- Having unsafe input by the user to input fields.
-- Having unsafe input to a Webview by a user or by having insecure code loaded into the webview. See:
-  -  [Testing javascript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing javascript execution in webviews");
+- Validate all input by the user in input fields.
+- Validate the content loaded inside a webview. See:
+  -  [Testing JavaScript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing JavaScript execution in webviews");
   - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers "Testing WebView Protocol Handlers");
   - [Determining Whether Java Objects Are Exposed Through WebViews]("https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews "Determining Whether Java Objects Are Exposed Through WebViews").
-- Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
+- Securely communicate with backend servers and is susceptible to man-in-the-middle attacks between the server and the mobile application. See:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
   - [Android Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md#android-network-apis "Android Network APIs") .
-- Having insecure or compromised storage. See:
+- Securely stores all local data, or loads untrusted data from storage. See:
   - [Data Storage on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android").
-- Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
+- Protect itself against compromised environments, repackaging or other local attacks. See:
   - [Android Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")
