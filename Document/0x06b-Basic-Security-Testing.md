@@ -475,7 +475,7 @@ import frida
 frida_code = """
 
 	// Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest[- initWithURL:];
+    var URL = ObjC.classes.NSURLRequest["- initWithURL"];
 
     // Intercept the method
     Interceptor.attach(URL.implementation, {
