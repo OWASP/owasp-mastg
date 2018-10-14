@@ -191,7 +191,7 @@ The iOS application attack surface consists of all components of the application
 - Validate the content loaded inside a webview. See:
   -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
   - [Determining Whether Native Methods Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#determining-whether-native-methods-are-exposed-through-webviews "Determining Whether Native Methods Are Exposed Through WebViews")
-- Securely communicate with backend servers and is susceptible to man-in-the-middle attacks between the server and the mobile application. See:
+- Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application. See:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
   - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
 - Securely stores all local data, or loads untrusted data from storage. See:
