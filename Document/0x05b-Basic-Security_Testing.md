@@ -234,10 +234,7 @@ Once you have setup an interception proxy and have a MITM position you might sti
 - The app is using a framework like Xamarin that simply is not using the proxy settings of the Android OS or
 - The app you are testing is verifying if a proxy is set and is not allowing now any communication.
 
-In both scenarios you would need additional steps to finally being able to see the traffic. In the sections below we are describing different solutions:
-- ettercap,
-- iptables and also
-- Frida.
+In both scenarios you would need additional steps to finally being able to see the traffic. In the sections below we are describing two different solutions, ettercap and iptables.
 
 You could also use an access point that is under your control to redirect the traffic, but this would require additional hardware and we focus for now on software solutions.
 
@@ -291,9 +288,11 @@ The machine where you run your proxy and the Android device must be connected to
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
-**Frida**
+##### Bypassing Proxy Detection
 
-A third option we didn't mention before is using Frida. It is possible on Android to detect if a system proxy is set by querying the [`ProxyInfo`](https://developer.android.com/reference/android/net/ProxyInfo "ProxyInfo") class and check the getHost() and getPort() methods. There might be various other methods to achieve the same task and you would need to decompile the APK in order to identify the actual class and method name.
+Some mobile apps are trying to detect if a proxy is set. If that's the case they will assume that this is malicious and will not work properly.
+
+In order to bypass such a protection mechanism you could either setup bettercap or configure iptables that don't need a proxy setup on your Android phone. A third option we didn't mention before and that is applicable in this scenario is using Frida. It is possible on Android to detect if a system proxy is set by querying the [`ProxyInfo`](https://developer.android.com/reference/android/net/ProxyInfo "ProxyInfo") class and check the getHost() and getPort() methods. There might be various other methods to achieve the same task and you would need to decompile the APK in order to identify the actual class and method name.
 
 Below you can find boiler plate source code for a Frida script that will help you to overload the method (in this case called isProxySet) that is verifying if a proxy is set and will always return false. Even if a proxy is now configured the app will now think that none is set as the function returns false.
 
