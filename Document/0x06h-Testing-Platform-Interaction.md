@@ -457,18 +457,36 @@ The `Codable`s can easily be encoded/decoded into various representations: NSDat
 There are various ways to encode and decode JSON within iOS:
 
 By means of a third party library, such as [Mantle](https://github.com/Mantle/Mantle "Mantle"), the [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel"), the [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON"), the [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper, "ObjectMapper library"), [JSONKit](https://github.com/johnezang/JSONKit "JSONKit"), [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel"), [YYModel](https://github.com/ibireme/YYModel "YYModel"), [SBJson 5](https://github.com/ibireme/YYModel "SBJson 5"), [Unbox](https://github.com/JohnSundell/Unbox "Unbox"), [Gloss](https://github.com/hkellaway/Gloss "Gloss"), [Mapper](https://github.com/lyft/mapper "Mapper"), [JASON](https://github.com/delba/JASON "JASON"), [Arrow](https://github.com/freshOS/Arrow "Arrow"). The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)muttable results, speed, memory consumption and actual library size.
+Again, note in case of immutability: confidential information cannot be removed from memory easily.
+Another way, is by using the promitives provided by Apple, using `Codable` together with a `JSONEncoder()`:
 
+```swift
+struct CustomPointStruct:Codable {
+    var x: Double
+    var name: String
+}
 
+let encoder = JSONEncoder()
+encoder.outputFormatting = .prettyPrinted
 
+let test = CustomPointStruct(x: 10, name: "test")
+let data = try encoder.encode(test)
+print(String(data: data, encoding: .utf8)!)
+/* Prints:
+ {
+   "x" : 10,
+   "name" : "test"
+ }
+*/
 
+```
 
-https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types
-https://developer.apple.com/documentation/foundation/jsonencoder
-https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4
+SON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the data storage chapter for more details.
+
 
 ##### Property Lists and Codable
 
-PropertyLists
+You can persist objects to `PropertyList`s (also called Plists in previous sections). You can find 2 examples below of how to use it:
 
 ```swift
 
@@ -483,12 +501,33 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 }
 
 ```
+In the example, the `NSUserDefaults` are used, which is the primary `PropertyList`. We can do the same with the `Codable` version:
 
+```Swift
 
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
+struct CustomPointStruct:Codable {
+    var x: Double
+    var name: String
+}
+
+var points: [CustomPointStruct] = [
+    CustomPointStruct(x: 1, name "test"),
+    CustomPointStruct(x: 2, name "test"),
+    CustomPointStruct(x: 3, name "test"),
+]
+
+UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
+if let data = UserDefaults.standard.value(forKey:"points") as? Data {
+    let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
+}
+
+```
+Note that plist files are not meant to store secret information. They are designed to hold user-preferences for an app.
+
 ##### XML and Codable
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-
+	CONTINUE_HERE
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
+https://labs.integrity.pt/articles/xxe-all-the-things-including-apple-ioss-office-viewer/index.html
 
 
 ##### Coredata
@@ -512,10 +551,13 @@ https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreD
 
 #### OWASP MASVS
 
-- V6.3: "The app does not export sensitive functionality via custom URL schemes unless they are properly protected."
+- V6.1: "The app only requests the minimum set of permissions necessary."
+- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
+
 
 #### CWE
 
