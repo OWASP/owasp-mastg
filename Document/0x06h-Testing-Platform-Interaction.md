@@ -458,7 +458,8 @@ There are various ways to encode and decode JSON within iOS:
 
 By means of a third party library, such as [Mantle](https://github.com/Mantle/Mantle "Mantle"), the [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel"), the [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON"), the [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper, "ObjectMapper library"), [JSONKit](https://github.com/johnezang/JSONKit "JSONKit"), [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel"), [YYModel](https://github.com/ibireme/YYModel "YYModel"), [SBJson 5](https://github.com/ibireme/YYModel "SBJson 5"), [Unbox](https://github.com/JohnSundell/Unbox "Unbox"), [Gloss](https://github.com/hkellaway/Gloss "Gloss"), [Mapper](https://github.com/lyft/mapper "Mapper"), [JASON](https://github.com/delba/JASON "JASON"), [Arrow](https://github.com/freshOS/Arrow "Arrow"). The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)muttable results, speed, memory consumption and actual library size.
 Again, note in case of immutability: confidential information cannot be removed from memory easily.
-Another way, is by using the promitives provided by Apple, using `Codable` together with a `JSONEncoder()`:
+
+By means of using the promitives provided by Apple, using `Codable` together with a `JSONEncoder()`:
 
 ```swift
 struct CustomPointStruct:Codable {
@@ -501,7 +502,7 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 }
 
 ```
-In the example, the `NSUserDefaults` are used, which is the primary `PropertyList`. We can do the same with the `Codable` version:
+In this first example, the `NSUserDefaults` are used, which is the primary `PropertyList`. We can do the same with the `Codable` version:
 
 ```Swift
 
@@ -522,18 +523,22 @@ if let data = UserDefaults.standard.value(forKey:"points") as? Data {
 }
 
 ```
-Note that plist files are not meant to store secret information. They are designed to hold user-preferences for an app.
+Note that PropertyList files are not meant to store secret information. They are designed to hold user-preferences for an app.
 
-##### XML and Codable
-	CONTINUE_HERE
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
-https://labs.integrity.pt/articles/xxe-all-the-things-including-apple-ioss-office-viewer/index.html
+##### XML
+There multiple ways to do XML encoding. Similar to JSON parsing, there are various third party libraries, such as: [Fuzi](https://github.com/cezheng/Fuzi "Fuzi"), [Ono](https://github.com/mattt/Ono "Ono"), [AEXML](https://github.com/tadija/AEXML "AEXML"), [RaptureXML](https://github.com/ZaBlanc/RaptureXML "RaptureXML"), [SwiftyXMLParser](https://github.com/yahoojapan/SwiftyXMLParser "SwiftyXMLParser"), [SWXMLHash](https://github.com/drmohundro/SWXMLHash "SWXMLHash"). Which vary in terms of speed, memory usage, object persistency and more important: differ in how they handle XML external entities. See [XXE in the Apple iOS Office viewer](https://nvd.nist.gov/vuln/detail/CVE-2015-3784 "CVE-2015-3784") as an example. Therefore, it is key to disable external entity parsing if possible. See the [OWASP XXE prevention cheatsheet](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing "XXE prevention cheatsheet") for more details.
+Note: in case of immutability: confidential information cannot be removed from memory easily.
+Next to the libraries, you can make use of Apple its [XMLParser class](https://developer.apple.com/documentation/foundation/xmlparser "XMLParser")
 
+When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return false.
 
-##### Coredata
-https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/KeyConcepts.html#//apple_ref/doc/uid/TP40001075-CH30-SW1
+##### ORM (Coredata and Realm)
+There are various ORM-like solutiosn for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Ralm's documetation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Enable encryption"). This allows for handlign secure data. Note that the encryption is turned off by default.
+
+Apple itself supplies CoreData. CoreData is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's PersistentStoreFeatures documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of datastores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in project [iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
 
 #### Static Analysis
+
 
 #### Dynamic Analysis
 
@@ -547,6 +552,7 @@ https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreD
 
 #### OWASP Mobile Top 10 2016
 
+- M1 - Insecure Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
 - M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
@@ -562,7 +568,9 @@ https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreD
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-200 - Information Leak / Disclosure
 - CWE-939 - Improper Authorization in Handler for Custom URL Scheme
+
 
 #### Tools
 
@@ -577,3 +585,4 @@ https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreD
 - https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types
 - https://developer.apple.com/documentation/foundation/jsonencoder
 - https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4
+- https://developer.apple.com/documentation/foundation/xmlparser

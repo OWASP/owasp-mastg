@@ -1196,7 +1196,10 @@ There are several ways to perform dynamic analysis:
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-200 - Information Leak / Disclosure
 - CWE-749 - Exposed Dangerous Method or Function
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
+
 
 #### Tools
 
