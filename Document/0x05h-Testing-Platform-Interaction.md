@@ -983,7 +983,7 @@ Now you can read/write the object with `ObjectInputStream`/`ObjectOutputStream` 
 
 ##### JSON
 
-There are several ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. A wide variety of libraries, including [GSON](https://github.com/google/gson "Google Gson") or [Jackson](https://github.com/FasterXML/jackson-core "Jackson core"), can also be used. The main differences between the libraries are whether they use reflection to compose the object, whether they support annotations, and the amount of memory they use. Note that almost all the JSON representations are String-based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory.
+There are several ways to serialize the contents of an object to JSON. Android comes with the `JSONObject` and `JSONArray` classes. A wide variety of libraries, including [GSON](https://github.com/google/gson "Google Gson"), [Jackson](https://github.com/FasterXML/jackson-core "Jackson core"), [Moshi](https://github.com/square/moshi "Moshi"), can also be used. The main differences between the libraries are whether they use reflection to compose the object, whether they support annotations, whether the create immutable objects, and the amount of memory they use. Note that almost all the JSON representations are String-based and therefore immutable. This means that any secret stored in JSON will be harder to remove from memory.
 JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the data storage chapter for more details. A simple example (from the GSON User Guide) of writing and reading JSON with GSON follows. In this example, the contents of an instance of the `BagOfPrimitives` is serialized into JSON:
 
 ```java
@@ -1004,6 +1004,10 @@ String json = gson.toJson(obj);
 // ==> json is {"value1":1,"value2":"abc"}
 
 ```
+##### XML
+
+There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [this blogpost](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
+Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the data storage chapter for more details. As stated earlier: the true danger in XML lies in the XML eXternal Entity attack (XXE) as it might allow for reading external data sources that are still acecssible within the application.
 
 ##### ORM
 
@@ -1049,6 +1053,11 @@ public class MyParcelable implements Parcelable {
 ```
 
 Because this mechanism that involves Parcels and Intents may change over time, and the `Parcelable` may contain `IBinder` pointers, storing data to disk via `Parcelable` is not recommended.
+
+#####Protocol Buffers
+[Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Encoding").
+There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
+Note that Protocol Buffers do not provide any protection for confidentiality: there is no built in encryption.
 
 #### Static Analysis
 
@@ -1192,7 +1201,10 @@ There are several ways to perform dynamic analysis:
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-200 - Information Leak / Disclosure
 - CWE-749 - Exposed Dangerous Method or Function
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
+
 
 #### Tools
 

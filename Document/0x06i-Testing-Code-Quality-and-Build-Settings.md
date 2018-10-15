@@ -153,7 +153,7 @@ Objective-C has two types of errors:
 `NSException` is used to handle programming and low-level errors (e.g., division by 0 and out-of-bounds array access).
 An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless caught, this exception will invoke the unhandled exception handler, with which you can log the statement (logging will halt the program). `@catch` allows you to recover from the exception if you're using a `@try`-`@catch`-block:
 
-```obj-c
+```objc
  @try {
  	//do work here
  }
