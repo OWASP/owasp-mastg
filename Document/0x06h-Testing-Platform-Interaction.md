@@ -538,9 +538,21 @@ There are various ORM-like solutiosn for iOS. The first one is [Realm](https://r
 Apple itself supplies CoreData. CoreData is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's PersistentStoreFeatures documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of datastores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in project [iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
 
 #### Static Analysis
-<TODO; CONTINUE HERE>
+All different flavors of object persistence share the following concerns:
+
+- If you use object persistence to store sensitive information on the device, then make sure that the data is encrypted: either at the database level, or specifically at the value level.
+- Need to guarantee the integrity of the information? Use an HMAC mechanism or sign the information stored. Always verify the HMAC/signature before processing the actual information stored in the objects.
+- Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the Data Storage section for more details.
+- Ensure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
+- Do not use persistence mechanisms that use Runtime Reference [see Apple Documentation](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C runtime reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (See anti-reverse-engineering chapter for more details).
+- Note that in Swift 2 and beyond, the `Mirror` [see Apple Developer Documentation](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
+
 
 #### Dynamic Analysis
+There are several ways to perform dynamic analysis:
+
+- For the actual persistence: Use the techniques described in the data storage chapter.
+- For the serialization itself: use a debug build or use Frida/Objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 <TODO: WHAT ABOUT PROTOBUFS?>
 
