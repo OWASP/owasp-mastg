@@ -356,26 +356,8 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
-### References
 
-#### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-#### OWASP MASVS
-
-- V7.1: "The app is signed and provisioned with a valid certificate."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### Tools
-
-- idb - https://github.com/dmayer/idb
-- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
-
-### Checking for weaknesses in third party libraries
+### Checking for Weaknesses in Third Party Libraries
 
 #### Overview
 
@@ -480,24 +462,32 @@ However, these do not include all the libraries being used. Next, with Class-dum
 ./class-dump <Executable> -r
 ```
 
+### References
 
-#### References
-
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V7.1: "The app is signed and provisioned with a valid certificate."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
+
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
+
 - [Carthage](https://github.com/carthage/carthage "Carthage")
 - [CocoaPods](https://CocoaPods.org "CocoaPods")
 - [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
 - [Sourceclear](https://sourceclear.com "Sourceclear")
 - [Class-dump](https://github.com/nygard/class-dump "Class-dump")
 - [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
+- [idb](https://github.com/dmayer/idb)
+- [Codesign](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html)

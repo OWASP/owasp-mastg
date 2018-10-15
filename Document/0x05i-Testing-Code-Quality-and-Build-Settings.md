@@ -25,7 +25,7 @@ Make sure that the release build has been signed via both the v1 and v2 schemes 
 
 APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 
-```bash
+```shell
 $ apksigner verify --verbose Desktop/example.apk
 Verifies
 Verified using v1 scheme (JAR signing): true
@@ -168,20 +168,20 @@ Symbols are usually stripped during the build process, so you need the compiled 
 
 First, find the `nm` binary in your Android NDK and export it (or create an alias).
 
-```bash
+```shell
 export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
 ```
 
 To display debug symbols:
 
-```bash
+```shell
 $ $NM -a libfoo.so
 /tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
 ```
 
 To display dynamic symbols:
 
-```bash
+```shell
 $ $NM -D libfoo.so
 ```
 
