@@ -547,7 +547,6 @@ All different flavors of object persistence share the following concerns:
 - Do not use persistence mechanisms that use Runtime Reference [see Apple Documentation](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C runtime reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (See anti-reverse-engineering chapter for more details).
 - Note that in Swift 2 and beyond, the `Mirror` [see Apple Developer Documentation](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
-
 #### Dynamic Analysis
 There are several ways to perform dynamic analysis:
 
