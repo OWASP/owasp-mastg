@@ -286,6 +286,27 @@ The machine where you run your proxy and the Android device must be connected to
 $ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
 ```
 
+**Frida**
+
+A third option we didn't mention before is using Frida. It is possible on Android to detect if a system proxy is set by querying the [`ProxyInfo`](https://developer.android.com/reference/android/net/ProxyInfo "ProxyInfo") class and check the getHost() and getPort() methods. There might be various other methods to achieve the same task and you would need to decompile the APK in order to identify the actual class and method name.
+
+Below you can find boiler plate source code for a Frida script that will help you to overload the method (in this case called isProxySet) that is verifying if a proxy is set and will always return false. Even if a proxy is now configured the app will now think that none is set as the function returns false.
+
+```javascript
+setTimeout(function(){
+	Java.perform(function (){
+		console.log("[*] Script loaded")
+
+		var Proxy = Java.use("<package-name>.<class-name>")
+
+		Proxy.isProxySet.overload().implementation = function() {
+			console.log("[*] isProxySet function invoked")
+			return false
+		}
+	});
+});
+```
+
 #### Network Monitoring/Sniffing
 
 [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
