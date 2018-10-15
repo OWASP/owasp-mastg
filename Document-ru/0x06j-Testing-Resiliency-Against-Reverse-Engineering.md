@@ -466,7 +466,7 @@ int xyz(char *dst) {
 5. Сохраните результат шага номер 4.
 
 
-```obj-c
+```objc
 	// Allocate a buffer to hold the digest, and perform the digest.
 	NSMutableData* actualData = [getData];
  	//get the key from the keychain
@@ -485,7 +485,7 @@ int xyz(char *dst) {
 2. Повторите шаги 1-3 генерации hmac, используя `NSData`.
 3. Теперь сравните полученные hmacbytes с результатом шага 1.
 
-```obj-c
+```objc
 	NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
 	NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
 	NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
