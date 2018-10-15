@@ -234,7 +234,12 @@ Once you have setup an interception proxy and have a MITM position you might sti
 - The app is using a framework like Xamarin that simply is not using the proxy settings of the Android OS or
 - The app you are testing is verifying if a proxy is set and is not allowing now any communication.
 
-In both scenarios you would need additional steps to finally being able to see the traffic. In the sections below we are describing two possible solutions, ettercap and iptables. You could also use an access point that is under your control to redirect the traffic, but this would require additional hardware and we focus for now on software solutions.
+In both scenarios you would need additional steps to finally being able to see the traffic. In the sections below we are describing different solutions:
+- ettercap,
+- iptables and also
+- Frida.
+
+You could also use an access point that is under your control to redirect the traffic, but this would require additional hardware and we focus for now on software solutions.
 
 > For both solutions you need to activate "Support invisible proxying" in Burp, in Proxy Tab/Options/Edit Interface.
 
