@@ -538,7 +538,7 @@ There are various ORM-like solutiosn for iOS. The first one is [Realm](https://r
 Apple itself supplies CoreData. CoreData is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's PersistentStoreFeatures documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of datastores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in project [iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
 
 #### Static Analysis
-
+<TODO; CONTINUE HERE>
 
 #### Dynamic Analysis
 
