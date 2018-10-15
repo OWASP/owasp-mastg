@@ -371,28 +371,134 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 There are several ways to persist an object on iOS:
 
-##### Object Serialization with NSCOding, NSSEcureCoding
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-##### NSKeyedArchiver
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-https://nshipster.com/nscoding/
-##### JSON
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-##### Property Lists
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-##### XML
-https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
-##### ORM
+##### Object Encoding
+iOS comes with two protocols for object encoding and decoding for Objective-C or NSObjects: `NSCoding` and `NSSecureCoding`. When a class conforms to either of the protocols, the data is serialized to `NSData`: a wrapper for byte buffers. Note that `Data` in Swift is the same as `NSData` or its mutable counterpart: `NSMutableData`. The `NSCoding` protocol declares the two methods that must be implemented in order to encode/decode its instance-variables. A class using NSCoding needs to implement NSObject or be annotated as an @objc class. The NSCoding protocol requires to implement encode and init as shown below.
 
+```swift
+class CustomPoint: NSObject, NSCoding {
+
+	//required by NSCoding:
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(x, forKey: "x")
+		aCoder.encode(name, forKey: "name")
+	}
+
+	var x: Double = 0.0
+	var name: String = ""
+
+	init(x: Double, name: String) {
+			self.x = x
+			self.name = name
+	}
+
+	// required by NSCoding: initalize members using a decoder.
+	required convenience init?(coder aDecoder: NSCoder) {
+			guard let name = aDecoder.decodeObject(forKey: "name") as? String
+					else {return nil}
+			self.init(x:aDecoder.decodeDouble(forKey:"x"),
+								name:name)
+	}
+
+	//getters/setters/etc.
+}
+```
+
+The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSEcureCoding` protocol has been introduced. When conforming to `NSSEcureCoding` you need to include
+
+```swift
+
+static var supportsSecureCoding: Bool {
+        return true
+}
+```
+
+when `init(coder:)` is part of the class. Next, when decoding the object, a check should be made, e.g.:
+```Swift
+let obj = decoder.decodeObject(of:MyClass.self, forKey: "myKey")
+```
+*Source: https://developer.apple.com/documentation/foundation/nssecurecoding*
+
+The conformance to `NSSEcureCoding` ensures that objects being instantiated are indeed the ones that were expected. However, there are no additional integrity checks done over the data & the data is not encrypted. Therefore, any secret data needs additional encryption and data of which the integrity must be protected, should get an additional HMAC.
+
+Note: when `NSData` (Objective-c) or the keyword `let` (Swift) is used: then the data is immutable in memory and cannot be easily removed.
+
+
+##### Object Archiving with NSKeyedArchiver
+`NSKeyedArchiver` is a concrete subclass of NSCoder and provides a way to encode objects and store them in a file. the `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
+
+```swift
+
+//archiving:
+NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
+
+//unarchiving:
+guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as? CustomPoint else { return nil }
+
+```
+
+When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain addditional data which is not detected by the program, unless the key for that given data is provided at a later stage.
+
+Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the Data Storage section for more details.
+
+##### Codable
+With Swift 4, the `Codable` type alias arrived: it is a combination of the `Decodable` and `Encodable` protocols. A String, Int, Double, Date, Data and URL are Codable by nature: meaning they can easily be encoded and decoded without any additonal work. Let's take the following example:
+
+```swift
+struct CustomPointStruct:Codable {
+    var x: Double
+    var name: String
+}
+```
+
+By adding `Codable` to the inheritance list for the `CustomPointStruct` in the example, the methods `init(from:)` and `encode(to:)` are automatically supported. Fore more details about the workings of `Codable`: check [Apple Developer Documentation](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types "Codable").
+The `Codable`s can easily be encoded/decoded into various representations: NSData using `NSCoding`/`NSSecureCoding`, JSON, Property Lists, XML, etc. . See the other subsections of this chapter for more details.
+
+##### JSON and Codable
+There are various ways to encode and decode JSON within iOS:
+
+By means of a third party library, such as [Mantle](https://github.com/Mantle/Mantle "Mantle"), the [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel"), the [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON"), the [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper, "ObjectMapper library"), [JSONKit](https://github.com/johnezang/JSONKit "JSONKit"), [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel"), [YYModel](https://github.com/ibireme/YYModel "YYModel"), [SBJson 5](https://github.com/ibireme/YYModel "SBJson 5"), [Unbox](https://github.com/JohnSundell/Unbox "Unbox"), [Gloss](https://github.com/hkellaway/Gloss "Gloss"), [Mapper](https://github.com/lyft/mapper "Mapper"), [JASON](https://github.com/delba/JASON "JASON"), [Arrow](https://github.com/freshOS/Arrow "Arrow"). The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)muttable results, speed, memory consumption and actual library size.
+
+
+
+
+
+https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types
+https://developer.apple.com/documentation/foundation/jsonencoder
+https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4
+
+##### Property Lists and Codable
+
+PropertyLists
+
+```swift
+
+//archiving:
+let data = NSKeyedArchiver.archivedDataWithRootObject(customPoint)
+NSUserDefaults.standardUserDefaults().setObject(data, forKey: "customPoint")
+
+//unarchiving:
+
+if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") as? NSData {
+    let customPoint = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+}
+
+```
+
+
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
+##### XML and Codable
+https://developer.apple.com/documentation/foundation/archives_and_serialization?language=objc
+
+
+
+##### Coredata
+https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/KeyConcepts.html#//apple_ref/doc/uid/TP40001075-CH30-SW1
 
 #### Static Analysis
 
-##### JSON
-
-##### ORM
-
 #### Dynamic Analysis
 
+<TODO: WHAT ABOUT PROTOBUFS?>
 
 
 ### References
@@ -419,3 +525,13 @@ https://developer.apple.com/documentation/foundation/archives_and_serialization?
 #### Tools
 
 - IDB - https://www.idbtool.com/
+
+#### Regarding Object Persistence in iOS
+- https://developer.apple.com/documentation/foundation/nssecurecoding
+- https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
+- https://developer.apple.com/documentation/foundation/nskeyedarchiver
+- https://developer.apple.com/documentation/foundation/nscoding?language=swift,https://developer.apple.com/documentation/foundation/nssecurecoding?language=swift
+- https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
+- https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types
+- https://developer.apple.com/documentation/foundation/jsonencoder
+- https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4
