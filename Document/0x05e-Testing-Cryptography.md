@@ -41,6 +41,20 @@ provider: AndroidKeyStore1.0 (Android KeyStore security provider)
 
 For some applications that support older versions of Android, bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the legion of the Bouncy Castle. Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
 
+
+Apps that target modern API levels, have other recommendations:
+- For Android Nougat and above:
+  - No longer specify a security provider. If you do so: you get a warning.
+  - No longer support the `Crypto` provider.
+  - No longer support `SHA1PRNG` for secure random, but instead the runtime provides an instance of `OpenSSLRandom`.
+- For Android Oreo (8.1) and above:
+  - HVG!!https://developer.android.com/about/versions/oreo/android-8.1
+- For Android Pie (9.0) and above:
+  - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+
+Since Android Nougat (Android 7), there have been various deprecations in the area of security providers:
+
+
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
 Here's an example of using AES/CBC/PKCS7Padding on API 23+:
@@ -143,7 +157,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 - `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong.
+Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
 
 ### Testing Random Number Generation
 
@@ -272,6 +286,10 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 ### References
 
 - [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
+
+#### Cryptography references
+- https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
+- https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
 
 ##### OWASP Mobile Top 10
 
