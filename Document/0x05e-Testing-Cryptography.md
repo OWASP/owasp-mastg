@@ -47,10 +47,16 @@ Apps that target modern API levels, have other recommendations:
   - No longer specify a security provider. If you do so: you get a warning.
   - No longer support the `Crypto` provider.
   - No longer support `SHA1PRNG` for secure random, but instead the runtime provides an instance of `OpenSSLRandom`.
-- For Android Oreo (8.1) and above:
-  - HVG!!https://developer.android.com/about/versions/oreo/android-8.1
-- For Android Pie (9.0) and above:
-  - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+- For Android Oreo (8.1) and above  The [Developer Documentation](https://developer.android.com/about/versions/oreo/android-8.1 "Cryptography updates") shows that:
+  - Conscrypt is preferred above using Bouncy Castle and it has new implementations: `AlgorithmParameters:GCM` , `KeyGenerator:AES`, `KeyGenerator:DESEDE`, `KeyGenerator:HMACMD5`, `KeyGenerator:HMACSHA1`, `KeyGenerator:HMACSHA224`, `KeyGenerator:HMACSHA256`, `KeyGenerator:HMACSHA384`, `KeyGenerator:HMACSHA512`, `SecretKeyFactory:DESEDE`and  `Signature:NONEWITHECDSA`.
+  - You should not use the `IvParameterSpec.class` anymore for GCM, but use the `GCMParameterSpec.class` instead.
+  - Sockets have changed from `OpenSSLSocketImpl` to `ConscryptFileDescriptorSocket` and `ConscryptEngineSocket`.
+  - `SSLSession` with null parameters give an NPE.
+  - You now have to have large enough arrays as inputbytes for generating a key.
+  - if a Socket read is interrupted, you get an `SocketException`.
+- For Android Pie (9.0) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P
+") shows even more aggressive changes:
+  - <TODO: CONTINUE HERE!>
 
 Since Android Nougat (Android 7), there have been various deprecations in the area of security providers:
 
