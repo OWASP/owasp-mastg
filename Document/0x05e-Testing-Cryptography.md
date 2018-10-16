@@ -56,7 +56,7 @@ Apps that target modern API levels, have other recommendations:
   - if a Socket read is interrupted, you get an `SocketException`.
 - For Android Pie (9.0) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P
 ") shows even more aggressive changes:
-  - <TODO: CONTINUE HERE!>
+  - <TODO: CONTINUE HERE!> & AFTER THAT REVIEW THE CHAPTER TO SEE WHAT WOULD BE RECOMMENDED GIVEN THESE CAHNGES. LASTLY URGE/PUSH FOR ALLWAYS PUSH FOR A SECURITY PROVIDER UPDATE!!!
 
 Since Android Nougat (Android 7), there have been various deprecations in the area of security providers:
 
