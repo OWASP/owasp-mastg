@@ -2,7 +2,18 @@
 
 In the "Cryptography for Mobile Apps" chapter, we introduced general cryptography best practices and described typical problems that may occur when cryptography is used incorrectly. In this chapter, we'll detail the cryptography APIs available for iOS. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When you're reviewing code, compare the cryptographic parameters with the current best practices linked in this guide.
 
-TODO: rewrite below into `Verifying the Configuration of Cryptographic Standard Algorithms` and a `Testing Key Management` section!!! 
+<TODO: rewrite below into `Verifying the Configuration of Cryptographic Standard Algorithms` and a `Testing Key Management` section!!! >
+
+### Verifying the Configuration of Cryptographic Standard Algorithms
+
+#### Overview
+TODO: PORT MATERIAL BELOW TO HERE!
+#### Static Analysis
+
+#### Dynamic Analysis
+
+
+
 ### iOS Cryptography Libraries
 
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
@@ -26,7 +37,13 @@ You can then compare all the `enum` types to determine which algorithm, padding,
 
 iOS code usually references predefined constants that are defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants. iOS cryptography should be based on the best practices described in the chapter "Cryptography for Mobile Apps."
 
-### Random Number Generation on iOS
+### Testing Random Number Generation
+
+#### OVerview (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
+
+#### Static Analysis (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
+
+#### Dynamic Analysis (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
 
 Apple provides a [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") API, which generates cryptographically secure random numbers.
 
@@ -48,6 +65,14 @@ The following is an example of the APIs usage:
 ```
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
+
+### Testing Key Management (TODO: implement (#922)!)
+
+#### OVerview (TODO: implement (#922)!)
+
+#### Static Analysis (TODO: implement (#922)!)
+
+#### Dynamic Analysis (TODO: implement (#922)!)
 
 ### References
 
