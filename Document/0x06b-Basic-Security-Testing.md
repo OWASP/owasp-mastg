@@ -388,7 +388,7 @@ Label: (null)
 Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
-
+In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
 #### Installing Frida
