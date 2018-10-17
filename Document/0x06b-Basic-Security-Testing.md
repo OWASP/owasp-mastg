@@ -359,7 +359,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Dumping KeyChain Data
 
-[Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
+[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
 ```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper

@@ -2,24 +2,60 @@
 
 In the "Cryptography for Mobile Apps" chapter, we introduced general cryptography best practices and described typical problems that may occur when cryptography is used incorrectly. In this chapter, we'll detail the cryptography APIs available for iOS. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When you're reviewing code, compare the cryptographic parameters with the current best practices linked in this guide.
 
-<TODO: rewrite below into `Verifying the Configuration of Cryptographic Standard Algorithms` and a `Testing Key Management` section!!! >
-
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
 #### Overview
-TODO: PORT MATERIAL BELOW TO HERE!
-#### Static Analysis
-
-#### Dynamic Analysis
-
-
-
-### iOS Cryptography Libraries
-
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
-iOS code usually refers to constants defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants to detect their use. Because iOS constants are numeric, you should determine whether the constants sent to the `CCCrypt` function represent an insecure or deprecated algorithm.
+##### CommonCrypto and Wrapper libraries
+The most commonly used Class for cyrptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the headerile ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
+- The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
+- The `CommonDigest.h` gives the parameters for the hashing Algorithms
+- The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
+- The `CommonKeyDerivation.h` gives the parameters for supported KDF functions
+- The `CommonSymmetricKeywrap.h` gives the function used for wrappnig a symmetric key with a Key Encryption Key.
 
+CommonCryptor lacks a few type of operations unfortunately, such as Gallois Coumter Mode (GCM) for AES and any asymmetric work (e.g. RSA encryption and signing). Which has motivated the adoption of other libraries within iOS, especially with the increasing adoption of the GCM mode with for instance JSOM Web Encryption (JWE).
+
+Even with the lack of the mentioned functionality, there are still some wrapper-classes around it for convinience, such as [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"), [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Note that many of these libraries are often not complete!
+
+##### CJose
+With the rise of JWE, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). Libraries like these often still require a higher level wrapping. EXPLAIN JOSE DANGER <todo: E.G. RFC ISSUES!>
+
+#### CryptoSwift
+https://github.com/krzyzanowskim/CryptoSwift
+
+##### OpenSSL and Wrapper libraries
+https://github.com/ZewoGraveyard/OpenSSL
+
+
+##### RNcryptor
+[RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor") describes itself as a Cross-language AES Encryptor/Decryptor data format.
+
+#### Sodium and Wrapper libraries
+https://github.com/jedisct1/swift-sodium
+https://download.libsodium.org/doc/
+
+####Tink?
+https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html
+
+##### Themis
+[Themis](https://github.com/cossacklabs/themis "Themis") is a wrapper around OpenSSL and provides support for <TODO FIRTHER ELABORATE N IT: https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
+
+
+
+
+
+
+
+
+##### Other altiernatives
+There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity") and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto") which are no longer maintained, but do provide support for a set of cyrptographic operations. Like always, it is recommended to look for supported and maintained libraries.
+
+
+#### Static Analysis
+
+#####CommonCryptor <todo explain which parameters are really old and should not be used!>
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
 ```
@@ -36,6 +72,11 @@ CCCryptorStatus CCCryptorCreate(
 You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material, nothing whether it's coming directly from a password (which is bad) or from a Key Derivation Function (e.g., PBKDF2). Obviously, your application may use other non-standard libraries (`openssl`, for example), so look for those too.
 
 iOS code usually references predefined constants that are defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants. iOS cryptography should be based on the best practices described in the chapter "Cryptography for Mobile Apps."
+
+
+
+
+#### Dynamic Analysis
 
 ### Testing Random Number Generation
 
@@ -69,12 +110,25 @@ int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ### Testing Key Management (TODO: implement (#922)!)
 
 #### OVerview (TODO: implement (#922)!)
+There are various methods on how to store the key on the device. Storing the key in the Keychain is highly recommended, as long as the .
+Obviously, alternatives can be chosen, such as using a PWKDF function in order to use a password from the user to generate a key. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata, is often not a good idea. If `CoreData` is used, then at least ensure that the sink (often a SQLite Database) is using the `NSFileProtectionComplete` data protection class. See the Testing Data Storage section for more details.
 
+ the filesystem (in terms of a SQLite database or a Realm database) is never a good idea.
+Background: https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf
+Managing keys: https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
 #### Static Analysis (TODO: implement (#922)!)
 
 #### Dynamic Analysis (TODO: implement (#922)!)
 
 ### References
+
+#### Random Number Documentation
+- https://developer.apple.com/documentation/security/randomization_services
+- https://developer.apple.com/reference/security/1399291-secrandomcopybytes
+
+#### General Security Documentation:
+- https://developer.apple.com/documentation/security
+- https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf
 
 #### OWASP Mobile Top 10 2016
 - M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
