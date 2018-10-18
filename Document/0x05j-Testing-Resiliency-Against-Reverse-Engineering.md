@@ -427,7 +427,7 @@ void fork_and_attach()
 
 With the child attached, further attempts to attach to the parent will fail. We can verify this by compiling the code into a JNI function and packing it into an app we run on the device.
 
-```bash
+```shell
 root@android:/ # ps | grep -i anti
 u0_a151   18190 201   1535844 54908 ffffffff b6e0f124 S sg.vantagepoint.antidebug
 u0_a151   18224 18190 1495180 35824 c019a3ac b6e0ee5c S sg.vantagepoint.antidebug
@@ -435,7 +435,7 @@ u0_a151   18224 18190 1495180 35824 c019a3ac b6e0ee5c S sg.vantagepoint.antidebu
 
 Attempting to attach to the parent process with gdbserver fails with an error:
 
-```bash
+```shell
 root@android:/ # ./gdbserver --attach localhost:12345 18190
 warning: process 18190 is already traced by process 18224
 Cannot attach to lwp 18190: Operation not permitted (1)
@@ -519,7 +519,7 @@ Java_sg_vantagepoint_antidebug_MainActivity_antidebug(JNIEnv *env, jobject insta
 
 Again, we pack this into an Android app to see if it works. Just as before, two processes show up when we run the app's debug build.
 
-```bash
+```shell
 root@android:/ # ps | grep -I anti-debug
 u0_a152   20267 201   1552508 56796 ffffffff b6e0f124 S sg.vantagepoint.anti-debug
 u0_a152   20301 20267 1495192 33980 c019a3ac b6e0ee5c S sg.vantagepoint.anti-debug
@@ -527,7 +527,7 @@ u0_a152   20301 20267 1495192 33980 c019a3ac b6e0ee5c S sg.vantagepoint.anti-deb
 
 However, if we terminate the child process at this point, the parent exits as well:
 
-```bash
+```shell
 root@android:/ # kill -9 20301
 130|root@hammerhead:/ # cd /data/local/tmp                                     
 root@android:/ # ./gdbserver --attach localhost:12345 20267   
@@ -1361,7 +1361,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 #### OWASP MASVS
-
+- V6.1: "The app only requests the minimum set of permissions necessary."
 - V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
 - V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."

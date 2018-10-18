@@ -3,4 +3,4 @@
 
 # Mobile Application Security Testing Guide
 
-[date]
+[DATE]

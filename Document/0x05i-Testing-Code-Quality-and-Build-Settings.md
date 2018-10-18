@@ -23,9 +23,9 @@ The v2 signature, which is supported by Android 7.0 and above, offers improved s
 
 Make sure that the release build has been signed via both the v1 and v2 schemes and that the code-signing certificate in the APK belongs to the developer.
 
-APK signatures can be verified with the `apksigner` tool.
+APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 
-```bash
+```shell
 $ apksigner verify --verbose Desktop/example.apk
 Verifies
 Verified using v1 scheme (JAR signing): true
@@ -168,20 +168,20 @@ Symbols are usually stripped during the build process, so you need the compiled 
 
 First, find the `nm` binary in your Android NDK and export it (or create an alias).
 
-```bash
+```shell
 export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
 ```
 
 To display debug symbols:
 
-```bash
+```shell
 $ $NM -a libfoo.so
 /tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
 ```
 
 To display dynamic symbols:
 
-```bash
+```shell
 $ $NM -D libfoo.so
 ```
 
@@ -567,7 +567,7 @@ These libraries can have the following two classes of unwanted side-effects:
 - A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain polution was possible to bypass SSL pinning.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
 
-Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview. Then the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps. 
+Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
 #### Static Analysis
 

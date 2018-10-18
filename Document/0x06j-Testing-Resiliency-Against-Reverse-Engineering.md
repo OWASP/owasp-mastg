@@ -152,7 +152,7 @@ This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJ
 
 This will provide the following output:
 
-```bash
+```shell
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
 
 Instrumenting functions...                                           `...
@@ -465,7 +465,7 @@ When you generate an HMAC with CC:
 5. Store the results of step 4.
 
 
-```obj-c
+```objc
 	// Allocate a buffer to hold the digest and perform the digest.
 	NSMutableData* actualData = [getData];
  	//get the key from the keychain
@@ -482,7 +482,7 @@ When verifying the HMAC with CC
 2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
 3. Compare the extracted HMAC bytes to the result of step 1.
 
-```obj-c
+```objc
 	NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
 	NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
 	NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];

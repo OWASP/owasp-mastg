@@ -70,33 +70,37 @@ After completing these steps and starting the app, the requests should show up i
 
 All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
 
-- AppUse
 - MobSF
-- Nathan
+- Nathan (not updated since 2016)
+- AppUse
 
-You can also easily create AVDs via Android Studio.
+You can also create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices")
 
-##### Setting Up a Web Proxy on a Virtual Device
+Please also verify the "Tools" section at the end of this book.
 
-The following procedure, which works on the Android emulator that ships with Android Studio 2.x, is for setting up an HTTP proxy on the emulator:
+##### Setting Up a Web Proxy on an Android Virtual Device (AVD)
 
-1. Set up your proxy to listen on localhost. Reverse-forward the proxy port from the emulator to the host, e.g.:
+The following procedure, which works on the Android emulator that ships with Android Studio 3.x, is for setting up an HTTP proxy on the emulator:
 
-```bash
-$ adb reverse tcp:8080 tcp:8080
-```
+1. Set up your proxy to listen on localhost and for example port 8080.
+2. Configure the HTTP proxy in the emulator settings:
+ - Click on the three dots in the emulator menu bar
+ - Open the Settings Menu
+ - Click on the Proxy tab
+ - Select "Manual proxy configuration"
+ - Enter "127.0.0.1" in the "Host Name" field and your proxy port in the "Port number" field (e.g., "8080")
+ - Tap "Apply"
 
-2. Configure the HTTP proxy with the device's access point settings:
-- Open the Settings Menu
-- Tap on "Wireless & Networks" -> "Cellular Networks" or "Wireless & Networks" -> "Mobile Networks"
-- Open "Access Point Names"
-- Open the existing APN (e.g., "T-Mobile US")
-- Enter "127.0.0.1" in the "Proxy" field and your proxy port in the "Port" field (e.g., "8080")
-- Open the menu at the top right and tap "save"
-
-<img width=300px src="Images/Chapters/0x05b/emulator-proxy.jpg"/>
+<img width=300px src="Images/Chapters/0x05b/emulator-proxy.png"/>
 
 HTTP and HTTPS requests should now be routed over the proxy on the host machine. If not, try toggling airplane mode off and on.
+
+A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
+
+```shell
+$ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
+```
+
 
 ##### Installing a CA Certificate on the Virtual Device
 
@@ -106,7 +110,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 
-```bash
+```shell
 $ adb push cacert.cer /sdcard/
 ```
 
@@ -117,15 +121,15 @@ You should then be prompted to confirm installation of the certificate (you'll a
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
-You can create an Android Virtual Device with the AVD manager, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices"). You can also start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
+You can either start an AVD by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
 
-```bash
+```shell
 $ ./android avd
 ```
 
 Once the emulator is up and running, you can establish a root connection with the `adb` command.
 
-```bash
+```shell
 $ adb root
 $ adb shell
 root@generic_x86:/ $ id
@@ -152,7 +156,7 @@ During **black box testing**, you won't have access to the original form of the 
 
 The following pull the APK from the device:
 
-```bash
+```shell
 $ adb shell pm list packages
 (...)
 package:com.awesomeproject
@@ -172,7 +176,7 @@ $ sudo ./install.sh
 
 This should copy `apkx` to `/usr/local/bin`. Run it on the APK that you want to test as follows:
 
-```bash
+```shell
 $ apkx UnCrackable-Level1.apk
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
 Converting: classes.dex -> classes.jar (dex2jar)
@@ -206,6 +210,241 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 Unlike static analysis, dynamic analysis is performed while executing the mobile app. The test cases range from investigating the file system to monitoring communication.
 
 Several tools support the dynamic analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; OWASP ZAP and Burp Suite Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+
+##### Client Isolation in Wireless Networks
+
+Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This might be due to restrictions in the app (see next section) but can also be due to so called client isolation in the Wifi that you are connected to.
+
+[Wireless Client Isolation](https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation "Wireless Client Isolation") is a security feature that prevents wireless clients from communicating with one another. This feature is useful for guest and BYOD SSIDs adding a level of security to limit attacks and threats between devices connected to the wireless networks.
+
+What to do if the Wi-Fi we need for testing has client isolation?
+
+You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your laptop and use adb to make a reverse port forwarding:
+
+```shell
+$ adb reverse tcp:8080 tcp:8080
+```
+
+Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your laptop and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wifis that have client isolation.
+
+##### Intercepting Non-Proxy Aware Apps
+
+Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This is mainly due to the following reasons:
+
+- The app is using a framework like Xamarin that simply is not using the proxy settings of the Android OS or
+- The app you are testing is verifying if a proxy is set and is not allowing now any communication.
+
+In both scenarios you would need additional steps to finally being able to see the traffic. In the sections below we are describing two different solutions, ettercap and iptables.
+
+You could also use an access point that is under your control to redirect the traffic, but this would require additional hardware and we focus for now on software solutions.
+
+> For both solutions you need to activate "Support invisible proxying" in Burp, in Proxy Tab/Options/Edit Interface.
+
+**iptables**
+
+You can use iptables on the Android device to  redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
+
+```shell
+$ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
+```
+
+Verify the iptables settings and check the IP and port.
+
+```shell
+$ iptables -t nat -L
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:5288 to:<Your-Proxy-IP>:8080
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+
+Chain natctrl_nat_POSTROUTING (0 references)
+target     prot opt source               destination
+
+Chain oem_nat_pre (0 references)
+target     prot opt source               destination
+```
+
+In case you want to reset the iptables configuration you can flush the rules:
+
+```shell
+$ iptables -t nat -F
+```
+
+**Ettercap**
+
+Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running ettercap.
+
+The machine where you run your proxy and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
+
+```shell
+$ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
+```
+
+##### Bypassing Proxy Detection
+
+Some mobile apps are trying to detect if a proxy is set. If that's the case they will assume that this is malicious and will not work properly.
+
+In order to bypass such a protection mechanism you could either setup bettercap or configure iptables that don't need a proxy setup on your Android phone. A third option we didn't mention before and that is applicable in this scenario is using Frida. It is possible on Android to detect if a system proxy is set by querying the [`ProxyInfo`](https://developer.android.com/reference/android/net/ProxyInfo "ProxyInfo") class and check the getHost() and getPort() methods. There might be various other methods to achieve the same task and you would need to decompile the APK in order to identify the actual class and method name.
+
+Below you can find boiler plate source code for a Frida script that will help you to overload the method (in this case called isProxySet) that is verifying if a proxy is set and will always return false. Even if a proxy is now configured the app will now think that none is set as the function returns false.
+
+```javascript
+setTimeout(function(){
+	Java.perform(function (){
+		console.log("[*] Script loaded")
+
+		var Proxy = Java.use("<package-name>.<class-name>")
+
+		Proxy.isProxySet.overload().implementation = function() {
+			console.log("[*] isProxySet function invoked")
+			return false
+		}
+	});
+});
+```
+
+#### Network Monitoring/Sniffing
+
+[Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+
+```shell
+$ adb root
+$ adb remount
+$ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
+```
+
+If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
+
+```shell
+$ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
+$ adb shell
+$ su
+$ mount -o rw,remount /system;
+$ cp /data/local/tmp/tcpdump /system/xbin/
+$ cd /system/xbin
+$ chmod 755 tcpdump
+```
+
+> Remember: To use tcpdump, you need root privileges on the phone!
+
+Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
+
+```shell
+$ tcpdump
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
+04:54:06.590751 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+04:54:09.659658 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+04:54:10.579795 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
+^C
+3 packets captured
+3 packets received by filter
+0 packets dropped by kernel
+```
+
+To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to `netcat` (nc):
+
+```shell
+$ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
+```
+
+The tcpdump command above involves
+- listening on the wlan0 interface,
+- defining the size (snapshot length) of the capture in bytes to get everything (-s0), and
+- writing to a file (-w). Instead of a filename, we pass `-`, which will make tcpdump write to stdout.
+
+By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens a listener on port 11111. You'll usually want to monitor the wlan0 interface. If you need another interface, list the available options with the command `$ ip addr`.
+
+To access port 11111, you need to forward the port to your machine via adb.
+
+```shell
+$ adb forward tcp:11111 tcp:11111
+```
+
+The following command connects you to the forwarded port via netcat and piping to Wireshark.
+
+```shell
+$ nc localhost 11111 | wireshark -k -S -i -
+```
+
+Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
+
+![Wireshark](Images/Chapters/0x05b/Android_Wireshark.png)
+
+You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
+
+![Wireshark and tcpdump](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png)
+
+This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp Plugins that can get you started.
+
+##### Burp Plugins to Process Non-HTTP Traffic
+
+Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
+- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
+
+These plugins can visualize non-HTP protocols and you will also be able to intercept and manipulate the traffic.
+
+Please note that this setup can become sometimes very tedious and is not as straight forward as testing HTTP.
+
+##### Firebase/Google Cloud Messaging (FCM/GCM)
+
+Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
+
+![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
+
+Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
+
+FCM is available for Android, iOS, and Chrome. FCM currently provides two connection server protocols: HTTP and XMPP. As described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"), these protocols are implemented differently. The following example demonstrates how to intercept both protocols.
+
+**Preparation of Test Setup**
+
+You need to either configure iptables on your phone or use ettercap to be able to intercept traffic.
+
+FCM can use either XMPP or HTTP to communicate with the Google backend.
+
+**HTTP**
+
+FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only port 5228 is used.
+
+- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
+
+```shell
+$ echo "
+rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
+
+**XMPP**
+
+For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") 5235 (Production) and 5236 (Testing).
+
+- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
+
+```shell
+$ echo "
+rdr pass inet proto tcp from any to any port 5235-> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
+
+Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
+
+![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
 ##### Drozer
 
@@ -295,7 +534,7 @@ Open the Drozer application in the running emulator and click the OFF button at 
 
 The server listens on port 31415 by default. Use adb to forward this port to the localhost interface, then run Drozer on the host to connect to the agent.
 
-```bash
+```shell
 $ adb forward tcp:31415 tcp:31415
 $ drozer console connect
 ```
@@ -344,7 +583,7 @@ Out of the box, Drozer provides modules for investigating various aspects of the
 
 The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
 
-```bash
+```shell
 dz> module search tool
 kernelerror.tools.misc.installcert
 metall0id.tools.setup.nmap
@@ -376,142 +615,6 @@ Successfully installed 1 modules, 0 already installed
 ```
 
 This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
-
-#### Network Monitoring/Sniffing
-
- [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
-
-```
-# adb root
-# adb remount
-# adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
-```
-
-If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
-
-```
-# adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
-# adb shell
-# su
-$ mount -o rw,remount /system;
-$ cp /data/local/tmp/tcpdump /system/xbin/
-```
-
-If you get the follwoing error, you need to fix the permissions for tcpdump. 
-
-```bash
-# cd /system/xbin/
-# chmod 755 tcpdump
-```
-
-> Remember: To use tcpdump, you need root privileges on the phone!
-
-Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
-
-```
-# tcpdump
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
-04:54:06.590751 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
-04:54:09.659658 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
-04:54:10.579795 00:9e:1e:10:7f:69 (oui Unknown) > Broadcast, RRCP-0x23 reply
-^C
-3 packets captured
-3 packets received by filter
-0 packets dropped by kernel
-```
-
-To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to netcat (nc):
-
-```
-$ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
-```
-
-The tcpdump command above involves
-- listening on the wlan0 interface,
-- defining the size (snapshot length) of the capture in bytes to get everything (-s0), and
-- writing to a file (-w). Instead of a filename, we pass `-`, which will make tcpdump write to stdout.
-
-With the pipe (`|`), we sent all output from tcpdump to netcat, which opens a listener on port 11111. You'll usually want to monitor the wlan0 interface. If you need another interface, list the available options with the command `$ ip addr`.
-
-To access port 11111, you need to forward the port to your machine via adb.
-
-```
-$ adb forward tcp:11111 tcp:11111
-```
-
-The following command connects you to the forwarded port via netcat and piping to Wireshark.
-
-```
-$ nc localhost 11111 | wireshark -k -S -i -
-```
-
-Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
-
-![Wireshark](Images/Chapters/0x05b/Android_Wireshark.png)
-
-#### Firebase/Google Cloud Messaging (FCM/GCM)
-
-Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
-
-![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
-
-Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
-
-FCM is available for Android, iOS, and Chrome. FCM currently provides two connection server protocols: HTTP and XMPP. As described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"), these protocols are implemented differently. The following example demonstrates how to intercept both protocols.
-
-##### Preparation
-
-FCM can use either XMPP or HTTP to communicate with the Google backend.
-
-**HTTP**
-
-FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only port 5228 is used.
-
-- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
-
-```bash
-$ echo "
-rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
-rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
-rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
-" | sudo pfctl -ef -
-```
-
-- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
-
-**XMPP**
-
-For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") 5235 (Production) and 5236 (Testing).
-
-- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
-
-```bash
-$ echo "
-rdr pass inet proto tcp from any to any port 5235-> 127.0.0.1 port 8080
-rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
-" | sudo pfctl -ef -
-```
-
-- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
-
-##### Intercepting Messages
-
-Read the chapter "Testing Network Communication" and the test case "Man-in-the-middle (MITM) attacks" for further preparation and instructions for running ettercap.
-
-Your testing machine and the Android device must be connected to the same wireless network. Start ettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device and the wireless network's gateway.
-
-```bash
-$ sudo ettercap -T -i en0 -M arp:remote /192.168.0.1// /192.168.0.105//
-```
-
-Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
-
-![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
-
-> You need to activate "Support invisible proxying" in Proxy Tab/Options/Edit Interface when using ettercap.
-
-Interception proxies such as Burp and OWASP ZAP won't show this traffic because they aren't capable of decoding it properly by default. There are, however, Burp plugins that visualize XMPP traffic, such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and [Mitm-relay](https://github.com/jrmdev/mitm_relay).
 
 
 #### Potential Obstacles

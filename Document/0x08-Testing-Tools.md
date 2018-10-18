@@ -49,7 +49,7 @@ To perform security testing different tools are available in order to be able to
 #### Dynamic and Runtime Analysis
 
 - [Cydia Substrate](http://www.cydiasubstrate.com) - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
-- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053)) - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
+- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053) - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
 - [logcat-color](https://github.com/marshall/logcat-color) - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
 - [Inspeckage](https://github.com/ac-pm/Inspeckage) - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 - [Frida](https://www.frida.re) - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
@@ -79,7 +79,7 @@ To perform security testing different tools are available in order to be able to
 
 #### Reverse Engineering and Static Analysis
 
-- [otool](https://www.unix.com/man-page/osx/1/otool/)) - The otool command displays specified parts of object files or libraries.
+- [otool](https://www.unix.com/man-page/osx/1/otool/) - The otool command displays specified parts of object files or libraries.
 - [Clutch](http://cydia.radare.org/) - Decrypted the application and dump specified bundleID into binary or .ipa file.
 - [Dumpdecrypted](https://github.com/stefanesser/dumpdecrypted) - Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk. This tool is necessary for security researchers to be able to look under the hood of encryption.
 - [class-dump](http://stevenygard.com/projects/class-dump/) - A command-line utility for examining the Objective-C runtime information stored in Mach-O files.
@@ -131,3 +131,25 @@ To perform security testing different tools are available in order to be able to
 - [IntelliJ](https://www.jetbrains.com/idea/download/ "InteliJ") - IntelliJ IDEA is a Java integrated development environment (IDE) for developing computer software.
 - [Eclipse](https://eclipse.org/ "Eclipse") - Eclipse is an integrated development environment (IDE) used in computer programming, and is the most widely used Java IDE.
 - [Xcode](https://developer.apple.com/xcode/ "XCode") - Xcode is an integrated development environment (IDE) available only for macOS to create apps for iOS, watchOS, tvOS and macOS.
+
+
+### Vulnerable applications
+The applications listed below can be used as training materials.
+
+#### Android
+- [DVHMA](https://github.com/logicalhacking/DVHMA "Damn Vulnerable Hybrid Mobile App") - A hybrid mobile app (for Android) that intentionally contains vulnerabilities.
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - A set of apps to test your Android application hacking skills.
+- [OMTG Android app](https://github.com/OWASP/MSTG-Hacking-Playground) - A vulnerable Android app with vulnerabilities similar to the test cases described in this document.
+- [Digitalbank](https://github.com/CyberScions/Digitalbank "Android Digital Bank Vulnerable Mobile App") - A vulnerable app created in 2015, which can be used on older Android platforms. Note: this is not tested by the authors.
+- [DIVA Android](https://github.com/payatu/diva-android "Damn insecure and vulnerable App") - An app intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges. Note: this is not tested by the authors.
+- [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "Insecure Bank V2") - A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities.
+- [DodoVulnerableBank](https://github.com/CSPF-Founder/DodoVulnerableBank "Dodo Vulnerable Bank") - An insecure Android app from 2015. Note: this is not tested by the authors.
+
+
+
+#### iOS
+
+- [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "Crackmes and license check") - A set of applications to test your iOS application hacking skills.
+- [Myriam](https://github.com/GeoSn0w/Myriam "Myriam iOS Security App") - A vulnerable iOS app with iOS security challenges.
+- [DVIA](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") - A vulnerable iOS app, written in Objective-C with a set of vulnerabilities. Additional lessons can be found at [the projects website](http://damnvulnerableiosapp.com/ "DVIA project website").
+- [DVIA-v2](https://github.com/prateek147/DVIA-v2 "Damn Vulnerable iOS App v2") - A vulnerable iOS app, written in Swift with over 15 vulnerabilities.

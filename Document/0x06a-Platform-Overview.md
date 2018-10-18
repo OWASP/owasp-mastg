@@ -1,6 +1,12 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS.
+iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from an architecture point of view. The following five key areas are discussed:
+
+1. iOS security architecture
+2. iOS application structure
+3. Inter-process Communication (IPC)
+4. iOS application publishing
+5. iOS Application Attack Surface
 
 Like the Apple desktop operating system macOS (formerly OS X), iOS is based on Darwin, an open source Unix operating system developed by Apple. Darwin's  kernel is XNU ("X is Not Unix"), a hybrid kernel that combines components of the Mach and FreeBSD kernels.
 
@@ -128,7 +134,7 @@ On a jailbroken device, you can recover the IPA for an installed iOS app with [I
 
 #### App Structure on the iOS File System
 
-Starting with iOS 8, the way applications are stored on the device changed. Previously, applications were unpacked to a folder in the `/var/mobile/applications/` directory. Applications were identified by UUID (Universal Unique Identifier), a 128-bit number. This number was the name of the folder in which the application itself was stored. Static bundle and application data folders are now stored somewhere else. These folders contain information that must be examined closely during application security assessments.
+Starting with iOS 8, the way applications are stored on the device changed. Previously, applications were unpacked to a folder in the `/var/mobile/applications/` directory. Note, that since iOS 10, the path has changed to `/private/var/containers/Bundle/Application/` Applications were identified by UUID (Universal Unique Identifier), a 128-bit number. This number was the name of the folder in which the application itself was stored. Static bundle and application data folders are now stored somewhere else. These folders contain information that must be examined closely during application security assessments.
 
 - `/var/mobile/Containers/Bundle/Application/[UUID]/Application.app` contains the previously mentioned application.app data, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
 - `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
@@ -149,7 +155,7 @@ On the iOS device, the actual installation process is then handled by the instal
 
 The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
-```bash
+```shell
 $ ipainstaller App_name.ipa
 ```
 
@@ -175,3 +181,20 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Bluetooth sharing
 - Media Library
 - Social media accounts
+
+### iOS Application Attack surface
+
+The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application may be vulnerable to attack if it does not:
+- Validate all input by means of IPC communication or URL-schemes. See
+  - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
+- Validate all input by the user in input fields.
+- Validate the content loaded inside a webview. See:
+  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
+  - [Determining Whether Native Methods Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#determining-whether-native-methods-are-exposed-through-webviews "Determining Whether Native Methods Are Exposed Through WebViews")
+- Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application. See:
+  - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
+  - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
+- Securely stores all local data, or loads untrusted data from storage. See:
+  - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
+- Protect itself against compromised environments, repackaging or other local attacks. See
+  - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")

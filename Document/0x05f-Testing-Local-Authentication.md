@@ -1,19 +1,19 @@
 ## Local Authentication on Android
 
-During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function. 
-As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitve (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
+During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, or fingerprint, verified by referencing local data. Generally, this process is invoked for reasons such providing a user convenience for resuming an existing session with the remote service or as a means of step-up authentication to protect some critical function.
+As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitive (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
 ### Testing Confirm Credentials
 
 #### Overview
-The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lockscreen-protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
+The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
 
-Note that the security of Confirm Credentials is only as strong as the protection set at the lockscreen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
+Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
 #### Static Analysis
 
-Reassure that the lockscreen is set:
+Reassure that the lock screen is set:
 
 ```java
    KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
@@ -22,7 +22,7 @@ Reassure that the lockscreen is set:
    }
 ```
 
-- Create the key protected by the lockscreen (assuring the the user was unlocking his device within the last 30 seconds, or he will have to unlock again):
+- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked his device in the last X seconds, or he will have to unlock the device again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
 
 ```java
   try {
@@ -50,7 +50,7 @@ Reassure that the lockscreen is set:
 
 ```
 
-- setup the lockscreen to confirm:
+- setup the lock screen to confirm:
 ```java
   private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
   Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
@@ -60,7 +60,7 @@ Reassure that the lockscreen is set:
 ```
 
 
-- use the key after lockscreen
+- use the key after lock screen
 ```java
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -76,6 +76,10 @@ Reassure that the lockscreen is set:
     }
 
 ```
+
+Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
+
+
 #### Dynamic Analysis
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
@@ -114,11 +118,11 @@ Safely implementing fingerprint authentication requires following a few simple p
     fingerprintManager.isHardwareDetected();                
 ```
 
-- The user must have a protected lockscreen:
+- The user must have a protected lock screen:
 
 ```Java
 	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lockscreen
+	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
 ```
 
 - At least one finger should be registered:

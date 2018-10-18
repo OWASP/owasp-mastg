@@ -153,7 +153,7 @@ Objective-C has two types of errors:
 `NSException` is used to handle programming and low-level errors (e.g., division by 0 and out-of-bounds array access).
 An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless caught, this exception will invoke the unhandled exception handler, with which you can log the statement (logging will halt the program). `@catch` allows you to recover from the exception if you're using a `@try`-`@catch`-block:
 
-```obj-c
+```objc
  @try {
  	//do work here
  }
@@ -356,26 +356,8 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
-### References
 
-#### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-#### OWASP MASVS
-
-- V7.1: "The app is signed and provisioned with a valid certificate."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### Tools
-
-- idb - https://github.com/dmayer/idb
-- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
-
-### Checking for weaknesses in third party libraries
+### Checking for Weaknesses in Third Party Libraries
 
 #### Overview
 
@@ -388,7 +370,7 @@ These libraries can have the following two classes of unwanted side-effects:
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
 Note: there are two widely used package management tools: Carthage and CocoaPods.
-Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview. Then the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps. 
+Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
 #### Static Analysis
 
@@ -480,24 +462,32 @@ However, these do not include all the libraries being used. Next, with Class-dum
 ./class-dump <Executable> -r
 ```
 
+### References
 
-#### References
-
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V7.1: "The app is signed and provisioned with a valid certificate."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
+
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
+
 - [Carthage](https://github.com/carthage/carthage "Carthage")
 - [CocoaPods](https://CocoaPods.org "CocoaPods")
 - [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
 - [Sourceclear](https://sourceclear.com "Sourceclear")
 - [Class-dump](https://github.com/nygard/class-dump "Class-dump")
 - [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
+- [idb](https://github.com/dmayer/idb)
+- [Codesign](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html)

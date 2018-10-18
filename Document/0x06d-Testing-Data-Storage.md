@@ -78,7 +78,7 @@ In case you want to use these mechanisms, it is recommended to test whether the 
 
 ```
 
-```obj-c
+```objc
   -(BOOL)devicePasscodeEnabled:(LAContex)context{
     if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
           return true;
@@ -312,7 +312,7 @@ For testing the local storage and verifying what data is stored within it, it's 
 
 Once the app is running in the iOS simulator, you can navigate to the directory of the latest simulator started with the following command:
 
-```bash
+```shell
 $ cd ~/Library/Developer/CoreSimulator/Devices/$(
 ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
 awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
@@ -320,7 +320,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 
 The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
-```bash
+```shell
 $ grep -iRn keyword .
 ```
 

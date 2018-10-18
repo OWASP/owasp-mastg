@@ -129,6 +129,7 @@ Verify that the following best practices have been followed:
 - Untrusted inputs are type-checked and/or validated using a white-list of acceptable values.
 - Prepared statements with variable binding (i.e. parameterized queries) are used when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
 - When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
+- When working with x509 formatted cetificate data, ensure that secure parsers are used. For instance Bouncy Castle below version 1.6 allows for Remote Code Execution by means of unsafe reflection.
 
 We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
@@ -239,12 +240,12 @@ Kotlin
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
 
 - ADB
-```bash
+```shell
 adb shell
 am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
 ```
 - Clipboard Data
-```bash
+```shell
 am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
 ```
 - 3rd party Intent

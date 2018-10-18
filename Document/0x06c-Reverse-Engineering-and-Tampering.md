@@ -154,7 +154,7 @@ Alternatively, you can easily decompile the application with [Hopper Disassemble
 
 The following command is listing shared libraries:
 
-```bash
+```shell
 $ otool -L <binary>
 ```
 
@@ -221,50 +221,65 @@ Cydia Substrate (formerly called MobileSubstrate) is the standard framework for 
 
 First download, unpack, and install the SDK.
 
-```bash
+```shell
+
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
 $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
+
 ```
+
 To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
-```bash
+
+```shell
 $ cycyript
 cy#
+
 ```
 
 To inject into a running process, we first need to find the process ID (PID). Running "cycript -p" with the PID injects Cycript into the process. To illustrate, we will inject into SpringBoard.
 
-```bash
+```shell
+
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
+
 ```
 
 We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript. 		
 
-```bash
+```shell
+
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]
+
 ```
 ![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
 
 Find the document directory with Cycript:
-```bash
+
+```shell
+
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
+
 ```
 
 Use the following command to get the application's delegate class:
-```bash
+
+```shell
 cy# [UIApplication sharedApplication].delegate
 ```
+
 The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow is shown. The indentation space reflects the relationships between views. For example, UILabel, UITextField, and UIButton are subviews of UIView.
 
 ```
+
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
   | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>
@@ -583,7 +598,7 @@ frida_code = """
 
                 // Create an immutable ObjC string object from a JS string object.
                 var str_url = NSString.stringWithString_(myNSURL.toString());
-                NSLog(str_url); 
+                NSLog(str_url);
             } finally {
                 pool.release();
             }
@@ -612,7 +627,7 @@ Please also take a look at the [Frida JavaScript API reference](https://www.frid
 
 If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") and the local server are preferable to the online version because the latter discloses the source code to a third party.
 
-At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app`, so the main JavaScript application file can be modified at this location.
+At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app` from iOS 10 onward, so the main JavaScript application file can be modified at this location.
 
 To identify the exact location of the application folder, you can use the tool [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller"):
 
