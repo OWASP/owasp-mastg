@@ -233,6 +233,7 @@ Kotlin
         if (url.substring(0, 6).equals("yourscheme:", ignoreCase = true)) {
             // parse the URL object and execute functions
         }
+    }
 ```
 
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the html parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
