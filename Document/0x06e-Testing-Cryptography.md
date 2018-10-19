@@ -7,7 +7,7 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 #### Overview
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
-##### CommonCrypto and Wrapper libraries
+##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
 The most commonly used Class for cyrptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the headerile ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
@@ -15,26 +15,25 @@ The most commonly used Class for cyrptographic operations is the CommonCrypto, w
 - The `CommonKeyDerivation.h` gives the parameters for supported KDF functions
 - The `CommonSymmetricKeywrap.h` gives the function used for wrappnig a symmetric key with a Key Encryption Key.
 
-CommonCryptor lacks a few type of operations unfortunately, such as Gallois Coumter Mode (GCM) for AES and any asymmetric work (e.g. RSA encryption and signing). Which has motivated the adoption of other libraries within iOS, especially with the increasing adoption of the GCM mode with for instance JSOM Web Encryption (JWE).
+CommonCryptor lacks a few type of operations unfortunately in its public APIs, for instance: GCM mode is only available in its private APIs: see [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Even with the lack of the mentioned functionality, there are still some wrapper-classes around it for convinience, such as [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"), [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Note that many of these libraries are often not complete!
+Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this. <TODO: ADD SHORTCOMMINGS IN STATIC ANALYSIS!>
 
-##### CJose
-With the rise of JWE, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). Libraries like these often still require a higher level wrapping. EXPLAIN JOSE DANGER <todo: E.G. RFC ISSUES!>
+As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto") and [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Another popular wrapper library which provides additional functionalities is [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
 
-#### CryptoSwift
-https://github.com/krzyzanowskim/CryptoSwift
+##### Third party libraries
+There are various third party libraries available, such as:
+- CJOSE: With the rise of JWE, and the lack of public support for AES GCM, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). CJOSE still requires a higher level wrapping as they only provide a C/C++ implementation.
+- CryptoSwift: https://github.com/krzyzanowskim/CryptoSwift
 
 ##### OpenSSL and Wrapper libraries
 https://github.com/ZewoGraveyard/OpenSSL
 
 
-##### RNcryptor
-[RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor") describes itself as a Cross-language AES Encryptor/Decryptor data format.
-
 #### Sodium and Wrapper libraries
 https://github.com/jedisct1/swift-sodium
 https://download.libsodium.org/doc/
+
 
 ####Tink?
 https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html
@@ -116,6 +115,7 @@ Obviously, alternatives can be chosen, such as using a PWKDF function in order t
  the filesystem (in terms of a SQLite database or a Realm database) is never a good idea.
 Background: https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf
 Managing keys: https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
+https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys?language=objc
 #### Static Analysis (TODO: implement (#922)!)
 
 #### Dynamic Analysis (TODO: implement (#922)!)
