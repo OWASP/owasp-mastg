@@ -17,39 +17,20 @@ The most commonly used Class for cyrptographic operations is the CommonCrypto, w
 
 CommonCryptor lacks a few type of operations unfortunately in its public APIs, for instance: GCM mode is only available in its private APIs: see [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this. <TODO: ADD SHORTCOMMINGS IN STATIC ANALYSIS!>
+Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this. <TODO: ADD PITFALLS IN STATIC ANALYSIS!>
 
-As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto") and [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Another popular wrapper library which provides additional functionalities is [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
+As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"), [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"), [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA") and [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Another popular wrapper library which provides additional functionalities is [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
 
 ##### Third party libraries
 There are various third party libraries available, such as:
 - CJOSE: With the rise of JWE, and the lack of public support for AES GCM, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). CJOSE still requires a higher level wrapping as they only provide a C/C++ implementation.
-- CryptoSwift: https://github.com/krzyzanowskim/CryptoSwift
-
-##### OpenSSL and Wrapper libraries
-https://github.com/ZewoGraveyard/OpenSSL
-
-
-#### Sodium and Wrapper libraries
-https://github.com/jedisct1/swift-sodium
-https://download.libsodium.org/doc/
-
-
-####Tink?
-https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html
-
-##### Themis
-[Themis](https://github.com/cossacklabs/themis "Themis") is a wrapper around OpenSSL and provides support for <TODO FIRTHER ELABORATE N IT: https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
-
-
-
-
-
-
-
-
-##### Other altiernatives
-There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity") and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto") which are no longer maintained, but do provide support for a set of cyrptographic operations. Like always, it is recommended to look for supported and maintained libraries.
+- CryptoSwift: A library in swift, which can be found at [Github](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
+- OpenSSL: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be call <HVG!!!> https://github.com/ZewoGraveyard/OpenSSL
+- Sodium: https://github.com/jedisct1/swift-sodium, https://download.libsodium.org/doc/
+- Tink: https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html
+- Themis: [Themis](https://github.com/cossacklabs/themis "Themis") is a wrapper around OpenSSL and provides support for <TODO FIRTHER ELABORATE N IT: https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
+- Others: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
+- DIY: More and more there are developers that have created their own implementation of a cipher or a cryptographic function. This is often not recommended, and should be vetted in depth (see static analysis for more details).
 
 
 #### Static Analysis

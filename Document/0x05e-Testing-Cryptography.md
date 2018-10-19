@@ -10,6 +10,8 @@ Android cryptography APIs are based on the Java Cryptography Architecture (JCA).
 
 The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 
+<TODO: ADD NDK CRYPTO!>
+
 You can list the set of existing providers as follows:
 
 ```java
