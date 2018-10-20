@@ -10,8 +10,6 @@ Android cryptography APIs are based on the Java Cryptography Architecture (JCA).
 
 The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 
-<TODO: ADD NDK CRYPTO!>
-
 You can list the set of existing providers as follows:
 
 ```java
@@ -46,7 +44,7 @@ For some applications that support older versions of Android (e.g.: only used Pr
 
 Apps that target modern API levels, went through the following changes:
 - For Android Nougat and above:
-  - It is recommended to stop specifying a security provider. Instead, always patch the security provider.
+  - It is recommended to stop specifying a security provider. Instead, always use a patched  security provider.
   - The support for the `Crypto` provider has dropped and the provider is deprecated.
   - There is no longer support for `SHA1PRNG` for secure random, but instead the runtime provides an instance of `OpenSSLRandom`.
 - For Android Oreo (8.1) and above  The [Developer Documentation](https://developer.android.com/about/versions/oreo/android-8.1 "Cryptography updates") shows that:
@@ -60,9 +58,6 @@ Apps that target modern API levels, went through the following changes:
 ") shows even more aggressive changes:
   - You get a warning if you still specify a provider using the `getInstance()` method and you target any API below P. If you target P or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
-
-Since Android Nougat (Android 7), there have been various deprecations in the area of security providers:
-
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
@@ -155,6 +150,8 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size).
 
+Note: there is a widespread fasle believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanisms is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with IDA(pro). From Android Nougat onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
+
 #### Static Analysis
 
 Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
@@ -167,6 +164,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
+Last, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
 
 ### Testing Random Number Generation
 
@@ -263,7 +261,8 @@ However, be aware that the ```KeyStore``` API has been changed significantly thr
 
 A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys.
 
-The last two options are to use hardcoded encryption keys in the source code and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code . Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
+The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in Java/Kotlin. Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application.
+Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
 
 #### Static Analysis
 
@@ -288,6 +287,7 @@ $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 This will highlight all the classes that use the ```SecretKeySpec``` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array ```Encrypt.keyBytes```.
 
 ![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png)
+
 #### Dynamic Analysis
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
@@ -299,6 +299,8 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 #### Cryptography references
 - https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+- https://www.hex-rays.com/products/ida/
+- https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html
 
 ##### OWASP Mobile Top 10
 
