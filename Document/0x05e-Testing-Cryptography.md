@@ -39,18 +39,18 @@ provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
 provider: AndroidKeyStore1.0 (Android KeyStore security provider)
 ```
 
-For some applications that support older versions of Android (e.g.: only used Pre Android Nougat), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the legion of the Bouncy Castle. Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
+For some applications that support older versions of Android (e.g.: only used Pre Android Nougat), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
 
 
 Apps that target modern API levels, went through the following changes:
-- For Android Nougat and above:
-  - It is recommended to stop specifying a security provider. Instead, always use a patched  security provider.
+- For Android Nougat (7.0) and above [the Android Developer blog shows that](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security provider Crypto deprecated in Andorid N"):
+  - It is recommended to stop specifying a security provider. Instead, always use a patched security provider.
   - The support for the `Crypto` provider has dropped and the provider is deprecated.
   - There is no longer support for `SHA1PRNG` for secure random, but instead the runtime provides an instance of `OpenSSLRandom`.
-- For Android Oreo (8.1) and above  The [Developer Documentation](https://developer.android.com/about/versions/oreo/android-8.1 "Cryptography updates") shows that:
-  - Conscrypt, known as `AndroidOpenSSL`, is preferred above using Bouncy Castle and it has new implementations: `AlgorithmParameters:GCM` , `KeyGenerator:AES`, `KeyGenerator:DESEDE`, `KeyGenerator:HMACMD5`, `KeyGenerator:HMACSHA1`, `KeyGenerator:HMACSHA224`, `KeyGenerator:HMACSHA256`, `KeyGenerator:HMACSHA384`, `KeyGenerator:HMACSHA512`, `SecretKeyFactory:DESEDE`and  `Signature:NONEWITHECDSA`.
+- For Android Oreo (8.1) and above the [Developer Documentation](https://developer.android.com/about/versions/oreo/android-8.1 "Cryptography updates") shows that:
+  - Conscrypt, known as `AndroidOpenSSL`, is preferred above using Bouncy Castle and it has new implementations: `AlgorithmParameters:GCM` , `KeyGenerator:AES`, `KeyGenerator:DESEDE`, `KeyGenerator:HMACMD5`, `KeyGenerator:HMACSHA1`, `KeyGenerator:HMACSHA224`, `KeyGenerator:HMACSHA256`, `KeyGenerator:HMACSHA384`, `KeyGenerator:HMACSHA512`, `SecretKeyFactory:DESEDE`, and `Signature:NONEWITHECDSA`.
   - You should not use the `IvParameterSpec.class` anymore for GCM, but use the `GCMParameterSpec.class` instead.
-  - Sockets have changed from `OpenSSLSocketImpl` to `ConscryptFileDescriptorSocket` and `ConscryptEngineSocket`.
+  - Sockets have changed from `OpenSSLSocketImpl` to `ConscryptFileDescriptorSocket`, and `ConscryptEngineSocket`.
   - `SSLSession` with null parameters give an NPE.
   - You now have to have large enough arrays as inputbytes for generating a key.
   - if a Socket read is interrupted, you get an `SocketException`.
@@ -297,10 +297,10 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
 #### Cryptography references
-- https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
-- https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
-- https://www.hex-rays.com/products/ida/
-- https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html
+- [Android Developer blog: Crypto provider deprecated]( https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Android Developer blog: Crypto provider deprecated")
+- [Android Developer blog: cryptography changes in android P]( https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Android Developer blog: cryptography changes in android P")
+- [Ida Pro](https://www.hex-rays.com/products/ida/ "IDA Pro")
+- [Android Developer blog: changes for NDK developers]( https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android Developer blog: changes for NDK developers")
 
 ##### OWASP Mobile Top 10
 
