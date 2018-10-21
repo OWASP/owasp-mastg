@@ -212,8 +212,15 @@ Take a close look at any WebViews present and investigate for untrusted input re
 
 XSS issues may exist if the URL opened by WebView is partially determined by user input. The following example is from an XSS issue in the [Zoho Web Service, reported by Linus Särud](https://labs.detectify.com/2015/02/20/finding-an-xss-in-an-html-based-android-application/).
 
+Java
+
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
+```
+Kotlin
+
+```kotlin
+webView.loadUrl("javascript:initialize($myNumber);")
 ```
 Another example of XSS issues determined by user input is public overriden methods.
 
