@@ -254,7 +254,16 @@ Intent i = new Intent();
 i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
 i.putExtra("url","http://test/test");
 i.putExtra("html","XSS PoC <script>alert(123)</script>");
-startActivity(i);
+view.getContext().startActivity(i);
+```
+Kotlin
+
+```kotlin
+val i = Intent()
+i.component = ComponentName("com.quora.android", "com.quora.android.ActionBarContentActivity")
+i.putExtra("url", "http://test/test")
+i.putExtra("html", "XSS PoC <script>alert(123)</script>")
+view.context.startActivity(i)
 ```
 
 If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
