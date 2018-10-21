@@ -8,7 +8,7 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
-The most commonly used Class for cyrptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the headerile ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
+The most commonly used Class for cyrptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
@@ -17,9 +17,14 @@ The most commonly used Class for cyrptographic operations is the CommonCrypto, w
 
 CommonCryptor lacks a few type of operations unfortunately in its public APIs, for instance: GCM mode is only available in its private APIs: see [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this. <TODO: ADD PITFALLS IN STATIC ANALYSIS!>
+Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this.
 
-As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"), [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"), [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA") and [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"). Another popular wrapper library which provides additional functionalities is [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
+As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance:
+- [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"),
+- [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"),
+- [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA"),
+- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"),
+- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
 
 ##### Third party libraries
 There are various third party libraries available, such as:
@@ -28,14 +33,16 @@ There are various third party libraries available, such as:
 - OpenSSL: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & assymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
 - LibSodium: Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing and more. It is a portable, cross-compilable, installable, packageable fork of NaCl, with a compatible API, and an extended API to improve usability even further. See [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs") for more details. There are some wrapper libraries, such as [Swift-sodium](https://github.com/jedisct1/swift-sodium "Swift-sodium"), [NAChloride](https://github.com/gabriel/NAChloride "NAChloride"), and [libsodium-ios](https://github.com/mochtu/libsodium-ios "libsodium ios").
 - Tink: A new cryptography library by Google. Google explains its reasoning behind the library [in its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks Github repository](https://github.com/google/tink "Tink at Github").
-- Themis: <TODO: HVG>! [Themis](https://github.com/cossacklabs/themis "Themis") is a wrapper around OpenSSL and provides support for <TODO FURTHER ELABORATE N IT: https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
+- Themis: a Crypto library for storage and messaging for Swift, Obj-C, Android/Java, С++, JS, Python, Ruby, PHP, Go. [Themis](https://github.com/cossacklabs/themis "Themis") uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Objective-C and Swift for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
 - Others: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
 - DIY: More and more there are developers that have created their own implementation of a cipher or a cryptographic function. This is often not recommended, and should be vetted in depth (see static analysis for more details).
 
 
 #### Static Analysis
+A lot has been said about deprecated algorithms and cryptographic configurations in section `Cryptography for Mobile Apps`. Obviously, these should be verified for each of the mentioned libraries in this chapter.
+Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory.
 
-#####CommonCryptor <todo explain which parameters are really old and should not be used!>
+#####CommonCryptor
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
 ```
@@ -49,9 +56,8 @@ CCCryptorStatus CCCryptorCreate(
 	CCCryptorRef *cryptorRef);  /* RETURNED */
 ```
 
-You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material, nothing whether it's coming directly from a password (which is bad) or from a Key Derivation Function (e.g., PBKDF2). Obviously, your application may use other non-standard libraries (`openssl`, for example), so look for those too.
-
-iOS code usually references predefined constants that are defined in `CommonCryptor.h` (for example, `kCCAlgorithmDES`). You can search the source code for these constants. iOS cryptography should be based on the best practices described in the chapter "Cryptography for Mobile Apps."
+You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material, nothing whether it's coming directly from a password (which is bad) or from a Key Derivation Function (e.g., PBKDF2).
+Next, be careful <TODO: HVG!>
 
 
 
