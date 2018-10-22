@@ -8,7 +8,7 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
-The most commonly used Class for cyrptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
+The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
@@ -19,7 +19,7 @@ CommonCryptor lacks a few type of operations unfortunately in its public APIs, f
 
 Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this.
 
-As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are often used are, for instance:
+As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are used are, for instance:
 - [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"),
 - [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"),
 - [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA"),
@@ -37,10 +37,9 @@ There are various third party libraries available, such as:
 - Others: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
 - DIY: More and more there are developers that have created their own implementation of a cipher or a cryptographic function. This is often not recommended, and should be vetted in depth (see static analysis for more details).
 
-
 #### Static Analysis
 A lot has been said about deprecated algorithms and cryptographic configurations in section `Cryptography for Mobile Apps`. Obviously, these should be verified for each of the mentioned libraries in this chapter.
-Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory.
+Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory. Make sure that it is part of a parent structure which can be easily removed from memory (e.g. a `struct` that lives temporally).
 
 #####CommonCryptor
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
@@ -56,10 +55,18 @@ CCCryptorStatus CCCryptorCreate(
 	CCCryptorRef *cryptorRef);  /* RETURNED */
 ```
 
-You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material, nothing whether it's coming directly from a password (which is bad) or from a Key Derivation Function (e.g., PBKDF2).
-Next, be careful <TODO: HVG!>
+You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material: the key should be generated securely - either using a key derivation function or a random-number generation function.
+Note that functions which are noted in chapter "Cryptography for Mobile Apps"  as deprecated, are still programmatically supported. They should not be used.
 
+##### Third party libraries
+Given the continuous evolution of all third party libraries, this should not be the place to evaluate each library in terms of static analysis. Still there are some points of attention:
 
+- **Find the library being used**: This can be done using the following methods:
+  - Check the [cartfile](ttps://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile") if Carthage is used.
+	- Check the [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile") if Cocoapods is used.
+	- Check the FRAMEWORK, CHECK HTE HEADERFILES, CHECK THE CODE FLOWS, CHECK THE PACKAGE MANAGER
+- **Determine the version being used**: VERSION AND SHORTCOMINGS
+- **BY HAND???**: EITHER VERIFY FOR EACH PARAMETER (CONSULT STANDARDS ) OR RECOMMEND TO USE ONE OF THE LIBRARIES.
 
 
 #### Dynamic Analysis

@@ -120,7 +120,11 @@ For more information on effective block modes, see the [NIST guidelines on block
 
 ##### Predictable Initialization Vector
 
-CBC mode requires the first plaintext block to be combined with an initialization vector (IV). The IV doesn't have to be kept secret, but it shouldn't be predictable. Make sure that IVs are generated using a cryptographically-secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors).
+CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial input to the cipher. The IV doesn't have to be kept secret, but it shouldn't be predictable. Make sure that IVs are generated using a cryptographically-secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors).
+
+##### Initialization Vectors in stateful operation modes.
+
+Please note that this is different from CTR and GCM mode in which the initialization vector is often a counter together with a nonce. So here using a predictable iv with its own stateful model is exactly what is needed. See the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details.
 
 ### Cryptographic APIs on Android and iOS
 
