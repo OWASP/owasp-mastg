@@ -1775,7 +1775,7 @@ In this how-to, we will use a Kernel module to hide a file. Create a file on the
 $ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
 $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
-```shell
+```
 
 It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these—open, openat, access, accessat, facessat, stat, fstat, etc. For now, you'll only hook the openat system call.  This is the syscall the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
 
