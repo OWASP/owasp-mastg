@@ -124,7 +124,10 @@ CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial inp
 
 ##### Initialization Vectors in stateful operation modes.
 
-Please note that this is different from CTR and GCM mode in which the initialization vector is often a counter together with a nonce. So here using a predictable iv with its own stateful model is exactly what is needed. See the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details.
+Please note that the usage of ivs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable iv with its own stateful model is exactly what is needed. in CTR you have a set of nocnes with counters which are the input, whereas in GCM you have a single IV per cryptographic operation, which should not be repeated. See the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details.
+
+#### Weaker padding mechanisms
+TODO: ADD PADDING PARTS HERE(OEAP VERSUS PKCS5)!
 
 ### Cryptographic APIs on Android and iOS
 
