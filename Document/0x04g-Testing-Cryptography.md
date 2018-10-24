@@ -98,6 +98,11 @@ Inventing proprietary cryptographic functions is time consuming, difficult, and 
 
 Carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data. All cryptographic operations should use standard cryptographic APIs for Android and iOS (we'll write about those in more detail in the platform-specific chapters). Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected. Pay close attention to standard algorithms that have been modified. Remember that encoding isn't the same as encryption! Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
 
+At all implementations of cryptography, you need to ensure that the following always takes place:
+- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are propperly removed from memory after consumption.
+- The inner state of a cipher should be kept as short in memory as possible.
+
+
 #### Inadequate AES Configuration
 
 Advanced Encryption Standard (AES) is the widely accepted standard for symmetric encryption in mobile apps. It's an iterative block cipher that is based on a series of linked mathematical operations. AES performs a variable number of rounds on the input, each of which involve substitution and permutation of the bytes in the input block. Each round uses a 128-bit round key which is derived from the original AES key.
@@ -124,7 +129,7 @@ CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial inp
 
 ##### Initialization Vectors in stateful operation modes.
 
-Please note that the usage of ivs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable iv with its own stateful model is exactly what is needed. in CTR you have a set of nocnes with counters which are the input, whereas in GCM you have a single IV per cryptographic operation, which should not be repeated. See the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details.
+Please note that the usage of ivs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable iv with its own stateful model is exactly what is needed. In CTR you have a new nonce plus counter as an input to every new block operation. For example: for a 5120 bit long plaintext: you have 20 blocks, so you need 20 input vectors consisting of a nonce and counter. Whereas in GCM you have a single IV per cryptographic operation, which should not be repeated with the same key. See section 8 of the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details and recomendations of the IV.
 
 #### Weaker padding mechanisms
 TODO: ADD PADDING PARTS HERE(OEAP VERSUS PKCS5)!
