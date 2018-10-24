@@ -140,6 +140,7 @@ com.noshufou.android.su
 com.koushikdutta.superuser
 com.zachspong.temprootremovejb
 com.ramdroid.appquarantine
+com.topjohnwu.magisk
 ```
 
 **Checking for writable partitions and system directories**
