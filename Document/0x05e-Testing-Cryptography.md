@@ -36,7 +36,7 @@ provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
 provider: BC1.49 (BouncyCastle Security Provider v1.49)
 provider: Crypto1.0 (HARMONY (SHA1 digest; SecureRandom; SHA1withDSA signature))
 provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
-provider: AndroidKeyStore1.0 (Android KeyStore security provider)
+provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
 ```
 
 For some applications that support older versions of Android (e.g.: only used Pre Android Nougat), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
@@ -82,7 +82,7 @@ SecretKey secretKey = keyGenerator.generateKey();
 
 The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS7), and explicitly specifies that randomized encryption is required (this is the default.) `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example.
 
-GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the Reverse Engineering chapter). Note that GCM is the only mode of AES that [does not support paddings](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in KeyStore").
+GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the Reverse Engineering chapter). Note that GCM is the only mode of AES that [does not support paddings](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
@@ -92,10 +92,10 @@ Here's an example of using that key to encrypt:
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
         + "/" + KeyProperties.BLOCK_MODE_CBC
         + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7;
-KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+KeyStore AndroidKeyStore = AndroidKeyStore.getInstance("AndroidKeyStore");
 
 // byte[] input
-Key key = keyStore.getKey(keyAlias, null);
+Key key = AndroidKeyStore.getKey(keyAlias, null);
 
 Cipher cipher = Cipher.getInstance(AES_MODE);
 cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -112,7 +112,7 @@ Here's how that cipher text would be decrypted. The `input` is the encrypted byt
 ```Java
 // byte[] input
 // byte[] iv
-Key key = keyStore.getKey(AES_KEY_ALIAS, null);
+Key key = AndroidKeyStore.getKey(AES_KEY_ALIAS, null);
 
 Cipher cipher = Cipher.getInstance(AES_MODE);
 IvParameterSpec params = new IvParameterSpec(iv);
@@ -229,15 +229,13 @@ If you want to test for randomness, you can try to capture a large set of number
 
 #### Overview
 
-Symmetric cryptography provides confidentiality and integrity of data because it ensures one basic cryptographic principle. It is based on the fact that a given ciphertext can only, in any circumstance, be decrypted when providing the original encryption key. The security problem is thereby shifted to securing the key instead of the content that is now securely encrypted. Asymmetric cryptography solves this problem by introducing the concept of a private and public key pair. The public key can be distributed freely, the private key is kept secret.
+In this section we will discuss different ways to store cryptographic keys and how to test for them. We discuss the most secure way, down to the less secure way of generating and storing key material.
 
-When testing an Android application on correct usage of cryptography it is thereby also important to make sure that key material is securely generated and stored. In this section we will discuss different ways to manage cryptographic keys and how to test for them. We discuss the most secure way, down to the less secure way of generating and storing key material.
-
-The most secure way of handling key material, is simply never storing it on the filesystem. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view, it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored.  However, note that some ciphers do not properly clean up their byte-arrays. For instance, the AES Cipher in BouncyCastle does not always clean up its latest working key.
+The most secure way of handling key material, is simply never storing it on the device. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view, it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored.  However, note that some ciphers do not properly clean up their byte-arrays. For instance, the AES Cipher in BouncyCastle does not always clean up its latest working key. Next, BigInteger based keys (e.g. private keys) cannot be removed from the heap nor zeroed out just like that.
 
 The encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDFv2). This cryptographic protocol is designed to generate secure and non brute-forceable keys. The code listing below illustrates how to generate a strong encryption key based on a password.
 
-```Java
+```java
 public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 {
     //Initiliaze objects and variables for later use
@@ -255,13 +253,15 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
     return new SecretKeySpec(keyBytes, "AES");
 }
 ```
-The above method requires a character array containing the password and the needed keylength in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10000 rounds which will be used by the PBKDFv2 algorithm. This significantly increases the workload for a bruteforce attack. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the ```SecureRandom``` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Storing the salt does not need any additional security measures, this can be publicly stored in the ```SharedPreferences``` without the need of any encryption. Afterwards the Password-based Encryption (PBE) key is generated using the recommended ```PBKDF2WithHmacSHA1``` algorithm.
+The above method requires a character array containing the password and the needed keylength in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10000 rounds which will be used by the PBKDFv2 algorithm. This significantly increases the workload for a bruteforce attack. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the ```SecureRandom``` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Storing the salt does not need any additional security measures, this can be privately stored in the ```SharedPreferences``` without the need of any encryption. Note that this will allow for device synchronization if you do not exclude it from the Android backup. See "testing android storage" for more details. Afterwards the Password-based Encryption (PBE) key is generated using the recommended ```PBKDF2WithHmacSHA1``` algorithm till API version 26. From there on it is best to use ```PBKDF2withHmacSHA256```, which will end up with a different keysize.
 
-Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android KeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the KeyStore is hardware-backed. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
+Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android AndroidKeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the AndroidKeyStore is hardware-backed in case a fingerprint sensor is present. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
-However, be aware that the ```KeyStore``` API has been changed significantly throughout various versions of Android. In earlier versions the ```KeyStore``` API only supported storing public\private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the ```KeyStore```. The encrypted symmetric key can now be safely stored in the ```SharedPreferences```. Whenever we need the symmetric key, the application retrieves the private key from the ```KeyStore``` and decrypts the symmetric key.
+However, be aware that the ```AndroidKeyStore``` API has been changed significantly throughout various versions of Android. In earlier versions the ```AndroidKeyStore``` API only supported storing public\private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the ```AndroidKeyStore```. The encrypted symmetric key can now be safely stored in the ```SharedPreferences```. Whenever we need the symmetric key, the application retrieves the private key from the ```AndroidKeyStore``` and decrypts the symmetric key.
 
-A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether MODE_PRIVATE has been used or not. This is not the case for the KeyStore. Since KeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the KeyStore clearing or destroying the keys.
+Another API offered by Android is the `KeyChain`, which provides access to private keys and their corresponding certificate chains in credential storage, which is often not used due to the interaction necessary and the shared nature of the Keychain. See the [Developer Documentation](https://developer.android.com/reference/android/security/KeyChain "Keychain") for more details.
+
+A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether `MODE_PRIVATE` has been used or not. This is not the case for the AndroidKeyStore. Since AndroidKeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
 
 The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in public places like ```/sdcard/```. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in Java/Kotlin. Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application.
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
@@ -274,7 +274,7 @@ Locate uses of the cryptographic primitives in reverse engineered or disassemble
 - `Mac`
 - `MessageDigest`
 - `Signature`
-- `KeyStore`
+- `AndroidKeyStore`
 - `Key`, `PrivateKey`, `PublicKey`, `SecretKeySpec`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
@@ -288,7 +288,11 @@ $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 ```
 This will highlight all the classes that use the ```SecretKeySpec``` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array ```Encrypt.keyBytes```.
 
-![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png)
+![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png).
+
+When you have access to the sourcecode, check at least for the following:
+- Check which mechanism is used to store a key: prevail the `AndroidKeyStore` over other solutions.
+- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated? See the [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 
 #### Dynamic Analysis
 

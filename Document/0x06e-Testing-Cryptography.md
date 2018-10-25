@@ -100,21 +100,29 @@ Note: if other mechanims are used for random numbers in the code: verify that th
 #### Dynamic Analysis
 If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite its [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
 
+### Testing Key Management
+
+#### Overview
+There are various methods on how to store the key on the device. Not storing a key at all will ensure that no keymaterial can be dumped. This can be archieved by using a Password Key Derivation function, such as PKBDF-2.
+<TODO: ADD PKBDF-2 EXAMPLE>
+
+When you need to store the key. Then we recommend ot use the Keychain, as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata or Realm, is usually not equally strong as using the KeyChain.
+Even when the sync of CoreData or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the Testing Data Storage section for more details.
+
+The Keychain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc "Secure Enclave") for more details on its implementation.
+
+The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in objective-C/Swift. Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application.
+Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged.
 
 
-### Testing Key Management (TODO: implement (#922)!)
-
-#### Overview (TODO: implement (#922)!)
-There are various methods on how to store the key on the device. Storing the key in the Keychain is highly recommended, as long as the .
-Obviously, alternatives can be chosen, such as using a PWKDF function in order to use a password from the user to generate a key. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata, is often not a good idea. If `CoreData` is used, then at least ensure that the sink (often a SQLite Database) is using the `NSFileProtectionComplete` data protection class. See the Testing Data Storage section for more details.
-
- the filesystem (in terms of a SQLite database or a Realm database) is never a good idea.
-Background: https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf
+#### Static Analysis (TODO: implement (#922)!)
 Managing keys: https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
 https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys?language=objc
-#### Static Analysis (TODO: implement (#922)!)
+
+
 
 #### Dynamic Analysis (TODO: implement (#922)!)
+
 
 ### References
 
@@ -131,6 +139,7 @@ https://developer.apple.com/documentation/security/certificate_key_and_trust_ser
 - M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
 
 #### OWASP MASVS
+- V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use case, configured with parameters that adhere to industry best practices."
 - V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 - V3.6: "All random values are generated using a sufficiently secure random number generator."
