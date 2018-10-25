@@ -64,12 +64,11 @@ Given the continuous evolution of all third party libraries, this should not be 
 - **Find the library being used**: This can be done using the following methods:
   - Check the [cartfile](ttps://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile") if Carthage is used.
 	- Check the [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile") if Cocoapods is used.
-	- TODO: HVG! Check the FRAMEWORK, CHECK HTE HEADERFILES, CHECK THE CODE FLOWS, CHECK THE PACKAGE MANAGER
-- **Determine the version being used**: VERSION AND SHORTCOMINGS
-- **BY HAND???**: EITHER VERIFY FOR EACH PARAMETER (CONSULT STANDARDS ) OR RECOMMEND TO USE ONE OF THE LIBRARIES.
+	- Check the linked libraries: Open the xcodeproj file and check the project properties. Go to the tab "Build Phases" and check the entries in "Link Binary With Libraries" for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
+	- In the case of copy-pasted sources: search the headerfiles (in case of using Objective-C) and otherwise the Swift files for known methodnames for known libraries.
+- **Determine the version being used**: Always check the version of the library being used and check whether there is a new version available in which possible vulnerabilities or shortcommings are patched. Even without a newer version of a library, it can be the case that cryptographic functions have not been reviewed yet. Therefore we always recommend using a library that has been validated or ensure that you have the ability, knowledge and experience to do validation yourself.
+- **By hand?**: We recommend not to role your own crypto, nor to implement known cryptographic functions yourself.
 
-
-#### Dynamic Analysis
 
 ### Testing Random Number Generation
 
@@ -105,7 +104,7 @@ If you want to test for randomness, you can try to capture a large set of number
 
 ### Testing Key Management (TODO: implement (#922)!)
 
-#### OVerview (TODO: implement (#922)!)
+#### Overview (TODO: implement (#922)!)
 There are various methods on how to store the key on the device. Storing the key in the Keychain is highly recommended, as long as the .
 Obviously, alternatives can be chosen, such as using a PWKDF function in order to use a password from the user to generate a key. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata, is often not a good idea. If `CoreData` is used, then at least ensure that the sink (often a SQLite Database) is using the `NSFileProtectionComplete` data protection class. See the Testing Data Storage section for more details.
 
@@ -122,6 +121,7 @@ https://developer.apple.com/documentation/security/certificate_key_and_trust_ser
 #### Random Number Documentation
 - https://developer.apple.com/documentation/security/randomization_services
 - https://developer.apple.com/reference/security/1399291-secrandomcopybytes
+- https://portswigger.net/burp/documentation/desktop/tools/sequencer
 
 #### General Security Documentation:
 - https://developer.apple.com/documentation/security
