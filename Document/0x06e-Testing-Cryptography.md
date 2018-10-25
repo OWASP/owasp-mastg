@@ -64,7 +64,7 @@ Given the continuous evolution of all third party libraries, this should not be 
 - **Find the library being used**: This can be done using the following methods:
   - Check the [cartfile](ttps://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile") if Carthage is used.
 	- Check the [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile") if Cocoapods is used.
-	- Check the FRAMEWORK, CHECK HTE HEADERFILES, CHECK THE CODE FLOWS, CHECK THE PACKAGE MANAGER
+	- TODO: HVG! Check the FRAMEWORK, CHECK HTE HEADERFILES, CHECK THE CODE FLOWS, CHECK THE PACKAGE MANAGER
 - **Determine the version being used**: VERSION AND SHORTCOMINGS
 - **BY HAND???**: EITHER VERIFY FOR EACH PARAMETER (CONSULT STANDARDS ) OR RECOMMEND TO USE ONE OF THE LIBRARIES.
 
@@ -73,16 +73,12 @@ Given the continuous evolution of all third party libraries, this should not be 
 
 ### Testing Random Number Generation
 
-#### OVerview (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
-
-#### Static Analysis (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
-
-#### Dynamic Analysis (TODO: RECREATE STUFF TO THE SAME CHAPTER LAY-OUT!)
-
+#### Overview
 Apple provides a [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") API, which generates cryptographically secure random numbers.
 
 The Randomization Services API uses the `SecRandomCopyBytes` function to generate numbers. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom values from 0 to 255. Make sure that all random numbers are generated with this API-there is no reason for developers to use a different one.
 
+#### Static Analysis
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 ```
 func SecRandomCopyBytes(_ rnd: SecRandomRef?,
@@ -99,6 +95,13 @@ The following is an example of the APIs usage:
 ```
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
+
+Note: if other mechanims are used for random numbers in the code: verify that these are either wrappers around the APIs mentioned above review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
+
+#### Dynamic Analysis
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite its [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
+
+
 
 ### Testing Key Management (TODO: implement (#922)!)
 
