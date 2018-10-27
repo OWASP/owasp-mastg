@@ -46,7 +46,7 @@ These symbols can be saved in "Stabs" format or the DWARF format. In the Stabs f
 
 Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
-```
+```shell
 $ gobjdump --stabs --dwarf TargetApp
 In archive MyTargetApp:
 

@@ -65,7 +65,7 @@ if(error==nil){
 
 You can check protocol handlers by attempting to open a Cydia URL. The Cydia app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
-```
+```objc
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ```
 
@@ -91,7 +91,7 @@ As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`)
 
 Let's inject Cycript into our process (look for your PID with `top`):
 
-```
+```sh
 iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true

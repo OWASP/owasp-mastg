@@ -168,7 +168,7 @@ $ adb pull /data/app/com.awesomeproject-1/base.apk
 
 `apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. Install it as follows:
 
-```
+```shell
 $ git clone https://github.com/b-mueller/apkx
 $ cd apkx
 $ sudo ./install.sh
@@ -456,20 +456,20 @@ Start the app and trigger a function that uses FCM. You should see HTTP messages
 
 Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
 
-```
-git clone https://github.com/mwrlabs/drozer/
-cd drozer
-make apks
-source ENVIRONMENT
-python setup.py build
-sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
+```shell
+$ git clone https://github.com/mwrlabs/drozer/
+$ cd drozer
+$ make apks
+$ source ENVIRONMENT
+$ python setup.py build
+$ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 ```
 
 **On Mac:**
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
 
-```
+```shell
 $ brew install openssl
 ```
 
@@ -477,13 +477,13 @@ Drozer depends on older versions of some libraries. Avoid messing up the system'
 
 Install virtualenv via pip:
 
-```
+```shell 
 $ pip install virtualenv
 ```
 
 Create a project directory to work in; you'll download several files into it. Navigate into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder, which contains the Python executable files and a copy of the pip library.
 
-```
+```shell
 $ virtualenv drozer
 $ source drozer/bin/activate
 (drozer) $
@@ -492,7 +492,7 @@ $ source drozer/bin/activate
 You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. A typo in the source of the pyOpenSSL version Drozer prevents successful compilation, so you'll need to fix the source before compiling. Fortunately, ropnop has figured out the necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
 Run the following commands:
 
-```
+```shell
 $ wget https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz
 $ tar xzvf pyOpenSSL-0.13.tar.gz
 $ cd pyOpenSSL-0.13
@@ -504,13 +504,13 @@ $ python setup.py install
 
 With that out of the way, you can install the remaining dependencies.
 
-```
+```shell
 $ easy_install protobuf==2.4.1 twisted==10.2.0
 ```
 
 Finally, download and install the Python .egg from the MWR labs website:
 
-```
+```shell 
 $ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
 $ tar xzf drozer-2.3.4.tar.gz
 $ easy_install drozer-2.3.4-py2.7.egg
@@ -520,7 +520,7 @@ $ easy_install drozer-2.3.4-py2.7.egg
 
 Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
 
-```
+```shell
 $ adb install drozer.apk
 ```
 

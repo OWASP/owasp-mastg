@@ -695,7 +695,7 @@ Masking of sensitive data, by showing asterisk or dots instead of clear text sho
 
 To make sure an application is masking sensitive user input, check for the following attribute in the definition of EditText:
 
-```
+```xml
 android:inputType="textPassword"
 ```
 
