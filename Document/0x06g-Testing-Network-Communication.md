@@ -96,7 +96,7 @@ If the source code is available, open then `Info.plist` file in the application 
 
 The following listing is an example of an exception configured to disable ATS restrictions globally.
 
-```
+```xml
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -108,7 +108,7 @@ If the source code is not available, then the `Info.plist` file should be either
 
 Since IPA files are ZIP archives, they can be extracted using any zip utility.
 
-```
+```shell
 $ unzip app-name.ipa
 ```
 
@@ -118,7 +118,7 @@ $ unzip app-name.ipa
 
 The following command shows how to convert the Info.plist file into XML format.
 
-```
+```shell
 $ plutil -convert xml1 Info.plist
 ```
 
@@ -129,7 +129,7 @@ In general it can be summarised:
 - ATS should be configured according to best practices by Apple and only be deactivated under certain circumstances.
 - If the application connects to a defined number of domains that the application owner controls, then configure the servers to support the ATS requirements and opt-in for the ATS requirements within the app. In the following example, `example.com` is owned by the application owner and ATS is enabled for that domain.
 
-```
+```xml
 <key>NSAppTransportSecurity</key>
 <dict>
     <key>NSAllowsArbitraryLoads</key>
@@ -176,7 +176,7 @@ The code presented below shows how it is possible to check if the certificate pr
 
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X509 checks. The snippet below implements a check of the certificate.  
 
-```
+```objc
 (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
   SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;

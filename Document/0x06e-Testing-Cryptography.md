@@ -45,7 +45,7 @@ Pay attention to how-to-be-removed key-holding datastructures and plain-text dat
 #####CommonCryptor
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
-```
+```c
 CCCryptorStatus CCCryptorCreate(
 	CCOperation op,             /* kCCEncrypt, etc. */
 	CCAlgorithm alg,            /* kCCAlgorithmDES, etc. */
@@ -80,19 +80,19 @@ The Randomization Services API uses the `SecRandomCopyBytes` function to generat
 
 #### Static Analysis
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
-```
+```swift
 func SecRandomCopyBytes(_ rnd: SecRandomRef?,
                       _ count: Int,
                       _ bytes: UnsafeMutablePointer<UInt8>) -> Int32
 ```
 
 The [Objective-C version](https://developer.apple.com/reference/security/1399291-secrandomcopybytes?language=objc "SecRandomCopyBytes (Objective-C)") is
-```
+```objc
 int SecRandomCopyBytes(SecRandomRef rnd, size_t count, uint8_t *bytes);
 ```
 
 The following is an example of the APIs usage:
-```
+```objc
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 

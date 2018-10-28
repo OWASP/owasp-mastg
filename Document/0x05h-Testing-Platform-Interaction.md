@@ -258,7 +258,7 @@ Package: com.android.mms.service
 
 When Android applications expose IPC components to other applications, they can define permissions to control which applications can access the components. For communication with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt so that it includes the required permission:
 
-```
+```shell
 $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
@@ -429,7 +429,7 @@ Check the source code for the class `android.app.Service`:
 
 By reversing the target application, we can see that the service `AuthService` provides functionality for changing the password and PIN-protecting the target app.
 
-```
+```java
    public void handleMessage(Message msg) {
             AuthService.this.responseHandler = msg.replyTo;
             Bundle returnBundle = msg.obj;
@@ -482,7 +482,7 @@ To understand more about what the receiver is intended to do, we have to go deep
 
 The following extract of the target application's source code shows that the broadcast receiver triggers transmission of an SMS message containing the user's decrypted password.
 
-```
+```java
 public class MyBroadCastReceiver extends BroadcastReceiver {
   String usernameBase64ByteString;
   public static final String MYPREFS = "mySharedPreferences";
@@ -890,7 +890,7 @@ Steps:
 
 The following example shows an Activity that extends this activity:
 
-```
+```java
 public class MyPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
