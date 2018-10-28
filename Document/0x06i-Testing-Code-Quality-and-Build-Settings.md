@@ -267,7 +267,7 @@ Although Xcode enables all binary security features by default, it may be releva
 
 -	**ARC** - Automatic Reference Counting - memory management feature
 	-	adds retain and release messages when required
--	**Stack Canary** - helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Tehrefore, the value of the cnaary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
+-	**Stack Canary** - helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Tehrefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
 -	**PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis

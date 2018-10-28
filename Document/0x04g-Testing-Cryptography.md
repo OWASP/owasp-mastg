@@ -100,8 +100,8 @@ Inventing proprietary cryptographic functions is time consuming, difficult, and 
 Carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data. All cryptographic operations should use standard cryptographic APIs for Android and iOS (we'll write about those in more detail in the platform-specific chapters). Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected. Pay close attention to standard algorithms that have been modified. Remember that encoding isn't the same as encryption! Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
 
 At all implementations of cryptography, you need to ensure that the following always takes place:
-- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are propperly removed from memory after consumption.
-- The inner state of a cipher should be kept as short in memory as possible.
+- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption.
+- The inner state of a cipher should be removed from memory as soon as possible.
 
 
 #### Inadequate AES Configuration
@@ -130,10 +130,10 @@ CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial inp
 
 ##### Initialization Vectors in stateful operation modes.
 
-Please note that the usage of ivs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable iv with its own stateful model is exactly what is needed. In CTR you have a new nonce plus counter as an input to every new block operation. For example: for a 5120 bit long plaintext: you have 20 blocks, so you need 20 input vectors consisting of a nonce and counter. Whereas in GCM you have a single IV per cryptographic operation, which should not be repeated with the same key. See section 8 of the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details and recomendations of the IV.
+Please note that the usage of ivs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable IV with its own stateful model is exactly what is needed. In CTR you have a new nonce plus counter as an input to every new block operation. For example: for a 5120 bit long plaintext: you have 20 blocks, so you need 20 input vectors consisting of a nonce and counter. Whereas in GCM you have a single IV per cryptographic operation, which should not be repeated with the same key. See section 8 of the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details and recomendations of the IV.
 
 #### Weaker padding mechanisms
-In the old days, PKCS7 (Public Key Cryptography Standards 7) was used as a padding mechanism. Now in modern JAva environments it is referred to as PKCS5. This mechanism is vulnerable to the padding oracle attack. Therefore, it is best to use OEAP (Optimal Asymmetric Encryption Padding) (or PKCS#1 v2.0)). Note that, even when using OAEP, you can still run into an issue known best as the Mangers attack as described [in the blog at Kudelskisecurity] ](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Kudelskisecurity").
+  In the old days, PKCS #7 (Public Key Cryptography Standards 7) was used as a padding mechanism. Now in modern JAva environments it is referred to as PKCS #5. This mechanism is vulnerable to the padding oracle attack. Therefore, it is best to use OEAP (Optimal Asymmetric Encryption Padding) (or PKCS #1 v2.0). Note that, even when using OAEP, you can still run into an issue known best as the Mangers attack as described [in the blog at Kudelskisecurity] ](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Kudelskisecurity").
 
 ### Cryptographic APIs on Android and iOS
 

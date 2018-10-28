@@ -8,34 +8,35 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
-The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be disected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
+The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
 - The `CommonKeyDerivation.h` gives the parameters for supported KDF functions
 - The `CommonSymmetricKeywrap.h` gives the function used for wrappnig a symmetric key with a Key Encryption Key.
 
-CommonCryptor lacks a few type of operations unfortunately in its public APIs, for instance: GCM mode is only available in its private APIs: see [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
+Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
 Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption?language=objc "Using keys for encryption") on how to use this.
 
-As noted before: there are some wrapper-libraries around for both in order to provide convinience. Typical libraries that are used are, for instance:
+As noted before: some wrapper-libraries exist for both in order to provide convenience. Typical libraries that are used are, for instance:
 - [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"),
 - [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"),
 - [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA"),
 - [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"),
-- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor").
+- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor"),
+- [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
 ##### Third party libraries
 There are various third party libraries available, such as:
 - CJOSE: With the rise of JWE, and the lack of public support for AES GCM, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). CJOSE still requires a higher level wrapping as they only provide a C/C++ implementation.
-- CryptoSwift: A library in swift, which can be found at [Github](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
+- CryptoSwift: A library in Swift, which can be found at [Github](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
 - OpenSSL: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & assymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
 - LibSodium: Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing and more. It is a portable, cross-compilable, installable, packageable fork of NaCl, with a compatible API, and an extended API to improve usability even further. See [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs") for more details. There are some wrapper libraries, such as [Swift-sodium](https://github.com/jedisct1/swift-sodium "Swift-sodium"), [NAChloride](https://github.com/gabriel/NAChloride "NAChloride"), and [libsodium-ios](https://github.com/mochtu/libsodium-ios "libsodium ios").
 - Tink: A new cryptography library by Google. Google explains its reasoning behind the library [in its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks Github repository](https://github.com/google/tink "Tink at Github").
-- Themis: a Crypto library for storage and messaging for Swift, Obj-C, Android/Java, С++, JS, Python, Ruby, PHP, Go. [Themis](https://github.com/cossacklabs/themis "Themis") uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Objective-C and Swift for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. https://github.com/cossacklabs/themis/wiki/Objective-C-Howto!
+- Themis: a Crypto library for storage and messaging for Swift, Obj-C, Android/Java, С++, JS, Python, Ruby, PHP, Go. [Themis](https://github.com/cossacklabs/themis "Themis") uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Objective-C and Swift for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. See [their wiki](https://github.com/cossacklabs/themis/wiki/Objective-C-Howto "Themis wiki") for more details.
 - Others: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
-- DIY: More and more there are developers that have created their own implementation of a cipher or a cryptographic function. This is often not recommended, and should be vetted in depth (see static analysis for more details).
+- DIY: An increasing amount of developers have created their own implementation of a cipher or a cryptographic function. This practice is _highly_ discouraged and should be vetted very thoroughly by a cryptography expert if used.
 
 #### Static Analysis
 A lot has been said about deprecated algorithms and cryptographic configurations in section `Cryptography for Mobile Apps`. Obviously, these should be verified for each of the mentioned libraries in this chapter.
@@ -56,7 +57,7 @@ CCCryptorStatus CCCryptorCreate(
 ```
 
 You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material: the key should be generated securely - either using a key derivation function or a random-number generation function.
-Note that functions which are noted in chapter "Cryptography for Mobile Apps"  as deprecated, are still programmatically supported. They should not be used.
+Note that functions which are noted in chapter "Cryptography for Mobile Apps" as deprecated, are still programmatically supported. They should not be used.
 
 ##### Third party libraries
 Given the continuous evolution of all third party libraries, this should not be the place to evaluate each library in terms of static analysis. Still there are some points of attention:
@@ -66,8 +67,8 @@ Given the continuous evolution of all third party libraries, this should not be 
 	- Check the [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile") if Cocoapods is used.
 	- Check the linked libraries: Open the xcodeproj file and check the project properties. Go to the tab "Build Phases" and check the entries in "Link Binary With Libraries" for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
 	- In the case of copy-pasted sources: search the headerfiles (in case of using Objective-C) and otherwise the Swift files for known methodnames for known libraries.
-- **Determine the version being used**: Always check the version of the library being used and check whether there is a new version available in which possible vulnerabilities or shortcommings are patched. Even without a newer version of a library, it can be the case that cryptographic functions have not been reviewed yet. Therefore we always recommend using a library that has been validated or ensure that you have the ability, knowledge and experience to do validation yourself.
-- **By hand?**: We recommend not to role your own crypto, nor to implement known cryptographic functions yourself.
+- **Determine the version being used**: Always check the version of the library being used and check whether there is a new version available in which possible vulnerabilities or shortcomings are patched. Even without a newer version of a library, it can be the case that cryptographic functions have not been reviewed yet. Therefore we always recommend using a library that has been validated or ensure that you have the ability, knowledge and experience to do validation yourself.
+- **By hand?**: We recommend not to roll your own crypto, nor to implement known cryptographic functions yourself.
 
 
 ### Testing Random Number Generation
@@ -75,7 +76,7 @@ Given the continuous evolution of all third party libraries, this should not be 
 #### Overview
 Apple provides a [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") API, which generates cryptographically secure random numbers.
 
-The Randomization Services API uses the `SecRandomCopyBytes` function to generate numbers. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom values from 0 to 255. Make sure that all random numbers are generated with this API-there is no reason for developers to use a different one.
+The Randomization Services API uses the `SecRandomCopyBytes` function to generate numbers. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom values from 0 to 255. Make sure that all random numbers are generated with this API. There is no reason for developers to use a different one.
 
 #### Static Analysis
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
@@ -95,23 +96,23 @@ The following is an example of the APIs usage:
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 
-Note: if other mechanims are used for random numbers in the code: verify that these are either wrappers around the APIs mentioned above review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
+Note: if other mechanims are used for random numbers in the code: verify that these are either wrappers around the APIs mentioned above or review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
 
 #### Dynamic Analysis
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite its [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
 
 ### Testing Key Management
 
 #### Overview
 There are various methods on how to store the key on the device. Not storing a key at all will ensure that no keymaterial can be dumped. This can be archieved by using a Password Key Derivation function, such as PKBDF-2.
-<TODO: ADD PKBDF-2 EXAMPLE>
+<TODO: ADD PKBDF-2 EXAMPLE>: TEST https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios !!!
 
-When you need to store the key. Then we recommend ot use the Keychain, as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata or Realm, is usually not equally strong as using the KeyChain.
+When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata or Realm, is usually less secure than using the KeyChain.
 Even when the sync of CoreData or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the Testing Data Storage section for more details.
 
-The Keychain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc "Secure Enclave") for more details on its implementation.
+The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc "Secure Enclave") for more details on its implementation.
 
-The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in objective-C/Swift. Consequrently, he can decrypt any other data that he can obtain and that was encrypted by the application.
+The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in objective-C/Swift. Consequently, he can decrypt any other data that he can obtain which was encrypted by the application.
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged.
 
 
@@ -121,8 +122,8 @@ https://developer.apple.com/documentation/security/certificate_key_and_trust_ser
 
 
 
-#### Dynamic Analysis (TODO: implement (#922)!)
-
+#### Dynamic Analysis
+Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
 ### References
 
