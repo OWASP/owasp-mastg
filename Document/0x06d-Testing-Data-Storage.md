@@ -95,7 +95,7 @@ On iOS, when an application is uninstalled, the Keychain data used by the applic
 When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
 
 ```
-python needle.py
+$ python needle.py
 [needle] > use storage/data/keychain_dump
 [needle] > run
   {
@@ -414,8 +414,8 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 Navigate to a screen that displays input fields that take sensitive user information. Two methods apply to checking log files for sensitive data:
 
 1. Connect to the iOS device and execute the following command:
-```
-tail -f /var/log/syslog
+```shell
+$ tail -f /var/log/syslog
 ```
 
 2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
@@ -610,7 +610,7 @@ Both file system properties are preferable to the deprecated approach of directl
 
 The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```#ObjC
+```ObjC
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
 {
     NSURL* URL= [NSURL fileURLWithPath: filePathString];
@@ -628,7 +628,7 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 
 The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```
+```swift
  func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
     {
         let URL:NSURL = NSURL.fileURLWithPath(filePath)
@@ -671,7 +671,7 @@ While analyzing the source code, look for the fields or screens that take or dis
 
 The following is a sample remediation method that will set a default screenshot:
 
-```
+```objc
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -791,7 +791,7 @@ Memory dumped to file: /Users/foo/memory_iOS/memory
 
 After the memory has been dumped, executing the command `strings` with the dump as argument will extract the strings.
 
-```
+```shell
 $ strings memory > strings.txt
 ```
 
