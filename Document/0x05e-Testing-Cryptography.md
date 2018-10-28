@@ -271,7 +271,7 @@ Next, when you have a predictable key derivation function based on identifiers w
 
 #### Static Analysis
 
-Locate uses of the cryptographic primitives in reverse engineered or disassembled code. Some of the most frequently used classes and interfaces:
+Locate uses of the cryptographic primitives in the code. Some of the most frequently used classes and interfaces:
 
 - `Cipher`
 - `Mac`
@@ -289,7 +289,7 @@ Now that we have a collection of Smali bytecode files, we can search the files f
 ```shell
 $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 ```
-This will highlight all the classes that use the ```SecretKeySpec``` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array ```Encrypt.keyBytes```.
+This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
 
 ![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png).
 

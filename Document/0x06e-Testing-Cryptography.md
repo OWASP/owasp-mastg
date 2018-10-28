@@ -171,11 +171,12 @@ The last three options are to use hardcoded encryption keys in the source code, 
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged.
 
 
-#### Static Analysis (TODO: implement (#922)!)
+#### Static Analysis
+There are various keywords to look for: check the libraries mentioned in the overview and static analysis of the section
 Managing keys: https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
 https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys?language=objc
 
-<TODO: ADD THE REST HERE!>
+<TODO: ADD THE REST HERE+ references!>
 
 #### Dynamic Analysis
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
