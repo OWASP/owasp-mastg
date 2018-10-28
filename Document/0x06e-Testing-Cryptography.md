@@ -104,8 +104,63 @@ If you want to test for randomness, you can try to capture a large set of number
 ### Testing Key Management
 
 #### Overview
-There are various methods on how to store the key on the device. Not storing a key at all will ensure that no keymaterial can be dumped. This can be archieved by using a Password Key Derivation function, such as PKBDF-2.
-<TODO: ADD PKBDF-2 EXAMPLE>: TEST https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios !!!
+There are various methods on how to store the key on the device. Not storing a key at all will ensure that no keymaterial can be dumped. This can be archieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
+
+```swift
+
+		func pbkdf2SHA1(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA1), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
+    }
+
+    func pbkdf2SHA256(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA256), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
+    }
+
+    func pbkdf2SHA512(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
+    }
+
+    func pbkdf2(hash :CCPBKDFAlgorithm, password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+        let passwordData = password.data(using:String.Encoding.utf8)!
+        var derivedKeyData = Data(repeating:0, count:keyByteCount)
+        let derivedKeyDataLength = derivedKeyData.count
+        let derivationStatus = derivedKeyData.withUnsafeMutableBytes {derivedKeyBytes in
+            salt.withUnsafeBytes { saltBytes in
+
+                CCKeyDerivationPBKDF(
+                    CCPBKDFAlgorithm(kCCPBKDF2),
+                    password, passwordData.count,
+                    saltBytes, salt.count,
+                    hash,
+                    UInt32(rounds),
+                    derivedKeyBytes, derivedKeyDataLength)
+            }
+        }
+        if (derivationStatus != 0) {
+            print("Error: \(derivationStatus)")
+            return nil;
+        }
+
+        return derivedKeyData
+    }
+
+
+
+
+    func testKeyDerivation(){
+			//test run in the 'Arcane' librarie its testingsuite to show how you can use it
+        let password     = "password"
+        //let salt       = "saltData".data(using: String.Encoding.utf8)!
+        let salt         = Data(bytes: [0x73, 0x61, 0x6c, 0x74, 0x44, 0x61, 0x74, 0x61])
+        let keyByteCount = 16
+        let rounds       = 100000
+
+        let derivedKey = pbkdf2SHA1(password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
+        print("derivedKey (SHA1): \(derivedKey! as NSData)")
+    }
+```
+
+ *Source: https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios, tested in the testsuite of the `Arcane` library*
 
 When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, Propertylists or by any other sink from Coredata or Realm, is usually less secure than using the KeyChain.
 Even when the sync of CoreData or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the Testing Data Storage section for more details.
@@ -120,7 +175,7 @@ Next, when you have a predictable key derivation function based on identifiers w
 Managing keys: https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
 https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys?language=objc
 
-
+<TODO: ADD THE REST HERE!>
 
 #### Dynamic Analysis
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.

@@ -222,7 +222,7 @@ public static void main (String args[]) {
 
 Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burpproxy its Sequencer") to see how good the quality of the randomness is.
 
 
 ### Testing Key Management
@@ -311,6 +311,22 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [Android Developer blog: cryptography changes in android P]( https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Android Developer blog: cryptography changes in android P")
 - [Ida Pro](https://www.hex-rays.com/products/ida/ "IDA Pro")
 - [Android Developer blog: changes for NDK developers]( https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android Developer blog: changes for NDK developers")
+- [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers")
+- [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle")
+- [Legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java")
+- [Android Developer documentation](ttps://developer.android.com/training/articles/keystore.html "Keystore")
+- [NIST keylength recommendations](https://www.keylength.com/en/4/ "NIST keylength recommendations")
+- [BSI recommendations - 2017](https://www.keylength.com/en/8/ "BSI recommendations - 2017")
+
+#### SecureRandom references
+- [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom")
+- [Burpproxy its Sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burpproxy its Sequencer")
+
+#### Testing Key Management references
+- [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API")
+- [Android Keychain API](https://developer.android.com/reference/android/security/KeyChain "Keychain")
+- [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API")
+- [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo")
 
 ##### OWASP Mobile Top 10
 
