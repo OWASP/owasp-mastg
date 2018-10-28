@@ -50,8 +50,8 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
 
-```
-npm install -g itms-services
+```shell 
+$ npm install -g itms-services
 ```
 
 Save the IPA file locally with the following command:
@@ -195,8 +195,8 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 
 Apply the entitlement with codesign:
 
-```
-codesign -s - --entitlements entitlements.plist -f debugserver
+```shell
+$ codesign -s - --entitlements entitlements.plist -f debugserver
 ```
 
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.

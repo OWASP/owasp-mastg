@@ -95,7 +95,7 @@ On iOS, when an application is uninstalled, the Keychain data used by the applic
 When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
 
 ```
-python needle.py
+$ python needle.py
 [needle] > use storage/data/keychain_dump
 [needle] > run
   {
@@ -414,8 +414,8 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 Navigate to a screen that displays input fields that take sensitive user information. Two methods apply to checking log files for sensitive data:
 
 1. Connect to the iOS device and execute the following command:
-```
-tail -f /var/log/syslog
+```shell
+$ tail -f /var/log/syslog
 ```
 
 2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).

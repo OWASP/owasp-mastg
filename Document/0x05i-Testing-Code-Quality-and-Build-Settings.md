@@ -355,14 +355,14 @@ The tester should manually test the input fields with strings like `OR 1=1--` if
 
 On a rooted device, the command content can be used to query the data from a Content Provider. The following command queries the vulnerable function described above.
 
-```
-content query --uri content://sg.vp.owasp_mobile.provider.College/students
+```shell
+# content query --uri content://sg.vp.owasp_mobile.provider.College/students
 ```
 
 SQL injection can be exploited with the following command. Instead of getting the record for Bob only, the user can retrieve all data.
 
-```
-content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
+```shell
+# content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
 Drozer can also be used for dynamic testing.
@@ -593,8 +593,8 @@ apply plugin: 'org.owasp.dependencycheck'
 Once gradle has invoked the plugin, you can create a report by running:
 
 ```sh
-gradle assemble
-gradle dependencyCheckAnalyze --info
+$ gradle assemble
+$ gradle dependencyCheckAnalyze --info
 ```
 
 The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. See remediation on what to do given the vulnerabilities found with the libraries.
@@ -626,8 +626,8 @@ plugins {
 Now, after the plugin is picked up, use the following commands:
 
 ```sh
-gradle assemble
-gradle downloadLicenses
+$ gradle assemble
+$ gradle downloadLicenses
 ```
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.

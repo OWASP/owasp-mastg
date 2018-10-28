@@ -794,23 +794,23 @@ $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
 
 ```shell
-dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
+$ dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```shell
-java -jar abe.jar unpack backup.ab
+$ java -jar abe.jar unpack backup.ab
 ```
 if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
 ```shell
-abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
+$ abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ```
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
 ```shell
-java -jar abe.jar unpack backup.ab backup.tar 123
+$ java -jar abe.jar unpack backup.ab backup.tar 123
 ```
 Extract the tar file to your working directory.
 
@@ -1048,7 +1048,7 @@ For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer (
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
 ```shell
-./hprof-conv memory.hprof memory-mat.hprof
+$ ./hprof-conv memory.hprof memory-mat.hprof
 ```
 
 MAT (Memory Analyzer Tool) provides several tools for analyzing the memory dump. For example, the _Histogram_ provides an estimate of the number of objects that have been captured from a given type, and the _Thread Overview_ shows processes' threads and stack frames. The _Dominator Tree_ provides information about keep-alive dependencies between objects. You can use regular expressions to filter the results these tools provide.

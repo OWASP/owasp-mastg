@@ -1078,7 +1078,7 @@ The -U option lets Frida search for USB devices or emulators.
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
 ```shell
-frida-trace -i "open" -U com.android.chrome
+$ frida-trace -i "open" -U com.android.chrome
 ```
 
 This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
@@ -1086,13 +1086,13 @@ This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frid
 Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
 ```shell
-frida -U com.android.chrome
+$ frida -U com.android.chrome
 ```
 
 With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
 
 ```shell
-frida -U -l myscript.js com.android.chrome
+$ frida -U -l myscript.js com.android.chrome
 ```
 
 Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
@@ -1260,7 +1260,7 @@ Wrap your code in the function `setImmediate` to prevent timeouts (you may or ma
 Save the above script as `uncrackable1.js` and load it:
 
 ```shell
-frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 ```
 
 After you see the "onClickHandler modified" message, you can safely press "OK". The app will not exit anymore.
@@ -1931,7 +1931,7 @@ bf000000 t new_openat    [kernel_hook]
 Now you have everything you need to overwrite the sys_call_table entry. The syntax for kmem_util is:
 
 ```shell
-./kmem_util <syscall_table_base_address> <offset> <func_addr>
+$ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
 The following command patches the openat system call table so that it points to your new function.
