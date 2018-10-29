@@ -1,5 +1,6 @@
 # Summary
 
+- [Changelog](../Changelog.md)
 - [Frontispiece](0x02-Frontispiece.md)
 
 ### Overview
@@ -10,16 +11,19 @@
 
 ### General Mobile App Testing Guide
 
-- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
-- [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
 - [Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)
 - [Testing Network Communication](0x04f-Testing-Network-Communication.md)
+- [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
+- [Testing Code Quality](0x04h-Testing-Code-Quality.md)
+- [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
+- [Testing User Education](0x04i-Testing-user-interaction.md)
+
 
 ### Android Testing Guide
 
 - [Platform Overview](0x05a-Platform-Overview.md)
 - [Setting up a Testing Environment for Android Apps](0x05b-Basic-Security_Testing.md)
-- [Testing Data Storage on Android](0x05d-Testing-Data-Storage.md)
+- [Data Storage on Android](0x05d-Testing-Data-Storage.md)
 - [Android Cryptographic APIs](0x05e-Testing-Cryptography.md)
 - [Local Authentication on Android](0x05f-Testing-Local-Authentication.md)
 - [Android Network APIs](0x05g-Testing-Network-Communication.md)
@@ -41,8 +45,8 @@
 - [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)
 - [iOS Anti-Reversing Defenses](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
+
 ### Appendix
 
 - [Testing Tools](0x08-Testing-Tools.md)
 - [Suggested Reading](0x09-Suggested-Reading.md)
-

@@ -4,6 +4,8 @@ osx_image: xcode9.3
 before_install:
 - rvm install 2.5.1 --disable-binary
 - brew install pandoc
+- brew cask install calibre
+- npm install -g gitbook-cli
 - gem install asciidoctor
 script:
 - "./Tools/gendocs.sh"

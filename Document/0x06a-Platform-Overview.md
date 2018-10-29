@@ -1,6 +1,6 @@
 ## iOS Platform Overview
 
-iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from the architecture point of view. The following five key areas are discussed:
+iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from an architecture point of view. The following five key areas are discussed:
 
 1. iOS security architecture
 2. iOS application structure
@@ -155,7 +155,7 @@ On the iOS device, the actual installation process is then handled by the instal
 
 The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
-```bash
+```shell
 $ ipainstaller App_name.ipa
 ```
 
@@ -184,17 +184,17 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 
 ### iOS Application Attack surface
 
-The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application can be attacked by:
-- Having unsafe input by means of IPC communication or URL-schemes. See
+The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application may be vulnerable to attack if it does not:
+- Validate all input by means of IPC communication or URL-schemes. See
   - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
-- Having unsafe input by the user to input fields.
-- Having unsafe input to a WebView by a user or by having insecure code loaded into the WebView. See:
+- Validate all input by the user in input fields.
+- Validate the content loaded inside a webview. See:
   -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
   - [Determining Whether Native Methods Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#determining-whether-native-methods-are-exposed-through-webviews "Determining Whether Native Methods Are Exposed Through WebViews")
-- Having insecure responses from a server, or compromised responses by means of a man in the middle attack between the server and the mobile application. See:
+- Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application. See:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
   - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
-- Having insecure or compromised storage. See:
+- Securely stores all local data, or loads untrusted data from storage. See:
   - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
-- Having a compromised runtime or repackaged app which allows for method hooking and other attacks. See
+- Protect itself against compromised environments, repackaging or other local attacks. See
   - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")

@@ -50,8 +50,8 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
 
-```
-npm install -g itms-services
+```shell 
+$ npm install -g itms-services
 ```
 
 Save the IPA file locally with the following command:
@@ -154,7 +154,7 @@ Alternatively, you can easily decompile the application with [Hopper Disassemble
 
 The following command is listing shared libraries:
 
-```bash
+```shell
 $ otool -L <binary>
 ```
 
@@ -195,8 +195,8 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 
 Apply the entitlement with codesign:
 
-```
-codesign -s - --entitlements entitlements.plist -f debugserver
+```shell
+$ codesign -s - --entitlements entitlements.plist -f debugserver
 ```
 
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.
@@ -221,7 +221,7 @@ Cydia Substrate (formerly called MobileSubstrate) is the standard framework for 
 
 First download, unpack, and install the SDK.
 
-```bash
+```shell
 
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
@@ -232,7 +232,7 @@ $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
 
 To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
 
-```bash
+```shell
 $ cycyript
 cy#
 
@@ -240,7 +240,7 @@ cy#
 
 To inject into a running process, we first need to find the process ID (PID). Running "cycript -p" with the PID injects Cycript into the process. To illustrate, we will inject into SpringBoard.
 
-```bash
+```shell
 
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
@@ -251,7 +251,7 @@ cy#
 
 We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript. 		
 
-```bash
+```shell
 
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
@@ -263,7 +263,7 @@ cy# [alertView release]
 
 Find the document directory with Cycript:
 
-```bash
+```shell
 
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
@@ -272,7 +272,7 @@ cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomai
 
 Use the following command to get the application's delegate class:
 
-```bash
+```shell
 cy# [UIApplication sharedApplication].delegate
 ```
 

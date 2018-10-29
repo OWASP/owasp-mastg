@@ -10,7 +10,7 @@ iOS code usually refers to constants defined in `CommonCryptor.h` (for example, 
 
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
-```
+```c
 CCCryptorStatus CCCryptorCreate(
 	CCOperation op,             /* kCCEncrypt, etc. */
 	CCAlgorithm alg,            /* kCCAlgorithmDES, etc. */
@@ -32,19 +32,19 @@ Apple provides a [Randomization Services](https://developer.apple.com/reference/
 The Randomization Services API uses the `SecRandomCopyBytes` function to generate numbers. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom values from 0 to 255. Make sure that all random numbers are generated with this API-there is no reason for developers to use a different one.
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
-```
+```swift
 func SecRandomCopyBytes(_ rnd: SecRandomRef?,
                       _ count: Int,
                       _ bytes: UnsafeMutablePointer<UInt8>) -> Int32
 ```
 
 The [Objective-C version](https://developer.apple.com/reference/security/1399291-secrandomcopybytes?language=objc "SecRandomCopyBytes (Objective-C)") is
-```
+```objc
 int SecRandomCopyBytes(SecRandomRef rnd, size_t count, uint8_t *bytes);
 ```
 
 The following is an example of the APIs usage:
-```
+```objc
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 
