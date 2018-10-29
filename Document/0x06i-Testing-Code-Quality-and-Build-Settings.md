@@ -46,7 +46,7 @@ These symbols can be saved in "Stabs" format or the DWARF format. In the Stabs f
 
 Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
-```
+```shell
 $ gobjdump --stabs --dwarf TargetApp
 In archive MyTargetApp:
 
@@ -153,7 +153,7 @@ Objective-C has two types of errors:
 `NSException` is used to handle programming and low-level errors (e.g., division by 0 and out-of-bounds array access).
 An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless caught, this exception will invoke the unhandled exception handler, with which you can log the statement (logging will halt the program). `@catch` allows you to recover from the exception if you're using a `@try`-`@catch`-block:
 
-```obj-c
+```objc
  @try {
  	//do work here
  }
@@ -356,26 +356,8 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 
 ![alt tag](Images/Chapters/0x06i/idb.png)
 
-### References
 
-#### OWASP Mobile Top 10 2016
-
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-#### OWASP MASVS
-
-- V7.1: "The app is signed and provisioned with a valid certificate."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### Tools
-
-- idb - https://github.com/dmayer/idb
-- Codesign - https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html
-
-### Checking for weaknesses in third party libraries
+### Checking for Weaknesses in Third Party Libraries
 
 #### Overview
 
@@ -400,14 +382,14 @@ In case CocoaPods is used for managing third party dependencies, the following s
 
 1. At the root of the project, where the Podfile is located, execute the following commands:
 ``` sh
-sudo gem install CocoaPods
-pod install
+$ sudo gem install CocoaPods
+$ pod install
 ```
 
 2. Now that the dependency tree has bene built, you can create an overview of the dependencies and their versions by running the following commands:
 ```sh
-sudo gem install CocoaPods-dependencies
-pod dependencies
+$ sudo gem install CocoaPods-dependencies
+$ pod dependencies
 ```
 
 3. The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
@@ -420,8 +402,8 @@ pod dependencies
 In case Carthage is used for third party dependencies, then the following steps can be taken to analyse the third party libraries for vulnerabilities:
 1. At the root of the project, where the Cartfile is located, type
 ```sh
-brew install carthage
-carthage update --platform iOS
+$ brew install carthage
+$ carthage update --platform iOS
 ```
 
 2. Check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
@@ -440,18 +422,17 @@ In order to ensure that the copyright laws are not infringed, one can best check
 
 When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Podfile is located, type
-``` sh
-sudo gem install CocoaPods
-pod install
-
+```sh
+$ sudo gem install CocoaPods
+$ pod install
 ```
 2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
 
 When the application sources are available and Carthage is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Cartfile is located, type
 ```sh
-brew install carthage
-carthage update --platform iOS
+$ brew install carthage
+$ carthage update --platform iOS
 ```
 
 2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
@@ -471,33 +452,41 @@ When no source-code is available for library analysis, you can find some of the 
 After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
 
 ```shell
-otool -L <Executable>
+$ otool -L <Executable>
 ```
 
 However, these do not include all the libraries being used. Next, with Class-dump (for Objective-C) you can generate a subset of the headerfiles used and derive which libraries are involved. But not detect the version of the library.
 
 ```shell
-./class-dump <Executable> -r
+$ ./class-dump <Executable> -r
 ```
 
+### References
 
-#### References
-
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 -	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
+#### OWASP MASVS
 
+- V7.1: "The app is signed and provisioned with a valid certificate."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
+
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
+
 - [Carthage](https://github.com/carthage/carthage "Carthage")
 - [CocoaPods](https://CocoaPods.org "CocoaPods")
 - [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
 - [Sourceclear](https://sourceclear.com "Sourceclear")
 - [Class-dump](https://github.com/nygard/class-dump "Class-dump")
 - [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
+- [idb](https://github.com/dmayer/idb)
+- [Codesign](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html)

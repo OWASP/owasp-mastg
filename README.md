@@ -3,7 +3,7 @@
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 [![Creative Commons License](https://i.creativecommons.org/l/by-sa/3.0/88x31.png)](http://creativecommons.org/licenses/by-sa/3.0/ "CC-by-SA 3")
-[![OWASP Labs](https://img.shields.io/badge/owasp-incubator%20project-f7b73c.svg)](https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory)
+[![OWASP Labs](https://img.shields.io/badge/owasp-lab%20project-f7b73c.svg)](https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory)
 [![Build Status](https://travis-ci.com/OWASP/owasp-mstg.svg?branch=master)](https://travis-ci.com/OWASP/owasp-mstg)
 
 
@@ -77,8 +77,7 @@ $ gitbook epub ./ Generated/MSTG.epub
 
 3. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
-
-3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and html files in the "Generated" subdirectory.
+3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
 
 ```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
@@ -86,13 +85,12 @@ $ cd owasp-mstg/Tools/
 $ ./generate_document.sh
 ```
 
-4. Clone the repository and run the [javascript pdf generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/genpdf.js "javascript docgenerator") (requires [node 6](http://nodejs.org "Node 6")). This produces a pdf file in the "Generated" subdirectory.
+4. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
 
 ```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
 $ cd owasp-mstg/Tools/
-$ npm install
-$ node genpdf.js
+$ ./gitbookandpdf.sh
 ```
 
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
