@@ -150,7 +150,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 
 Следующая команда показывает список общих библиотек:
 
-```bash
+```shell
 $ otool -L <binary>
 ```
 
@@ -217,7 +217,7 @@ Cydia Substrate (раньше называемая MobileSubstrate) являет
 
 Прежде всего, необходимо скачать, распаковать и установить SDK.
 
-```bash
+```shell
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
@@ -225,14 +225,14 @@ $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
 ```
 Чтобы создать интерактивную оболочку cycript, вы можете запустить “./cyript” или просто “cycript”, если он находится в вашей глобальной переменной PATH.
 
-```bash
+```shell
 $ cycyript
 cy#
 ```
 
 Чтобы произвести инъекцию в запущенный процесс, в первую очередь необходимо найти идентификатор процесса(PID). Вы можете выполнить "cycript -p" с указанием PID того процесса, куда хотите произвести инъекцию. Чтобы продемонстрировать мы произведем инъекцию в SpringBoard.
 
-```bash
+```shell
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
@@ -241,7 +241,7 @@ cy#
 
 Мы осуществили инекцию в SpringBoard, давайте попробуем вызвать сообщение оповещения на SpringBoard, используя cycript. 		
 
-```bash
+```shell
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
@@ -251,14 +251,14 @@ cy# [alertView release]
 
 Узнайте папку документа, используя cycript:
 
-```bash
+```shell
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
 ```
 
 Получайте класс делегата приложения, используя следующую команду:
 
-```bash
+```shell
 cy# [UIApplication sharedApplication].delegate
 ```
 

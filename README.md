@@ -73,7 +73,7 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
 
-```bash
+```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
 $ cd owasp-mstg/Tools/
 $ ./generate_document.sh
@@ -81,7 +81,7 @@ $ ./generate_document.sh
 
 4. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
 
-```bash
+```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
 $ cd owasp-mstg/Tools/
 $ ./gitbookandpdf.sh
