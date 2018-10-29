@@ -69,7 +69,7 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 To generate the epub version you can use the following command:
 
-```bash
+```shell
 $ gitbook epub ./ Generated/MSTG.epub
 ```
 
@@ -80,7 +80,7 @@ $ gitbook epub ./ Generated/MSTG.epub
 
 3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and html files in the "Generated" subdirectory.
 
-```bash
+```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
 $ cd owasp-mstg/Tools/
 $ ./generate_document.sh
@@ -88,7 +88,7 @@ $ ./generate_document.sh
 
 4. Clone the repository and run the [javascript pdf generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/genpdf.js "javascript docgenerator") (requires [node 6](http://nodejs.org "Node 6")). This produces a pdf file in the "Generated" subdirectory.
 
-```bash
+```shell
 $ git clone https://github.com/OWASP/owasp-mstg/
 $ cd owasp-mstg/Tools/
 $ npm install
@@ -103,7 +103,7 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 
-https://owasp.slack.com/
+[https://owasp.slack.com/](https://join.slack.com/t/owasp/shared_invite/enQtNDI5MzgxMDQ2MTAwLTEyNzIzYWQ2NDZiMGIwNmJhYzYxZDJiNTM0ZmZiZmJlY2EwZmMwYjAyNmJjNzQxNzMyMWY4OTk3ZTQ0MzFhMDY)
 
 Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "Style Guide") which contains a few basic writing rules.
 
