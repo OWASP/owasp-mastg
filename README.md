@@ -65,13 +65,7 @@ You can also read the MSTG on [Gitbook](https://mobile-security.gitbook.io/mobil
 
 The release 1.0 of the MSTG was published in June 2018. You can get intermediate builds in multiple formats.
 
-1. Read it on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "Gitbook"). The book is automatically synchronized with the main repo. You can use the gitbook command line tool to generate PDF, epub, and other e-book formats, once you have checked out this repo.
-
-To generate the epub version you can use the following command:
-
-```shell
-$ gitbook epub ./ Generated/MSTG.epub
-```
+1. Read it on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "Gitbook"). The book is automatically synchronized with the main repo.
 
 2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "Our releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
