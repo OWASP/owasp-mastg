@@ -130,13 +130,13 @@ To perform security testing different tools are available in order to be able to
 #### Bypassing Root Detection and SSL Pinning
 
 - [SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2") - Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and OS X Apps.
+- [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit") - TrustKit provides an easy-to-use API for deploying SSL public key pinning and reporting it in any iOS 10+, macOS 10.10+, tvOS 10+ or watchOS 3+ App; it supports both Swift and Objective-C Apps.
 - [iOS TrustMe](https://github.com/intrepidusgroup/trustme "iOS TrustMe") - Disable certificate trust checks on iOS devices.
 - [Xcon](http://cydia.saurik.com/package/com.n00neimp0rtant.xcon/ "Xcon") - A tool for bypassing Jailbreak detection.
 - [tsProtector](http://cydia.saurik.com/package/kr.typostudio.tsprotector8 "tsProtector 8") - Another tool for bypassing Jailbreak detection.
 - [Frida CodeShare](https://codeshare.frida.re/ "Frida CodeShare") - The Frida CodeShare project is comprised of developers from around the world working together with one goal - push Frida to its limits in new and innovative ways.
 
 #### Security Libraries
-- [PublicKey Pinning](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#iOS "PublicKey Pinning") - iOS pinning is performed through a NSURLConnectionDelegate. The delegate must implement connection:canAuthenticateAgainstProtectionSpace: and connection:didReceiveAuthenticationChallenge:. Within connection:didReceiveAuthenticationChallenge:, the delegate must call SecTrustEvaluate to perform customary X509 checks.
 - [OWASP iMAS](http://project-imas.github.io/ "OWASP iMAS") - iMAS is a collaborative research project from the MITRE Corporation focused on open source iOS security controls.
 
 ### Tools for Network Interception and Monitoring
