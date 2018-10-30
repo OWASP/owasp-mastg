@@ -58,6 +58,7 @@ To perform security testing different tools are available in order to be able to
 - [Cydia Substrate: Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
 - [Drozer](https://www.mwrinfosecurity.com/products/drozer/) - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
 - [VirtualHook](https://github.com/rk700/VirtualHook) - VirtualHook is a hooking tool for applications on Android ART(>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks.
+- [NowSecure](https://nowsecure.com/) - Brought to you by the authors of Frida and Radare2: Automated dynamic and static analysis of Android and iOS mobile apps including network MITM and API level security analysis.
 
 #### Bypassing Root Detection and Certificate Pinning
 
@@ -103,6 +104,7 @@ To perform security testing different tools are available in order to be able to
 - [keychaindumper](http://cydia.radare.org/) - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
 - [BinaryCookieReader](https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py) - A tool to dump all the cookies from the binary Cookies.binarycookies file.
 - [Burp Suite Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html) - A tool to bypass certificate pinning and is able to inject into apps.
+- [NowSecure](https://nowsecure.com/) - Brought to you by the authors of Frida and Radare2: Automated dynamic and static analysis of Android and iOS mobile apps, including network MITM and API level security analysis. 
 
 #### Bypassing Root Detection and SSL Pinning
 
