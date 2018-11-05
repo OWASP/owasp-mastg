@@ -158,15 +158,15 @@ Life is easy with a jailbroken device: not only do you gain easy access to the a
 
 The following commands install the dependencies required to run Needle on Linux.
 
-```
+```shell
 # Unix packages
-sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
+$ sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
 
 # Python packages
-sudo pip install readline paramiko sshtunnel frida mitmproxy biplist
+$ sudo pip install readline paramiko sshtunnel frida mitmproxy biplist
 
 # Download source
-git clone https://github.com/mwrlabs/needle.git
+$ git clone https://github.com/mwrlabs/needle.git
 
 ```
 
@@ -174,28 +174,28 @@ git clone https://github.com/mwrlabs/needle.git
 
 The following commands install the dependencies required to run Needle on macOS.
 
-```
+```shell 
 # Core dependencies
-brew install python
-brew install libxml2
-xcode-select --install
+$ brew install python
+$ brew install libxml2
+$ xcode-select --install
 
 # Python packages
-sudo -H pip install --upgrade --user readline
-sudo -H pip install --upgrade --user paramiko
-sudo -H pip install --upgrade --user sshtunnel
-sudo -H pip install --upgrade --user frida
-sudo -H pip install --upgrade --user biplist
+$ sudo -H pip install --upgrade --user readline
+$ sudo -H pip install --upgrade --user paramiko
+$ sudo -H pip install --upgrade --user sshtunnel
+$ sudo -H pip install --upgrade --user frida
+$ sudo -H pip install --upgrade --user biplist
 # sshpass
-brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+$ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 
 # mitmproxy
-wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz
-tar -xvzf mitmproxy-0.17.1-osx.tar.gz
-sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
+$ wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz
+$ tar -xvzf mitmproxy-0.17.1-osx.tar.gz
+$ sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
 
 # Download source
-git clone https://github.com/mwrlabs/needle.git
+$ git clone https://github.com/mwrlabs/needle.git
 ```
 
 ##### Install the Needle Agent
@@ -229,7 +229,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 To launch Needle, just open a console and type:
 
-```
+```shell 
 $ python needle.py
       __  _ _______ _______ ______         ______
       | \ | |______ |______ | \     |      |______
@@ -359,7 +359,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Dumping KeyChain Data
 
-[Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
+[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
 ```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
@@ -388,7 +388,7 @@ Label: (null)
 Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
-
+In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
 #### Installing Frida

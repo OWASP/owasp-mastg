@@ -38,7 +38,7 @@ The file [system/core/include/private/android_filesystem_config.h](http://androi
 
 For example, Android Nougat defines the following system users:
 
-```
+```c
     #define AID_ROOT             0  /* traditional unix root user */
 
     #define AID_SYSTEM        1000  /* system server */
@@ -86,7 +86,7 @@ Installed Android apps are located at `/data/app/[package-name]`. For example, t
 
 The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
 
-```
+```shell
 $ unzip base.apk
 $ ls -lah
 -rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
@@ -175,13 +175,13 @@ drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
 Android leverages Linux user management to isolate apps. This approach is different from user management usage in traditional Linux environments, where multiple apps are often run by the same user. Android creates a unique UID for each Android app and runs the app in a separate process. Consequently, each app can access its own resources only. This protection is enforced by the Linux kernel.
 
 Generally, apps are assigned UIDs in the range of 10000 and 99999. Android apps receive a user name based on their UID. For example, the app with UID 10188 receives the user name `u0_a188`. If the permissions an app requested are granted, the corresponding group ID is added to the app's process. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That group is related to android.permission.INTERNET permission. The output of the `id` command is shown below.
-```
+```shell
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
 ```
 
 The relationship between group IDs and permissions is defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml)
-```
+```xml
 <permission name="android.permission.INTERNET" >
 	<group gid="inet" />
 </permission>
@@ -206,14 +206,14 @@ Installation of a new app creates a new directory named after the app package, w
 
 We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
 
-```
+```shell
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
 Developers who want their apps to share a common sandbox can sidestep sandboxing . When two apps are signed with the same certificate and explicitly share the same user ID (having the _sharedUserId_ in their _AndroidManifest.xml_ files), each can access the other's data directory. See the following example to achieve this in the NFC app:
 
-```
+```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.android.nfc"
   android:sharedUserId="android.uid.nfc">
@@ -241,7 +241,7 @@ Every app has a manifest file, which embeds content in binary XML format. The st
 The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's  icon, version number, and theme. The file may list other information,  such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
 
 Here is an example of a manifest file, including the package name (the convention is a reversed  URL, but any string is acceptable). It also lists the app version, relevant SDKs, required permissions, exposed content providers, broadcast receivers used with intent filters, and a description of the app and its activities:
-```
+```xml
 <manifest
 	package="com.owasp.myapplication"
 	android:versionCode="0.1" >
@@ -296,7 +296,7 @@ Activities make up the visible part of any app. There is one activity per screen
 
 Each activity needs to be declared in the app manifest with the following syntax:
 
-```
+```xml
 <activity android:name="ActivityName">
 </activity>
 ```
@@ -367,7 +367,7 @@ Services that allow other applications to bind to them are called *bound service
 
 Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added with `addService` and retrieved by name with the static `getService` method in `android.os.ServiceManager`:
 
-```
+```java
   public static IBinder getService(String name)
 ```
 
@@ -426,7 +426,7 @@ Broadcast Receivers are components that allow apps to receive notifications from
 Broadcast Receivers must be declared in the app's manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
-```
+```xml
 	<receiver android:name=".myReceiver" >
 		<intent-filter>
 			<action android:name="com.owasp.myapplication.MY_ACTION" />
@@ -474,7 +474,7 @@ Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags  into their manifest.
 The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
-```
+```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
 
@@ -487,7 +487,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 
 Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html)  or define its own. A new permission is declared with the <permission>element.
 The example below shows an app declaring a permission:
-```
+```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.permissions.sample" ...>
 
@@ -503,7 +503,7 @@ The above code defines a new permission named `com.permissions.sample.ACCESS_USE
 
 Android components can be protected with permissions. Activities, Services, Content Providers, and Broadcast Receivers—all can use the permission mechanism to protect their interfaces.
 Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receivers* by adding the attribute *android:permission* to the respective component tag in AndroidManifest.xml:
-```
+```xml
 <receiver
     android:name="com.permissions.sample.AnalyticsReceiver"
     android:enabled="true"
@@ -545,8 +545,8 @@ With the APK signature scheme, the complete APK is hashed and signed, and an APK
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
 App creators can either reuse an existing private/public key pair that is in an available keystore or generate a new pair.
 In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory):
-```
-keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
+```shell
+$ keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
 ```
 
 Safely storing your secret key and making sure it remains secret during its entire lifecycle is of paramount importance. Anyone who gains access to the key will be able to publish updates to your apps with content that you don't control (thereby adding insecure features or accessing shared content with signature-based permissions). The trust that a user places in an app and its developers is based totally on such certificates; certificate protection and secure management are therefore vital for reputation and customer retention, and secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected with a password; such files are referred to as 'keystores'. Keystore passwords should be strong and known only to the key creator. For this reason, keys are usually stored on a dedicated build machine that developers have limited access to.
@@ -558,8 +558,8 @@ The goal of the signing process is to associate the app file (.apk) with the dev
 
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; double-check this in case others are able to access such files and remove the information if necessary.
 Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
-```
-apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
+```shell 
+$ apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
 ```
 In this example, an unsigned app ('myUnsignedApp.apk') will be signed with a private key from the developer keystore 'myKeyStore.jks' (located in the current directory). The app will become a signed app called 'mySignedApp.apk' and will be ready to release to stores.
 

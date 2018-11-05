@@ -51,17 +51,17 @@ To perform security testing different tools are available in order to be able to
 
 #### Dynamic and Runtime Analysis
 
-- [Cydia Substrate](http://www.cydiasubstrate.com "Cydia Substrate") - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
-- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053 "Xposed Framework") - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
-- [logcat-color](https://github.com/marshall/logcat-color "logcat-color") - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
-- [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
-- [Frida](https://www.frida.re "Frida") - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
-- [Diff-GUI](https://github.com/antojoseph/diff-gui "Diff-GUI") - A Web framework to start instrumenting with the avaliable modules, hooking on native, inject JavaScript using Frida.
-- [House](https://github.com/nccgroup/house "House") - A runtime mobile application analysis toolkit with a Web GUI, powered by Frida, is designed for helping assess mobile applications by implementing dynamic function hooking and intercepting and intended to make Frida script writing as simple as possible.
-- [AndBug](https://github.com/swdunlop/AndBug "AndBug") - AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers.
-- [Cydia Substrate: Introspy-Android](https://github.com/iSECPartners/Introspy-Android "Cydia Substrate: Introspy-Android") - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
-- [Drozer](https://www.mwrinfosecurity.com/products/drozer/ "Drozer") - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
-- [VirtualHook](https://github.com/rk700/VirtualHook "VirtualHook") - VirtualHook is a hooking tool for applications on Android ART(>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks.
+- [Cydia Substrate](http://www.cydiasubstrate.com) - Cydia Substrate for Android enables developers to make changes to existing software with Substrate extensions that are injected in to the target process's memory.
+- [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053) - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APKor re-flashing.
+- [logcat-color](https://github.com/marshall/logcat-color) - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
+- [Inspeckage](https://github.com/ac-pm/Inspeckage) - Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
+- [Frida](https://www.frida.re) - The toolkit works using a client-server model and lets you inject in to running processes not just on Android, but also on iOS, Windows and Mac.
+- [Diff-GUI](https://github.com/antojoseph/diff-gui) - A Web framework to start instrumenting with the avaliable modules, hooking on native, inject JavaScript using Frida.
+- [AndBug](https://github.com/swdunlop/AndBug) - AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers.
+- [Cydia Substrate: Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
+- [Drozer](https://www.mwrinfosecurity.com/products/drozer/) - Drozer allows you to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS.
+- [VirtualHook](https://github.com/rk700/VirtualHook) - VirtualHook is a hooking tool for applications on Android ART(>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks.
+- [NowSecure](https://nowsecure.com/) - Brought to you by the authors of Frida and Radare2: Automated dynamic and static analysis of Android and iOS mobile apps including network MITM and API level security analysis.
 
 #### Bypassing Root Detection and Certificate Pinning
 
@@ -126,6 +126,7 @@ To perform security testing different tools are available in order to be able to
 - [keychaindumper](http://cydia.radare.org/ "keychaindumper") - A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
 - [BinaryCookieReader](https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py "BinaryCookieReader") - A tool to dump all the cookies from the binary Cookies.binarycookies file.
 - [Burp Suite Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html "Burp Suite Mobile Assistant") - A tool to bypass certificate pinning and is able to inject into apps.
+
 
 #### Bypassing Root Detection and SSL Pinning
 

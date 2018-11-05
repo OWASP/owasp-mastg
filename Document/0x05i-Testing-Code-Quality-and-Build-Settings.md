@@ -37,7 +37,7 @@ The contents of the signing certificate can be examined with `jarsigner`. Note t
 
 The output for an APK signed with a debug certificate is shown below:
 
-```
+```shell
 $ jarsigner -verify -verbose -certs example.apk
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
@@ -78,7 +78,7 @@ Check `AndroidManifest.xml` to determine whether the `android:debuggable` attrib
 ```xml
     ...
     <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
-    …
+    ...
 ```
 
 For a release build, this attribute should always be set to "false" (the default value).
@@ -113,7 +113,7 @@ Package: com.vulnerable.app
 
 If an application is debuggable, executing application commands is trivial. In the `adb` shell, execute `run-as` by appending the package name and application command to the binary name:
 
-```
+```shell
 $ run-as com.vulnerable.app id
 uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
 ```
@@ -126,7 +126,7 @@ The following procedure can be used to start a debug session with `jdb`:
 
 1. Using `adb` and `jdwp`, identify the PID of the active application that you want to debug:
 
-```
+```shell
 $ adb jdwp
 2355
 16346  <== last launched, corresponds to our application
@@ -134,14 +134,14 @@ $ adb jdwp
 
 2. Create a communication channel by using `adb` between the application process (with the PID) and the analysis workstation by using a specific local port:
 
-```
+```shell
 # adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
 $ adb forward tcp:55555 jdwp:16346
 ```
 
 3. Using `jdb`, attach the debugger to the local communication channel port and start a debug session:
 
-```
+```shell
 $ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
 Set uncaught java.lang.Throwable
 Set deferred uncaught java.lang.Throwable
@@ -192,11 +192,11 @@ Dynamic symbols can be stripped via the `visibility` compiler flag. Adding this 
 Make sure that the following has been added to build.gradle:
 
 ```
-        externalNativeBuild {
-            cmake {
-                cppFlags "-fvisibility=hidden"
-            }
-        }
+externalNativeBuild {
+    cmake {
+        cppFlags "-fvisibility=hidden"
+    }
+}
 ```
 
 #### Dynamic Analysis
@@ -355,14 +355,14 @@ The tester should manually test the input fields with strings like `OR 1=1--` if
 
 On a rooted device, the command content can be used to query the data from a Content Provider. The following command queries the vulnerable function described above.
 
-```
-content query --uri content://sg.vp.owasp_mobile.provider.College/students
+```shell
+# content query --uri content://sg.vp.owasp_mobile.provider.College/students
 ```
 
 SQL injection can be exploited with the following command. Instead of getting the record for Bob only, the user can retrieve all data.
 
-```
-content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
+```shell
+# content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
 Drozer can also be used for dynamic testing.
@@ -431,11 +431,11 @@ public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
 Now the handler's initializer must be called in your custom `Application` class (e.g., the class that extends `Application`):
 
 ```java
-	 @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MemoryCleanerOnCrash.init();
-    }
+@Override
+protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MemoryCleanerOnCrash.init();
+}
 ```
 
 #### Dynamic Analysis
@@ -593,8 +593,8 @@ apply plugin: 'org.owasp.dependencycheck'
 Once gradle has invoked the plugin, you can create a report by running:
 
 ```sh
-gradle assemble
-gradle dependencyCheckAnalyze --info
+$ gradle assemble
+$ gradle dependencyCheckAnalyze --info
 ```
 
 The report will be in `build/reports` unless otherwise configured. Use the report in order to analyse the vulnerabilities found. See remediation on what to do given the vulnerabilities found with the libraries.
@@ -626,8 +626,8 @@ plugins {
 Now, after the plugin is picked up, use the following commands:
 
 ```sh
-gradle assemble
-gradle downloadLicenses
+$ gradle assemble
+$ gradle downloadLicenses
 ```
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreemts to see whether a copyright notice needs to be included into the app and whether the licensetype requires to open-source the code of the application.

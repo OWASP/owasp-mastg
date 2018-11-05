@@ -148,7 +148,7 @@ Swift был представлен в Xcode 6 в 2014 году.
 
 IPA также может быть непосредственно установлен через командную строку с помощью [ipainstaller] (https://github.com/autopear/ipainstaller "Установщик IPA"). После того, как вы скопируете IPA на устройство, используя, например, scp (защищенное копирование), вы можете выполнить ipainstaller с именем файла IPA:
 
-```bash
+```shell
 $ ipainstaller App_name.ipa
 ```
 

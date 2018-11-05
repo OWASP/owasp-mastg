@@ -123,7 +123,7 @@ Reverse engineering is the process of taking an app apart to find out how it wor
 
 Java bytecode can be converted back into source code without many problems unless some nasty, tool-breaking anti-decompilation tricks have been applied. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
-```
+```shell
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 $ adb install UnCrackable-Level1.apk
 ```
@@ -134,7 +134,7 @@ Seems like we're expected to find some kind of secret code!
 
 We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file and look at the content.
 
-```
+```shell
 $ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
 Archive:  UnCrackable-Level1.apk
   inflating: UnCrackable-Level1/AndroidManifest.xml  
@@ -159,7 +159,7 @@ Once you have a JAR file, you can use any free decompiler to produce Java code. 
 
 The easiest way to run CFR is through `apkx`, which also packages `dex2jar` and automates extraction, conversion, and decompilation. Install it:
 
-```
+```shell
 $ git clone https://github.com/b-mueller/apkx
 $ cd apkx
 $ sudo ./install.sh
@@ -305,7 +305,7 @@ So where is the native implementation of this function? If you look into the `li
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
-```
+```shell
 $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
@@ -336,37 +336,37 @@ Not a lot of code there, but you should analyze it. The first thing you need to 
 
 With that in mind, let's have a look at each line of assembly code.
 
-```
+```arm
 LDR  R2, [R0]
 ```
 
 Remember: the first argument (in R0) is a pointer to the JNI function table pointer. The `LDR` instruction loads this function table pointer into R2.
 
-```
+```arm
 LDR  R1, =aHelloFromC
 ```
 
 This instruction loads into R1 the pc-relative offset of the string "Hello from C++." Note that this string comes directly after the end of the function block at offset 0xe84. Addressing relative to the program counter allows the code to run independently of its position in memory.
 
-```
+```arm
 LDR.W  R2, [R2, #0x29C]
 ```
 
 This instruction loads the function pointer from offset 0x29C into the JNI function pointer table pointed to by R2. This is the `NewStringUTF` function. You can look at the list of function pointers in jni.h, which is included in the Android NDK. The function prototype looks like this:
 
-```
+```c
 jstring     (*NewStringUTF)(JNIEnv*, const char*);
 ```
 
 The function takes two arguments: the JNIEnv pointer (already in R0) and a String pointer. Next, the current value of PC is added to R1, resulting in the absolute address of the static string "Hello from C++" (PC + offset).
 
-```
+```arm
 ADD  R1, PC
 ```
 
 Finally, the program executes a branch instruction to the `NewStringUTF` function pointer loaded into R2:
 
-```
+```arm
 BX   R2
 ```
 
@@ -398,7 +398,7 @@ To re-sign, you first need a code-signing certificate. If you have built a proje
 
 The standard Java distribution includes `keytool` for managing keystores and certificates. You can create your own signing certificate and key, then add it to the debug keystore:
 
-```
+```shell
 $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 ```
 
@@ -866,10 +866,10 @@ All of this makes it possible to build tracers that are practically transparent 
 
 PANDA comes with pre-made plugins, including a stringsearch tool and a syscall tracer. Most importantly, it supports Android guests, and some of the DroidScope code has even been ported. Building and running PANDA for Android ("PANDROID") is relatively straightforward. To test it, clone Moiyx's git repository and build PANDA:
 
-~~~
+```shell
 $ cd qemu
 $ ./configure --target-list=arm-softmmu --enable-android $ makee
-~~~
+```
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repo.
 
@@ -1038,11 +1038,11 @@ $ sudo pip install frida
 
 Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
-~~~
+```shell
 $ frida --version
 9.1.10
 $ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
-~~~
+```
 
 Or you can run the following command to automatically detect frida version and download the right frida-server binary:
 
@@ -1051,15 +1051,15 @@ $ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida
 ```
 Copy frida-server to the device and run it:
 
-~~~
+```shell
 $ adb push frida-server /data/local/tmp/
 $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
-~~~
+```
 
 With frida-server running, you should now be able to get a list of running processes with the following command:
 
-~~~
+```shell
 $ frida-ps -U
   PID  Name
 -----  --------------------------------------------------------------
@@ -1071,33 +1071,33 @@ $ frida-ps -U
  5353  com.android.settings
   936  com.android.systemui
 (...)
-~~~
+```
 
 The -U option lets Frida search for USB devices or emulators.
 
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
-~~~
-frida-trace -i "open" -U com.android.chrome
-~~~
+```shell
+$ frida-trace -i "open" -U com.android.chrome
+```
 
 This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
 
 Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
-~~~
-frida -U com.android.chrome
-~~~
+```shell
+$ frida -U com.android.chrome
+```
 
 With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
 
-~~~
-frida -U -l myscript.js com.android.chrome
-~~~
+```shell
+$ frida -U -l myscript.js com.android.chrome
+```
 
 Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
 
-~~~
+```java
 Java.perform(function () {
     var Activity = Java.use("android.app.Activity");
     Activity.onResume.implementation = function () {
@@ -1105,13 +1105,13 @@ Java.perform(function () {
         this.onResume();
     };
 });
-~~~
+```
 
 The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
 
 Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
-~~~
+```java
 setImmediate(function() {
     console.log("[*] Starting script");
     Java.perform(function () {
@@ -1125,22 +1125,22 @@ setImmediate(function() {
         });
     });
 });
-~~~
+```
 
 The output would look like this:
 
-~~~
+```
 [*] Starting script
 [*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
 [*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
 [*] Instance found: android.view.View{be471b6 G.ED..... ......I. 0,0-0,0 #7f0c01f5 app:id/location_bar_verbose_status_separator}
 [*] Instance found: android.view.View{3ae0eb7 V.ED..... ........ 0,0-1080,63 #102002f android:id/statusBarBackground}
 [*] Finished heap search
-~~~
+```
 
 You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
 
-~~~
+```java
 Java.perform(function () {
     var view = Java.use("android.view.View");
     var methods = view.class.getMethods();
@@ -1148,7 +1148,7 @@ Java.perform(function () {
         console.log(methods[i].toString());
     }
 });
-~~~
+```
 
 Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
 
@@ -1163,7 +1163,7 @@ When you start the App on an emulator or a rooted device, you'll find that the a
 Let's see how we can prevent this.
 The main method (decompiled with CFR) looks like this:
 
-```
+```java
 package sg.vantagepoint.uncrackable1;
 
 import android.app.Activity;
@@ -1219,7 +1219,7 @@ Notice the "Root detected" message in the `onCreate` method and the various meth
 
 The `onClickListener` implementation for the dialog button doesn't do much:
 
-```
+```java
 package sg.vantagepoint.uncrackable1;
 
 class b implements android.content.DialogInterface$OnClickListener {
@@ -1240,7 +1240,7 @@ class b implements android.content.DialogInterface$OnClickListener {
 
 It just exits the app. Now intercept it with Frida to prevent the app from exiting after root detection:
 
-```
+```java
 setImmediate(function() { //prevent timeout
     console.log("[*] Starting script");
 
@@ -1259,8 +1259,8 @@ Wrap your code in the function `setImmediate` to prevent timeouts (you may or ma
 
 Save the above script as `uncrackable1.js` and load it:
 
-```
-frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+```shell
+$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 ```
 
 After you see the "onClickHandler modified" message, you can safely press "OK". The app will not exit anymore.
@@ -1269,7 +1269,7 @@ You can now try to input a "secret string." But where do you get it?
 
 If you look at the class `sg.vantagepoint.uncrackable1.a`, you can see the encrypted string with which your input gets compared:
 
-```
+```java
 package sg.vantagepoint.uncrackable1;
 
 import android.util.Base64;
@@ -1307,7 +1307,7 @@ Notice the `string.equals` comparison at the end of the `a` method and the creat
 Instead of reversing the decryption routines to reconstruct the secret key, you can simply ignore all the decryption logic in the app and hook the `sg.vantagepoint.a.a.a` function to catch its return value.
 Here is the complete script that prevents exiting on root and intercepts the decryption of the secret string:
 
-```
+```java
 setImmediate(function() {
     console.log("[*] Starting script");
 
@@ -1337,7 +1337,7 @@ setImmediate(function() {
 
 After running the script in Frida and seeing the "[*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
-```
+```shell
 michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
      ____
     / _  |   Frida 9.1.16 - A world-class dynamic instrumentation framework
@@ -1371,7 +1371,7 @@ Our target program is a simple license key validation program. Granted, you won'
 
 Angr is written in Python 2, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
 
-```
+```shell
 $ pip install angr
 ```
 
@@ -1407,7 +1407,7 @@ The main function is located at address 0x1874 in the disassembly (note that thi
 
 The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x1760:
 
-```assembly_x68
+```assembly_x86
 .text:00001760 ; =============== S U B R O U T I N E =======================================
 .text:00001760
 .text:00001760 ; Attributes: bp-based frame
@@ -1563,7 +1563,7 @@ Note the last part of the program, where the final input string is retrieved—i
 
 Running this script should return the following:
 
-```
+```shell
 (angr) $ python solve.py
 WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
 JQAE6ACMABNAAIIA
@@ -1775,7 +1775,7 @@ In this how-to, we will use a Kernel module to hide a file. Create a file on the
 $ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
 $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
-```shell
+```
 
 It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these—open, openat, access, accessat, facessat, stat, fstat, etc. For now, you'll only hook the openat system call.  This is the syscall the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
 
@@ -1931,7 +1931,7 @@ bf000000 t new_openat    [kernel_hook]
 Now you have everything you need to overwrite the sys_call_table entry. The syntax for kmem_util is:
 
 ```shell
-./kmem_util <syscall_table_base_address> <offset> <func_addr>
+$ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
 The following command patches the openat system call table so that it points to your new function.
