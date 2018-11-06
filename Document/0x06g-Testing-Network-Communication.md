@@ -194,6 +194,8 @@ else {
 }
 ```
 
+There are libraries available that provide an API for implementing SSL Pinning, like [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"). Trustkit supports both Swift and Objective-C Apps.
+
 #### Dynamic Analysis
 
 ##### Server certificate validation
