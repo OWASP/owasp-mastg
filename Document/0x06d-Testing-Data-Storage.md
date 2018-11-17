@@ -878,8 +878,8 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 #### OWASP Mobile Top 10 2016
 
-- M1 - Improper Platform Usage
-- M2 - Insecure Data Storage
+- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
 
 #### OWASP MASVS
 
