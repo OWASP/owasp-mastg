@@ -1185,7 +1185,7 @@ There are several ways to perform dynamic analysis:
 
 #### OWASP Mobile Top 10 2016
 
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
 
