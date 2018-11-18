@@ -101,7 +101,7 @@ If you don't mind looking at Smali instead of Java, you can use the [smalidea pl
 
 [APKTool](https://ibotpeaches.github.io/Apktool/ "APKTool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
-You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://nilocunger.github.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
+You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
 #### Commercial Tools
 
@@ -1369,7 +1369,7 @@ Our target program is a simple license key validation program. Granted, you won'
 
 #### Installing Angr
 
-Angr is written in Python 2, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
+Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
 
 ```shell
 $ pip install angr
@@ -1377,7 +1377,7 @@ $ pip install angr
 
 Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
 
-Comprehensive Angr documentation, including an installation guide, tutorials, and usage examples [5], is available on Gitbooks. A complete API reference is also available [6].
+Comprehensive documentation, including an installation guide, tutorials, and usage examples [5], is available on Gitbooks. A complete API reference is also available [6].
 
 #### Using the Disassembler Backends - Symbolic Execution
 
@@ -1953,3 +1953,7 @@ tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 Voilà! The file "nowyouseeme" is now somewhat hidden from all usermode processes (note that you need to do a lot more to properly hide a file, including hooking stat(), access(), and other system calls).
 
 File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of [Bernhard Mueller's Hacking Soft Tokens Paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf).
+
+
+[5]: https://docs.angr.io
+[6]: https://angr.io/api-doc/
