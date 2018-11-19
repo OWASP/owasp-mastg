@@ -39,7 +39,7 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 
 #### Hardware Security
 
-The iOS security architecture makes good use of hardware-based security features that enhance overall performance. Each iOS device comes with two built-in Advanced Encryption Standard (AES) 256-bit keys – GID and UID – that are fused and compiled into the Application Processor (AP) and Secure Enclave Processor (SEP) during manufacturing. There's no direct way to read these keys with software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines that have exclusive access to these keys.
+The iOS security architecture makes good use of hardware-based security features that enhance overall performance. Each iOS device comes with two built-in Advanced Encryption Standard (AES) 256-bit keys. The device’s unique IDs (UIDs) and a device group IDs (GIDs) are AES 256-bit keys fused (UID) or compiled (GID) into the Application Processor (AP) and Secure Enclave Processor (SEP) during manufacturing. There's no direct way to read these keys with software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines that have exclusive access to these keys.
 
 The GID is a value shared by all processors in a class of devices used to prevent tampering with firmware files and other cryptographic tasks not directly related to the user's private data. UIDs, which are unique to each device, are used to protect the key hierarchy that's used for device-level file system encryption. Because UIDs aren't recorded during manufacturing, not even Apple can restore the file encryption keys for a particular device.
 
@@ -62,7 +62,7 @@ Developers need to register with Apple, join the [Apple Developer Program](https
 
 *FairPlay Code Encryption* is applied to apps downloaded from the App Store. FairPlay was developed as a DRM for multimedia content purchased through iTunes. Originally, Fairplay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, or Apple ID, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").
 
-Apple has built encryption into the hardware and firmware of its iOS devices since the release of the iPhone 3GS. Every device has a dedicated hardware-based crypto engine that's based on AES 256-bit, and that also impl the SHA-1 cryptographic hash function. In addition, there's a unique identifier (UID) built into each device's hardware with an AES 256-bit key fused into the Application Processor. This UID is unique and not recorded elsewhere. At the time of writing, neither software nor firmware can directly read the UID. Because the key is burned into the silicon chip, it can't be tampered with or bypassed. Only the crypto engine can access it.
+Apple has built encryption into the hardware and firmware of its iOS devices since the release of the iPhone 3GS. Every device has a dedicated hardware-based cryptographic engine that provides an implementation of the AES 256-bit encryption and the SHA-1 hashing algorithms. In addition, there's a unique identifier (UID) built into each device's hardware with an AES 256-bit key fused into the Application Processor. This UID is unique and not recorded elsewhere. At the time of writing, neither software nor firmware can directly read the UID. Because the key is burned into the silicon chip, it can't be tampered with or bypassed. Only the crypto engine can access it.
 
 Building encryption into the physical architecture makes it a default security feature that can encrypt all data stored on an iOS device. As a result, data protection is implemented at the software level and works with the hardware and firmware encryption to provide more security.
 
@@ -134,12 +134,14 @@ On a jailbroken device, you can recover the IPA for an installed iOS app using d
 
 #### App Structure on the iOS File System
 
-Starting with iOS 8, the way applications are stored on the device changed. Previously, applications were unpacked to a folder in the `/var/mobile/applications/` directory. Note, that since iOS 10, the path has changed again to `/private/var/containers/Bundle/Application/`. Applications were identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number was the name of the folder in which the application itself was stored. The static app bundle and the application data folders are stored in a different location since iOS 8. These folders contain information that must be examined closely during application security assessments.
+Previously, ups to iOS 7 included, applications were unpacked to a folder in the `/var/mobile/Applications/` directory. Starting with iOS 8, the way applications are stored on the device changed (as detailed below). Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself is stored. The static app bundle and the application data folders are stored in a different location. These folders contain information that must be examined closely during application security assessments.
 
 - `/var/mobile/Containers/Bundle/Application/[UUID]/Application.app` contains the previously mentioned Application.app data, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
 - `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
 - `/var/mobile/Containers/Data/Application/[UUID]/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
 - `/var/mobile/Containers/Data/Application/[UUID]/tmp` contains temporary files which aren't needed between application launches.
+
+Note, that since iOS 9.3.x, the Bundle path has changed again to `/var/containers/Bundle/Application/`.
 
 The following figure represents the application folder structure:
 ![iOS App Folder Structure](Images/Chapters/0x06a/iOS_Folder_Structure.png)
