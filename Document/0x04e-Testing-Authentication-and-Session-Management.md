@@ -58,22 +58,22 @@ The secondary authentication can be performed at login or later in the user's se
 
 Dangers of SMS-OTP
 
-  Although OTP sent via SMS is a common second factor for 2-factor authentication, this method has its shortcomings. In 2016, NIST suggested that “Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators.” Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.  
+ Although one-time passwords (OTP) sent via SMS are a common second factor for 2-factor authentication, this method has its shortcomings. In 2016, NIST suggested that "Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators." Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.  
 
-  Threats: 
+Threats:  
 
-  - Wireless Interception:  The adversary can incept SMS messages by abusing femtocells and other known vulnerabilities in the SS7 network. 
-  - Trojans: Malware downloaded on a device can be used to forward data sent in sms messages to another number. 
-  - SIM SWAP Attack: This is when the adversary calls the phone company and requests that a number be used with their sim card. If successful, the adversary can see messages, and possibly use any 2-factor authentication that is sent to access accounts associated with that number. 
-  - Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.  
-  - Voicemail: Some 2-factor authentication schemes allow the OTP to be sent through a phone call when sms is no longer preferred or available. Many of these calls, if not answered, send the information to voicemail. If an attacker was able to gain access to the voicemail, they could also use the OTP to gain access to a user’s account. 
+-  Wireless Interception: The adversary can incept SMS messages by abusing femtocells and other known vulnerabilities in the SS7 network.  
+- Trojans: Malware downloaded on a device used to forward data sent in SMS messages to another number.  
+- SIM SWAP Attack: In this attack, the adversary calls the phone company and requests that a number be used with different sim card owned by the adversary. If successful, the adversary can see messages, and possibly use any 2-factor authentication that is sent to access accounts associated with that number.  
+- Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.  
+- Voicemail: Some 2-factor authentication schemes allow the OTP to be sent through a phone call when SMS is no longer preferred or available. Many of these calls, if not answered, send the information to voicemail. If an attacker was able to gain access to the voicemail, they could also use the OTP to gain access to a user's account.  
 
-  Mitigation Suggestions: 
+Mitigation Suggestions:  
 
-  - Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code 
-  - Dedicated Channel: Send OTPs to a dedicated application, that can’t be accessed by other applications, and is only used to receive OTPs. 
-  - Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess 
-  - Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail 
+- Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code  
+- Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.  
+- Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess  
+- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail
 
 #### Transaction Signing with Push Notifications and PKI
 
