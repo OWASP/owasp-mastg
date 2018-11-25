@@ -361,7 +361,7 @@ ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the 
 
 This is a security risk because the (unused) string leaks plain text data into memory, which can be accessed via a debugger or memory dumping.
 
-Unfortunately, no silver bullet exists for this issue, but one options would be to implement a custom logging facility that takes simple arguments and constructs the log statements internally.
+Unfortunately, no silver bullet exists for this issue, but one option would be to implement a custom logging facility that takes simple arguments and constructs the log statements internally.
 
 ```java
 SecureLog.v("Private key [byte format]: ", key);
