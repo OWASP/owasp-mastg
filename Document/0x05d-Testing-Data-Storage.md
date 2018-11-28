@@ -361,32 +361,13 @@ ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the 
 
 This is a security risk because the (unused) string leaks plain text data into memory, which can be accessed via a debugger or memory dumping.
 
-Unfortunately, no silver bullet exists for this issue, but a few options are available:
+Unfortunately, no silver bullet exists for this issue, but one option would be to implement a custom logging facility that takes simple arguments and constructs the log statements internally.
 
-- Implement a custom logging facility that takes simple arguments and constructs the log statements internally.
 ```java
 SecureLog.v("Private key [byte format]: ", key);
 ```
+
 Then configure ProGuard to strip its calls.
-
-- Remove logs at the source level instead of at the compiled bytecode level. Below is a simple Gradle task that comments out all log statements, including any inline string builders:
-
-```
-afterEvaluate {
-  project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release")}.each { task ->
-      task.dependsOn('removeLogs')
-  }
-
-  task removeLogs() {
-    doLast {
-      fileTree(dir: project.file('src')).each { File file ->
-        def out = file.getText("UTF-8").replaceAll("((android\\.util\\.)*Log\\.([ewidv]|wtf)\\s*\\([\\S\\s]*?\\)\\s*;)", "/*\$1*/")
-        file.write(out);
-      }
-    }
-  }
-}
-```
 
 
 #### Dynamic Analysis
