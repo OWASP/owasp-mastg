@@ -34,6 +34,28 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
+### Determining Whether the App is Debuggable
+
+#### Overview
+
+Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to stores. 
+
+Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
+
+#### Static Analysis
+
+First, a way to determine the mode in which your app is to be generated to check the flags in the environment:
+- Select the build settings of the project
+- under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
+- or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
+
+Second, make sure all code used for debugging is removed from your app: as, generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to display particular messages or log useful information, look for 'DEBUG' in your source files (using the 'grep' command for instance). Then, remove all code that will be useless in release versions (which is generally ALL code used for debugging purposes). 
+This will make sure information that can be retrieved in runtime is limited to what the system perits.
+
+#### Dynamic Analysis
+
+In iOS, debugging an app is always feasible: provided the app is running on an iOS device that is linked to a laptop running Xcode, attaching the lldb debugger to the process running the app is always possible. However, depending on the mode in which the app was generated and the information that is leaked by development code (see former section for minimizing this quantity of code), the amount of useful and immediate information that will be available will not be the same, hence will make the job of an attacker more difficult.
+
 ### Finding Debugging Symbols
 
 #### Overview
