@@ -47,7 +47,7 @@ Generating an app in Build or Release mode depends on build settings in Xcode; w
 First, a way to determine the mode in which your app is to be generated to check the flags in the environment:
 - Select the build settings of the project
 - Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
-- Untick the "Debug executable" option.
+- Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
 Second, make sure all code used for debugging either guarded by compiler directives or removed. Generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to ensure that debugging code is not compiled in release-versions of the app. You can further tone down the availability of the debug code to an app by selecting the iphone simulator as a target (`#if !defined(DEBUG) || !(TARGET_IPHONE_SIMULATOR)`) Debugging code can contain instructions to display particular messages or log useful information. Look for these types of instructions and ensure that they are guarded by the directives ore removed.
