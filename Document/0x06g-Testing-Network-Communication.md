@@ -229,7 +229,7 @@ Once you have extracted the certificate from the application (e.g. using Cycript
 
 ##### OWASP Mobile Top 10 2016
 
-- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 ##### OWASP MASVS
 

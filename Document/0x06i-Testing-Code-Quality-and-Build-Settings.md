@@ -34,6 +34,30 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
+### Determining Whether the App is Debuggable
+
+#### Overview
+
+Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program.
+
+Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
+
+#### Static Analysis
+
+At first you need to determine the mode in which your app is to be generated to check the flags in the environment:
+- Select the build settings of the project
+- Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
+- Make sure that the "Debug executable" option is not selected.
+- Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
+
+
+#### Dynamic Analysis
+
+Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
+
+Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
+
+
 ### Finding Debugging Symbols
 
 #### Overview
@@ -471,7 +495,7 @@ $ ./class-dump <Executable> -r
 
 #### OWASP Mobile Top 10 2016
 
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
 
