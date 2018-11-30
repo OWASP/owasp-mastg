@@ -49,7 +49,7 @@ First, a way to determine the mode in which your app is to be generated to check
 - Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-Second, make sure all code used for debugging either guarded by compiler directives or removed. Generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to ensure that debugging code is not compiled in release-versions of the app. Debugging code can contain instructions to display particular messages or log useful information. Look for these types of instructions and ensure that they are guarded by the directives ore removed.
+Second, make sure all code used for debugging either guarded by compiler directives or removed. Generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to ensure that debugging code is not compiled in release-versions of the app. You can further tone down the availability of the debug code to an app by selecting the iphone simulator as a target (`#if !defined(DEBUG) || !(TARGET_IPHONE_SIMULATOR)`) Debugging code can contain instructions to display particular messages or log useful information. Look for these types of instructions and ensure that they are guarded by the directives ore removed.
 While guarding or removing debug code is always a good idea, please make sure that it does not influence the security controls: they should not be downgraded by means of disabling/removing the debug code.
 
 #### Dynamic Analysis
