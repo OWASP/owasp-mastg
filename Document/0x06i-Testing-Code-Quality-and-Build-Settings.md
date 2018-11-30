@@ -1,4 +1,4 @@
-## Code Quality and Build Settings for iOS Apps
+x## Code Quality and Build Settings for iOS Apps
 
 ### Making Sure that the App Is Properly Signed
 
@@ -38,7 +38,7 @@ Internal requirements count=1 size=176
 
 #### Overview
 
-Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to stores. 
+Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to stores.
 
 Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
 
@@ -49,8 +49,9 @@ First, a way to determine the mode in which your app is to be generated to check
 - under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
 - or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-Second, make sure all code used for debugging is removed from your app: as, generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to display particular messages or log useful information, look for 'DEBUG' in your source files (using the 'grep' command for instance). Then, remove all code that will be useless in release versions (which is generally ALL code used for debugging purposes). 
+Second, make sure all code used for debugging is removed from your app: as, generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to display particular messages or log useful information, look for 'DEBUG' in your source files (using the 'grep' command for instance). Then, remove all code that will be useless in release versions (which is generally ALL code used for debugging purposes).
 This will make sure information that can be retrieved in runtime is limited to what the system perits.
+While removing debug code is always a good idea, please make sure that it does not influence the security controls: they should not be downgraded by means of disabling/removing the debug code.
 
 #### Dynamic Analysis
 
