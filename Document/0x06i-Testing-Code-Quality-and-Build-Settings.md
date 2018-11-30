@@ -50,13 +50,12 @@ At first you need to determine the mode in which your app is to be generated to 
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-Second, make sure all code used for debugging either guarded by compiler directives or removed. Generally, '#ifdef DEBUG' (for Objective-C) or '#if DEBUG' (for Swift) statements are used in source files to ensure that debugging code is not compiled in release-versions of the app. You can further tone down the availability of the debug code to an app by selecting the iphone simulator as a target (`#if !defined(DEBUG) || !(TARGET_IPHONE_SIMULATOR)`) Debugging code can contain instructions to display particular messages or log useful information. Look for these types of instructions and ensure that they are guarded by the directives ore removed.
-While guarding or removing debug code is always a good idea, please make sure that it does not influence the security controls: they should not be downgraded by means of disabling/removing the debug code.
 
 #### Dynamic Analysis
 
-In iOS, debugging an app is often feasible on a jailbroken device after Clutching and by using the debug-server. Note: if the application is equiped with anti-reverse engineering controls, then the debugger can be detected and stopped.
-Therefore it is recommended to debug the application and see what information and/or debug functionality is still available.
+Check whether you can either attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
+
+Note: if the application is equiped with anti-reverse engineering controls, then the debugger can be detected and stopped.
 
 
 ### Finding Debugging Symbols
