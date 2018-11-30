@@ -55,7 +55,7 @@ At first you need to determine the mode in which your app is to be generated to 
 
 Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
 
-Note: if the application is equiped with anti-reverse engineering controls, then the debugger can be detected and stopped.
+Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
 
 
 ### Finding Debugging Symbols
