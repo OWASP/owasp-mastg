@@ -1,5 +1,24 @@
 This document is automatically generated at {{gitbook.time}}
 
+1.1.0 30 Nov 2018:
+
+- Added more samples in Kotlin.
+- Simplified leanpub and gitbook publishing.
+- A lot of QA improvements.
+- Added deserialization testcases for iOS, including input sanitization.
+- Added testcases regarding device-access-security policies and data storage on iOS.
+- Added testcases regarding session invalidation.
+- Improved cryptography and key management testcases on both Android and iOS.
+- Started adding various updates in the testcases introduced by Android Oreo and Android Pie.
+- Refreshed the Testing Tools section: removed some of the lesser maintained tools, added new tools.
+- Fixed some of the markdown issues.
+- Updated license to CC 4.0.
+- Started Japanese translation.
+- Updated references to OWASP Mobile Top 10.
+- Updated Android Crackmes.
+- Fixed some of the anti-reverse-engineering testcases.
+- Added debugging testcase for iOS.
+
 1.0.2 13 Oct 2018:
 
 - Updated uiding documentation (README)
