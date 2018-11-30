@@ -44,7 +44,7 @@ Generating an app in Build or Release mode depends on build settings in Xcode; w
 
 #### Static Analysis
 
-First, a way to determine the mode in which your app is to be generated to check the flags in the environment:
+At first you need to determine the mode in which your app is to be generated to check the flags in the environment:
 - Select the build settings of the project
 - Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
 - Make sure that the "Debug executable" option is not selected.
