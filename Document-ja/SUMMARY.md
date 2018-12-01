@@ -16,7 +16,7 @@
 - [モバイルアプリの暗号化](0x04g-Testing-Cryptography.md)
 - [コード品質のテスト](0x04h-Testing-Code-Quality.md)
 - [改竄とリバースエンジニアリング](0x04c-Tampering-and-Reverse-Engineering.md)
-- [ユーザー教育のテスト](0x04i-Testing-user-interaction.md)
+- [ユーザー啓発のテスト](0x04i-Testing-user-interaction.md)
 
 
 ### Android テストガイド
@@ -49,4 +49,4 @@
 ### 付録
 
 - [テストツール](0x08-Testing-Tools.md)
-- [推薦図書](0x09-Suggested-Reading.md)
+- [さらに学ぶための資料](0x09-Suggested-Reading.md)
