@@ -273,6 +273,8 @@ dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
 
 The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate()` method:
 
+Java
+
 ```java
 public class MainActivity
 extends AppCompatActivity {
@@ -290,6 +292,23 @@ extends AppCompatActivity {
     public native String stringFromJNI();
 }
 
+}
+```
+Kotlin
+
+```kotlin
+class Main:AppCompatActivity() {
+  protected fun onCreate(bundle:Bundle) {
+    super.onCreate(bundle)
+    this.setContentView(2130968603)
+    (this.findViewById(2131427422) as TextView).setText(this.stringFromJNI() as CharSequence)
+  }
+  external fun stringFromJNI():String
+  companion object {
+    init{
+      System.loadLibrary("native-lib")
+    }
+  }
 }
 ```
 
@@ -495,6 +514,8 @@ Let's revisit the decompiled code from the UnCrackable App Level 1 and think abo
 
 Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.MainActivity.a` displays the "This in unacceptable..." message box. This method creates an `AlertDialog` and sets a listener class for the `onClick` event. This class (named `b`) has a callback method will terminates the app once the user taps the “OK” button. To prevent the user from simply canceling the dialog, the `setCancelable` method is called.
 
+Java
+
 ```java
   private void a(final String title) {
         final AlertDialog create = new AlertDialog$Builder((Context)this).create();
@@ -504,6 +525,19 @@ Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.Mai
         create.setCancelable(false);
         create.show();
     }
+```
+
+Kotlin
+
+```kotlin
+private fun a(title:String) {
+  val create = `AlertDialog$Builder`(this as Context).create()
+  create.setTitle(title as CharSequence)
+  create.setMessage("This in unacceptable. The app is now going to exit." as CharSequence)
+  create.setButton(-3, "OK" as CharSequence, b(this) as `DialogInterface$OnClickListener`)
+  create.setCancelable(false)
+  create.show()
+}
 ```
 
 You can bypass this with a little run time tampering. With the app still suspended, set a method breakpoint on `android.app.Dialog.setCancelable` and resume the app.
@@ -948,6 +982,8 @@ To use Xposed, you need to first install the Xposed framework on a rooted device
 
 Let's assume you're testing an app that's stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
+Java
+
 ```java
 package com.example.a.b
 
@@ -971,9 +1007,32 @@ public static boolean c() {
 }
 ```
 
+Kotlin
+
+```kotlin
+com.example.a.b
+val c:Boolean
+()
+run({ val v3 = 0
+     val v0 = false
+     val v1 = arrayOf<String>("/sbin/", "/system/bin/", "/system/xbin/", "/data/local/xbin/", "/data/local/bin/", "/system/sd/xbin/", "/system/bin/failsafe/", "/data/local/")
+     val v2 = v1.size
+     for (v3 in 0 until v2)
+     {
+       if (File((v1[v3]).toString() + "su").exists())
+       {
+         v0 = true
+         return v0
+       }
+     }
+     return v0 })
+```
+
 This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this.
 
 The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
+
+Java
 
 ```java
 package com.awesome.pentestcompany;
@@ -1000,6 +1059,36 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
         });
     }
+}
+```
+
+Kotlin
+
+```kotlin
+package com.awesome.pentestcompany
+
+import de.robv.android.xposed.XposedHelpers.findAndHookMethod
+import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
+
+class DisableRootCheck:IXposedHookLoadPackage {
+  @Throws(Throwable::class)
+
+  fun handleLoadPackage(lpparam:LoadPackageParam) {
+    if (!lpparam.packageName.equals("com.example.targetapp"))
+    return
+
+    findAndHookMethod("com.example.a.b", lpparam.classLoader, "c", object:XC_MethodHook() {
+      @Throws(Throwable::class)
+
+      protected fun beforeHookedMethod(param:MethodHookParam) {
+        XposedBridge.log("Caught root check!")
+        param.setResult(false)
+      }
+    })
+  }
 }
 ```
 
@@ -1163,7 +1252,9 @@ When you start the App on an emulator or a rooted device, you'll find that the a
 Let's see how we can prevent this.
 The main method (decompiled with CFR) looks like this:
 
-```
+Java
+
+```java
 package sg.vantagepoint.uncrackable1;
 
 import android.app.Activity;
@@ -1215,11 +1306,71 @@ extends Activity {
 }
 ```
 
+Kotlin
+
+```kotlin
+package sg.vantagepoint.uncrackable1
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.os.Bundle
+import android.text.Editable
+import android.view.View
+import android.widget.EditText
+import sg.vantagepoint.uncrackable1.a
+import sg.vantagepoint.uncrackable1.b
+import sg.vantagepoint.uncrackable1.c
+
+class MainActivity:Activity() {
+  private fun a(string:String) {
+    val alertDialog = AlertDialog.Builder(this as Context).create()
+    alertDialog.setTitle(string as CharSequence)
+    alertDialog.setMessage("This in unacceptable. The app is now going to exit." as CharSequence)
+    alertDialog.setButton(-3, "OK" as CharSequence, b(this) as DialogInterface.OnClickListener)
+    alertDialog.show()
+  }
+
+  protected fun onCreate(bundle:Bundle) {
+    if (sg.vantagepoint.a.c.a() || sg.vantagepoint.a.c.b() || sg.vantagepoint.a.c.c())
+    {
+      this.a("Root detected!") //This is the message we are looking for
+    }
+    if (sg.vantagepoint.a.b.a(this.getApplicationContext() as Context))
+    {
+      this.a("App is debuggable!")
+    }
+    super.onCreate(bundle)
+    this.setContentView(2130903040)
+  }
+
+  fun verify(`object`:View) {
+    `object` = (this.findViewById(2131230720) as EditText).getText().toString()
+    val alertDialog = AlertDialog.Builder(this as Context).create()
+    if (a.a(`object` as String))
+    {
+      alertDialog.setTitle("Success!" as CharSequence)
+      alertDialog.setMessage("This is the correct secret." as CharSequence)
+    }
+    else
+    {
+      alertDialog.setTitle("Nope..." as CharSequence)
+      alertDialog.setMessage("That's not it. Try again." as CharSequence)
+    }
+    alertDialog.setButton(-3, "OK" as CharSequence, c(this) as DialogInterface.OnClickListener)
+    alertDialog.show()
+  }
+}
+
+```
+
 Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which  closes the application via `System.exit(0)` after successful root detection. With Frida, you can prevent the app from exiting by hooking the callback.
 
 The `onClickListener` implementation for the dialog button doesn't do much:
 
-```
+Java
+
+```java
 package sg.vantagepoint.uncrackable1;
 
 class b implements android.content.DialogInterface$OnClickListener {
@@ -1235,6 +1386,24 @@ class b implements android.content.DialogInterface$OnClickListener {
     {
         System.exit(0);
     }
+}
+```
+
+Kotlin
+
+```kotlin
+package sg.vantagepoint.uncrackable1
+
+internal class b(a0:sg.vantagepoint.uncrackable1.MainActivity):`android.content.`DialogInterface$OnClickListener`` {
+  val a:sg.vantagepoint.uncrackable1.MainActivity
+
+  init{
+    this.a = a0
+  }
+
+  fun onClick(a0:android.content.DialogInterface, i:Int) {
+    System.exit(0)
+  }
 }
 ```
 
@@ -1269,7 +1438,9 @@ You can now try to input a "secret string." But where do you get it?
 
 If you look at the class `sg.vantagepoint.uncrackable1.a`, you can see the encrypted string with which your input gets compared:
 
-```
+Java
+
+```java
 package sg.vantagepoint.uncrackable1;
 
 import android.util.Base64;
@@ -1299,6 +1470,44 @@ public class a {
         }
         return arrby;
     }
+}
+```
+
+Kotlin
+
+```kotlin
+package sg.vantagepoint.uncrackable1
+import android.util.Base64
+import android.util.Log
+
+object a {
+
+  fun a(string:String):Boolean {
+    val arrby = Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=" as String, 0.toInt())
+    val arrby2 = byteArrayOf()
+    try
+    {
+      arrby = sg.vantagepoint.a.a.a(a.b("8d127684cbc37c17616d806cf50473cc" as String) as ByteArray, arrby as ByteArray)
+      arrby2 = arrby
+    }
+    catch (var2_2:Exception) {
+      Log.d("CodeCheck" as String, ("AES error:" + var2_2.message) as String)
+    }
+    if (string != String(arrby2)) return false
+    return true
+  }
+
+  fun b(string:String):ByteArray {
+    val n = string.length
+    val arrby = ByteArray(n / 2)
+    val n2 = 0
+    while (n2 < n)
+    {
+      arrby[n2 / 2] = ((Character.digit(string.get(n2), 16) shl 4) + Character.digit(string.get(n2 + 1), 16)).toByte()
+      n2 += 2
+    }
+    return arrby
+  }
 }
 ```
 
