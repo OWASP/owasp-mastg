@@ -209,6 +209,8 @@ Congratulations—you just learned the fundamentals of static analysis! It is al
 
 Next, Ctrl+click (or Command+click on Mac) on the `check_input` method. This takes you to the method definition. The decompiled method looks like this:
 
+Java
+
 ```java
     public static boolean check_input(String string) {
         byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
@@ -216,7 +218,7 @@ Next, Ctrl+click (or Command+click on Mac) on the `check_input` method. This tak
         try {
             arrby = sg.vantagepoint.a.a.a(Validator.b("8d127684cbc37c17616d806cf50473cc"), arrby);
             arrby2 = arrby;
-        }sa
+        }
         catch (Exception exception) {
             Log.d((String)"CodeCheck", (String)("AES error:" + exception.getMessage()));
         }
@@ -227,7 +229,29 @@ Next, Ctrl+click (or Command+click on Mac) on the `check_input` method. This tak
     }
 ```
 
+Kotlin
+
+```kotlin
+fun check_input(string:String):Boolean {
+  val arrby = Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=" as String, 0.toInt())
+  val arrby2 = byteArrayOf()
+  try
+  {
+    arrby = sg.vantagepoint.a.a.a(Validator.b("8d127684cbc37c17616d806cf50473cc"), arrby)
+    arrby2 = arrby
+  }
+  (Exception)
+  run({ Log.d("CodeCheck" as String, ("AES error:" + exception.getMessage()) as String) })
+  if (string == String(arrby2))
+  {
+    return true
+  }
+  return false
+}
+```
 So, you have a base64-encoded String that's passed to the function `a` in the package `sg.vantagepoint.a.a` (again, everything is called `a`) along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this particular `a` do? Ctrl-click it to find out.
+
+Java
 
 ```java
 public class a {
@@ -238,6 +262,20 @@ public class a {
         return cipher.doFinal(arrby);
     }
 }
+```
+
+Kotlin
+
+```kotlin
+object a {
+  fun a(`object`:ByteArray, arrby:ByteArray):ByteArray {
+    `object` = SecretKeySpec(`object` as ByteArray, "AES/ECB/PKCS7Padding")
+    val cipher = Cipher.getInstance("AES")
+    cipher.init(2, `object` as Key)
+    return cipher.doFinal(arrby)
+  }
+}
+
 ```
 
 Now you're getting somewhere: it's simply standard AES-ECB. Looks like the base64 string stored in `arrby1` in `check_input` is a ciphertext. It is decrypted with 128bit AES, then compared with the user input. As a bonus task, try to decrypt the extracted ciphertext and find the secret value!
@@ -1011,8 +1049,9 @@ Kotlin
 
 ```kotlin
 com.example.a.b
+
 val c:Boolean
-()
+
 run({ val v3 = 0
      val v0 = false
      val v1 = arrayOf<String>("/sbin/", "/system/bin/", "/system/xbin/", "/data/local/xbin/", "/data/local/bin/", "/system/sd/xbin/", "/system/bin/failsafe/", "/data/local/")
