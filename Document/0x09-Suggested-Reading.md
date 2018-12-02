@@ -8,6 +8,7 @@
 - Joshua J. Drake, Zach Lanier, Collin Mulliner, Pau Oliva, Stephen A. Ridley, Georg Wicherski (2014) *Android Hacker's Handbook*. Wiley. Available at: http://www.wiley.com/WileyCDA/WileyTitle/productCd-111860864X.html
 - Godfrey Nolan (2014) *Bulletproof Android*. Addison-Wesley Professional. Available at: https://www.amazon.com/Bulletproof-Android-Practical-Building-Developers/dp/0133993329
 - Nikolay Elenkov (2014) *Android Security Internals: An In-Depth Guide to Android's Security Architecture*. No Starch Press. Available at: https://nostarch.com/androidsecurity
+- Jonathan Levin (2015) *Android Internals :: A confectioners cookbook - Volume I: The power user's view*. Technologeeks.com. Available at: http://newandroidbook.com/
 
 #### iOS
 
@@ -24,3 +25,4 @@
 - Bernhard Mueller (2016) *Hacking Soft Tokens - Advanced Reverse Engineering on Android*. HITB GSEC Singapore. Available at: http://gsec.hitb.org/materials/sg2016/D1%20-%20Bernhard%20Mueller%20-%20Attacking%20Software%20Tokens.pdf
 - Dennis Yurichev (2016) *Reverse Engineering for Beginners*. Online. Available at: https://github.com/dennis714/RE-for-beginners
 - Michael Hale Ligh, Andrew Case, Jamie Levy, Aaron Walters (2014) *The Art of Memory Forensics.* Wiley. Available at: http://as.wiley.com/WileyCDA/WileyTitle/productCd-1118825098.html
+- Jacob Baines (2016) *Programming Linux Anti-Reversing Techniques*. Leanpub. Available at: https://leanpub.com/anti-reverse-engineering-linux

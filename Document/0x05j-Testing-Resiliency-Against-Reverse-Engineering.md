@@ -27,7 +27,7 @@ To use the API, an app may call the `SafetyNetApi.attest` method (which returns 
 
 The following is a sample attestation result:
 
-```
+```json
 {
   "nonce": "R2Rra24fVm5xa2Mg",
   "timestampMs": 9860437986543,
@@ -140,6 +140,7 @@ com.noshufou.android.su
 com.koushikdutta.superuser
 com.zachspong.temprootremovejb
 com.ramdroid.appquarantine
+com.topjohnwu.magisk
 ```
 
 **Checking for writable partitions and system directories**
@@ -150,7 +151,7 @@ Unusual permissions on system directories may indicate a customized or rooted de
 
 Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
 
-```
+```java
 private boolean isTestKeyBuild()
 {
 String str = Build.TAGS;
@@ -222,7 +223,7 @@ We have already encountered the `android:debuggable` attribute. This flag in the
 
 The `Android Debug` system class offers a static method to determine whether a debugger is connected. The method returns a boolean value.
 
-```
+```java
     public static boolean detectDebugger() {
         return Debug.isDebuggerConnected();
     }
@@ -230,7 +231,7 @@ The `Android Debug` system class offers a static method to determine whether a d
 
 The same API can be called via native code by accessing the DvmGlobals global structure.
 
-```
+```c
 JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv * env, jobject obj) {
     if (gDvm.debuggerConnected || gDvm.debuggerActive)
         return JNI_TRUE;
@@ -242,7 +243,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 
 `Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has been executing code. Because debugging slows down process execution, [you can use the difference in execution time to guess whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
 
-```
+```java
 static boolean detect_threadCpuTimeNanos(){
   long start = Debug.threadCpuTimeNanos();
 
@@ -372,7 +373,7 @@ When the `ptrace` system call is used to attach to a process, the "TracerPid" fi
 
 The following implementation is from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/):
 
-```
+```java
     public static boolean hasTracerPid() throws IOException {
         BufferedReader reader = null;
         try {
@@ -405,7 +406,7 @@ On Linux, the [`ptrace` system call](http://man7.org/linux/man-pages/man2/ptrace
 
 You can prevent debugging of a process by forking a child process and attaching it to the parent as a debugger via code similar to the following simple example code:
 
-```
+```c
 void fork_and_attach()
 {
   int pid = fork();
@@ -933,7 +934,7 @@ void scan() {
 
 Note the use of `my_openat`, etc., instead of the normal libc library functions. These are custom implementations that do the same things as their Bionic libc counterparts: they set up the arguments for the respective system call and execute the `swi` instruction (see the following code). Using these functions eliminates the reliance on public APIs, thus making them less susceptible to the typical libc hooks. The complete implementation is in `syscall.S`. The following is an assembler implementation of `my_openat`.
 
-```
+```arm
 #include "bionic_asm.h"
 
 .text

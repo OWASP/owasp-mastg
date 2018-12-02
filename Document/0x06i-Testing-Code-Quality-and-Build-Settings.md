@@ -34,6 +34,30 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
+### Determining Whether the App is Debuggable
+
+#### Overview
+
+Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program.
+
+Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
+
+#### Static Analysis
+
+At first you need to determine the mode in which your app is to be generated to check the flags in the environment:
+- Select the build settings of the project
+- Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
+- Make sure that the "Debug executable" option is not selected.
+- Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
+
+
+#### Dynamic Analysis
+
+Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
+
+Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
+
+
 ### Finding Debugging Symbols
 
 #### Overview
@@ -46,7 +70,7 @@ These symbols can be saved in "Stabs" format or the DWARF format. In the Stabs f
 
 Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
 
-```
+```shell
 $ gobjdump --stabs --dwarf TargetApp
 In archive MyTargetApp:
 
@@ -267,7 +291,7 @@ Although Xcode enables all binary security features by default, it may be releva
 
 -	**ARC** - Automatic Reference Counting - memory management feature
 	-	adds retain and release messages when required
--	**Stack Canary** - helps prevent buffer overflow attacks
+-	**Stack Canary** - helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
 -	**PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis
@@ -382,14 +406,14 @@ In case CocoaPods is used for managing third party dependencies, the following s
 
 1. At the root of the project, where the Podfile is located, execute the following commands:
 ``` sh
-sudo gem install CocoaPods
-pod install
+$ sudo gem install CocoaPods
+$ pod install
 ```
 
 2. Now that the dependency tree has bene built, you can create an overview of the dependencies and their versions by running the following commands:
 ```sh
-sudo gem install CocoaPods-dependencies
-pod dependencies
+$ sudo gem install CocoaPods-dependencies
+$ pod dependencies
 ```
 
 3. The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
@@ -402,8 +426,8 @@ pod dependencies
 In case Carthage is used for third party dependencies, then the following steps can be taken to analyse the third party libraries for vulnerabilities:
 1. At the root of the project, where the Cartfile is located, type
 ```sh
-brew install carthage
-carthage update --platform iOS
+$ brew install carthage
+$ carthage update --platform iOS
 ```
 
 2. Check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
@@ -414,6 +438,12 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-proces. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
+In case frameworks are added manually as linked libraries:
+1. Open the xcodeproj file and check the project properties.
+2. Go to the tab "Build Phases" and check the entries in "Link Binary With Libraries" for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
+
+In the case of copy-pasted sources: search the headerfiles (in case of using Objective-C) and otherwise the Swift files for known methodnames for known libraries.
+
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
 
@@ -422,18 +452,17 @@ In order to ensure that the copyright laws are not infringed, one can best check
 
 When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Podfile is located, type
-``` sh
-sudo gem install CocoaPods
-pod install
-
+```sh
+$ sudo gem install CocoaPods
+$ pod install
 ```
 2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
 
 When the application sources are available and Carthage is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Cartfile is located, type
 ```sh
-brew install carthage
-carthage update --platform iOS
+$ brew install carthage
+$ carthage update --platform iOS
 ```
 
 2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
@@ -453,20 +482,20 @@ When no source-code is available for library analysis, you can find some of the 
 After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
 
 ```shell
-otool -L <Executable>
+$ otool -L <Executable>
 ```
 
 However, these do not include all the libraries being used. Next, with Class-dump (for Objective-C) you can generate a subset of the headerfiles used and derive which libraries are involved. But not detect the version of the library.
 
 ```shell
-./class-dump <Executable> -r
+$ ./class-dump <Executable> -r
 ```
 
 ### References
 
 #### OWASP Mobile Top 10 2016
 
--	M7 - Client Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
 

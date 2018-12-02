@@ -43,7 +43,6 @@ For example, when you have a Info.plist file, for a Solitair game which has, at 
 <string>Share your health data with us!</string>
 <key>NSCameraUsageDescription</key>
 <string>We want to access your camera</string>
-
 ```
 Should be suspicious as a normal solitair game probably does not have any need for accessing the camera nor a user's health-records.
 Note that from iOS 10 onward you need to provide explanation in terms of these \*Description fields. See table 1-2 at the [Apple app programming guide](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Apple app programming guide") for a more complete overview of different keys to look for.
@@ -61,7 +60,6 @@ The entitlements file shows which capabilities are used. Some of these capabilit
   <array/>
 </dict>
 </plist>
-
 ```
 
 Note that this requirement is not always necessary to "bleed" information from one application to another. You can have a back-end as a medium between two applications to share information as well.
@@ -587,8 +585,8 @@ There are several ways to perform dynamic analysis:
 
 #### OWASP Mobile Top 10 2016
 
-- M1 - Insecure Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M7 - Client-Side Injection - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
+- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
 

@@ -54,9 +54,9 @@ $ brew install ettercap
 Ettercap can also be installed through `apt-get` on Debian based linux distributions.
 
 ```shell
-sudo apt-get install zlib1g zlib1g-dev
-sudo apt-get install build-essential
-sudo apt-get install ettercap
+$ sudo apt-get install zlib1g zlib1g-dev
+$ sudo apt-get install build-essential
+$ sudo apt-get install ettercap
 ```
 
 **Network Analyzer Tool**
@@ -157,7 +157,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 - Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate()` or `Main()` method and re-create the app:
 
-```
+```csharp
 WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
 ```
 

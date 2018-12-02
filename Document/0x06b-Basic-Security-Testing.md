@@ -36,7 +36,7 @@ End users often jailbreak their devices to tweak the iOS system's appearance, ad
 - root access to the file system
 - possibility of executing applications that haven't been signed by Apple (which includes many security tools)
 - unrestricted debugging and dynamic analysis
-- access to the Objective-C runtime
+- access to the Objective-C or Swift runtime
 
 #### Jailbreak Types
 
@@ -46,17 +46,17 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 - Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
 
-- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website.
+- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
 
 - Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
 
 #### Caveats and Considerations
 
-Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the versions are hardware-based vulnerabilities). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
+Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
-If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting a spare device (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade to the affected iOS version and apply the jailbreak.
+If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
 
-iOS upgrades are based on a challenge-response process. The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple. This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
 #### Which Jailbreaking Tool to Use
 
@@ -75,7 +75,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 #### Dealing with Jailbreak Detection
 
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around this detection, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
+Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
 
 #### Jailbroken Device Setup
 
@@ -89,11 +89,11 @@ Once you've jailbroken your iOS device and Cydia has been installed (as shown in
 2. SSH into your iOS device.
   - The default users are `root` and `mobile`.
   - The default password is `alpine`.
-3. Change the default password for users `root` and `mobile`.
+3. Change the default password for both users `root` and `mobile`.
 4. Add the following repository to Cydia: `https://build.frida.re`.
 5. Install Frida from Cydia.
 
-Cydia allows you to manage repositories. One of the most popular repositories is BigBoss. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL:
+Cydia allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL:
 
 ```
 http://apt.thebigboss.org/repofiles/cydia/
@@ -111,13 +111,13 @@ The following are some useful packages you can install from Cydia to get started
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
 - [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
-- Substrate: A platform that makes developing third-party iOS add-ons easier.
-- cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes.
+- Cydia or Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (assiciated to Substrate).
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
-- PreferenceLoader: A MobileSubstrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
+- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
-Your workstation should have at least the following installed:
+Your analyst workstation should have at least the following installed:
 
 - an SSH client
 - an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
@@ -133,7 +133,7 @@ Other useful tools we'll be referring throughout the guide:
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
-Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps, so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
+Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (altough most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
 
 The static analysis instructions in the following chapters are based on the assumption that the source code is available.
 
@@ -141,12 +141,11 @@ The static analysis instructions in the following chapters are based on the assu
 
 Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
 
-Don't shy away from using automated scanners for your analysis-they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
+Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
 ### Dynamic Analysis of Jailbroken Devices
 
-Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later. For basic API monitoring, you can get away with not knowing all the details of how Substrate works-you can simply use existing API monitoring tools.
-
+Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
 #### Needle
 
@@ -158,15 +157,15 @@ Life is easy with a jailbroken device: not only do you gain easy access to the a
 
 The following commands install the dependencies required to run Needle on Linux.
 
-```
+```shell
 # Unix packages
-sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
+$ sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
 
 # Python packages
-sudo pip install readline paramiko sshtunnel frida mitmproxy biplist
+$ sudo pip install readline paramiko sshtunnel frida mitmproxy biplist
 
 # Download source
-git clone https://github.com/mwrlabs/needle.git
+$ git clone https://github.com/mwrlabs/needle.git
 
 ```
 
@@ -174,28 +173,28 @@ git clone https://github.com/mwrlabs/needle.git
 
 The following commands install the dependencies required to run Needle on macOS.
 
-```
+```shell 
 # Core dependencies
-brew install python
-brew install libxml2
-xcode-select --install
+$ brew install python
+$ brew install libxml2
+$ xcode-select --install
 
 # Python packages
-sudo -H pip install --upgrade --user readline
-sudo -H pip install --upgrade --user paramiko
-sudo -H pip install --upgrade --user sshtunnel
-sudo -H pip install --upgrade --user frida
-sudo -H pip install --upgrade --user biplist
+$ sudo -H pip install --upgrade --user readline
+$ sudo -H pip install --upgrade --user paramiko
+$ sudo -H pip install --upgrade --user sshtunnel
+$ sudo -H pip install --upgrade --user frida
+$ sudo -H pip install --upgrade --user biplist
 # sshpass
-brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+$ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 
 # mitmproxy
-wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz
-tar -xvzf mitmproxy-0.17.1-osx.tar.gz
-sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
+$ wget https://github.com/mitmproxy/mitmproxy/releases/download/v0.17.1/mitmproxy-0.17.1-osx.tar.gz
+$ tar -xvzf mitmproxy-0.17.1-osx.tar.gz
+$ sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
 
 # Download source
-git clone https://github.com/mwrlabs/needle.git
+$ git clone https://github.com/mwrlabs/needle.git
 ```
 
 ##### Install the Needle Agent
@@ -229,7 +228,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 To launch Needle, just open a console and type:
 
-```
+```shell 
 $ python needle.py
       __  _ _______ _______ ______         ______
       | \ | |______ |______ | \     |      |______
@@ -359,7 +358,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Dumping KeyChain Data
 
-[Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
+[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
 ```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
@@ -388,7 +387,7 @@ Label: (null)
 Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
-
+In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
 #### Installing Frida
