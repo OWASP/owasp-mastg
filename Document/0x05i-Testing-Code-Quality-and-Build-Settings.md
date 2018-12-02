@@ -38,14 +38,16 @@ The contents of the signing certificate can be examined with `jarsigner`. Note t
 The output for an APK signed with a debug certificate is shown below:
 
 ```shell
+
 $ jarsigner -verify -verbose -certs example.apk
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
       X.509, CN=Android Debug, O=Android, C=US
       [certificate is valid from 3/24/16 9:18 AM to 8/10/43 9:18 AM]
-      [CertPath not validated: Path doesn't chain with any of the trust anchors]
+      [CertPath not validated: Path doesn\'t chain with any of the trust anchors]
 (...)
+
 ```
 
 Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and above. Instead of `jarsigner`, you can rely on the `apksigner` to verify the certificate chain.
@@ -99,7 +101,7 @@ Attack Surface:
 
 To scan for all debuggable applications on a device, use the `app.package.debuggable` module:
 
-```
+```shell
 dz> run app.package.debuggable
 Package: com.mwr.dz
   UID: 10083
@@ -520,39 +522,10 @@ class a$b
 }
 ```
 
-### References
-
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
-
-#### OWASP MASVS
-
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- V7.1: "The app is signed and provisioned with valid certificate."
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-- V7.3: "Debugging symbols have been removed from native binaries."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### CWE
-
-- CWE-20 - Improper Input Validation
-- CWE-215 - Information Exposure through Debug Information
-- CWE-388 - Error Handling
-- CWE-489 - Leftover Debug Code
-- CWE-656 - Reliance on Security through Obscurity
-
-
-#### Tools
-
-- ProGuard - https://www.guardsquare.com/en/proguard
-- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
-- Xposed - http://repo.xposed.info/
-- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
-- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
+### Memory Corruption Bugs
+Android applications often runin a VM where most of the memory corruption issues have been taken care off.
+<TODO: add stagefreight as an example, add https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 (https://android.googlesource.com/platform/frameworks/base/+/181dc252ddec574464882970d3fab290e8b625b5)>
+<TODO: WRITE OVERVIEW, WRITE STATIC ANALYSIS FOR WHERE NATIVE CODE IS USED (REFER TO GENERAL TESTING GUIDE), WRITE DYNAMIC ANALYSIS (SAME AS STATIC)>
 
 
 ### Checking for Weaknesses in Third Party Libraries
@@ -647,20 +620,40 @@ When the sources are not available, one can decompile the app and check the jar 
 The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
-
+#### OWASP MASVS
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- V7.1: "The app is signed and provisioned with valid certificate."
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- V7.3: "Debugging symbols have been removed from native binaries."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
-##### CWE
+#### CWE
+
+- CWE-20 - Improper Input Validation
+- CWE-215 - Information Exposure through Debug Information
+- CWE-388 - Error Handling
+- CWE-489 - Leftover Debug Code
+- CWE-656 - Reliance on Security through Obscurity
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
-##### Tools
+#### Tools
+<TODO: REVIEWER: WHAT SHOULD BE THE WAY TO DO TOOL -REFERENCES?>
+- ProGuard - https://www.guardsquare.com/en/proguard
+- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
+- Xposed - http://repo.xposed.info/
+- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
+- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
 - [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
 - [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
 - [Snyk](https://snyk.io/ "snyk")

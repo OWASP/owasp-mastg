@@ -491,6 +491,12 @@ However, these do not include all the libraries being used. Next, with Class-dum
 $ ./class-dump <Executable> -r
 ```
 
+### Memory Corruption Bugs
+iOS applications have various ways to run into memory corruption bugs
+<TODO: write overview with reference to general testing gudie>
+<TODO: write static analysis for unsafe ptrs in obj-c, swift wrapping, C unsafe stuff & C++ unsafe stuff>
+<TODO: write dynamic analysis part>
+
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -500,10 +506,13 @@ $ ./class-dump <Executable> -r
 #### OWASP MASVS
 
 - V7.1: "The app is signed and provisioned with a valid certificate."
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- V7.3: "Debugging symbols have been removed from native binaries."
 - V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
 - V7.6: "The app catches and handles possible exceptions."
 - V7.7: "Error handling logic in security controls denies access by default."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
 - V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ##### CWE
