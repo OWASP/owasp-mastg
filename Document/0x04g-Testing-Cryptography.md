@@ -67,7 +67,7 @@ Ensure that the key length fulfills [accepted industry standards](https://www.en
 
 The security of symmetric encryption and keyed hashes (MACs) depends on the secrecy of the key. If the key is disclosed, the security gained by encryption is lost. To prevent this, never store secret keys in the same place as the encrypted data they helped create. Developers often make the mistake of encrypting locally stored data with a static, hard-coded encryption key and compiling that key into the app. This makes the key accessible to anyone who can use a disassembler.
 
-First, ensure that no keys or passwords are stored within the source code. Note that hard-coded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.
+First, ensure that no keys or passwords are stored within the source code. This means you should check native code, javascript/dart code, Java/Kotlin code on Android and Objective-C/Swift in iOS. Note that hard-coded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.
 
 If the app is using two-way SSL (both server and client certificates are validated), make sure that:
 
@@ -133,11 +133,26 @@ CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial inp
 Please note that the usage of IVs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable IV with its own stateful model is exactly what is needed. In CTR you have a new nonce plus counter as an input to every new block operation. For example: for a 5120 bit long plaintext: you have 20 blocks, so you need 20 input vectors consisting of a nonce and counter. Whereas in GCM you have a single IV per cryptographic operation, which should not be repeated with the same key. See section 8 of the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details and recomendations of the IV.
 
 #### Weaker padding mechanisms
-  In the old days, PKCS #7 (Public Key Cryptography Standards 7) was used as a padding mechanism. Now in modern Java environments it is referred to as PKCS #5. This mechanism is vulnerable to the padding oracle attack. Therefore, it is best to use OEAP (Optimal Asymmetric Encryption Padding) (or PKCS #1 v2.0). Note that, even when using OAEP, you can still run into an issue known best as the Mangers attack as described [in the blog at Kudelskisecurity] ](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Kudelskisecurity").
+
+In the old days, PKCS #7 (Public Key Cryptography Standards 7) was used as a padding mechanism. Now in modern Java environments it is referred to as PKCS #5. This mechanism is vulnerable to the padding oracle attack. Therefore, it is best to use OEAP (Optimal Asymmetric Encryption Padding) (or PKCS #1 v2.0). Note that, even when using OAEP, you can still run into an issue known best as the Mangers attack as described [in the blog at Kudelskisecurity](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Kudelskisecurity").
+
+Note: AES-CBC with PKCS #5 has shown to be vulnerable to padding oracle attacks as well, see [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack/ "The Padding Oracle Attack") for an example.
+
+
+#### Protecting keys in memory
+
+When memory dumping is part of your threatmodel, then keys can be accessed the moment they are actively used. Memory dumping either requires root-access (e.g. a rooted device or jailbroken device) or it requires a patched application with Frida (so you can use tools like Fridump).
+Therefore it is best to, if keys are still needed at the device:
+- make sure that all cryptographic actions and the keys itself remain in the Trusted Execution Environment (e.g. use Android Keystore) or Secure Enclave (E.g. use the keychain and when you sign, use ECDHE).
+- If keys are necessary which are outside of the TEE / SE, make sure you obfuscate/encrypt them and only de-obfuscate them during use. Always zero out keys before the memory is released, whether using native code or not. This means: overwrite the memory structure (e.g. nullify the array) and know that anything in Android based on `BigInteger` stays in the heap.
+
+Note: given the ease of memory dumping: never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
+
 
 ### Cryptographic APIs on Android and iOS
 
 While same basic cryptographic principles apply independent of the particular OS, each operating system offers its own implementation and APIs. Platform-specific cryptographic APIs for data storage are covered in greater detail in the [**Testing Data Storage on Android**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md) and [**Testing Data Storage on iOS**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md) chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md) chapter.
+
 
 #### References
 
@@ -156,6 +171,7 @@ While same basic cryptographic principles apply independent of the particular OS
 - V3.2: "The app uses proven implementations of cryptographic primitives."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 - V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
 
 ##### CWE
 
