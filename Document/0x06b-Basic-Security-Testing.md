@@ -278,6 +278,18 @@ The tool has the following global options (list them via the `show options` comm
 - **SAVE_HISTORY**: If set to "true," the command history will persist across sessions.
 - **VERBOSE, DEBUG**: If set to "true," this will enable verbose and debug logging, respectively.
 
+**Trouble shooting**
+
+Please pay attention, in order to use the modules in Needle. You might have to install its dependencies by using this command in Neelde.
+
+```
+use device/dependency_installer
+
+run
+```
+Other module may promt you the ```apt-get``` command has not been installed. To get ```apt-get```, go to your Cydia and look for  ```CyDelete``` and install it. 
+
+This will install the needed dependencies, command lines for later use.
 
 #### SSH Connection via USB
 
