@@ -321,7 +321,7 @@ cy# printMethods ("AppDelegate")
 If you haven't already done so, install the Frida Python package on your host machine:
 
 ```shell
-$ pip install frida
+$ pip install frida frida-tools
 ```
 
 To connect Frida to an iOS app, you need to inject the Frida runtime into the app. This is easy to do on a jailbroken device: just install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
