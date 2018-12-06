@@ -287,9 +287,7 @@ use device/dependency_installer
 
 run
 ```
-Other module may promt you the ```apt-get``` command has not been installed. To get ```apt-get```, go to your Cydia and look for  ```CyDelete``` and install it. 
-
-This will install the needed dependencies, command lines for later use.
+Other modules may promt you the ```apt-get``` command has not been installed. To get ```apt-get```, go to your Cydia and look for  ```CyDelete``` and install it. 
 
 #### SSH Connection via USB
 
