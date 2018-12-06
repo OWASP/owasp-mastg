@@ -280,7 +280,7 @@ The tool has the following global options (list them via the `show options` comm
 
 **Troubleshooting**
 
-Please pay attention, in order to use the modules in Needle. You might have to install its dependencies by using this command in Neelde.
+In order to use the modules in Needle, you may have to install its dependencies. Use this command in Needle:
 
 ```
 use device/dependency_installer
