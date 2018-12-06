@@ -278,7 +278,7 @@ The tool has the following global options (list them via the `show options` comm
 - **SAVE_HISTORY**: If set to "true," the command history will persist across sessions.
 - **VERBOSE, DEBUG**: If set to "true," this will enable verbose and debug logging, respectively.
 
-**Trouble shooting**
+**Troubleshooting**
 
 Please pay attention, in order to use the modules in Needle. You might have to install its dependencies by using this command in Neelde.
 
