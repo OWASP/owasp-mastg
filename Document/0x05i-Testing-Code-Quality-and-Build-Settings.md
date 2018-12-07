@@ -526,7 +526,7 @@ class a$b
 Android applications often runin a VM where most of the memory corruption issues have been taken care off.
 <TODO: add stagefreight as an example, add https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 (https://android.googlesource.com/platform/frameworks/base/+/181dc252ddec574464882970d3fab290e8b625b5)>
 <TODO: WRITE OVERVIEW, WRITE STATIC ANALYSIS FOR WHERE NATIVE CODE IS USED (REFER TO GENERAL TESTING GUIDE), WRITE DYNAMIC ANALYSIS (SAME AS STATIC)>
-
+<TODO: DO SHOW YOU CAN HAVE MEMORY LEAKS BY VARIOUS WAYS (SQUARE LEAK CANARY!)>
 
 ### Checking for Weaknesses in Third Party Libraries
 
