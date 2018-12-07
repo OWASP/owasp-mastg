@@ -415,9 +415,9 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 
 Navigate to a screen that displays input fields that take sensitive user information. Two methods apply to checking log files for sensitive data:
 
-1. Connect to the iOS device and execute the following command:
+1. Connect to the iOS device and execute the following command (available through Cydia):
 ```shell
-$ tail -f /var/log/syslog
+$ ondeviceconsole
 ```
 
 2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
