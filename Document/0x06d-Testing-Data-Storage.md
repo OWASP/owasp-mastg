@@ -494,6 +494,38 @@ If a jailbroken iPhone is available, execute the following steps:
 `/private/var/mobile/Library/Keyboard/`
 4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
 
+With Needle:
+
+```
+[needle] > use storage/caching/keyboard_autocomplete
+[needle] > run
+
+[*] Checking connection with device...
+[+] Already connected to: 142.16.24.31
+[*] Running strings over keyboard autocomplete databases...
+[+] The following content has been found:
+	DynamicDictionary-5
+	check
+	darw
+	Frida
+	frid
+	gawk
+	iasdasdt11
+	installdeopbear
+	Minh
+	mter
+	needle
+	openssl
+	openss
+	produce
+	python
+	truchq
+	wallpaper
+	DynamicDictionary-5
+[*] Saving output to file: /home/phanvanloc/.needle/output/keyboard_autocomplete.txt
+
+```
+
 ```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
