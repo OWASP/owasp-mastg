@@ -523,8 +523,17 @@ class a$b
 ```
 
 ### Memory Corruption Bugs
-Android applications often runin a VM where most of the memory corruption issues have been taken care off.
-<TODO: add stagefreight as an example, add https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 (https://android.googlesource.com/platform/frameworks/base/+/181dc252ddec574464882970d3fab290e8b625b5)>
+Android applications often run on a VM where most of the memory corruption issues have been taken care off.
+This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at blackhat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
+
+A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-activity classes, or when you pass references to `Activity` classes to your helperclasses.
+
+#### Static Analysis
+
+#### Dynamic Analysis
+
+
+<add (https://android.googlesource.com/platform/frameworks/base/+/181dc252ddec574464882970d3fab290e8b625b5, https://github.com/pnfsoftware/jnihelper)>
 <TODO: WRITE OVERVIEW, WRITE STATIC ANALYSIS FOR WHERE NATIVE CODE IS USED (REFER TO GENERAL TESTING GUIDE), WRITE DYNAMIC ANALYSIS (SAME AS STATIC)>
 <TODO: DO SHOW YOU CAN HAVE MEMORY LEAKS BY VARIOUS WAYS (SQUARE LEAK CANARY!)>
 
