@@ -526,16 +526,32 @@ class a$b
 Android applications often run on a VM where most of the memory corruption issues have been taken care off.
 This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at blackhat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
 
-A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-activity classes, or when you pass references to `Activity` classes to your helperclasses.
+A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
 
 #### Static Analysis
+There are various items to look for:
+- Are there native code parts? If so: check for the given errors in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
+- Is there Javacode or Kotlin code? Look for
+  - Serialization/deserialization issues <TODO: EXTEND BASED ON https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet#for-android and https://versprite.com/blog/json-deserialization-memory-corruption-vulnerabilities/>
+  - Memory leaks? Look for (based on https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e and https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570): <TODO: EXPLAIN WHAT TO LOOK FOR!>
+    - BroadcastReceivers which are not unregistered,
+    - Static references to `Activity` or `View` classes,
+    - Singleton classes that have references to `Context`
+    - Inner Class references
+    - Anonymous Class references
+    - AsyncTask references
+    - Handler references
+    - Threading done wrong
+    - TimerTask references
+
 
 #### Dynamic Analysis
+There are various steps to take:
+- In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
+- In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
+- Check with the [Memory Profiler from Android Studio](ttps://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
 
 
-<add (https://android.googlesource.com/platform/frameworks/base/+/181dc252ddec574464882970d3fab290e8b625b5, https://github.com/pnfsoftware/jnihelper)>
-<TODO: WRITE OVERVIEW, WRITE STATIC ANALYSIS FOR WHERE NATIVE CODE IS USED (REFER TO GENERAL TESTING GUIDE), WRITE DYNAMIC ANALYSIS (SAME AS STATIC)>
-<TODO: DO SHOW YOU CAN HAVE MEMORY LEAKS BY VARIOUS WAYS (SQUARE LEAK CANARY!)>
 
 ### Checking for Weaknesses in Third Party Libraries
 
