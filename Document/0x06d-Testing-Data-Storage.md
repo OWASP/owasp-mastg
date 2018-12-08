@@ -415,9 +415,14 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 
 Navigate to a screen that displays input fields that take sensitive user information. Two methods apply to checking log files for sensitive data:
 
-1. Connect to the iOS device and execute the following command:
+1. Connect to the iOS device and use one of the following options:
+- Install tail via the Core Utilities from Cydia and run the following command:
 ```shell
 $ tail -f /var/log/syslog
+```
+- Install ondeviceconsole via cydia.suarik.com and run the following command:
+```shell
+$ ondeviceconsole
 ```
 
 2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
@@ -488,6 +493,38 @@ If a jailbroken iPhone is available, execute the following steps:
 3. Dump the keyboard cache file `dynamic-text.dat` into the following directory (which might be different for iOS versions before 8.0):
 `/private/var/mobile/Library/Keyboard/`
 4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
+
+With Needle:
+
+```
+[needle] > use storage/caching/keyboard_autocomplete
+[needle] > run
+
+[*] Checking connection with device...
+[+] Already connected to: 142.16.24.31
+[*] Running strings over keyboard autocomplete databases...
+[+] The following content has been found:
+	DynamicDictionary-5
+	check
+	darw
+	Frida
+	frid
+	gawk
+	iasdasdt11
+	installdeopbear
+	Minh
+	mter
+	needle
+	openssl
+	openss
+	produce
+	python
+	truchq
+	wallpaper
+	DynamicDictionary-5
+[*] Saving output to file: /home/phanvanloc/.needle/output/keyboard_autocomplete.txt
+
+```
 
 ```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -818,6 +855,8 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 
 
 ##### Fridump (No Jailbreak needed)
+
+To use Fridump you need to have either a jailbroken/rooted device with Frida-server installed, or build the original application with the Frida library attached instructions on [Frida’s site](https://www.frida.re/docs/ios/)
 
 The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
 

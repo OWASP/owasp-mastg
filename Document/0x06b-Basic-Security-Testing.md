@@ -397,7 +397,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 If you haven't already done so, you need to install the Frida Python package on your host machine:
 
 ```shell
-$ pip install frida
+$ pip install frida-tools
 ```
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
