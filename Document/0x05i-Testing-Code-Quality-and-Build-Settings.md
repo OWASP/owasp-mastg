@@ -528,7 +528,7 @@ This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522
 
 A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
 
-#### Static Analysis
+#### Static Analysis 
 There are various items to look for:
 - Are there native code parts? If so: check for the given errors in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
 - Is there Javacode or Kotlin code? Look for
