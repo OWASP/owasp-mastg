@@ -282,12 +282,12 @@ The tool has the following global options (list them via the `show options` comm
 
 In order to use the modules in Needle, you may have to install its dependencies. Use this command in Needle:
 
-```
+```shell
 use device/dependency_installer
 
 run
 ```
-Other modules may promt you the ```apt-get``` command has not been installed. To get ```apt-get```, go to your Cydia and look for  ```CyDelete``` and install it. 
+Other modules may promt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it. 
 
 #### SSH Connection via USB
 
