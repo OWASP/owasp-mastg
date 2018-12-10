@@ -524,13 +524,13 @@ class a$b
 
 ### Memory Corruption Bugs
 Android applications often run on a VM where most of the memory corruption issues have been taken care off.
-This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at blackhat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
+This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
 
 A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
 
-#### Static Analysis 
+#### Static Analysis
 There are various items to look for:
-- Are there native code parts? If so: check for the given errors in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
+- Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
 - Is there Javacode or Kotlin code? Look for
   - Serialization/deserialization issues <TODO: EXTEND BASED ON https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet#for-android and https://versprite.com/blog/json-deserialization-memory-corruption-vulnerabilities/>
   - Memory leaks? Look for (based on https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e and https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570): <TODO: EXPLAIN WHAT TO LOOK FOR!>
@@ -673,15 +673,15 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 #### Tools
-<TODO: REVIEWER: WHAT SHOULD BE THE WAY TO DO TOOL -REFERENCES?>
+
 - ProGuard - https://www.guardsquare.com/en/proguard
 - jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
 - Xposed - http://repo.xposed.info/
 - Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
 - GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
-- [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
-- [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
-- [Snyk](https://snyk.io/ "snyk")
-- [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
-- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
-- [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF, "MobSF")
+- Black Duck - https://www.blackducksoftware.com/
+- Sourceclear -  https://www.sourceclear.com/
+- Snyk - https://snyk.io/
+- Gradle license plugn - https://github.com/hierynomus/license-gradle-plugin
+- Dependency-check-gradle - https://github.com/jeremylong/dependency-check-gradle
+- MobSF - https://www.github.com/MobSF/Mobile-Security-Framework-MobSF
