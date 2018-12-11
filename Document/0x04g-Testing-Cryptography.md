@@ -136,7 +136,7 @@ Please note that the usage of IVs is different when using CTR and GCM mode in wh
 
 In the old days, PKCS #7 (Public Key Cryptography Standards 7) was used as a padding mechanism. Now in modern Java environments it is referred to as PKCS #5. This mechanism is vulnerable to the padding oracle attack. Therefore, it is best to use OEAP (Optimal Asymmetric Encryption Padding) (or PKCS #1 v2.0). Note that, even when using OAEP, you can still run into an issue known best as the Mangers attack as described [in the blog at Kudelskisecurity](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Kudelskisecurity").
 
-Note: AES-CBC with PKCS #5 has shown to be vulnerable to padding oracle attacks as well, given that the impelmentation gives warnings, such as "Padding error", "MAC error", or "decryption failed". See [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack/ "The Padding Oracle Attack") for an example.
+Note: AES-CBC with PKCS #5 has shown to be vulnerable to padding oracle attacks as well, given that the impelmentation gives warnings, such as "Padding error", "MAC error", or "decryption failed". See [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack/ "The Padding Oracle Attack") for an example. Next, it is best to ensure that you add an HMAC after you encrypt the plaintext: after all a ciphertext with a failing MAC will not have to be decrypted and can be discarded.
 
 
 #### Protecting Keys in Memory
