@@ -194,7 +194,7 @@ If `Security.framework` is used, only the second one will be shown.
 It is important to remember that Local Authentication framework is an event-based procedure and as such, should not the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
 
 - Verify that sensitive processes, such as re-authenticating a user triggering a payment transaction, are protected using the Keychain services method.
-- Verify that the `kSecAccessControlUserPresence` policy and `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` protection classes are set when the `SecAccessControlCreateWithFlags` method is called.
+- Verify that the `kSecAccessControlTouchIDAny` or `kSecAccessControlTouchIDCurrentSet` flags are set and `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` protection classes are set when the `SecAccessControlCreateWithFlags` method is called. Note that, alternatively, `kSecAccessControlUserPresence` can be used as a flag as well when you want to be able to use passcode as a fallback. Last, note that, when `kSecAccessControlTouchIDCurrentSet` is set, changing the fingerprints registered to the device will invalidate the entry which is protected with the flag.
 
 #### Dynamic Analysis
 
