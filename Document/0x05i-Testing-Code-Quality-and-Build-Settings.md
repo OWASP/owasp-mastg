@@ -531,25 +531,16 @@ A memory leak is often an issue as well. This can happen for instance when a ref
 #### Static Analysis
 There are various items to look for:
 - Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
-- Is there Javacode or Kotlin code? Look for
-  - Serialization/deserialization issues <TODO: EXTEND BASED ON https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet#for-android and https://versprite.com/blog/json-deserialization-memory-corruption-vulnerabilities/>
-  - Memory leaks? Look for (based on https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e and https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570): <TODO: EXPLAIN WHAT TO LOOK FOR!>
-    - BroadcastReceivers which are not unregistered,
-    - Static references to `Activity` or `View` classes,
-    - Singleton classes that have references to `Context`
-    - Inner Class references
-    - Anonymous Class references
-    - AsyncTask references
-    - Handler references
-    - Threading done wrong
-    - TimerTask references
+- Is there Javacode or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
 
+Note that there can be Memory leaks in Java/Kottline code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details: check the blog [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "a blog") and [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "a blog").
 
 #### Dynamic Analysis
 There are various steps to take:
 - In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
 - In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
 - Check with the [Memory Profiler from Android Studio](ttps://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
+- Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Tester"), for serialization vulnerabilities.
 
 
 
@@ -685,3 +676,11 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - Gradle license plugn - https://github.com/hierynomus/license-gradle-plugin
 - Dependency-check-gradle - https://github.com/jeremylong/dependency-check-gradle
 - MobSF - https://www.github.com/MobSF/Mobile-Security-Framework-MobSF
+- Squares leak canary - https://github.com/square/leakcanary
+- Memory Profiler from Android Studio - https://developer.android.com/studio/profile/memory-profiler
+- Android Java Deserialization Vulnerability Tester - https://github.com/modzero/modjoda
+
+#### Memory Analysis References
+- [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization")
+- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "a blog")
+- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "a blog")

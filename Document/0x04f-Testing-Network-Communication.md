@@ -248,7 +248,7 @@ Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You ca
 If you want to verify whether your server supports the right ciphersuites, there are various tools you can use:
 - nscurl - see Testing Network Communication for ios for more details/
 - [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
-- 
+
 
 ### Making Sure that Critical Operations Use Secure Communication Channels
 
@@ -291,6 +291,7 @@ Make sure that critical operations enforce the use of at least one additional ch
 #### Tools
 
 - Tcpdump - https://www.androidtcpdump.com/
+- Testssl.sh - https://github.com/drwetter/testssl.sh
 - Wireshark - https://www.wireshark.org/
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 - Burp Suite - https://portswigger.net/burp/
