@@ -809,7 +809,7 @@ public boolean checkRunningProcesses() {
 
 This works if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary, so we should find a better method.
 
-frida-server binds to TCP port 27047 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
+frida-server binds to TCP port 27042 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
 
 ```c
 boolean is_frida_server_listening() {
@@ -817,7 +817,7 @@ boolean is_frida_server_listening() {
 
     memset(&sa, 0, sizeof(sa));
     sa.sin_family = AF_INET;
-    sa.sin_port = htons(27047);
+    sa.sin_port = htons(27042);
     inet_aton("127.0.0.1", &(sa.sin_addr));
 
     int sock = socket(AF_INET , SOCK_STREAM , 0);
