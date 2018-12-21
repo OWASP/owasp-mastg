@@ -343,7 +343,7 @@ Fragment Managers can be created via the following:
 FragmentManager fm = getFragmentManager();
 ```
 
-Fragments don't necessarily have a user interface; they can be a convenient and efficient way to manage background operations pertaining to the app's user interface. A fragment may be declared persistent so that it the system preserves its state even if its Activity is destroyed.
+Fragments don't necessarily have a user interface; they can be a convenient and efficient way to manage background operations pertaining to the app's user interface. A fragment may be declared persistent so that if the system preserves its state even if its Activity is destroyed.
 
 ##### Inter-Process Communication
 
