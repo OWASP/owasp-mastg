@@ -1015,7 +1015,6 @@ Build.MODEL         sdk             emulator
 Build.PRODUCT       sdk             emulator
 Build.RADIO         unknown         possibly emulator
 Build.SERIAL        null            emulator
-Build.TAGS          test-keys       emulator
 Build.USER          android-build   emulator
 ```
 
