@@ -94,6 +94,8 @@ Better security is achieved by using the fingerprint API in conjunction with the
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the Keystore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key. The advantage of this is that transactions can be signed using Keystore APIs without ever extracting the private key from the Keystore. Consequently, it is impossible for attackers to obtain the key from memory dumps or by using instrumentation.
 
+Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which used event based communication with the application to tell whether a finger passed the authentication.
+
 #### Static Analysis
 
 Begin by searching for `FingerprintManager.authenticate()` calls. The first parameter passed to this method should be a `CryptoObject` instance which is a [wrapper class for crypto objects](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html) supported by FingerprintManager. Should the parameter be set to `null`, this means the fingerprint authorization is purely event-bound, likely creating a security issue.
