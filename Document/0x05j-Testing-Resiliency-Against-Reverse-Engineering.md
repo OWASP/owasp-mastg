@@ -1368,9 +1368,9 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
 - V8.5: "The app detects, and responds to, being run in an emulator."
 - V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
-- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
-- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
 
 
 #### Tools
