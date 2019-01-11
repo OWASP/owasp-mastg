@@ -94,7 +94,7 @@ Better security is achieved by using the fingerprint API in conjunction with the
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the Keystore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key. The advantage of this is that transactions can be signed using Keystore APIs without ever extracting the private key from the Keystore. Consequently, it is impossible for attackers to obtain the key from memory dumps or by using instrumentation.
 
-Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which used event based communication with the application to tell whether a finger passed the authentication.
+Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which uses an `onComplete` handler with no cryptographic binding. See [the Samsung Programming Guide](https://developer.samsung.com/common/download/check.do?actId=1106 "Pass programming guide") for more details.
 
 #### Static Analysis
 
@@ -252,6 +252,10 @@ Android Oreo (API 26) adds two additional error-codes:
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
 - `FINGERPRINT_ERROR_VENDOR` – A vendor-specific fingerprint reader error occurred.
 
+##### Third party SDKs
+
+Make sure that fingerprint authentication and/or other types of biometric authentication happens based on the Android SDK its APIs. If this is not the case, ensure that the SDK have been propperly vetted for any weaknesses, next: make sure that there is no "pass/no pass" setup. In all cases: the biometric APIs should bind to other means (e.g. unlock a secret or a cryptographic operator) which cannot be touched when the biometric authentication itself is bypassed.
+
 #### Dynamic Analysis
 
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
@@ -276,3 +280,4 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 #### Request App Permissions
 
 - Runtime Permissions - https://developer.android.com/training/permissions/requesting
+- Samsung Pass Developer Guide - https://developer.samsung.com/galaxy/pass/guide
