@@ -365,6 +365,8 @@ Make sure that critical operations enforce the use of at least one additional ch
 
 #### OWASP MASVS
 - V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
+- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - V5.5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
 
 #### CWE
