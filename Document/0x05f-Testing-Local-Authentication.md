@@ -254,7 +254,7 @@ Android Oreo (API 26) adds two additional error-codes:
 
 ##### Third party SDKs
 
-Make sure that fingerprint authentication and/or other types of biometric authentication happens based on the Android SDK its APIs. If this is not the case, ensure that the SDK have been propperly vetted for any weaknesses, next: make sure that there is no "pass/no pass" setup. In all cases: the biometric APIs should bind to other means (e.g. unlock a secret or a cryptographic operator) which cannot be touched when the biometric authentication itself is bypassed.
+Make sure that fingerprint authentication and/or other types of biometric authentication happens based on the Android SDK and its APIs. If this is not the case, ensure that the alternative SDK has been propperly vetted for any weaknesses. Make sure that the SDK is backed by the TEE/SE which unlocks a (cryptographic) secret based on the biometric authentication. This secret should not be unlocked by anything else, but a valid biometric entry. That way, it should never be the case that the fingerprintlogic can just be bypassed.
 
 #### Dynamic Analysis
 
