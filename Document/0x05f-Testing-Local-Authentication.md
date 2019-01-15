@@ -94,6 +94,8 @@ Better security is achieved by using the fingerprint API in conjunction with the
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the Keystore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key. The advantage of this is that transactions can be signed using Keystore APIs without ever extracting the private key from the Keystore. Consequently, it is impossible for attackers to obtain the key from memory dumps or by using instrumentation.
 
+Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which uses an `onComplete` handler with no cryptographic binding. See [the Samsung Programming Guide](https://developer.samsung.com/common/download/check.do?actId=1106 "Pass programming guide") for more details.
+
 #### Static Analysis
 
 Begin by searching for `FingerprintManager.authenticate()` calls. The first parameter passed to this method should be a `CryptoObject` instance which is a [wrapper class for crypto objects](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html) supported by FingerprintManager. Should the parameter be set to `null`, this means the fingerprint authorization is purely event-bound, likely creating a security issue.
@@ -250,6 +252,10 @@ Android Oreo (API 26) adds two additional error-codes:
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
 - `FINGERPRINT_ERROR_VENDOR` – A vendor-specific fingerprint reader error occurred.
 
+##### Third party SDKs
+
+Make sure that fingerprint authentication and/or other types of biometric authentication happens based on the Android SDK and its APIs. If this is not the case, ensure that the alternative SDK has been propperly vetted for any weaknesses. Make sure that the SDK is backed by the TEE/SE which unlocks a (cryptographic) secret based on the biometric authentication. This secret should not be unlocked by anything else, but a valid biometric entry. That way, it should never be the case that the fingerprintlogic can just be bypassed.
+
 #### Dynamic Analysis
 
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
@@ -274,3 +280,4 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 #### Request App Permissions
 
 - Runtime Permissions - https://developer.android.com/training/permissions/requesting
+- Samsung Pass Developer Guide - https://developer.samsung.com/galaxy/pass/guide
