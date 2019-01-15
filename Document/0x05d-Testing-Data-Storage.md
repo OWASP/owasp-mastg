@@ -273,6 +273,16 @@ Inspect the source code to determine whether native Android mechanisms identify 
 - Make sure that the app is using the Android KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the patterns `AndroidKeystore`, `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom`, and corresponding usages.
 - Use the `store(OutputStream stream, char[] password)` function to store the KeyStore to disk with a password. Make sure that the password is provided by the user, not hard-coded.
 
+##### 3rd Party libraries
+
+There are several different open-source libraries that offer encryption capabilities specific for the Android platform.
+
+- **[Java AES Crypto](https://github.com/tozny/java-aes-crypto "Java AES Crypto")** - A simple Android class for encrypting and decrypting strings.
+- **[SQL Cipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQL Cipher")** - SQLCipher is an open source extension to SQLite that provides transparent 256-bit AES encryption of database files.
+- **[Secure Preferences](https://github.com/scottyab/secure-preferences "Secure Preferences")** - Android Shared preference wrapper than encrypts the keys and values of Shared Preferences.
+
+> Please keep in mind that as long as the key is not stored in the KeyStore, it is always possible to easily retrieve the key on a rooted device and the decrypt the values you are trying to protect.
+
 #### Dynamic Analysis
 
 Install and use the app, executing all functions at least once. Data can be generated when entered by the user, sent by the endpoint, or shipped with the app. Then complete the following:
