@@ -440,11 +440,17 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
+**Intercepting the Requests**
+
+The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
+
+**End-to-End Encryption for Push Notifications**
+
+As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients. 
 
 ##### Drozer
 
@@ -477,7 +483,7 @@ Drozer depends on older versions of some libraries. Avoid messing up the system'
 
 Install virtualenv via pip:
 
-```shell 
+```shell
 $ pip install virtualenv
 ```
 
@@ -510,7 +516,7 @@ $ easy_install protobuf==2.4.1 twisted==10.2.0
 
 Finally, download and install the Python .egg from the MWR labs website:
 
-```shell 
+```shell
 $ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
 $ tar xzf drozer-2.3.4.tar.gz
 $ easy_install drozer-2.3.4-py2.7.egg

@@ -340,7 +340,9 @@ Check the app's source code for logging mechanisms by searching for the followin
   * logging
   * logs
 
-While preparing the production release, you can use tools like `ProGuard` (included in Android Studio) to delete logging-related code. To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-project.txt_) for the following options:
+While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
+
+To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-project.txt_) for the following options:
 
 ```java
 -assumenosideeffects class android.util.Log
