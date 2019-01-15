@@ -173,7 +173,7 @@ $ git clone https://github.com/mwrlabs/needle.git
 
 The following commands install the dependencies required to run Needle on macOS.
 
-```shell 
+```shell
 # Core dependencies
 $ brew install python
 $ brew install libxml2
@@ -228,7 +228,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 To launch Needle, just open a console and type:
 
-```shell 
+```shell
 $ python needle.py
       __  _ _______ _______ ______         ______
       | \ | |______ |______ | \     |      |______
@@ -287,7 +287,7 @@ use device/dependency_installer
 
 run
 ```
-Other modules may promt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it. 
+Other modules may promt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it.
 
 #### SSH Connection via USB
 
@@ -564,6 +564,14 @@ If you don't have access to the source, you can try binary patching or runtime m
 - Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
 
 Certificate pinning is a good security practice and should be used for all applications that handle sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) lists the root and intermediate CAs that major operating systems automatically trust. Please refer to the [map of the roughly 650 organizations that are Certificate Authorities Mozilla or Microsoft trust (directly or indirectly)](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
+
+It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a pre-requisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection Github Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
+
+```
+# ios sslpinning disable
+```
+
+See also the [Github Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
 
 If you want to get more details about white box testing and typical code patterns, refer to "iOS Application Security" by David Thiel. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
