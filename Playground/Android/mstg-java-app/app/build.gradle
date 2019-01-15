@@ -1,0 +1,107 @@
+//apply plugin: 'com.android.application'
+//
+//android {
+//    compileSdkVersion 23
+//    buildToolsVersion "23.0.2"
+//
+//    defaultConfig {
+//        applicationId "sg.vp.owasp_mobile.myfirstbrokenapp"
+//        minSdkVersion 15
+//        targetSdkVersion 23
+//        versionCode 1
+//        versionName "1.0"
+//    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//}
+
+
+apply plugin: 'com.android.application'
+
+
+    android {
+        compileSdkVersion 26
+        buildToolsVersion '27.0.3'
+
+
+        defaultConfig {
+            applicationId "sg.vp.owasp_mobile.omtg_android"
+            minSdkVersion 21
+            targetSdkVersion 26
+            versionCode 1
+            versionName "1.0"
+        }
+
+        sourceSets {
+            main {
+                jni.srcDirs = []
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled = false
+                proguardFiles.add(file('proguard-android.txt'))
+            }
+        }
+
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
+//            universalApk true //generate an additional APK that contains all the ABIs
+//        }
+
+
+//        splits {
+//
+//            density {
+//                enable true
+//                reset()
+//                include "mdpi", "hdpi"
+//            }
+//            abi {
+//                enable true
+//                reset()
+//                include "x86", "x86_64"
+//            }
+//        }
+
+//        ndk {
+//            moduleName = "native"
+//            toolchain = 'clang'
+//            CFlags.addAll(['-Wall'])
+//        }
+//        productFlavors {
+//            // for detailed abiFilter descriptions, refer to "Supported ABIs" @
+//            // https://developer.android.com/ndk/guides/abis.html#sa
+//            create("arm") {
+//                ndk.abiFilters.add("armeabi")
+//            }
+//            create("x86") {
+//                ndk.abiFilters.add("x86")
+//            }
+//            // To include all cpu architectures, leaves abiFilters empty
+//            //create("arm")
+//        }
+
+
+
+    }
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile files('libs/sqlcipher.jar')
+    compile files('libs/guava-r09.jar')
+    compile files('libs/commons-codec.jar')
+    compile 'ch.acra:acra:4.9.0'
+}

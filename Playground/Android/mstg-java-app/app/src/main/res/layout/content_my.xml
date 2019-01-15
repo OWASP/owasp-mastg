@@ -1,0 +1,160 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_my"
+    android:layout_marginTop="4dp"
+    android:paddingTop="60dp">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_BadEncryption"
+        android:onClick="OMTG_DATAST_001_BadEncryption" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_KeyChain"
+        android:onClick="OMTG_DATAST_001_KeyChain" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_KeyStore"
+        android:onClick="OMTG_DATAST_001_KeyStore" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_InternalStorage"
+        android:onClick="OMTG_DATAST_001_InternalStorage" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_ExternalStorage"
+        android:onClick="OMTG_DATAST_001_ExternalStorage" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_SharedPreferences"
+        android:onClick="OMTG_DATAST_001_SharedPreferences" />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_SQLite"
+        android:onClick="OMTG_DATAST_001_SQLite_Not_Encrypted" />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_001_SQLiteEncrypted"
+        android:onClick="OMTG_DATAST_001_SQLite_Encrypted" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_002_Logging"
+        android:onClick="OMTG_DATAST_002_Logging" />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_004_3rd_Party"
+        android:onClick="OMTG_DATAST_004_3rd_Party" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_005_Keyboard_Cache"
+        android:onClick="OMTG_DATAST_005_Keyboard_Cache" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_006_Clipboard"
+        android:onClick="OMTG_DATAST_006_Clipboard" />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_DATAST_011_Memory"
+        android:onClick="OMTG_DATAST_011_Memory" />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_ENV_005_Webview"
+        android:onClick="OMTG_ENV_005_Webview_Remote" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_ENV_005_Webview_Local"
+        android:onClick="OMTG_ENV_005_Webview_Local" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_CODING_003_Best_Practice"
+        android:onClick="OMTG_CODING_003_Best_Practice" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_CODING_003_SQL_Injection"
+        android:onClick="OMTG_CODING_003_SQL_Injection" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_CODING_003_SQL_Injection_Content_Provider"
+        android:onClick="OMTG_CODING_003_SQL_Injection_Content_Provider" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_OMTG_CODING_003_Code_Injection"
+        android:onClick="OMTG_CODING_004_Code_Injection" />
+
+    <Button
+        android:text="@string/button_OMTG_NETW_001_Secure_Channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="OMTG_NETW_001_Secure_Channel" />
+
+    <Button
+        android:text="@string/button_OMTG_NETW_004_SSL_Pinning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="OMTG_NETW_004_SSL_Pining" />
+
+    <Button
+        android:text="@string/button_OMTG_NETW_004_SSL_Pinning_Whole_Cert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="OMTG_NETW_004_SSL_Pining_Certificate" />
+
+
+
+</LinearLayout>
+</ScrollView>

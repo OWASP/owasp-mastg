@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="sg.vp.owasp_mobile.OMTG_Android" >
+
+    <!-- Used for OMTG_DATAST_001_ExternalStorage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Needed for WebView Class and ACRA (3rd party library) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MyActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:label="@string/title_activity_display_message"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_SharedPreferences"
+            android:label="@string/title_activity_omtg__datast_004__sharedpreferences"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_KeyChain"
+            android:label="@string/title_activity_omtg__datast_001__key_chain"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_BadEncryption"
+            android:label="@string/title_activity_omtg__datast_001__bad_encryption"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_KeyStore"
+            android:label="@string/title_activity_omtg__datast_001__key_store"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_002_Logging"
+            android:label="@string/title_activity_omtg__datast_002__logging"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_InternalStorage"
+            android:label="@string/title_activity_omtg__datast_004__internal_storage"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_SQLite_Encrypted"
+            android:label="@string/title_activity_omtg__datast_004__sqlite__secure"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_SQLite_Not_Encrypted"
+            android:label="@string/title_activity_omtg__datast_004__sqlite"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_011_Memory"
+            android:label="@string/title_activity_omtg__datast_007__memory"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_CODING_003_SQL_Injection"
+            android:label="@string/title_activity_omtg__coding_003__sql__injection"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_001_ExternalStorage"
+            android:label="@string/title_activity_omtg__datast_004__external_storage"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_004_3rd_Party"
+            android:label="@string/title_activity_omtg__datast_005"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="489d9b39abe9f529a26895bb10637d445c94f29d" />
+
+        <activity
+            android:name=".OMTG_CODING_003_SQL_Injection_Content_Provider"
+            android:label="@string/title_activity_omtg__coding_003__sql__injection__content__provider"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+
+        <provider
+            android:name=".OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation"
+            android:authorities="sg.vp.owasp_mobile.provider.College" >
+        </provider>
+
+        <activity
+            android:name=".OMTG_CODING_003_Best_Practice"
+            android:label="@string/title_activity_omtg__coding_003__best__practice"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_CODING_004_Code_Injection"
+            android:label="@string/title_activity_omtg__coding_004__code__injection"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_ENV_005_WebView_Remote"
+            android:label="@string/title_activity_omtg__env_005__web_view"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_ENV_005_WebView_Local"
+            android:label="@string/title_activity_omtg__env_005__web_view__local"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_005_Keyboard_Cache"
+            android:label="@string/title_activity_omtg__datast_005__keyboard__cache"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_DATAST_006_Clipboard"
+            android:label="@string/title_activity_omtg__datast_006__clipboard"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.vp.owasp_mobile.OMTG_Android.MyActivity" />
+        </activity>
+        <activity
+            android:name=".OMTG_NETW_001_Secure_Channel"
+            android:label="@string/title_OMTG_NETW_001_Secure_Channel"
+            android:parentActivityName=".MyActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OMTG_NETW_004_SSL_Pinning"
+            android:label="@string/title_activity_omtg__netw_004__ssl__pinning"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OMTG_NETW_004_SSL_Pinning_Certificate"
+            android:label="@string/title_activity_omtg__netw_004__ssl__pinning__certificate"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+    </application>
+
+</manifest>

