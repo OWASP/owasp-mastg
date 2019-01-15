@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">MSTG Kotlin App</string>
+
+    <string name="login_text">Login</string>
+    <string name="login_username">User Name</string>
+    <string name="login_email">Email Address</string>
+    <string name="login_password">Password</string>
+    <string name="register_text">Register New Account</string>
+    <string name="register_name">User Name</string>
+    <string name="register_email">Email Address</string>
+    <string name="register_password">Password</string>
+    <string name="register_cpassword">Confirm Password</string>
+    <string name="menu_text">Test Cases</string>
+    <string name="menu_sharedpref">SharedPreferences Implementation</string>
+    <string name="menu_sharedpref_details"><b><u>Instructions</u></b>\n\nReview the content in "/data/data/<b>[package-name]</b>/shared_prefs/*.xml"\n\nIf done correctly, content in the XML file should be encrypted using encryption keys from the KeyStore.</string>
+    <string name="menu_webview">WebView Implementation</string>
+    <string name="menu_webview_details"><b><u>Instructions</u></b>\n\nRender unsafe content in both of the following WebViews with different settings.\n\nIf done correctly, the safe WebViews should prevent arbitrary JavaScript execution.</string>
+    <string name="menu_rootcheck">Root Detection Implementation</string>
+    <string name="menu_rootcheck_details"><b><u>Instructions</u></b>\n\nReview the root detection function from the source code.\n\nIf done correctly, there should be multiple methods of performing root detection.</string>
+
+    <string name="webview_secure"><b>Launch Secure WebView</b></string>
+    <string name="webview_insecure"><b>Launch Insecure WebView</b></string>
+
+    <string name="rootcheck_secure">Launch Multiple Root Detection</string>
+    <string name="rootcheck_insecure">Launch Single Root Detection</string>
+
+    <string name="root_detection"><b>Root Detection Check</b></string>
+
+</resources>

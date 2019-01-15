@@ -1,0 +1,1 @@
+This is the source code for MSTG Kotlin App prior to pushing into public Github as part of the MSTG Hacking Playground.

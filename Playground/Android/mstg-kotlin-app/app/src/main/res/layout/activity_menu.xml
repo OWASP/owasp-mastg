@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sg.vantagepoint.mstgkotlin.MenuActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/menulayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:text="@string/menu_text"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/title_text" />
+
+            <TextView
+                android:id="@+id/tvsharedpref"
+                android:text="@string/menu_sharedpref"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/colorAccent"
+                android:padding="@dimen/menu_items_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvsharedpref_details"
+                android:text="@string/menu_sharedpref_details"
+                android:textColor="@color/colorTextDetails"
+                android:background="@color/colorTextBackground"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvwebview"
+                android:text="@string/menu_webview"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/colorAccent"
+                android:padding="@dimen/menu_items_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvwebview_details"
+                android:text="@string/menu_webview_details"
+                android:textColor="@color/colorTextDetails"
+                android:background="@color/colorTextBackground"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_safe_webview"
+                android:text="@string/webview_secure"
+                android:textColor="@color/colorTextDetails"
+                android:background="@drawable/button_border"
+                android:fontFamily="monospace"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_unsafe_webview"
+                android:text="@string/webview_insecure"
+                android:textColor="@color/colorTextDetails"
+                android:background="@drawable/button_border"
+                android:fontFamily="monospace"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvrootcheck"
+                android:text="@string/menu_rootcheck"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/colorAccent"
+                android:padding="@dimen/menu_items_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvrootcheck_details"
+                android:text="@string/menu_rootcheck_details"
+                android:textColor="@color/colorTextDetails"
+                android:background="@color/colorTextBackground"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_secure_rootcheck"
+                android:text="@string/rootcheck_secure"
+                android:textColor="@color/colorTextDetails"
+                android:background="@drawable/button_border"
+                android:fontFamily="monospace"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_insecure_rootcheck"
+                android:text="@string/rootcheck_insecure"
+                android:textColor="@color/colorTextDetails"
+                android:background="@drawable/button_border"
+                android:fontFamily="monospace"
+                android:padding="@dimen/menu_items_padding"
+                android:textSize="@dimen/menu_items_textsize"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

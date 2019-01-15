@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>Rendering Unsafe HTML Content to demonstrate secure WebView implementation</title>
+</head>
+
+<body>
+
+<p style="font-weight:bold;text-decoration:underline">Unsafe HTML Content for Demonstration Purposes</p>
+
+<noscript><p style="color:red">Sorry, your WebView does not support JavaScript!</p></noscript>
+
+<input type="button" value="Click here for Toast Message" onclick="fireToastMessage()" style="padding:14px 40px;background-color:#4CAF50;border:none;color:white" />
+
+<p id="output"></p>
+<!--<script>alert("This is an XSS POC to show that WebView is not securely implemented and allows JavaScript Execution");</script>-->
+<script>
+	 	// check if JavaScript is activated
+		alert("This is an XSS POC to show that WebView is not securely implemented and allows JavaScript Execution");
+
+		var result = window.Android.returnString();
+		document.getElementById("output").innerHTML = result;
+
+		function fireToastMessage() {
+			window.Android.showToast("This message is executed by JavaScript");
+		}
+	</script>
+</body>
+
+</html>
