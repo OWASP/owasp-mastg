@@ -41,6 +41,10 @@
 /var/cache/apt
 /var/lib/apt
 /var/lib/cydia
+/usr/sbin/frida-server
+/usr/bin/cycript
+/usr/local/bin/cycript
+/usr/lib/libcycript.dylib
 ```
 
 ##### Проверки разрешений файлов
