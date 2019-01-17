@@ -57,13 +57,15 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
 ```
-/system/xbin/busybox
-
-/sbin/su
-/system/bin/su
-/system/xbin/su
-/data/local/su
-/data/local/xbin/su
+/sbin/su  
+/system/bin/su  
+/system/bin/failsafe/su  
+/system/xbin/su  
+/system/xbin/busybox  
+/system/sd/xbin/su  
+/data/local/su  
+/data/local/xbin/su  
+/data/local/bin/su  
 ```
 
 Checking whether `su` is on the PATH also works:
