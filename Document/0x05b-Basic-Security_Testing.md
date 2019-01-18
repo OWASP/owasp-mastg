@@ -450,7 +450,7 @@ Start the app and trigger a function that uses FCM. You should see HTTP messages
 
 **End-to-End Encryption for Push Notifications**
 
-As an additional layer of security, push notifications can be encrypted by using Capillary. Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients.
+As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients. 
 
 ##### Drozer
 
