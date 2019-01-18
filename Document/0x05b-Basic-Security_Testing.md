@@ -440,11 +440,17 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-- The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
+**Intercepting the Requests**
+
+The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
+
+**End-to-End Encryption for Push Notifications**
+
+As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients. 
 
 ##### Drozer
 
@@ -477,7 +483,7 @@ Drozer depends on older versions of some libraries. Avoid messing up the system'
 
 Install virtualenv via pip:
 
-```shell 
+```shell
 $ pip install virtualenv
 ```
 
@@ -510,7 +516,7 @@ $ easy_install protobuf==2.4.1 twisted==10.2.0
 
 Finally, download and install the Python .egg from the MWR labs website:
 
-```shell 
+```shell
 $ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
 $ tar xzf drozer-2.3.4.tar.gz
 $ easy_install drozer-2.3.4-py2.7.egg
@@ -640,3 +646,25 @@ See the test case "Testing Custom Certificate Stores and Certificate Pinning" fo
 An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
+
+
+### References (Tools)
+
+- ADBI - https://github.com/crmulliner/adbi
+- Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
+- Android tcpdump - https://www.androidtcpdump.com/
+- Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
+- Android Platform Tools - https://developer.android.com/studio/releases/platform-tools.html
+- Android Studio - https://developer.android.com/studio/index.html
+- apkx - https://github.com/b-mueller/apkx
+- Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
+- Burp Suite Professional - https://portswigger.net/burp/
+- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
+- Frida - https://www.frida.re/docs/android/
+- JAADAS - https://github.com/flankerhqd/JAADAS
+- Mitm-relay - https://github.com/jrmdev/mitm_relay
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- QARK - https://github.com/linkedin/qark/
+- SDK tools - https://developer.android.com/studio/index.html#downloads
+- SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
+- Wireshark - https://www.wireshark.org/
