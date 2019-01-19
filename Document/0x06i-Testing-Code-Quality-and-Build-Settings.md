@@ -491,6 +491,17 @@ However, these do not include all the libraries being used. Next, with Class-dum
 $ ./class-dump <Executable> -r
 ```
 
+### Memory Corruption Bugs
+iOS applications have various ways to run into memory corruption bugs: first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-c and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
+
+#### Static Analysis
+
+#### Dynamic Analysis
+https://developer.ibm.com/tutorials/mo-ios-memory/
+https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html / https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15 / http://www.phrack.org/issues/69/9.html#article, https://books.google.nl/books?id=nucRXjCYpN8C&pg=PA212&lpg=PA212&dq=memory+corruption+in+objective-c&source=bl&ots=dINvpq6NvV&sig=jx4ofktFwg4QhfYViLqmEjSB9ZI&hl=nl&sa=X&ved=2ahUKEwjlqeaipJLfAhWKJVAKHSXjDOY4ChDoATACegQIBBAB#v=onepage&q=memory%20corruption%20in%20objective-c&f=false, https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c, https://academy.realm.io/posts/russ-bishop-unsafe-swift/
+<TODO: write overview with reference to general testing gudie>
+<TODO: write static analysis for unsafe ptrs in obj-c, swift wrapping, C unsafe stuff & C++ unsafe stuff>
+<TODO: write dynamic analysis part>
 
 
 ### References
