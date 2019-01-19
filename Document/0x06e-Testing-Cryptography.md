@@ -63,7 +63,7 @@ Note that functions which are noted in chapter "Cryptography for Mobile Apps" as
 Given the continuous evolution of all third party libraries, this should not be the place to evaluate each library in terms of static analysis. Still there are some points of attention:
 
 - **Find the library being used**: This can be done using the following methods:
-  - Check the [cartfile](ttps://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile") if Carthage is used.
+  - Check the [cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile") if Carthage is used.
 	- Check the [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile") if Cocoapods is used.
 	- Check the linked libraries: Open the xcodeproj file and check the project properties. Go to the tab "Build Phases" and check the entries in "Link Binary With Libraries" for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
 	- In the case of copy-pasted sources: search the headerfiles (in case of using Objective-C) and otherwise the Swift files for known methodnames for known libraries.
@@ -213,7 +213,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs")
 - [Google on Tink](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink")
 - [Themis](https://github.com/cossacklabs/themis "Themis")
-- [cartfile](ttps://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile")
+- [cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile")
 - [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile")
 
 #### Random Number Documentation

@@ -229,7 +229,7 @@ Protocols:
 - `TLSv1.2`[rfc5246](https://tools.ietf.org/html/rfc5246)
 - `TLSv1.3`[rfc8446](https://tools.ietf.org/html/rfc8446)
 
-Key Exchange Algorithms: 
+Key Exchange Algorithms:
 - `DSA`[rfc6979](https://tools.ietf.org/html/rfc6979)
 - `ECDSA`[rfc6979](https://tools.ietf.org/html/rfc6979)
 - `RSA`[rfc8017](https://tools.ietf.org/html/rfc8017)
@@ -333,7 +333,7 @@ Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You ca
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning". Tools like Vproxy can be used to redirect all HTTP(S) traffic to your machine to sniff and investigate it for unencrypted requests.
 
 If you want to verify whether your server supports the right ciphersuites, there are various tools you can use:
-- nscurl - see Testing Network Communication for ios for more details/
+- nscurl - see Testing Network Communication for ios for more details.
 - [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
 
@@ -414,7 +414,7 @@ Make sure that critical operations enforce the use of at least one additional ch
 - RFC 8447 - https://tools.ietf.org/html/rfc8447#section-8
 
 
-#### Android 
+#### Android
 - Android supported Cipher suites - https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites
 
 
