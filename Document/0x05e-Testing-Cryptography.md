@@ -314,7 +314,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers")
 - [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle")
 - [Legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java")
-- [Android Developer documentation](ttps://developer.android.com/training/articles/keystore.html "Keystore")
+- [Android Developer documentation](https://developer.android.com/training/articles/keystore.html "Keystore")
 - [NIST keylength recommendations](https://www.keylength.com/en/4/ "NIST keylength recommendations")
 - [BSI recommendations - 2017](https://www.keylength.com/en/8/ "BSI recommendations - 2017")
 
