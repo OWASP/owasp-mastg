@@ -66,6 +66,58 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
+As mentioned before starting at Android 7, android device won't trust user CA certificates. In the following we will be presenting two methods to bypass this android security mesure.
+
+#### Network Security Configuration
+
+Available since Android 7,this feature allows apps to customize their network security settings,by precising which CA certificates the app will be trusting.This CA certificates can be system trusted CAs as well as user non-public CAs or both.
+Network security configuration uses an XML file where the app specify which CAs certificates will be trusting.
+
+res/xml/network_security_config.xml:
+```shell
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="@raw/extracas"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+```
+The apps must include an entry in the manifest file to point to the network security configuration file.
+```shell
+<?xml version="1.0" encoding="utf-8"?>
+<manifest ... >
+    <application android:networkSecurityConfig="@xml/network_security_config"
+                    ... >
+        ...
+    </application>decomp
+</manifest>
+```
+
+In order to intercept an application traffic which Android version is 7 and above, you must follow the steps below:
+
+- Decompile the app using decompiling tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
+- Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
+- Repackage the app.[Android developer documentation] explains how it's done. (https://developer.android.com/studio/publish/app-signing#signing-manually)
+
+Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is redundant and annoying.
+##### Adding the Proxy's certificate among system trusted CAs
+
+In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the Device to accept the proxy's certificate as one of the system strusted certificates, to do so follow the steps below:
+
+- Making the system files writable which requires rooting the Device.Find instructions on how to [root] your device later in this chapter.Run 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'(https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root)
+- Preparing the proxy's CA cerificates to match system certificates format.Export the proxy's certificates on der format (this is based on burp suites case) then run the following commands:
+```shell
+openssl x509 -inform DER -in cacert.der -out cacert.pem  
+openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
+mv cacert.pem <hash>.0
+```
+- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command ```shell chmod 644 <hash>.0 ```
+
+By following the steps presented above you make sure that any application will trust the proxy's certificates, so you can intercept its traffic.
+
 #### Testing on the Emulator
 
 All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
@@ -118,6 +170,8 @@ $ adb push cacert.cer /sdcard/
 5. Scroll down and tap `cacert.cer`.
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
+
+For Android 7 and above following the same methods presented in Real Device testing section.
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
