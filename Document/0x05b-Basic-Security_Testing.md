@@ -116,7 +116,8 @@ openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1
 mv cacert.pem <hash>.0
 ```
 - Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command 
-```shell chmod 644 <hash>.0 ```
+```shell chmod 644 <hash>.0
+```
 
 By following the steps presented above you make sure that any application will trust the proxy's certificates, so you can intercept its traffic.
 
