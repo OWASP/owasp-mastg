@@ -176,7 +176,7 @@ The interception proxy need to listen to the port specified in the port forwardi
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
 
 - [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
-Note that starting at Android Nougat 7.0 (API LEVEL 24) application don't trust anymore user CA certificates. bypassing this security mesure will be addressed in the "Basic Security Testing" chapters.
+Note that starting at Android Nougat 7.0 (API LEVEL 24) the application no longer trusts a user supplied CA certificate unless specified in the app.Bypassing this security mesure will be addressed in the "Basic Security Testing" chapters.
 - [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
 
 **Intercepting Traffic**
