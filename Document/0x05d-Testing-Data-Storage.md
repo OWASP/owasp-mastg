@@ -1169,3 +1169,9 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
 - Fridump - https://github.com/Nightbringer21/fridump
 - LiME - https://github.com/504ensicsLabs/LiME
+
+#### Libraries
+
+- Java AES Crypto - https://github.com/tozny/java-aes-crypto
+- SQL Cipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android
+- Secure Preferences - https://github.com/scottyab/secure-preferences
