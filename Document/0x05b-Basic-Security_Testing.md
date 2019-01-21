@@ -727,3 +727,4 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - SDK tools - https://developer.android.com/studio/index.html#downloads
 - SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - Wireshark - https://www.wireshark.org/
+- Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
