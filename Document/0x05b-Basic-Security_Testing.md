@@ -109,7 +109,7 @@ Note that even if this method is quite simple its major drawback is that you hav
 In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems strusted certificates.
 The following steps illustrate how this could be done:
 
-- Making the system files writable which requires rooting the device.Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
+- Making the system files writable which requires rooting the device. Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
 - Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in der format (this is the default format in Burp Suite) then run the following commands:
 ```shell
 openssl x509 -inform DER -in cacert.der -out cacert.pem  
