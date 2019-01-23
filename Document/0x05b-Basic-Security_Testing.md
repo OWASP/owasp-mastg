@@ -98,11 +98,11 @@ The apps must include an entry in the manifest file to point to the network secu
 
 In order to intercept the traffic of an application running on Android 7.0 and higher, you must follow the steps below:
 
-- Decompile the app using decompiling tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
+- Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
 - Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
-- Repackage the app.[Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done. 
+- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done. 
 
-Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is redundant and annoying.
+Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
 ##### Adding the Proxy's certificate among system trusted CAs
 
