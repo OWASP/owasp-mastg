@@ -496,12 +496,16 @@ iOS applications have various ways to run into memory corruption bugs: first the
 
 #### Static Analysis
 There are various items to look for:
-- Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given 
+Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code is a little harder to spot when compiled. If you have the sources then you can see that C files use .c source files and .h header files and C++ uses .cpp files and .h files. This is a little different from the .swift and the .m source files for Swift and Objective-C. These files can be part of the sources, or part of third party libraries, registered as frameworks and imported through various tools, such as Carthage, the Swift Package Manager or Cocoapods.
+
+Is Objective-C in use? Check for the following items:
 
 
 #### Dynamic Analysis
 https://developer.ibm.com/tutorials/mo-ios-memory/
-https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html / https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15 / http://www.phrack.org/issues/69/9.html#article, https://books.google.nl/books?id=nucRXjCYpN8C&pg=PA212&lpg=PA212&dq=memory+corruption+in+objective-c&source=bl&ots=dINvpq6NvV&sig=jx4ofktFwg4QhfYViLqmEjSB9ZI&hl=nl&sa=X&ved=2ahUKEwjlqeaipJLfAhWKJVAKHSXjDOY4ChDoATACegQIBBAB#v=onepage&q=memory%20corruption%20in%20objective-c&f=false, https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c, https://academy.realm.io/posts/russ-bishop-unsafe-swift/
+https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html / https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15 / http://www.phrack.org/issues/69/9.html#article, https://books.google.nl/books?id=nucRXjCYpN8C&pg=PA212&lpg=PA212&dq=memory+corruption+in+objective-c&source=bl&ots=dINvpq6NvV&sig=jx4ofktFwg4QhfYViLqmEjSB9ZI&hl=nl&sa=X&ved=2ahUKEwjlqeaipJLfAhWKJVAKHSXjDOY4ChDoATACegQIBBAB#v=onepage&q=memory%20corruption%20in%20objective-c&f=false,
+https://stackoverflow.com/questions/8592289/arc-the-meaning-of-unsafe-unretained
+ https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c, https://academy.realm.io/posts/russ-bishop-unsafe-swift/
 <TODO: write static analysis for unsafe ptrs in obj-c, swift wrapping, C unsafe stuff & C++ unsafe stuff>
 <TODO: write dynamic analysis part>
 
