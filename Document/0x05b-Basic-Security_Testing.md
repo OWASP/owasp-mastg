@@ -66,6 +66,63 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
+As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security mesure.
+
+#### Bypassing the Network Security Configuration
+
+From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting. The CA certificates trusted by the app can be a system trusted CA as well as a user CA.
+The network security configuration uses an XML file where the app specifies which CA certificates will be trusted.
+
+res/xml/network_security_config.xml:
+```shell
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="@raw/extracas"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+```
+The apps must include an entry in the manifest file to point to the network security configuration file.
+```shell
+<?xml version="1.0" encoding="utf-8"?>
+<manifest ... >
+    <application android:networkSecurityConfig="@xml/network_security_config"
+                    ... >
+        ...
+    </application>decomp
+</manifest>
+```
+
+In order to intercept the traffic of an application running on Android 7.0 and higher, you must follow the steps below:
+
+- Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
+- Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
+- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done. 
+
+Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
+
+##### Adding the Proxy's certificate among system trusted CAs
+
+In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems strusted certificates.
+The following steps illustrate how this could be done:
+
+- Making the system files writable which requires rooting the device. Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
+- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in der format (this is the default format in Burp Suite) then run the following commands:
+```shell
+openssl x509 -inform DER -in cacert.der -out cacert.pem  
+openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
+mv cacert.pem <hash>.0
+```
+- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command 
+```shell 
+chmod 644 <hash>.0
+```
+
+By following the steps described above, you allow any application to trust the proxy's certificates, which allows you to intercept its traffic.
+
 #### Testing on the Emulator
 
 All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
@@ -118,6 +175,8 @@ $ adb push cacert.cer /sdcard/
 5. Scroll down and tap `cacert.cer`.
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
+
+For Android 7 and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
@@ -668,3 +727,4 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - SDK tools - https://developer.android.com/studio/index.html#downloads
 - SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - Wireshark - https://www.wireshark.org/
+- Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
