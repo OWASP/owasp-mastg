@@ -209,9 +209,9 @@ In that case, the certificate associated or 'pinned' to the host at when it seen
 
 #### Static Analysis
 
-Verify that the server certificate is pinned. Pinning can be implemented in multiple ways:
+Verify that the server certificate is pinned. Pinning can be implemented on various levels in terms of the certificate tree presented by the server:
 
-1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
+1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated.
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
@@ -220,6 +220,7 @@ The code presented below shows how it is possible to check if the certificate pr
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X509 checks. The snippet below implements a check of the certificate.  
 
 ```objc
+
 (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
   SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
@@ -237,7 +238,13 @@ else {
 }
 ```
 
-There are libraries available that provide an API for implementing SSL Pinning, like [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"). Trustkit supports both Swift and Objective-C Apps.
+Note that the certificate pinning example above has a major drawback when you use certificate pinning and the certificate changes, then the pin is invalidated. If you can reuse the public key of the server, then you can create a new certificate with that same public key, which will ease the maintenance. There are various ways in which you can do this:
+
+- Implement your own pin based on the publick key: Change the comparison `if ([remoteCertificateData isEqualToData:localCertData]) {` in our example to a comparison of the key-bytes or the certificate-thumb.
+- Use [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
+- Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
+- Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
+
 
 #### Dynamic Analysis
 
