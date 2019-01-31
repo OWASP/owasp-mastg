@@ -785,31 +785,55 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 ###### Example: Ways to Detect Frida
 
-An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP. You can use a Java method that iterates through the list of running processes to determine whether `frida-server` is running:
+An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-```c
+With API Level 25 and below it was possible to query for all running services by using the Java method  (getRunningServices[https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices(int) "getRunningServices"]. This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
+
+A working solution to detect the frida process is to us the command `ps` instead.
+
+```Java
 public boolean checkRunningProcesses() {
 
-  boolean returnValue = false;
+    boolean returnValue = false;
 
-  // Get currently running application processes
-  List<RunningServiceInfo> list = manager.getRunningServices(300);
+    try {
+        Process process = Runtime.getRuntime().exec("ps");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        int read;
+        char[] buffer = new char[4096];
+        StringBuffer output = new StringBuffer();
+        while ((read = reader.read(buffer)) > 0) {
+            output.append(buffer, 0, read);
+        }
+        reader.close();
 
-  if(list != null){
-    String tempName;
-    for(int i=0;i<list.size();++i){
-      tempName = list.get(i).process;
+        // Waits for the command to finish.
+        process.waitFor();
+        Log.d("fridaserver", output.toString());
 
-      if(tempName.contains("fridaserver")) {
-        returnValue = true;
-      }
+        if(output.toString().contains("frida-server")) {
+            Log.d("fridaserver","Frida Server process found!" );
+            returnValue = true;
+        }
+
+    } catch (IOException e) {
+
+    } catch (InterruptedException e) {
+
     }
-  }
-  return returnValue;
+
+    return returnValue;
 }
+
 ```
 
-This works if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary, so we should find a better method.
+Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself. When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
+
+![Executing ps on Android Lollipop](Images/Chapters/0x05j/Android_Lollipop_ps.png)
+
+![Executing ps on Android Nougat](Images/Chapters/0x05j/Android_Nougat_ps.png)
+
+Even if the process name could easily be detected, this would only work if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
 
 frida-server binds to TCP port 27042 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
 
