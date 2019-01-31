@@ -4,6 +4,22 @@ By now, you should have a basic understanding of the way Android apps are struct
 
 You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS.
 
+Before going any further with describing how you can set up you testing environment and start your first test, we'll present some TLS parameters and functionalities Android changes, which have to be considred when testing Android platforms starting at Oreo(8) and Pie(9).
+
+###### Android 8
+
+- Android plateform will no longer support SSLv3
+- HttpsURLConnection method will no longer perform insecure TLS/SSL protocol version fallback
+- URIs can no longer contain empty labels
+- When tunneling HTTPS connection over connection, the system correctly places the port number (:443) in the Host line when sending this information to an intermediate server
+- The system no longer sends a proxy-authorization header on a tunneled Http(s)URLConnection to the proxy when setting up the tunnel. Instead, the system generates a proxy-authorization header, and sends it to the proxy when that proxy sends HTTP 407 in response to the initial request
+
+###### Android 9
+
+- If an instance of SSLSocket fails to connect while it's being created, the system throws an IOException instead of a NullPointerException.
+- The SSLEngine class cleanly handles any close_notify alerts that occur.
+
+
 #### Software Needed on the Host PC or Mac
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
@@ -728,3 +744,5 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - Wireshark - https://www.wireshark.org/
 - Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
+- Android 8.0 Behavior Changes - https://developer.android.com/about/versions/oreo/android-8.0-changes
+- Android 9.0 Behavior Changes - https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes
