@@ -415,6 +415,8 @@ As mentioned in the previous topic, apps that target API levels 24+, unless othe
 
 In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, it will not use this feature, therefore still trusting in user supplied CA's.
 
+Note that from Android 8 onward, there is no support for SSLv3 & HttpsURLConnection will nog longer perform a fallback to an insecure TLS/SSL protocol.
+
 #### Static Analysis
 
 * Use a decompiler (Ex. Jadx) to confirm the targetSDK present in the AndroidManifest.xml file

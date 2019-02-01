@@ -4,22 +4,6 @@ By now, you should have a basic understanding of the way Android apps are struct
 
 You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS.
 
-Before going any further with describing how you can set up you testing environment and start your first test, we'll present some TLS parameters and functionalities Android changes, which have to be considred when testing Android platforms starting at Oreo(8) and Pie(9).
-
-###### Android 8
-
-- Android plateform will no longer support SSLv3
-- HttpsURLConnection method will no longer perform insecure TLS/SSL protocol version fallback
-- URIs can no longer contain empty labels
-- When tunneling HTTPS connection over connection, the system correctly places the port number (:443) in the Host line when sending this information to an intermediate server
-- The system no longer sends a proxy-authorization header on a tunneled Http(s)URLConnection to the proxy when setting up the tunnel. Instead, the system generates a proxy-authorization header, and sends it to the proxy when that proxy sends HTTP 407 in response to the initial request
-
-###### Android 9
-
-- If an instance of SSLSocket fails to connect while it's being created, the system throws an IOException instead of a NullPointerException.
-- The SSLEngine class cleanly handles any close_notify alerts that occur.
-
-
 #### Software Needed on the Host PC or Mac
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
@@ -32,6 +16,8 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 - API 24: Android 7.0
 - API 25: Android 7.1
 - API 26: Android 8.0
+- API 27: Android 8.1
+- API 28: Android 9.0
 
 ![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
 
@@ -82,6 +68,8 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
+A few other differences: from Android 8 onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 onward, the SSLSocket and SSLEngine will behave a little bit different in terms of erroring when something goes wrong during the handshakes.
+
 As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security mesure.
 
 #### Bypassing the Network Security Configuration
@@ -116,7 +104,7 @@ In order to intercept the traffic of an application running on Android 7.0 and h
 
 - Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
 - Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
-- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done. 
+- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
@@ -132,8 +120,8 @@ openssl x509 -inform DER -in cacert.der -out cacert.pem
 openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
 mv cacert.pem <hash>.0
 ```
-- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command 
-```shell 
+- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command
+```shell
 chmod 644 <hash>.0
 ```
 
@@ -193,6 +181,7 @@ $ adb push cacert.cer /sdcard/
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
 For Android 7 and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
+
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
@@ -525,7 +514,7 @@ Start the app and trigger a function that uses FCM. You should see HTTP messages
 
 **End-to-End Encryption for Push Notifications**
 
-As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients. 
+As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients.
 
 ##### Drozer
 
