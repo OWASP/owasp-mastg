@@ -16,6 +16,8 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 - API 24: Android 7.0
 - API 25: Android 7.1
 - API 26: Android 8.0
+- API 27: Android 8.1
+- API 28: Android 9.0
 
 ![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
 
@@ -66,6 +68,8 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
+A few other differences: from Android 8 onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 onward, the SSLSocket and SSLEngine will behave a little bit different in terms of erroring when something goes wrong during the handshakes.
+
 As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security mesure.
 
 #### Bypassing the Network Security Configuration
@@ -100,7 +104,7 @@ In order to intercept the traffic of an application running on Android 7.0 and h
 
 - Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
 - Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
-- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done. 
+- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
@@ -116,8 +120,8 @@ openssl x509 -inform DER -in cacert.der -out cacert.pem
 openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
 mv cacert.pem <hash>.0
 ```
-- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command 
-```shell 
+- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command
+```shell
 chmod 644 <hash>.0
 ```
 
@@ -177,6 +181,7 @@ $ adb push cacert.cer /sdcard/
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
 For Android 7 and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
+
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
@@ -509,7 +514,7 @@ Start the app and trigger a function that uses FCM. You should see HTTP messages
 
 **End-to-End Encryption for Push Notifications**
 
-As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients. 
+As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients.
 
 ##### Drozer
 
@@ -728,3 +733,5 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - Wireshark - https://www.wireshark.org/
 - Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
+- Android 8.0 Behavior Changes - https://developer.android.com/about/versions/oreo/android-8.0-changes
+- Android 9.0 Behavior Changes - https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes
