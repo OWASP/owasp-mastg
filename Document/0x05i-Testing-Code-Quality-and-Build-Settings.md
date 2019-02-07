@@ -38,14 +38,16 @@ The contents of the signing certificate can be examined with `jarsigner`. Note t
 The output for an APK signed with a debug certificate is shown below:
 
 ```shell
+
 $ jarsigner -verify -verbose -certs example.apk
 
 sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
       X.509, CN=Android Debug, O=Android, C=US
       [certificate is valid from 3/24/16 9:18 AM to 8/10/43 9:18 AM]
-      [CertPath not validated: Path doesn't chain with any of the trust anchors]
+      [CertPath not validated: Path doesn\'t chain with any of the trust anchors]
 (...)
+
 ```
 
 Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and above. Instead of `jarsigner`, you can rely on the `apksigner` to verify the certificate chain.
@@ -99,7 +101,7 @@ Attack Surface:
 
 To scan for all debuggable applications on a device, use the `app.package.debuggable` module:
 
-```
+```shell
 dz> run app.package.debuggable
 Package: com.mwr.dz
   UID: 10083
@@ -520,39 +522,28 @@ class a$b
 }
 ```
 
-### References
+### Memory Corruption Bugs
+Android applications often run on a VM where most of the memory corruption issues have been taken care off.
+This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
 
-#### OWASP Mobile Top 10 2016
+A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+#### Static Analysis
+There are various items to look for:
+- Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
+- Is there Javacode or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
 
-#### OWASP MASVS
+Note that there can be Memory leaks in Java/Kottline code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
+- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
+- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android").
 
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- V7.1: "The app is signed and provisioned with valid certificate."
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-- V7.3: "Debugging symbols have been removed from native binaries."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+#### Dynamic Analysis
+There are various steps to take:
+- In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
+- In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
+- Check with the [Memory Profiler from Android Studio](https://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
+- Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
 
-#### CWE
-
-- CWE-20 - Improper Input Validation
-- CWE-215 - Information Exposure through Debug Information
-- CWE-388 - Error Handling
-- CWE-489 - Leftover Debug Code
-- CWE-656 - Reliance on Security through Obscurity
-
-
-#### Tools
-
-- ProGuard - https://www.guardsquare.com/en/proguard
-- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
-- Xposed - http://repo.xposed.info/
-- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
-- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
 
 
 ### Checking for Weaknesses in Third Party Libraries
@@ -647,23 +638,51 @@ When the sources are not available, one can decompile the app and check the jar 
 The dynamic analysis of this secion comprises validating whether the copyrights of the licensens have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 
-#### References
+### References
 
-##### OWASP Mobile Top 10 2016
+#### OWASP Mobile Top 10 2016
 
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
-##### OWASP MASVS
-
+#### OWASP MASVS
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- V7.1: "The app is signed and provisioned with valid certificate."
+- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- V7.3: "Debugging symbols have been removed from native binaries."
+- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
 - V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- V7.6: "The app catches and handles possible exceptions."
+- V7.7: "Error handling logic in security controls denies access by default."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
+- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
-##### CWE
+#### CWE
+
+- CWE-20 - Improper Input Validation
+- CWE-215 - Information Exposure through Debug Information
+- CWE-388 - Error Handling
+- CWE-489 - Leftover Debug Code
+- CWE-656 - Reliance on Security through Obscurity
 - CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
-##### Tools
-- [Black Duck](https://www.blackducksoftware.com/ "Black Duck")
-- [Sourceclear](https://www.sourceclear.com/ "Sourceclear")
-- [Snyk](https://snyk.io/ "snyk")
-- [Gradle license plugn](https://github.com/hierynomus/license-gradle-plugin "Gradle license plugin")
-- [Dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle "Dependency-check-gradle")
-- [MobSF](https://www.github.com/MobSF/Mobile-Security-Framework-MobSF, "MobSF")
+#### Tools
+
+- ProGuard - https://www.guardsquare.com/en/proguard
+- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
+- Xposed - http://repo.xposed.info/
+- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
+- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
+- Black Duck - https://www.blackducksoftware.com/
+- Sourceclear -  https://www.sourceclear.com/
+- Snyk - https://snyk.io/
+- Gradle license plugn - https://github.com/hierynomus/license-gradle-plugin
+- Dependency-check-gradle - https://github.com/jeremylong/dependency-check-gradle
+- MobSF - https://www.github.com/MobSF/Mobile-Security-Framework-MobSF
+- Squares leak canary - https://github.com/square/leakcanary
+- Memory Profiler from Android Studio - https://developer.android.com/studio/profile/memory-profiler
+- Android Java Deserialization Vulnerability Tester - https://github.com/modzero/modjoda
+
+#### Memory Analysis References
+- [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization")
+- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
+- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android")

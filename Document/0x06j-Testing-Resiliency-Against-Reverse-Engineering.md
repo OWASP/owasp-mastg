@@ -41,6 +41,10 @@ Check for files and directories typically associated with jailbreaks, such as
 /var/cache/apt
 /var/lib/apt
 /var/lib/cydia
+/usr/sbin/frida-server
+/usr/bin/cycript
+/usr/local/bin/cycript
+/usr/lib/libcycript.dylib
 ```
 
 ##### Checking File Permissions
@@ -597,10 +601,10 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 #### OWASP MASVS
 
 - V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.11: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- V8.13: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
+- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
+- V8.12: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
 #### Tools
 - Frida - http://frida.re/

@@ -57,13 +57,15 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
 ```
-/system/xbin/busybox
-
-/sbin/su
-/system/bin/su
-/system/xbin/su
-/data/local/su
-/data/local/xbin/su
+/sbin/su  
+/system/bin/su  
+/system/bin/failsafe/su  
+/system/xbin/su  
+/system/xbin/busybox  
+/system/sd/xbin/su  
+/data/local/su  
+/data/local/xbin/su  
+/data/local/bin/su  
 ```
 
 Checking whether `su` is on the PATH also works:
@@ -1015,7 +1017,6 @@ Build.MODEL         sdk             emulator
 Build.PRODUCT       sdk             emulator
 Build.RADIO         unknown         possibly emulator
 Build.SERIAL        null            emulator
-Build.TAGS          test-keys       emulator
 Build.USER          android-build   emulator
 ```
 
@@ -1369,9 +1370,9 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
 - V8.5: "The app detects, and responds to, being run in an emulator."
 - V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
-- V8.9: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
-- V8.10: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
 
 
 #### Tools

@@ -124,8 +124,52 @@ $ plutil -convert xml1 Info.plist
 
 Once the file is converted to a human readable format, the exceptions can be analyzed. The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP website that does not have all the ATS requirements.
 
-In general it can be summarised:
+#### Recommendations for usage of ATS
 
+It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` is available to check the same. The command can be used as follows:
+
+```
+/usr/bin/nscurl --ats-diagnostics https://www.example.com
+Starting ATS Diagnostics
+
+Configuring ATS Info.plist keys and displaying the result of HTTPS loads to https://www.example.com.
+A test will "PASS" if URLSession:task:didCompleteWithError: returns a nil error.
+Use '--verbose' to view the ATS dictionaries used and to display the error received in URLSession:task:didCompleteWithError:.
+================================================================================
+
+Default ATS Secure Connection
+---
+ATS Default Connection
+Result : PASS
+---
+
+================================================================================
+
+Allowing Arbitrary Loads
+
+---
+Allow All Loads
+Result : PASS
+---
+
+================================================================================
+
+Configuring TLS exceptions for www.example.com
+
+---
+TLSv1.3
+2019-01-15 09:39:27.892 nscurl[11459:5126999] NSURLSession/NSURLConnection HTTP load failed (kCFStreamErrorDomainSSL, -9800)
+Result : FAIL
+---
+```
+
+The output above only shows the first few results of nscurl. A permutation of different settings is executed and verified against the specified endpoint. If the default ATS secure connection test is passing, ATS can be used in it's default secure configuration.
+
+> If there are any fails in the nscurl output, please change the server side configuration of TLS to make the serverside more secure, instead of weakening the configuration in ATS on the client.
+
+For more information on this topic please consult the [blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
+
+In general it can be summarised:
 - ATS should be configured according to best practices by Apple and only be deactivated under certain circumstances.
 - If the application connects to a defined number of domains that the application owner controls, then configure the servers to support the ATS requirements and opt-in for the ATS requirements within the app. In the following example, `example.com` is owned by the application owner and ATS is enabled for that domain.
 
@@ -154,7 +198,6 @@ In general it can be summarised:
 - If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views
 
-
 ### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
@@ -166,9 +209,9 @@ In that case, the certificate associated or 'pinned' to the host at when it seen
 
 #### Static Analysis
 
-Verify that the server certificate is pinned. Pinning can be implemented in multiple ways:
+Verify that the server certificate is pinned. Pinning can be implemented on various levels in terms of the certificate tree presented by the server:
 
-1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated
+1. Including server's certificate in the application bundle and performing verification on each connection. This requires an update mechanisms whenever the certificate on the server is updated.
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
@@ -177,6 +220,7 @@ The code presented below shows how it is possible to check if the certificate pr
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X509 checks. The snippet below implements a check of the certificate.  
 
 ```objc
+
 (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
   SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
@@ -194,7 +238,13 @@ else {
 }
 ```
 
-There are libraries available that provide an API for implementing SSL Pinning, like [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"). Trustkit supports both Swift and Objective-C Apps.
+Note that the certificate pinning example above has a major drawback when you use certificate pinning and the certificate changes, then the pin is invalidated. If you can reuse the public key of the server, then you can create a new certificate with that same public key, which will ease the maintenance. There are various ways in which you can do this:
+
+- Implement your own pin based on the publick key: Change the comparison `if ([remoteCertificateData isEqualToData:localCertData]) {` in our example to a comparison of the key-bytes or the certificate-thumb.
+- Use [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
+- Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
+- Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
+
 
 #### Dynamic Analysis
 
@@ -243,3 +293,7 @@ Once you have extracted the certificate from the application (e.g. using Cycript
 - CWE-319 - Cleartext Transmission of Sensitive Information
 - CWE-326 - Inadequate Encryption Strength
 - CWE-295 - Improper Certificate Validation
+
+##### Nscurl
+- [Blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS")
+-

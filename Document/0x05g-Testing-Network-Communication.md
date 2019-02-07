@@ -193,7 +193,7 @@ Once the Keystore has been loaded, we can use the TrustManager that trusts the C
 String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
 TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
 tmf.init(keyStore);
-Create an SSLContext that uses the TrustManager
+// Create an SSLContext that uses the TrustManager
 // SSLContext context = SSLContext.getInstance("TLS");
 sslContext.init(null, tmf.getTrustManagers(), null);
 ```
@@ -212,7 +212,7 @@ OkHttpClient client = new OkHttpClient.Builder()
         .build();
 ```
 
-Applications that use a WebView component may utilize the WebViewClient's event handler for some kind of "certificate pinning" of each request before the target resource is loaded. The following code shows an example verification of the Issuer DN of the certificate sent by the server:
+Applications that use a WebView component may utilize the WebViewClient's event handler for some kind of "certificate pinning" of each request before the target resource is loaded. The following code shows an example verification:
 
 ```java
 WebView myWebView = (WebView) findViewById(R.id.webview);
@@ -228,15 +228,15 @@ myWebView.setWebViewClient(new WebViewClient(){
         //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
         SslCertificate serverCert = view.getCertificate();
         if(serverCert != null){
-            //Apply check on Issuer DN against expected one
-            SslCertificate.DName issuerDN = serverCert.getIssuedBy();
-            if(!this.expectedIssuerDN.equals(issuerDN.toString())){
+            //apply either certificate or public key pinning comparison here
                 //Throw exception to cancel resource loading...
             }
         }
     }
 });
 ```
+
+Alternatively, it is better to use an OkHttpClient with configured pins and let it act as a proxy overriding `shouldInterceptRequest` of the `WebViewClient`.
 
 ##### Xamarin Applications
 
@@ -249,7 +249,7 @@ Normally a function is created to check the certificate(s) and return the boolea
     public class MainActivity : Activity
     {
         // SupportedPublicKey - Hexadecimal value of the public key.
-        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin. 
+        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin.
         private const string SupportedPublicKey = "3082010A02820101009CD30CF05AE52E47B7725D3783B3686330EAD735261925E1BDBE35F170922FB7B84B4105ABA99E350858ECB12AC468870BA3E375E4E6F3A76271BA7981601FD7919A9FF3D0786771C8690E9591CFFEE699E9603C48CC7ECA4D7712249D471B5AEBB9EC1E37001C9CAC7BA705EACE4AEBBD41E53698B9CBFD6D3C9668DF232A42900C867467C87FA59AB8526114133F65E98287CBDBFA0E56F68689F3853F9786AFB0DC1AEF6B0D95167DC42BA065B299043675806BAC4AF31B9049782FA2964F2A20252904C674C0D031CD8F31389516BAA833B843F1B11FC3307FA27931133D2D36F8E3FCF2336AB93931C5AFC48D0D1D641633AAFA8429B6D40BC0D87DC3930203010001";
 
         private static bool ValidateServerCertificate(
@@ -270,7 +270,7 @@ Normally a function is created to check the certificate(s) and return the boolea
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Main);
             TesteAsync("https://security.claudio.pt");
-  
+
         }
 ```
 
@@ -315,7 +315,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
-After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage. 
+After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage.
 
 #### Dynamic Analysis
 
@@ -343,7 +343,7 @@ Pin-set contain a set of public key pins. Each set can define a expiration date.
 The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
 
 If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
-    
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -405,7 +405,7 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 #### Dynamic Analysis
 
-In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism. 
+In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the device, this particular app sets the targetSDK to Api level 24+ and is running on a Android device with version 7+, we should not be able to intercept the communication. If we are able to, this means that there is a bypass of this mechanism.
 
 
 ### Testing Default Network Security Configuration
@@ -414,6 +414,8 @@ In a scenario where we have the proxy root CA (Ex. Burp Suite) installed on the 
 As mentioned in the previous topic, apps that target API levels 24+, unless otherwise defined, will implement a default Network Security Configuration that no longer trust user supplied CA's.
 
 In a scenario that the app is running on a Android device with version 7+, but targets API levels below 24, it will not use this feature, therefore still trusting in user supplied CA's.
+
+Note that from Android 8 onward, there is no support for SSLv3 & HttpsURLConnection will nog longer perform a fallback to an insecure TLS/SSL protocol.
 
 #### Static Analysis
 
