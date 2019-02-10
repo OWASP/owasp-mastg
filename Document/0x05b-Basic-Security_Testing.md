@@ -78,7 +78,7 @@ From Android 7 onwards, the network security configuration allows apps to custom
 The network security configuration uses an XML file where the app specifies which CA certificates will be trusted.
 
 res/xml/network_security_config.xml:
-```shell
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <base-config>
@@ -90,7 +90,7 @@ res/xml/network_security_config.xml:
 </network-security-config>
 ```
 The apps must include an entry in the manifest file to point to the network security configuration file.
-```shell
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest ... >
     <application android:networkSecurityConfig="@xml/network_security_config"

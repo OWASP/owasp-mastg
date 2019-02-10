@@ -374,7 +374,7 @@ Servicemanager is a system daemon that manages the registration and lookup of sy
 You can query the list of system services with the `service list` command.
 
 
-```
+```shell
 $ adb shell service list
 Found 99 services:
 0 carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]
