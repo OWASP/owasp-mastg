@@ -287,6 +287,7 @@ In order to test Universal links on a static approach you will do the following:
 - retrieve and validate the App Site Association file from the server
 - check that the link receiver method in the app delegate is properly verifying the incoming links
 - check that the data handler method is handling properly the incoming data
+- check if the app is calling other apps's Universal Links
 
 ###### Checking the Associated Domains
 
@@ -357,7 +358,40 @@ Note that the scheme of the `webpageURL` must be HTTP or HTTPS. Any other scheme
 
 ###### Checking the Data Handler Method
 
-You should check how the received data is validated. This can be also part of the method `application:continueUserActivity:restorationHandler:` method or occur on a separate method being called from it.
+You should check how the received data is validated. This can be also part of the method `application:continueUserActivity:restorationHandler:` method or occur on a separate method being called from it. Here's an example from the Telegram app:
+
+```swift
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        ...
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
+            self.openUrl(url: url)
+        }
+        
+        return true
+    }
+```
+
+You can see there that it verifies that the received activity is of type `NSUserActivityTypeBrowsingWeb` and then obtain the url from `userActivity.webpageURL` and opens it.
+
+###### Checking if the App is Calling Other App's Universal Links
+
+```swift
+}, openUniversalUrl: { url, completion in
+    if #available(iOS 10.0, *) {
+        var parsedUrl = URL(string: url)
+        if let parsed = parsedUrl {
+            if parsed.scheme == nil || parsed.scheme!.isEmpty {
+                parsedUrl = URL(string: "https://\(url)")
+            }
+        }
+        
+        if let parsedUrl = parsedUrl {
+            return UIApplication.shared.open(parsedUrl, options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber], completionHandler: { value in
+                completion.completion(value)
+            })
+```
+
+Note how they turn the `scheme` to "https" and how they set the option `UIApplicationOpenURLOptionUniversalLinksOnly: true` that [opens the URL only if the URL is a valid universal link and there is an installed app capable of opening that URL](https://developer.apple.com/documentation/uikit/uiapplicationopenurloptionuniversallinksonly?language=objc).
 
 ##### Testing UIActivity Sharing
 
@@ -841,7 +875,7 @@ RET: (
 
 Here we can observe that:
 
-- as we anticipated in the overview, this occurred via XPC under-the-hood, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
+- as we anticipated in the overview, this occurred via XPC under-the-hood, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
 - the UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist).
 
 ###### Identify the App Extensions Involved
@@ -875,7 +909,7 @@ Apple warns about the improper use of custom URL schemes in the [Apple Developer
 
 > URL schemes offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow other apps to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
 
-They also suggest using Universal Links for deep linking:
+They also suggest using Universal Links instead, if the purpose is to implement deep linking:
 
 > While custom URL schemes are an acceptable form of deep linking, universal links are strongly recommended as a best practice.
 
@@ -883,28 +917,26 @@ Supporting a custom URL scheme is done by:
 
 - defining the format for the app's URLs
 - register the scheme so that the system directs appropriate URLs to the app
-- handling the URLs that the app receives
+- handling the URLs that the app receives.
 
 Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters and when users aren't prompted for confirmation before triggering an important action.
 
-One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge.
-
-Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
+One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge. Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
 
 As a developer, you should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
 
-All URLs are passed to your app delegate, either at launch time or while your app is running or in the background. To handle incoming URLs, your delegate should implement methods to:
+All URLs are passed to the app delegate, either at launch time or while the app is running or in the background. To handle incoming URLs, the delegate should implement methods to:
 
-- retrieve information about the URL and decide whether you want to open it.
+- retrieve information about the URL and decide whether you want to open it
 - open the resource specified by the URL.
 
 More information can be found in the [archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW13) and in the [Apple Secure Coding Guide](https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/Articles/ValidatingInput.html).
 
-In addition, an app may also want to send URL requests (aka. queries) to other apps.
+In addition, an app may also want to send URL requests (aka. queries) to other apps. This is done by:
 
 - registering the application query schemes that the app wants to query
-- the app can query other apps to know if they can open a certain URL
-- finally, it can send the URL requests
+- optionally querying other apps to know if they can open a certain URL
+- sending the URL requests.
 
 All of this presents a wide attack surface that we will address in the static and dynamic analysis sections.
 
@@ -922,7 +954,7 @@ There are a couple of things that we can do in the static analysis. In the next 
 
 The first step to test custom URL schemes is finding out whether an application registers any protocol handlers.
 
-To view registered protocol handlers, if you have the original source code, simply open the project in Xcode, go to the "Info" tab and open the "URL Types" section as presented in the screenshot below:
+If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the "Info" tab and open the "URL Types" section as presented in the screenshot below:
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
@@ -942,7 +974,7 @@ Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in t
 </array>
 ```
 
-In a compiled application (or IPA), registered protocol handlers are found in the file `Info.plist` in the root app bundle folder. Open it and search for the `CFBundleURLSchemes` key, if present, it should contain an array of strings (example from [iGoat-Swift](https://github.com/OWASP/iGoat-Swift)):
+In a compiled application (or IPA), registered protocol handlers are found in the file `Info.plist` in the app bundle's root folder. Open it and search for the `CFBundleURLSchemes` key, if present, it should contain an array of strings (example from [iGoat-Swift](https://github.com/OWASP/iGoat-Swift)):
 
 ```xml
 grep -A 5 -nri urlsch Info.plist
@@ -963,7 +995,7 @@ This could lead to a URL scheme hijacking attack (see page 136 in [#THIEL]).
 
 ##### Testing Application Query Schemes Registration
 
-Before calling the `openURL:options:completionHandler:` method apps can call [`canOpenURL`](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) to verify that the target app is available. As it was being used by malicious app as a way to enumerate installed apps, [from iOS 9.0 you must also declare the URL schemes you pass to this method](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl#discussion) by adding the `LSApplicationQueriesSchemes` key to your app's `Info.plist` file and an array of up to 50 URL schemes.
+Before calling the `openURL:options:completionHandler:` method, apps can call [`canOpenURL`](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) to verify that the target app is available. However, as this method was being used by malicious app as a way to enumerate installed apps, [from iOS 9.0 the URL schemes passed to it must be also declared](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl#discussion) by adding the `LSApplicationQueriesSchemes` key to the app's `Info.plist` file and an array of up to 50 URL schemes.
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
@@ -973,38 +1005,69 @@ Before calling the `openURL:options:completionHandler:` method apps can call [`c
     </array>
 ```
 
-`canOpenURL` will always return `NO` for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme**, even if `LSApplicationQueriesSchemes` was declared, and return `YES` / `NO` depending on the result.
+`canOpenURL` will always return `NO` for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return `YES` / `NO` depending on the result.
+
+As an example, Telegram declares in its [`Info.plist`](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Telegram-iOS/Info.plist#L63) these Queries Schemes, among others:
+
+```xml
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>dbapi-3</string>
+        <string>instagram</string>
+        <string>googledrive</string>
+        <string>comgooglemaps-x-callback</string>
+        <string>foursquare</string>
+        <string>here-location</string>
+        <string>yandexmaps</string>
+        <string>yandexnavi</string>
+        <string>comgooglemaps</string>
+        <string>youtube</string>
+        <string>twitter</string>
+        ...
+```
 
 ##### Testing URL Handling and Validation
 
-Next, determine how a URL path is built and validated. If you have the original source code you can search for the following methods:
+In order to determine how a URL path is built and validated, if you have the original source code, you can search for the following methods:
 
 - `application:didFinishLaunchingWithOptions:` method or `application:will-FinishLaunchingWithOptions:`: verify how the decision is made and how the information about the URL is retrieved
 - [`application:openURL:options:`](application:openURL:options:): verify how the resource is being opened, i.e. how the data is being parsed, verify the [options](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey), especially if the calling app ([`sourceApplication`](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey/1623128-sourceapplication)) is being verified or checked against a white- or blacklist. The app might also need user permission when using the custom URL scheme.
 
+In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250):
+
+```swift
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?) -> Bool {
+        self.openUrl(url: url)
+        return true
+    }
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        self.openUrl(url: url)
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        self.openUrl(url: url)
+        return true
+    }
+    
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        self.openUrl(url: url)
+        return true
+    }
+```
+
+We can observe some things here:
+
+- the app implements also deprecated methods like [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc) and [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application)
+- the source application is not being verified in any of those methods
+- all of them call a private `openUrl` method. You can [inspect it](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1270) to learn more about how the URL request is handled
+
 ##### Testing URL Requests to Other Apps
 
-The method [`openURL:options:completionHandler:`](https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc) is responsible for opening URLs that may be local to the current app or it may be one that must be provided by a different app.
+The method [`openURL:options:completionHandler:`](https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc) and the [deprecated `openURL` method of `UIApplication`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc) are responsible for opening URLs (i.e. to send requests / make queries to other apps) that may be local to the current app or it may be one that must be provided by a different app. If you have the original source code you can search directly for usages of those methods.
 
-If only having the compiled application (IPA) you can still try to identify which URL schemes are being used.
-For each of the elements on that array, you might want to find out how the app makes use of it. For this you can first verify that the app binary contains those strings by e.g. using unix `strings` command:
-
-```bash
-$ strings <yourapp> | grep "myURLscheme://"
-```
-
-or even better, use radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
-
-```bash
-$ r2 -qc izz~iGoat:// iGoat-Swift
-37436 0x001ee610 0x001ee610  23  24 (4.__TEXT.__cstring) ascii iGoat://?contactNumber=
-```
-
-Similarly you can search for other app's URL schemes the app might be calling
-
-- check if `LSApplicationQueriesSchemes` was declared or search for common URL schemes
-- also use the string `://` or build a regular expression to match URLs as the app might not be declaring some schemes
-- if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/):
+Additionally, if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/):
     ```
     Apple Music — music:// or musics:// or audio-player-event://
     Calendar — calshow:// or x-apple-calevent://
@@ -1016,7 +1079,75 @@ Similarly you can search for other app's URL schemes the app might be calling
     Messages — sms://phonenumber
     Notes — mobilenotes://
     ...
-    ```
+    ```.
+
+We search for this method in the telegram source code, this time without using Xcode, just with `egrep`:
+
+```
+$ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
+```
+
+If we inspect the results we will see that this `openURL:options:completionHandler:` is actually for Universal Links so we keep searching for maybe `openURL`:
+
+```
+$ egrep -nr "openURL\(" ./Telegram-iOS/
+```
+
+If we inspect those lines we will see how this method is also being used to open "Settings" or to open the "App Store Page".
+
+When just searching for `://` we see:
+
+```
+if documentUri.hasPrefix("file://"), let path = URL(string: documentUri)?.path {
+if !url.hasPrefix("mt-encrypted-file://?") {
+guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex, 
+    offsetBy: "mt-encrypted-file://?".count)...])) else {
+parsedUrl = URL(string: "https://\(url)")
+if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreId)") {
+} else if let url = url as? String, url.lowercased().hasPrefix("tg://") {
+[[WKExtension sharedExtension] openSystemURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", userHandle.data]]];
+```
+
+After combining the results of both searches and carefully inspecting the source code we find the interesting part for us right now:
+
+```swift
+openUrl: { url in
+            var parsedUrl = URL(string: url)
+            if let parsed = parsedUrl {
+                if parsed.scheme == nil || parsed.scheme!.isEmpty {
+                    parsedUrl = URL(string: "https://\(url)")
+                }
+                if parsed.scheme == "tg" {
+                    return
+                }
+            }
+            
+            if let parsedUrl = parsedUrl {
+                UIApplication.shared.openURL(parsedUrl)
+```
+
+Before opening a URL, the scheme is validated, "https" will be added if necessary and it won't open any URL with the "tg" scheme. When ready it will use the deprecated `openURL` method.
+
+If only having the compiled application (IPA) you can still try to identify which URL schemes are being used to query other apps.
+
+- check if `LSApplicationQueriesSchemes` was declared or search for common URL schemes
+- also use the string `://` or build a regular expression to match URLs as the app might not be declaring some schemes
+
+You can do that by first verifying that the app binary contains those strings by e.g. using unix `strings` command:
+
+```bash
+$ strings <yourapp> | grep "someURLscheme://"
+```
+
+or even better, use radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
+
+```bash
+$ r2 -qc izz~iGoat:// iGoat-Swift
+37436 0x001ee610 0x001ee610  23  24 (4.__TEXT.__cstring) ascii iGoat://?contactNumber=
+```
+
+
+
 
 ##### Testing for Deprecated Methods
 
