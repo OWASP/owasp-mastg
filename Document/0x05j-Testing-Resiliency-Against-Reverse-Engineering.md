@@ -827,7 +827,7 @@ public boolean checkRunningProcesses() {
 
 ```
 
-Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself. When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
+Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox) . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
 
 ![Executing ps on Android Lollipop](Images/Chapters/0x05j/Android_Lollipop_ps.png)
 
@@ -983,7 +983,58 @@ my_openat:
     .size my_openat, .-my_openat;
 ```
 
-This implementation is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added. Even so, there are of course many ways to bypass this. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
+This implementation is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added.
+
+Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned. A check for the signature1 could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API Level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
+
+The following example is using GET_SIGNATURES;
+
+```Java
+public String getSignature() {
+
+    PackageInfo info;
+    String signatureBase64 = "";
+
+    // https://stackoverflow.com/a/52043065
+    try {
+      info = getPackageManager().getPackageInfo("antifrida.android.mstg.owasp.org.antifrida", PackageManager.GET_SIGNATURES);
+
+      for (Signature signature : info.signatures) {
+          MessageDigest md;
+          md = MessageDigest.getInstance("SHA");
+
+          md.update(signature.toByteArray());
+          signatureBase64 = new String(Base64.encode(md.digest(), 0));
+          //String something = new String(Base64.encodeBytes(md.digest()));
+          Log.e("Sign Base64 API < 28 ", signatureBase64);
+        }
+    } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    } catch (Exception e){
+        Log.e("exception", e.toString());
+    }
+
+    return signatureBase64;
+}
+```
+
+When calling the `getSignature()` function you would just need to verify if the signature matches your predefined and hardcoded signature.
+
+```Java
+String appSignature = getSignature();
+
+if(appSignature.isEmpty()) {
+    Toast.makeText(MainActivity.this,"App Signature is empty! You were tampering the App!", Toast.LENGTH_LONG).show();
+    Log.e("Sign Base64 empty", appSignature);
+} else if (appSignature.contains("<Base64-encoded-Signature")) {
+    Log.e("Sign Base64", "App Signature is verified and ok");
+} else {
+    Toast.makeText(MainActivity.this,"App Signature changed! You were tampering the App!", Toast.LENGTH_LONG).show();
+    Log.e("Sign Base64 changed", appSignature);
+}
+```
+
+Even so, there are of course many ways to bypass this. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
