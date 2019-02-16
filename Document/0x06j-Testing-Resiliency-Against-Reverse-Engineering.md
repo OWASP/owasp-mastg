@@ -103,14 +103,14 @@ true
 
 As you can see, our class method was called directly, and it returned "true." Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
-```
+```sh
 cy# a=choose(JailbreakDetectionVC)
 []
 ```
 
 Ooops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
 
-```
+```sh
 cy# a=choose(JailbreakDetectionVC)
 [#"<JailbreakDetectionVC: 0x14ee15620>"]
 cy# [a[0] isJailbroken]
@@ -121,7 +121,7 @@ True
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
-```
+```sh
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
@@ -140,7 +140,7 @@ Now, imagine that the application is closing immediately after detecting that th
 3.	iOS device must be connected via USB cable.
 4.	Use `frida-trace` on your workstation:
 
-```
+```shell
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
 ```
 

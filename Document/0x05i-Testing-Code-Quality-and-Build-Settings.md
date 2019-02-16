@@ -193,7 +193,7 @@ Dynamic symbols can be stripped via the `visibility` compiler flag. Adding this 
 
 Make sure that the following has been added to build.gradle:
 
-```
+```groovy
 externalNativeBuild {
     cmake {
         cppFlags "-fvisibility=hidden"
@@ -470,7 +470,7 @@ If source code is provided, you can check the build.gradle file to see whether o
 
 By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names, and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier. It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:
 
-```
+```groovy
 android {
     buildTypes {
         release {
