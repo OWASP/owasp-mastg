@@ -425,9 +425,16 @@ You can use this now to dynamically test them:
 
 ###### Triggering Universal Links
 
-Unlike custom URL schemes, unfortunately you cannot test Universal Links from Safari just by typing them in the search bar directly as this is not allowed by Apple. But you can test them anytime using other apps like the Notes app.
+Unlike custom URL schemes, unfortunately you cannot test Universal Links from Safari just by typing them in the search bar directly as this is not allowed by Apple. But you can test them anytime using other apps like the Notes app:
+
+- open the Notes app and create a new note
+- write the links including the domain
+- leave the editing mode in the Notes app
+- long-press the links to open them
 
 > To do it from Safari you will have to find an existing link on a website that once you click it it will be recognized as a Universal Link. This can be a bit time consuming.
+
+Alternatively you can also use Frida for this, see the section "[Performing URL Requests](#Performing-URL-Requests)" for more details.
 
 ###### Identifying Valid Universal Links
 
@@ -442,22 +449,17 @@ From the `apple-app-site-association` of apple.com we have seen above we chose t
     "/today",
 ```
 
-One of them should offer the "Open in app" option and the other should not. If you want to test them:
+One of them should offer the "Open in app" option and the other should not.
 
-- open the Notes app and create a new note
-- write the links including the domain
-- leave the editing mode in the Notes app
-- long-press the links to open them
-
-If we open the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
+If we click on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
 
 ![Forbidden Universal Link](Images/Chapters/0x06h/forbidden_universal_link.png)
 
-If we open the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
+If we click on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
 
 ![Allowed Universal Link](Images/Chapters/0x06h/allowed_universal_link.png)
 
-If we repeat the process and hook the `application:continueUserActivity:restorationHandler:` method using Frida we will see how it gets called as soon as we open the allowed universal link, use frida-trace for example:
+If we repeat the process and hook or trace the `application:continueUserActivity:restorationHandler:` method we will see how it gets called as soon as we open the allowed universal link. For this you can use frida-trace for example:
 
 ```javascript
 $ frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
@@ -495,7 +497,7 @@ Now we will show how to trace the link receiver method and how to extract additi
 }
 ```
 
-In order to open the links we will use the Notes app, write https://t.me/addstickers/radare (got from some quick Internet research) and open it.
+In order to open the links we will also use the Notes app, write https://t.me/addstickers/radare (got from some quick Internet research) and open it.
 
 ![Add Stickers](Images/Chapters/0x06h/telegram_add_stickers_universal_link.png)
 
@@ -542,7 +544,7 @@ You can observe that the function is in fact being called. You can now add code 
 
 ###### Checking How the Links Are Opened
 
-If you want to know more about which function actually opens the URL and how the data is actually being handled you can keep investigating.
+If you want to know more about which function actually opens the URL and how the data is actually being handled you should keep investigating.
 
 Extend the previous command in order to find out if there are any other functions involved into opening the URL.
 
@@ -659,7 +661,7 @@ Starting on iOS 6 it is possible for third-party apps to share information via s
 
 ![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet_1.png)
 
-The available share mechanisms (aka. Activity Types) include:
+The available sharing mechanisms (aka. Activity Types) include:
 
 - airDrop
 - assignToContact
@@ -669,25 +671,29 @@ The available share mechanisms (aka. Activity Types) include:
 - postToFacebook
 - postToTwitter
 
-A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype). Excluding some of the sharing mechanisms is possible, however it is a bit cumbersome as we will see.
+A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype). If not considered appropriate for the app, the developers have the possibility to exclude some of these sharing mechanisms.
 
 ##### Static Analysis
 
 ###### Sending Files
 
-Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired data (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init).
-
-As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes).
-
-In order to test this you should pay especial attention to:
+When testing `UIActivity` Sharing you should pay especial attention to:
 
 - the data being shared,
 - the custom activities,
 - the excluded activity types.
+  
+Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired data (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init).
 
-It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase and the developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some might not be even documented like "Create Watch Face".
+As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes). It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase and the developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some might not be even documented like "Create Watch Face".
 
-If having the source code, you should take a look at the `UIActivityViewController` and verify the `excludedActivityTypes`. If you only have the installed app, please refer to the steps presented in the dynamic analysis.
+If having the source code, you should take a look at the `UIActivityViewController` and:
+
+- inspect the activities passed to the `init(activityItems:applicationActivities:)` method
+- check if it defines custom activities (also being passed to the previous method)
+- verify the `excludedActivityTypes` if any
+
+If you only have the compiled/installed app, try searching for the previous method and property, for example:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems
@@ -704,8 +710,8 @@ When receiving files, you should check:
 
 If not having the source code you can still take a look into the `Info.plist` file and search for:
 
-- `CFBundleDocumentTypes` to see if the app specifies any *document types that it can open*.
 - `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` if the app declares exported/imported *custom document types*.
+- `CFBundleDocumentTypes` to see if the app specifies any *document types that it can open*.
 
 A very complete explanation about the use of these key can be found [here](https://stackoverflow.com/questions/21937978/what-are-utimportedtypedeclarations-and-utexportedtypedeclarations-used-for-on-i).
 
@@ -715,9 +721,9 @@ Let's see a real-world example. We will take a File Manager app and take a look 
 objection --gadget SomeFileManager run ios plist cat Info.plist
 ```
 
-Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just *one command away* from our goal and this can be still considered static analysis.
+> Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just *one command away* from our goal and this can be still considered static analysis.
 
-The first thing you notice is that app does not declare any imported custom document types but you can find a couple of exported ones:
+The first thing we noticed is that app does not declare any imported custom document types but ye could find a couple of exported ones:
 
 ```xml
 UTExportedTypeDeclarations =     (
@@ -750,13 +756,8 @@ The app also declares the document types it opens as we can find the key `CFBund
 
 ```xml
 CFBundleDocumentTypes =     (
-            {
-        CFBundleTypeIconFiles =             (
-            "doc_icon_64",
-            "doc_icon_22",
-            "doc_icon_44",
-            "doc_icon_320"
-        );
+        {
+        ...
         CFBundleTypeName = "SomeFileManager Files";
         LSItemContentTypes =             (
             "public.content",
@@ -771,7 +772,7 @@ CFBundleDocumentTypes =     (
 );
 ```
 
-We can see that this file manager will try to open anything that conforms to any of the UTIs listed in `LSItemContentTypes` and it's ready to open files with the extensions listed in `UTTypeTagSpecification/"public.filename-extension"`. Please take a note of this because it will be useful if we want to search for vulnerabilities when dealing with the different types of files when performing dynamic analysis.
+We can see that this File Manager will try to open anything that conforms to any of the UTIs listed in `LSItemContentTypes` and it's ready to open files with the extensions listed in `UTTypeTagSpecification/"public.filename-extension"`. Please take a note of this because it will be useful if you want to search for vulnerabilities when dealing with the different types of files when performing dynamic analysis.
 
 ##### Dynamic Analysis
 
@@ -788,10 +789,12 @@ To achieve this you can do two things:
 - hook the method we have seen in the static analysis, [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init) to get the `activityItems` and `applicationActivities`
 - find out the excluded activities by hooking [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes)
 
-Let's see an example using Telegram to share a picture and a text file. First write the hooks, we will use Frida for this:
+Let's see an example using Telegram to share a picture and a text file. First prepare the hooks, we will use the Frida REPL and write a script for this:
 
 ```javascript
-Interceptor.attach(ObjC.classes.UIActivityViewController['- initWithActivityItems:applicationActivities:'].implementation, {
+Interceptor.attach(
+ObjC.classes.
+    UIActivityViewController['- initWithActivityItems:applicationActivities:'].implementation, {
   onEnter: function (args) {
 
     printHeader(args)
@@ -808,7 +811,8 @@ Interceptor.attach(ObjC.classes.UIActivityViewController['- initWithActivityItem
   }
 });
 
-Interceptor.attach(ObjC.classes.UIActivityViewController['- excludedActivityTypes'].implementation, {
+Interceptor.attach(
+ObjC.classes.UIActivityViewController['- excludedActivityTypes'].implementation, {
   onEnter: function (args) {
     printHeader(args)
   },
@@ -818,7 +822,7 @@ Interceptor.attach(ObjC.classes.UIActivityViewController['- excludedActivityType
 });
 
 function printHeader(args) {
-  console.log("\n[*] ("+ ObjC.Object(args[0]).toString() + ") " + Memory.readUtf8String(args[1]) + " @ " + args[1])
+  console.log(Memory.readUtf8String(args[1]) + " @ " + args[1])
 };
 
 function printRet(retval) {
@@ -834,13 +838,13 @@ function printRet(retval) {
 You can store this as a JavaScript file, e.g. `inspect_send_activity_data.js` and load it like this:
 
 ```bash
-$ frida -U Telegram -l inspect_send_activity_data.js`
+$ frida -U Telegram -l inspect_send_activity_data.js
 ```
 
-You can trigger now this methods in the app by sharing a picture and then a text file. This will print the following output:
+Now observe the output when you first share a picture:
 
 ```javascript
-[*] (<UIActivityViewController: 0x13cb2b800>) initWithActivityItems:applicationActivities: @ 0x18c130c07
+[*] initWithActivityItems:applicationActivities: @ 0x18c130c07
 initWithActivityItems: (
     "<UIImage: 0x1c4aa0b40> size {571, 264} orientation 0 scale 1.000000"
 )
@@ -848,11 +852,15 @@ applicationActivities: nil
 RET @ 0x13cb2b800:
 <UIActivityViewController: 0x13cb2b800>
 
-[*] (<UIActivityViewController: 0x13cb2b800>) excludedActivityTypes @ 0x18c0f8429
+[*] excludedActivityTypes @ 0x18c0f8429
 RET @ 0x0:
 nil
+```
 
-[*] (<_UIDICActivityViewController: 0x13c4bdc00>) initWithActivityItems:applicationActivities: @ 0x18c130c07
+and then a text file:
+
+```javascript
+[*] initWithActivityItems:applicationActivities: @ 0x18c130c07
 initWithActivityItems: (
     "<QLActivityItemProvider: 0x1c4a30140>",
     "<UIPrintInfo: 0x1c0699a50>"
@@ -862,22 +870,22 @@ applicationActivities: (
 RET @ 0x13c4bdc00:
 <_UIDICActivityViewController: 0x13c4bdc00>
 
-[*] (<_UIDICActivityViewController: 0x13c4bdc00>) excludedActivityTypes @ 0x18c0f8429
+[*] excludedActivityTypes @ 0x18c0f8429
 RET @ 0x1c001b1d0:
 (
     "com.apple.UIKit.activity.MarkupAsPDF"
 )
 ```
 
-First we can see that,
+You can see that,
 
-- for the picture, the activity item is a `UIImage` and there are no excluded activities. 
+- for the picture, the activity item is a `UIImage` and there are no excluded activities.
 - for the text file there are two different activity items and "com.apple.UIKit.activity.MarkupAsPDF" is excluded.
 
-In the previous example case there were no custom `applicationActivities` and only one excluded activity. However, to better illustrate what you can expect from other apps we have shared a picture using another app, here you can see a bunch of application activities and excluded activities (output was edited to hide the name of the originating app):
+In the previous example, there were no custom `applicationActivities` and only one excluded activity. However, to better illustrate what you can expect from other apps we have shared a picture using another app, here you can see a bunch of application activities and excluded activities (output was edited to hide the name of the originating app):
 
 ```javascript
-[*] (<SomeActivityViewController: 0x142138a00>) initWithActivityItems:applicationActivities: @ 0x18c130c07
+[*] initWithActivityItems:applicationActivities: @ 0x18c130c07
 initWithActivityItems: (
     "<SomeActivityItemProvider: 0x1c04bd580>"
 )
@@ -890,7 +898,7 @@ applicationActivities: (
 RET @ 0x142138a00:
 <SomeActivityViewController: 0x142138a00>
 
-[*] (<SomeActivityViewController: 0x142138a00>) excludedActivityTypes @ 0x18c0f8429
+[*] excludedActivityTypes @ 0x18c0f8429
 RET @ 0x14797c3e0:
 (
     "com.apple.UIKit.activity.Print",
@@ -902,34 +910,35 @@ RET @ 0x14797c3e0:
 
 ###### Receiving Files
 
-In order to test the receiving part you can:
+After performing the static analysis you would know which *document types that the app can open* and *if it declares any custom document types* and (part of) the methods involved. You can use this now to test the receiving part by:
 
-- send a file that will trigger the "Open with..." dialogue (via AirDrop or e-mail) or *share* a file with the app from another app
-- hook `application:openURL:options:` and any other methods that we have identified in a previous static analysis
-- observe the app behaviour
-- in addition, we could send specific malformed files and/or use a fuzzing technique
+- sending a file that will trigger the "Open with..." dialogue (via AirDrop or e-mail) or *share* a file with the app from another app
+- hooking `application:openURL:options:` and any other methods that we have identified in a previous static analysis
+- observing the app behaviour
+- in addition, you could send specific malformed files and/or use a fuzzing technique
 
-To illustrate this with an example we have chosen an actual file manager app that we will call here "SomeFileManager" and its Bundle-ID `com.some.filemanager`. We do the following:
+To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and do the following:
 
 1. send a PDF file from our MacBook via Airdrop
 2. the "AirDrop" popup appears
 3. if we accept, as there is no default app that will open the file, it switches to the "Open with..." popup
-4. we can select the app that will open our file
-5. the next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
+4. we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
     ![AirDrop Open With Dialog](Images/Chapters/0x06h/airdrop_openwith.png)
 
-6. After selecting "SomeFileManager" we can see the following:
+5. After selecting "SomeFileManager" we can see the following:
     ```javascript
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
     application: <UIApplication: 0x101c00950>
-    openURL: file:///var/mobile/Library/Application%20Support/Containers/com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
+    openURL: file:///var/mobile/Library/Application%20Support
+                        /Containers/com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
     options: {
         UIApplicationOpenURLOptionsAnnotationKey =     {
             LSMoveDocumentOnOpen = 1;
         };
         UIApplicationOpenURLOptionsOpenInPlaceKey = 0;
         UIApplicationOpenURLOptionsSourceApplicationKey = "com.apple.sharingd";
-        "_UIApplicationOpenURLOptionsSourceProcessHandleKey" = "<FBSProcessHandle: 0x1c3a63140; sharingd:605; valid: YES>";
+        "_UIApplicationOpenURLOptionsSourceProcessHandleKey" = "<FBSProcessHandle: 0x1c3a63140; 
+                                                                    sharingd:605; valid: YES>";
     }
     0x18c7930d8 UIKit!__58-[UIApplication _applicationOpenURLAction:payload:origin:]_block_invoke
     ...
@@ -937,11 +946,12 @@ To illustrate this with an example we have chosen an actual file manager app tha
     RET: 0x1
     ```
 
-As you can see the sending application is `com.apple.sharingd` and the URL has the `file://` scheme. Note that once we select the app that should open the file, the system already moved the file to the corresponding destination, that is to the app's Inbox. The app is then responsible for deleting the files inside their Inboxes. This app, for example, moves the file to `/var/mobile/Documents/` and removing it from the Inbox.
+As you can see, the sending application is `com.apple.sharingd` and the URL's scheme is `file://`. Note that once we select the app that should open the file, the system already moved the file to the corresponding destination, that is to the app's Inbox. The apps are then responsible for deleting the files inside their Inboxes. This app, for example, moves the file to `/var/mobile/Documents/` and removes it from the Inbox.
 
 ```javascript
 (0x1c002c760)  -[XXFileManager moveItemAtPath:toPath:error:]
-moveItemAtPath: /var/mobile/Library/Application Support/Containers/com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
+moveItemAtPath: /var/mobile/Library/Application Support/Containers
+                            /com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
 toPath: /var/mobile/Documents/OWASP_MASVS (1).pdf
 error: 0x16f095bf8
 0x100f24e90 SomeFileManager!-[AppDelegate __handleOpenURL:]
@@ -952,9 +962,9 @@ error: 0x16f095bf8
 RET: 0x1
 ```
 
-If you look at the stack trace, you can see how `application:openURL:options:` called `__handleOpenURL:`, which called `moveItemAtPath:toPath:error:`. Notice that we have now this information without having the source code for tha target app. The first thing that we had to do was clear: hook `application:openURL:options:`. Regarding the rest, we had to think a little bit and come up with methods that we could start tracing and are related to the file manager, for example, all methods containing the strings "copy", "move", "remove", etc. until we have found that the one being called was `moveItemAtPath:toPath:error:`.
+If you look at the stack trace, you can see how `application:openURL:options:` called `__handleOpenURL:`, which called `moveItemAtPath:toPath:error:`. Notice that we have now this information without having the source code for the target app. The first thing that we had to do was clear: hook `application:openURL:options:`. Regarding the rest, we had to think a little bit and come up with methods that we could start tracing and are related to the file manager, for example, all methods containing the strings "copy", "move", "remove", etc. until we have found that the one being called was `moveItemAtPath:toPath:error:`.
 
-A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to "Testing Custom URL Schemes" for more information.
+A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to ["Testing Custom URL Schemes"](#Testing-Custom-URL-Schemes) for more information.
 
 
 #### App Extensions
