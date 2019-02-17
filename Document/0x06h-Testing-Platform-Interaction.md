@@ -61,18 +61,19 @@ The following sections go more into detail about the mentioned files and how to 
 
 #### Static Analysis
 
-Since iOS 10, there are four areas which you need to inspect for permissions:
+Since iOS 10, these are the main areas which you need to inspect for permissions:
 
-- [Info.plist File](#Info.plist-File)
+- [Purpose Strings in the Info.plist File](#Purpose-Strings-in-the-Info.plist-File)
 - [Code Signing Entitlements File](#Code-Signing-Entitlements-File)
 - [Embedded Provisioning Profile File](#Embedded-Provisioning-Profile-File)
+- [Entitlements Embedded in the Compiled App Binary](#Entitlements-Embedded-in-the-Compiled-App-Binary)
 - [Source Code Inspection](#Source-Code-Inspection)
 
-##### Info.plist File
+##### Purpose Strings in the Info.plist File
 
 An app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5) or *information property list* file contains, among others, the app's overview of protected data and resources as a set of key-value pairs. Each value contains the so-called *purpose string* or *usage description string* (mandatory from iOS 10 onward), which is a custom text that is offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
-In order to verify the permissions included in the `Info.plist` file, if having the original source code:
+If having the original source code, you can verify the permissions included in the `Info.plist` file:
 
 - open the project with Xcode
 - find and open the `Info.plist` file in the default editor and search for the keys starting with `"Privacy -"`
@@ -153,31 +154,30 @@ $ security cms -D -i embedded.mobileprovision
 
 and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
-However, in some cases you won't find this file in the IPA so you'll have to take the binary of the app (encrypted or decrypted) and extract the entitlements file yourself.
+##### Entitlements Embedded in the Compiled App Binary
 
-First you need to find the path to the app's bundle:
+If you only have the compiled app (IPA) or even only the running app, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you'll be able to extract the entitlements files from the app bundle yourself.
+
+First you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
+
+- open the app and leave it running on foreground
+- run the following command
 
 ```bash
 $ objection --gadget Telegram run env | grep BundlePath
 BundlePath  /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app
 ```
 
-###### Per SSH and grep
+Now you have two options:
 
-Connect per SSH, `cd` to the bundle and grep for "applinks:":
+- connect per SSH, `cd` to the bundle and locate the (encrypted) app binary and use grep directly on it
+- or decrypt and extract the binary to your computer and use other tools apart from grep like binwalk or radare2.
 
-```bash
-# grep -nria "applinks:" .
-Telegram X:4139:            <string>applinks:telegram.me</string>
-Telegram X:4140:            <string>applinks:t.me</string>
-```
+> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
 
-this is located in the app binary itself (called "Telegram X" in this case). Note that this information is not encrypted in the app binary, that's why we could grep and find it. If not we would have to decrypt and extract the app first.
+Now let's assume that you have the binary on your computer. For Telegram it's called "Telegram X".
 
-
-###### Using binwalk
-
-Extract all XML files using binwalk on the decrypted/encrypted binary:
+One approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
 ```language
 $ binwalk -e -y=xml ./Telegram\ X
@@ -188,9 +188,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 1458814       0x16427E        XML document, version: "1.0"
 ```
 
-###### Using radare
-
-Search all strings on the decrypted/encrypted binary containing "PropertyList":
+Or you can use radare2 (`-qc to *quietly* run one command and exit`) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
 ```bash
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
@@ -201,9 +199,8 @@ $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 24696 0x0016427d 0x0016427d 331 332 () ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n\t<key>cdhashes</key>...
 ```
 
-It has also found the two `plist` files and we are able to find the `application-groups` entitlement form the previous section.
+In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements).
 
-> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
 
 ##### Source Code Inspection
 
@@ -216,15 +213,17 @@ Pay attention to:
 
 #### Dynamic Analysis
 
-Use static analysis first to take note of the included permissions included in the relevant files (`Info.plist`, `<appname>.entitlements`/`embedded.mobileprovision`). After that go through the application and check whether the application communicates with other applications or with back ends. Check whether the information retrieved using the permissions and capabilities is used for malicious purposes or the permissions and capabilities themselves are over-asked/under-utilized.
+Use static analysis first to take note of the included permissions included in the relevant files. After that, go through the application and check whether the application communicates with other applications or with back ends. Check whether the information retrieved using the permissions and capabilities is used for malicious purposes or the permissions and capabilities themselves are over-asked/under-utilized.
 
 The way to go here is different for each capability. For example:
 
-- In order to check the authorization of the *photo library*, you could start by using Frida to trace or hook [`PHPhotoLibrary.authorizationStatus()`](https://developer.apple.com/documentation/photokit/phphotolibrary/1620745-authorizationstatus) and check its return value [`PHAuthorizationStatus`](https://developer.apple.com/documentation/photokit/phauthorizationstatus).
-- When using location services you might want to check which [`CLAuthorizationStatus`](https://developer.apple.com/documentation/corelocation/clauthorizationstatus) is being returned by [`CLLocationManager.authorizationStatus()`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423523-authorizationstatus).
-- You could also verify the correct usage of the App Groups entitlement by hooking the [`containerURL(forSecurityApplicationGroupIdentifier:)`](https://developer.apple.com/documentation/foundation/filemanager/1412643-containerurl) method which returns the container directory associated with the specified security application group identifier.
+- in order to check the authorization of the *photo library*, you could start by using Frida to trace or hook [`PHPhotoLibrary.authorizationStatus()`](https://developer.apple.com/documentation/photokit/phphotolibrary/1620745-authorizationstatus) and check its return value [`PHAuthorizationStatus`](https://developer.apple.com/documentation/photokit/phauthorizationstatus).
+- when using location services you might want to check which [`CLAuthorizationStatus`](https://developer.apple.com/documentation/corelocation/clauthorizationstatus) is being returned by [`CLLocationManager.authorizationStatus()`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423523-authorizationstatus).
+- you could also verify the correct usage of the App Groups entitlement by hooking the [`containerURL(forSecurityApplicationGroupIdentifier:)`](https://developer.apple.com/documentation/foundation/filemanager/1412643-containerurl) method which returns the container directory associated with the specified security application group identifier.
 
-Remember that when looking into Settings for the app "ALLOW APP_NAME TO ACCESS" screen, not all permissions are presented at once. You will have to *trigger* them in order to appear. For example, if you're testing a social media app try to post something, this will give options to share photos or location, it will trigger the permission dialogue and the permission will be visible in Settings as well.
+There is also a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening the Settings app and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might presented yet. You will have to *trigger* them in order to be listed on that screen.
+ 
+For example, if you're testing a social media app, try to post something. As you do it, surely the app will offer options to share photos or location. If you click, for example, on share a photo, this will trigger the permission dialogue and the permission will be visible in Settings as well.
 
 
 ### Testing for Sensitive Functionality Exposure Through IPC
@@ -249,7 +248,7 @@ Please refer to the next section ["Testing Custom URL Schemes"](#Testing-Custom-
 
 Universal links the iOS equivalent to the Android App Links (aka. Digital Asset Links) and are used for deep linking. They came as a way to *prevent* the URL scheme hijacking attacks, when a user taps a link to the app's website he will get seamlessly redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
 
-According to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html), Universal links give several key benefits that are not applicable when using custom URL schemes. Specifically, universal links are:
+According to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html), Universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking. Specifically, universal links are:
 
 - **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to your website.
 - **Secure**: When users install your app, iOS checks a file that you’ve uploaded to your web server to make sure that your website allows your app to open URLs on its behalf. Only you can create and upload this file, so the association of your website with your app is secure.
@@ -333,17 +332,21 @@ The [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard)
 
 ##### Testing Universal Links
 
-In order to test Universal links on a static approach you will do the following:
+Testing Universal links on a static approach includes doing the following:
 
-- check the Associated Domains (`com.apple.developer.associated-domains`) entitlement
-- retrieve and validate the App Site Association file from the server
-- check that the link receiver method in the app delegate is properly verifying the incoming links
-- check that the data handler method is handling properly the incoming data
-- check if the app is calling other apps's Universal Links
+- [Checking the Associated Domains](#Checking-the-Associated-Domains)
+- [Retrieving the App Site Association File](#Retrieving-the-App-Site-Association-File)
+- [Checking the Link Receiver Method](#Checking-the-Link-Receiver-Method)
+- [Checking the Data Handler Method](#Checking-the-Data-Handler-Method)
+- [Checking if the App is Calling Other App's Universal Links](#Checking-if-the-App-is-Calling-Other-App's-Universal-Links)
 
 ###### Checking the Associated Domains
 
-Universal Links requires the developer to add Associated Domains (`com.apple.developer.associated-domains`) entitlement and include in it a list of the domains that the app supports (no more than about 20 to 30 domains). This can be done in Xcode in the "Capabilities" tab. Each of the domains must be prefixed with `applinks:`, such as `applinks:www.mywebsite.com`. Here's an example from Telegram's `.entitlements` file:
+Universal Links requires the developer to add Associated Domains entitlement and include in it a list of the domains that the app supports (no more than about 20 to 30 domains). 
+
+In Xcode, go to the "Capabilities" tab and search for "Associated Domains". You can also inspect the `.entitlements` file looking for `com.apple.developer.associated-domains`. Each of the domains must be prefixed with `applinks:`, such as `applinks:www.mywebsite.com`.
+
+Here's an example from Telegram's `.entitlements` file:
 
 ```xml
     <key>com.apple.developer.associated-domains</key>
@@ -355,13 +358,13 @@ Universal Links requires the developer to add Associated Domains (`com.apple.dev
 
 More detailed information can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW2).
 
-If you don't have the original source code you still can search for this (as we did in [Embedded Provisioning Profile File](#Embedded-Provisioning-Profile-File)).
+If you don't have the original source code you still can search for this (as we did in [Entitlements Embedded in the Compiled App Binary](#Entitlements-Embedded-in-the-Compiled-App-Binary)).
 
 ###### Retrieving the App Site Association File
 
 Try to retrieve the `apple-app-site-association` file from the server using the associated domains you got from the previous step. This file needs to be accessible via HTTPS, without any redirects, at `https://<domain>/apple-app-site-association` or `https://<domain>/.well-known/apple-app-site-association`.
 
-You can retrieve it yourself with your browser or use this tool: <https://branch.io/resources/aasa-validator/>. After entering the domain, it will also verify the file for you and show the results (e.g. if it is not being properly served over HTTPS).
+You can retrieve it yourself with your browser or use this tool: <https://branch.io/resources/aasa-validator/>. After entering the domain, it will display the file. 
 
 Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association):
 
@@ -394,11 +397,13 @@ Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-associ
             ...
 ```
 
+It will also verify the file for you and show the results (e.g. if it is not being properly served over HTTPS):
+
 ![`apple-app-site-association-file` Validation](Images/Chapters/0x06h/apple-app-site-association-file_validation.png)
 
 ###### Checking the Link Receiver Method
 
-The app delegate has to implement [`application:continueUserActivity:restorationHandler:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623072-application) that will be used to receive links and handle them appropriately. If you have the original project try searching for this method.
+In order to receive links and handle them appropriately, the app delegate has to implement [`application:continueUserActivity:restorationHandler:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623072-application). If you have the original project try searching for this method.
 
 Please note that if the app uses [`openURL:options:completionHandler:`](https://developer.apple.com/documentation/uikit/uiapplication/1648685-openurl?language=objc) to open a universal link to the app's website, the link won't open in the app. As the call originates from the app, it won't be handled as a universal link.
 
@@ -406,18 +411,17 @@ Please note that if the app uses [`openURL:options:completionHandler:`](https://
 
 That the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen above.
 
-Note that the scheme of the `webpageURL` must be HTTP or HTTPS. Any other scheme throws an exception. It can be verified to be HTTPS with help of the [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme) instance property of `URLComponents` / `NSURLComponents`. This is also the recommendation from Apple:
+Note that the scheme of the `webpageURL` must be HTTP or HTTPS. Any other scheme should throw an exception. The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme) instance property of `URLComponents` / `NSURLComponents` can be used to verify if it is in fact HTTPS or not. This is also the recommendation from Apple:
 
 > To protect users’ privacy and security, you should not use HTTP when you need to transport data; instead, use a secure transport protocol such as HTTPS.
 
-If you don't have the original source code you can use radare2 or rabin2:
+If you don't have the original source code you can use radare2 or rabin2 to search the whole binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
 
 0x1000deea9 53 52 application:continueUserActivity:restorationHandler:
 ```
-
 
 ###### Checking the Data Handler Method
 
@@ -434,9 +438,15 @@ You should check how the received data is validated. This can be also part of th
     }
 ```
 
-You can see there that it verifies that the received activity is of type `NSUserActivityTypeBrowsingWeb` and then obtain the url from `userActivity.webpageURL` and opens it.
+You can see there that it verifies that the received activity is of type `NSUserActivityTypeBrowsingWeb` and then obtain the URL from `userActivity.webpageURL` and opens it.
 
 ###### Checking if the App is Calling Other App's Universal Links
+
+If you have the original source code, you can search it for the `openURL:options:completionHandler:` method.
+
+> Note that the `openURL:options:completionHandler:` method is not only used to open Universal Links but also to [call custom URL schemes](#Testing-URL-Requests-to-Other-Apps).
+
+This is an example from the Telegram app:
 
 ```swift
 }, openUniversalUrl: { url, completion in
@@ -454,9 +464,9 @@ You can see there that it verifies that the received activity is of type `NSUser
             })
 ```
 
-Note how they turn the `scheme` to "https" and how they set the option `UIApplicationOpenURLOptionUniversalLinksOnly: true` that [opens the URL only if the URL is a valid universal link and there is an installed app capable of opening that URL](https://developer.apple.com/documentation/uikit/uiapplicationopenurloptionuniversallinksonly?language=objc).
+Note how the app adapts the `scheme` to "https" before opening it and how it uses the option `UIApplicationOpenURLOptionUniversalLinksOnly: true` that [opens the URL only if the URL is a valid universal link and there is an installed app capable of opening that URL](https://developer.apple.com/documentation/uikit/uiapplicationopenurloptionuniversallinksonly?language=objc).
 
-If you don't have the source code search in the symbols (for Swift) and in the strings (for Objective-C) of the app binary. For example, we will search for Objective-C methods that contain openURL:
+If you don't have the original source code, search in the symbols and in the strings of the app binary. For example, we will search for Objective-C methods that contain "openURL":
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
