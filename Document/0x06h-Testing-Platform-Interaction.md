@@ -323,6 +323,8 @@ Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-associ
             ...
 ```
 
+Note how the "paths" key implements a white- or blacklist of relative paths. Some apps, like Telegram do not implement any (`"paths": ["*"]`), allowing all possible paths.
+
 It will also verify the file for you and show the results (e.g. if it is not being properly served over HTTPS):
 
 ![`apple-app-site-association-file` Validation](Images/Chapters/0x06h/apple-app-site-association-file_validation.png)
@@ -414,14 +416,20 @@ If an app is implementing Universal Links, you should have the following outputs
 - the link receiver method
 - the data handler method
 
-You can use this now to dynamically test them. In order to do that you can:
+You can use this now to dynamically test them:
 
-- trigger the handling of a link and verify that it is a valid universal link
-- try to trace and verify how the data is being handled / parsed
+- [Triggering Universal Links](#Triggering-Universal-Links)
+- [Identifying Valid Universal Links](#Identifying-Valid-Universal-Links)
+- [Tracing the Link Receiver Method](#Tracing-the-Link-Receiver-Method)
+- [Checking How the Links Are Opened](#Checking-How-the-Links-Are-Opened)
+
+###### Triggering Universal Links
 
 Unlike custom URL schemes, unfortunately you cannot test Universal Links from Safari just by typing them in the search bar directly as this is not allowed by Apple. But you can test them anytime using other apps like the Notes app.
 
 > To do it from Safari you will have to find an existing link on a website that once you click it it will be recognized as a Universal Link. This can be a bit time consuming.
+
+###### Identifying Valid Universal Links
 
 First of all we will see the difference between opening an allowed Universal Link and one that shouldn't be allowed.
 
@@ -455,7 +463,9 @@ If we repeat the process and hook the `application:continueUserActivity:restorat
 $ frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
 ```
 
-Now we will show what happens when we do this. But we will use now Telegram, where all links are allowed, see its `apple-app-site-association` file:
+###### Tracing the Link Receiver Method
+
+Now we will show how to trace the link receiver method and how to extract additional information. For this we will use now Telegram, where all links are allowed, see its `apple-app-site-association` file:
 
 ```
 {
@@ -489,38 +499,29 @@ In order to open the links we will use the Notes app, write https://t.me/addstic
 
 ![Add Stickers](Images/Chapters/0x06h/telegram_add_stickers_universal_link.png)
 
-we use frida-trace as anticipated before but we will extend the command as we also want to find out if there are any other functions involved into opening the URL:
+As anticipated before, we will use frida-trace:
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
-> `-m` includes an Objective-C method to the traces, `-i` includes any method. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)) (e.g. with the "*" wildcard, `-i "*open*Url*"` means "include any function containing 'open', then 'Url' and something else")
+> `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)) (e.g. with the "*" wildcard, `-m "*[* *restorationHandler*]"` means "include any Objective-C method of any class containing 'restorationHandler'")
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
-$S10TelegramUI0A19ApplicationBindingsC16openUniversalUrlyySS_AA0ac4OpenG10Completion...
-$S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18application...
-$S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J4HashAC0A4Core19...
-...
-Started tracing 10 functions. Press Ctrl+C to stop.
 ```
 
-We can see a long list of functions but we still don't know which ones will be called. The instrumentation has started, so we can trigger the Universal Link and observe the traces.
+You can see that only one function was found and is being instrumented. Trigger now the Universal Link and observe the traces.
 
 ```bash
-           /* TID 0x303 */
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 restorationHandler:0x16f27a898]
-298619 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext
-                20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA012PresentationK0CA
-                A0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
 ```
 
-There's one Objective-C method and one Swift function that are of our interest. For these we can add code to their stubs in `__handlers__/`, first the Objective-C method:
+You can observe that the function is in fact being called. You can now add code to the stubs in `__handlers__/` to obtain more details:
 
 ```javascript
 // __handlers__/__AppDelegate_application_contin_8e36bbb1.js
@@ -537,9 +538,45 @@ There's one Objective-C method and one Swift function that are of our interest. 
   },
 ```
 
-> We have added more information as just the parameters, we also call some methods from them to get more details, in this case about the `NSUserActivity`. If we look in the [Apple Developer Documentation](https://developer.apple.com/documentation/foundation/nsuseractivity?language=objc) we can see what else we can call from this object.
+> Apart from the function parameters we have added more information by calling some methods from them to get more details, in this case about the `NSUserActivity`. If we look in the [Apple Developer Documentation](https://developer.apple.com/documentation/foundation/nsuseractivity?language=objc) we can see what else we can call from this object.
 
-For the Swift function we don't have documentation but we can just demangle its symbol:
+###### Checking How the Links Are Opened
+
+If you want to know more about which function actually opens the URL and how the data is actually being handled you can keep investigating.
+
+Extend the previous command in order to find out if there are any other functions involved into opening the URL.
+
+```bash
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
+```
+
+> `-i` includes any method. You can also use a glob pattern here (e.g. `-i "*open*Url*"` means "include any function containing 'open', then 'Url' and something else")
+
+Again, we let first frida-trace generate the stubs in `__handlers__/`:
+
+```bash
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
+Instrumenting functions...
+-[AppDelegate application:continueUserActivity:restorationHandler:]
+$S10TelegramUI0A19ApplicationBindingsC16openUniversalUrlyySS_AA0ac4OpenG10Completion...
+$S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18application...
+$S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J4HashAC0A4Core19...
+...
+```
+
+Now you can see a long list of functions but we still don't know which ones will be called. Trigger the Universal Link again and observe the traces.
+
+```bash
+           /* TID 0x303 */
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 restorationHandler:0x16f27a898]
+298619 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext
+                20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA012PresentationK0CA
+                A0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
+```
+
+Apart from the Objective-C method, now there is one Swift function that is also of your interest.
+
+There is probably no documentation for that Swift function but you can just demangle its symbol:
 
 ```swift
 $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
@@ -549,7 +586,7 @@ $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18
 
 This not only gives you the class (or module) of the method, its name and the parameters but also reveals the parameter types and return type, so in case you need to dive deeper now you know where to start.
 
-For now we will use this information to properly print the parameters:
+For now we will use this information to properly print the parameters by editing the stub file:
 
 ```javascript
 // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
@@ -603,7 +640,9 @@ There you can observe the following:
 
 You can now keep going and try to trace and verify how the data is being validated. For example, if you have two apps that *communicate* via Universal Links you can use this to see if the sending app is leaking sensitive data by hooking these methods in the receiving app. This is especially useful when you don't have the source code as you will be able to retrieve the full URL that you wouldn't see other way as it might be the result of clicking some button or triggering some functionality.
 
-The data can be found in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other cases. To see this, be sure to hook the userInfo property or access it directly form the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
+In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other cases. To see this, be sure to hook the `userInfo` property or access it directly form the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
+
+**Final Notes about Universal Links and Handoff**
 
 A final note here, this is also [the way Handoff works](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338) and how you could also see the received data. Actually, this is very similar to ["Web Browser–to–Native App Handoff"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10) scenario.
 
