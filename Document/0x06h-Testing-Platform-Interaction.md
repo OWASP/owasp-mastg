@@ -228,8 +228,6 @@ For example, if you're testing a social media app, try to post something. As you
 
 ### Testing for Sensitive Functionality Exposure Through IPC
 
-#### Overview
-
 During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
 In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers some rather limited options for communication between apps. In fact, there's no way for apps to communicate directly. In this section we will present the different types of indirect communication offered by iOS and how to test them. Here's an overview:
@@ -240,11 +238,13 @@ In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS 
 - [App Extensions](#App-Extensions)
 - [UIPasteboard](#UIPasteboard)
 
-##### Custom URL Schemes
+#### Custom URL Schemes
 
 Please refer to the next section ["Testing Custom URL Schemes"](#Testing-Custom-URL-Schemes) for more information on what custom URL schemes are and how to test them.
 
-##### Universal Links
+#### Universal Links
+
+##### Overview
 
 Universal links the iOS equivalent to the Android App Links (aka. Digital Asset Links) and are used for deep linking. They came as a way to *prevent* the URL scheme hijacking attacks, when a user taps a link to the app's website he will get seamlessly redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
 
@@ -256,81 +256,7 @@ According to the [Apple Developer Documentation](https://developer.apple.com/lib
 - **Simple**: One URL works for both your website and your app.
 - **Private**: Other apps can communicate with your app without needing to know whether your app is installed.
 
-##### UIActivity Sharing
-
-Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known *share activity sheet* that appears after clicking on the "Share" button.
-
-![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet_1.png)
-
-The available share mechanisms (aka. Activity Types) include:
-
-- airDrop
-- assignToContact
-- copyToPasteboard
-- mail
-- message
-- postToFacebook
-- postToTwitter
-
-A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype). Excluding some of the sharing mechanisms is possible, however it is a bit cumbersome as we will see.
-
-##### App Extensions
-
-###### What are app extensions?
-
-According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
-
-Depending on the task, the app extension will have a particular type (and only one), the so-called extension points. Some notable ones are:
-
-- Custom Keyboard: Replace the iOS system keyboard with a custom keyboard for use in all apps.
-- Share: Post to a sharing website or share content with others.
-- Today: also called widgets, they offer content or perform quick tasks in the Today view of Notification Center.
-
-###### How do app extensions interact with other apps?
-
-There are three important elements here:
-
-- App extension: is the one bundled inside a containing app. Host apps interact with it.
-- Host app: is the (third-party) app that triggers the app extension of another app.
-- Containing app: is the app that contains the app extension bundled into it.
-
-For example, the user selects text in the *host app*, clicks on the "Share" button and selects one "app" or action from the list. This triggers the *app extension* of the *containing app*. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13) which pretty good summarizes this:
-
-![App Extensions Communication](Images/Chapters/0x06h/app_extensions_communication.png)
-
-###### Security Considerations
-
-From the security point of view it is important to note that
-
-- an app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
-- an app extension and the host app communicate via inter-process communication.
-- an app extension’s containing app and the host app don’t communicate at all.
-- a Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
-- any app extension and its containing app can access shared data in a privately defined shared container.
-
-In addition:
-
-- app extensions cannot access some APIS, for example, HealthKit.
-- they cannot receive data using AirDrop but do can send data.
-- no long-running background tasks are allowed but uploads or downloads can be initiated.
-- app extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
-
-###### Things to consider when testing App Extensions
-
-So when we analyze an app we will want to do the following:
-
-- find out if the app integrates app extensions and list them
-- verify the data being shared between the app extension and the host app
-- check if there are any shared resources between the app extension and the containing app (mostly regarding data coming from the host app)
-- verify if the app restricts the use of some app extension
-
-##### UIPasteboard
-
-The [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard).
-
-#### Static Analysis
-
-##### Testing Universal Links
+##### Static Analysis
 
 Testing Universal links on a static approach includes doing the following:
 
@@ -479,179 +405,7 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 
 As expected, `openURL:options:completionHandler:` is among the ones found.
 
-##### Testing UIActivity Sharing
-
-###### Sending Files
-
-Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired data (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init).
-
-As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes).
-
-In order to test this you should pay especial attention to:
-
-- the data being shared,
-- the custom activities,
-- the excluded activity types.
-
-It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase and the developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some might not be even documented like "Create Watch Face".
-
-If having the source code, you should take a look at the `UIActivityViewController` and verify the `excludedActivityTypes`. If you only have the installed app, please refer to the steps presented in the dynamic analysis.
-
-```bash
-$ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems
-0x1000df034 45 44 initWithActivityItems:applicationActivities:
-```
-
-###### Receiving Files
-
-When receiving files, you should check:
-
-- if the app declares *custom document types* by looking into Exported/Imported UTIs ("Info" tab of the Xcode project). Here is the list of all [system declared UTIs](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259) (Uniform Type Identifiers).
-- if the app specifies any *document types that it can open* by looking into Document Types ("Info" tab of the Xcode project). If present, they consist of name and one or more UTIs that represent the data type (e.g. "public.png" for PNG files). iOS uses this to determine if the app is eligible to open a given document (specifying Exported/Imported UTIs is not enough).
-- if the app properly *verifies the received data* by looking into the implementation of [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc) (or its deprecated version [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application?language=objc)) in the app delegate.
-
-If not having the source code you can still take a look into the `Info.plist` file and search for:
-
-- `CFBundleDocumentTypes` to see if the app specifies any *document types that it can open*.
-- `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` if the app declares exported/imported *custom document types*.
-
-A very complete explanation about the use of these key can be found [here](https://stackoverflow.com/questions/21937978/what-are-utimportedtypedeclarations-and-utexportedtypedeclarations-used-for-on-i).
-
-Let's see a real-world example. We will take a File Manager app and take a look at these keys. We used [objection](https://github.com/sensepost/objection) here to read the `Info.plist` file.
-
-```bash
-objection --gadget SomeFileManager run ios plist cat Info.plist
-```
-
-Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just *one command away* from our goal and this can be still considered static analysis.
-
-The first thing you notice is that app does not declare any imported custom document types but you can find a couple of exported ones:
-
-```xml
-UTExportedTypeDeclarations =     (
-            {
-        UTTypeConformsTo =             (
-            "public.data"
-        );
-        UTTypeDescription = "SomeFileManager Files";
-        UTTypeIdentifier = "com.some.filemanager.custom";
-        UTTypeTagSpecification =             {
-            "public.filename-extension" =                 (
-                ipa,
-                deb,
-                zip,
-                rar,
-                tar,
-                gz,
-                ...
-                key,
-                pem,
-                p12,
-                cer
-            );
-        };
-    }
-);
-```
-
-The app also declares the document types it opens as we can find the key `CFBundleDocumentTypes`:
-
-```xml
-CFBundleDocumentTypes =     (
-            {
-        CFBundleTypeIconFiles =             (
-            "doc_icon_64",
-            "doc_icon_22",
-            "doc_icon_44",
-            "doc_icon_320"
-        );
-        CFBundleTypeName = "SomeFileManager Files";
-        LSItemContentTypes =             (
-            "public.content",
-            "public.data",
-            "public.archive",
-            "public.item",
-            "public.database",
-            "public.calendar-event",
-            ...
-        );
-    }
-);
-```
-
-We can see that this file manager will try to open anything that conforms to any of the UTIs listed in `LSItemContentTypes` and it's ready to open files with the extensions listed in `UTTypeTagSpecification/"public.filename-extension"`. Please take a note of this because it will be useful if we want to search for vulnerabilities when dealing with the different types of files when performing dynamic analysis.
-
-##### Testing App Extensions
-
-As we anticipated on the overview, from things to consider when testing app extensions, the static analysis will take care of:
-
-- first determine if the app contains any app extensions.
-- if it does, it is important to test the declared Supported Data Types (for sharing data with host apps via Share or Action Extensions)
-- as well as the data being shared with the containing app.
-- we can also verify if the app restricts the use of some app extension.
-
-###### Verify if the App Contains App Extensions
-
-If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
-
-![List App Extensions in Xcode](Images/Chapters/0x06h/xcode_embed_app_extensions.png)
-
-There you can find the names of all embedded app extensions followed by `.appex`, now you can navigate to the individual app extensions in the project.
-
-If not having the original source code:
-
-Grep for `NSExtensionPointIdentifier` among all property lists inside the app bundle.
-
-You can also access per SSH, find the app bundle and list all inside PlugIns or do it with objection:
-
-```
-ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
-/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/PlugIns
-ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
-NSFileType      Perms  NSFileProtection    Read    Write    Owner           Group           Size     Creation                   Name
-------------  -------  ------------------  ------  -------  --------------  --------------  -------  -------------------------  -------------------------
-Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:06 +0000  NotificationContent.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  512.0 B  2019-01-31 00:26:32 +0000  Widget.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:21 +0000  Share.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  192.0 B  2019-01-31 00:26:17 +0000  SiriIntents.appex
-```
-
-We can see now the same four app extensions that we saw in Xcode before.
-
-###### Supported Data Types (Data Shared with Host Apps)
-
-When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and Data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension or that. It is possible to share data using only `UIActivity`.
-
-Inspect the app extension's `Ìnfo.plist` file and search for `NSExtensionActivationRule`. That key specifies the data being supported as well as e.g. maximum of items supported. For example:
-
-```xml
-<key>NSExtensionAttributes</key>
-    <dict>
-        <key>NSExtensionActivationRule</key>
-        <dict>
-            <key>NSExtensionActivationSupportsImageWithMaxCount</key>
-            <integer>10</integer>
-            <key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-            <integer>1</integer>
-            <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-            <integer>1</integer>
-        </dict>
-    </dict>
-```
-
-Only the data types present here and not having `0` as `MaxCount` will be supported. However, more complex filtering is possible by using a so-called predicate string that will evaluate the UTIs given. Please refer to the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW8) for more detailed information about this.
-
-###### Data Shared with the Containing App
-
-Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19) and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults) API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11):
-
-![App Extensions Container Restrictions](Images/Chapters/0x06h/app_extensions_container_restrictions.png)
-
-As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
-
-#### Dynamic Analysis
-
-##### Testing Universal Links
+##### Dynamic Analysis
 
 If an app is implementing Universal Links, you should have the following outputs from the static analysis:
 
@@ -857,7 +611,130 @@ A final note here, this is also [the way Handoff works](https://developer.apple.
 
 Like Universal Links, the Handoff Activity Continuation is defined in the `com.apple.developer.associated-domains` entitlement and in the `apple-app-site-association` file from the server, both using the keyword `"activitycontinuation":`. See ["Retrieving the App Site Association File"](#Retrieving-the-App-Site-Association-File) above for an example.
 
-##### Testing UIActivity Sharing
+
+#### UIActivity Sharing
+
+##### Overview
+
+Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known *share activity sheet* that appears after clicking on the "Share" button.
+
+![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet_1.png)
+
+The available share mechanisms (aka. Activity Types) include:
+
+- airDrop
+- assignToContact
+- copyToPasteboard
+- mail
+- message
+- postToFacebook
+- postToTwitter
+
+A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype). Excluding some of the sharing mechanisms is possible, however it is a bit cumbersome as we will see.
+
+##### Static Analysis
+
+###### Sending Files
+
+Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired data (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init).
+
+As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes).
+
+In order to test this you should pay especial attention to:
+
+- the data being shared,
+- the custom activities,
+- the excluded activity types.
+
+It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase and the developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some might not be even documented like "Create Watch Face".
+
+If having the source code, you should take a look at the `UIActivityViewController` and verify the `excludedActivityTypes`. If you only have the installed app, please refer to the steps presented in the dynamic analysis.
+
+```bash
+$ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems
+0x1000df034 45 44 initWithActivityItems:applicationActivities:
+```
+
+###### Receiving Files
+
+When receiving files, you should check:
+
+- if the app declares *custom document types* by looking into Exported/Imported UTIs ("Info" tab of the Xcode project). Here is the list of all [system declared UTIs](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259) (Uniform Type Identifiers).
+- if the app specifies any *document types that it can open* by looking into Document Types ("Info" tab of the Xcode project). If present, they consist of name and one or more UTIs that represent the data type (e.g. "public.png" for PNG files). iOS uses this to determine if the app is eligible to open a given document (specifying Exported/Imported UTIs is not enough).
+- if the app properly *verifies the received data* by looking into the implementation of [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc) (or its deprecated version [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application?language=objc)) in the app delegate.
+
+If not having the source code you can still take a look into the `Info.plist` file and search for:
+
+- `CFBundleDocumentTypes` to see if the app specifies any *document types that it can open*.
+- `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` if the app declares exported/imported *custom document types*.
+
+A very complete explanation about the use of these key can be found [here](https://stackoverflow.com/questions/21937978/what-are-utimportedtypedeclarations-and-utexportedtypedeclarations-used-for-on-i).
+
+Let's see a real-world example. We will take a File Manager app and take a look at these keys. We used [objection](https://github.com/sensepost/objection) here to read the `Info.plist` file.
+
+```bash
+objection --gadget SomeFileManager run ios plist cat Info.plist
+```
+
+Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just *one command away* from our goal and this can be still considered static analysis.
+
+The first thing you notice is that app does not declare any imported custom document types but you can find a couple of exported ones:
+
+```xml
+UTExportedTypeDeclarations =     (
+            {
+        UTTypeConformsTo =             (
+            "public.data"
+        );
+        UTTypeDescription = "SomeFileManager Files";
+        UTTypeIdentifier = "com.some.filemanager.custom";
+        UTTypeTagSpecification =             {
+            "public.filename-extension" =                 (
+                ipa,
+                deb,
+                zip,
+                rar,
+                tar,
+                gz,
+                ...
+                key,
+                pem,
+                p12,
+                cer
+            );
+        };
+    }
+);
+```
+
+The app also declares the document types it opens as we can find the key `CFBundleDocumentTypes`:
+
+```xml
+CFBundleDocumentTypes =     (
+            {
+        CFBundleTypeIconFiles =             (
+            "doc_icon_64",
+            "doc_icon_22",
+            "doc_icon_44",
+            "doc_icon_320"
+        );
+        CFBundleTypeName = "SomeFileManager Files";
+        LSItemContentTypes =             (
+            "public.content",
+            "public.data",
+            "public.archive",
+            "public.item",
+            "public.database",
+            "public.calendar-event",
+            ...
+        );
+    }
+);
+```
+
+We can see that this file manager will try to open anything that conforms to any of the UTIs listed in `LSItemContentTypes` and it's ready to open files with the extensions listed in `UTTypeTagSpecification/"public.filename-extension"`. Please take a note of this because it will be useful if we want to search for vulnerabilities when dealing with the different types of files when performing dynamic analysis.
+
+##### Dynamic Analysis
 
 ###### Sending Files
 
@@ -1040,7 +917,128 @@ If you look at the stack trace, you can see how `application:openURL:options:` c
 
 A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to "Testing Custom URL Schemes" for more information.
 
-##### Testing App Extensions
+
+#### App Extensions
+
+##### Overview
+
+###### What are app extensions?
+
+According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
+
+Depending on the task, the app extension will have a particular type (and only one), the so-called extension points. Some notable ones are:
+
+- Custom Keyboard: Replace the iOS system keyboard with a custom keyboard for use in all apps.
+- Share: Post to a sharing website or share content with others.
+- Today: also called widgets, they offer content or perform quick tasks in the Today view of Notification Center.
+
+###### How do app extensions interact with other apps?
+
+There are three important elements here:
+
+- App extension: is the one bundled inside a containing app. Host apps interact with it.
+- Host app: is the (third-party) app that triggers the app extension of another app.
+- Containing app: is the app that contains the app extension bundled into it.
+
+For example, the user selects text in the *host app*, clicks on the "Share" button and selects one "app" or action from the list. This triggers the *app extension* of the *containing app*. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13) which pretty good summarizes this:
+
+![App Extensions Communication](Images/Chapters/0x06h/app_extensions_communication.png)
+
+###### Security Considerations
+
+From the security point of view it is important to note that
+
+- an app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
+- an app extension and the host app communicate via inter-process communication.
+- an app extension’s containing app and the host app don’t communicate at all.
+- a Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
+- any app extension and its containing app can access shared data in a privately defined shared container.
+
+In addition:
+
+- app extensions cannot access some APIS, for example, HealthKit.
+- they cannot receive data using AirDrop but do can send data.
+- no long-running background tasks are allowed but uploads or downloads can be initiated.
+- app extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
+
+###### Things to consider when testing App Extensions
+
+So when we analyze an app we will want to do the following:
+
+- find out if the app integrates app extensions and list them
+- verify the data being shared between the app extension and the host app
+- check if there are any shared resources between the app extension and the containing app (mostly regarding data coming from the host app)
+- verify if the app restricts the use of some app extension
+
+##### Static Analysis
+
+As we anticipated on the overview, from things to consider when testing app extensions, the static analysis will take care of:
+
+- first determine if the app contains any app extensions.
+- if it does, it is important to test the declared Supported Data Types (for sharing data with host apps via Share or Action Extensions)
+- as well as the data being shared with the containing app.
+- we can also verify if the app restricts the use of some app extension.
+
+###### Verify if the App Contains App Extensions
+
+If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
+
+![List App Extensions in Xcode](Images/Chapters/0x06h/xcode_embed_app_extensions.png)
+
+There you can find the names of all embedded app extensions followed by `.appex`, now you can navigate to the individual app extensions in the project.
+
+If not having the original source code:
+
+Grep for `NSExtensionPointIdentifier` among all property lists inside the app bundle.
+
+You can also access per SSH, find the app bundle and list all inside PlugIns or do it with objection:
+
+```
+ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
+/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/PlugIns
+ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
+NSFileType      Perms  NSFileProtection    Read    Write    Owner           Group           Size     Creation                   Name
+------------  -------  ------------------  ------  -------  --------------  --------------  -------  -------------------------  -------------------------
+Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:06 +0000  NotificationContent.appex
+Directory         493  None                True    False    _installd (33)  _installd (33)  512.0 B  2019-01-31 00:26:32 +0000  Widget.appex
+Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:21 +0000  Share.appex
+Directory         493  None                True    False    _installd (33)  _installd (33)  192.0 B  2019-01-31 00:26:17 +0000  SiriIntents.appex
+```
+
+We can see now the same four app extensions that we saw in Xcode before.
+
+###### Supported Data Types (Data Shared with Host Apps)
+
+When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and Data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension or that. It is possible to share data using only `UIActivity`.
+
+Inspect the app extension's `Ìnfo.plist` file and search for `NSExtensionActivationRule`. That key specifies the data being supported as well as e.g. maximum of items supported. For example:
+
+```xml
+<key>NSExtensionAttributes</key>
+    <dict>
+        <key>NSExtensionActivationRule</key>
+        <dict>
+            <key>NSExtensionActivationSupportsImageWithMaxCount</key>
+            <integer>10</integer>
+            <key>NSExtensionActivationSupportsMovieWithMaxCount</key>
+            <integer>1</integer>
+            <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+            <integer>1</integer>
+        </dict>
+    </dict>
+```
+
+Only the data types present here and not having `0` as `MaxCount` will be supported. However, more complex filtering is possible by using a so-called predicate string that will evaluate the UTIs given. Please refer to the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW8) for more detailed information about this.
+
+###### Data Shared with the Containing App
+
+Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19) and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults) API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11):
+
+![App Extensions Container Restrictions](Images/Chapters/0x06h/app_extensions_container_restrictions.png)
+
+As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
+
+##### Dynamic Analysis
 
 For the dynamic analysis we can do the following to gain knowledge without having the source code:
 
@@ -1102,6 +1100,18 @@ As you can see there are two app extensions involved:
 - `com.apple.mobilenotes.SharingExtension.appex` which is receiving and will process the text file
 
 If you want to dig in more into what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/) and then dig deeper into the methods that you find more interesting by extending the automatically generated hooks.
+
+
+#### UIPasteboard
+
+##### Overview
+
+The [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard).
+
+##### Static Analysis
+
+##### Dynamic Analysis
+
 
 ### Testing Custom URL Schemes
 
