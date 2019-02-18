@@ -1005,23 +1005,14 @@ From the security point of view it is important to note that
 
 In addition:
 
-- app extensions cannot access some APIS, for example, HealthKit.
+- app extensions cannot access some APIs, for example, HealthKit.
 - they cannot receive data using AirDrop but do can send data.
 - no long-running background tasks are allowed but uploads or downloads can be initiated.
 - app extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
 
-###### Things to consider when testing App Extensions
-
-So when we analyze an app we will want to do the following:
-
-- find out if the app integrates app extensions and list them
-- verify the data being shared between the app extension and the host app
-- check if there are any shared resources between the app extension and the containing app (mostly regarding data coming from the host app)
-- verify if the app restricts the use of some app extension
-
 ##### Static Analysis
 
-As we anticipated on the overview, the static analysis will take care of:
+The static analysis will take care of:
 
 - [Verifying if the App Contains App Extensions](#Verifying-if-the-App-Contains-App-Extensions)
 - [Determining the Supported Data Types](#Determining-the-Supported-Data-Types)
@@ -1038,20 +1029,31 @@ There you can find the names of all embedded app extensions followed by `.appex`
 
 If not having the original source code:
 
-Grep for `NSExtensionPointIdentifier` among all property lists inside the app bundle.
+Grep for `NSExtensionPointIdentifier` among all files inside the app bundle (IPA or installed app):
+
+```bash
+$ grep -nr NSExtensionPointIdentifier Payload/Telegram\ X.app/
+Binary file Payload/Telegram X.app//PlugIns/SiriIntents.appex/Info.plist matches
+Binary file Payload/Telegram X.app//PlugIns/Share.appex/Info.plist matches
+Binary file Payload/Telegram X.app//PlugIns/NotificationContent.appex/Info.plist matches
+Binary file Payload/Telegram X.app//PlugIns/Widget.appex/Info.plist matches
+Binary file Payload/Telegram X.app//Watch/Watch.app/PlugIns/Watch Extension.appex/Info.plist matches
+```
 
 You can also access per SSH, find the app bundle and list all inside PlugIns or do it with objection:
 
 ```
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
-/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/PlugIns
+    /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/
+    Telegram X.app/PlugIns
+
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
-NSFileType      Perms  NSFileProtection    Read    Write    Owner           Group           Size     Creation                   Name
-------------  -------  ------------------  ------  -------  --------------  --------------  -------  -------------------------  -------------------------
-Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:06 +0000  NotificationContent.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  512.0 B  2019-01-31 00:26:32 +0000  Widget.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  224.0 B  2019-01-31 00:26:21 +0000  Share.appex
-Directory         493  None                True    False    _installd (33)  _installd (33)  192.0 B  2019-01-31 00:26:17 +0000  SiriIntents.appex
+NSFileType      Perms  NSFileProtection    Read    Write     Name
+------------  -------  ------------------  ------  -------   -------------------------
+Directory         493  None                True    False     NotificationContent.appex
+Directory         493  None                True    False     Widget.appex
+Directory         493  None                True    False     Share.appex
+Directory         493  None                True    False     SiriIntents.appex
 ```
 
 We can see now the same four app extensions that we saw in Xcode before.
@@ -1118,7 +1120,7 @@ For this we should hook `NSExtensionContext - inputItems` in the data originatin
 0x181ac0168 libxpc.dylib!_xpc_connection_mach_event
 ...
 RET: (
-    "<NSExtensionItem: 0x1c420a540> - userInfo: {
+"<NSExtensionItem: 0x1c420a540> - userInfo: {
     NSExtensionItemAttachmentsKey =     (
     "<NSItemProvider: 0x1c46b30e0> {types = (\n \"public.plain-text\",\n \"public.file-url\"\n)}"
     );
