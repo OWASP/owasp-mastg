@@ -1021,14 +1021,14 @@ So when we analyze an app we will want to do the following:
 
 ##### Static Analysis
 
-As we anticipated on the overview, from things to consider when testing app extensions, the static analysis will take care of:
+As we anticipated on the overview, the static analysis will take care of:
 
-- first determine if the app contains any app extensions.
-- if it does, it is important to test the declared Supported Data Types (for sharing data with host apps via Share or Action Extensions)
-- as well as the data being shared with the containing app.
-- we can also verify if the app restricts the use of some app extension.
+- [Verifying if the App Contains App Extensions](#Verifying-if-the-App-Contains-App-Extensions)
+- [Determining the Supported Data Types](#Determining-the-Supported-Data-Types)
+- [Checking Data Sharing with the Containing App](#Checking-Data-Sharing-with-the-Containing-App)
+- [Verifying if the App Restricts the Use of App Extensions](#Verifying-if-the-App-Restricts-the-Use-of-App-Extensions)
 
-###### Verify if the App Contains App Extensions
+###### Verifying if the App Contains App Extensions
 
 If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
 
@@ -1056,11 +1056,11 @@ Directory         493  None                True    False    _installd (33)  _ins
 
 We can see now the same four app extensions that we saw in Xcode before.
 
-###### Supported Data Types (Data Shared with Host Apps)
+###### Determining the Supported Data Types
 
-When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and Data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension or that. It is possible to share data using only `UIActivity`.
+This is important for data being shared with host apps (e.g. via Share or Action Extensions). When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension or that. It is possible to share data using only `UIActivity`.
 
-Inspect the app extension's `Ìnfo.plist` file and search for `NSExtensionActivationRule`. That key specifies the data being supported as well as e.g. maximum of items supported. For example:
+Inspect the app extension's `Info.plist` file and search for `NSExtensionActivationRule`. That key specifies the data being supported as well as e.g. maximum of items supported. For example:
 
 ```xml
 <key>NSExtensionAttributes</key>
@@ -1079,7 +1079,7 @@ Inspect the app extension's `Ìnfo.plist` file and search for `NSExtensionActiva
 
 Only the data types present here and not having `0` as `MaxCount` will be supported. However, more complex filtering is possible by using a so-called predicate string that will evaluate the UTIs given. Please refer to the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW8) for more detailed information about this.
 
-###### Data Shared with the Containing App
+###### Checking Data Sharing with the Containing App
 
 Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19) and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults) API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11):
 
@@ -1087,25 +1087,27 @@ Remember that app extensions and their containing apps do not have direct access
 
 As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
 
+###### Verifying if the App Restricts the Use of App Extensions
+
+It is possible to reject a specific type of app extension by using the method [`application:shouldAllowExtensionPointIdentifier:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623122-application?language=objc). However, it is currently only possible for "custom keyboard" app extensions (and should be verified when testing apps handling sensitive data via the keyboard like e.g. banking apps).
+
 ##### Dynamic Analysis
 
 For the dynamic analysis we can do the following to gain knowledge without having the source code:
 
-- inspect the items being shared
-- identify the involved app extensions
+- [Inspecting the Items Being Shared](#Inspecting-the-Items-Being-Shared)
+- [Identifying the App Extensions Involved](#Identifying-the-App-Extensions-Involved)
 
 Following the previous example of Telegram we will now use the "Share" button on a text file to create a note in the Notes app with it:
 
 ![Using an App Extension](Images/Chapters/0x06h/telegram_share_extension.png)
 
 
-###### Inspect the Items being shared
+###### Inspecting the Items Being Shared
 
-For this we should hook `NSExtensionContext - inputItems`:
+For this we should hook `NSExtensionContext - inputItems` in the data originating app. If we share a text file from a Telegram chat and select the Notes app as target, we see the following output:
 
-When we trigger the share and select the Notes app as target, we see the following output:
-
-```
+```javascript
 (0x1c06bb420) NSExtensionContext - inputItems
 0x18284355c Foundation!-[NSExtension _itemProviderForPayload:extensionContext:]
 0x1828447a4 Foundation!-[NSExtension _loadItemForPayload:contextIdentifier:completionHandler:]
@@ -1118,7 +1120,7 @@ When we trigger the share and select the Notes app as target, we see the followi
 RET: (
     "<NSExtensionItem: 0x1c420a540> - userInfo: {
     NSExtensionItemAttachmentsKey =     (
-        "<NSItemProvider: 0x1c46b30e0> {types = (\n    \"public.plain-text\",\n    \"public.file-url\"\n)}"
+    "<NSItemProvider: 0x1c46b30e0> {types = (\n \"public.plain-text\",\n \"public.file-url\"\n)}"
     );
 }"
 )
@@ -1126,10 +1128,10 @@ RET: (
 
 Here we can observe that:
 
-- as we anticipated in the overview, this occurred via XPC under-the-hood, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
+- as we anticipated in the overview, this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
 - the UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist).
 
-###### Identify the App Extensions Involved
+###### Identifying the App Extensions Involved
 
 You can also find out which app extension is taking care of your the requests and responses by hooking `NSExtension - _plugIn`:
 
@@ -1148,7 +1150,7 @@ As you can see there are two app extensions involved:
 - `Share.appex` is sending the text file (`public.plain-text` and `public.file-url`)
 - `com.apple.mobilenotes.SharingExtension.appex` which is receiving and will process the text file
 
-If you want to dig in more into what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/) and then dig deeper into the methods that you find more interesting by extending the automatically generated hooks.
+If you want to learn more about what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/) and then dig deeper into the methods that you find more interesting by extending the automatically generated stubs.
 
 
 #### UIPasteboard
