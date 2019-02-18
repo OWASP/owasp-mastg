@@ -313,6 +313,37 @@ iPhone:~ root#
 
 You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
+#### Using Burp via USB on a jailbroken device
+
+We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+
+1. First we need to create the SSH connection
+
+```bash
+$ iproxy 2222 22
+waiting for connection
+```
+
+2. The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
+
+```bash
+ssh -R 8080:localhost:8080 root@localhost -p 2222
+```
+
+3. You should be able to reach now Burp on your iOS device. Just open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+
+4. The last step would be to set the proxy globally on your iOS device.
+- Go to Settings
+- Wi-Fi
+- Connect to **any** Wi-Fi (you can literally connect to any Wifi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
+- Once connected click on the small blue icon on the right side of the connect Wi-Fi
+- Configure your Proxy by selecting Manual
+- Type in 127.0.0.1 as Server
+- Type in 8080 as Port
+
+Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
+
+
 #### App Folder Structure
 
 System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
