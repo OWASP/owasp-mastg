@@ -10,10 +10,15 @@ Android permissions are classified into four different categories on the basis o
 
 -	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
 -	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
+Note that starting at Android 8, If an app requests a permission at runtime, the system will grant the explicit permission, instead of all the permissions which belong to the same permission group as the requested one.
 -	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
 -	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
+
+Note that starting at Android 8 the permissions bellow contain the following changes:
+- READ_CONTACTS : When an app request this permission, queries for usage data will return aproximations rather than exact values.
+- GET_ACCOUNTs : Apps no longer get access to user accounts with this permission unless the authenticator owns the accounts or the user grants that access.
 
 #### Activity Permission Enforcement
 Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
@@ -1182,6 +1187,10 @@ There are several ways to perform dynamic analysis:
 - https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions
 - https://developer.android.com/guide/topics/permissions/overview
 - https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct
+
+#### Android permissions changes in Android 8
+
+- https://developer.android.com/about/versions/oreo/android-8.0-changes
 
 #### OWASP Mobile Top 10 2016
 
