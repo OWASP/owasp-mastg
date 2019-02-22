@@ -1060,7 +1060,7 @@ We can see now the same four app extensions that we saw in Xcode before.
 
 ###### Determining the Supported Data Types
 
-This is important for data being shared with host apps (e.g. via Share or Action Extensions). When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension or that. It is possible to share data using only `UIActivity`.
+This is important for data being shared with host apps (e.g. via Share or Action Extensions). When the user selects some data type in a host app and it matches the data types define here, the host app will offer the extension. It is worth noticing the difference between this and data sharing via `UIActivity` where we had to define the document types, also using UTIs. An app does not need to have an extension for that. It is possible to share data using only `UIActivity`.
 
 Inspect the app extension's `Info.plist` file and search for `NSExtensionActivationRule`. That key specifies the data being supported as well as e.g. maximum of items supported. For example:
 
@@ -1130,7 +1130,7 @@ RET: (
 
 Here we can observe that:
 
-- as we anticipated in the overview, this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
+- this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
 - the UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist).
 
 ###### Identifying the App Extensions Involved
@@ -1159,12 +1159,62 @@ If you want to learn more about what's happening under-the-hood in terms of XPC,
 
 ##### Overview
 
-The [UIPasteboard](https://developer.apple.com/documentation/uikit/uipasteboard).
+The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard) enables sharing data within an app, and from an app to other apps. There are two kinds of pasteboards:
+
+- systemwide general pasteboard: for sharing data with any other app. Persistent by default across device restarts and app uninstalls (since iOS 10).
+- custom / named pasteboards: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
+
+Some security considerations:
+
+- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760)
+- Apple warns about persistent named pasteboards and discourages their use. Instead, shared containers should be used
+- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data
+
 
 ##### Static Analysis
 
+
+
+The **systemwide general pasteboard** can be obtained by using [`generalPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard/1622106-generalpasteboard?language=objc), search the source code or the compiled binary for this method. Using the systemwide general Pasteboard should be avoided when dealing with sensitive data.
+
+**Custom pasteboards** can be created with [`pasteboardWithName:create:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622074-pasteboardwithname?language=objc) or [`pasteboardWithUniqueName;`](https://developer.apple.com/documentation/uikit/uipasteboard/1622087-pasteboardwithuniquename?language=objc). Verify if custom pasteboards are set to be persistent. This is deprecated since iOS 10. A shared container should be used instead.
+
+In addition, the following can be inspected:
+
+- Check if pasteboards are being removed with [`removePasteboardWithName:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622072-removepasteboardwithname?language=objc), which invalidates an app pasteboard, freeing up all resources used by it (no effect for the general pasteboard).
+- Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option
+- Check if there are expiring pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionExpirationDate` option
+- Check if the app swipes the pasteboard when going to background or when terminating.
+
 ##### Dynamic Analysis
 
+###### Detect Pasteboard Usage
+
+Hook or trace the following:
+
+- `generalPasteboard` for the systemwide general pasteboard
+- `pasteboardWithName:create:` and `pasteboardWithUniqueName;` for custom pasteboards
+
+###### Detect Persistent Pasteboard Usage
+
+Hook or trace the deprecated [`setPersistent:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622096-setpersistent?language=objc) method and verify if it's being called.
+
+###### Inspecting pasteboard items (Pasteboard Monitoring)
+
+When monitoring the pasteboards, there is several details that may be dynamically retrieved:
+
+- Obtain pasteboard name by hooking `pasteboardWithName:create:` and inspecting its input parameters or `pasteboardWithUniqueName;` and inspecting its return value
+- Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275)
+- Get the number of items with `numberOfItems` 
+- Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10)
+- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff (UTIs) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the previous section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc) and setting the corresponding UTIs.
+- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate` 
+
+If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
+
+> Hooks into the iOS UIPasteboard class and polls the generalPasteboard every 5 seconds for data. If new data is found, different from the previous poll, that data will be dumped to screen.
+
+You may also build your own pasteboard monitor that monitors specific information as seen above.
 
 ### Testing Custom URL Schemes
 
