@@ -289,7 +289,7 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
 The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
-  //Endpoint to verify against certiticate pinning.
+  //Endpoint to verify against certificatef pinning.
   var server = "https://www.owasp.org";
   //SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
   var fingerprint = "D8 EF 3C DF 7E F6 44 BA 04 EC D5 97 14 BB 00 4A 7A F5 26 63 53 87 4E 76 67 77 F0 F4 CC ED 67 B9";
@@ -326,7 +326,7 @@ For further information, please check the [OWASP certificate pinning guide](http
 ### Testing the Network Security Configuration settings
 
 #### Overview
-Network Security Configuration was introducted on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
+Network Security Configuration was introduced on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
 
 ##### Trust Anchors
 

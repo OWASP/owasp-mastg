@@ -74,10 +74,91 @@ As mentioned before, starting with Android 7, the Android OS will no longer trus
 
 #### Bypassing the Network Security Configuration
 
-From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting. The CA certificates trusted by the app can be a system trusted CA as well as a user CA.
-The network security configuration uses an XML file where the app specifies which CA certificates will be trusted.
+From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting. The apps must also include an entry in the manifest file to point to the network security configuration file.
 
-res/xml/network_security_config.xml:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest ... >
+    <application android:networkSecurityConfig="@xml/network_security_config"
+                    ... >
+        ...
+    </application>
+</manifest>
+```
+
+The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the NSC, which will be described below.  
+
+##### Adding the User Certificates to the NSC Configuration
+
+The CA certificates trusted by the app can be a system trusted CA as well as a user CA. If you added the certificate of your interception proxy already as additional CA in Android, you can force the Android app to trust it with the following NSC configuration below:
+
+```xml
+<network-security-config>
+   <base-config>
+      <trust-anchors>
+          <certificates src="system" />
+          <certificates src="user" />
+      </trust-anchors>
+   </base-config>
+</network-security-config>
+```
+
+To implement this new setting you must follow the steps below:
+
+- Decompile the app using decompilation tools.[Manual static Analysis](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis) provides details about decompiling
+- Make the application trust user's certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
+- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done.
+
+Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
+
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass. The last step, [installing the app might fail](https://github.com/51j0/Android-CertKiller/issues "APK not installing"), due to a bug at the moment.  
+
+```bash
+python main.py -w
+
+***************************************
+Android CertKiller (v0.1)
+***************************************
+
+CertKiller Wizard Mode
+---------------------------------
+List of devices attached
+4200dc72f27bc44d	device
+
+---------------------------------
+
+Enter Application Package Name: nsc.android.mstg.owasp.org.android_nsc
+
+Package: /data/app/nsc.android.mstg.owasp.org.android_nsc-1/base.apk
+
+I. Intitaing APK extraction from device
+   complete
+------------------------------
+I. Decompiling
+   complete
+------------------------------
+I. Applying SSL bypass
+   complete
+------------------------------
+I. Building New APK
+   complete
+------------------------------
+I. Sigining APK
+   complete
+------------------------------
+
+Would you like to install the APK on your device(y/N): y
+------------------------------------
+ Installing Unpinned APK
+------------------------------
+Finished
+```
+
+
+##### Adding the Proxy Certificate to the NSC Configuration
+
+The certificate of your interception proxy can be added directly to the NSC configuration file:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -89,20 +170,10 @@ res/xml/network_security_config.xml:
     </base-config>
 </network-security-config>
 ```
-The apps must include an entry in the manifest file to point to the network security configuration file.
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest ... >
-    <application android:networkSecurityConfig="@xml/network_security_config"
-                    ... >
-        ...
-    </application>decomp
-</manifest>
-```
 
-In order to intercept the traffic of an application running on Android 7.0 and higher, you must follow the steps below:
+To implement this new setting you must follow the steps below:
 
-- Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
+- Decompile the app using decompilation tools.[Manual static Analysis](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis) provides details about decompiling
 - Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
 - Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done.
 
@@ -110,22 +181,22 @@ Note that even if this method is quite simple its major drawback is that you hav
 
 ##### Adding the Proxy's certificate among system trusted CAs
 
-In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems strusted certificates.
+In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems trusted certificates.
 The following steps illustrate how this could be done:
 
 - Making the system files writable which requires rooting the device. Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
-- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in der format (this is the default format in Burp Suite) then run the following commands:
+- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 ```shell
-openssl x509 -inform DER -in cacert.der -out cacert.pem  
-openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
+$ openssl x509 -inform DER -in cacert.der -out cacert.pem  
+$ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
 mv cacert.pem <hash>.0
 ```
-- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command
+- Finally, copy the <hash>.0 file into the directory /system/etc/security/cacerts and then run the following command:
 ```shell
 chmod 644 <hash>.0
 ```
 
-By following the steps described above, you allow any application to trust the proxy's certificates, which allows you to intercept its traffic.
+By following the steps described above, you allow any application to trust the proxy's certificate, which allows you to intercept its traffic.
 
 #### Testing on the Emulator
 
