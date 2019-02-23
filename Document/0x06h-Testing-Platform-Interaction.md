@@ -657,7 +657,7 @@ Like Universal Links, the Handoff Activity Continuation is defined in the `com.a
 
 ##### Overview
 
-Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known *share activity sheet* that appears after clicking on the "Share" button.
+Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
 
 ![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet_1.png)
 
@@ -973,7 +973,7 @@ A final thing worth noticing here is that this way of handling incoming files is
 
 ###### What are app extensions?
 
-According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
+Together with iOS 8, Apple introduced App Extensions. According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
 
 Depending on the task, the app extension will have a particular type (and only one), the so-called extension points. Some notable ones are:
 
@@ -1040,7 +1040,7 @@ Binary file Payload/Telegram X.app//PlugIns/Widget.appex/Info.plist matches
 Binary file Payload/Telegram X.app//Watch/Watch.app/PlugIns/Watch Extension.appex/Info.plist matches
 ```
 
-You can also access per SSH, find the app bundle and list all inside PlugIns or do it with objection:
+You can also access per SSH, find the app bundle and list all inside PlugIns (they are placed there by default) or do it with objection:
 
 ```
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
@@ -1161,30 +1161,29 @@ If you want to learn more about what's happening under-the-hood in terms of XPC,
 
 The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard) enables sharing data within an app, and from an app to other apps. There are two kinds of pasteboards:
 
-- systemwide general pasteboard: for sharing data with any other app. Persistent by default across device restarts and app uninstalls (since iOS 10).
-- custom / named pasteboards: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
+- **systemwide general pasteboard**: for sharing data with any other app. Persistent by default across device restarts and app uninstalls (since iOS 10).
+- **custom / named pasteboards**: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
 
 Some security considerations:
 
-- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760)
-- Apple warns about persistent named pasteboards and discourages their use. Instead, shared containers should be used
+- Users cannot grant or deny permission for apps to read the pasteboard
+- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760), this mitigates background pasteboard monitoring. However, if the *malicious* app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor consent of the user.
+- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc) and discourages their use. Instead, shared containers should be used
 - Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data
 
 
 ##### Static Analysis
 
+The **systemwide general pasteboard** can be obtained by using [`generalPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard/1622106-generalpasteboard?language=objc), search the source code or the compiled binary for this method. Using the systemwide general pasteboard should be avoided when dealing with sensitive data.
 
-
-The **systemwide general pasteboard** can be obtained by using [`generalPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard/1622106-generalpasteboard?language=objc), search the source code or the compiled binary for this method. Using the systemwide general Pasteboard should be avoided when dealing with sensitive data.
-
-**Custom pasteboards** can be created with [`pasteboardWithName:create:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622074-pasteboardwithname?language=objc) or [`pasteboardWithUniqueName;`](https://developer.apple.com/documentation/uikit/uipasteboard/1622087-pasteboardwithuniquename?language=objc). Verify if custom pasteboards are set to be persistent. This is deprecated since iOS 10. A shared container should be used instead.
+**Custom pasteboards** can be created with [`pasteboardWithName:create:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622074-pasteboardwithname?language=objc) or [`pasteboardWithUniqueName`](https://developer.apple.com/documentation/uikit/uipasteboard/1622087-pasteboardwithuniquename?language=objc). Verify if custom pasteboards are set to be persistent. This is deprecated since iOS 10. A shared container should be used instead.
 
 In addition, the following can be inspected:
 
 - Check if pasteboards are being removed with [`removePasteboardWithName:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622072-removepasteboardwithname?language=objc), which invalidates an app pasteboard, freeing up all resources used by it (no effect for the general pasteboard).
 - Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option
 - Check if there are expiring pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionExpirationDate` option
-- Check if the app swipes the pasteboard when going to background or when terminating.
+- Check if the app swipes the pasteboard items when going to background or when terminating. This is done by some password manager apps trying to restrict sensitive data exposure.
 
 ##### Dynamic Analysis
 
@@ -1193,28 +1192,82 @@ In addition, the following can be inspected:
 Hook or trace the following:
 
 - `generalPasteboard` for the systemwide general pasteboard
-- `pasteboardWithName:create:` and `pasteboardWithUniqueName;` for custom pasteboards
+- `pasteboardWithName:create:` and `pasteboardWithUniqueName` for custom pasteboards
 
 ###### Detect Persistent Pasteboard Usage
 
 Hook or trace the deprecated [`setPersistent:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622096-setpersistent?language=objc) method and verify if it's being called.
 
-###### Inspecting pasteboard items (Pasteboard Monitoring)
+###### Monitoring and Inspecting Pasteboard Items
 
 When monitoring the pasteboards, there is several details that may be dynamically retrieved:
 
-- Obtain pasteboard name by hooking `pasteboardWithName:create:` and inspecting its input parameters or `pasteboardWithUniqueName;` and inspecting its return value
+- Obtain pasteboard name by hooking `pasteboardWithName:create:` and inspecting its input parameters or `pasteboardWithUniqueName` and inspecting its return value
 - Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275)
-- Get the number of items with `numberOfItems` 
+- Get the number of items with `numberOfItems`
 - Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10)
-- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff (UTIs) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the previous section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc) and setting the corresponding UTIs.
-- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate` 
+- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](https://developer.apple.com/documentation/mobilecoreservices/uttype?language=objc)) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#UIActivity-Sharing)" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc) and setting the corresponding UTIs.
+- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
 
 > Hooks into the iOS UIPasteboard class and polls the generalPasteboard every 5 seconds for data. If new data is found, different from the previous poll, that data will be dumped to screen.
 
 You may also build your own pasteboard monitor that monitors specific information as seen above.
+
+For example, this script (inspired from the script behind [objection's pasteboard monitor](https://github.com/sensepost/objection/blob/b39ee53b5ba2e9a271797d2f3931d79c46dccfdb/agent/src/ios/pasteboard.ts)) reads the pasteboard items every 5 seconds, if there's something new it will print it:
+
+```javascript
+const UIPasteboard = ObjC.classes.UIPasteboard;
+    const Pasteboard = UIPasteboard.generalPasteboard();
+    var items = "";
+    var count = Pasteboard.changeCount().toString();
+
+setInterval(function () {
+      const currentCount = Pasteboard.changeCount().toString();
+      const currentItems = Pasteboard.items().toString();
+
+      if (currentCount === count) { return; }
+
+      items = currentItems;
+      count = currentCount;
+
+      console.log('[* Pasteboard changed] count: ' + count + 
+      ' hasStrings: ' + Pasteboard.hasStrings().toString() + 
+      ' hasURLs: ' + Pasteboard.hasURLs().toString() + 
+      ' hasImages: ' + Pasteboard.hasImages().toString());
+      console.log(items);
+
+    }, 1000 * 5);
+```
+
+In the output we can see the following:
+
+```
+[* Pasteboard changed] count: 64 hasStrings: true hasURLs: false hasImages: false
+(
+        {
+        "public.utf8-plain-text" = hola;
+    }
+)
+[* Pasteboard changed] count: 65 hasStrings: true hasURLs: true hasImages: false
+(
+        {
+        "public.url" = "https://codeshare.frida.re/";
+        "public.utf8-plain-text" = "https://codeshare.frida.re/";
+    }
+)
+[* Pasteboard changed] count: 66 hasStrings: false hasURLs: false hasImages: true
+(
+        {
+        "com.apple.uikit.image" = "<UIImage: 0x1c42b23c0> size {571, 264} orientation 0 scale 1.000000";
+        "public.jpeg" = "<UIImage: 0x1c44a1260> size {571, 264} orientation 0 scale 1.000000";
+        "public.png" = "<UIImage: 0x1c04aaaa0> size {571, 264} orientation 0 scale 1.000000";
+    }
+)
+```
+
+You see that first a text was copied including the string "hola", after that a URL was copied and finally a picture was copied. Some of them are available via different UTIs. Other apps will consider these UTIs to allow pasting of this data or not.
 
 ### Testing Custom URL Schemes
 
