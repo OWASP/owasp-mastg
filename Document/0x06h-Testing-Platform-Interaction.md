@@ -442,7 +442,7 @@ First of all we will see the difference between opening an allowed Universal Lin
 
 From the `apple-app-site-association` of apple.com we have seen above we chose the following paths:
 
-```json
+```
 "paths": [
     "NOT /shop/buy-iphone/*",
     ...
@@ -590,7 +590,7 @@ This not only gives you the class (or module) of the method, its name and the pa
 
 For now we will use this information to properly print the parameters by editing the stub file:
 
-```javascript
+```
 // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
   onEnter: function (log, args, state) {
@@ -642,7 +642,7 @@ There you can observe the following:
 
 You can now keep going and try to trace and verify how the data is being validated. For example, if you have two apps that *communicate* via Universal Links you can use this to see if the sending app is leaking sensitive data by hooking these methods in the receiving app. This is especially useful when you don't have the source code as you will be able to retrieve the full URL that you wouldn't see other way as it might be the result of clicking some button or triggering some functionality.
 
-In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other cases. To see this, be sure to hook the `userInfo` property or access it directly form the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
+In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other cases. To see this, be sure to hook the `userInfo` property or access it directly form the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
 
 **Final Notes about Universal Links and Handoff**
 
@@ -1141,10 +1141,14 @@ We run the same example again:
 
 ```
 (0x1c0370200) NSExtension - _plugIn
-RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785 1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/PlugIns/Share.appex>
+RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785 
+1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/
+PlugIns/Share.appex>
 
 (0x1c0372300)  -[NSExtension _plugIn]
-RET: <PKPlugin: 0x10bff7910 com.apple.mobilenotes.SharingExtension(1.5) 73E4F137-5184-4459-A70A-83F90A1414DC 1(2) /private/var/containers/Bundle/Application/5E267B56-F104-41D0-835B-F1DAB9AE076D/MobileNotes.app/PlugIns/com.apple.mobilenotes.SharingExtension.appex>
+RET: <PKPlugin: 0x10bff7910 com.apple.mobilenotes.SharingExtension(1.5) 73E4F137-5184-4459-A70A-83F90A1414DC
+ 1(2) /private/var/containers/Bundle/Application/5E267B56-F104-41D0-835B-F1DAB9AE076D/MobileNotes.app/
+ PlugIns/com.apple.mobilenotes.SharingExtension.appex>
 ```
 
 As you can see there are two app extensions involved:
@@ -1181,7 +1185,7 @@ The **systemwide general pasteboard** can be obtained by using [`generalPasteboa
 In addition, the following can be inspected:
 
 - Check if pasteboards are being removed with [`removePasteboardWithName:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622072-removepasteboardwithname?language=objc), which invalidates an app pasteboard, freeing up all resources used by it (no effect for the general pasteboard).
-- Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option
+- Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option
 - Check if there are expiring pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionExpirationDate` option
 - Check if the app swipes the pasteboard items when going to background or when terminating. This is done by some password manager apps trying to restrict sensitive data exposure.
 
@@ -1207,7 +1211,7 @@ When monitoring the pasteboards, there is several details that may be dynamicall
 - Get the number of items with `numberOfItems`
 - Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10)
 - Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](https://developer.apple.com/documentation/mobilecoreservices/uttype?language=objc)) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#UIActivity-Sharing)" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc) and setting the corresponding UTIs.
-- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`
+- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
 
@@ -1406,25 +1410,27 @@ In order to determine how a URL path is built and validated, if you have the ori
 In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250):
 
 ```swift
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?) -> Bool {
-        self.openUrl(url: url)
-        return true
-    }
-    
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        self.openUrl(url: url)
-        return true
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        self.openUrl(url: url)
-        return true
-    }
-    
-    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        self.openUrl(url: url)
-        return true
-    }
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?) -> Bool {
+    self.openUrl(url: url)
+    return true
+}
+
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?, 
+annotation: Any) -> Bool {
+    self.openUrl(url: url)
+    return true
+}
+
+func application(_ app: UIApplication, open url: URL, 
+options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    self.openUrl(url: url)
+    return true
+}
+
+func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+    self.openUrl(url: url)
+    return true
+}
 ```
 
 We can observe some things here:
@@ -1475,7 +1481,8 @@ guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.in
 parsedUrl = URL(string: "https://\(url)")
 if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreId)") {
 } else if let url = url as? String, url.lowercased().hasPrefix("tg://") {
-[[WKExtension sharedExtension] openSystemURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", userHandle.data]]];
+[[WKExtension sharedExtension] openSystemURL:[NSURL URLWithString:[NSString 
+    stringWithFormat:@"tel://%@", userHandle.data]]];
 ```
 
 After combining the results of both searches and carefully inspecting the source code we find the interesting part for us right now:
@@ -1660,16 +1667,7 @@ options: {
 }
 0x18b5030d8 UIKit!__58-[UIApplication _applicationOpenURLAction:payload:origin:]_block_invoke
 0x18b502a94 UIKit!-[UIApplication _applicationOpenURLAction:payload:origin:]
-0x18b50c1fc UIKit!-[UIApplication _handleNonLaunchSpecificActions:forScene:withTransitionContext:completion:]
-0x18b792f10 UIKit!-[__UICanvasLifecycleMonitor_Compatability activateEventsOnly:withContext:completion:]
-0x18bf0e4b8 UIKit!__82-[_UIApplicationCanvas _transitionLifecycleStateWithTransitionContext:completion:]_block_invoke
-0x18bf0e35c UIKit!-[_UIApplicationCanvas _transitionLifecycleStateWithTransitionContext:completion:]
-0x18bc80294 UIKit!__125-[_UICanvasLifecycleSettingsDiffAction performActionsForCanvas:withUpdatedScene:settingsDiff:fromSettings:transitionContext:]_block_invoke
-0x18be170ac UIKit!_performActionsWithDelayForTransitionContext
-0x18bc80144 UIKit!-[_UICanvasLifecycleSettingsDiffAction performActionsForCanvas:withUpdatedScene:settingsDiff:fromSettings:transitionContext:]
-0x18ba662cc UIKit!-[_UICanvas scene:didUpdateWithDiff:transitionContext:completion:]
-0x18b908d5c UIKit!-[UIApplicationSceneClientAgent scene:handleEvent:withCompletion:]
-0x18450a20c FrontBoardServices!__80-[FBSSceneImpl updater:didUpdateSettings:withDiff:transitionContext:completion:]_block_invoke.362
+...
 0x1817e1048 libdispatch.dylib!_dispatch_client_callout
 0x1817e86c8 libdispatch.dylib!_dispatch_block_invoke_direct$VARIANT$mp
 0x18453d9f4 FrontBoardServices!__FBSSERIALQUEUE_IS_CALLING_OUT_TO_A_BLOCK__
@@ -1767,9 +1765,6 @@ options: {
 }
 0x18b5030d8 UIKit!__58-[UIApplication _applicationOpenURLAction:payload:origin:]_block_invoke
 0x18b502a94 UIKit!-[UIApplication _applicationOpenURLAction:payload:origin:]
-0x18b50c1fc UIKit!-[UIApplication _handleNonLaunchSpecificActions:forScene:withTransitionContext:completion:]
-0x18bf0e480 UIKit!__82-[_UIApplicationCanvas _transitionLifecycleStateWithTransitionContext:completion:]_block_invoke
-0x18bf0e35c UIKit!-[_UIApplicationCanvas _transitionLifecycleStateWithTransitionContext:completion:]
 ...
 RET: 0x1
 ```
@@ -1785,7 +1780,8 @@ We do it now with Safari and Telegram, but instead of giving it manually into th
 First of all we let frida-trace generate the stubs for us:
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" -m "*[* *application*URL*]" -m "*[* openURL]"
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" 
+    -m "*[* *application*URL*]" -m "*[* openURL]"
 
 ...
 7310 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
@@ -1828,7 +1824,8 @@ And the Swift method `$S10TelegramUI15openExternalUrl...`:
 The next time we run it, we see the following output:
 
 ```javascript
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" -m "*[* *application*URL*]" -m "*[* openURL]"
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" 
+    -m "*[* *application*URL*]" -m "*[* openURL]"
 
   8144 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
   8145 ms     | -[AppDelegate application: 0x105a59980 openURL: 0x1c46ebb80 options: 0x1c0e222c0]
@@ -1878,7 +1875,8 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
 
 // After clicking "Cancel" on the pop-up and "OPEN" in the page
 
-406575 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c063d0c0 restorationHandler:0x16f27a898]
+406575 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c063d0c0 
+                restorationHandler:0x16f27a898]
 406575 ms  	application:<Application: 0x10556b3c0>
 406575 ms  	continueUserActivity:<NSUserActivity: 0x1c063d0c0>
 406575 ms  		webpageURL:https://telegram.me/fridadotre
@@ -2088,7 +2086,9 @@ Check the source code for WebViews usage. If you can identify a WebView instance
     [super viewDidLoad];
     WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, CGRectGetWidth([UIScreen mainScreen].bounds) - 20, CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, 
+        CGRectGetWidth([UIScreen mainScreen].bounds) - 20, 
+        CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
     self.webView.navigationDelegate = self;
     [self.view addSubview:self.webView];
 
