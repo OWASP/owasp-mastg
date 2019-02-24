@@ -1639,7 +1639,7 @@ Manual fuzzing can be performed against the URL scheme to identify input validat
 
 If you can't look into the original source code you will have to find out yourself which method does the app use to handle the URL scheme requests that it receives. You cannot know if it is an Objective-C method or a Swift one, or even if the app is using a deprecated one.
 
-###### Crafting the link yourself and letting Safari open it (objc-method-observer)
+###### Crafting the Link Yourself and Letting Safari Open It (objc-method-observer)
 
 So let's hook all of them to find out. For this we will use the [ObjC method observer](https://codeshare.frida.re/@mrmacete/objc-method-observer/) from Frida CodeShare, which is an extremely handy script that allows you to quickly observe any collection of methods or classes just by providing a simple pattern.
 
@@ -1704,7 +1704,7 @@ The call was successful and we see now that the iGoat app was open:
 
 Notice that we can also see that the caller (source application) was Safari if we look in the upper-left corner of the screenshot.
 
-###### Dynamically opening the link from the app itfelf (Frida REPL)
+###### Dynamically Opening the Link from the App Itself (Frida REPL)
 
 It is also interesting to see which other methods get called on the way. To change the result a little bit we will call the same URL Scheme from the iGoat app itself:
 
@@ -1753,7 +1753,7 @@ RET: 0x1
 
 The output is truncated for better readability. This time you see that `UIApplicationOpenURLOptionsSourceApplicationKey` has changed to `OWASP.iGoat-Swift`, which makes sense. In addition, a long list of `openURL`-like methods were called. Considering this information can be very useful for some scenarios as it will help you to decide what you next steps will be, e.g. which method you will hook or tamper with next.
 
-###### Opening a link by navigating to a page and letting Safari open it (frida-trace)
+###### Opening a Link by Navigating to a Page and Letting Safari Open It (frida-trace)
 
 We do it now with Safari and Telegram, but instead of giving it manually into the search bar, we will let Safari identify and process the URL scheme from a page containing one. Opening this link "https://telegram.me/fridadotre" will trigger this behaviour.
 
@@ -1769,39 +1769,38 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 7310 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
 7311 ms     | -[AppDelegate application: 0x105a59980 openURL: 0x1c46ebb80 options: 0x1c0e222c0]
 7312 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
-            18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA
-            14OpenURLContextOSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
+            18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContext
+            OSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
 ```
 
-Now we can simply modify by hand the stubs we are interested in, that is, the Objective-C method `application:openURL:options:`:
+Now we can simply modify by hand the stubs we are interested in:
 
-```javascript
-// __handlers__/__AppDelegate_application_openUR_3679fadc.js
+- the Objective-C method `application:openURL:options:`:
+    ```javascript
+    // __handlers__/__AppDelegate_application_openUR_3679fadc.js
 
-onEnter: function (log, args, state) {
-    log("-[AppDelegate application: " + args[2] + " openURL: " + args[3] + " options: " + args[4] + "]");
-    log("\tapplication :" + ObjC.Object(args[2]).toString());
-    log("\topenURL :" + ObjC.Object(args[3]).toString());
-    log("\toptions :" + ObjC.Object(args[4]).toString());
-},
-```
+    onEnter: function (log, args, state) {
+        log("-[AppDelegate application: " + args[2] + " openURL: " + args[3] + " options: " + args[4] + "]");
+        log("\tapplication :" + ObjC.Object(args[2]).toString());
+        log("\topenURL :" + ObjC.Object(args[3]).toString());
+        log("\toptions :" + ObjC.Object(args[4]).toString());
+    },
+    ```
+- the Swift method `$S10TelegramUI15openExternalUrl...`:
+    ```javascript
+    // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
-And the Swift method `$S10TelegramUI15openExternalUrl...`:
+    onEnter: function (log, args, state) {
 
-```javascript
-// __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
-
-  onEnter: function (log, args, state) {
-
-    log("TelegramUI.openExternalUrl(account, url, presentationData," +
-                "applicationContext, navigationController, dismissInput)");
-    log("\taccount: " + ObjC.Object(args[1]).toString());
-    log("\turl: " + ObjC.Object(args[2]).toString());
-    log("\tpresentationData: " + args[3]);
-    log("\tapplicationContext: " + ObjC.Object(args[4]).toString());
-    log("\tnavigationController: " + ObjC.Object(args[5]).toString());
-  },
-```
+        log("TelegramUI.openExternalUrl(account, url, presentationData," +
+                    "applicationContext, navigationController, dismissInput)");
+        log("\taccount: " + ObjC.Object(args[1]).toString());
+        log("\turl: " + ObjC.Object(args[2]).toString());
+        log("\tpresentationData: " + args[3]);
+        log("\tapplicationContext: " + ObjC.Object(args[4]).toString());
+        log("\tnavigationController: " + ObjC.Object(args[5]).toString());
+    },
+    ```
 
 The next time we run it, we see the following output:
 
@@ -1876,7 +1875,7 @@ Search for deprecated methods like:
 - [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc)
 - [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application)
 
-Simply use frida-trace to see if any of those methods is being used.
+You may simply use frida-trace for this, to see if any of those methods are being used.
 
 ##### Testing URL Schemes Source Validation
 
