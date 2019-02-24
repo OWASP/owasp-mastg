@@ -179,7 +179,7 @@ Now let's assume that you have the binary on your computer. For Telegram it's ca
 
 One approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
-```language
+```
 $ binwalk -e -y=xml ./Telegram\ X
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
@@ -190,13 +190,17 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 Or you can use radare2 (`-qc to *quietly* run one command and exit`) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
-```bash
+```
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
-24162 0x0015d2a4 0x0015d2a4 1526 1527 () ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">
-...<key>com.apple.security.application-groups</key>\n\t\t<array>\n\t\t\t<string>group.ph.telegra.Telegraph</string>...
+0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC 
+"-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">
+...<key>com.apple.security.application-groups</key>\n\t\t<array>
+\n\t\t\t<string>group.ph.telegra.Telegraph</string>...
 
-24696 0x0016427d 0x0016427d 331 332 () ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n\t<key>cdhashes</key>...
+0x0016427d ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC 
+"-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n
+<dict>\n\t<key>cdhashes</key>...
 ```
 
 In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements).
@@ -503,7 +507,7 @@ In order to open the links we will also use the Notes app, write https://t.me/ad
 
 As anticipated before, we will use frida-trace:
 
-```bash
+```
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
@@ -511,7 +515,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
-```bash
+```
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -519,7 +523,7 @@ Instrumenting functions...
 
 You can see that only one function was found and is being instrumented. Trigger now the Universal Link and observe the traces.
 
-```bash
+```
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 restorationHandler:0x16f27a898]
 ```
 
@@ -556,7 +560,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 Again, we let first frida-trace generate the stubs in `__handlers__/`:
 
-```bash
+```
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -568,7 +572,7 @@ $S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J
 
 Now you can see a long list of functions but we still don't know which ones will be called. Trigger the Universal Link again and observe the traces.
 
-```bash
+```
            /* TID 0x303 */
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 restorationHandler:0x16f27a898]
 298619 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext
@@ -578,12 +582,22 @@ Now you can see a long list of functions but we still don't know which ones will
 
 Apart from the Objective-C method, now there is one Swift function that is also of your interest.
 
-There is probably no documentation for that Swift function but you can just demangle its symbol:
+There is probably no documentation for that Swift function but you can just demangle its symbol using `swift-demangle`:
+
+```bash
+$ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
+18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA0
+12PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
+```
+
+Resulting in:
 
 ```swift
-$ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
-
-$S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF ---> TelegramUI.openExternalUrl(account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData, applicationContext: TelegramUI.TelegramApplicationContext, navigationController: Display.NavigationController?, dismissInput: () -> ()) -> ()
+---> TelegramUI.openExternalUrl(
+    account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String, 
+    forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData, 
+    applicationContext: TelegramUI.TelegramApplicationContext, 
+    navigationController: Display.NavigationController?, dismissInput: () -> ()) -> ()
 ```
 
 This not only gives you the class (or module) of the method, its name and the parameters but also reveals the parameter types and return type, so in case you need to dive deeper now you know where to start.
@@ -611,7 +625,7 @@ For now we will use this information to properly print the parameters by editing
 
 This way, the next time we run it we get an much more detailed output:
 
-```javascript
+```
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
 298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
@@ -1109,7 +1123,7 @@ Following the previous example of Telegram we will now use the "Share" button on
 
 For this we should hook `NSExtensionContext - inputItems` in the data originating app. If we share a text file from a Telegram chat and select the Notes app as target, we see the following output:
 
-```javascript
+```
 (0x1c06bb420) NSExtensionContext - inputItems
 0x18284355c Foundation!-[NSExtension _itemProviderForPayload:extensionContext:]
 0x1828447a4 Foundation!-[NSExtension _loadItemForPayload:contextIdentifier:completionHandler:]
@@ -1120,7 +1134,8 @@ For this we should hook `NSExtensionContext - inputItems` in the data originatin
 0x181ac0168 libxpc.dylib!_xpc_connection_mach_event
 ...
 RET: (
-"<NSExtensionItem: 0x1c420a540> - userInfo: {
+"<NSExtensionItem: 0x1c420a540> - userInfo:
+{
     NSExtensionItemAttachmentsKey =     (
     "<NSItemProvider: 0x1c46b30e0> {types = (\n \"public.plain-text\",\n \"public.file-url\"\n)}"
     );
@@ -1247,7 +1262,7 @@ setInterval(function () {
 
 In the output we can see the following:
 
-```
+```bash
 [* Pasteboard changed] count: 64 hasStrings: true hasURLs: false hasImages: false
 (
         {
@@ -1535,7 +1550,7 @@ Search for deprecated methods like:
 
 For example, here we find those three:
 
-```bash
+```
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 0x1000d9e90 31 30 UIApplicationOpenURLOptionsKey
@@ -1712,47 +1727,14 @@ completionHandler: <__NSStackBlock__: 0x16fc89c38>
 0x183befbec MobileCoreServices!-[LSApplicationWorkspace openURL:withOptions:error:]
 0x10ba6400c
 ...
-0x10a722f08
 RET: nil
 
-(0x1c422ee00)  -[LSApplicationWorkspace openURL:withOptions:error:]
-openURL: iGoat://?contactNumber=123456789&message=hola
-withOptions: nil
-error: nil
-0x10ba2400c
 ...
-0x10a723084
-RET: 0x1
-
-(0x1c422ee00)  -[LSApplicationWorkspace openURL:withOptions:]
-openURL: iGoat://?contactNumber=123456789&message=hola
-withOptions: nil
-0x18b501fd8 UIKit!-[UIApplication _openURL:]
-0x10b80400c
-...
-0x10a723084
-RET: 0x1
-
-(0x1c422ee00)  -[LSApplicationWorkspace openURL:]
-openURL: iGoat://?contactNumber=123456789&message=hola
-0x18b501fd8 UIKit!-[UIApplication _openURL:]
-0x10b80400c
-...
-0x10a723084
-RET: 0x1
-
-(0x101d0fad0)  -[UIApplication _openURL:]
-_openURL: iGoat://?contactNumber=123456789&message=hola
-0x10a610044
-...
-0x10a722e58
-RET: 0x1
 
 (0x101d0fad0)  -[UIApplication openURL:]
 openURL: iGoat://?contactNumber=123456789&message=hola
 0x10a610044
 ...
-0x10a722e58
 RET: 0x1
 
 true
@@ -1769,7 +1751,7 @@ options: {
 RET: 0x1
 ```
 
-The output is truncated for better readability. This time you see that `UIApplicationOpenURLOptionsSourceApplicationKey` has changed to `OWASP.iGoat-Swift`, which makes sense. In addition, we see an overview of all `openURL`-like methods being called. This can be very useful for some scenarios as it will help you to decide what you next steps will be, e.g. which method you will hook or tamper with next.
+The output is truncated for better readability. This time you see that `UIApplicationOpenURLOptionsSourceApplicationKey` has changed to `OWASP.iGoat-Swift`, which makes sense. In addition, a long list of `openURL`-like methods were called. Considering this information can be very useful for some scenarios as it will help you to decide what you next steps will be, e.g. which method you will hook or tamper with next.
 
 ###### Opening a link by navigating to a page and letting Safari open it (frida-trace)
 
@@ -1854,7 +1836,7 @@ There you can observe the following:
 - it uses the `tg://` custom URL scheme from Telegram
 
 
-It is interesting to see that if you open the same link "https://telegram.me/fridadotre", click on cancel and the click on the link offered by the page itself "Open in the Telegram app, instead of opening via custom URL scheme it will open via Universal Links.
+It is interesting to see that if you navigate again to "https://telegram.me/fridadotre", click on cancel and then click on the link offered by the page itself "Open in the Telegram app". Instead of opening via custom URL scheme it will open via Universal Links.
 
 ![Open in the Telegram app](Images/Chapters/0x06h/open_in_telegram_via_universallink.png)
 
@@ -1879,9 +1861,9 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
                 restorationHandler:0x16f27a898]
 406575 ms  	application:<Application: 0x10556b3c0>
 406575 ms  	continueUserActivity:<NSUserActivity: 0x1c063d0c0>
-406575 ms  		webpageURL:https://telegram.me/fridadotre
-406575 ms  		activityType:NSUserActivityTypeBrowsingWeb
-406575 ms  		userInfo:{
+406575 ms       webpageURL:https://telegram.me/fridadotre
+406575 ms       activityType:NSUserActivityTypeBrowsingWeb
+406575 ms       userInfo:{
 }
 406575 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
 ```
@@ -1954,7 +1936,7 @@ Doing this with Frida is pretty easy, you can refer to this [blog post](https://
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the iGoat-Swift app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
 
-```javascript
+```
 $ frida -U SpringBoard -l ios-url-scheme-fuzzing.js
 [iPhone::SpringBoard]-> fuzz("iGoat", "iGoat://?contactNumber={0}&message={0}")
 Watching for crashes from iGoat...
