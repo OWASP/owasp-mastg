@@ -56,7 +56,7 @@ For example, Android Nougat defines the following system users:
 Android apps interact with system services via the Android Framework, an abstraction layer that offers high-level Java APIs. The majority of these services are invoked via normal Java method calls and are translated to IPC calls to system services that are running in the background. Examples of system services include:
 
     - Connectivity (Wi-Fi, Bluetooth, NFC, etc.)
-    - Giles
+    - Files
     - Cameras
     - Geolocation (GPS)
     - Microphone
