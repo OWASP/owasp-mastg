@@ -289,9 +289,9 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
 The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
-  //Endpoint to verify against certificatef pinning.
+  // Endpoint to verify against certificate pinning.
   var server = "https://www.owasp.org";
-  //SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
+  // SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
   var fingerprint = "D8 EF 3C DF 7E F6 44 BA 04 EC D5 97 14 BB 00 4A 7A F5 26 63 53 87 4E 76 67 77 F0 F4 CC ED 67 B9";
 
   window.plugins.sslCertificateChecker.check(
