@@ -268,13 +268,29 @@ Android Pie adds the ability to import keys securely into the `AndroidKeystore`.
 
 ![Secure key import into Keystore.](Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png).
 
+```java
+KeyDescription ::= SEQUENCE {
+    keyFormat INTEGER,
+    authorizationList AuthorizationList
+}
+
+SecureKeyWrapper ::= SEQUENCE {
+    wrapperFormatVersion INTEGER,
+    encryptedTransportKey OCTET_STRING,
+    initializationVector OCTET_STRING,
+    keyDescription KeyDescription,
+    secureKey OCTET_STRING,
+    tag OCTET_STRING
+}
+```
+
 #### decryption only on unlocked devices
 
 For more security Android pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
 
 #### StrongBox Hardware Security module
 
-Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random-number generator and a mechanism to resist package tampering. To use this feature a `True` flag must be passed to `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`.
+Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random-number generator and a mechanism to resist package tampering. To use this feature a `True` flag must be passed to `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. Make sure that StrongBox is used during runtime by checking that `isInsideSecureHardware` returns `true`.
 
 #### Key use authorizations
 
