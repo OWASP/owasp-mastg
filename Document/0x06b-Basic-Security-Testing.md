@@ -646,3 +646,21 @@ It is important to note that changing this value will break the original signatu
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
+
+
+### References (Tools)
+
+- Burp Suite - https://portswigger.net/burp/communitydownload
+- Frida - https://www.frida.re
+- IDB - https://www.idbtool.com
+- Introspy - https://github.com/iSECPartners/Introspy-iOS
+- ipainstaller - https://github.com/autopear/ipainstaller
+- iProxy - https://iphonedevwiki.net/index.php/SSH_Over_USB
+- Keychain-dumper - https://github.com/ptoomey3/Keychain-Dumper/
+- MobSF - https://github.com/MobSF/Mobile-Security-Framework-MobSF
+- Needle - https://github.com/mwrlabs/needle
+- Objection - https://github.com/sensepost/objection
+- SSL Kill Switch 2 - https://github.com/nabla-c0d3/ssl-kill-switch2
+- Usbmuxd - https://github.com/libimobiledevice/usbmuxd
+- Wireshark - https://www.wireshark.org/download.html
+- Xcode - https://developer.apple.com/xcode/
