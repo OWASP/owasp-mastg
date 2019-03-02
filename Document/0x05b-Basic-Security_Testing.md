@@ -783,14 +783,23 @@ An extensive list of root detection methods is presented in the "Testing Anti-Re
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
 
 
-### References (Tools)
+### References
+
+- Signing Manually (Android developer documentation) - https://developer.android.com/studio/publish/app-signing#signing-manually
+- Custom Trust - https://developer.android.com/training/articles/security-config#CustomTrust
+- Google Android Codelabs - https://codelabs.developers.google.com/codelabs/android-network-security-config/#3
+- Security Analyst’s Guide to Network Security Configuration in Android P - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+
+#### Tools
 
 - ADBI - https://github.com/crmulliner/adbi
 - Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
+- Android-CertKiller - https://github.com/51j0/Android-CertKiller
 - Android tcpdump - https://www.androidtcpdump.com/
 - Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
 - Android Platform Tools - https://developer.android.com/studio/releases/platform-tools.html
 - Android Studio - https://developer.android.com/studio/index.html
+- apktool -https://ibotpeaches.github.io/Apktool/
 - apkx - https://github.com/b-mueller/apkx
 - Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
 - Burp Suite Professional - https://portswigger.net/burp/
