@@ -245,7 +245,7 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 
     //Generate the salt
     byte[] salt = new byte[saltLength];
-    randomb.nextBytes(salt);
+    random.nextBytes(salt);
 
     KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
     SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
