@@ -22,8 +22,11 @@ How exactly SafetyNet works is not well documented and may change at any time. W
 
 To use the API, an app may call the `SafetyNetApi.attest` method (which returns a JWS message with the *Attestation Result*) and then check the following fields:
 
-- ctsProfileMatch: If "true," the device profile matches one of Google's listed devices.
-- basicIntegrity: If "true", the device running the app likely hasn't been tampered with.
+- `ctsProfileMatch`: If "true," the device profile matches one of Google's listed devices.
+- `basicIntegrity`: If "true", the device running the app likely hasn't been tampered with.
+- `nonces`: to match the response to its request.
+- `timestampMs`: to check how much time has passed since you made the request and you got the response. A delayed response  may suggest suspicious activity.
+- `apkPackageName`, `apkCertificateDigestSha256`,  `apkDigestSha256` parameters provide information about the APK, which is use to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information
 
 The following is a sample attestation result:
 
@@ -39,6 +42,32 @@ The following is a sample attestation result:
   "basicIntegrity": true,
 }
 ```
+
+**ctsProfileMatch Vs basicIntegrity**
+
+The SafetyNet Attestation API initially provided a single value called basicIntegrity to help developers determine the integrity of a device. As the API evolved, Google introduced a new, stricter check whose results appear in a value called ctsProfileMatch, which allows developers to more finely evaluate the devices on which their app is running.
+
+In broad terms, basicIntegrity gives you a signal about the general integrity of the device and its API. Rooted devices fail basicIntegrity, as do emulators, virtual devices, and devices with signs of tampering, such as API hooks.
+
+On the other hand, ctsProfileMatch gives you a much stricter signal about the compatibility of the device. Only unmodified devices that have been certified by Google can pass ctsProfileMatch. Devices that will fail ctsProfileMatch include the following:
+
+- Devices that fail basicIntegrity
+- Devices with an unlocked bootloader
+- Devices with a custom system image (custom ROM)
+- Devices for which the manufactured didn't apply for, or pass, Google certification
+- Devices with a system image built directly from the Android Open Source Program source files
+- Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
+
+** Do's and Don'ts of `SafetyNetApi.attest` **
+
+-  Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
+- Trust APK information (apkPackageName, apkCertificateDigestSha256 & apkDigestSha256) only if the value of ctsProfileMatch is true.
+- Using a secure connection, entire JWS response should be send to your server, for verification. It isn't recommend to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
+- The verify() method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. Also, it has a fixed rate limit of 10,000 requests per day, per project. Hence, use the verify() method only for testing during the initial development stage and not in a production scenario.
+- The SafetyNet Attestation API gives you snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommend to plan a strategy to use the least amount of attestations required to satisfy the use case.
+
+
+Follow the [checklist](https://developer.android.com/training/safetynet/attestation-checklis) to ensure that you've completed each of the steps needed to integrate the SafetyNet Attestation API into the app.
 
 ###### Programmatic Detection
 
