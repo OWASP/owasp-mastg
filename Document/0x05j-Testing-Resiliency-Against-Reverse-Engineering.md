@@ -24,9 +24,9 @@ To use the API, an app may call the `SafetyNetApi.attest` method (which returns 
 
 - `ctsProfileMatch`: If "true," the device profile matches one of Google's listed devices.
 - `basicIntegrity`: If "true", the device running the app likely hasn't been tampered with.
-- `nonces`: to match the response to its request.
-- `timestampMs`: to check how much time has passed since you made the request and you got the response. A delayed response  may suggest suspicious activity.
-- `apkPackageName`, `apkCertificateDigestSha256`,  `apkDigestSha256` parameters provide information about the APK, which is use to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information
+- `nonces`: To match the response to its request.
+- `timestampMs`: To check how much time has passed since you made the request and you got the response. A delayed response  may suggest suspicious activity.
+- `apkPackageName`, `apkCertificateDigestSha256`,  `apkDigestSha256`: Provide information about the APK, which is use to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information
 
 The following is a sample attestation result:
 
@@ -58,7 +58,7 @@ On the other hand, ctsProfileMatch gives you a much stricter signal about the co
 - Devices with a system image built directly from the Android Open Source Program source files
 - Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
 
-** Do's and Don'ts of `SafetyNetApi.attest` **
+**Do's and Don'ts of** `SafetyNetApi.attest`
 
 -  Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (apkPackageName, apkCertificateDigestSha256 & apkDigestSha256) only if the value of ctsProfileMatch is true.
@@ -67,7 +67,7 @@ On the other hand, ctsProfileMatch gives you a much stricter signal about the co
 - The SafetyNet Attestation API gives you snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommend to plan a strategy to use the least amount of attestations required to satisfy the use case.
 
 
-Follow the [checklist](https://developer.android.com/training/safetynet/attestation-checklis) to ensure that you've completed each of the steps needed to integrate the SafetyNet Attestation API into the app.
+Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklis) to ensure that you've completed each of the steps needed to integrate the SafetyNet Attestation API into the app.
 
 ###### Programmatic Detection
 
