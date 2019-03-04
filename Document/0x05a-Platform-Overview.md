@@ -527,7 +527,7 @@ When an application is installed on the Android device, the Package Manager ensu
 
 #### APK Signing Schemes
 
-Android supports two application signing schemes. Starting with Android 7.0, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, APKs signed with the v2 signature format can be installed on older Android devices as long as the former are also v1-signed. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports three application signing schemes. Starting with Android 9.0, APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compability, APKs signed with a given signing scheme can be installed on older Android devices as long as the former are signed with prior scheme verions too. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 Scheme)
 
@@ -540,6 +540,12 @@ With the APK signature scheme, the complete APK is hashed and signed, and an APK
 ![Preparation](Images/Chapters/0x05a/apk-validation-process.png)
 [APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
 
+#### APK Signature Scheme (v3 Scheme)
+
+The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
+
+![apk-validation-process-v3-scheme](Images/Chapters/0x05a/apk-validation-process-v3-scheme)
+[APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process")
 ##### Creating Your Certificate
 
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.

@@ -10,18 +10,22 @@ When an APK is signed, a public-key certificate is attached to it. This certific
 
 The [final release build](https://developer.android.com/studio/publish/app-signing.html "Android Application Signing") of an app must be signed with a valid release key. In Android Studio, the app can be signed manually or via creation of a signing configuration that's assigned to the release build type.
 
-All app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations "Android Signing Considerations"). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
+Prior Android Pie All app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations "Android Signing Considerations"). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
 
-Two APK signing schemes are available:
+Three APK signing schemes are available:
 - JAR signing (v1 scheme),
-- APK Signature Scheme v2 (v2 scheme).
+- APK Signature Scheme v2 (v2 scheme),
+- APK Signature Scheme v3 (v3 scheme).
 
-The v2 signature, which is supported by Android 7.0 and above, offers improved security and performance. Release builds should always be signed via *both* schemes.
+The v2 signature, which is supported by Android 7.0 and above, offers improved security and performance compared to v1 scheme.
+The V3 signature, which is supported by Android 9.0 and above, gives apps the ability to change  their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availibility by allowing both the new and the old keys to be used.
+
+For each signing scheme the release builds should always be signed via all its previous schemes as well. 
 
 
 #### Static Analysis
 
-Make sure that the release build has been signed via both the v1 and v2 schemes and that the code-signing certificate in the APK belongs to the developer.
+Make sure that the release build has been signed via both the v1 and v2 schemes for Android 7 and above and via all the three schemes for android 9 and above, and that the code-signing certificate in the APK belongs to the developer.
 
 APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 
@@ -30,6 +34,7 @@ $ apksigner verify --verbose Desktop/example.apk
 Verifies
 Verified using v1 scheme (JAR signing): true
 Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
 Number of signers: 1
 ```
 
@@ -52,11 +57,12 @@ sm     11116 Fri Nov 11 12:07:48 ICT 2016 AndroidManifest.xml
 
 Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and above. Instead of `jarsigner`, you can rely on the `apksigner` to verify the certificate chain.
 
-The signing configuration can be managed through Android Studio or the `signingConfig` block in `build.gradle`. To activate both the v1 and v2 schemes, the following values must be set:
+The signing configuration can be managed through Android Studio or the `signingConfig` block in `build.gradle`. To activate both the v1 and v2 and v3 schemes, the following values must be set:
 
 ```
 v1SigningEnabled true
 v2SigningEnabled true
+v3SigningEnabled true
 ```
 
 Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
@@ -686,3 +692,7 @@ The dynamic analysis of this secion comprises validating whether the copyrights 
 - [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization")
 - [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
 - [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android")
+
+#### Android Documentation
+
+- [APK signature scheme with key rotation](https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation)
