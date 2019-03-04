@@ -74,58 +74,129 @@ As mentioned before, starting with Android 7, the Android OS will no longer trus
 
 #### Bypassing the Network Security Configuration
 
-From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting. The CA certificates trusted by the app can be a system trusted CA as well as a user CA.
-The network security configuration uses an XML file where the app specifies which CA certificates will be trusted.
+From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
-res/xml/network_security_config.xml:
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <base-config>
-        <trust-anchors>
-            <certificates src="@raw/extracas"/>
-            <certificates src="system"/>
-        </trust-anchors>
-    </base-config>
-</network-security-config>
-```
-The apps must include an entry in the manifest file to point to the network security configuration file.
+In order to implement the network security configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in one of the [Google Android Codelabs](https://codelabs.developers.google.com/codelabs/android-network-security-config/#3 "Basic Network Security Configuration").
+
+After the creation, the apps must also include an entry in the manifest file to point to the new network security configuration file.
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest ... >
     <application android:networkSecurityConfig="@xml/network_security_config"
                     ... >
         ...
-    </application>decomp
+    </application>
 </manifest>
 ```
 
-In order to intercept the traffic of an application running on Android 7.0 and higher, you must follow the steps below:
+The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
-- Decompile the app using decompilation tools.[Manual static Analysis] provides details about decompiling (https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#manual-static-analysis)
-- Make the application trust the proxy's certificate by creating a network security configuration with the giving certificate as explained above
-- Repackage the app. The [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually) explains how it's done.
+##### Adding the User Certificates to the Network Security Configuration
+
+There are different configurations available for the Network Security Configuration to [add non-system Certificate Authorities](https://developer.android.com/training/articles/security-config#CustomTrust "Custom Trust") via the src attribute:
+
+```xml
+<certificates src=["system" | "user" | "raw resource"]
+              overridePins=["true" | "false"] />
+```
+Each certificate can be one of the following:
+- a "raw resource" ID pointing to a file containing X.509 certificates
+- "system" for the pre-installed system CA certificates
+- "user" for user-added CA certificates
+
+
+The CA certificates trusted by the app can be a system trusted CA as well as a user CA. Usually you will have added the certificate of your interception proxy already as additional CA in Android. Therefore we will focus on the "user" setting, which allows you to force the Android app to trust this certificate with the following Network Security Configuration configuration below:
+
+```xml
+<network-security-config>
+   <base-config>
+      <trust-anchors>
+          <certificates src="system" />
+          <certificates src="user" />
+      </trust-anchors>
+   </base-config>
+</network-security-config>
+```
+
+To implement this new setting you must follow the steps below:
+
+- Decompile the app using a decompilation tool like apktool:
+```bash
+$ apktool d <filename>.apk
+```
+- Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
+- Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
+```bash
+$ apktool b
+```
+- You need to repackage the app, as explained in the [repackaging chapter](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
+> Bear in mind that if the app you are testing has additional hardening measures, like verification of the app signature you might not be able to start the app anymore. As part of the repackaging you will sign the app with your own key and therefore the signature changes will result in triggering such checks that might lead to immediate termination of the app. You would need to identify and disable such checks either by patching them during repackaging of the app or dynamic instrumentation through Frida.
+
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass. The last step, [installing the app might fail](https://github.com/51j0/Android-CertKiller/issues "APK not installing"), due to a bug at the moment.  
+
+```bash
+python main.py -w
+
+***************************************
+Android CertKiller (v0.1)
+***************************************
+
+CertKiller Wizard Mode
+---------------------------------
+List of devices attached
+4200dc72f27bc44d	device
+
+---------------------------------
+
+Enter Application Package Name: nsc.android.mstg.owasp.org.android_nsc
+
+Package: /data/app/nsc.android.mstg.owasp.org.android_nsc-1/base.apk
+
+I. Intitaing APK extraction from device
+   complete
+------------------------------
+I. Decompiling
+   complete
+------------------------------
+I. Applying SSL bypass
+   complete
+------------------------------
+I. Building New APK
+   complete
+------------------------------
+I. Sigining APK
+   complete
+------------------------------
+
+Would you like to install the APK on your device(y/N): y
+------------------------------------
+ Installing Unpinned APK
+------------------------------
+Finished
+```
+
 ##### Adding the Proxy's certificate among system trusted CAs
 
-In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems strusted certificates.
+In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems trusted certificates.
 The following steps illustrate how this could be done:
 
 - Making the system files writable which requires rooting the device. Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
-- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in der format (this is the default format in Burp Suite) then run the following commands:
+- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 ```shell
-openssl x509 -inform DER -in cacert.der -out cacert.pem  
-openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1  
+$ openssl x509 -inform DER -in cacert.der -out cacert.pem  
+$ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
 mv cacert.pem <hash>.0
 ```
-- Finally, copy the <hash>.0 file in /system/etc/security/cacerts then run this command
+- Finally, copy the <hash>.0 file into the directory /system/etc/security/cacerts and then run the following command:
 ```shell
 chmod 644 <hash>.0
 ```
 
-By following the steps described above, you allow any application to trust the proxy's certificates, which allows you to intercept its traffic.
+By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, of course unless the application uses SSL pinning.
 
 #### Testing on the Emulator
 
@@ -712,14 +783,23 @@ An extensive list of root detection methods is presented in the "Testing Anti-Re
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
 
 
-### References (Tools)
+### References
+
+- Signing Manually (Android developer documentation) - https://developer.android.com/studio/publish/app-signing#signing-manually
+- Custom Trust - https://developer.android.com/training/articles/security-config#CustomTrust
+- Google Android Codelabs - https://codelabs.developers.google.com/codelabs/android-network-security-config/#3
+- Security Analyst’s Guide to Network Security Configuration in Android P - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+
+#### Tools
 
 - ADBI - https://github.com/crmulliner/adbi
 - Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
+- Android-CertKiller - https://github.com/51j0/Android-CertKiller
 - Android tcpdump - https://www.androidtcpdump.com/
 - Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
 - Android Platform Tools - https://developer.android.com/studio/releases/platform-tools.html
 - Android Studio - https://developer.android.com/studio/index.html
+- apktool -https://ibotpeaches.github.io/Apktool/
 - apkx - https://github.com/b-mueller/apkx
 - Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
 - Burp Suite Professional - https://portswigger.net/burp/
