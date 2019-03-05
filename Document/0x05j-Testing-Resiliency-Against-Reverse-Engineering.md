@@ -63,10 +63,10 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 -  Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
 - Using a secure connection, the entire JWS response should be sent to your server, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
-- The verify() method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. Also, it has a fixed rate limit of 10,000 requests per day, per project. Hence, use the verify() method only for testing during the initial development stage and not in a production scenario instead you should verify the JWS statement using the standard cryptographic solutions provided found in the  [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") on your server.
+- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. Also, it has a fixed rate limit of 10,000 requests per day, per project. Hence, use the `verify()` method only for testing during the initial development stage and not in a production scenario instead you should verify the JWS statement at your own server, using a standard cryptographic solutions provided  in the [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample").
 - The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
 
-Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklis "attestation checklist") to ensure that you've completed each of the steps needed to integrate the SafetyNet Attestation API into the app.
+Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklis "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
 
 ###### Programmatic Detection
 
@@ -1463,7 +1463,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
 
 
 #### OWASP MASVS
@@ -1480,13 +1480,13 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### SafetyNet Attestation
 
-- [Developer Guideline](https://developer.android.com/training/safetynet/attestation.html "https://developer.android.com/training/safetynet/attestation.html")
-- [SafetyNet Attestation Checklist](https://developer.android.com/training/safetynet/attestation-checklist "https://developer.android.com/training/safetynet/attestation-checklist")
-- [Do's & Don'ts of SafetyNet Attestation](https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html "https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html")
+- [Developer Guideline](https://developer.android.com/training/safetynet/attestation.html "developer guideline")
+- [SafetyNet Attestation Checklist](https://developer.android.com/training/safetynet/attestation-checklist "checklist")
+- [Do's & Don'ts of SafetyNet Attestation](https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html "recommendations")
 - [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/ "Google SafetyNet Sample")
-- [SafetyNet Attestation API - Quota Request](https://support.google.com/googleplay/android-developer/contact/safetynetqr "https://support.google.com/googleplay/android-developer/contact/safetynetqr")
+- [SafetyNet Attestation API - Quota Request](https://support.google.com/googleplay/android-developer/contact/safetynetqr "Quota Request")
 
 #### Tools
 
-- Frida - https://www.frida.re/
+- [Frida](https://www.frida.re/ "Frida")
 - ADB & DDMS
