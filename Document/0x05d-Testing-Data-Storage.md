@@ -105,7 +105,7 @@ Secure ways to retrieve the key include:
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
-//the getKey() method either gets the key from the server or from a Keystore, or is deferred from a password.
+//the getKey() method either gets the key from the server or from a KeyStore, or is deferred from a password.
 RealmConfiguration config = new RealmConfiguration.Builder()
   .encryptionKey(getKey())
   .build();
@@ -303,7 +303,7 @@ For any publicly accessible data storage, any process can override the data. Thi
 #### Static analysis
 
 ##### Using Shared Preferences
-When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaning the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
+When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaining the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
 Using reflection based persistence? Check the section on "Testing Object Persistence" for Android to see how it should be validated.
 Using the `SharedPreferences.Editor` to store and read certificates or keys? Make sure you have patched your security provider given vulnerabilities such as found in [Bouncy Castle](https://www.cvedetails.com/cve/CVE-2018-1000613/ "Key reading vulnerability due to unsafe reflection").
 
@@ -436,7 +436,7 @@ To intercept traffic between the client and server, you can perform dynamic anal
 
 #### Overview
 
-When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. Hovewer, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
 
 #### Static Analysis
 
