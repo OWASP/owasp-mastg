@@ -25,7 +25,7 @@ To use the API, an app may call the `SafetyNetApi.attest` method (which returns 
 - `ctsProfileMatch`: If 'true', the device profile matches one of Google's listed devices.
 - `basicIntegrity`: If 'true', the device running the app likely hasn't been tampered with.
 - `nonces`: To match the response to its request.
-- `timestampMs`: To check how much time has passed since you made the request and you got the response. A delayed response  may suggest suspicious activity.
+- `timestampMs`: To check how much time has passed since you made the request and you got the response. A delayed response may suggest suspicious activity.
 - `apkPackageName`, `apkCertificateDigestSha256`,  `apkDigestSha256`: Provide information about the APK, which is used to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information.
 
 The following is a sample attestation result:
