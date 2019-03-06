@@ -342,7 +342,7 @@ This protection can be bypassed by using a custom Network Security Configuration
 
 Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
 
-The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
+The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
 If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
 
