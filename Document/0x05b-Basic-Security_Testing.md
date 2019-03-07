@@ -70,7 +70,7 @@ After completing these steps and starting the app, the requests should show up i
 
 A few other differences: from Android 8 onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 onward, the SSLSocket and SSLEngine will behave a little bit different in terms of erroring when something goes wrong during the handshakes.
 
-As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security mesure.
+As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security control.
 
 #### Bypassing the Network Security Configuration
 
@@ -156,7 +156,7 @@ Enter Application Package Name: nsc.android.mstg.owasp.org.android_nsc
 
 Package: /data/app/nsc.android.mstg.owasp.org.android_nsc-1/base.apk
 
-I. Intitaing APK extraction from device
+I. Initiating APK extraction from device
    complete
 ------------------------------
 I. Decompiling
@@ -168,7 +168,7 @@ I. Applying SSL bypass
 I. Building New APK
    complete
 ------------------------------
-I. Sigining APK
+I. Signing APK
    complete
 ------------------------------
 
@@ -185,7 +185,7 @@ In order to avoid the obligation of configuring the Network Security Configurati
 The following steps illustrate how this could be done:
 
 - Making the system files writable which requires rooting the device. Find instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device later in this chapter. Run the 'mount' command to make sure the /system is writable, if it still not the case run the following command 'mount -o rw,remount -t ext4 /system'
-- Preparing the proxy's CA cerificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
+- Preparing the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 ```shell
 $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
 $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
@@ -348,7 +348,7 @@ Several tools support the dynamic analysis of applications that rely on the HTTP
 
 ##### Client Isolation in Wireless Networks
 
-Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This might be due to restrictions in the app (see next section) but can also be due to so called client isolation in the Wifi that you are connected to.
+Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This might be due to restrictions in the app (see next section) but can also be due to so called client isolation in the Wi-Fi that you are connected to.
 
 [Wireless Client Isolation](https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation "Wireless Client Isolation") is a security feature that prevents wireless clients from communicating with one another. This feature is useful for guest and BYOD SSIDs adding a level of security to limit attacks and threats between devices connected to the wireless networks.
 
@@ -360,7 +360,7 @@ You can configure the proxy on your Android device to point to 127.0.0.1:8080, c
 $ adb reverse tcp:8080 tcp:8080
 ```
 
-Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your laptop and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wifis that have client isolation.
+Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your laptop and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wi-Fis that have client isolation.
 
 ##### Intercepting Non-Proxy Aware Apps
 
@@ -518,9 +518,9 @@ You can display the captured traffic in a human-readable format with Wireshark. 
 
 ![Wireshark and tcpdump](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png)
 
-This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp Plugins that can get you started.
+This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
-##### Burp Plugins to Process Non-HTTP Traffic
+##### Burp plugins to Process Non-HTTP Traffic
 
 Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and

@@ -606,7 +606,7 @@ public class CodeCheck {
     }
 ```
 
-Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in Github.
+Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in GitHub.
 
 #### Effectiveness Assessment
 
@@ -643,7 +643,7 @@ Integrity checks often calculate a checksum or hash over selected files. Commonl
 - class files *.dex,
 - native libraries (*.so).
 
-The following [sample implementation from the Android Cracking Blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
+The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
 
 
 ```java
@@ -818,7 +818,7 @@ An obvious way to detect Frida and similar frameworks is to check the environmen
 
 With API Level 25 and below it was possible to query for all running services by using the Java method  (getRunningServices[https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices(int) "getRunningServices"]. This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
 
-A working solution to detect the frida process is to us the command `ps` instead.
+A working solution to detect the frida-server process is to us the command `ps` instead.
 
 ```Java
 public boolean checkRunningProcesses() {
@@ -864,7 +864,7 @@ Starting with Android Nougat (API Level 24) the `ps` command will only return pr
 
 Even if the process name could easily be detected, this would only work if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
 
-frida-server binds to TCP port 27042 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
+The frida-server process binds to TCP port 27042 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
 
 ```c
 boolean is_frida_server_listening() {

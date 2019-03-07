@@ -182,7 +182,7 @@ Implementing certificate pinning involves three main steps:
 - Make sure the certificate is in .bks format.
 - Pin the certificate to an instance of the default Apache Httpclient.
 
-To analyze the correct implementation of certificate pinning, the HTTP client should load the Keystore:
+To analyze the correct implementation of certificate pinning, the HTTP client should load the KeyStore:
 
 ```java
 InputStream in = resources.openRawResource(certificateRawResource);
@@ -190,7 +190,7 @@ keyStore = KeyStore.getInstance("BKS");
 keyStore.load(resourceStream, password);
 ```
 
-Once the Keystore has been loaded, we can use the TrustManager that trusts the CAs in our KeyStore:
+Once the KeyStore has been loaded, we can use the TrustManager that trusts the CAs in our KeyStore:
 
 ```java
 String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
@@ -318,7 +318,7 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
-After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the Javascript code of the application to confirm its usage.
+After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the JavaScript code of the application to confirm its usage.
 
 #### Dynamic Analysis
 
@@ -342,7 +342,7 @@ This protection can be bypassed by using a custom Network Security Configuration
 
 Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
 
-The Network Security Configuration should be analysed to determine what settings are configured. The file is located inside the apk in the /res/xml/ folder with the name network_security_config.xml.
+The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
 If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
 

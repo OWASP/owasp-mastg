@@ -147,7 +147,7 @@ In both scenarios the AP needs to be configured to point to your machines IP. To
 
 #### Setting a Proxy Through Runtime Instrumentation
 
-On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage) or code injection frameworks like [frida](https://www.frida.re) and [cycript](http://www.cycript.org). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
+On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage) or code injection frameworks like [Frida](https://www.frida.re) and [cycript](http://www.cycript.org). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
 
 #### Example: Dealing with Xamarin
 
@@ -213,7 +213,7 @@ EX: `TLS_RSA_WITH_3DES_EDE_CBC_SHA`
 
 In the example above the cipher suites uses:
 - TLS as protocol
-- RSA Asymmetric encryption for Athentication
+- RSA Asymmetric encryption for Authentication
 - 3DES for Symmetric encryption with EDE_CBC mode
 - SHA Hash algorithm for integrity
 
@@ -267,7 +267,7 @@ Integrity Check Algorithms:
 Note that The efficiency of a cipher suite depends on the efficiency of its algorithms.
 
 
-In the following, we’ll present the updated recommended cipher suites list to use with TLS, these Cipher suites are recommended by both, IANA in its TLS parameters documentaion and Owasp TLS Cipher String Cheat Sheet:
+In the following, we’ll present the updated recommended cipher suites list to use with TLS, these Cipher suites are recommended by both, IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
 
 IANA recommended cipher suites [rfc8447](https://tools.ietf.org/html/rfc8447#section-8) [IANA_CIPHERS](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4):
 
@@ -296,7 +296,7 @@ IANA recommended cipher suites [rfc8447](https://tools.ietf.org/html/rfc8447#sec
 - `TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384`
 - `TLS_ECDHE_PSK_WITH_AES_128_CCM_SHA256`
 
-Owasp recommended cipher suites [Cipher_String_Cheat_Sheet](https://www.owasp.org/index.php/TLS_Cipher_String_Cheat_Sheet):
+OWASP recommended cipher suites [Cipher_String_Cheat_Sheet](https://www.owasp.org/index.php/TLS_Cipher_String_Cheat_Sheet):
 
 - `TLS_DHE_RSA_WITH_AES_256_GCM_SHA384`
 - `TLS_DHE_RSA_WITH_AES_128_GCM_SHA256`
@@ -311,7 +311,7 @@ Owasp recommended cipher suites [Cipher_String_Cheat_Sheet](https://www.owasp.or
 - `TLS_DHE_RSA_WITH_AES_256_CBC_SHA`
 - `TLS_DHE_RSA_WITH_AES_128_CBC_SHA`
 
-Some Android and IOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites) and [IOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc) versions and choose the Top supported cipher suites
+Some Android and IOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites) and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc) versions and choose the Top supported cipher suites
 
 #### Static Analysis
 
@@ -334,7 +334,7 @@ Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You ca
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning". Tools like Vproxy can be used to redirect all HTTP(S) traffic to your machine to sniff and investigate it for unencrypted requests.
 
 If you want to verify whether your server supports the right ciphersuites, there are various tools you can use:
-- nscurl - see Testing Network Communication for ios for more details.
+- nscurl - see Testing Network Communication for iOS for more details.
 - [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
 
