@@ -71,7 +71,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 - [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
-> Note that OWASP and the MSTG won't be responsible if you end up bricking your iOS device!
+> Note that any modification you make to you device is at your own risk. While Jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
 #### Dealing with Jailbreak Detection
 
@@ -133,7 +133,7 @@ Other useful tools we'll be referring throughout the guide:
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
-Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (altough most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
+Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
 
 The static analysis instructions in the following chapters are based on the assumption that the source code is available.
 
@@ -287,7 +287,7 @@ use device/dependency_installer
 
 run
 ```
-Other modules may promt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it.
+Other modules may prompt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it.
 
 #### SSH Connection via USB
 
@@ -335,7 +335,7 @@ ssh -R 8080:localhost:8080 root@localhost -p 2222
 4. The last step would be to set the proxy globally on your iOS device.
 - Go to Settings
 - Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wifi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
+- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
 - Once connected click on the small blue icon on the right side of the connect Wi-Fi
 - Configure your Proxy by selecting Manual
 - Type in 127.0.0.1 as Server
@@ -575,7 +575,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-Portswigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 #### Bypassing Certificate Pinning
 
@@ -586,7 +586,7 @@ The Burp Suite app "[Mobile Assistant](https://portswigger.net/burp/help/mobile_
 In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
 
 - the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
-- methods/strings containing words like "pinning," "X509," "Certificate," etc.
+- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
 
 If you don't have access to the source, you can try binary patching or runtime manipulation:
 
@@ -596,13 +596,13 @@ If you don't have access to the source, you can try binary patching or runtime m
 
 Certificate pinning is a good security practice and should be used for all applications that handle sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) lists the root and intermediate CAs that major operating systems automatically trust. Please refer to the [map of the roughly 650 organizations that are Certificate Authorities Mozilla or Microsoft trust (directly or indirectly)](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
 
-It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a pre-requisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection Github Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
+It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
 
 ```
 # ios sslpinning disable
 ```
 
-See also the [Github Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
+See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
 
 If you want to get more details about white box testing and typical code patterns, refer to "iOS Application Security" by David Thiel. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
@@ -643,7 +643,7 @@ Sometimes an application can require to be used on an iPad device. If you only h
 
 It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
 
-This bypass might not work if the application requires capabilities that are specific to modern iPads while your iphone or iPod is a bit older.
+This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
 

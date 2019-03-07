@@ -217,7 +217,7 @@ Attaching to process 2670...
 
 #### Cycript and Cynject
 
-Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing run-time patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Acessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
+Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing run-time patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
 
 First download, unpack, and install the SDK.
 
@@ -362,7 +362,7 @@ Thanks to Apple's confusing provisioning and code-signing system, re-signing an 
 
 We'll use `optool`, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
 
-To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repo. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
+To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repository. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
 > Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
 
