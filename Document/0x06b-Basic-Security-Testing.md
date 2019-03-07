@@ -71,7 +71,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 - [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
-> Note that any modification you make to you device is at your own risk. While Jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
+> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
 #### Dealing with Jailbreak Detection
 
